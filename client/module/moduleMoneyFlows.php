@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMoneyFlows.php,v 1.12 2005/03/09 20:52:26 olivleh1 Exp $
+	$Id: moduleMoneyFlows.php,v 1.13 2005/03/09 22:20:41 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -65,9 +65,9 @@ class moduleMoneyFlows extends module {
 				$all_data=$this->corePreDefMoneyFlows->get_valid_data( date( 'Y-m-d' ), date( 'Y-m-d' ) );
 
 				foreach( $all_data as $key => $value ) {
-					if( count( $checked ) > 0 ) {
+					if( count( $checked ) > 0 )
 						$all_data[$key]['checked']=$checked[$all_data[$key]['id']]==1?'checked':'';
-					}
+
 					$all_data[$key]['capitalsourcecomment']=$this->coreCapitalSources->get_comment( $all_data[$key]['capitalsourceid'] );
 					$all_data[$key]['contractpartnername']=$this->coreContractPartners->get_name( $all_data[$key]['contractpartnerid'] );
 				}
