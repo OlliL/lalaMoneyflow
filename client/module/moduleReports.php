@@ -1,5 +1,9 @@
 <?php
 
+/*
+	$Id: moduleReports.php,v 1.3 2005/03/05 12:24:50 olivleh1 Exp $
+*/
+
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
 require_once 'core/coreContractPartners.php';

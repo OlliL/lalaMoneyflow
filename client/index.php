@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: index.php,v 1.4 2005/03/05 12:19:49 olivleh1 Exp $
+	$Id: index.php,v 1.5 2005/03/05 12:24:50 olivleh1 Exp $
 */
 
 if( ! empty($_GET['action']) || ! empty($_POST['action']) )
@@ -109,8 +109,9 @@ switch( $action ) {
 					$display=$moduleReports->display_list_reports($month,$year);
 					break;
 
-/* START: REWRITE ME */
 
+
+/* START: REWRITE ME */
 	case 'add_moneyflows':		$display=$moduleMoneyFlows->display_add_moneyflows();
 					break;
 	case 'save_moneyflows':		$display=$moduleMoneyFlows->save_moneyflows();
@@ -118,8 +119,6 @@ switch( $action ) {
 	case 'show_monthlysettlement':	$display=$moduleMonthlySettlement->display_show_monthlysettlement();
 					break;
 	case 'edit_monthlysettlement':	$display=$moduleMonthlySettlement->edit_monthlysettlement();
-					break;
-	case 'generate report':		$display=$moduleReports->generate_report();
 					break;
 /* END: REWRITE ME */
 }
