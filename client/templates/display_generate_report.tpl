@@ -1,17 +1,14 @@
-<html>
-	<head><title>report</title>
-{$HEADER}
-
-		<td align="center">
-			<h1>money flow {$YEAR}-{$MONTH}</h1>
-			<table border=0>
+			<h1>money flow {$MONTH.name} {$YEAR}</h1>
+			<table border=0 width=820 align="center">
 				<tr>
-					<th>bookingdate</th>
-					<th>invoicedate</th>
-					<th>amount</th>
-					<th>contract partner</th>
-					<th>comment</th>
-					<th>capital source</th>
+					<th width="8%">bookingdate</th>
+					<th width="8%">invoicedate</th>
+					<th width="10%">amount</th>
+					<th width="16%">contract partner</th>
+					<th >comment</th>
+					<th width="23%">capital source</th>
+					<th width="2%">&nbsp</th>
+					<th width="3%">&nbsp</th>
 				</tr>
 				{section name=DATA loop=$ALL_MONEYFLOW_DATA}
 					<tr>
@@ -29,8 +26,8 @@
 							{if $CAPITALSOURCE_VALUES[CAPITALSOURCE].id == $ALL_MONEYFLOW_DATA[DATA].capitalsourceid}{$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}{/if} 
 						{/section}
 						</td>
-						<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&id={$ALL_MONEYFLOW_DATA[DATA].id}&sr=1','_blank','width=1024,height=80')">edit</a></td>
-						<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&id={$ALL_MONEYFLOW_DATA[DATA].id}&sr=1','_blank','width=1024,height=80')">delete</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&id={$ALL_MONEYFLOW_DATA[DATA].id}&sr=1','_blank','width=1024,height=80')">edit</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&id={$ALL_MONEYFLOW_DATA[DATA].id}&sr=1','_blank','width=1024,height=80')">delete</a></td>
 					</tr>
 				{/section}
 			</table>
@@ -77,28 +74,3 @@
 					<td align="right" class="contrastbgcolor"><font {if $DIFFERENCE < 0}color="red"{/if}>{$DIFFERENCE|number_format} EUR</font></td>
 				</tr>
 			</table>
-			<br />
-			<form action="{$ENV_INDEX_PHP}" method="GET">
-				<select name="header_month">
-					<option {if $HEADER_MONTH == 01}selected{/if}> 01
-					<option {if $HEADER_MONTH == 02}selected{/if}> 02
-					<option {if $HEADER_MONTH == 03}selected{/if}> 03
-					<option {if $HEADER_MONTH == 04}selected{/if}> 04
-					<option {if $HEADER_MONTH == 05}selected{/if}> 05
-					<option {if $HEADER_MONTH == 06}selected{/if}> 06
-					<option {if $HEADER_MONTH == 07}selected{/if}> 07
-					<option {if $HEADER_MONTH == 08}selected{/if}> 08
-					<option {if $HEADER_MONTH == 09}selected{/if}> 09
-					<option {if $HEADER_MONTH == 10}selected{/if}> 10
-					<option {if $HEADER_MONTH == 11}selected{/if}> 11
-					<option {if $HEADER_MONTH == 12}selected{/if}> 12
-				</select>
-				<select name="header_year">
-					{section name=YEAR loop=$YEARS}
-						<option {if $YEARS[YEAR] == $HEADER_YEAR}selected{/if}> {$YEARS[YEAR]}
-					{/section}
-				</select>
-				<input type="submit" name="action" value="generate report">
-			</form>
-		</td>
-{$FOOTER}

@@ -8,8 +8,8 @@ class coreMoneyFlows extends core {
 		$this->core();
 	}
 	
-	function get_all_data($id=0) {
-		if($id>0)
+	function get_all_data( $id=0 ) {
+		if( $id>0 )
 			return $this->select_row( "SELECT * FROM moneyflows WHERE id=$id" );
 		else
 			return $this->select_rows( "SELECT * FROM moneyflows ORDER BY id" );
@@ -21,32 +21,37 @@ class coreMoneyFlows extends core {
 		return $this->select_row( "SELECT * FROM moneyflows WHERE id=$id" );
 	}
 
-	function get_all_monthly_data($month,$year) {
+	function get_all_monthly_data( $month, $year ) {
 		return $this->select_rows( "SELECT * FROM moneyflows WHERE bookingdate >= '$year-$month-01' AND bookingdate < DATE_ADD('$year-$month-01', INTERVAL 1 MONTH) ORDER BY bookingdate,invoicedate" );
 	}
 
-	function capitalsource_in_use($id) {
+	function capitalsource_in_use( $id ) {
 		if( $this->select_col( "SELECT COUNT(*) FROM moneyflows WHERE capitalsourceid=$id" ) > 0 )
 			return 1;
 		else
 			return 0;
 	}
 
-	function contractpartner_in_use($id) {
+	function contractpartner_in_use( $id ) {
 		if( $this->select_col( "SELECT COUNT(*) FROM moneyflows WHERE contractpartnerid=$id" ) > 0 )
 			return 1;
 		else
 			return 0;
 	}
 
-	function get_monthly_capitalsource_movement($id,$month,$year) {
+	function get_monthly_capitalsource_movement( $id, $month, $year ) {
 		$movement=$this->select_col( "SELECT round(sum(amount),2) FROM moneyflows WHERE bookingdate >= '$year-$month-01' AND bookingdate < DATE_ADD('$year-$month-01', INTERVAL 1 MONTH) AND capitalsourceid=$id" );
-		if(empty($movement))
+		if( empty( $movement ) )
 			$movement=0;
 		return $movement;
 	}
+
 	function get_all_years() {
-		return $this->select_cols( "SELECT DISTINCT YEAR(bookingdate) year FROM moneyflows order by year asc" );
+		return $this->select_cols( "SELECT DISTINCT YEAR(bookingdate) year FROM moneyflows ORDER BY year ASC" );
+	}
+
+	function get_all_months( $year ) {
+		return $this->select_cols( "SELECT DISTINCT MONTH(bookingdate) month FROM moneyflows WHERE YEAR(bookingdate) = $year ORDER BY month ASC" );
 	}
 
 

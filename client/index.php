@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: index.php,v 1.3 2005/03/05 00:31:27 olivleh1 Exp $
+	$Id: index.php,v 1.4 2005/03/05 12:19:49 olivleh1 Exp $
 */
 
 if( ! empty($_GET['action']) || ! empty($_POST['action']) )
@@ -102,6 +102,12 @@ switch( $action ) {
 					break;
 
 
+	/* reports */
+	
+	case 'list_reports':		$month=		$_GET['reports_month'];
+					$year=		$_GET['reports_year'];
+					$display=$moduleReports->display_list_reports($month,$year);
+					break;
 
 /* START: REWRITE ME */
 
