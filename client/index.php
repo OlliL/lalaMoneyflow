@@ -1,13 +1,10 @@
 <?php
 
 /*
-	$Id: index.php,v 1.10 2005/03/06 12:58:11 olivleh1 Exp $
+	$Id: index.php,v 1.11 2005/03/06 15:40:14 olivleh1 Exp $
 */
 
-if( ! empty($_GET['action']) || ! empty($_POST['action']) )
-	$action=$_POST['action']?$_POST['action']:$_GET['action'];
-else
-	$action='main';
+$action=$_POST['action']?$_POST['action']:$_GET['action'];
 
 function my_number_format($number) {
 	return number_format($number,2);
@@ -34,9 +31,6 @@ $modulePreDefMoneyFlows		= new modulePreDefMoneyFlows();
 $moduleReports			= new moduleReports();
 
 switch( $action ) {
-	case 'main':			$display=$moduleFrontPage->display_main();
-					break;
-
 	/* capitalsources */
 
 	case 'list_capitalsources':	$letter=	$_POST['letter']?$_POST['letter']:$_GET['letter'];
@@ -129,6 +123,9 @@ switch( $action ) {
 	case 'list_reports':		$month=		$_GET['reports_month'];
 					$year=		$_GET['reports_year'];
 					$display=$moduleReports->display_list_reports( $month, $year );
+					break;
+
+	default:			$display=$moduleFrontPage->display_main();
 					break;
 }
 

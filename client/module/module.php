@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: module.php,v 1.6 2005/03/06 01:26:48 olivleh1 Exp $
+	$Id: module.php,v 1.7 2005/03/06 15:40:14 olivleh1 Exp $
 */
 
 require_once 'Smarty.class.php';
@@ -20,14 +20,14 @@ class module {
 	}
 
 	function parse_header( $nonavi=0 ) {
-		$this->template->assign( 'REPORTS_YEAR',  date('Y') );
-		$this->template->assign( 'REPORTS_MONTH', date('m') );
+		$this->template->assign( 'REPORTS_YEAR',  date( 'Y') );
+		$this->template->assign( 'REPORTS_MONTH', date( 'm') );
 		$this->template->assign( 'NO_NAVIGATION', $nonavi   );
 
-		$header=$this->template->fetch('./display_header.tpl');
+		$header=$this->template->fetch( './display_header.tpl' );
 		$this->template->assign( 'HEADER', $header );
 
-		$footer=$this->template->fetch('./display_footer.tpl');
+		$footer=$this->template->fetch( './display_footer.tpl' );
 		$this->template->assign( 'FOOTER', $footer );
 	}	
 

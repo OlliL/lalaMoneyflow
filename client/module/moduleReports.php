@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleReports.php,v 1.7 2005/03/06 12:51:34 olivleh1 Exp $
+	$Id: moduleReports.php,v 1.8 2005/03/06 15:40:14 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -23,10 +23,10 @@ class moduleReports extends module {
 	function display_list_reports( $month, $year ) {
 
 		if( !$year )
-			$year=date('Y');
+			$year=date( 'Y' );
 
-		$years = $this->coreMoneyFlows->get_all_years();
-		$temp_months = $this->coreMoneyFlows->get_all_months($year);
+		$years=$this->coreMoneyFlows->get_all_years();
+		$temp_months=$this->coreMoneyFlows->get_all_months( $year );
 		if( is_array( $temp_months ) ) {
 			foreach( $temp_months as $key => $value ) {
 				$months[] = array(
@@ -46,13 +46,13 @@ class moduleReports extends module {
 		$this->template->assign( 'SELECTED_YEAR', $year   );
 
 		$this->parse_header();
-		return $this->template->fetch('./display_list_reports.tpl');
+		return $this->template->fetch( './display_list_reports.tpl' );
 	}
 
 	function generate_report( $month, $year ) {
 
 		$all_moneyflow_data=$this->coreMoneyFlows->get_all_monthly_joined_data( $month, $year );
-		$this->template->assign( 'ALL_MONEYFLOW_DATA',   $all_moneyflow_data );
+		$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
 		$all_capitalsources_ids=$this->coreCapitalSources->get_valid_ids( $month, $year, $month, $year );
 
@@ -63,7 +63,7 @@ class moduleReports extends module {
 			$summary_data[$i]['type']=$this->coreCapitalSources->get_type( $capitalsources_id );
 			$summary_data[$i]['state']=$this->coreCapitalSources->get_state( $capitalsources_id );
 			$summary_data[$i]['lastamount']=$this->coreMonthlySettlement->get_amount( $capitalsources_id, date( 'm', mktime(0, 0, 0, $month-1, 1) ), date( 'Y', mktime(0, 0, 0, $month-1, 1) ) );
-			$summary_data[$i]['fixamount']=$this->coreMonthlySettlement->get_amount($capitalsources_id,$month,$year);
+			$summary_data[$i]['fixamount']=$this->coreMonthlySettlement->get_amount( $capitalsources_id, $month,$year );
 			$summary_data[$i]['calcamount']=round( $summary_data[$i]['lastamount']+$this->coreMoneyFlows->get_monthly_capitalsource_movement( $capitalsources_id, $month, $year ), 2 );
 			$summary_data[$i]['difference']=$summary_data[$i]['fixamount']-$summary_data[$i]['calcamount'];
 
@@ -74,7 +74,7 @@ class moduleReports extends module {
 			$i++;
 		}
 
-		$monthlysettlement_exists=$this->coreMonthlySettlement->monthlysettlement_exists( $month, $year);
+		$monthlysettlement_exists=$this->coreMonthlySettlement->monthlysettlement_exists( $month, $year );
 
 		$firstamount=$this->coreMonthlySettlement->get_sum_amount( 12, $year-1 );
 
