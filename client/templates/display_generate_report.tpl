@@ -1,19 +1,19 @@
 			<h1>money flow {$MONTH.name} {$YEAR}</h1>
-			<table border=0 width=820 align="center">
+			<table border=0 width=830 align="center" cellpadding=2>
 				<tr>
-					<th width="8%">bookingdate</th>
-					<th width="8%">invoicedate</th>
+					<th width="9%">bookingdate</th>
+					<th width="9%">invoicedate</th>
 					<th width="10%">amount</th>
 					<th width="16%">contract partner</th>
 					<th >comment</th>
-					<th width="23%">capital source</th>
+					<th width="22%">capital source</th>
 					<th width="2%">&nbsp</th>
 					<th width="3%">&nbsp</th>
 				</tr>
 				{section name=DATA loop=$ALL_MONEYFLOW_DATA}
 					<tr>
-						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].bookingdate}</td>
-						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].invoicedate}</td>
+						<td class="contrastbgcolor"><p style="margin-left:8px;">{$ALL_MONEYFLOW_DATA[DATA].bookingdate}</p></td>
+						<td class="contrastbgcolor"><p style="margin-left:8px;">{$ALL_MONEYFLOW_DATA[DATA].invoicedate}</p></td>
 						<td align="right" class="contrastbgcolor"><font {if $ALL_MONEYFLOW_DATA[DATA].amount < 0}color="red"{/if}>{$ALL_MONEYFLOW_DATA[DATA].amount|number_format} EUR</font></td>
 						<td class="contrastbgcolor">
 						{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
