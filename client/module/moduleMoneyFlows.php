@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMoneyFlows.php,v 1.6 2005/03/05 22:54:21 olivleh1 Exp $
+	$Id: moduleMoneyFlows.php,v 1.7 2005/03/06 01:25:08 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -24,11 +24,10 @@ class moduleMoneyFlows extends module {
 
 		switch( $realaction ) {
 			case 'save':
-				if( $id == 0 )
-					$ret=0;
-					#$ret=$this->coreMoneyFlows->add_moneyflow( $all_data['bookingdate'], $all_data['invoicedate'], $all_data['amount'], $all_data['capitalsourceid'], $all_data['contractpartnerid'], $all_data['comment'] );
-				else
-					$ret=$this->coreMoneyFlows->update_moneyflow( $id, $all_data['bookingdate'], $all_data['invoicedate'], $all_data['amount'], $all_data['capitalsourceid'], $all_data['contractpartnerid'], $all_data['comment'] );
+				if( empty( $all_data['invoicedate'] ) )
+					$all_data['invoicedate']=$all_data['bookingdate'];
+
+				$ret=$this->coreMoneyFlows->update_moneyflow( $id, $all_data['bookingdate'], $all_data['invoicedate'], $all_data['amount'], $all_data['capitalsourceid'], $all_data['contractpartnerid'], $all_data['comment'] );
 
 				if( $ret )
 					$this->template->assign( 'CLOSE', 1 );
