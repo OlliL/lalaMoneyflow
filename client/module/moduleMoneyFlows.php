@@ -1,5 +1,10 @@
 <?php
 
+/*
+	$Id: moduleMoneyFlows.php,v 1.2 2005/03/05 00:30:12 olivleh1 Exp $
+*/
+
+
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
 require_once 'core/coreContractPartners.php';
@@ -15,6 +20,8 @@ class moduleMoneyFlows extends module {
 		$this->coreMoneyFlows=new coreMoneyFlows();
 		$this->corePreDefMoneyFlows=new corePreDefMoneyFlows();
 	}
+
+/* START: REWRITE ME */
 
 	function display_add_moneyflows($checked = array()) {
 		$all_data=$this->corePreDefMoneyFlows->get_all_data();
@@ -61,40 +68,66 @@ class moduleMoneyFlows extends module {
 	}
     
 
-	function display_edit_moneyflow($id) {
-		$all_data=$this->coreMoneyFlows->get_all_data($id);
-		$this->template->assign("ALL_DATA",$all_data);
-		
-		$capitalsource_values=$this->coreCapitalSources->get_all_comments();
-		$contractpartner_values=$this->coreContractPartners->get_all_names();
-		
-		$this->template->assign("CAPITALSOURCE_VALUES",$capitalsource_values);
-		$this->template->assign("CONTRACTPARTNER_VALUES",$contractpartner_values);
+/* END: REWRITE ME */
 
-		$this->parse_header(1);
-		return $this->template->fetch("./display_edit_moneyflow.tpl");
-	}
+	function display_edit_moneyflow( $realaction, $id, $all_data ) {
 
-	function edit_moneyflow($id) {
-		switch($_POST['realaction']) {
+		switch( $realaction ) {
 			case 'save':
-				$this->template->assign("CLOSE",1);
-				if(empty($_POST['invoicedate']))
-					$_POST['invoicedate']=$_POST['bookingdate'];
-				$this->coreMoneyFlows->update_moneyflow($id,$_POST['bookingdate'],$_POST['invoicedate'],$_POST['amount'],$_POST['capitalsourceid'],$_POST['contractpartnerid'],$_POST['comment']);
+				if( $id == 0 )
+					$ret=0;
+					#$ret=$this->coreMoneyFlows->add_moneyflow( $all_data['bookingdate'], $all_data['invoicedate'], $all_data['amount'], $all_data['capitalsourceid'], $all_data['contractpartnerid'], $all_data['comment'] );
+				else
+					$ret=$this->coreMoneyFlows->update_moneyflow( $id, $all_data['bookingdate'], $all_data['invoicedate'], $all_data['amount'], $all_data['capitalsourceid'], $all_data['contractpartnerid'], $all_data['comment'] );
 
+				if( $ret )
+					$this->template->assign( 'CLOSE', 1 );
 				break;
-			case 'delete':
-				$this->template->assign("CLOSE",1);
-				$this->coreMoneyFlows->delete_moneyflow($id);
-				break;
-			case 'reload':
+			default:
+				if( $id > 0 ) {
+					$all_data=$this->coreMoneyFlows->get_id_data( $id );
+					$this->template->assign( 'ALL_DATA', $all_data );
+				}
+				$capitalsource_values=$this->coreCapitalSources->get_all_comments();
+				$contractpartner_values=$this->coreContractPartners->get_all_names();
+				
+				$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
+				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 				break;
 		}
+
+		$this->template->assign( 'ERRORS', $this->get_errors() );
 		
-		return $this->display_edit_moneyflow($id);
+		$this->parse_header(1);
+		return $this->template->fetch( './display_edit_moneyflow.tpl' );
 	}
 
 
+	function display_delete_moneyflow( $realaction, $id ) {
+
+		switch( $realaction ) {
+			case 'yes':
+				if( $this->coreMoneyFlows->delete_moneyflow( $id ) ) {
+					$this->template->assign( 'CLOSE', 1 );
+				} else {
+					$all_data=$this->coreMoneyFlows->get_id_data( $id );
+					$all_data['capitalsource_comment']=$this->coreCapitalSources->get_comment( $all_data['capitalsourceid'] );
+					$all_data['contractpartner_name']=$this->coreContractPartners->get_name( $all_data['contractpartnerid'] );
+					$this->template->assign( 'ALL_DATA', $all_data );
+				}
+				break;
+			default:
+				$all_data=$this->coreMoneyFlows->get_id_data( $id );
+				$all_data['capitalsource_comment']=$this->coreCapitalSources->get_comment( $all_data['capitalsourceid'] );
+				$all_data['contractpartner_name']=$this->coreContractPartners->get_name( $all_data['contractpartnerid'] );
+				$this->template->assign( 'ALL_DATA', $all_data );
+				break;
+		}
+
+		$this->template->assign( 'ERRORS', $this->get_errors() );
+		
+		$this->parse_header(1);
+		return $this->template->fetch( './display_delete_moneyflow.tpl' );
+	}
 }
 ?>

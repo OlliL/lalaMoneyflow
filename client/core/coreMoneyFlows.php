@@ -17,6 +17,10 @@ class coreMoneyFlows extends core {
 			
 	}
 
+	function get_id_data( $id ) {
+		return $this->select_row( "SELECT * FROM moneyflows WHERE id=$id" );
+	}
+
 	function get_all_monthly_data($month,$year) {
 		return $this->select_rows( "SELECT * FROM moneyflows WHERE bookingdate >= '$year-$month-01' AND bookingdate < DATE_ADD('$year-$month-01', INTERVAL 1 MONTH) ORDER BY bookingdate,invoicedate" );
 	}

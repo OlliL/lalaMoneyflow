@@ -1,5 +1,9 @@
 <?php
 
+/*
+	$Id: modulePreDefMoneyFlows.php,v 1.2 2005/03/05 00:30:12 olivleh1 Exp $
+*/
+
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
 require_once 'core/corePreDefMoneyFlows.php';
@@ -97,56 +101,5 @@ class modulePreDefMoneyFlows extends module {
 		$this->parse_header(1);
 		return $this->template->fetch( './display_delete_predefmoneyflow.tpl' );
 	}
-
-/*	function display_show_predefmoneyflows($checked = array()) {
-		$all_data=$this->corePreDefMoneyFlows->get_all_data();
-
-		if( count($checked) > 0 ) {
-			foreach($all_data as $key => $value)
-				$all_data[$key]["checked"]=$checked[$all_data[$key]["id"]]==1?"checked":"";
-		}
-				
-		$capitalsource_values=$this->corePreDefMoneyFlows->get_all_comments();
-		$contractpartner_values=$this->coreContractPartners->get_all_names();
-		
-		$this->template->assign("CAPITALSOURCE_VALUES",  $capitalsource_values  );
-		$this->template->assign("CONTRACTPARTNER_VALUES",$contractpartner_values);
-		$this->template->assign("ALL_DATA",              $all_data              );
-		
-		$this->parse_header();
-		return $this->template->fetch("./display_edit_predefmoneyflows.tpl");
-	}
-
-	function edit_predefmoneyflows() {
-		switch($_POST['realaction']) {
-			case 'save':
-				if(is_array($_POST['id'])) {
-					foreach($_POST['id'] as $id => $value ) {
-						if ($value == 1) {
-							if($id == -1 ) {
-								$id=$this->corePreDefMoneyFlows->add_predefmoneyflow($_POST['amount'][$id],$_POST['capitalsourceid'][$id],$_POST['contractpartnerid'][$id],$_POST['comment'][$id]);
-								$checked[$id]="1";
-							} else {
-								$this->corePreDefMoneyFlows->update_predefmoneyflow($id,$_POST['amount'][$id],$_POST['capitalsourceid'][$id],$_POST['contractpartnerid'][$id],$_POST['comment'][$id]);
-								$checked[$id]="1";
-							}
-						}
-					}
-				}
-				break;
-			
-			case 'delete':
-				if(is_array($_POST['id']))
-					foreach($_POST['id'] as $id => $value )
-						if ($value == 1 && $id >=0 )
-							$this->corePreDefMoneyFlows->delete_predefmoneyflow($id);
-				break;
-			case 'reload':
-				break;
-		}
-		
-		return $this->display_show_predefmoneyflows($checked);
-	}
-*/    
 }
 ?>

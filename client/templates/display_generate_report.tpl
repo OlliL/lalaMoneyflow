@@ -29,7 +29,8 @@
 							{if $CAPITALSOURCE_VALUES[CAPITALSOURCE].id == $ALL_MONEYFLOW_DATA[DATA].capitalsourceid}{$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}{/if} 
 						{/section}
 						</td>
-						<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=show_moneyflow&id={$ALL_MONEYFLOW_DATA[DATA].id}&sr=1','_blank','width=1024,height=80')">edit</a></td>
+						<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&id={$ALL_MONEYFLOW_DATA[DATA].id}&sr=1','_blank','width=1024,height=80')">edit</a></td>
+						<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&id={$ALL_MONEYFLOW_DATA[DATA].id}&sr=1','_blank','width=1024,height=80')">delete</a></td>
 					</tr>
 				{/section}
 			</table>

@@ -84,14 +84,22 @@ switch( $action ) {
 					$display=$modulePreDefMoneyFlows->display_delete_predefmoneyflow($realaction,$id);
 					break;
 
+	/* moneyflows */
 
-
-
-	case 'show_moneyflow':		$id=$_POST['id']?$_POST['id']:$_GET['id'];
-					$display=$moduleMoneyFlows->display_edit_moneyflow($id);
+	case 'edit_moneyflow':		$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
+					$id=		$_POST['id']?$_POST['id']:$_GET['id'];
+					$all_data=	$_POST['all_data'];
+					$display=$moduleMoneyFlows->display_edit_moneyflow($realaction,$id,$all_data);
 					break;
-	case 'edit_moneyflow':		$display=$moduleMoneyFlows->edit_moneyflow($_POST['id']);
+
+	case 'delete_moneyflow':	$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
+					$id=		$_POST['id']?$_POST['id']:$_GET['id'];
+					$display=$moduleMoneyFlows->display_delete_moneyflow($realaction,$id);
 					break;
+
+
+
+
 	case 'add_moneyflows':		$display=$moduleMoneyFlows->display_add_moneyflows();
 					break;
 	case 'save_moneyflows':		$display=$moduleMoneyFlows->save_moneyflows();
