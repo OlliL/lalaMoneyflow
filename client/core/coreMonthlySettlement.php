@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMonthlySettlement.php,v 1.5 2005/03/06 01:26:48 olivleh1 Exp $
+	$Id: coreMonthlySettlement.php,v 1.6 2005/03/06 01:51:22 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -14,6 +14,13 @@ class coreMonthlySettlement extends core {
 
 	function get_amount( $sourceid, $month, $year) {
 		return $this->select_col( "SELECT round(amount,2) FROM monthlysettlements WHERE capitalsourceid=$sourceid AND month=$month AND year=$year LIMIT 1" );
+	}
+
+	function monthlysettlement_exists( $month, $year) {
+		if( $this->select_col( "SELECT 1 FROM monthlysettlements WHERE month=$month AND year=$year LIMIT 1" ) == 1 )
+			return true;
+		else
+			return false;
 	}
 
 	function get_all_years() {

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleReports.php,v 1.4 2005/03/06 01:26:49 olivleh1 Exp $
+	$Id: moduleReports.php,v 1.5 2005/03/06 01:51:22 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -74,22 +74,24 @@ class moduleReports extends module {
 			$i++;
 		}
 
+		$capitalsource_values=$this->coreCapitalSources->get_valid_comments( $month, $year, $month, $year );
+		$contractpartner_values=$this->coreContractPartners->get_all_names();
+		$monthlysettlement_exists=$this->coreMonthlySettlement->monthlysettlement_exists( $month, $year);
+
 		$month = array(
 			'nummeric' => sprintf( '%02d', $month ),
 			'name'     => strftime( '%B', strtotime( "$month/1/$year" ) )
 		);
 
-		$capitalsource_values=$this->coreCapitalSources->get_valid_comments( $month, $year, $month, $year );
-		$contractpartner_values=$this->coreContractPartners->get_all_names();
-
-		$this->template->assign( 'MONTH',                  $month                  );
-		$this->template->assign( 'YEAR' ,                  $year                   );
-		$this->template->assign( 'SUMMARY_DATA',           $summary_data           );
-		$this->template->assign( 'LASTAMOUNT',             $lastamount             );
-		$this->template->assign( 'FIXAMOUNT',              $fixamount              );
-		$this->template->assign( 'CALCAMOUNT',             $calcamount             );
-		$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
-		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
+		$this->template->assign( 'MONTH',                    $month                    );
+		$this->template->assign( 'YEAR' ,                    $year                     );
+		$this->template->assign( 'SUMMARY_DATA',             $summary_data             );
+		$this->template->assign( 'LASTAMOUNT',               $lastamount               );
+		$this->template->assign( 'FIXAMOUNT',                $fixamount                );
+		$this->template->assign( 'CALCAMOUNT',               $calcamount               );
+		$this->template->assign( 'CAPITALSOURCE_VALUES',     $capitalsource_values     );
+		$this->template->assign( 'CONTRACTPARTNER_VALUES',   $contractpartner_values   );
+		$this->template->assign( 'MONTHLYSETTLEMENT_EXISTS', $monthlysettlement_exists );
 
 		$this->parse_header();
 		return $this->template->fetch( './display_generate_report.tpl' );
