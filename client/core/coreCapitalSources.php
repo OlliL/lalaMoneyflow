@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreCapitalSources.php,v 1.6 2005/03/09 20:20:51 olivleh1 Exp $
+	$Id: coreCapitalSources.php,v 1.7 2005/03/09 20:34:22 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -82,7 +82,13 @@ class coreCapitalSources extends core {
 
 
 	function update_capitalsource( $id, $type, $state, $accountnumber, $bankcode, $comment, $validfrom, $validtil ) {
-		return $this->update_row( "UPDATE capitalsources set type='$type',state='$state',accountnumber='$accountnumber',bankcode='$bankcode',comment='$comment',validfrom='$validfrom',validtil='$validtil' WHERE id=$id" );
+		$coreMoneyFlows=new coreMoneyFlows();
+		if( $coreMoneyFlows->capitalsource_in_use_out_of_date( $id, $validfrom, $validtil ) ) {
+			$this->add_error( "There are some moneyflows out of the validityperiod you wanted to set!" );
+			return 0;
+		} else {
+			return $this->update_row( "UPDATE capitalsources set type='$type',state='$state',accountnumber='$accountnumber',bankcode='$bankcode',comment='$comment',validfrom='$validfrom',validtil='$validtil' WHERE id=$id" );
+		}
 	}
 
 	function add_capitalsource( $type, $state, $accountnumber, $bankcode, $comment, $validfrom, $validtil ) {

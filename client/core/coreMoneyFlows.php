@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMoneyFlows.php,v 1.8 2005/03/09 20:20:51 olivleh1 Exp $
+	$Id: coreMoneyFlows.php,v 1.9 2005/03/09 20:34:22 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -36,6 +36,13 @@ class coreMoneyFlows extends core {
 
 	function capitalsource_in_use( $id ) {
 		if( $this->select_col( "SELECT COUNT(*) FROM moneyflows WHERE capitalsourceid=$id" ) > 0 )
+			return 1;
+		else
+			return 0;
+	}
+
+	function capitalsource_in_use_out_of_date( $id, $validfrom, $validtil ) {
+		if( $this->select_col( "SELECT COUNT(*) FROM moneyflows WHERE capitalsourceid=$id AND ( bookingdate < '$validfrom' OR bookingdate > '$validtil')" ) > 0 )
 			return 1;
 		else
 			return 0;
