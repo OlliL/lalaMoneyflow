@@ -1,0 +1,43 @@
+- suchfunktionen
+
+capitalsources
+	id
+	type
+	state
+	accountnumber
+	bankcode
+	comment
+	validfrom
+	validtil
+
+
+monthlysettlement
+	id
+	capitalsourceid
+	month
+	year
+	amount
+
+contractpartners
+	id
+	name
+	street
+	postcode
+	town
+	country
+
+moneyflows
+	id
+	bookingdate
+	invoicedate
+	amount
+	capitalsourceid
+	contractpartnerid
+	comment
+
+predefmoneyflow
+	id
+	amount
+	capitalsourceid
+	contractpartnerid
+	comment
