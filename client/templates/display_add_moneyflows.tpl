@@ -17,10 +17,10 @@
 					<th>capitalsource</th>
 				</tr>
 					<tr>
-						<td class="contrastbgcolor"><input class="contrastbgcolor" type="checkbox" name="id[-1]" value=1></td>
+						<td class="contrastbgcolor"><input class="contrastbgcolor" type="checkbox" name="lala" value=1 ></td>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="bookingdate[-1]" value="{$DATE}" size=10 /></td>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="invoicedate[-1]" value="" size=10 /></td>
-						<td class="contrastbgcolor" nowrap><input class="contrastbgcolor" type="text" name="amount[-1]" value="" size=8 align="right"/> EUR</td>
+						<td class="contrastbgcolor" nowrap><input class="contrastbgcolor" type="text" name="amount[-1]" value="" size=8 align="right" onchange="this.form.elements[1].checked=true"/> EUR</td>
 						<td class="contrastbgcolor"><select class="contrastbgcolor" name="contractpartnerid[-1]" size=1>
 						{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
 							<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].id}"> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}
