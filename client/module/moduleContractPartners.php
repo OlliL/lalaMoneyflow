@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleContractPartners.php,v 1.1 2005/03/04 23:52:09 olivleh1 Exp $
+	$Id: moduleContractPartners.php,v 1.2 2005/03/05 15:19:27 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -64,11 +64,8 @@ class moduleContractPartners extends module {
 			case 'yes':
 				if( $this->coreContractPartners->delete_contractpartner( $id ) ) {
 					$this->template->assign( 'CLOSE', 1 );
-				} else {
-					$all_data=$this->coreContractPartners->get_id_data( $id );
-					$this->template->assign( 'ALL_DATA', $all_data );
+					break;
 				}
-				break;
 			default:
 				$all_data=$this->coreContractPartners->get_id_data( $id );
 				$this->template->assign( 'ALL_DATA', $all_data );

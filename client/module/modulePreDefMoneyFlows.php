@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: modulePreDefMoneyFlows.php,v 1.2 2005/03/05 00:30:12 olivleh1 Exp $
+	$Id: modulePreDefMoneyFlows.php,v 1.3 2005/03/05 15:19:27 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -81,13 +81,9 @@ class modulePreDefMoneyFlows extends module {
 			case 'yes':
 				if( $this->corePreDefMoneyFlows->delete_predefmoneyflow( $id ) ) {
 					$this->template->assign( 'CLOSE', 1 );
-				} else {
-					$all_data=$this->corePreDefMoneyFlows->get_id_data( $id );
-					$all_data['capitalsource_comment']=$this->coreCapitalSources->get_comment( $all_data['capitalsourceid'] );
-					$all_data['contractpartner_name']=$this->coreContractPartners->get_name( $all_data['contractpartnerid'] );
-					$this->template->assign( 'ALL_DATA', $all_data );
+					break;
 				}
-				break;
+				
 			default:
 				$all_data=$this->corePreDefMoneyFlows->get_id_data( $id );
 				$all_data['capitalsource_comment']=$this->coreCapitalSources->get_comment( $all_data['capitalsourceid'] );
