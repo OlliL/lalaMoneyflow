@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreContractPartners.php,v 1.1 2005/03/04 23:52:09 olivleh1 Exp $
+	$Id: coreContractPartners.php,v 1.2 2005/03/05 00:10:40 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -26,31 +26,31 @@ class coreContractPartners extends core {
 		return $this->select_cols( "SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters FROM contractpartners ORDER BY letters" );
 	}
 
-	function get_ids_index_letters($ids) {
-		$idstring=implode($ids,",");
+	function get_ids_index_letters( $ids ) {
+		$idstring=implode( $ids, "," );
 		return $this->select_cols( "SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters FROM contractpartners WHERE id IN ($idstring) ORDER BY letters" );
 	}
 
 	function get_all_matched_data( $letter ) {
-		return $this->select_rows( "SELECT * FROM contractpartners WHERE UPPER(name) LIKE UPPER('$letter%') ORDER BY name " );
+		return $this->select_rows( "SELECT * FROM contractpartners WHERE UPPER(name) LIKE UPPER('$letter%') ORDER BY name" );
 	}
 
 	function get_ids_matched_data( $letter ) {
-		return $this->select_cols( "SELECT id FROM contractpartners WHERE UPPER(name) LIKE UPPER('$letter%') ORDER BY name " );
+		return $this->select_cols( "SELECT id FROM contractpartners WHERE UPPER(name) LIKE UPPER('$letter%') ORDER BY name" );
 	}
 
 	function get_all_names() {
 		return $this->select_rows( "SELECT id,name FROM contractpartners ORDER BY name" );
 	}
 
-	function get_name($id) {
+	function get_name( $id ) {
 		return $this->select_col( "SELECT name FROM contractpartners WHERE ID=$id" );
 	}
 
 
 	function delete_contractpartner( $id ) {
-		if( $this->coreMoneyFlows->contractpartner_in_use($id) ) {
-			$this->add_error("You can't delete a contract partner who is still in use!");
+		if( $this->coreMoneyFlows->contractpartner_in_use( $id ) ) {
+			$this->add_error( "You can't delete a contract partner who is still in use!" );
 			return 0;
 		} else {
 			return $this->delete_row( "DELETE FROM contractpartners WHERE id=$id LIMIT 1" );
@@ -59,11 +59,11 @@ class coreContractPartners extends core {
 	}
 
 
-	function update_contractpartner( $id,$name,$street,$postcode,$town,$country ) {
-		return $this->insert_row( "UPDATE contractpartners set name='$name',street='$street',postcode='$postcode',town='$town',country='$country' WHERE id=$id;" );
+	function update_contractpartner( $id, $name, $street, $postcode, $town, $country ) {
+		return $this->insert_row( "UPDATE contractpartners set name='$name',street='$street',postcode='$postcode',town='$town',country='$country' WHERE id=$id" );
 	}
 
-	function add_contractpartner( $name,$street,$postcode,$town,$country ) {
-		return $this->insert_row( "INSERT INTO contractpartners (name,street,postcode,town,country) VALUES ('$name','$street','$postcode','$town','$country');" );
+	function add_contractpartner( $name, $street, $postcode, $town, $country ) {
+		return $this->insert_row( "INSERT INTO contractpartners (name,street,postcode,town,country) VALUES ('$name','$street','$postcode','$town','$country')" );
 	}
 }

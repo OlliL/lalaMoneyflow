@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreCapitalSources.php,v 1.1 2005/03/04 23:52:08 olivleh1 Exp $
+	$Id: coreCapitalSources.php,v 1.2 2005/03/05 00:10:40 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -64,27 +64,6 @@ class coreCapitalSources extends core {
 
 	function get_state( $id ) {
 		return $this->select_col( "SELECT state FROM capitalsources WHERE id=$id LIMIT 1" );
-	}
-
-
-	function set_type( $id, $type ) {
-		return $this->update_row( "UPDATE capitalsources SET type='$type' WHERE id=$id LIMIT 1" );
-	}
-
-	function set_state( $id, $state ) {
-		return $this->update_row( "UPDATE capitalsources SET state='$state' WHERE id=$id LIMIT 1" );
-	}
-
-	function set_accountnumber( $id, $accountnumber ) {
-		return $this->update_row( "UPDATE capitalsources SET accountnumber='$accountnumber' WHERE id=$id LIMIT 1" );
-	}
-
-	function set_bankcode( $id, $bankcode ) {
-		return $this->update_row( "UPDATE capitalsources SET bankcode='$bankcode' WHERE id=$id LIMIT 1" );
-	}
-
-	function set_comment( $id, $comment ) {
-		return $this->update_row( "UPDATE capitalsources SET comment='$comment' WHERE id=$id LIMIT 1" );
 	}
 
 
