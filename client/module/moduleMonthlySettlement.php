@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMonthlySettlement.php,v 1.7 2005/03/09 20:52:26 olivleh1 Exp $
+	$Id: moduleMonthlySettlement.php,v 1.8 2005/03/09 22:22:36 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -73,9 +73,10 @@ class moduleMonthlySettlement extends module {
 					if( !$this->coreMonthlySettlement->set_amount( $value['id'], $month, $year, $value['amount'] ) )
 						$ret=false;
 
-				if( $ret )
+				if( $ret ) {
 					$this->template->assign( 'CLOSE', 1 );
-				break;
+					break;
+				}
 			default:
 				if( $month==0 && $year==0 ) {
 					$timestamp=$this->coreMonthlySettlement->get_next_date();
