@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: core.php,v 1.5 2005/03/06 01:26:48 olivleh1 Exp $
+	$Id: core.php,v 1.6 2005/03/06 12:58:11 olivleh1 Exp $
 */
 
 require_once 'DB.php';
@@ -17,7 +17,7 @@ class core {
 	}
 
 	function query( $query ) {
-#		echo $query;
+#		echo "<pre>$query</pre>";
 		return $this->db->query( $query );
 	}
 	function select_col( $query ) {
