@@ -1,5 +1,4 @@
 - wenn validfrom/validtil leer ist (capitalsource) -> gibt es eine use_defined() fk. in mysql?
-- keine capitalsources disablen die noch predefmoneyflows haben
 - suchfunktionen
 
 capitalsources

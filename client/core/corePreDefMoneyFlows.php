@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: corePreDefMoneyFlows.php,v 1.5 2005/03/09 20:20:51 olivleh1 Exp $
+	$Id: corePreDefMoneyFlows.php,v 1.6 2005/03/09 20:52:26 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -15,6 +15,10 @@ class corePreDefMoneyFlows extends core {
 
 	function get_all_data() {
 		return $this->select_rows( 'SELECT * FROM predefmoneyflows ORDER BY id' );
+	}
+
+	function get_valid_data( $validfrom, $validtil ) {
+		return $this->select_rows( "SELECT a.* FROM predefmoneyflows a, capitalsources b, contractpartners c WHERE a.capitalsourceid=b.id AND validfrom <= '$validfrom' and validtil >= '$validtil' AND a.contractpartnerid=c.id ORDER BY id" );
 	}
 
 	function get_id_data( $id ) {

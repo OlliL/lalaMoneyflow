@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMonthlySettlement.php,v 1.6 2005/03/06 15:48:43 olivleh1 Exp $
+	$Id: moduleMonthlySettlement.php,v 1.7 2005/03/09 20:52:26 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -33,7 +33,7 @@ class moduleMonthlySettlement extends module {
 		}
 
 		if( $month > 0 && $year > 0 ) {
-			$all_ids=$this->coreCapitalSources->get_valid_ids( $month, $year, $month, $year );
+			$all_ids=$this->coreCapitalSources->get_valid_ids( "$year-$month-1", "$year-$month-1" );
 			foreach( $all_ids as $id ) {
 				$all_data[]=array(
 					'id'      => $id,
@@ -87,7 +87,7 @@ class moduleMonthlySettlement extends module {
 				}
 
 				if( $month > 0 && $year > 0 ) {
-					$all_ids=$this->coreCapitalSources->get_valid_ids( $month, $year, $month, $year );
+					$all_ids=$this->coreCapitalSources->get_valid_ids( "$year-$month-1", "$year-$month-1" );
 					$all_data=array();
 					foreach( $all_ids as $id ) {
 						$all_data[]=array(
@@ -126,7 +126,7 @@ class moduleMonthlySettlement extends module {
 					break;
 				}
 			default:
-				$all_ids=$this->coreCapitalSources->get_valid_ids( $month, $year, $month, $year );
+				$all_ids=$this->coreCapitalSources->get_valid_ids( "$year-$month-1", "$year-$month-1" );
 				foreach( $all_ids as $id ) {
 					$all_data[]=array(
 						'id'      => $id,

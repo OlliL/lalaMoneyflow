@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMoneyFlows.php,v 1.11 2005/03/09 20:20:51 olivleh1 Exp $
+	$Id: moduleMoneyFlows.php,v 1.12 2005/03/09 20:52:26 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -62,7 +62,7 @@ class moduleMoneyFlows extends module {
 						$ret=$this->coreMoneyFlows->add_moneyflow( $value['bookingdate'], $value['invoicedate'], $value['amount'], $value['capitalsourceid'], $value['contractpartnerid'], $value['comment'] );
 				}
 			default:
-				$all_data=$this->corePreDefMoneyFlows->get_all_data();
+				$all_data=$this->corePreDefMoneyFlows->get_valid_data( date( 'Y-m-d' ), date( 'Y-m-d' ) );
 
 				foreach( $all_data as $key => $value ) {
 					if( count( $checked ) > 0 ) {
@@ -72,7 +72,7 @@ class moduleMoneyFlows extends module {
 					$all_data[$key]['contractpartnername']=$this->coreContractPartners->get_name( $all_data[$key]['contractpartnerid'] );
 				}
 
-				$capitalsource_values=$this->coreCapitalSources->get_valid_comments( date( 'd' ), date( 'm' ), date( 'Y' ), date( 'd' ), date( 'm' ), date( 'Y' ) );
+				$capitalsource_values=$this->coreCapitalSources->get_valid_comments( date( 'Y-m-d' ), date( 'Y-m-d' ) );
 				$contractpartner_values=$this->coreContractPartners->get_all_names();
 
 				$this->template->assign( 'DATE',                   date( 'Y-m-d' )         );

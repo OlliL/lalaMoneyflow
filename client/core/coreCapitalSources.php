@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreCapitalSources.php,v 1.7 2005/03/09 20:34:22 olivleh1 Exp $
+	$Id: coreCapitalSources.php,v 1.8 2005/03/09 20:52:26 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -33,16 +33,16 @@ class coreCapitalSources extends core {
 		return $this->select_cols( 'SELECT id FROM capitalsources ORDER BY id' );
 	}
 
-	function get_valid_ids( $dayfrom, $monthfrom, $yearfrom, $daytil, $monthtil, $yeartil ) {
-		return $this->select_cols( "SELECT id FROM capitalsources WHERE validfrom <= '$yearfrom-$monthfrom-$dayfrom' and validtil >= '$yeartil-$monthtil-$daytil' ORDER BY id" );
+	function get_valid_ids( $validfrom, $validtil ) {
+		return $this->select_cols( "SELECT id FROM capitalsources WHERE validfrom <= '$validfrom' and validtil >= '$validtil' ORDER BY id" );
 	}
 
 	function get_all_comments() {
 		return $this->select_rows( 'SELECT id,comment FROM capitalsources ORDER BY id' );
 	}
 
-	function get_valid_comments( $dayfrom, $monthfrom, $yearfrom, $daytil, $monthtil, $yeartil ) {
-		return $this->select_rows( "SELECT id,comment FROM capitalsources WHERE validfrom <= '$yearfrom-$monthfrom-$dayfrom' and validtil >= '$yeartil-$monthtil-$daytil' ORDER BY id" );
+	function get_valid_comments( $validfrom, $validtil ) {
+		return $this->select_rows( "SELECT id,comment FROM capitalsources WHERE validfrom <= '$validfrom' and validtil >= '$validytil' ORDER BY id" );
 	}
 
 	function get_enum_type() {
