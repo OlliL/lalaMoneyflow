@@ -11,15 +11,21 @@
 {if $NO_NAVIGATION == 0}
 				<td valign="top" width="200">
 		<a href="{$ENV_INDEX_PHP}?action=list_capitalsources">list capital sources</a><br />
-		<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&sr=1','_blank','width=800,height=80')">add capital source</a><br />
 		<a href="{$ENV_INDEX_PHP}?action=list_contractpartners">list contract partners</a><br />
-		<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&sr=1','_blank','width=800,height=80')">add contract partner</a><br />
 		<a href="{$ENV_INDEX_PHP}?action=list_predefmoneyflows">list predefined moneyflows</a><br />
-		<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_predefmoneyflow&sr=1','_blank','width=800,height=80')">add predefined moneyflow</a><br />
+		list moneyflow reports<br />
 		<br />
+		<i>
 		<a href="{$ENV_INDEX_PHP}?action=add_moneyflows">add moneyflows</a><br />
 		<br />
 		<a href="{$ENV_INDEX_PHP}?action=show_monthlysettlement">do a monthly settlement</a><br />
+		<br />
+		</i>
+		<b>shortcuts</b><br />
+		<a href="{$ENV_INDEX_PHP}?action=generate report&header_month={$HEADER_MONTH}&header_year={$HEADER_YEAR}">moneyflow {$HEADER_YEAR}-{$HEADER_MONTH}</a><br />
+		<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&sr=1','_blank','width=800,height=80')">add capital source</a><br />
+		<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&sr=1','_blank','width=800,height=80')">add contract partner</a><br />
+		<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_predefmoneyflow&sr=1','_blank','width=800,height=80')">add predefined moneyflow</a><br />
 		<br />
 		<form action="{$ENV_INDEX_PHP}" method="GET">
 			<select name="header_month">
