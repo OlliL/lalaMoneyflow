@@ -24,6 +24,10 @@
 						<td class="contrastbgcolor" align="right"><font {if $ALL_DATA[DATA].amount < 0}color="red"{/if}>{$ALL_DATA[DATA].amount|number_format} EUR</font></td>
 					</tr>
 				{/section}
+				<tr>
+					<td align="right">&sum;</td>
+					<td align="right" class="contrastbgcolor"><font {if $SUMAMOUNT < 0}color="red"{/if}><u>{$SUMAMOUNT|number_format} EUR</u></font></td>
+				</tr>
 			</table>
 			<input type="submit" name="realaction" value="yes">
 			<input type="button" value="no" onclick="javascript:void self.close();">

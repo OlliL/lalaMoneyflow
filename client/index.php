@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: index.php,v 1.8 2005/03/06 01:26:48 olivleh1 Exp $
+	$Id: index.php,v 1.9 2005/03/06 12:51:34 olivleh1 Exp $
 */
 
 if( ! empty($_GET['action']) || ! empty($_POST['action']) )
@@ -22,8 +22,8 @@ require_once 'module/moduleMonthlySettlement.php';
 require_once 'module/modulePreDefMoneyFlows.php';
 require_once 'module/moduleReports.php';
 require_once 'util/utilTimer.php';
-#$timer = new utilTimer();
-#$timer->mStart();
+$timer = new utilTimer();
+$timer->mStart();
 
 $moduleCapitalSources		= new moduleCapitalSources();
 $moduleContractPartners		= new moduleContractPartners();
@@ -133,5 +133,5 @@ switch( $action ) {
 }
 
 echo $display;
-#$timer->mPrintTime();
+$timer->mPrintTime();
 ?>

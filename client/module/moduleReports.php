@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleReports.php,v 1.6 2005/03/06 08:30:52 olivleh1 Exp $
+	$Id: moduleReports.php,v 1.7 2005/03/06 12:51:34 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -51,7 +51,7 @@ class moduleReports extends module {
 
 	function generate_report( $month, $year ) {
 
-		$all_moneyflow_data=$this->coreMoneyFlows->get_all_monthly_data( $month, $year );
+		$all_moneyflow_data=$this->coreMoneyFlows->get_all_monthly_joined_data( $month, $year );
 		$this->template->assign( 'ALL_MONEYFLOW_DATA',   $all_moneyflow_data );
 
 		$all_capitalsources_ids=$this->coreCapitalSources->get_valid_ids( $month, $year, $month, $year );
@@ -74,13 +74,9 @@ class moduleReports extends module {
 			$i++;
 		}
 
-		$capitalsource_values=$this->coreCapitalSources->get_valid_comments( $month, $year, $month, $year );
-		$contractpartner_values=$this->coreContractPartners->get_all_names();
 		$monthlysettlement_exists=$this->coreMonthlySettlement->monthlysettlement_exists( $month, $year);
 
-		$all_capitalsources_ids=$this->coreCapitalSources->get_valid_ids( 12, $year-1, 12, $year-1 );
-		foreach( $all_capitalsources_ids as $capitalsources_id )
-			$firstamount+=$this->coreMonthlySettlement->get_amount( $capitalsources_id, 12, $year-1 );
+		$firstamount=$this->coreMonthlySettlement->get_sum_amount( 12, $year-1 );
 
 		$month = array(
 			'nummeric' => sprintf( '%02d', $month ),
@@ -94,8 +90,6 @@ class moduleReports extends module {
 		$this->template->assign( 'LASTAMOUNT',               $lastamount               );
 		$this->template->assign( 'FIXAMOUNT',                $fixamount                );
 		$this->template->assign( 'CALCAMOUNT',               $calcamount               );
-		$this->template->assign( 'CAPITALSOURCE_VALUES',     $capitalsource_values     );
-		$this->template->assign( 'CONTRACTPARTNER_VALUES',   $contractpartner_values   );
 		$this->template->assign( 'MONTHLYSETTLEMENT_EXISTS', $monthlysettlement_exists );
 
 		$this->parse_header();

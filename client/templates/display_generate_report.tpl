@@ -16,17 +16,9 @@
 						<td class="contrastbgcolor"><p style="margin-left:8px;">{$ALL_MONEYFLOW_DATA[DATA].bookingdate}</p></td>
 						<td class="contrastbgcolor"><p style="margin-left:8px;">{$ALL_MONEYFLOW_DATA[DATA].invoicedate}</p></td>
 						<td align="right" class="contrastbgcolor"><font {if $ALL_MONEYFLOW_DATA[DATA].amount < 0}color="red"{/if}>{$ALL_MONEYFLOW_DATA[DATA].amount|number_format} EUR</font></td>
-						<td class="contrastbgcolor">
-						{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
-							{if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].id == $ALL_MONEYFLOW_DATA[DATA].contractpartnerid}{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}{/if}
-						{/section}
-						</td>
+						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].contractpartnername}</td>
 						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].comment}</td>
-						<td class="contrastbgcolor">
-						{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
-							{if $CAPITALSOURCE_VALUES[CAPITALSOURCE].id == $ALL_MONEYFLOW_DATA[DATA].capitalsourceid}{$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}{/if} 
-						{/section}
-						</td>
+						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].capitalsourcecomment}</td>
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&id={$ALL_MONEYFLOW_DATA[DATA].id}&sr=1','_blank','width=1024,height=80')">edit</a></td>
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&id={$ALL_MONEYFLOW_DATA[DATA].id}&sr=1','_blank','width=1024,height=80')">delete</a></td>
 					</tr>
@@ -69,6 +61,7 @@
 						{/if}
 					</tr>
 				{/section}
+					<tr>
 						<td></td>
 						<td></td>
 						<td align="right">&sum;</td>
@@ -81,6 +74,7 @@
 						{math equation="x - y" x=$FIXAMOUNT y=$CALCAMOUNT assign=DIFFERENCE}
 						<td align="right" class="contrastbgcolor"><font {if $DIFFERENCE < 0}color="red"{/if}><u>{$DIFFERENCE|number_format} EUR</u></font></td>
 						{/if}
+					</tr>
 			</table>
 			<br />
 			<table border=0 cellpadding=2>

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMonthlySettlement.php,v 1.4 2005/03/06 01:26:49 olivleh1 Exp $
+	$Id: moduleMonthlySettlement.php,v 1.5 2005/03/06 12:51:34 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -41,10 +41,15 @@ class moduleMonthlySettlement extends module {
 					'amount'  => $this->coreMonthlySettlement->get_amount($id,$month,$year)
 				);
 			}
+
+			$sumamount=$this->coreMonthlySettlement->get_sum_amount( $month, $year );
+
 			$month = array(
 				'nummeric' => sprintf( '%02d', $month ),
 				'name'     => strftime( '%B', strtotime( "$month/1/$year" ) )
 			);
+
+			$this->template->assign( 'SUMAMOUNT',      $sumamount         );
 			$this->template->assign( 'MONTH',          $month             );
 			$this->template->assign( 'YEAR' ,          $year              );
 			$this->template->assign( 'ALL_DATA',       $all_data          );
@@ -92,10 +97,12 @@ class moduleMonthlySettlement extends module {
 							'amount'  => $this->coreMonthlySettlement->get_amount($id,$month,$year)
 						);
 					}
+
 					$month = array(
 						'nummeric' => sprintf( '%02d', $month ),
 						'name'     => strftime( '%B', strtotime( "$month/1/$year" ) )
 					);
+
 					$this->template->assign( 'MONTH',          $month             );
 					$this->template->assign( 'YEAR' ,          $year              );
 					$this->template->assign( 'ALL_DATA',       $all_data          );
@@ -128,10 +135,13 @@ class moduleMonthlySettlement extends module {
 						'amount'  => $this->coreMonthlySettlement->get_amount($id,$month,$year)
 					);
 				}
+				$sumamount=$this->coreMonthlySettlement->get_sum_amount( $month, $year );
+
 				$month = array(
 					'nummeric' => sprintf( '%02d', $month ),
 					'name'     => strftime( '%B', strtotime( "$month/1/$year" ) )
 				);
+				$this->template->assign( 'SUMAMOUNT',      $sumamount         );
 				$this->template->assign( 'MONTH',          $month             );
 				$this->template->assign( 'YEAR' ,          $year              );
 				$this->template->assign( 'ALL_DATA',       $all_data          );
