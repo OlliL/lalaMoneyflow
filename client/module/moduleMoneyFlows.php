@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMoneyFlows.php,v 1.9 2005/03/06 15:48:43 olivleh1 Exp $
+	$Id: moduleMoneyFlows.php,v 1.10 2005/03/08 14:22:08 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -24,9 +24,6 @@ class moduleMoneyFlows extends module {
 
 		switch( $realaction ) {
 			case 'save':
-				if( empty( $all_data['invoicedate'] ) )
-					$all_data['invoicedate']=$all_data['bookingdate'];
-
 				$ret=$this->coreMoneyFlows->update_moneyflow( $id, $all_data['bookingdate'], $all_data['invoicedate'], $all_data['amount'], $all_data['capitalsourceid'], $all_data['contractpartnerid'], $all_data['comment'] );
 
 				if( $ret )
@@ -56,9 +53,13 @@ class moduleMoneyFlows extends module {
 
 		switch( $realaction ) {
 			case 'save':
-				foreach( $all_data as $id => $value )
+				foreach( $all_data as $id => $value ) {
+					if( empty( $value['invoicedate'] ) )
+						$value['invoicedate']=$value['bookingdate'];
+
 					if ( $value['id'] == 1 )
 						$ret=$this->coreMoneyFlows->add_moneyflow( $value['bookingdate'], $value['invoicedate'], $value['amount'], $value['capitalsourceid'], $value['contractpartnerid'], $value['comment'] );
+				}
 			default:
 				$all_data=$this->corePreDefMoneyFlows->get_all_data();
 
