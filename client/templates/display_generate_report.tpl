@@ -9,9 +9,9 @@
 					<th>bookingdate</th>
 					<th>invoicedate</th>
 					<th>amount</th>
-					<th>contractpartner</th>
+					<th>contract partner</th>
 					<th>comment</th>
-					<th>capitalsource</th>
+					<th>capital source</th>
 				</tr>
 				{section name=DATA loop=$ALL_MONEYFLOW_DATA}
 					<tr>
