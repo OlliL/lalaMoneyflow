@@ -31,6 +31,11 @@
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&id={$ALL_MONEYFLOW_DATA[DATA].id}&sr=1','_blank','width=1024,height=80')">delete</a></td>
 					</tr>
 				{/section}
+				{math equation="y-x" x=$LASTAMOUNT y=$CALCAMOUNT assign=CALCULATEDTURNOVER}
+				<tr>
+					<td></td>
+					<td align="right">&sum;</td>
+					<td align="right" class="contrastbgcolor"><font {if $CALCULATEDTURNOVER < 0}color="red"{/if}><u>{$CALCULATEDTURNOVER|number_format} EUR</u></font></td>
 			</table>
 			<br />
 			<hr>
@@ -66,15 +71,15 @@
 				{/section}
 						<td></td>
 						<td></td>
-						<td></td>
-						<td align="right" class="contrastbgcolor"><font {if $LASTAMOUNT < 0}color="red"{/if}>{$LASTAMOUNT|number_format} EUR</font></td>
+						<td align="right">&sum;</td>
+						<td align="right" class="contrastbgcolor"><font {if $LASTAMOUNT < 0}color="red"{/if}><u>{$LASTAMOUNT|number_format} EUR</u></font></td>
 						{if $MONTHLYSETTLEMENT_EXISTS == true}
-						<td align="right" class="contrastbgcolor"><b><font {if $FIXAMOUNT < 0}color="red"{/if}>{$FIXAMOUNT|number_format} EUR</b></font></td>
+						<td align="right" class="contrastbgcolor"><font {if $FIXAMOUNT < 0}color="red"{/if}><u>{$FIXAMOUNT|number_format} EUR</u></font></td>
 						{/if}
-						<td align="right" class="contrastbgcolor"><font {if $CALCAMOUNT < 0}color="red"{/if}>{$CALCAMOUNT|number_format} EUR</font></td>
+						<td align="right" class="contrastbgcolor"><font {if $CALCAMOUNT < 0}color="red"{/if}><u>{$CALCAMOUNT|number_format} EUR</u></font></td>
 						{if $MONTHLYSETTLEMENT_EXISTS == true}
 						{math equation="x - y" x=$FIXAMOUNT y=$CALCAMOUNT assign=DIFFERENCE}
-						<td align="right" class="contrastbgcolor"><font {if $DIFFERENCE < 0}color="red"{/if}>{$DIFFERENCE|number_format} EUR</font></td>
+						<td align="right" class="contrastbgcolor"><font {if $DIFFERENCE < 0}color="red"{/if}><u>{$DIFFERENCE|number_format} EUR</u></font></td>
 						{/if}
 			</table>
 			<br />
@@ -95,7 +100,6 @@
 				{/if}
 				<tr>
 					<th align="right">calculated turnover</th>
-					{math equation="y-x" x=$LASTAMOUNT y=$CALCAMOUNT assign=CALCULATEDTURNOVER}
 					<td align="right" class="contrastbgcolor"><font {if $CALCULATEDTURNOVER < 0}color="red"{/if}>{$CALCULATEDTURNOVER|number_format} EUR</font></td>
 					{math equation="y-x" x=$FIRSTAMOUNT y=$CALCAMOUNT assign=FIRSTTURNOVER}
 					<td align="right" class="contrastbgcolor"><font {if $FIRSTTURNOVER < 0}color="red"{/if}>{$FIRSTTURNOVER|number_format} EUR</font></td>
