@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleReports.php,v 1.5 2005/03/06 01:51:22 olivleh1 Exp $
+	$Id: moduleReports.php,v 1.6 2005/03/06 08:30:52 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -78,6 +78,10 @@ class moduleReports extends module {
 		$contractpartner_values=$this->coreContractPartners->get_all_names();
 		$monthlysettlement_exists=$this->coreMonthlySettlement->monthlysettlement_exists( $month, $year);
 
+		$all_capitalsources_ids=$this->coreCapitalSources->get_valid_ids( 12, $year-1, 12, $year-1 );
+		foreach( $all_capitalsources_ids as $capitalsources_id )
+			$firstamount+=$this->coreMonthlySettlement->get_amount( $capitalsources_id, 12, $year-1 );
+
 		$month = array(
 			'nummeric' => sprintf( '%02d', $month ),
 			'name'     => strftime( '%B', strtotime( "$month/1/$year" ) )
@@ -86,6 +90,7 @@ class moduleReports extends module {
 		$this->template->assign( 'MONTH',                    $month                    );
 		$this->template->assign( 'YEAR' ,                    $year                     );
 		$this->template->assign( 'SUMMARY_DATA',             $summary_data             );
+		$this->template->assign( 'FIRSTAMOUNT',              $firstamount              );
 		$this->template->assign( 'LASTAMOUNT',               $lastamount               );
 		$this->template->assign( 'FIXAMOUNT',                $fixamount                );
 		$this->template->assign( 'CALCAMOUNT',               $calcamount               );

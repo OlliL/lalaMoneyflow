@@ -1,4 +1,5 @@
-			<h1>money flow {$MONTH.name} {$YEAR}</h1>
+			<br />
+			<h1>money flow for {$MONTH.name} {$YEAR}</h1>
 			<table border=0 width=830 align="center" cellpadding=2>
 				<tr>
 					<th width="9%">bookingdate</th>
@@ -34,7 +35,7 @@
 			<br />
 			<hr>
 			<h1>Summary</h1>
-			<table border=0>
+			<table border=0 cellpadding=2>
 				<tr>
 					<th>type</th>
 					<th>state</th>
@@ -77,23 +78,32 @@
 						{/if}
 			</table>
 			<br />
-			<table border=0>
+			<table border=0 cellpadding=2>
+				<tr>
+					<th></th>
+					<th>month</th>
+					<th>year</th>
+				</tr>
 				{if $MONTHLYSETTLEMENT_EXISTS == true}
 				<tr>
 					<th align="right">fixed turnover</th>
 					{math equation="y-x" x=$LASTAMOUNT y=$FIXAMOUNT assign=FIXEDTURNOVER}
 					<td align="right" class="contrastbgcolor"><font {if $FIXEDTURNOVER < 0}color="red"{/if}>{$FIXEDTURNOVER|number_format} EUR</font></td>
+					{math equation="y-x" x=$FIRSTAMOUNT y=$FIXAMOUNT assign=FIRSTTURNOVER}
+					<td align="right" class="contrastbgcolor"><font {if $FIRSTTURNOVER < 0}color="red"{/if}>{$FIRSTTURNOVER|number_format} EUR</font></td>
 				</tr>
 				{/if}
 				<tr>
 					<th align="right">calculated turnover</th>
 					{math equation="y-x" x=$LASTAMOUNT y=$CALCAMOUNT assign=CALCULATEDTURNOVER}
 					<td align="right" class="contrastbgcolor"><font {if $CALCULATEDTURNOVER < 0}color="red"{/if}>{$CALCULATEDTURNOVER|number_format} EUR</font></td>
+					{math equation="y-x" x=$FIRSTAMOUNT y=$CALCAMOUNT assign=FIRSTTURNOVER}
+					<td align="right" class="contrastbgcolor"><font {if $FIRSTTURNOVER < 0}color="red"{/if}>{$FIRSTTURNOVER|number_format} EUR</font></td>
 				</tr>
 				{if $MONTHLYSETTLEMENT_EXISTS == true}
 				<tr>
 					<th align="right">difference</th>
-					<td align="right" class="contrastbgcolor"><font {if $DIFFERENCE < 0}color="red"{/if}>{$DIFFERENCE|number_format} EUR</font></td>
+					<td align="right" class="contrastbgcolor" colspan=2><font {if $DIFFERENCE < 0}color="red"{/if}>{$DIFFERENCE|number_format} EUR</font></td>
 				</tr>
 				{/if}
 			</table>
