@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMonthlySettlement.php,v 1.7 2005/03/06 12:51:34 olivleh1 Exp $
+	$Id: coreMonthlySettlement.php,v 1.8 2005/03/06 15:48:43 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -12,15 +12,15 @@ class coreMonthlySettlement extends core {
 		$this->core();
 	}
 
-	function get_amount( $sourceid, $month, $year) {
+	function get_amount( $sourceid, $month, $year ) {
 		return $this->select_col( "SELECT round(amount,2) FROM monthlysettlements WHERE capitalsourceid=$sourceid AND month=$month AND year=$year LIMIT 1" );
 	}
 
-	function get_sum_amount( $month, $year) {
+	function get_sum_amount( $month, $year ) {
 		return $this->select_col( "SELECT round(sum(amount),2) FROM monthlysettlements WHERE month=$month AND year=$year LIMIT 1" );
 	}
 
-	function monthlysettlement_exists( $month, $year) {
+	function monthlysettlement_exists( $month, $year ) {
 		if( $this->select_col( "SELECT 1 FROM monthlysettlements WHERE month=$month AND year=$year LIMIT 1" ) == 1 )
 			return true;
 		else
@@ -37,7 +37,7 @@ class coreMonthlySettlement extends core {
 
 	function get_next_date() {
 		$result=$this->select_row( 'SELECT MAX(month) month,MAX(year) year FROM monthlysettlements WHERE year=(SELECT MAX(year) FROM monthlysettlements)' );
-		return mktime( 0, 0, 0, $result['month']+1, 1, $result['year']);
+		return mktime( 0, 0, 0, $result['month']+1, 1, $result['year'] );
 	}
 
 

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleReports.php,v 1.8 2005/03/06 15:40:14 olivleh1 Exp $
+	$Id: moduleReports.php,v 1.9 2005/03/06 15:48:43 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -62,7 +62,7 @@ class moduleReports extends module {
 			$summary_data[$i]['comment']=$this->coreCapitalSources->get_comment( $capitalsources_id );
 			$summary_data[$i]['type']=$this->coreCapitalSources->get_type( $capitalsources_id );
 			$summary_data[$i]['state']=$this->coreCapitalSources->get_state( $capitalsources_id );
-			$summary_data[$i]['lastamount']=$this->coreMonthlySettlement->get_amount( $capitalsources_id, date( 'm', mktime(0, 0, 0, $month-1, 1) ), date( 'Y', mktime(0, 0, 0, $month-1, 1) ) );
+			$summary_data[$i]['lastamount']=$this->coreMonthlySettlement->get_amount( $capitalsources_id, date( 'm', mktime( 0, 0, 0, $month-1, 1 ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1 ) ) );
 			$summary_data[$i]['fixamount']=$this->coreMonthlySettlement->get_amount( $capitalsources_id, $month,$year );
 			$summary_data[$i]['calcamount']=round( $summary_data[$i]['lastamount']+$this->coreMoneyFlows->get_monthly_capitalsource_movement( $capitalsources_id, $month, $year ), 2 );
 			$summary_data[$i]['difference']=$summary_data[$i]['fixamount']-$summary_data[$i]['calcamount'];

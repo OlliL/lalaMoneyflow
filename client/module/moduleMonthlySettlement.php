@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMonthlySettlement.php,v 1.5 2005/03/06 12:51:34 olivleh1 Exp $
+	$Id: moduleMonthlySettlement.php,v 1.6 2005/03/06 15:48:43 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -19,10 +19,10 @@ class moduleMonthlySettlement extends module {
 	function display_list_monthlysettlements( $month, $year ) {
 
 		if( !$year )
-			$year=date('Y');
+			$year=date( 'Y' );
 
 		$years = $this->coreMonthlySettlement->get_all_years();
-		$temp_months = $this->coreMonthlySettlement->get_all_months($year);
+		$temp_months = $this->coreMonthlySettlement->get_all_months( $year );
 		if( is_array( $temp_months ) ) {
 			foreach( $temp_months as $key => $value ) {
 				$months[] = array(
@@ -34,11 +34,11 @@ class moduleMonthlySettlement extends module {
 
 		if( $month > 0 && $year > 0 ) {
 			$all_ids=$this->coreCapitalSources->get_valid_ids( $month, $year, $month, $year );
-			foreach($all_ids as $id) {
+			foreach( $all_ids as $id ) {
 				$all_data[]=array(
 					'id'      => $id,
-					'comment' => $this->coreCapitalSources->get_comment($id),
-					'amount'  => $this->coreMonthlySettlement->get_amount($id,$month,$year)
+					'comment' => $this->coreCapitalSources->get_comment( $id ),
+					'amount'  => $this->coreMonthlySettlement->get_amount( $id, $month, $year )
 				);
 			}
 
@@ -61,7 +61,7 @@ class moduleMonthlySettlement extends module {
 		$this->template->assign( 'SELECTED_YEAR', $year   );
 
 		$this->parse_header();
-		return $this->template->fetch('./display_list_monthlysettlements.tpl');
+		return $this->template->fetch( './display_list_monthlysettlements.tpl' );
 	}
 
 	function display_edit_monthlysettlement( $realaction, $month, $year, $all_data ) {
@@ -69,10 +69,9 @@ class moduleMonthlySettlement extends module {
 		switch( $realaction ) {
 			case 'save':
 				$ret=true;
-				foreach( $all_data as $id => $value ) {
+				foreach( $all_data as $id => $value )
 					if( !$this->coreMonthlySettlement->set_amount( $value['id'], $month, $year, $value['amount'] ) )
 						$ret=false;
-				}
 
 				if( $ret )
 					$this->template->assign( 'CLOSE', 1 );
@@ -90,11 +89,11 @@ class moduleMonthlySettlement extends module {
 				if( $month > 0 && $year > 0 ) {
 					$all_ids=$this->coreCapitalSources->get_valid_ids( $month, $year, $month, $year );
 					$all_data=array();
-					foreach($all_ids as $id) {
+					foreach( $all_ids as $id ) {
 						$all_data[]=array(
 							'id'      => $id,
-							'comment' => $this->coreCapitalSources->get_comment($id),
-							'amount'  => $this->coreMonthlySettlement->get_amount($id,$month,$year)
+							'comment' => $this->coreCapitalSources->get_comment( $id ),
+							'amount'  => $this->coreMonthlySettlement->get_amount( $id,$month, $year )
 						);
 					}
 
@@ -113,7 +112,7 @@ class moduleMonthlySettlement extends module {
 
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
-		$this->parse_header(1);
+		$this->parse_header( 1 );
 		return $this->template->fetch( './display_edit_monthlysettlement.tpl' );
 	}
 
@@ -128,11 +127,11 @@ class moduleMonthlySettlement extends module {
 				}
 			default:
 				$all_ids=$this->coreCapitalSources->get_valid_ids( $month, $year, $month, $year );
-				foreach($all_ids as $id) {
+				foreach( $all_ids as $id ) {
 					$all_data[]=array(
 						'id'      => $id,
-						'comment' => $this->coreCapitalSources->get_comment($id),
-						'amount'  => $this->coreMonthlySettlement->get_amount($id,$month,$year)
+						'comment' => $this->coreCapitalSources->get_comment( $id ),
+						'amount'  => $this->coreMonthlySettlement->get_amount( $id, $month, $year )
 					);
 				}
 				$sumamount=$this->coreMonthlySettlement->get_sum_amount( $month, $year );
@@ -151,7 +150,7 @@ class moduleMonthlySettlement extends module {
 
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
-		$this->parse_header(1);
+		$this->parse_header( 1 );
 		return $this->template->fetch( './display_delete_monthlysettlement.tpl' );
 	}
 }

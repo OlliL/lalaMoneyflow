@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: core.php,v 1.6 2005/03/06 12:58:11 olivleh1 Exp $
+	$Id: core.php,v 1.7 2005/03/06 15:48:43 olivleh1 Exp $
 */
 
 require_once 'DB.php';
@@ -11,7 +11,7 @@ class core {
 	function core() {
 		$this->db = DB::connect( $GLOBALS['dsn'],1 );
 
-		if(DB::isError( $this->db )) {
+		if( DB::isError( $this->db ) ) {
 			die( $this->db->getMessage() );
 		}
 	}

@@ -10,7 +10,7 @@ class moduleFrontPage extends module {
 
 	function display_main() {
 		$this->parse_header();
-		return $this->template->fetch("./display_main.tpl");
+		return $this->template->fetch( './display_main.tpl' );
 	}
     
 }

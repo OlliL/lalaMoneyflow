@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMoneyFlows.php,v 1.8 2005/03/06 01:26:49 olivleh1 Exp $
+	$Id: moduleMoneyFlows.php,v 1.9 2005/03/06 15:48:43 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -47,7 +47,7 @@ class moduleMoneyFlows extends module {
 
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
-		$this->parse_header(1);
+		$this->parse_header( 1 );
 		return $this->template->fetch( './display_edit_moneyflow.tpl' );
 	}
 
@@ -63,7 +63,7 @@ class moduleMoneyFlows extends module {
 				$all_data=$this->corePreDefMoneyFlows->get_all_data();
 
 				foreach( $all_data as $key => $value ) {
-					if( count($checked) > 0 ) {
+					if( count( $checked ) > 0 ) {
 						$all_data[$key]['checked']=$checked[$all_data[$key]['id']]==1?'checked':'';
 					}
 					$all_data[$key]['capitalsourcecomment']=$this->coreCapitalSources->get_comment( $all_data[$key]['capitalsourceid'] );
@@ -73,7 +73,7 @@ class moduleMoneyFlows extends module {
 				$capitalsource_values=$this->coreCapitalSources->get_all_comments();
 				$contractpartner_values=$this->coreContractPartners->get_all_names();
 
-				$this->template->assign( 'DATE',                   date('Y-m-d')           );
+				$this->template->assign( 'DATE',                   date( 'Y-m-d' )         );
 				$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
 				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 				$this->template->assign( 'ALL_DATA',               $all_data               );
@@ -103,7 +103,7 @@ class moduleMoneyFlows extends module {
 
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
-		$this->parse_header(1);
+		$this->parse_header( 1 );
 		return $this->template->fetch( './display_delete_moneyflow.tpl' );
 	}
 }

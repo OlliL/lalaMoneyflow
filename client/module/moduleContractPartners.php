@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleContractPartners.php,v 1.3 2005/03/06 01:26:48 olivleh1 Exp $
+	$Id: moduleContractPartners.php,v 1.4 2005/03/06 15:48:43 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -25,7 +25,7 @@ class moduleContractPartners extends module {
 		}
 
 		$this->template->assign( 'ALL_DATA',          $all_data          );
-		$this->template->assign( 'COUNT_ALL_DATA',    count($all_data)   );
+		$this->template->assign( 'COUNT_ALL_DATA',    count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 
 		$this->parse_header();
@@ -54,7 +54,7 @@ class moduleContractPartners extends module {
 
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
-		$this->parse_header(1);
+		$this->parse_header( 1 );
 		return $this->template->fetch( './display_edit_contractpartner.tpl' );
 	}
 
@@ -74,7 +74,7 @@ class moduleContractPartners extends module {
 
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
-		$this->parse_header(1);
+		$this->parse_header( 1 );
 		return $this->template->fetch( './display_delete_contractpartner.tpl' );
 	}
 }

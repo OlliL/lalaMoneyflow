@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: modulePreDefMoneyFlows.php,v 1.4 2005/03/06 01:26:49 olivleh1 Exp $
+	$Id: modulePreDefMoneyFlows.php,v 1.5 2005/03/06 15:48:43 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -37,7 +37,7 @@ class modulePreDefMoneyFlows extends module {
 		}
 
 		$this->template->assign( 'ALL_DATA',          $all_data          );
-		$this->template->assign( 'COUNT_ALL_DATA',    count($all_data)   );
+		$this->template->assign( 'COUNT_ALL_DATA',    count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 
 		$this->parse_header();
@@ -71,7 +71,7 @@ class modulePreDefMoneyFlows extends module {
 
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
-		$this->parse_header(1);
+		$this->parse_header( 1 );
 		return $this->template->fetch( './display_edit_predefmoneyflow.tpl' );
 	}
 
@@ -94,7 +94,7 @@ class modulePreDefMoneyFlows extends module {
 
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
-		$this->parse_header(1);
+		$this->parse_header( 1 );
 		return $this->template->fetch( './display_delete_predefmoneyflow.tpl' );
 	}
 }
