@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMoneyFlows.php,v 1.10 2005/03/08 14:22:08 olivleh1 Exp $
+	$Id: moduleMoneyFlows.php,v 1.11 2005/03/09 20:20:51 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -26,9 +26,10 @@ class moduleMoneyFlows extends module {
 			case 'save':
 				$ret=$this->coreMoneyFlows->update_moneyflow( $id, $all_data['bookingdate'], $all_data['invoicedate'], $all_data['amount'], $all_data['capitalsourceid'], $all_data['contractpartnerid'], $all_data['comment'] );
 
-				if( $ret )
+				if( $ret ) {
 					$this->template->assign( 'CLOSE', 1 );
-				break;
+					break;
+				}
 			default:
 				if( $id > 0 ) {
 					$all_data=$this->coreMoneyFlows->get_id_data( $id );
@@ -71,7 +72,7 @@ class moduleMoneyFlows extends module {
 					$all_data[$key]['contractpartnername']=$this->coreContractPartners->get_name( $all_data[$key]['contractpartnerid'] );
 				}
 
-				$capitalsource_values=$this->coreCapitalSources->get_all_comments();
+				$capitalsource_values=$this->coreCapitalSources->get_valid_comments( date( 'd' ), date( 'm' ), date( 'Y' ), date( 'd' ), date( 'm' ), date( 'Y' ) );
 				$contractpartner_values=$this->coreContractPartners->get_all_names();
 
 				$this->template->assign( 'DATE',                   date( 'Y-m-d' )         );

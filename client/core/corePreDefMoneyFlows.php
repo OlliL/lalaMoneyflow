@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: corePreDefMoneyFlows.php,v 1.4 2005/03/06 01:26:48 olivleh1 Exp $
+	$Id: corePreDefMoneyFlows.php,v 1.5 2005/03/09 20:20:51 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -11,7 +11,6 @@ class corePreDefMoneyFlows extends core {
 
 	function corePreDefMoneyFlows() {
 		$this->core();
-		$this->coreContractPartners=new coreContractPartners();
 	}
 
 	function get_all_data() {
@@ -23,12 +22,14 @@ class corePreDefMoneyFlows extends core {
 	}
 
 	function get_all_index_letters() {
+		$coreContractPartners=new coreContractPartners();
 		$temp=$this->select_cols( 'SELECT DISTINCT contractpartnerid FROM predefmoneyflows' );
-		return $this->coreContractPartners->get_ids_index_letters( $temp );
+		return $coreContractPartners->get_ids_index_letters( $temp );
 	}
 
 	function get_all_matched_data( $letter ) {
-		$ids=$this->coreContractPartners->get_ids_matched_data( $letter );
+		$coreContractPartners=new coreContractPartners();
+		$ids=$coreContractPartners->get_ids_matched_data( $letter );
 		$idstring=implode( $ids, ',' );
 		return $this->select_rows( "SELECT * FROM predefmoneyflows  WHERE contractpartnerid IN ($idstring) ORDER BY comment" );
 	}
@@ -40,7 +41,7 @@ class corePreDefMoneyFlows extends core {
 
 
 	function update_predefmoneyflow( $id, $amount, $capitalsourceid, $contractpartnerid, $comment ) {
-		return $this->insert_row( "UPDATE predefmoneyflows set amount='$amount',capitalsourceid='$capitalsourceid',contractpartnerid='$contractpartnerid',comment='$comment' WHERE id=$id" );
+		return $this->update_row( "UPDATE predefmoneyflows set amount='$amount',capitalsourceid='$capitalsourceid',contractpartnerid='$contractpartnerid',comment='$comment' WHERE id=$id" );
 	}
 
 	function add_predefmoneyflow( $amount, $capitalsourceid, $contractpartnerid, $comment ) {

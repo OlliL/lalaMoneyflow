@@ -4,6 +4,9 @@
 {$HEADER}
 
 		<td align="center">
+		{section name=ERROR loop=$ERRORS}
+			<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
+		{/section}
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action" value="edit_moneyflow">
 			<input type="hidden" name="id"      value="{$ALL_DATA.id}">

@@ -1,10 +1,11 @@
 <?php
 
 /*
-	$Id: coreMoneyFlows.php,v 1.7 2005/03/06 12:51:34 olivleh1 Exp $
+	$Id: coreMoneyFlows.php,v 1.8 2005/03/09 20:20:51 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
+require_once 'core/coreCapitalSources.php';
 
 class coreMoneyFlows extends core {
 
@@ -69,7 +70,13 @@ class coreMoneyFlows extends core {
 
 
 	function update_moneyflow( $id, $bookingdate, $invoicedate, $amount, $capitalsourceid, $contractpartnerid, $comment ) {
-		return $this->update_row( "UPDATE moneyflows set bookingdate=STR_TO_DATE('$bookingdate',GET_FORMAT(DATE,'ISO')),invoicedate=STR_TO_DATE('$invoicedate',GET_FORMAT(DATE,'ISO')),amount='$amount',capitalsourceid='$capitalsourceid',contractpartnerid='$contractpartnerid',comment='$comment' WHERE id=$id" );
+		$coreCapitalSources = new coreCapitalSources();
+		if( $coreCapitalSources->id_is_valid( $capitalsourceid, $bookingdate ) ) {
+			return $this->update_row( "UPDATE moneyflows set bookingdate=STR_TO_DATE('$bookingdate',GET_FORMAT(DATE,'ISO')),invoicedate=STR_TO_DATE('$invoicedate',GET_FORMAT(DATE,'ISO')),amount='$amount',capitalsourceid='$capitalsourceid',contractpartnerid='$contractpartnerid',comment='$comment' WHERE id=$id" );
+		} else {
+			$this->add_error( "You can't select the capital source you've choosen. It is not valid on the bookingdate you've given" );
+			return false;
+		}
 	}
 
 	function add_moneyflow( $bookingdate, $invoicedate, $amount, $capitalsourceid, $contractpartnerid, $comment ) {

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleReports.php,v 1.9 2005/03/06 15:48:43 olivleh1 Exp $
+	$Id: moduleReports.php,v 1.10 2005/03/09 20:20:51 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -54,7 +54,7 @@ class moduleReports extends module {
 		$all_moneyflow_data=$this->coreMoneyFlows->get_all_monthly_joined_data( $month, $year );
 		$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
-		$all_capitalsources_ids=$this->coreCapitalSources->get_valid_ids( $month, $year, $month, $year );
+		$all_capitalsources_ids=$this->coreCapitalSources->get_valid_ids( 1, $month, $year, 1, $month, $year );
 
 		$i=0;
 		foreach( $all_capitalsources_ids as $capitalsources_id ) {

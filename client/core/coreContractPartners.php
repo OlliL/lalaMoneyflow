@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreContractPartners.php,v 1.4 2005/03/06 01:26:48 olivleh1 Exp $
+	$Id: coreContractPartners.php,v 1.5 2005/03/09 20:20:51 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -11,7 +11,6 @@ class coreContractPartners extends core {
 
 	function coreContractPartners() {
 		$this->core();
-		$this->coreMoneyFlows=new coreMoneyFlows();
 	}
 
 	function get_all_data() {
@@ -49,7 +48,8 @@ class coreContractPartners extends core {
 
 
 	function delete_contractpartner( $id ) {
-		if( $this->coreMoneyFlows->contractpartner_in_use( $id ) ) {
+		$coreMoneyFlows=new coreMoneyFlows();
+		if( $coreMoneyFlows->contractpartner_in_use( $id ) ) {
 			$this->add_error( "You can't delete a contract partner who is still in use!" );
 			return 0;
 		} else {
@@ -60,7 +60,7 @@ class coreContractPartners extends core {
 
 
 	function update_contractpartner( $id, $name, $street, $postcode, $town, $country ) {
-		return $this->insert_row( "UPDATE contractpartners set name='$name',street='$street',postcode='$postcode',town='$town',country='$country' WHERE id=$id" );
+		return $this->update_row( "UPDATE contractpartners set name='$name',street='$street',postcode='$postcode',town='$town',country='$country' WHERE id=$id" );
 	}
 
 	function add_contractpartner( $name, $street, $postcode, $town, $country ) {

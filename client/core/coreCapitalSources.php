@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreCapitalSources.php,v 1.5 2005/03/06 01:26:48 olivleh1 Exp $
+	$Id: coreCapitalSources.php,v 1.6 2005/03/09 20:20:51 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -11,7 +11,6 @@ class coreCapitalSources extends core {
 
 	function coreCapitalSources() {
 		$this->core();
-		$this->coreMoneyFlows=new coreMoneyFlows();
 	}
 
 	function get_all_data() {
@@ -34,16 +33,16 @@ class coreCapitalSources extends core {
 		return $this->select_cols( 'SELECT id FROM capitalsources ORDER BY id' );
 	}
 
-	function get_valid_ids( $monthfrom, $yearfrom, $monthtil, $yeartil ) {
-		return $this->select_cols( "SELECT id FROM capitalsources WHERE validfrom <= '$yearfrom-$monthfrom-1' and validtil >= '$yeartil-$monthtil-1' ORDER BY id" );
+	function get_valid_ids( $dayfrom, $monthfrom, $yearfrom, $daytil, $monthtil, $yeartil ) {
+		return $this->select_cols( "SELECT id FROM capitalsources WHERE validfrom <= '$yearfrom-$monthfrom-$dayfrom' and validtil >= '$yeartil-$monthtil-$daytil' ORDER BY id" );
 	}
 
 	function get_all_comments() {
 		return $this->select_rows( 'SELECT id,comment FROM capitalsources ORDER BY id' );
 	}
 
-	function get_valid_comments( $monthfrom, $yearfrom, $monthtil, $yeartil ) {
-		return $this->select_rows( "SELECT id,comment FROM capitalsources WHERE validfrom <= '$yearfrom-$monthfrom-1' and validtil >= '$yeartil-$monthtil-1' ORDER BY id" );
+	function get_valid_comments( $dayfrom, $monthfrom, $yearfrom, $daytil, $monthtil, $yeartil ) {
+		return $this->select_rows( "SELECT id,comment FROM capitalsources WHERE validfrom <= '$yearfrom-$monthfrom-$dayfrom' and validtil >= '$yeartil-$monthtil-$daytil' ORDER BY id" );
 	}
 
 	function get_enum_type() {
@@ -66,9 +65,14 @@ class coreCapitalSources extends core {
 		return $this->select_col( "SELECT state FROM capitalsources WHERE id=$id LIMIT 1" );
 	}
 
+	function id_is_valid( $id, $date ) {
+		return $this->select_col( "SELECT 1 from capitalsources WHERE id=$id AND validfrom <= '$date' and validtil >= '$date' LIMIT 1" );
+	}
+
 
 	function delete_capitalsource( $id ) {
-		if( $this->coreMoneyFlows->capitalsource_in_use( $id ) ) {
+		$coreMoneyFlows=new coreMoneyFlows();
+		if( $coreMoneyFlows->capitalsource_in_use( $id ) ) {
 			$this->add_error( "You can't delete a capital source which is still in use!" );
 			return 0;
 		} else {
@@ -77,11 +81,11 @@ class coreCapitalSources extends core {
 	}
 
 
-	function update_capitalsource( $id, $type, $state, $accountnumber, $bankcode, $comment ) {
-		return $this->insert_row( "UPDATE capitalsources set type='$type',state='$state',accountnumber='$accountnumber',bankcode='$bankcode',comment='$comment' WHERE id=$id" );
+	function update_capitalsource( $id, $type, $state, $accountnumber, $bankcode, $comment, $validfrom, $validtil ) {
+		return $this->update_row( "UPDATE capitalsources set type='$type',state='$state',accountnumber='$accountnumber',bankcode='$bankcode',comment='$comment',validfrom='$validfrom',validtil='$validtil' WHERE id=$id" );
 	}
 
-	function add_capitalsource( $type, $state, $accountnumber, $bankcode, $comment ) {
-		return $this->insert_row( "INSERT INTO capitalsources (type,state,accountnumber,bankcode,comment) VALUES ('$type','$state','$accountnumber','$bankcode','$comment')" );
+	function add_capitalsource( $type, $state, $accountnumber, $bankcode, $comment, $validfrom, $validtil ) {
+		return $this->insert_row( "INSERT INTO capitalsources (type,state,accountnumber,bankcode,comment,validfrom,validtil) VALUES ('$type','$state','$accountnumber','$bankcode','$comment','$validfrom','$validtil')" );
 	}
 }

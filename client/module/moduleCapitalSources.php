@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleCapitalSources.php,v 1.4 2005/03/06 15:48:43 olivleh1 Exp $
+	$Id: moduleCapitalSources.php,v 1.5 2005/03/09 20:20:51 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -37,13 +37,14 @@ class moduleCapitalSources extends module {
 		switch( $realaction ) {
 			case 'save':
 				if( $id == 0 )
-					$ret=$this->coreCapitalSources->add_capitalsource( $all_data['type'], $all_data['state'], $all_data['accountnumber'], $all_data['bankcode'], $all_data['comment'] );
+					$ret=$this->coreCapitalSources->add_capitalsource( $all_data['type'], $all_data['state'], $all_data['accountnumber'], $all_data['bankcode'], $all_data['comment'], $all_data['validfrom'], $all_data['validtil'] );
 				else
-					$ret=$this->coreCapitalSources->update_capitalsource( $id, $all_data['type'], $all_data['state'], $all_data['accountnumber'], $all_data['bankcode'], $all_data['comment'] );
+					$ret=$this->coreCapitalSources->update_capitalsource( $id, $all_data['type'], $all_data['state'], $all_data['accountnumber'], $all_data['bankcode'], $all_data['comment'], $all_data['validfrom'], $all_data['validtil'] );
 
-				if( $ret )
+				if( $ret ) {
 					$this->template->assign( 'CLOSE', 1 );
-				break;
+					break;
+				}
 			default:
 				if( $id > 0 ) {
 					$all_data=$this->coreCapitalSources->get_id_data( $id );
