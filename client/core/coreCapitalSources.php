@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreCapitalSources.php,v 1.8 2005/03/09 20:52:26 olivleh1 Exp $
+	$Id: coreCapitalSources.php,v 1.9 2005/03/09 21:05:10 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -92,6 +92,12 @@ class coreCapitalSources extends core {
 	}
 
 	function add_capitalsource( $type, $state, $accountnumber, $bankcode, $comment, $validfrom, $validtil ) {
+		if( empty( $validfrom ) )
+			$validfrom='default';
+
+		if( empty( $validtil ) )
+			$validtil='default';
+
 		return $this->insert_row( "INSERT INTO capitalsources (type,state,accountnumber,bankcode,comment,validfrom,validtil) VALUES ('$type','$state','$accountnumber','$bankcode','$comment','$validfrom','$validtil')" );
 	}
 }
