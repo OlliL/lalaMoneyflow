@@ -35,10 +35,10 @@
 					</tr>
 				{section name=DATA loop=$ALL_DATA}
 					<tr>
-						<td class="contrastbgcolor"><input class="contrastbgcolor" type="checkbox" name="all_data[{$ALL_DATA[DATA].id}[id]" value=1 {$ALL_DATA[DATA].checked}></td>
+						<td class="contrastbgcolor"><input class="contrastbgcolor" type="checkbox" name="all_data[{$ALL_DATA[DATA].id}][id]" value=1 {$ALL_DATA[DATA].checked}></td>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$ALL_DATA[DATA].id}][bookingdate]" value="{$DATE}" size=10 /></td>
-						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_datainvoicedate[{$ALL_DATA[DATA].id}][]" value="" size=10 /></td>
-						<td class="contrastbgcolor" nowrap><input class="contrastbgcolor" type="text" name="all_dataamount[{$ALL_DATA[DATA].id}][]" value="{$ALL_DATA[DATA].amount|string_format:"%.2f"}" size=8 align="right"/> EUR</td>
+						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$ALL_DATA[DATA].id}][invoicedate]" value="" size=10 /></td>
+						<td class="contrastbgcolor" nowrap><input class="contrastbgcolor" type="text" name="all_data[{$ALL_DATA[DATA].id}][amount]" value="{$ALL_DATA[DATA].amount|string_format:"%.2f"}" size=8 align="right"/> EUR</td>
 						<td class="contrastbgcolor"><input type="hidden" name="all_data[{$ALL_DATA[DATA].id}][contractpartnerid]" value="{$ALL_DATA[DATA].contractpartnerid}">{$ALL_DATA[DATA].contractpartnername}</td>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$ALL_DATA[DATA].id}][comment]"   value="{$ALL_DATA[DATA].comment}" size="50"/></td>
 						<td class="contrastbgcolor"><input type="hidden" name="all_data[{$ALL_DATA[DATA].id}][capitalsourceid]" value="{$ALL_DATA[DATA].capitalsourceid}">{$ALL_DATA[DATA].capitalsourcecomment}</td>
