@@ -27,10 +27,9 @@ function Go(x)
 		<td align="center" valign="top" width=600>
 <form action="#" method="get">
 			<h1>list reports</h1>
-			<table border="0">
+			<table border="0" cellpadding=5>
 				<tr>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="reports_year" size=1 onchange="Go(this.form.reports_year.options[this.form.reports_year.options.selectedIndex].value)">
-						<option value="{$ENV_INDEX_PHP}?action=list_reports&reports_year=2004"> 2004
 					{section name=YEAR loop=$ALL_YEARS}
 						<option {if $ALL_YEARS[YEAR] == $SELECTED_YEAR}selected{/if} value="{$ENV_INDEX_PHP}?action=list_reports&reports_year={$ALL_YEARS[YEAR]}"> {$ALL_YEARS[YEAR]}
 					{/section}
