@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: core.php,v 1.2 2005/03/05 12:24:50 olivleh1 Exp $
+	$Id: core.php,v 1.3 2005/03/05 12:27:27 olivleh1 Exp $
 */
 
 require_once 'DB.php';
@@ -35,7 +35,7 @@ class core {
 	function select_cols( $query ) {
 		$reslink = $this->query( $query );
 		if( DB::isError( $reslink ) )
-			die( reslink->getMessage() );
+			die( $reslink->getMessage() );
 		while ( list( $retval ) = $reslink->fetchrow() )
 			$retvals[] = $retval;
 		return $retvals;
