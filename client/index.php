@@ -1,5 +1,9 @@
 <?php
 
+/*
+	$Id: index.php,v 1.3 2005/03/05 00:31:27 olivleh1 Exp $
+*/
+
 if( ! empty($_GET['action']) || ! empty($_POST['action']) )
 	$action=$_POST['action']?$_POST['action']:$_GET['action'];
 else
@@ -99,14 +103,11 @@ switch( $action ) {
 
 
 
+/* START: REWRITE ME */
 
 	case 'add_moneyflows':		$display=$moduleMoneyFlows->display_add_moneyflows();
 					break;
 	case 'save_moneyflows':		$display=$moduleMoneyFlows->save_moneyflows();
-					break;
-	case 'edit_predefmoneyflows':	$display=$modulePreDefMoneyFlows->edit_predefmoneyflows();
-					break;
-	case 'show_predefmoneyflows':	$display=$modulePreDefMoneyFlows->display_show_predefmoneyflows();
 					break;
 	case 'show_monthlysettlement':	$display=$moduleMonthlySettlement->display_show_monthlysettlement();
 					break;
@@ -114,6 +115,7 @@ switch( $action ) {
 					break;
 	case 'generate report':		$display=$moduleReports->generate_report();
 					break;
+/* END: REWRITE ME */
 }
 
 echo $display;
