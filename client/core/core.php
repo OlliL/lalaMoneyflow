@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: core.php,v 1.4 2005/03/05 22:54:20 olivleh1 Exp $
+	$Id: core.php,v 1.5 2005/03/06 01:26:48 olivleh1 Exp $
 */
 
 require_once 'DB.php';
@@ -15,7 +15,7 @@ class core {
 			die( $this->db->getMessage() );
 		}
 	}
-	
+
 	function query( $query ) {
 #		echo $query;
 		return $this->db->query( $query );
@@ -61,7 +61,7 @@ class core {
 		$retval[]=$val;
 		return $retval;
 	}
-	
+
 	function generic_query( $query ) {
 		$reslink = $this->query( $query );
 		if( DB::isError( $reslink ) )
@@ -81,17 +81,17 @@ class core {
 	function update_row( $query ) {
 		return $this->generic_query( $query );
 	}
-	
+
 	function real_get_enum_values( $table, $column ) {
 		$definition=$this->select_row( "SHOW COLUMNS FROM $table LIKE '$column'" );
-	
+
 		$enum = str_replace( 'enum(', '', $definition['Type'] );
 		$enum = ereg_replace( '\\)$', '', $enum );
 		$enum = explode( '\',\'', substr( $enum, 1, -1 ) );
 
 		return $enum;
 	}
-	
+
 	function add_error( $error ) {
 		global $ERRORS;
 		$ERRORS[]=$error;

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMonthlySettlement.php,v 1.3 2005/03/05 16:48:47 olivleh1 Exp $
+	$Id: moduleMonthlySettlement.php,v 1.4 2005/03/06 01:26:49 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -20,7 +20,7 @@ class moduleMonthlySettlement extends module {
 
 		if( !$year )
 			$year=date('Y');
-	
+
 		$years = $this->coreMonthlySettlement->get_all_years();
 		$temp_months = $this->coreMonthlySettlement->get_all_months($year);
 		if( is_array( $temp_months ) ) {
@@ -54,7 +54,7 @@ class moduleMonthlySettlement extends module {
 		$this->template->assign( 'ALL_YEARS',     $years  );
 		$this->template->assign( 'ALL_MONTHS',    $months );
 		$this->template->assign( 'SELECTED_YEAR', $year   );
-		
+
 		$this->parse_header();
 		return $this->template->fetch('./display_list_monthlysettlements.tpl');
 	}
@@ -105,7 +105,7 @@ class moduleMonthlySettlement extends module {
 		}
 
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header(1);
 		return $this->template->fetch( './display_edit_monthlysettlement.tpl' );
 	}
@@ -140,7 +140,7 @@ class moduleMonthlySettlement extends module {
 		}
 
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header(1);
 		return $this->template->fetch( './display_delete_monthlysettlement.tpl' );
 	}

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreContractPartners.php,v 1.3 2005/03/05 22:54:20 olivleh1 Exp $
+	$Id: coreContractPartners.php,v 1.4 2005/03/06 01:26:48 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -13,7 +13,7 @@ class coreContractPartners extends core {
 		$this->core();
 		$this->coreMoneyFlows=new coreMoneyFlows();
 	}
-	
+
 	function get_all_data() {
 		return $this->select_rows( 'SELECT * FROM contractpartners ORDER BY name' );
 	}

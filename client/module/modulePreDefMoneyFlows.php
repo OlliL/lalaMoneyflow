@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: modulePreDefMoneyFlows.php,v 1.3 2005/03/05 15:19:27 olivleh1 Exp $
+	$Id: modulePreDefMoneyFlows.php,v 1.4 2005/03/06 01:26:49 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -39,7 +39,7 @@ class modulePreDefMoneyFlows extends module {
 		$this->template->assign( 'ALL_DATA',          $all_data          );
 		$this->template->assign( 'COUNT_ALL_DATA',    count($all_data)   );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
-		
+
 		$this->parse_header();
 		return $this->template->fetch( './display_list_predefmoneyflows.tpl' );
 	}
@@ -63,14 +63,14 @@ class modulePreDefMoneyFlows extends module {
 				}
 				$capitalsource_values=$this->coreCapitalSources->get_all_comments();
 				$contractpartner_values=$this->coreContractPartners->get_all_names();
-				
+
 				$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
 				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 				break;
 		}
 
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header(1);
 		return $this->template->fetch( './display_edit_predefmoneyflow.tpl' );
 	}
@@ -83,7 +83,7 @@ class modulePreDefMoneyFlows extends module {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
-				
+
 			default:
 				$all_data=$this->corePreDefMoneyFlows->get_id_data( $id );
 				$all_data['capitalsource_comment']=$this->coreCapitalSources->get_comment( $all_data['capitalsourceid'] );
@@ -93,7 +93,7 @@ class modulePreDefMoneyFlows extends module {
 		}
 
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header(1);
 		return $this->template->fetch( './display_delete_predefmoneyflow.tpl' );
 	}

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleReports.php,v 1.3 2005/03/05 12:24:50 olivleh1 Exp $
+	$Id: moduleReports.php,v 1.4 2005/03/06 01:26:49 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -24,7 +24,7 @@ class moduleReports extends module {
 
 		if( !$year )
 			$year=date('Y');
-	
+
 		$years = $this->coreMoneyFlows->get_all_years();
 		$temp_months = $this->coreMoneyFlows->get_all_months($year);
 		if( is_array( $temp_months ) ) {
@@ -44,7 +44,7 @@ class moduleReports extends module {
 		$this->template->assign( 'ALL_YEARS',     $years  );
 		$this->template->assign( 'ALL_MONTHS',    $months );
 		$this->template->assign( 'SELECTED_YEAR', $year   );
-		
+
 		$this->parse_header();
 		return $this->template->fetch('./display_list_reports.tpl');
 	}
@@ -53,9 +53,9 @@ class moduleReports extends module {
 
 		$all_moneyflow_data=$this->coreMoneyFlows->get_all_monthly_data( $month, $year );
 		$this->template->assign( 'ALL_MONEYFLOW_DATA',   $all_moneyflow_data );
-		
+
 		$all_capitalsources_ids=$this->coreCapitalSources->get_valid_ids( $month, $year, $month, $year );
-		
+
 		$i=0;
 		foreach( $all_capitalsources_ids as $capitalsources_id ) {
 			$summary_data[$i]['id']=$capitalsources_id;
@@ -81,7 +81,7 @@ class moduleReports extends module {
 
 		$capitalsource_values=$this->coreCapitalSources->get_valid_comments( $month, $year, $month, $year );
 		$contractpartner_values=$this->coreContractPartners->get_all_names();
-		
+
 		$this->template->assign( 'MONTH',                  $month                  );
 		$this->template->assign( 'YEAR' ,                  $year                   );
 		$this->template->assign( 'SUMMARY_DATA',           $summary_data           );

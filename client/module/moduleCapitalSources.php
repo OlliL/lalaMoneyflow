@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleCapitalSources.php,v 1.2 2005/03/05 15:19:27 olivleh1 Exp $
+	$Id: moduleCapitalSources.php,v 1.3 2005/03/06 01:26:48 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -27,7 +27,7 @@ class moduleCapitalSources extends module {
 		$this->template->assign( 'ALL_DATA',          $all_data          );
 		$this->template->assign( 'COUNT_ALL_DATA',    count($all_data)   );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
-		
+
 		$this->parse_header();
 		return $this->template->fetch( './display_list_capitalsources.tpl' );
 	}
@@ -58,7 +58,7 @@ class moduleCapitalSources extends module {
 		}
 
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header(1);
 		return $this->template->fetch( './display_edit_capitalsource.tpl' );
 	}
@@ -78,7 +78,7 @@ class moduleCapitalSources extends module {
 		}
 
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header(1);
 		return $this->template->fetch( './display_delete_capitalsource.tpl' );
 	}

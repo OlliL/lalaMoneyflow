@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMonthlySettlement.php,v 1.4 2005/03/05 22:54:20 olivleh1 Exp $
+	$Id: coreMonthlySettlement.php,v 1.5 2005/03/06 01:26:48 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -11,7 +11,7 @@ class coreMonthlySettlement extends core {
 	function coreMonthlySettlement() {
 		$this->core();
 	}
-	
+
 	function get_amount( $sourceid, $month, $year) {
 		return $this->select_col( "SELECT round(amount,2) FROM monthlysettlements WHERE capitalsourceid=$sourceid AND month=$month AND year=$year LIMIT 1" );
 	}

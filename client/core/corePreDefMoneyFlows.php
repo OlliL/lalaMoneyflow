@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: corePreDefMoneyFlows.php,v 1.3 2005/03/05 22:54:20 olivleh1 Exp $
+	$Id: corePreDefMoneyFlows.php,v 1.4 2005/03/06 01:26:48 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -13,7 +13,7 @@ class corePreDefMoneyFlows extends core {
 		$this->core();
 		$this->coreContractPartners=new coreContractPartners();
 	}
-	
+
 	function get_all_data() {
 		return $this->select_rows( 'SELECT * FROM predefmoneyflows ORDER BY id' );
 	}

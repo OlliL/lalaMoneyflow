@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreCapitalSources.php,v 1.4 2005/03/05 22:54:20 olivleh1 Exp $
+	$Id: coreCapitalSources.php,v 1.5 2005/03/06 01:26:48 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -13,7 +13,7 @@ class coreCapitalSources extends core {
 		$this->core();
 		$this->coreMoneyFlows=new coreMoneyFlows();
 	}
-	
+
 	function get_all_data() {
 		return $this->select_rows( 'SELECT * FROM capitalsources ORDER BY id' );
 	}
@@ -49,7 +49,7 @@ class coreCapitalSources extends core {
 	function get_enum_type() {
 		return $this->real_get_enum_values( 'capitalsources', 'type' );
 	}
-	
+
 	function get_enum_state() {
 		return $this->real_get_enum_values( 'capitalsources', 'state' );
 	}

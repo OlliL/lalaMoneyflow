@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMoneyFlows.php,v 1.5 2005/03/05 22:54:20 olivleh1 Exp $
+	$Id: coreMoneyFlows.php,v 1.6 2005/03/06 01:26:48 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -11,14 +11,14 @@ class coreMoneyFlows extends core {
 	function coreMoneyFlows() {
 		$this->core();
 	}
-	
+
 	function get_all_data( $id=0 ) {
 		if( $id>0 )
 			return $this->select_row( "SELECT * FROM moneyflows WHERE id=$id" );
 		else
 			return $this->select_rows( 'SELECT * FROM moneyflows ORDER BY id' );
 
-			
+
 	}
 
 	function get_id_data( $id ) {

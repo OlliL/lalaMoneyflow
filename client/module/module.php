@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: module.php,v 1.5 2005/03/05 22:54:20 olivleh1 Exp $
+	$Id: module.php,v 1.6 2005/03/06 01:26:48 olivleh1 Exp $
 */
 
 require_once 'Smarty.class.php';
@@ -18,7 +18,7 @@ class module {
 			$this->template->assign( 'ENV_REFERER', $_POST['REFERER']?$_POST['REFERER']:$_GET['REFERER'] );
 		}
 	}
-	
+
 	function parse_header( $nonavi=0 ) {
 		$this->template->assign( 'REPORTS_YEAR',  date('Y') );
 		$this->template->assign( 'REPORTS_MONTH', date('m') );

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMoneyFlows.php,v 1.7 2005/03/06 01:25:08 olivleh1 Exp $
+	$Id: moduleMoneyFlows.php,v 1.8 2005/03/06 01:26:49 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -39,21 +39,21 @@ class moduleMoneyFlows extends module {
 				}
 				$capitalsource_values=$this->coreCapitalSources->get_all_comments();
 				$contractpartner_values=$this->coreContractPartners->get_all_names();
-				
+
 				$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
 				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 				break;
 		}
 
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header(1);
 		return $this->template->fetch( './display_edit_moneyflow.tpl' );
 	}
 
 
 	function display_add_moneyflow( $realaction, $all_data ) {
-		
+
 		switch( $realaction ) {
 			case 'save':
 				foreach( $all_data as $id => $value )
@@ -69,10 +69,10 @@ class moduleMoneyFlows extends module {
 					$all_data[$key]['capitalsourcecomment']=$this->coreCapitalSources->get_comment( $all_data[$key]['capitalsourceid'] );
 					$all_data[$key]['contractpartnername']=$this->coreContractPartners->get_name( $all_data[$key]['contractpartnerid'] );
 				}
-						
+
 				$capitalsource_values=$this->coreCapitalSources->get_all_comments();
 				$contractpartner_values=$this->coreContractPartners->get_all_names();
-		
+
 				$this->template->assign( 'DATE',                   date('Y-m-d')           );
 				$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
 				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
@@ -82,7 +82,7 @@ class moduleMoneyFlows extends module {
 		$this->parse_header();
 		return $this->template->fetch( './display_add_moneyflow.tpl' );
 	}
-		
+
 
 	function display_delete_moneyflow( $realaction, $id ) {
 
@@ -92,7 +92,7 @@ class moduleMoneyFlows extends module {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
-				
+
 			default:
 				$all_data=$this->coreMoneyFlows->get_id_data( $id );
 				$all_data['capitalsource_comment']=$this->coreCapitalSources->get_comment( $all_data['capitalsourceid'] );
@@ -102,7 +102,7 @@ class moduleMoneyFlows extends module {
 		}
 
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header(1);
 		return $this->template->fetch( './display_delete_moneyflow.tpl' );
 	}
