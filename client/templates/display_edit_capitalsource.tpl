@@ -10,15 +10,16 @@
 			<input type="hidden" name="REFERER" value="{$ENV_REFERER}">
 			<table border=0>
 				<tr>
+					<th>comment</th>
 					<th>type</th>
 					<th>state</th>
 					<th>accountnumber</th>
 					<th>bankcode</th>
-					<th>comment</th>
 					<th>valid from</th>
 					<th>valid til</th>
 				</tr>
 				<tr>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]"       value="{$ALL_DATA.comment}" /></td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[type]"  size=1>
 					{section name=TYPE loop=$TYPE_VALUES}
 						<option {if $TYPE_VALUES[TYPE]   == $ALL_DATA.type}selected{/if} > {$TYPE_VALUES[TYPE]}
@@ -31,7 +32,6 @@
 					</select></td>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[accountnumber]" value="{$ALL_DATA.accountnumber}" /></td>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[bankcode]"      value="{$ALL_DATA.bankcode}" /></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]"       value="{$ALL_DATA.comment}" /></td>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validfrom]"     value="{$ALL_DATA.validfrom}" size=8 /></td>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validtil]"      value="{$ALL_DATA.validtil}" size=8 /></td>
 				</tr>
