@@ -9,16 +9,15 @@
 		<table border=0 width="100%">
 			<tr>
 {if $NO_NAVIGATION == 0}
-				<td valign="top" width="200">
+				<td valign="top" width="100">
 		<a href="{$ENV_INDEX_PHP}?action=list_capitalsources">list capital sources</a><br />
 		<a href="{$ENV_INDEX_PHP}?action=list_contractpartners">list contract partners</a><br />
 		<a href="{$ENV_INDEX_PHP}?action=list_predefmoneyflows">list predefined moneyflows</a><br />
+		<a href="{$ENV_INDEX_PHP}?action=list_monthlysettlements">list monthly settlements</a><br />
 		<a href="{$ENV_INDEX_PHP}?action=list_reports">list reports</a><br />
 		<br />
 		<i>
 		<a href="{$ENV_INDEX_PHP}?action=add_moneyflows">add moneyflows</a><br />
-		<br />
-		<a href="{$ENV_INDEX_PHP}?action=show_monthlysettlement">do a monthly settlement</a><br />
 		<br />
 		</i>
 		<b>shortcuts</b><br />

@@ -25,7 +25,7 @@ function Go(x)
 {$HEADER}
 
 		<td align="center" valign="top" width=600>
-<form action="#" method="get">
+			<form action="#" method="get">
 			<h1>list reports</h1>
 			<table border="0" cellpadding=5>
 				<tr>
@@ -41,7 +41,7 @@ function Go(x)
 					{/section}
 				</tr>
 			</table>
-</form>
+			</form>
 {$REPORT}
 		</td>
 {$FOOTER}

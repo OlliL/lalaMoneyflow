@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: index.php,v 1.5 2005/03/05 12:24:50 olivleh1 Exp $
+	$Id: index.php,v 1.6 2005/03/05 15:02:22 olivleh1 Exp $
 */
 
 if( ! empty($_GET['action']) || ! empty($_POST['action']) )
@@ -40,52 +40,52 @@ switch( $action ) {
 	/* capitalsources */
 
 	case 'list_capitalsources':	$letter=	$_POST['letter']?$_POST['letter']:$_GET['letter'];
-					$display=$moduleCapitalSources->display_list_capitalsources($letter);
+					$display=$moduleCapitalSources->display_list_capitalsources( $letter );
 					break;
 
 	case 'edit_capitalsource':	$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
 					$id=		$_POST['id']?$_POST['id']:$_GET['id'];
 					$all_data=	$_POST['all_data'];
-					$display=$moduleCapitalSources->display_edit_capitalsource($realaction,$id,$all_data);
+					$display=$moduleCapitalSources->display_edit_capitalsource( $realaction, $id, $all_data );
 					break;
 
 	case 'delete_capitalsource':	$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
 					$id=		$_POST['id']?$_POST['id']:$_GET['id'];
-					$display=$moduleCapitalSources->display_delete_capitalsource($realaction,$id);
+					$display=$moduleCapitalSources->display_delete_capitalsource( $realaction, $id );
 					break;
 
 	/* contractpartners */
 
 	case 'list_contractpartners':	$letter=	$_POST['letter']?$_POST['letter']:$_GET['letter'];
-					$display=$moduleContractPartners->display_list_contractpartners($letter);
+					$display=$moduleContractPartners->display_list_contractpartners( $letter );
 					break;
 
 	case 'edit_contractpartner':	$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
 					$id=		$_POST['id']?$_POST['id']:$_GET['id'];
 					$all_data=	$_POST['all_data'];
-					$display=$moduleContractPartners->display_edit_contractpartner($realaction,$id,$all_data);
+					$display=$moduleContractPartners->display_edit_contractpartner( $realaction, $id, $all_data );
 					break;
 
 	case 'delete_contractpartner':	$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
 					$id=		$_POST['id']?$_POST['id']:$_GET['id'];
-					$display=$moduleContractPartners->display_delete_contractpartner($realaction,$id);
+					$display=$moduleContractPartners->display_delete_contractpartner( $realaction, $id );
 					break;
 
 	/* predefmoneyflows */
 
 	case 'list_predefmoneyflows':	$letter=	$_POST['letter']?$_POST['letter']:$_GET['letter'];
-					$display=$modulePreDefMoneyFlows->display_list_predefmoneyflows($letter);
+					$display=$modulePreDefMoneyFlows->display_list_predefmoneyflows( $letter );
 					break;
 
 	case 'edit_predefmoneyflow':	$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
 					$id=		$_POST['id']?$_POST['id']:$_GET['id'];
 					$all_data=	$_POST['all_data'];
-					$display=$modulePreDefMoneyFlows->display_edit_predefmoneyflow($realaction,$id,$all_data);
+					$display=$modulePreDefMoneyFlows->display_edit_predefmoneyflow( $realaction, $id, $all_data );
 					break;
 
 	case 'delete_predefmoneyflow':	$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
 					$id=		$_POST['id']?$_POST['id']:$_GET['id'];
-					$display=$modulePreDefMoneyFlows->display_delete_predefmoneyflow($realaction,$id);
+					$display=$modulePreDefMoneyFlows->display_delete_predefmoneyflow( $realaction, $id );
 					break;
 
 	/* moneyflows */
@@ -93,20 +93,38 @@ switch( $action ) {
 	case 'edit_moneyflow':		$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
 					$id=		$_POST['id']?$_POST['id']:$_GET['id'];
 					$all_data=	$_POST['all_data'];
-					$display=$moduleMoneyFlows->display_edit_moneyflow($realaction,$id,$all_data);
+					$display=$moduleMoneyFlows->display_edit_moneyflow( $realaction, $id, $all_data );
 					break;
 
 	case 'delete_moneyflow':	$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
 					$id=		$_POST['id']?$_POST['id']:$_GET['id'];
-					$display=$moduleMoneyFlows->display_delete_moneyflow($realaction,$id);
+					$display=$moduleMoneyFlows->display_delete_moneyflow( $realaction, $id );
 					break;
 
+
+	/* monthlysettlements */
+
+	case 'list_monthlysettlements':	$month=		$_GET['monthlysettlements_month'];
+					$year=		$_GET['monthlysettlements_year'];
+					$display=$moduleMonthlySettlement->display_list_monthlysettlements( $month, $year );
+					break;
+	case 'edit_monthlysettlement':	$month=		$_POST['monthlysettlements_month']?$_POST['monthlysettlements_month']:$_GET['monthlysettlements_month'];
+					$year=		$_POST['monthlysettlements_year']?$_POST['monthlysettlements_year']:$_GET['monthlysettlements_year'];
+					$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
+					$all_data=	$_POST['all_data'];
+					$display=$moduleMonthlySettlement->display_edit_monthlysettlement( $realaction, $month, $year, $all_data );
+					break;
+	case 'delete_monthlysettlement':$month=		$_POST['monthlysettlements_month']?$_POST['monthlysettlements_month']:$_GET['monthlysettlements_month'];
+					$year=		$_POST['monthlysettlements_year']?$_POST['monthlysettlements_year']:$_GET['monthlysettlements_year'];
+					$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
+					$display=$moduleMonthlySettlement->display_delete_monthlysettlement( $realaction, $month, $year );
+					break;
 
 	/* reports */
 	
 	case 'list_reports':		$month=		$_GET['reports_month'];
 					$year=		$_GET['reports_year'];
-					$display=$moduleReports->display_list_reports($month,$year);
+					$display=$moduleReports->display_list_reports( $month, $year );
 					break;
 
 
@@ -115,10 +133,6 @@ switch( $action ) {
 	case 'add_moneyflows':		$display=$moduleMoneyFlows->display_add_moneyflows();
 					break;
 	case 'save_moneyflows':		$display=$moduleMoneyFlows->save_moneyflows();
-					break;
-	case 'show_monthlysettlement':	$display=$moduleMonthlySettlement->display_show_monthlysettlement();
-					break;
-	case 'edit_monthlysettlement':	$display=$moduleMonthlySettlement->edit_monthlysettlement();
 					break;
 /* END: REWRITE ME */
 }

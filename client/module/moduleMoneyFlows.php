@@ -1,9 +1,8 @@
 <?php
 
 /*
-	$Id: moduleMoneyFlows.php,v 1.2 2005/03/05 00:30:12 olivleh1 Exp $
+	$Id: moduleMoneyFlows.php,v 1.3 2005/03/05 15:02:22 olivleh1 Exp $
 */
-
 
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
