@@ -55,6 +55,14 @@
 						<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].difference < 0}color="red"{/if}>{$SUMMARY_DATA[DATA].difference|number_format} EUR</font></td>
 					</tr>
 				{/section}
+						<td></td>
+						<td></td>
+						<td></td>
+						<td align="right" class="contrastbgcolor"><font {if $LASTAMOUNT < 0}color="red"{/if}>{$LASTAMOUNT|number_format} EUR</font></td>
+						<td align="right" class="contrastbgcolor"><b><font {if $FIXAMOUNT < 0}color="red"{/if}>{$FIXAMOUNT|number_format} EUR</b></font></td>
+						<td align="right" class="contrastbgcolor"><font {if $CALCAMOUNT < 0}color="red"{/if}>{$CALCAMOUNT|number_format} EUR</font></td>
+						{math equation="x - y" x=$FIXAMOUNT y=$CALCAMOUNT assign=DIFFERENCE}
+						<td align="right" class="contrastbgcolor"><font {if $DIFFERENCE < 0}color="red"{/if}>{$DIFFERENCE|number_format} EUR</font></td>
 			</table>
 			<br />
 			<table border=0>
@@ -70,7 +78,6 @@
 				</tr>
 				<tr>
 					<th align="right">difference</th>
-					{math equation="x - y" x=$FIXAMOUNT y=$CALCAMOUNT assign=DIFFERENCE}
 					<td align="right" class="contrastbgcolor"><font {if $DIFFERENCE < 0}color="red"{/if}>{$DIFFERENCE|number_format} EUR</font></td>
 				</tr>
 			</table>

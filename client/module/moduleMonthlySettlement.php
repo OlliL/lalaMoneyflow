@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMonthlySettlement.php,v 1.2 2005/03/05 15:02:22 olivleh1 Exp $
+	$Id: moduleMonthlySettlement.php,v 1.3 2005/03/05 16:48:47 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -65,7 +65,6 @@ class moduleMonthlySettlement extends module {
 			case 'save':
 				$ret=true;
 				foreach( $all_data as $id => $value ) {
-				echo "save!".$value['id']."-".$value['amount']."<br>";
 					if( !$this->coreMonthlySettlement->set_amount( $value['id'], $month, $year, $value['amount'] ) )
 						$ret=false;
 				}

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: index.php,v 1.6 2005/03/05 15:02:22 olivleh1 Exp $
+	$Id: index.php,v 1.7 2005/03/05 16:48:47 olivleh1 Exp $
 */
 
 if( ! empty($_GET['action']) || ! empty($_POST['action']) )
@@ -90,6 +90,10 @@ switch( $action ) {
 
 	/* moneyflows */
 
+	case 'add_moneyflow':		$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
+					$all_data=	$_POST['all_data'];
+					$display=$moduleMoneyFlows->display_add_moneyflow( $realaction, $all_data );
+					break;
 	case 'edit_moneyflow':		$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
 					$id=		$_POST['id']?$_POST['id']:$_GET['id'];
 					$all_data=	$_POST['all_data'];
@@ -126,15 +130,6 @@ switch( $action ) {
 					$year=		$_GET['reports_year'];
 					$display=$moduleReports->display_list_reports( $month, $year );
 					break;
-
-
-
-/* START: REWRITE ME */
-	case 'add_moneyflows':		$display=$moduleMoneyFlows->display_add_moneyflows();
-					break;
-	case 'save_moneyflows':		$display=$moduleMoneyFlows->save_moneyflows();
-					break;
-/* END: REWRITE ME */
 }
 
 echo $display;

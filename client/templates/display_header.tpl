@@ -1,6 +1,6 @@
 	<style type="text/css">
 	{literal}
-	all,body,table,a,td,option,input,select { font-size:10px; }
+	all,body,table,a,td,option,input,select { font-size:10px;font-family:arial,helvetica; }
 	.contrastbgcolor { background-color: #B0C4DE; }
 	{/literal}
 	</style>				
@@ -16,10 +16,8 @@
 					<a href="{$ENV_INDEX_PHP}?action=list_monthlysettlements">list monthly settlements</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_reports">list reports</a><br />
 					<br />
-					<i>
-					<a href="{$ENV_INDEX_PHP}?action=add_moneyflows">add moneyflows</a><br />
+					<a href="{$ENV_INDEX_PHP}?action=add_moneyflow">add moneyflow</a><br />
 					<br />
-					</i>
 					<b>shortcuts</b><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$REPORTS_MONTH}&reports_year={$REPORTS_YEAR}">report {$REPORTS_YEAR}-{$REPORTS_MONTH}</a><br />
 					<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&sr=1','_blank','width=800,height=80')">add capital source</a><br />
