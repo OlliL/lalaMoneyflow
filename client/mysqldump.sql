@@ -71,11 +71,11 @@ CREATE TABLE `moneyflows` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Table structure for table `monthlysettlement`
+-- Table structure for table `monthlysettlements`
 --
 
-DROP TABLE IF EXISTS `monthlysettlement`;
-CREATE TABLE `monthlysettlement` (
+DROP TABLE IF EXISTS `monthlysettlements`;
+CREATE TABLE `monthlysettlements` (
   `id` int(11) NOT NULL auto_increment,
   `capitalsourceid` int(11) NOT NULL default '0',
   `month` tinyint(4) NOT NULL default '0',
