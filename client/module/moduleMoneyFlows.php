@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMoneyFlows.php,v 1.5 2005/03/05 16:48:47 olivleh1 Exp $
+	$Id: moduleMoneyFlows.php,v 1.6 2005/03/05 22:54:21 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -65,10 +65,10 @@ class moduleMoneyFlows extends module {
 
 				foreach( $all_data as $key => $value ) {
 					if( count($checked) > 0 ) {
-						$all_data[$key]["checked"]=$checked[$all_data[$key]["id"]]==1?"checked":"";
+						$all_data[$key]['checked']=$checked[$all_data[$key]['id']]==1?'checked':'';
 					}
-					$all_data[$key]['capitalsourcecomment']=$this->coreCapitalSources->get_comment( $all_data[$key]["capitalsourceid"] );
-					$all_data[$key]['contractpartnername']=$this->coreContractPartners->get_name( $all_data[$key]["contractpartnerid"] );
+					$all_data[$key]['capitalsourcecomment']=$this->coreCapitalSources->get_comment( $all_data[$key]['capitalsourceid'] );
+					$all_data[$key]['contractpartnername']=$this->coreContractPartners->get_name( $all_data[$key]['contractpartnerid'] );
 				}
 						
 				$capitalsource_values=$this->coreCapitalSources->get_all_comments();
@@ -81,7 +81,7 @@ class moduleMoneyFlows extends module {
 				break;
 		}
 		$this->parse_header();
-		return $this->template->fetch("./display_add_moneyflow.tpl");
+		return $this->template->fetch( './display_add_moneyflow.tpl' );
 	}
 		
 

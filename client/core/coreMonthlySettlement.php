@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMonthlySettlement.php,v 1.3 2005/03/05 15:34:23 olivleh1 Exp $
+	$Id: coreMonthlySettlement.php,v 1.4 2005/03/05 22:54:20 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -17,7 +17,7 @@ class coreMonthlySettlement extends core {
 	}
 
 	function get_all_years() {
-		return $this->select_cols( "SELECT DISTINCT year FROM monthlysettlements ORDER BY year ASC" );
+		return $this->select_cols( 'SELECT DISTINCT year FROM monthlysettlements ORDER BY year ASC' );
 	}
 
 	function get_all_months( $year ) {

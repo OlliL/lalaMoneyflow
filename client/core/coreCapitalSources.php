@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreCapitalSources.php,v 1.3 2005/03/05 00:14:06 olivleh1 Exp $
+	$Id: coreCapitalSources.php,v 1.4 2005/03/05 22:54:20 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -15,7 +15,7 @@ class coreCapitalSources extends core {
 	}
 	
 	function get_all_data() {
-		return $this->select_rows( "SELECT * FROM capitalsources ORDER BY id" );
+		return $this->select_rows( 'SELECT * FROM capitalsources ORDER BY id' );
 	}
 
 	function get_id_data( $id ) {
@@ -23,7 +23,7 @@ class coreCapitalSources extends core {
 	}
 
 	function get_all_index_letters() {
-		return $this->select_cols( "SELECT DISTINCT UPPER(SUBSTR(comment,1,1)) letters FROM capitalsources ORDER BY letters" );
+		return $this->select_cols( 'SELECT DISTINCT UPPER(SUBSTR(comment,1,1)) letters FROM capitalsources ORDER BY letters' );
 	}
 
 	function get_all_matched_data( $letter ) {
@@ -31,7 +31,7 @@ class coreCapitalSources extends core {
 	}
 
 	function get_all_ids() {
-		return $this->select_cols( "SELECT id FROM capitalsources ORDER BY id " );
+		return $this->select_cols( 'SELECT id FROM capitalsources ORDER BY id' );
 	}
 
 	function get_valid_ids( $monthfrom, $yearfrom, $monthtil, $yeartil ) {
@@ -39,7 +39,7 @@ class coreCapitalSources extends core {
 	}
 
 	function get_all_comments() {
-		return $this->select_rows( "SELECT id,comment FROM capitalsources ORDER BY id" );
+		return $this->select_rows( 'SELECT id,comment FROM capitalsources ORDER BY id' );
 	}
 
 	function get_valid_comments( $monthfrom, $yearfrom, $monthtil, $yeartil ) {
@@ -47,11 +47,11 @@ class coreCapitalSources extends core {
 	}
 
 	function get_enum_type() {
-		return $this->real_get_enum_values( "capitalsources", "type" );
+		return $this->real_get_enum_values( 'capitalsources', 'type' );
 	}
 	
 	function get_enum_state() {
-		return $this->real_get_enum_values( "capitalsources", "state" );
+		return $this->real_get_enum_values( 'capitalsources', 'state' );
 	}
 
 	function get_comment( $id ) {

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: module.php,v 1.4 2005/03/05 16:48:47 olivleh1 Exp $
+	$Id: module.php,v 1.5 2005/03/05 22:54:20 olivleh1 Exp $
 */
 
 require_once 'Smarty.class.php';
@@ -9,7 +9,7 @@ require_once 'Smarty.class.php';
 class module {
 	function module() {
 		$this->template = new Smarty;
-		$this->index_php="index.php";
+		$this->index_php='index.php';
 		$this->template->register_modifier( 'number_format', 'my_number_format' );
 		$this->template->assign( 'ENV_INDEX_PHP', $this->index_php );
 		if ( $_POST['sr'] == 1 || $_GET['sr'] == 1 ) {

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: core.php,v 1.3 2005/03/05 12:27:27 olivleh1 Exp $
+	$Id: core.php,v 1.4 2005/03/05 22:54:20 olivleh1 Exp $
 */
 
 require_once 'DB.php';
@@ -94,6 +94,6 @@ class core {
 	
 	function add_error( $error ) {
 		global $ERRORS;
-		$ERRORS[]="$error";
+		$ERRORS[]=$error;
 	}
 }

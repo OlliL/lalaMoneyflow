@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMoneyFlows.php,v 1.4 2005/03/05 12:24:50 olivleh1 Exp $
+	$Id: coreMoneyFlows.php,v 1.5 2005/03/05 22:54:20 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -16,7 +16,7 @@ class coreMoneyFlows extends core {
 		if( $id>0 )
 			return $this->select_row( "SELECT * FROM moneyflows WHERE id=$id" );
 		else
-			return $this->select_rows( "SELECT * FROM moneyflows ORDER BY id" );
+			return $this->select_rows( 'SELECT * FROM moneyflows ORDER BY id' );
 
 			
 	}
@@ -51,7 +51,7 @@ class coreMoneyFlows extends core {
 	}
 
 	function get_all_years() {
-		return $this->select_cols( "SELECT DISTINCT YEAR(bookingdate) year FROM moneyflows ORDER BY year ASC" );
+		return $this->select_cols( 'SELECT DISTINCT YEAR(bookingdate) year FROM moneyflows ORDER BY year ASC' );
 	}
 
 	function get_all_months( $year ) {

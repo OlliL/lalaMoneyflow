@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreContractPartners.php,v 1.2 2005/03/05 00:10:40 olivleh1 Exp $
+	$Id: coreContractPartners.php,v 1.3 2005/03/05 22:54:20 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -15,7 +15,7 @@ class coreContractPartners extends core {
 	}
 	
 	function get_all_data() {
-		return $this->select_rows( "SELECT * FROM contractpartners ORDER BY name" );
+		return $this->select_rows( 'SELECT * FROM contractpartners ORDER BY name' );
 	}
 
 	function get_id_data( $id ) {
@@ -23,11 +23,11 @@ class coreContractPartners extends core {
 	}
 
 	function get_all_index_letters() {
-		return $this->select_cols( "SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters FROM contractpartners ORDER BY letters" );
+		return $this->select_cols( 'SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters FROM contractpartners ORDER BY letters' );
 	}
 
 	function get_ids_index_letters( $ids ) {
-		$idstring=implode( $ids, "," );
+		$idstring=implode( $ids, ',' );
 		return $this->select_cols( "SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters FROM contractpartners WHERE id IN ($idstring) ORDER BY letters" );
 	}
 
@@ -40,7 +40,7 @@ class coreContractPartners extends core {
 	}
 
 	function get_all_names() {
-		return $this->select_rows( "SELECT id,name FROM contractpartners ORDER BY name" );
+		return $this->select_rows( 'SELECT id,name FROM contractpartners ORDER BY name' );
 	}
 
 	function get_name( $id ) {

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: corePreDefMoneyFlows.php,v 1.2 2005/03/05 00:11:50 olivleh1 Exp $
+	$Id: corePreDefMoneyFlows.php,v 1.3 2005/03/05 22:54:20 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -15,7 +15,7 @@ class corePreDefMoneyFlows extends core {
 	}
 	
 	function get_all_data() {
-		return $this->select_rows( "SELECT * FROM predefmoneyflows ORDER BY id" );
+		return $this->select_rows( 'SELECT * FROM predefmoneyflows ORDER BY id' );
 	}
 
 	function get_id_data( $id ) {
@@ -23,13 +23,13 @@ class corePreDefMoneyFlows extends core {
 	}
 
 	function get_all_index_letters() {
-		$temp=$this->select_cols( "SELECT DISTINCT contractpartnerid FROM predefmoneyflows" );
+		$temp=$this->select_cols( 'SELECT DISTINCT contractpartnerid FROM predefmoneyflows' );
 		return $this->coreContractPartners->get_ids_index_letters( $temp );
 	}
 
 	function get_all_matched_data( $letter ) {
 		$ids=$this->coreContractPartners->get_ids_matched_data( $letter );
-		$idstring=implode( $ids, "," );
+		$idstring=implode( $ids, ',' );
 		return $this->select_rows( "SELECT * FROM predefmoneyflows  WHERE contractpartnerid IN ($idstring) ORDER BY comment" );
 	}
 
