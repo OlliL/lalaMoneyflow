@@ -83,6 +83,7 @@
 					<th>month</th>
 					<th>year</th>
 				</tr>
+				{if !$FIRSTAMOUNT}{assign var="FIRSTAMOUNT" value="0"}{/if}
 				{if $MONTHLYSETTLEMENT_EXISTS == true}
 				<tr>
 					<th align="right">fixed turnover</th>
