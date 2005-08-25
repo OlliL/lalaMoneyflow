@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreCapitalSources.php,v 1.9 2005/03/09 21:05:10 olivleh1 Exp $
+	$Id: coreCapitalSources.php,v 1.10 2005/08/25 05:42:10 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -42,7 +42,7 @@ class coreCapitalSources extends core {
 	}
 
 	function get_valid_comments( $validfrom, $validtil ) {
-		return $this->select_rows( "SELECT id,comment FROM capitalsources WHERE validfrom <= '$validfrom' and validtil >= '$validytil' ORDER BY id" );
+		return $this->select_rows( "SELECT id,comment FROM capitalsources WHERE validfrom <= '$validfrom' and validtil >= '$validtil' ORDER BY id" );
 	}
 
 	function get_enum_type() {
