@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMoneyFlows.php,v 1.9 2005/03/09 20:34:22 olivleh1 Exp $
+	$Id: coreMoneyFlows.php,v 1.10 2005/10/08 13:12:52 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -27,11 +27,29 @@ class coreMoneyFlows extends core {
 	}
 
 	function get_all_monthly_data( $month, $year ) {
-		return $this->select_rows( "SELECT * FROM moneyflows WHERE bookingdate >= '$year-$month-01' AND bookingdate < DATE_ADD('$year-$month-01', INTERVAL 1 MONTH) ORDER BY bookingdate,invoicedate" );
+		return $this->select_rows( "SELECT * FROM moneyflows WHERE bookingdate BETWEEN '$year-$month-01' AND DATE_ADD('$year-$month-01', INTERVAL 1 MONTH) ORDER BY bookingdate,invoicedate" );
 	}
 
-	function get_all_monthly_joined_data( $month, $year ) {
-		return $this->select_rows( "SELECT a.id,a.bookingdate,a.invoicedate,a.amount,a.comment,b.name contractpartnername,c.comment capitalsourcecomment FROM moneyflows a, contractpartners b, capitalsources c WHERE a.bookingdate >= '$year-$month-01' AND a.bookingdate < DATE_ADD('$year-$month-01', INTERVAL 1 MONTH) AND a.contractpartnerid=b.id AND a.capitalsourceid=c.id ORDER BY bookingdate,invoicedate" );
+	function get_all_monthly_joined_data( $month, $year, $sortby, $order ) {
+		$sortbyadd=' bookingdate,invoicedate';
+		switch( $sortby ) {
+			case 'capitalsources_comment':	$sortby='capitalsourcecomment '.$order.',';
+							break;
+			case 'moneyflows_bookingdate':	$sortby='a.bookingdate '.$order.',';
+							$sortbyadd=' invoicedate';
+							break;
+			case 'moneyflows_invoicedate':	$sortby='a.invoicedate '.$order.',';
+							$sortbyadd=' bookingdate';
+							break;
+			case 'moneyflows_amount':	$sortby='a.amount '.$order.',';
+							break;
+			case 'moneyflows_comment':	$sortby='a.comment '.$order.',';
+							break;
+			case 'contractpartners_name':	$sortby='contractpartnername '.$order.',';
+							break;
+			default:			$sortby='';
+		}
+		return $this->select_rows( "SELECT a.id,a.bookingdate,a.invoicedate,a.amount,a.comment,b.name contractpartnername,c.comment capitalsourcecomment FROM moneyflows a, contractpartners b, capitalsources c WHERE a.bookingdate >= '$year-$month-01' AND a.bookingdate < DATE_ADD('$year-$month-01', INTERVAL 1 MONTH) AND a.contractpartnerid=b.id AND a.capitalsourceid=c.id ORDER BY $sortby $sortbyadd" );
 	}
 
 	function capitalsource_in_use( $id ) {

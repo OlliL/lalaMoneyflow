@@ -2,12 +2,12 @@
 			<h1>money flow for {$MONTH.name} {$YEAR}</h1>
 			<table border=0 width=830 align="center" cellpadding=2>
 				<tr>
-					<th width="9%">bookingdate</th>
-					<th width="9%">invoicedate</th>
-					<th width="10%">amount</th>
-					<th width="16%">contract partner</th>
-					<th >comment</th>
-					<th width="22%">capital source</th>
+					<th width="9%"><a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$MONTH.nummeric}&reports_year={$YEAR}&reports_sortby=moneyflows_bookingdate&reports_order={$ORDER}">bookingdate</a></th>
+					<th width="9%"><a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$MONTH.nummeric}&reports_year={$YEAR}&reports_sortby=moneyflows_invoicedate&reports_order={$ORDER}">invoicedate</a></th>
+					<th width="10%"><a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$MONTH.nummeric}&reports_year={$YEAR}&reports_sortby=moneyflows_amount&reports_order={$ORDER}">amount</a></th>
+					<th width="16%"><a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$MONTH.nummeric}&reports_year={$YEAR}&reports_sortby=contractpartners_name&reports_order={$ORDER}">contract partner</a></th>
+					<th ><a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$MONTH.nummeric}&reports_year={$YEAR}&reports_sortby=moneyflows_comment&reports_order={$ORDER}">comment</a></th>
+					<th width="22%"><a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$MONTH.nummeric}&reports_year={$YEAR}&reports_sortby=capitalsources_comment&reports_order={$ORDER}">capital source</a></th>
 					<th width="2%">&nbsp</th>
 					<th width="3%">&nbsp</th>
 				</tr>

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: index.php,v 1.11 2005/03/06 15:40:14 olivleh1 Exp $
+	$Id: index.php,v 1.12 2005/10/08 13:12:52 olivleh1 Exp $
 */
 
 $action=$_POST['action']?$_POST['action']:$_GET['action'];
@@ -122,7 +122,9 @@ switch( $action ) {
 
 	case 'list_reports':		$month=		$_GET['reports_month'];
 					$year=		$_GET['reports_year'];
-					$display=$moduleReports->display_list_reports( $month, $year );
+					$sortby=	$_GET['reports_sortby'];
+					$order=		$_GET['reports_order'];
+					$display=$moduleReports->display_list_reports( $month, $year, $sortby, $order );
 					break;
 
 	default:			$display=$moduleFrontPage->display_main();

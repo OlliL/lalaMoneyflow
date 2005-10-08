@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleReports.php,v 1.11 2005/03/09 20:52:26 olivleh1 Exp $
+	$Id: moduleReports.php,v 1.12 2005/10/08 13:12:52 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -20,7 +20,7 @@ class moduleReports extends module {
 		$this->coreMonthlySettlement=new coreMonthlySettlement();
 	}
 
-	function display_list_reports( $month, $year ) {
+	function display_list_reports( $month, $year, $sortby, $order ) {
 
 		if( !$year )
 			$year=date( 'Y' );
@@ -37,24 +37,33 @@ class moduleReports extends module {
 		}
 
 		if( $month > 0 && $year > 0 ) {
-			$report=$this->generate_report( $month, $year );
+			$report=$this->generate_report( $month, $year, $sortby, $order );
 			$this->template->assign( 'REPORT', $report );
 		}
 
-		$this->template->assign( 'ALL_YEARS',     $years  );
-		$this->template->assign( 'ALL_MONTHS',    $months );
-		$this->template->assign( 'SELECTED_YEAR', $year   );
+		$this->template->assign( 'ALL_YEARS',      $years  );
+		$this->template->assign( 'ALL_MONTHS',     $months );
+		$this->template->assign( 'SELECTED_YEAR',  $year   );
 
 		$this->parse_header();
 		return $this->template->fetch( './display_list_reports.tpl' );
 	}
 
-	function generate_report( $month, $year ) {
+	function generate_report( $month, $year, $sortby, $order ) {
 
-		$all_moneyflow_data=$this->coreMoneyFlows->get_all_monthly_joined_data( $month, $year );
+		switch( $order ) {
+			case 'DESC':	$neworder='ASC';
+					break;
+			case 'ASC':	$neworder='DESC';
+					break;
+			default:	$order='';
+					$neworder='ASC';
+		}
+
+		$all_moneyflow_data=$this->coreMoneyFlows->get_all_monthly_joined_data( $month, $year, $sortby, $order );
 		$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
-		$all_capitalsources_ids=$this->coreCapitalSources->get_valid_ids( "$year-$month-1", "$year-$month-1" );
+		$all_capitalsources_ids=$this->coreCapitalSources->get_valid_ids( "$year-$month-1", "$year-$month-1", $sortby, $order );
 
 		$i=0;
 		foreach( $all_capitalsources_ids as $capitalsources_id ) {
@@ -85,6 +94,8 @@ class moduleReports extends module {
 
 		$this->template->assign( 'MONTH',                    $month                    );
 		$this->template->assign( 'YEAR' ,                    $year                     );
+		$this->template->assign( 'SORTBY',                   $sortby                   );
+		$this->template->assign( 'ORDER',                    $neworder                 );
 		$this->template->assign( 'SUMMARY_DATA',             $summary_data             );
 		$this->template->assign( 'FIRSTAMOUNT',              $firstamount              );
 		$this->template->assign( 'LASTAMOUNT',               $lastamount               );
