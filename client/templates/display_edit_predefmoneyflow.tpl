@@ -27,7 +27,7 @@
 						<option {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].id == $ALL_DATA.contractpartnerid}selected{/if} value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].id}"> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}
 					{/section}
 					</select></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]" value="{$ALL_DATA.comment}" size="50"/></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]" value="{$ALL_DATA.comment}" size="48"/></td>
 				</tr>
 			</table>
 			<input type="submit" name="realaction" value="save">

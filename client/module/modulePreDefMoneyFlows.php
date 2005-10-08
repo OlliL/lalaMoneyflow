@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: modulePreDefMoneyFlows.php,v 1.5 2005/03/06 15:48:43 olivleh1 Exp $
+	$Id: modulePreDefMoneyFlows.php,v 1.6 2005/10/08 18:02:17 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -60,8 +60,11 @@ class modulePreDefMoneyFlows extends module {
 				if( $id > 0 ) {
 					$all_data=$this->corePreDefMoneyFlows->get_id_data( $id );
 					$this->template->assign( 'ALL_DATA', $all_data );
+					$capitalsource_values=$this->coreCapitalSources->get_all_comments();
+				} else {
+					$capitalsource_values=$this->coreCapitalSources->get_valid_comments( date( 'Y-m-d' ), date( 'Y-m-d' ) );
 				}
-				$capitalsource_values=$this->coreCapitalSources->get_all_comments();
+				
 				$contractpartner_values=$this->coreContractPartners->get_all_names();
 
 				$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
