@@ -16,7 +16,7 @@
 					<th>comment</th>
 				</tr>
 				<tr>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[amount]" value="{$ALL_DATA.amount|string_format:"%.2f"}" align="right" size="8"/> EUR</td>
+					<td class="contrastbgcolor"><nobr><input class="contrastbgcolor" type="text" name="all_data[amount]" value="{$ALL_DATA.amount|string_format:"%.2f"}" align="right" size="8"/> EUR</nobr></td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[capitalsourceid]" size=1>
 					{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
 						<option {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].id == $ALL_DATA.capitalsourceid}selected{/if} value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].id}"> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}
