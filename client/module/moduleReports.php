@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleReports.php,v 1.12 2005/10/08 13:12:52 olivleh1 Exp $
+	$Id: moduleReports.php,v 1.13 2005/11/09 18:04:59 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -66,6 +66,9 @@ class moduleReports extends module {
 		$all_capitalsources_ids=$this->coreCapitalSources->get_valid_ids( "$year-$month-1", "$year-$month-1", $sortby, $order );
 
 		$i=0;
+		$lastamount=0;
+		$fixamount=0;
+		$calcamount=0;
 		foreach( $all_capitalsources_ids as $capitalsources_id ) {
 			$summary_data[$i]['id']=$capitalsources_id;
 			$summary_data[$i]['comment']=$this->coreCapitalSources->get_comment( $capitalsources_id );

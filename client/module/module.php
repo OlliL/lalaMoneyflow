@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: module.php,v 1.8 2005/03/06 15:48:43 olivleh1 Exp $
+	$Id: module.php,v 1.9 2005/11/09 18:04:59 olivleh1 Exp $
 */
 
 require_once 'Smarty.class.php';
@@ -12,10 +12,25 @@ class module {
 		$this->index_php='index.php';
 		$this->template->register_modifier( 'number_format', 'my_number_format' );
 		$this->template->assign( 'ENV_INDEX_PHP', $this->index_php );
-		if ( $_POST['sr'] == 1 || $_GET['sr'] == 1 ) {
-			$this->template->assign( 'ENV_REFERER', $_SERVER['HTTP_REFERER'] );
+		
+		if( !empty( $_SERVER['HTTP_REFERER'] ) ) {
+			$http_referer = $_SERVER['HTTP_REFERER'];
 		} else {
-			$this->template->assign( 'ENV_REFERER', $_POST['REFERER']?$_POST['REFERER']:$_GET['REFERER'] );
+			$http_referer = '';
+		}
+
+		if( !empty( $_POST['REFERER'] ) ) {
+			$referer = $_POST['REFERER'];
+		} elseif( !empty( $_GET['REFERER'] ) ) {
+			$referer = $_GET['REFERER'];
+		} else {
+			$referer ='';
+		}
+		
+		if ( ( !empty( $_POST['sr'] ) && $_POST['sr'] == 1 ) || ( !empty( $_GET['sr'] ) && $_GET['sr'] == 1 ) ) {
+			$this->template->assign( 'ENV_REFERER', $http_referer );
+		} else {
+			$this->template->assign( 'ENV_REFERER', $referer );
 		}
 	}
 

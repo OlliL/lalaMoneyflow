@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleContractPartners.php,v 1.4 2005/03/06 15:48:43 olivleh1 Exp $
+	$Id: moduleContractPartners.php,v 1.5 2005/11/09 18:04:59 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -22,6 +22,8 @@ class moduleContractPartners extends module {
 			$all_data=$this->coreContractPartners->get_all_data();
 		} elseif( !empty( $letter ) ) {
 			$all_data=$this->coreContractPartners->get_all_matched_data( $letter );
+		} else {
+			$all_data=array();
 		}
 
 		$this->template->assign( 'ALL_DATA',          $all_data          );

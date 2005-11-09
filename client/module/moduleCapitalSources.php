@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleCapitalSources.php,v 1.5 2005/03/09 20:20:51 olivleh1 Exp $
+	$Id: moduleCapitalSources.php,v 1.6 2005/11/09 18:04:59 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -22,6 +22,8 @@ class moduleCapitalSources extends module {
 			$all_data=$this->coreCapitalSources->get_all_data();
 		} elseif( !empty( $letter ) ) {
 			$all_data=$this->coreCapitalSources->get_all_matched_data( $letter );
+		} else {
+			$all_data=array();
 		}
 
 		$this->template->assign( 'ALL_DATA',          $all_data          );
