@@ -23,11 +23,11 @@
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&id={$ALL_MONEYFLOW_DATA[DATA].id}&sr=1','_blank','width=1024,height=80')">delete</a></td>
 					</tr>
 				{/section}
-				{math equation="y-x" x=$LASTAMOUNT y=$CALCAMOUNT assign=CALCULATEDTURNOVER}
+				{math equation="y-x" x=$LASTAMOUNT y=$MON_CALCAMOUNT assign=MON_CALCULATEDTURNOVER}
 				<tr>
 					<td></td>
 					<td align="right">&sum;</td>
-					<td align="right" class="contrastbgcolor"><font {if $CALCULATEDTURNOVER < 0}color="red"{/if}><u>{$CALCULATEDTURNOVER|number_format} EUR</u></font></td>
+					<td align="right" class="contrastbgcolor"><font {if $MON_CALCULATEDTURNOVER < 0}color="red"{/if}><u>{$MON_CALCULATEDTURNOVER|number_format} EUR</u></font></td>
 			</table>
 			<br />
 			<hr>
@@ -69,10 +69,10 @@
 						{if $MONTHLYSETTLEMENT_EXISTS == true}
 						<td align="right" class="contrastbgcolor"><font {if $FIXAMOUNT < 0}color="red"{/if}><u>{$FIXAMOUNT|number_format} EUR</u></font></td>
 						{/if}
-						<td align="right" class="contrastbgcolor"><font {if $CALCAMOUNT < 0}color="red"{/if}><u>{$CALCAMOUNT|number_format} EUR</u></font></td>
+						<td align="right" class="contrastbgcolor"><font {if $MON_CALCAMOUNT < 0}color="red"{/if}><u>{$MON_CALCAMOUNT|number_format} EUR</u></font></td>
 						{if $MONTHLYSETTLEMENT_EXISTS == true}
-						{math equation="x - y" x=$FIXAMOUNT y=$CALCAMOUNT assign=DIFFERENCE}
-						<td align="right" class="contrastbgcolor"><font {if $DIFFERENCE < 0}color="red"{/if}><u>{$DIFFERENCE|number_format} EUR</u></font></td>
+						{math equation="x - y" x=$FIXAMOUNT y=$MON_CALCAMOUNT assign=MON_DIFFERENCE}
+						<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{/if}><u>{$MON_DIFFERENCE|number_format} EUR</u></font></td>
 						{/if}
 					</tr>
 			</table>
@@ -87,22 +87,23 @@
 				{if $MONTHLYSETTLEMENT_EXISTS == true}
 				<tr>
 					<th align="right">fixed turnover</th>
-					{math equation="y-x" x=$LASTAMOUNT y=$FIXAMOUNT assign=FIXEDTURNOVER}
-					<td align="right" class="contrastbgcolor"><font {if $FIXEDTURNOVER < 0}color="red"{/if}>{$FIXEDTURNOVER|number_format} EUR</font></td>
-					{math equation="y-x" x=$FIRSTAMOUNT y=$FIXAMOUNT assign=FIRSTTURNOVER}
-					<td align="right" class="contrastbgcolor"><font {if $FIRSTTURNOVER < 0}color="red"{/if}>{$FIRSTTURNOVER|number_format} EUR</font></td>
+					{math equation="y-x" x=$LASTAMOUNT y=$FIXAMOUNT assign=MON_FIXEDTURNOVER}
+					<td align="right" class="contrastbgcolor"><font {if $MON_FIXEDTURNOVER < 0}color="red"{/if}>{$MON_FIXEDTURNOVER|number_format} EUR</font></td>
+					{math equation="y-x" x=$FIRSTAMOUNT y=$FIXAMOUNT assign=YEA_FIXEDTURNOVER}
+					<td align="right" class="contrastbgcolor"><font {if $YEA_FIXEDTURNOVER < 0}color="red"{/if}>{$YEA_FIXEDTURNOVER|number_format} EUR</font></td>
 				</tr>
 				{/if}
 				<tr>
 					<th align="right">calculated turnover</th>
-					<td align="right" class="contrastbgcolor"><font {if $CALCULATEDTURNOVER < 0}color="red"{/if}>{$CALCULATEDTURNOVER|number_format} EUR</font></td>
-					{math equation="y-x" x=$FIRSTAMOUNT y=$CALCAMOUNT assign=FIRSTTURNOVER}
-					<td align="right" class="contrastbgcolor"><font {if $FIRSTTURNOVER < 0}color="red"{/if}>{$FIRSTTURNOVER|number_format} EUR</font></td>
+					<td align="right" class="contrastbgcolor"><font {if $MON_CALCULATEDTURNOVER < 0}color="red"{/if}>{$MON_CALCULATEDTURNOVER|number_format} EUR</font></td>
+					<td align="right" class="contrastbgcolor"><font {if $YEA_CALCULATEDTURNOVER < 0}color="red"{/if}>{$YEA_CALCULATEDTURNOVER|number_format} EUR</font></td>
 				</tr>
 				{if $MONTHLYSETTLEMENT_EXISTS == true}
 				<tr>
 					<th align="right">difference</th>
-					<td align="right" class="contrastbgcolor" colspan=2><font {if $DIFFERENCE < 0}color="red"{/if}>{$DIFFERENCE|number_format} EUR</font></td>
+					<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{/if}>{$MON_DIFFERENCE|number_format} EUR</font></td>
+					{math equation="x - y" x=$YEA_FIXEDTURNOVER y=$YEA_CALCULATEDTURNOVER assign=YEA_DIFFERENCE}
+					<td align="right" class="contrastbgcolor"><font {if $YEA_DIFFERENCE < 0}color="red"{/if}>{$YEA_DIFFERENCE|number_format} EUR</font></td>
 				</tr>
 				{/if}
 			</table>

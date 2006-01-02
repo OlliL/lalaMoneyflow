@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMoneyFlows.php,v 1.10 2005/10/08 13:12:52 olivleh1 Exp $
+	$Id: coreMoneyFlows.php,v 1.11 2006/01/02 18:05:26 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -74,7 +74,19 @@ class coreMoneyFlows extends core {
 	}
 
 	function get_monthly_capitalsource_movement( $id, $month, $year ) {
-		$movement=$this->select_col( "SELECT round(sum(amount),2) FROM moneyflows WHERE bookingdate >= '$year-$month-01' AND bookingdate < DATE_ADD('$year-$month-01', INTERVAL 1 MONTH) AND capitalsourceid=$id" );
+		if( empty( $month ) ) {
+			$start = "'".$year."-01-01'";
+			$end   = "'".($year+1)."-01-01'";
+		} else {
+			$start = "'".$year."-".$month."-01'";
+			$end   = "DATE_ADD('$year-$month-01', INTERVAL 1 MONTH)";
+		}
+		
+		if( !empty( $id ) ) {
+			$where = " AND capitalsourceid=$id";
+		}
+
+		$movement=$this->select_col( "SELECT round(sum(amount),2) FROM moneyflows WHERE bookingdate >= $start AND bookingdate < $end".$where );
 		if( empty( $movement ) )
 			$movement=0;
 		return $movement;
