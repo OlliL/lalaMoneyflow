@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMoneyFlows.php,v 1.14 2005/11/09 18:04:59 olivleh1 Exp $
+	$Id: moduleMoneyFlows.php,v 1.15 2006/01/21 09:37:19 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -35,7 +35,15 @@ class moduleMoneyFlows extends module {
 					$all_data=$this->coreMoneyFlows->get_id_data( $id );
 					$this->template->assign( 'ALL_DATA', $all_data );
 				}
-				$capitalsource_values=$this->coreCapitalSources->get_all_comments();
+
+				$capitalsourceid=$this->coreMoneyFlows->get_capitalsourceid( $id );
+
+				if ( $this->coreCapitalSources->id_is_valid( $capitalsourceid, date( 'Y-m-d' ) ) ) {
+					$capitalsource_values=$this->coreCapitalSources->get_valid_comments( date( 'Y-m-d' ), date( 'Y-m-d' ) );
+				} else {
+					$capitalsource_values=$this->coreCapitalSources->get_all_comments();
+				}
+
 				$contractpartner_values=$this->coreContractPartners->get_all_names();
 
 				$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMoneyFlows.php,v 1.11 2006/01/02 18:05:26 olivleh1 Exp $
+	$Id: coreMoneyFlows.php,v 1.12 2006/01/21 09:37:19 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -105,6 +105,9 @@ class coreMoneyFlows extends core {
 		return $this->delete_row( "DELETE FROM moneyflows WHERE id=$id LIMIT 1" );
 	}
 
+	function get_capitalsourceid( $id ) {
+		return $this->select_col( "SELECT capitalsourceid FROM moneyflows WHERE id=$id" );
+	}
 
 	function update_moneyflow( $id, $bookingdate, $invoicedate, $amount, $capitalsourceid, $contractpartnerid, $comment ) {
 		$coreCapitalSources = new coreCapitalSources();

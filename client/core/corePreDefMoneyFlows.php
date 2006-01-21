@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: corePreDefMoneyFlows.php,v 1.6 2005/03/09 20:52:26 olivleh1 Exp $
+	$Id: corePreDefMoneyFlows.php,v 1.7 2006/01/21 09:37:19 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -23,6 +23,10 @@ class corePreDefMoneyFlows extends core {
 
 	function get_id_data( $id ) {
 		return $this->select_row( "SELECT * FROM predefmoneyflows WHERE id=$id" );
+	}
+
+	function get_capitalsourceid( $id ) {
+		return $this->select_col( "SELECT capitalsourceid FROM predefmoneyflows WHERE id=$id" );
 	}
 
 	function get_all_index_letters() {
