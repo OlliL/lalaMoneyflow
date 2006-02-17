@@ -30,7 +30,7 @@
 					<td align="right" class="contrastbgcolor"><font {if $MON_CALCULATEDTURNOVER < 0}color="red"{else}color="black"{/if}><u>{$MON_CALCULATEDTURNOVER|number_format} EUR</u></font></td>
 			</table>
 			<br />
-			<hr>
+			<hr align="center" width="830"/>
 			<h1>Summary</h1>
 			<table border=0 cellpadding=2>
 				<tr>
