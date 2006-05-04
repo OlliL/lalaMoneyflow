@@ -16,6 +16,7 @@
 					<a href="{$ENV_INDEX_PHP}?action=list_monthlysettlements">list monthly settlements</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_reports">list reports</a><br />
 					<br />
+					<a href="{$ENV_INDEX_PHP}?action=search">search moneyflows</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=add_moneyflow">add moneyflow</a><br />
 					<br />
 					<b>shortcuts</b><br />

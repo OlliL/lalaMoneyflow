@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMoneyFlows.php,v 1.13 2006/05/04 18:50:21 olivleh1 Exp $
+	$Id: coreMoneyFlows.php,v 1.14 2006/05/04 19:45:26 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -127,5 +127,30 @@ class coreMoneyFlows extends core {
 
 	function add_moneyflow( $bookingdate, $invoicedate, $amount, $capitalsourceid, $contractpartnerid, $comment ) {
 		return $this->insert_row( "INSERT INTO moneyflows (bookingdate,invoicedate,amount,capitalsourceid,contractpartnerid,comment) VALUES (STR_TO_DATE('$bookingdate',GET_FORMAT(DATE,'ISO')),STR_TO_DATE('$invoicedate',GET_FORMAT(DATE,'ISO')),'$amount','$capitalsourceid','$contractpartnerid','$comment')" );
+	}
+
+	function search_moneyflows( $params ) {
+		$SEARCHCOL="comment";
+		if( empty( $params['startdate'] ) )
+			$params['startdate'] = '0000-00-00';
+		if( empty( $params['enddate'] ) )
+			$params['enddate'] = '9999-12-31';
+
+		if( $params["equal"] == 1 ) {
+			$LIKE="=";
+		} else {
+			if( $params["regexp"] == 1 ) {
+				$LIKE="REGEXP";
+				$params["pattern"] = str_replace("\]","\\\]",$params["pattern"]);
+				$params["pattern"] = str_replace("\[","\\\[",$params["pattern"]);
+			}
+			else
+				$LIKE="LIKE";
+			if( $params["casesensitive"] == 1 )
+				$LIKE.=" BINARY";
+		}
+		if( $params["minus"] == 1 ) 
+			$WHEREADD = 'and amount < 0';
+		return $this->select_rows( "SELECT month(bookingdate) month, year(bookingdate) year, round(sum(amount),2) amount,comment FROM moneyflows WHERE $SEARCHCOL $LIKE '".$params["pattern"]."' and bookingdate between STR_TO_DATE('".$params['startdate']."',GET_FORMAT(DATE,'ISO')) and STR_TO_DATE('".$params['enddate']."',GET_FORMAT(DATE,'ISO')) $WHEREADD group by year(bookingdate),month(bookingdate) order by year,month" );
 	}
 }

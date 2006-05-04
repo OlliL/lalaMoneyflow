@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: index.php,v 1.12 2005/10/08 13:12:52 olivleh1 Exp $
+	$Id: index.php,v 1.13 2006/05/04 19:45:26 olivleh1 Exp $
 */
 
 $action=$_POST['action']?$_POST['action']:$_GET['action'];
@@ -18,6 +18,7 @@ require_once 'module/moduleMoneyFlows.php';
 require_once 'module/moduleMonthlySettlement.php';
 require_once 'module/modulePreDefMoneyFlows.php';
 require_once 'module/moduleReports.php';
+require_once 'module/moduleSearch.php';
 require_once 'util/utilTimer.php';
 #$timer = new utilTimer();
 #$timer->mStart();
@@ -29,6 +30,7 @@ $moduleMoneyFlows		= new moduleMoneyFlows();
 $moduleMonthlySettlement	= new moduleMonthlySettlement();
 $modulePreDefMoneyFlows		= new modulePreDefMoneyFlows();
 $moduleReports			= new moduleReports();
+$moduleSearch			= new moduleSearch();
 
 switch( $action ) {
 	/* capitalsources */
@@ -125,6 +127,20 @@ switch( $action ) {
 					$sortby=	$_GET['reports_sortby'];
 					$order=		$_GET['reports_order'];
 					$display=$moduleReports->display_list_reports( $month, $year, $sortby, $order );
+					break;
+
+	/* search */
+
+	case 'search':			$display=$moduleSearch->display_search();
+					break;
+	case 'do_search':		$searchstring=	$_POST['searchstring'];
+					$startdate=	$_POST['startdate'];
+					$enddate=	$_POST['enddate'];
+					$equal=		$_POST['equal'];
+					$casesensitive=	$_POST['casesensitive'];
+					$regexp=	$_POST['regexp'];
+					$minus=		$_POST['minus'];
+					$display=$moduleSearch->do_search( $searchstring, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus );
 					break;
 
 	default:			$display=$moduleFrontPage->display_main();
