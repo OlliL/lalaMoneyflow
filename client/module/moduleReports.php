@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleReports.php,v 1.14 2006/01/02 18:05:26 olivleh1 Exp $
+	$Id: moduleReports.php,v 1.15 2006/05/04 18:50:21 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -86,7 +86,7 @@ class moduleReports extends module {
 			$i++;
 		}
 
-		$yea_calculatedturnover+=round( $summary_data[$i]['lastamount']+$this->coreMoneyFlows->get_monthly_capitalsource_movement( '', '', $year ), 2 );
+		$yea_calculatedturnover+=round( $summary_data[$i]['lastamount']+$this->coreMoneyFlows->get_year_capitalsource_movement( $month, $year ), 2 );
 
 		$monthlysettlement_exists=$this->coreMonthlySettlement->monthlysettlement_exists( $month, $year );
 

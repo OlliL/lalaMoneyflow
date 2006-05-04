@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMoneyFlows.php,v 1.12 2006/01/21 09:37:19 olivleh1 Exp $
+	$Id: coreMoneyFlows.php,v 1.13 2006/05/04 18:50:21 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -74,19 +74,25 @@ class coreMoneyFlows extends core {
 	}
 
 	function get_monthly_capitalsource_movement( $id, $month, $year ) {
-		if( empty( $month ) ) {
-			$start = "'".$year."-01-01'";
-			$end   = "'".($year+1)."-01-01'";
-		} else {
-			$start = "'".$year."-".$month."-01'";
-			$end   = "DATE_ADD('$year-$month-01', INTERVAL 1 MONTH)";
-		}
-		
-		if( !empty( $id ) ) {
-			$where = " AND capitalsourceid=$id";
-		}
+		$start = "'".$year."-".$month."-01'";
+		$end   = "DATE_ADD('$year-$month-01', INTERVAL 1 MONTH)";
+		$where = " AND capitalsourceid=$id";
 
 		$movement=$this->select_col( "SELECT round(sum(amount),2) FROM moneyflows WHERE bookingdate >= $start AND bookingdate < $end".$where );
+		if( empty( $movement ) )
+			$movement=0;
+		return $movement;
+	}
+
+	function get_year_capitalsource_movement( $month, $year ) {
+		$start = "'".$year."-01-01'";
+		if( empty( $month ) ) {
+			$end   = "'".($year+1)."-01-01'";
+		} else {
+			$end   = "DATE_ADD('$year-$month-01', INTERVAL 1 MONTH)";
+		}
+
+		$movement=$this->select_col( "SELECT round(sum(amount),2) FROM moneyflows WHERE bookingdate >= $start AND bookingdate < $end" );
 		if( empty( $movement ) )
 			$movement=0;
 		return $movement;
