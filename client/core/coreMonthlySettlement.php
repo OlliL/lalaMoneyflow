@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMonthlySettlement.php,v 1.8 2005/03/06 15:48:43 olivleh1 Exp $
+	$Id: coreMonthlySettlement.php,v 1.9 2006/05/08 12:25:57 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -48,6 +48,6 @@ class coreMonthlySettlement extends core {
 
 
 	function set_amount( $sourceid, $month, $year, $amount ) {
-		return $this->insert_row( "INSERT INTO monthlysettlements (capitalsourceid,month,year,amount) VALUES ($sourceid,$month,$year,$amount) ON DUPLICATE KEY UPDATE amount=VALUES(amount)" );
+		return $this->insert_row( "INSERT INTO monthlysettlements (capitalsourceid,month,year,amount) VALUES ($sourceid,$month,$year,".$this->fix_amount( $amount ).") ON DUPLICATE KEY UPDATE amount=VALUES(amount)" );
 	}
 }

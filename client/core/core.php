@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: core.php,v 1.7 2005/03/06 15:48:43 olivleh1 Exp $
+	$Id: core.php,v 1.8 2006/05/08 12:25:57 olivleh1 Exp $
 */
 
 require_once 'DB.php';
@@ -20,6 +20,11 @@ class core {
 #		echo "<pre>$query</pre>";
 		return $this->db->query( $query );
 	}
+
+	function fix_amount( $amount ) {
+		return str_replace( ',', '.', $amount );
+	}
+
 	function select_col( $query ) {
 		$reslink = $this->query( $query );
 		if( DB::isError( $reslink ) )
