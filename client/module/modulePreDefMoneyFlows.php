@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: modulePreDefMoneyFlows.php,v 1.7 2006/01/21 09:37:19 olivleh1 Exp $
+	$Id: modulePreDefMoneyFlows.php,v 1.8 2006/05/08 13:55:53 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -60,16 +60,16 @@ class modulePreDefMoneyFlows extends module {
 				if( $id > 0 ) {
 					$all_data=$this->corePreDefMoneyFlows->get_id_data( $id );
 					$this->template->assign( 'ALL_DATA', $all_data );
-				}
-
-				$capitalsourceid=$this->corePreDefMoneyFlows->get_capitalsourceid( $id );
-
-				if ( $this->coreCapitalSources->id_is_valid( $capitalsourceid, date( 'Y-m-d' ) ) ) {
-					$capitalsource_values=$this->coreCapitalSources->get_valid_comments( date( 'Y-m-d' ), date( 'Y-m-d' ) );
+					$capitalsourceid=$this->corePreDefMoneyFlows->get_capitalsourceid( $id );
+					if ( $this->coreCapitalSources->id_is_valid( $capitalsourceid, date( 'Y-m-d' ) ) ) {
+						$capitalsource_values=$this->coreCapitalSources->get_valid_comments( date( 'Y-m-d' ), date( 'Y-m-d' ) );
+					} else {
+						$capitalsource_values=$this->coreCapitalSources->get_all_comments();
+					}
 				} else {
-					$capitalsource_values=$this->coreCapitalSources->get_all_comments();
-				}
-				
+					$capitalsource_values=$this->coreCapitalSources->get_valid_comments( date( 'Y-m-d' ), date( 'Y-m-d' ) );
+				}				
+
 				$contractpartner_values=$this->coreContractPartners->get_all_names();
 
 				$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
