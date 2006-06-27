@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: index.php,v 1.13 2006/05/04 19:45:26 olivleh1 Exp $
+	$Id: index.php,v 1.14 2006/06/27 16:44:54 olivleh1 Exp $
 */
 
 $action=$_POST['action']?$_POST['action']:$_GET['action'];
@@ -134,13 +134,14 @@ switch( $action ) {
 	case 'search':			$display=$moduleSearch->display_search();
 					break;
 	case 'do_search':		$searchstring=	$_POST['searchstring'];
+					$contractpart=	$_POST['contractpartner'];
 					$startdate=	$_POST['startdate'];
 					$enddate=	$_POST['enddate'];
 					$equal=		$_POST['equal'];
 					$casesensitive=	$_POST['casesensitive'];
 					$regexp=	$_POST['regexp'];
 					$minus=		$_POST['minus'];
-					$display=$moduleSearch->do_search( $searchstring, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus );
+					$display=$moduleSearch->do_search( $searchstring, $contractpart, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus );
 					break;
 
 	default:			$display=$moduleFrontPage->display_main();

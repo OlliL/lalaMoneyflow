@@ -12,6 +12,15 @@
 					<td class="contrastbgcolor">comment</td>
 				</tr>
 				<tr>
+					<th>contract partner</th>
+					<td class="contrastbgcolor"><select class="contrastbgcolor" name="contractpartner" size=1>
+					<option value=""> </option>
+					{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
+						<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].id}"  {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].id == $SEARCHPARAMS.contractpartnerid}selected{/if}> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}
+					{/section}
+					</select></td>
+				</tr>
+				<tr>
 					<th>string to search</th>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="searchstring" value="{$SEARCHPARAMS.pattern}"></td>
 				</tr>

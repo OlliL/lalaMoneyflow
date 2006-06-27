@@ -23,13 +23,13 @@
 						<td class="contrastbgcolor" nowrap><input class="contrastbgcolor" type="text" name="all_data[-1][amount]" value="" size=8 align="right" onchange="this.form.elements[1].checked=true"/> EUR</td>
 						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[-1][contractpartnerid]" size=1>
 						{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
-							<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].id}"> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}
+							<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].id}"> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}</option>
 						{/section}
 						</select></td>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[-1][comment]" value="" size="50"/></td>
 						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[-1][capitalsourceid]" size=1>
 						{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
-							<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].id}"> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}
+							<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].id}"> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}</option>
 						{/section}
 						</select></td>
 					</tr>

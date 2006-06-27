@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMoneyFlows.php,v 1.15 2006/05/08 12:25:57 olivleh1 Exp $
+	$Id: coreMoneyFlows.php,v 1.16 2006/06/27 16:44:54 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -130,27 +130,42 @@ class coreMoneyFlows extends core {
 	}
 
 	function search_moneyflows( $params ) {
-		$SEARCHCOL="comment";
+		$SEARCHCOL       = 'comment';
+		$WHERE_KEYWORD   = 'WHERE';
 		if( empty( $params['startdate'] ) )
 			$params['startdate'] = '0000-00-00';
 		if( empty( $params['enddate'] ) )
 			$params['enddate'] = '9999-12-31';
 
-		if( $params["equal"] == 1 ) {
-			$LIKE="=";
-		} else {
-			if( $params["regexp"] == 1 ) {
-				$LIKE="REGEXP";
-				$params["pattern"] = str_replace("\]","\\\]",$params["pattern"]);
-				$params["pattern"] = str_replace("\[","\\\[",$params["pattern"]);
+
+		if( !empty( $params['pattern'] ) ) {
+			if( $params['equal'] == 1 ) {
+				$LIKE="=";
+			} else {
+				if( $params['regexp'] == 1 ) {
+					$LIKE="REGEXP";
+					$params['pattern'] = str_replace('\]','\\\]',$params['pattern']);
+					$params['pattern'] = str_replace('\[','\\\[',$params['pattern']);
+				}
+				else
+					$LIKE='LIKE';
+				if( $params['casesensitive'] == 1 )
+					$LIKE.=' BINARY';
 			}
-			else
-				$LIKE="LIKE";
-			if( $params["casesensitive"] == 1 )
-				$LIKE.=" BINARY";
+			$WHERE_CONDITION  = $WHERE_KEYWORD.' '.$SEARCHCOL.' '.$LIKE." '".$params["pattern"]."'";
+			$WHERE_KEYWORD    = 'AND';
 		}
-		if( $params["minus"] == 1 ) 
-			$WHEREADD = 'and amount < 0';
-		return $this->select_rows( "SELECT month(bookingdate) month, year(bookingdate) year, round(sum(amount),2) amount,comment FROM moneyflows WHERE $SEARCHCOL $LIKE '".$params["pattern"]."' and bookingdate between STR_TO_DATE('".$params['startdate']."',GET_FORMAT(DATE,'ISO')) and STR_TO_DATE('".$params['enddate']."',GET_FORMAT(DATE,'ISO')) $WHEREADD group by year(bookingdate),month(bookingdate) order by year,month" );
+		
+		if( $params['minus'] == 1 ) {
+			$WHERE_CONDITION .= $WHERE_KEYWORD.' amount < 0';
+			$WHERE_KEYWORD    = 'AND';
+		}
+
+		if( !empty( $params['contractpartnerid'] ) ) {
+			$WHERE_CONDITION .=  $WHERE_KEYWORD.' contractpartnerid = '.$params['contractpartnerid'];
+			$WHERE_KEYWORD    = 'AND';
+		}
+
+		return $this->select_rows( 'SELECT month(bookingdate) month, year(bookingdate) year, round(sum(amount),2) amount,comment FROM moneyflows '.$WHERE_CONDITION." and bookingdate between STR_TO_DATE('".$params['startdate']."',GET_FORMAT(DATE,'ISO')) and STR_TO_DATE('".$params['enddate']."',GET_FORMAT(DATE,'ISO')) $WHEREADD group by year(bookingdate),month(bookingdate) order by year,month" );
 	}
 }
