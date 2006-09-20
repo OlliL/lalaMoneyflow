@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: core.php,v 1.8 2006/05/08 12:25:57 olivleh1 Exp $
+	$Id: core.php,v 1.9 2006/09/20 18:37:41 olivleh1 Exp $
 */
 
 require_once 'DB.php';
@@ -19,10 +19,6 @@ class core {
 	function query( $query ) {
 #		echo "<pre>$query</pre>";
 		return $this->db->query( $query );
-	}
-
-	function fix_amount( $amount ) {
-		return str_replace( ',', '.', $amount );
 	}
 
 	function select_col( $query ) {
@@ -95,10 +91,5 @@ class core {
 		$enum = explode( '\',\'', substr( $enum, 1, -1 ) );
 
 		return $enum;
-	}
-
-	function add_error( $error ) {
-		global $ERRORS;
-		$ERRORS[]=$error;
 	}
 }

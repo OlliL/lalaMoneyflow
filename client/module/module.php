@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: module.php,v 1.9 2005/11/09 18:04:59 olivleh1 Exp $
+	$Id: module.php,v 1.10 2006/09/20 18:37:42 olivleh1 Exp $
 */
 
 require_once 'Smarty.class.php';
@@ -45,10 +45,5 @@ class module {
 		$footer=$this->template->fetch( './display_footer.tpl' );
 		$this->template->assign( 'FOOTER', $footer );
 	}	
-
-	function get_errors() {
-		global $ERRORS;
-		return $ERRORS;
-	}
 }
 ?>

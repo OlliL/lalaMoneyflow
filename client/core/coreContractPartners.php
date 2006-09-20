@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreContractPartners.php,v 1.5 2005/03/09 20:20:51 olivleh1 Exp $
+	$Id: coreContractPartners.php,v 1.6 2006/09/20 18:37:41 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -50,7 +50,7 @@ class coreContractPartners extends core {
 	function delete_contractpartner( $id ) {
 		$coreMoneyFlows=new coreMoneyFlows();
 		if( $coreMoneyFlows->contractpartner_in_use( $id ) ) {
-			$this->add_error( "You can't delete a contract partner who is still in use!" );
+			add_error( "You can't delete a contract partner who is still in use!" );
 			return 0;
 		} else {
 			return $this->delete_row( "DELETE FROM contractpartners WHERE id=$id LIMIT 1" );

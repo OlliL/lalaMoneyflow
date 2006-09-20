@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMoneyFlows.php,v 1.16 2006/06/27 16:44:54 olivleh1 Exp $
+	$Id: coreMoneyFlows.php,v 1.17 2006/09/20 18:37:42 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -120,13 +120,13 @@ class coreMoneyFlows extends core {
 		if( $coreCapitalSources->id_is_valid( $capitalsourceid, $bookingdate ) ) {
 			return $this->update_row( "UPDATE moneyflows set bookingdate=STR_TO_DATE('$bookingdate',GET_FORMAT(DATE,'ISO')),invoicedate=STR_TO_DATE('$invoicedate',GET_FORMAT(DATE,'ISO')),amount='".$this->fix_amount( $amount )."',capitalsourceid='$capitalsourceid',contractpartnerid='$contractpartnerid',comment='$comment' WHERE id=$id" );
 		} else {
-			$this->add_error( "You can't select the capital source you've choosen. It is not valid on the bookingdate you've given" );
+			add_error( "You can't select the capital source you've choosen. It is not valid on the bookingdate you've given" );
 			return false;
 		}
 	}
 
 	function add_moneyflow( $bookingdate, $invoicedate, $amount, $capitalsourceid, $contractpartnerid, $comment ) {
-		return $this->insert_row( "INSERT INTO moneyflows (bookingdate,invoicedate,amount,capitalsourceid,contractpartnerid,comment) VALUES (STR_TO_DATE('$bookingdate',GET_FORMAT(DATE,'ISO')),STR_TO_DATE('$invoicedate',GET_FORMAT(DATE,'ISO')),'".$this->fix_amount( $amount )."','$capitalsourceid','$contractpartnerid','$comment')" );
+		return $this->insert_row( "INSERT INTO moneyflows (bookingdate,invoicedate,amount,capitalsourceid,contractpartnerid,comment) VALUES (STR_TO_DATE('$bookingdate',GET_FORMAT(DATE,'ISO')),STR_TO_DATE('$invoicedate',GET_FORMAT(DATE,'ISO')),'".fix_amount( $amount )."','$capitalsourceid','$contractpartnerid','$comment')" );
 	}
 
 	function search_moneyflows( $params ) {

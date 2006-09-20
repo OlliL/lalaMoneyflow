@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreCapitalSources.php,v 1.10 2005/08/25 05:42:10 olivleh1 Exp $
+	$Id: coreCapitalSources.php,v 1.11 2006/09/20 18:37:41 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -73,7 +73,7 @@ class coreCapitalSources extends core {
 	function delete_capitalsource( $id ) {
 		$coreMoneyFlows=new coreMoneyFlows();
 		if( $coreMoneyFlows->capitalsource_in_use( $id ) ) {
-			$this->add_error( "You can't delete a capital source which is still in use!" );
+			add_error( "You can't delete a capital source which is still in use!" );
 			return 0;
 		} else {
 			return $this->delete_row( "DELETE FROM capitalsources WHERE id=$id LIMIT 1" );
@@ -84,7 +84,7 @@ class coreCapitalSources extends core {
 	function update_capitalsource( $id, $type, $state, $accountnumber, $bankcode, $comment, $validfrom, $validtil ) {
 		$coreMoneyFlows=new coreMoneyFlows();
 		if( $coreMoneyFlows->capitalsource_in_use_out_of_date( $id, $validfrom, $validtil ) ) {
-			$this->add_error( "There are some moneyflows out of the validityperiod you wanted to set!" );
+			add_error( "There are some moneyflows out of the validityperiod you wanted to set!" );
 			return 0;
 		} else {
 			return $this->update_row( "UPDATE capitalsources set type='$type',state='$state',accountnumber='$accountnumber',bankcode='$bankcode',comment='$comment',validfrom='$validfrom',validtil='$validtil' WHERE id=$id" );

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMoneyFlows.php,v 1.15 2006/01/21 09:37:19 olivleh1 Exp $
+	$Id: moduleMoneyFlows.php,v 1.16 2006/09/20 18:37:42 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -51,7 +51,7 @@ class moduleMoneyFlows extends module {
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template->assign( 'ERRORS', get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->template->fetch( './display_edit_moneyflow.tpl' );
@@ -60,35 +60,97 @@ class moduleMoneyFlows extends module {
 
 	function display_add_moneyflow( $realaction, $all_data ) {
 
+		$date=date( 'Y-m-d' );
+
 		switch( $realaction ) {
 			case 'save':
+				$data_is_valid   = true;
+				$nothing_checked = true;
 				foreach( $all_data as $id => $value ) {
-					if( empty( $value['invoicedate'] ) )
-						$value['invoicedate']=$value['bookingdate'];
+					if ( $value['checked'] == 1 ) {
+						$nothing_checked = false;
+						
+						if( empty( $value['invoicedate'] ) )
+							$value['invoicedate']=$value['bookingdate'];
+	
+						if( ! is_date( $value['invoicedate'] ) ) {
+							add_error( "invoicedate has to be in format YYYY-MM-DD" );
+							$all_data[$id]['invoicedate_error'] = 1;
+							$data_is_valid = false;
+						}
 
-					if ( $value['id'] == 1 )
-						$ret=$this->coreMoneyFlows->add_moneyflow( $value['bookingdate'], $value['invoicedate'], $value['amount'], $value['capitalsourceid'], $value['contractpartnerid'], $value['comment'] );
+						if( ! is_date( $value['bookingdate'] ) ) {
+							add_error( "bookingdate has to be in format YYYY-MM-DD" );
+							$all_data[$id]['bookingdate_error'] = 1;
+							$data_is_valid = false;
+						}
+	
+						if( empty( $value['comment'] ) ) {
+							add_error( "comment can't be empty" );
+							$data_is_valid = false;
+						}
+							
+						if( preg_match( '/,/', $value['amount'] )  && preg_match( '/\./', $value['amount'] ) ) {
+							add_error( "amount may not contain , or . at the same time, not both" );
+							$all_data[$id]['amount_error'] = 1;
+							$data_is_valid = false;
+						} elseif( preg_match_all( '/./', $value['amount'], $foo )  > 1 ) {
+							add_error( "amount may not contain one . sign" );
+							$all_data[$id]['amount_error'] = 1;
+							$data_is_valid = false;
+						} elseif( preg_match_all( '/,/', $value['amount'], $foo )  > 1 ) {
+							add_error( "amount may not contain one , sign" );
+							$all_data[$id]['amount_error'] = 1;
+							$data_is_valid = false;
+						} elseif ( preg_match( '/[^-,\.0-9]/', $value['amount'] ) ) {
+							add_error( "amount may only contain numbers and the following signs: - , ." );
+							$all_data[$id]['amount_error'] = 1;
+							$data_is_valid = false;
+						} elseif ( fix_amount($value['amount']) != round( fix_amount($value['amount']), 2 ) ) {
+							add_error( "amount may only consist of 2 decimal places" );
+							$all_data[$id]['amount_error'] = 1;
+							$data_is_valid = false;
+						}
+					}
 				}
+				
+				if( $nothing_checked ) {
+					add_error( "nothing marked to add!" );
+					$data_is_valid = false;
+				}
+				if( $data_is_valid ) {
+					foreach( $all_data as $id => $value ) {
+						if ( $value['checked'] == 1 ) {
+							$ret=$this->coreMoneyFlows->add_moneyflow( $value['bookingdate'], $value['invoicedate'], $value['amount'], $value['capitalsourceid'], $value['contractpartnerid'], $value['comment'] );
+						}
+					}
+				}
+				break;
 			default:
-				$all_data=$this->corePreDefMoneyFlows->get_valid_data( date( 'Y-m-d' ), date( 'Y-m-d' ) );
+				$all_data_pre=$this->corePreDefMoneyFlows->get_valid_data( $date, $date );
 
-				foreach( $all_data as $key => $value ) {
-					if( !empty( $checked ) && count( $checked ) > 0 )
-						$all_data[$key]['checked']=$checked[$all_data[$key]['id']]==1?'checked':'';
-
-					$all_data[$key]['capitalsourcecomment']=$this->coreCapitalSources->get_comment( $all_data[$key]['capitalsourceid'] );
-					$all_data[$key]['contractpartnername']=$this->coreContractPartners->get_name( $all_data[$key]['contractpartnerid'] );
+				$all_data[0]=array( 'id'          =>  -1,
+				                    'bookingdate' => date( 'Y-m-d' ) );
+				$i=1;				
+				foreach( $all_data_pre as $key => $value ) {
+					$all_data[$i]=$value;
+					$all_data[$i]['bookingdate']=$date;
+					$all_data[$i]['amount']=sprintf('%.02f',$all_data_pre[$key]['amount']);
+					$all_data[$i]['capitalsourcecomment']=$this->coreCapitalSources->get_comment( $all_data_pre[$key]['capitalsourceid'] );
+					$all_data[$i]['contractpartnername']=$this->coreContractPartners->get_name( $all_data_pre[$key]['contractpartnerid'] );
+					$i++;
 				}
 
-				$capitalsource_values=$this->coreCapitalSources->get_valid_comments( date( 'Y-m-d' ), date( 'Y-m-d' ) );
-				$contractpartner_values=$this->coreContractPartners->get_all_names();
-
-				$this->template->assign( 'DATE',                   date( 'Y-m-d' )         );
-				$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
-				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
-				$this->template->assign( 'ALL_DATA',               $all_data               );
 				break;
 		}
+		$capitalsource_values=$this->coreCapitalSources->get_valid_comments( $date, $date );
+		$contractpartner_values=$this->coreContractPartners->get_all_names();
+
+		$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
+		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
+		$this->template->assign( 'ALL_DATA',               $all_data               );
+		$this->template->assign( 'ERRORS', get_errors() );
+
 		$this->parse_header();
 		return $this->template->fetch( './display_add_moneyflow.tpl' );
 	}
@@ -111,7 +173,7 @@ class moduleMoneyFlows extends module {
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template->assign( 'ERRORS', get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->template->fetch( './display_delete_moneyflow.tpl' );

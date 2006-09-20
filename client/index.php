@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: index.php,v 1.14 2006/06/27 16:44:54 olivleh1 Exp $
+	$Id: index.php,v 1.15 2006/09/20 18:37:41 olivleh1 Exp $
 */
 
 $action=$_POST['action']?$_POST['action']:$_GET['action'];
@@ -11,6 +11,7 @@ function my_number_format($number) {
 }
 
 require_once 'include.php';
+require_once 'functions.php';
 require_once 'module/moduleCapitalSources.php';
 require_once 'module/moduleContractPartners.php';
 require_once 'module/moduleFrontPage.php';
