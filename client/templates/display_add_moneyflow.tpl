@@ -4,7 +4,7 @@
 
 		<td align="center">
 		<h1>add moneyflow</h1>
-		<form action="{$ENV_INDEX_PHP}" method="POST">
+		<form action="{$ENV_INDEX_PHP}?action=add_moneyflow" method="POST">
 			<input type="hidden" name="action" value="add_moneyflow">
 			<table border=0>
 				<tr>
