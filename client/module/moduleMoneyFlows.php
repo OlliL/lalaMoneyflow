@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMoneyFlows.php,v 1.16 2006/09/20 18:37:42 olivleh1 Exp $
+	$Id: moduleMoneyFlows.php,v 1.17 2006/09/21 08:18:13 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -90,15 +90,15 @@ class moduleMoneyFlows extends module {
 							$data_is_valid = false;
 						}
 							
-						if( preg_match( '/,/', $value['amount'] )  && preg_match( '/\./', $value['amount'] ) ) {
+						if( preg_match( '/,/', $value['amount'] ) && preg_match( '/\./', $value['amount'] ) ) {
 							add_error( "amount may not contain , or . at the same time, not both" );
 							$all_data[$id]['amount_error'] = 1;
 							$data_is_valid = false;
-						} elseif( preg_match_all( '/./', $value['amount'], $foo )  > 1 ) {
+						} elseif( preg_match( '/\./', $value['amount'] ) && preg_match_all( '/./', $value['amount'], $foo )  > 1 ) {
 							add_error( "amount may not contain one . sign" );
 							$all_data[$id]['amount_error'] = 1;
 							$data_is_valid = false;
-						} elseif( preg_match_all( '/,/', $value['amount'], $foo )  > 1 ) {
+						} elseif( preg_match( '/,/', $value['amount'] ) && preg_match_all( '/,/', $value['amount'], $foo )  > 1 ) {
 							add_error( "amount may not contain one , sign" );
 							$all_data[$id]['amount_error'] = 1;
 							$data_is_valid = false;
@@ -121,11 +121,14 @@ class moduleMoneyFlows extends module {
 				if( $data_is_valid ) {
 					foreach( $all_data as $id => $value ) {
 						if ( $value['checked'] == 1 ) {
+							if( empty( $value['invoicedate'] ) )
+								$value['invoicedate']=$value['bookingdate'];
 							$ret=$this->coreMoneyFlows->add_moneyflow( $value['bookingdate'], $value['invoicedate'], $value['amount'], $value['capitalsourceid'], $value['contractpartnerid'], $value['comment'] );
 						}
 					}
+				} else {
+					break;
 				}
-				break;
 			default:
 				$all_data_pre=$this->corePreDefMoneyFlows->get_valid_data( $date, $date );
 

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleContractPartners.php,v 1.5 2005/11/09 18:04:59 olivleh1 Exp $
+	$Id: moduleContractPartners.php,v 1.6 2006/09/21 08:15:02 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -54,7 +54,7 @@ class moduleContractPartners extends module {
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template->assign( 'ERRORS', get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->template->fetch( './display_edit_contractpartner.tpl' );
@@ -74,7 +74,7 @@ class moduleContractPartners extends module {
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template->assign( 'ERRORS', get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->template->fetch( './display_delete_contractpartner.tpl' );
