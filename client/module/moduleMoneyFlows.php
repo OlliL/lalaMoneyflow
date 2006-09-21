@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMoneyFlows.php,v 1.17 2006/09/21 08:18:13 olivleh1 Exp $
+	$Id: moduleMoneyFlows.php,v 1.18 2006/09/21 15:51:39 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -94,11 +94,11 @@ class moduleMoneyFlows extends module {
 							add_error( "amount may not contain , or . at the same time, not both" );
 							$all_data[$id]['amount_error'] = 1;
 							$data_is_valid = false;
-						} elseif( preg_match( '/\./', $value['amount'] ) && preg_match_all( '/./', $value['amount'], $foo )  > 1 ) {
+						} elseif( preg_match_all( '/\./', $value['amount'], $foo )  > 1 ) {
 							add_error( "amount may not contain one . sign" );
 							$all_data[$id]['amount_error'] = 1;
 							$data_is_valid = false;
-						} elseif( preg_match( '/,/', $value['amount'] ) && preg_match_all( '/,/', $value['amount'], $foo )  > 1 ) {
+						} elseif( preg_match_all( '/,/', $value['amount'], $foo )  > 1 ) {
 							add_error( "amount may not contain one , sign" );
 							$all_data[$id]['amount_error'] = 1;
 							$data_is_valid = false;
