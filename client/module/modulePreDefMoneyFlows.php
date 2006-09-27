@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: modulePreDefMoneyFlows.php,v 1.8 2006/05/08 13:55:53 olivleh1 Exp $
+	$Id: modulePreDefMoneyFlows.php,v 1.9 2006/09/27 16:09:20 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -77,7 +77,7 @@ class modulePreDefMoneyFlows extends module {
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template->assign( 'ERRORS', get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->template->fetch( './display_edit_predefmoneyflow.tpl' );
@@ -100,7 +100,7 @@ class modulePreDefMoneyFlows extends module {
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template->assign( 'ERRORS', get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->template->fetch( './display_delete_predefmoneyflow.tpl' );
