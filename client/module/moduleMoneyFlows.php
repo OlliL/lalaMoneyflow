@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMoneyFlows.php,v 1.19 2006/10/04 13:39:12 olivleh1 Exp $
+	$Id: moduleMoneyFlows.php,v 1.20 2006/10/04 13:39:33 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -70,7 +70,7 @@ class moduleMoneyFlows extends module {
 					if ( $value['checked'] == 1 ) {
 						$nothing_checked = false;
 						
-						if( ! empty( $value['invoicedate'] && ! is_date( $value['invoicedate'] ) ) {
+						if( ! empty( $value['invoicedate'] ) && ! is_date( $value['invoicedate'] ) ) {
 							add_error( "invoicedate has to be in format YYYY-MM-DD" );
 							$all_data[$id]['invoicedate_error'] = 1;
 							$data_is_valid = false;
