@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleCapitalSources.php,v 1.6 2005/11/09 18:04:59 olivleh1 Exp $
+	$Id: moduleCapitalSources.php,v 1.7 2006/10/04 04:33:45 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -60,7 +60,7 @@ class moduleCapitalSources extends module {
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template->assign( 'ERRORS', get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->template->fetch( './display_edit_capitalsource.tpl' );
@@ -80,7 +80,7 @@ class moduleCapitalSources extends module {
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template->assign( 'ERRORS', get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->template->fetch( './display_delete_capitalsource.tpl' );
