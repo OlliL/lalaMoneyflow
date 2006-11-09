@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleReports.php,v 1.15 2006/05/04 18:50:21 olivleh1 Exp $
+	$Id: moduleReports.php,v 1.16 2006/11/09 20:14:51 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -9,6 +9,8 @@ require_once 'core/coreCapitalSources.php';
 require_once 'core/coreContractPartners.php';
 require_once 'core/coreMoneyFlows.php';
 require_once 'core/coreMonthlySettlement.php';
+require_once 'jpgraph.php';
+require_once 'jpgraph_line.php';
 
 class moduleReports extends module {
 
@@ -112,5 +114,121 @@ class moduleReports extends module {
 		$this->parse_header();
 		return $this->template->fetch( './display_generate_report.tpl' );
 	}
+
+	function display_plot_trends( $all_data ) {
+		$capitalsource_values = $this->coreCapitalSources->get_all_data();
+		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
+		
+		$years=$this->coreMonthlySettlement->get_all_years();
+		$this->template->assign( 'ALL_YEARS',      $years  );
+
+		$this->template->assign( 'ALL_DATA',       $all_data  );
+
+		if( is_array( $all_data ) && isset($all_data[capitalsourceid]) ) {
+			$this->template->assign( 'PLOT_GRAPH',       1  );
+		} else {
+			$this->template->assign( 'PLOT_GRAPH',       0  );
+		}
+
+		$this->parse_header();
+		return $this->template->fetch( './display_plot_trends.tpl' );
+
+	}
+	function plot_graph( $capitalsources_id, $startmonth, $startyear, $endmonth, $endyear ) {
+	
+		if( $capitalsources_id == 0 ) {
+			$all_capitalsources_ids  = $this->coreCapitalSources->get_all_ids();
+			$graph_comment = 'amount trend of all capitalsources';
+		} else {
+			$all_capitalsources_ids[] = $capitalsources_id;
+			$graph_comment = 'amount trend of capitalsource "'.$this->coreCapitalSources->get_comment( $capitalsources_id ).'"';
+		}
+			
+		# find first recorded monthly settlement
+		$testmonth = $startmonth;
+		$testyear  = $startyear;
+		$exists    = false;
+		while( !$exists  && ($testmonth < $endmonth || $testyear != $endyear) ) {
+			$exists = $this->coreMonthlySettlement->monthlysettlement_exists( $testmonth, $testyear, $capitalsources_id );
+			if( !$exists ) {
+				if($testmonth == 12) {
+					$testmonth = 1;
+					$testyear++;
+				} else {
+					$testmonth++;
+				}
+			}
+		}
+		$startmonth = $testmonth;
+		$startyear  = $testyear;
+
+		for( $testmonth = $startmonth; $testmonth <= 12 && ! $this->coreMonthlySettlement->monthlysettlement_exists( $testmonth, $startyear, $capitalsources_id ); $testmonth++ );
+		$startmonth = $testmonth;
+
+		# find latest recorded monthly settlement
+		$testmonth = $endmonth;
+		$testyear  = $endyear;
+		$exists    = 0;
+		while( $exists == 0  && ($testmonth > $startmonth || $testyear != $startyear) ) {
+			$exists = $this->coreMonthlySettlement->monthlysettlement_exists( $testmonth, $testyear, $capitalsources_id );
+			if( $exists == 0 ) {
+				if($testmonth == 1) {
+					$testmonth = 12;
+					$testyear--;
+				} else {
+					$testmonth--;
+				}
+			}
+		}
+		$endmonth = $testmonth;
+		$endyear  = $testyear;
+
+		$month = $startmonth;
+		$year  = $startyear;
+		$i=0;
+		
+		while( $year <= $endyear ) {
+			while( $month <= 12 && ($month <= $endmonth || $year != $endyear) ) {
+				foreach( $all_capitalsources_ids as $capitalsources_id ) {
+					$monthly_data[$i] += $this->coreMonthlySettlement->get_amount( $capitalsources_id, $month,$year );
+				}
+				$monthly_x[$i] = sprintf('%02d/%02d',$month,substr($year,3,2));
+				$month++;
+				$i++;
+			}
+			$year++;
+			$month=1;
+		}
+
+		$graph = new Graph(700,400);
+		$graph->SetMargin(45,45,40,35);
+		$graph->SetScale("intlin");
+		$graph->SetMarginColor('#E6E6FA');
+
+		$txt = new Text($graph_comment."\nstarting from ".sprintf('%02d/%02d',$startmonth,substr($startyear,3,2)).' until '.sprintf('%02d/%02d',$endmonth,substr($endyear,3,2)));
+		$txt->SetFont(FF_FONT1,FS_BOLD);
+		$txt->Center(0,700);
+		$txt->ParagraphAlign('center');
+		$graph->AddText($txt);
+	
+		$p1 = new LinePlot($monthly_data);
+		$p1->SetWeight(1);
+		$p1->SetFillGradient('#E6E6FA','#B0C4DE');
+		$graph->Add($p1);
+
+		$graph->xaxis->title->Set("month/year");                           
+		$graph->xaxis->SetTitleMargin(10);
+		$graph->xaxis->SetTickLabels($monthly_x);
+		$graph->xaxis->SetFont(FF_FONT0);                              
+		$graph->xaxis->title->SetFont(FF_FONT1,FS_BOLD);          
+
+		$graph->yaxis->title->Set("amount");                                         
+		$graph->yaxis->SetTitleMargin(30);
+		$graph->yaxis->SetFont(FF_FONT0);                              
+		$graph->yaxis->title->SetFont(FF_FONT1,FS_BOLD);                              
+
+		$graph->Stroke();
+	}
+
 }
 ?>

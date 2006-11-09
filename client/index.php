@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: index.php,v 1.15 2006/09/20 18:37:41 olivleh1 Exp $
+	$Id: index.php,v 1.16 2006/11/09 20:14:50 olivleh1 Exp $
 */
 
 $action=$_POST['action']?$_POST['action']:$_GET['action'];
@@ -128,6 +128,16 @@ switch( $action ) {
 					$sortby=	$_GET['reports_sortby'];
 					$order=		$_GET['reports_order'];
 					$display=$moduleReports->display_list_reports( $month, $year, $sortby, $order );
+					break;
+	case 'plot_trends':		$all_data=	$_POST['all_data'];
+					$display=$moduleReports->display_plot_trends($all_data);
+					break;
+	case 'plot_graph':		$id=		$_GET['id'];
+					$startmonth=	$_GET['startmonth'];
+					$startyear=	$_GET['startyear'];
+					$endmonth=	$_GET['endmonth'];
+					$endyear=	$_GET['endyear'];
+					$display=$moduleReports->plot_graph( $id, $startmonth, $startyear, $endmonth, $endyear );
 					break;
 
 	/* search */
