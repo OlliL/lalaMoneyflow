@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleReports.php,v 1.16 2006/11/09 20:14:51 olivleh1 Exp $
+	$Id: moduleReports.php,v 1.17 2006/11/09 21:55:54 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -122,13 +122,16 @@ class moduleReports extends module {
 		$years=$this->coreMonthlySettlement->get_all_years();
 		$this->template->assign( 'ALL_YEARS',      $years  );
 
-		$this->template->assign( 'ALL_DATA',       $all_data  );
-
 		if( is_array( $all_data ) && isset($all_data[capitalsourceid]) ) {
 			$this->template->assign( 'PLOT_GRAPH',       1  );
 		} else {
+			$all_data['endyear']  = $years[count($years)-1];
+			$all_data['endmonth'] = 12;
 			$this->template->assign( 'PLOT_GRAPH',       0  );
 		}
+
+		$this->template->assign( 'ALL_DATA',       $all_data  );
+
 
 		$this->parse_header();
 		return $this->template->fetch( './display_plot_trends.tpl' );
@@ -201,7 +204,7 @@ class moduleReports extends module {
 		}
 
 		$graph = new Graph(700,400);
-		$graph->SetMargin(45,45,40,35);
+		$graph->SetMargin(50,20,40,35);
 		$graph->SetScale("intlin");
 		$graph->SetMarginColor('#E6E6FA');
 
@@ -223,7 +226,7 @@ class moduleReports extends module {
 		$graph->xaxis->title->SetFont(FF_FONT1,FS_BOLD);          
 
 		$graph->yaxis->title->Set("amount");                                         
-		$graph->yaxis->SetTitleMargin(30);
+		$graph->yaxis->SetTitleMargin(35);
 		$graph->yaxis->SetFont(FF_FONT0);                              
 		$graph->yaxis->title->SetFont(FF_FONT1,FS_BOLD);                              
 
