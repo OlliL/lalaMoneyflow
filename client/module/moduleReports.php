@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleReports.php,v 1.17 2006/11/09 21:55:54 olivleh1 Exp $
+	$Id: moduleReports.php,v 1.18 2006/11/10 09:27:58 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -207,6 +207,7 @@ class moduleReports extends module {
 		$graph->SetMargin(50,20,40,35);
 		$graph->SetScale("intlin");
 		$graph->SetMarginColor('#E6E6FA');
+		$graph->SetFrame(true,array(0,0,0),0);
 
 		$txt = new Text($graph_comment."\nstarting from ".sprintf('%02d/%02d',$startmonth,substr($startyear,3,2)).' until '.sprintf('%02d/%02d',$endmonth,substr($endyear,3,2)));
 		$txt->SetFont(FF_FONT1,FS_BOLD);
