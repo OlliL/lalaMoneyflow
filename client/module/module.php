@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: module.php,v 1.10 2006/09/20 18:37:42 olivleh1 Exp $
+	$Id: module.php,v 1.11 2006/11/10 09:43:05 olivleh1 Exp $
 */
 
 require_once 'Smarty.class.php';
@@ -37,6 +37,7 @@ class module {
 	function parse_header( $nonavi=0 ) {
 		$this->template->assign( 'REPORTS_YEAR',  date( 'Y' ) );
 		$this->template->assign( 'REPORTS_MONTH', date( 'm' ) );
+		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
 		$this->template->assign( 'NO_NAVIGATION', $nonavi   );
 
 		$header=$this->template->fetch( './display_header.tpl' );

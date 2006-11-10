@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleReports.php,v 1.18 2006/11/10 09:27:58 olivleh1 Exp $
+	$Id: moduleReports.php,v 1.19 2006/11/10 09:43:06 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -9,8 +9,10 @@ require_once 'core/coreCapitalSources.php';
 require_once 'core/coreContractPartners.php';
 require_once 'core/coreMoneyFlows.php';
 require_once 'core/coreMonthlySettlement.php';
-require_once 'jpgraph.php';
-require_once 'jpgraph_line.php';
+if( ENABLE_JPGRAPH ) {
+	require_once 'jpgraph.php';
+	require_once 'jpgraph_line.php';
+}
 
 class moduleReports extends module {
 

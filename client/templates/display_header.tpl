@@ -15,7 +15,9 @@
 					<a href="{$ENV_INDEX_PHP}?action=list_predefmoneyflows">list predefined moneyflows</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_monthlysettlements">list monthly settlements</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_reports">list reports</a><br />
+{if $ENABLE_JPGRAPH }
 					<a href="{$ENV_INDEX_PHP}?action=plot_trends">plot trends</a><br />
+{/if}
 					<br />
 					<a href="{$ENV_INDEX_PHP}?action=search">search moneyflows</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=add_moneyflow">add moneyflow</a><br />
