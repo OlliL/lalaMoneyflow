@@ -5,6 +5,9 @@
 
 		<td align="center">
 		<h1>monthly settlement {$MONTH.name} {$YEAR}</h1>
+		{section name=ERROR loop=$ERRORS}
+			<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
+		{/section}
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action" value="edit_monthlysettlement">
 			{if $NEW != 1 }

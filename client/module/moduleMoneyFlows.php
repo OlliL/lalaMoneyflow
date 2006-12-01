@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMoneyFlows.php,v 1.20 2006/10/04 13:39:33 olivleh1 Exp $
+	$Id: moduleMoneyFlows.php,v 1.21 2006/12/01 15:37:57 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -48,6 +48,7 @@ class moduleMoneyFlows extends module {
 
 				$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
 				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
+				$this->template->assign( 'ERRORS',                 get_errors() );
 				break;
 		}
 
@@ -87,24 +88,10 @@ class moduleMoneyFlows extends module {
 							$data_is_valid = false;
 						}
 							
-						if( preg_match( '/,/', $value['amount'] ) && preg_match( '/\./', $value['amount'] ) ) {
-							add_error( "amount may not contain , or . at the same time, not both" );
-							$all_data[$id]['amount_error'] = 1;
-							$data_is_valid = false;
-						} elseif( preg_match_all( '/\./', $value['amount'], $foo )  > 1 ) {
-							add_error( "amount may not contain one . sign" );
-							$all_data[$id]['amount_error'] = 1;
-							$data_is_valid = false;
-						} elseif( preg_match_all( '/,/', $value['amount'], $foo )  > 1 ) {
-							add_error( "amount may not contain one , sign" );
-							$all_data[$id]['amount_error'] = 1;
-							$data_is_valid = false;
-						} elseif ( preg_match( '/[^-,\.0-9]/', $value['amount'] ) ) {
-							add_error( "amount may only contain numbers and the following signs: - , ." );
-							$all_data[$id]['amount_error'] = 1;
-							$data_is_valid = false;
-						} elseif ( fix_amount($value['amount']) != round( fix_amount($value['amount']), 2 ) ) {
-							add_error( "amount may only consist of 2 decimal places" );
+						if( ! (    preg_match( '/^-{0,1}[0-9]+([\.][0-9][0-9][0-9]){0,}([,][0-9]{1,2}){0,1}$/', $value['amount'] ) 
+						       ||  preg_match( '/^-{0,1}[0-9]+([,][0-9][0-9][0-9]){0,}([\.][0-9]{1,2}){0,1}$/', $value['amount'] )
+						      ) ) {
+							add_error( 'amount '.$value['amount'].' is not in a readable format' );
 							$all_data[$id]['amount_error'] = 1;
 							$data_is_valid = false;
 						}

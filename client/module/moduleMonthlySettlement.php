@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMonthlySettlement.php,v 1.9 2006/10/04 04:33:45 olivleh1 Exp $
+	$Id: moduleMonthlySettlement.php,v 1.10 2006/12/01 15:37:57 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -107,6 +107,7 @@ class moduleMonthlySettlement extends module {
 					$this->template->assign( 'YEAR' ,          $year              );
 					$this->template->assign( 'ALL_DATA',       $all_data          );
 					$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
+					$this->template->assign( 'ERRORS',         get_errors() );
 				}
 				break;
 		}

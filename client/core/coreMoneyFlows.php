@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMoneyFlows.php,v 1.18 2006/09/21 08:19:14 olivleh1 Exp $
+	$Id: coreMoneyFlows.php,v 1.19 2006/12/01 15:37:56 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -118,7 +118,11 @@ class coreMoneyFlows extends core {
 	function update_moneyflow( $id, $bookingdate, $invoicedate, $amount, $capitalsourceid, $contractpartnerid, $comment ) {
 		$coreCapitalSources = new coreCapitalSources();
 		if( $coreCapitalSources->id_is_valid( $capitalsourceid, $bookingdate ) ) {
-			return $this->update_row( "UPDATE moneyflows set bookingdate=STR_TO_DATE('$bookingdate',GET_FORMAT(DATE,'ISO')),invoicedate=STR_TO_DATE('$invoicedate',GET_FORMAT(DATE,'ISO')),amount='".fix_amount( $amount )."',capitalsourceid='$capitalsourceid',contractpartnerid='$contractpartnerid',comment='$comment' WHERE id=$id" );
+			if( fix_amount( $amount ) ) {
+				return $this->update_row( "UPDATE moneyflows set bookingdate=STR_TO_DATE('$bookingdate',GET_FORMAT(DATE,'ISO')),invoicedate=STR_TO_DATE('$invoicedate',GET_FORMAT(DATE,'ISO')),amount='$amount',capitalsourceid='$capitalsourceid',contractpartnerid='$contractpartnerid',comment='$comment' WHERE id=$id" );
+			} else {
+				return false;
+			}
 		} else {
 			add_error( "You can't select the capital source you've choosen. It is not valid on the bookingdate you've given" );
 			return false;
@@ -126,7 +130,11 @@ class coreMoneyFlows extends core {
 	}
 
 	function add_moneyflow( $bookingdate, $invoicedate, $amount, $capitalsourceid, $contractpartnerid, $comment ) {
-		return $this->insert_row( "INSERT INTO moneyflows (bookingdate,invoicedate,amount,capitalsourceid,contractpartnerid,comment) VALUES (STR_TO_DATE('$bookingdate',GET_FORMAT(DATE,'ISO')),STR_TO_DATE('$invoicedate',GET_FORMAT(DATE,'ISO')),'".fix_amount( $amount )."','$capitalsourceid','$contractpartnerid','$comment')" );
+		if (fix_amount( $amount )) {
+			return $this->insert_row( "INSERT INTO moneyflows (bookingdate,invoicedate,amount,capitalsourceid,contractpartnerid,comment) VALUES (STR_TO_DATE('$bookingdate',GET_FORMAT(DATE,'ISO')),STR_TO_DATE('$invoicedate',GET_FORMAT(DATE,'ISO')),'$amount','$capitalsourceid','$contractpartnerid','$comment')" );
+		} else {
+			return false;
+		}
 	}
 
 	function search_moneyflows( $params ) {
