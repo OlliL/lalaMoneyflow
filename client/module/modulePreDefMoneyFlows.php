@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: modulePreDefMoneyFlows.php,v 1.9 2006/09/27 16:09:20 olivleh1 Exp $
+	$Id: modulePreDefMoneyFlows.php,v 1.10 2006/12/07 12:51:42 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -53,9 +53,10 @@ class modulePreDefMoneyFlows extends module {
 				else
 					$ret=$this->corePreDefMoneyFlows->update_predefmoneyflow( $id, $all_data['amount'], $all_data['capitalsourceid'], $all_data['contractpartnerid'], $all_data['comment'] );
 
-				if( $ret )
+				if( $ret ) {
 					$this->template->assign( 'CLOSE', 1 );
-				break;
+					break;
+				}
 			default:
 				if( $id > 0 ) {
 					$all_data=$this->corePreDefMoneyFlows->get_id_data( $id );

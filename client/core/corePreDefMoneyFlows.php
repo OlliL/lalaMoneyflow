@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: corePreDefMoneyFlows.php,v 1.7 2006/01/21 09:37:19 olivleh1 Exp $
+	$Id: corePreDefMoneyFlows.php,v 1.8 2006/12/07 12:51:41 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -49,10 +49,18 @@ class corePreDefMoneyFlows extends core {
 
 
 	function update_predefmoneyflow( $id, $amount, $capitalsourceid, $contractpartnerid, $comment ) {
-		return $this->update_row( "UPDATE predefmoneyflows set amount='$amount',capitalsourceid='$capitalsourceid',contractpartnerid='$contractpartnerid',comment='$comment' WHERE id=$id" );
+		if( fix_amount( $amount ) ) {
+			return $this->update_row( "UPDATE predefmoneyflows set amount='$amount',capitalsourceid='$capitalsourceid',contractpartnerid='$contractpartnerid',comment='$comment' WHERE id=$id" );
+		} else {
+			return false;
+		}
 	}
 
 	function add_predefmoneyflow( $amount, $capitalsourceid, $contractpartnerid, $comment ) {
-		return $this->insert_row( "INSERT INTO predefmoneyflows (amount,capitalsourceid,contractpartnerid,comment) VALUES ('$amount','$capitalsourceid','$contractpartnerid','$comment')" );
+		if( fix_amount( $amount ) ) {
+			return $this->insert_row( "INSERT INTO predefmoneyflows (amount,capitalsourceid,contractpartnerid,comment) VALUES ('$amount','$capitalsourceid','$contractpartnerid','$comment')" );
+		} else {
+			return false;
+		}
 	}
 }

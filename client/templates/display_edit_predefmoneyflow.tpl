@@ -8,6 +8,9 @@
 			<input type="hidden" name="action"  value="edit_predefmoneyflow">
 			<input type="hidden" name="id"      value="{$ALL_DATA.id}">
 			<input type="hidden" name="REFERER" value="{$ENV_REFERER}">
+			{section name=ERROR loop=$ERRORS}
+				<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
+			{/section}
 			<table border=0>
 				<tr>
 					<th>amount</th>

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: moduleMoneyFlows.php,v 1.21 2006/12/01 15:37:57 olivleh1 Exp $
+	$Id: moduleMoneyFlows.php,v 1.22 2006/12/07 12:51:41 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
@@ -88,8 +88,8 @@ class moduleMoneyFlows extends module {
 							$data_is_valid = false;
 						}
 							
-						if( ! (    preg_match( '/^-{0,1}[0-9]+([\.][0-9][0-9][0-9]){0,}([,][0-9]{1,2}){0,1}$/', $value['amount'] ) 
-						       ||  preg_match( '/^-{0,1}[0-9]+([,][0-9][0-9][0-9]){0,}([\.][0-9]{1,2}){0,1}$/', $value['amount'] )
+						if( ! (    preg_match( '/^-{0,1}[0-9]*([\.][0-9][0-9][0-9]){0,}([,][0-9]{1,2}){0,1}$/', $value['amount'] ) 
+						       ||  preg_match( '/^-{0,1}[0-9]*([,][0-9][0-9][0-9]){0,}([\.][0-9]{1,2}){0,1}$/', $value['amount'] )
 						      ) ) {
 							add_error( 'amount '.$value['amount'].' is not in a readable format' );
 							$all_data[$id]['amount_error'] = 1;
