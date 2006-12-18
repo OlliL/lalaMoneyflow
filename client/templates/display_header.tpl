@@ -10,6 +10,7 @@
 			<tr>
 {if $NO_NAVIGATION == 0}
 				<td valign="top" width="100"><nobr>
+<p style="font-size:11px;color:darkblue;font-weight:bold;text-align:center">lalaMoneyflow<br />0.5.1</p><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_capitalsources">list capital sources</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_contractpartners">list contract partners</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_predefmoneyflows">list predefined moneyflows</a><br />
@@ -28,5 +29,7 @@
 					<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&sr=1','_blank','width=800,height=80')">add contract partner</a><br />
 					<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_predefmoneyflow&sr=1','_blank','width=800,height=80')">add predefined moneyflow</a><br />
 					</nobr>
+<br />
+<p style="font-size:11px;color:darkblue;font-weight:bold;text-align:center">&copy; by Oliver Lehmann</p>
 		</td>
 {/if}
