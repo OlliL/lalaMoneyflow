@@ -53,18 +53,18 @@ function Go(x)
 					{section name=DATA loop=$ALL_DATA}
 						<tr>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].comment}</td>
-							<td class="contrastbgcolor" align="right"><font {if $ALL_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_DATA[DATA].amount|number_format} EUR</font></td>
+							<td class="contrastbgcolor" align="right"><font {if $ALL_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_DATA[DATA].amount|number_format} {$CURRENCY}</font></td>
 						</tr>
 					{/section}
 					<tr>
 						<td align="right">&sum;</td>
-						<td align="right" class="contrastbgcolor"><font {if $SUMAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$SUMAMOUNT|number_format} EUR</u></font></td>
+						<td align="right" class="contrastbgcolor"><font {if $SUMAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$SUMAMOUNT|number_format} {$CURRENCY}</u></font></td>
 					</tr>
 				</table>
 				<table border="0" cellpadding=2>
 					<tr>
 					<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_monthlysettlement&monthlysettlements_month={$MONTH.nummeric}&monthlysettlements_year={$YEAR}&sr=1','_blank','width=500,height=300')">edit</a></td>
-					<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_monthlysettlement&monthlysettlements_month={$MONTH.nummeric}&monthlysettlements_year={$YEAR}&sr=1','_blank','width=500,height=300')">delete</a></td>
+					<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_monthlysettlement&monthlysettlements_month={$MONTH.nummeric}&monthlysettlements_year={$YEAR}&sr=1','_blank','width=500,height=250')">delete</a></td>
 					</tr>
 				</table>
 			{/if}

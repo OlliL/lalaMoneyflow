@@ -65,7 +65,7 @@
 					<tr>
 						<td class="contrastbgcolor"><p style="margin-left:8px;">{$RESULTS[DATA].year}</p></td>
 						<td class="contrastbgcolor"><p style="margin-left:8px;">{$RESULTS[DATA].month}</p></td>
-						<td align="right" class="contrastbgcolor"><font {if $RESULTS[DATA].amount < 0}color="red"{else}color="black"{/if}>{$RESULTS[DATA].amount|number_format} EUR</font></td>
+						<td align="right" class="contrastbgcolor"><font {if $RESULTS[DATA].amount < 0}color="red"{else}color="black"{/if}>{$RESULTS[DATA].amount|number_format} {$CURRENCY}</font></td>
 						<td class="contrastbgcolor">{$RESULTS[DATA].comment}</td>
 					</tr>
 				{/section}

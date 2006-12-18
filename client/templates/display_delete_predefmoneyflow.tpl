@@ -20,7 +20,7 @@
 				 	 <th width="200">comment</th>
 				</tr>
 				<tr>
-					<td class="contrastbgcolor" align="right">{$ALL_DATA.amount|string_format:"%.2f"} EUR</td>
+					<td class="contrastbgcolor" align="right">{$ALL_DATA.amount|string_format:"%.2f"} {$CURRENCY}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.capitalsource_comment}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.contractpartner_name}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.comment}</td>

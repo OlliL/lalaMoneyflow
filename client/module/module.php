@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: module.php,v 1.11 2006/11/10 09:43:05 olivleh1 Exp $
+	$Id: module.php,v 1.12 2006/12/18 12:24:11 olivleh1 Exp $
 */
 
 require_once 'Smarty.class.php';
@@ -26,7 +26,7 @@ class module {
 		} else {
 			$referer ='';
 		}
-		
+
 		if ( ( !empty( $_POST['sr'] ) && $_POST['sr'] == 1 ) || ( !empty( $_GET['sr'] ) && $_GET['sr'] == 1 ) ) {
 			$this->template->assign( 'ENV_REFERER', $http_referer );
 		} else {

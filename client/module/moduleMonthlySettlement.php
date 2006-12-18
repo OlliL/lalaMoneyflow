@@ -1,19 +1,21 @@
 <?php
 
 /*
-	$Id: moduleMonthlySettlement.php,v 1.10 2006/12/01 15:37:57 olivleh1 Exp $
+	$Id: moduleMonthlySettlement.php,v 1.11 2006/12/18 12:24:12 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
-require_once 'core/coreMonthlySettlement.php';
 require_once 'core/coreCapitalSources.php';
+require_once 'core/coreCurrencies.php';
+require_once 'core/coreMonthlySettlement.php';
 
 class moduleMonthlySettlement extends module {
 
 	function moduleMonthlySettlement() {
 		$this->module();
-		$this->coreMonthlySettlement=new coreMonthlySettlement();
 		$this->coreCapitalSources=new coreCapitalSources();
+		$this->coreCurrencies=new coreCurrencies();
+		$this->coreMonthlySettlement=new coreMonthlySettlement();
 	}
 
 	function display_list_monthlysettlements( $month, $year ) {
@@ -59,6 +61,7 @@ class moduleMonthlySettlement extends module {
 		$this->template->assign( 'ALL_YEARS',     $years  );
 		$this->template->assign( 'ALL_MONTHS',    $months );
 		$this->template->assign( 'SELECTED_YEAR', $year   );
+		$this->template->assign( 'CURRENCY',      $this->coreCurrencies->get_displayed_currency() );
 
 		$this->parse_header();
 		return $this->template->fetch( './display_list_monthlysettlements.tpl' );
@@ -112,7 +115,8 @@ class moduleMonthlySettlement extends module {
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', get_errors() );
+		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
+		$this->template->assign( 'ERRORS',   get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->template->fetch( './display_edit_monthlysettlement.tpl' );
@@ -150,7 +154,8 @@ class moduleMonthlySettlement extends module {
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', get_errors() );
+		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
+		$this->template->assign( 'ERRORS',   get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->template->fetch( './display_delete_monthlysettlement.tpl' );

@@ -1,21 +1,23 @@
 <?php
 
 /*
-	$Id: modulePreDefMoneyFlows.php,v 1.10 2006/12/07 12:51:42 olivleh1 Exp $
+	$Id: modulePreDefMoneyFlows.php,v 1.11 2006/12/18 12:24:12 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
-require_once 'core/corePreDefMoneyFlows.php';
 require_once 'core/coreContractPartners.php';
+require_once 'core/coreCurrencies.php';
+require_once 'core/corePreDefMoneyFlows.php';
 
 class modulePreDefMoneyFlows extends module {
 
 	function modulePreDefMoneyFlows() {
 		$this->module();
 		$this->coreCapitalSources=new coreCapitalSources();
-		$this->corePreDefMoneyFlows=new corePreDefMoneyFlows();
 		$this->coreContractPartners=new coreContractPartners();
+		$this->coreCurrencies=new coreCurrencies();
+		$this->corePreDefMoneyFlows=new corePreDefMoneyFlows();
 	}
 
 
@@ -39,6 +41,7 @@ class modulePreDefMoneyFlows extends module {
 		$this->template->assign( 'ALL_DATA',          $all_data          );
 		$this->template->assign( 'COUNT_ALL_DATA',    count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
+		$this->template->assign( 'CURRENCY',          $this->coreCurrencies->get_displayed_currency() );
 
 		$this->parse_header();
 		return $this->template->fetch( './display_list_predefmoneyflows.tpl' );
@@ -78,7 +81,8 @@ class modulePreDefMoneyFlows extends module {
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', get_errors() );
+		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
+		$this->template->assign( 'ERRORS',   get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->template->fetch( './display_edit_predefmoneyflow.tpl' );
@@ -101,7 +105,8 @@ class modulePreDefMoneyFlows extends module {
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', get_errors() );
+		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
+		$this->template->assign( 'ERRORS',   get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->template->fetch( './display_delete_predefmoneyflow.tpl' );

@@ -1,19 +1,21 @@
 <?php
 
 /*
-	$Id: moduleSearch.php,v 1.2 2006/06/27 16:44:54 olivleh1 Exp $
+	$Id: moduleSearch.php,v 1.3 2006/12/18 12:24:12 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
-require_once 'core/coreMoneyFlows.php';
 require_once 'core/coreContractPartners.php';
+require_once 'core/coreCurrencies.php';
+require_once 'core/coreMoneyFlows.php';
 
 class moduleSearch extends module {
 
 	function moduleSearch() {
 		$this->module();
-		$this->coreMoneyFlows=new coreMoneyFlows();
 		$this->coreContractPartners=new coreContractPartners();
+		$this->coreCurrencies=new coreCurrencies();
+		$this->coreMoneyFlows=new coreMoneyFlows();
 	}
 
 	function display_search() {
@@ -45,8 +47,9 @@ class moduleSearch extends module {
 
 		$results = $this->coreMoneyFlows->search_moneyflows( $searchparams );
 	    
-		$this->template->assign( 'SEARCHPARAMS',   $searchparams      );
-		$this->template->assign( 'RESULTS', $results );
+		$this->template->assign( 'SEARCHPARAMS', $searchparams      );
+		$this->template->assign( 'RESULTS',      $results );
+		$this->template->assign( 'CURRENCY',     $this->coreCurrencies->get_displayed_currency() );
 		return $this->display_search();
 	}
 }

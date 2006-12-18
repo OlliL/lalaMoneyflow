@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMoneyFlows.php,v 1.19 2006/12/01 15:37:56 olivleh1 Exp $
+	$Id: coreMoneyFlows.php,v 1.20 2006/12/18 12:24:11 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -15,23 +15,23 @@ class coreMoneyFlows extends core {
 
 	function get_all_data( $id=0 ) {
 		if( $id>0 )
-			return $this->select_row( "SELECT * FROM moneyflows WHERE id=$id" );
+			return $this->select_row( "SELECT id,bookingdate,invoicedate,calc_amount(amount,'OUT') amount,capitalsourceid,contractpartnerid,comment FROM moneyflows WHERE id=$id" );
 		else
-			return $this->select_rows( 'SELECT * FROM moneyflows ORDER BY id' );
+			return $this->select_rows( "SELECT id,bookingdate,invoicedate,calc_amount(amount,'OUT') amount,capitalsourceid,contractpartnerid,comment FROM moneyflows ORDER BY id" );
 
 
 	}
 
 	function get_id_data( $id ) {
-		return $this->select_row( "SELECT * FROM moneyflows WHERE id=$id" );
+		return $this->select_row( "SELECT id,bookingdate,invoicedate,calc_amount(amount,'OUT') amount,capitalsourceid,contractpartnerid,comment FROM moneyflows WHERE id=$id" );
 	}
 
 	function get_all_monthly_data( $month, $year ) {
-		return $this->select_rows( "SELECT * FROM moneyflows WHERE bookingdate BETWEEN '$year-$month-01' AND DATE_ADD('$year-$month-01', INTERVAL 1 MONTH) ORDER BY bookingdate,invoicedate" );
+		return $this->select_rows( "SELECT id,bookingdate,invoicedate,calc_amount(amount,'OUT') amount,capitalsourceid,contractpartnerid,comment FROM moneyflows WHERE bookingdate BETWEEN '$year-$month-01' AND DATE_ADD('$year-$month-01', INTERVAL 1 MONTH) ORDER BY bookingdate,invoicedate" );
 	}
 
 	function get_all_monthly_joined_data( $month, $year, $sortby, $order ) {
-		$sortbyadd=' bookingdate,invoicedate';
+		$sortbyadd=' bookingdate,invoicedate,id';
 		switch( $sortby ) {
 			case 'capitalsources_comment':	$sortby='capitalsourcecomment '.$order.',';
 							break;
@@ -41,7 +41,7 @@ class coreMoneyFlows extends core {
 			case 'moneyflows_invoicedate':	$sortby='a.invoicedate '.$order.',';
 							$sortbyadd=' bookingdate';
 							break;
-			case 'moneyflows_amount':	$sortby='a.amount '.$order.',';
+			case 'moneyflows_amount':	$sortby='4 '.$order.',';
 							break;
 			case 'moneyflows_comment':	$sortby='a.comment '.$order.',';
 							break;
@@ -49,7 +49,7 @@ class coreMoneyFlows extends core {
 							break;
 			default:			$sortby='';
 		}
-		return $this->select_rows( "SELECT a.id,a.bookingdate,a.invoicedate,a.amount,a.comment,b.name contractpartnername,c.comment capitalsourcecomment FROM moneyflows a, contractpartners b, capitalsources c WHERE a.bookingdate >= '$year-$month-01' AND a.bookingdate < DATE_ADD('$year-$month-01', INTERVAL 1 MONTH) AND a.contractpartnerid=b.id AND a.capitalsourceid=c.id ORDER BY $sortby $sortbyadd" );
+		return $this->select_rows( "SELECT a.id,a.bookingdate,a.invoicedate,calc_amount(a.amount,'OUT') amount,a.comment,b.name contractpartnername,c.comment capitalsourcecomment FROM moneyflows a, contractpartners b, capitalsources c WHERE a.bookingdate >= '$year-$month-01' AND a.bookingdate < DATE_ADD('$year-$month-01', INTERVAL 1 MONTH) AND a.contractpartnerid=b.id AND a.capitalsourceid=c.id ORDER BY $sortby $sortbyadd" );
 	}
 
 	function capitalsource_in_use( $id ) {
@@ -78,7 +78,7 @@ class coreMoneyFlows extends core {
 		$end   = "DATE_ADD('$year-$month-01', INTERVAL 1 MONTH)";
 		$where = " AND capitalsourceid=$id";
 
-		$movement=$this->select_col( "SELECT round(sum(amount),2) FROM moneyflows WHERE bookingdate >= $start AND bookingdate < $end".$where );
+		$movement=$this->select_col( "SELECT calc_amount(sum(amount),'OUT') amount FROM moneyflows WHERE bookingdate >= $start AND bookingdate < $end".$where );
 		if( empty( $movement ) )
 			$movement=0;
 		return $movement;
@@ -92,7 +92,7 @@ class coreMoneyFlows extends core {
 			$end   = "DATE_ADD('$year-$month-01', INTERVAL 1 MONTH)";
 		}
 
-		$movement=$this->select_col( "SELECT round(sum(amount),2) FROM moneyflows WHERE bookingdate >= $start AND bookingdate < $end" );
+		$movement=$this->select_col( "SELECT calc_amount(sum(amount),'OUT') FROM moneyflows WHERE bookingdate >= $start AND bookingdate < $end" );
 		if( empty( $movement ) )
 			$movement=0;
 		return $movement;
@@ -119,7 +119,7 @@ class coreMoneyFlows extends core {
 		$coreCapitalSources = new coreCapitalSources();
 		if( $coreCapitalSources->id_is_valid( $capitalsourceid, $bookingdate ) ) {
 			if( fix_amount( $amount ) ) {
-				return $this->update_row( "UPDATE moneyflows set bookingdate=STR_TO_DATE('$bookingdate',GET_FORMAT(DATE,'ISO')),invoicedate=STR_TO_DATE('$invoicedate',GET_FORMAT(DATE,'ISO')),amount='$amount',capitalsourceid='$capitalsourceid',contractpartnerid='$contractpartnerid',comment='$comment' WHERE id=$id" );
+				return $this->update_row( "UPDATE moneyflows set bookingdate=STR_TO_DATE('$bookingdate',GET_FORMAT(DATE,'ISO')),invoicedate=STR_TO_DATE('$invoicedate',GET_FORMAT(DATE,'ISO')),amount=calc_amount('$amount','IN'),capitalsourceid='$capitalsourceid',contractpartnerid='$contractpartnerid',comment='$comment' WHERE id=$id" );
 			} else {
 				return false;
 			}
@@ -131,7 +131,7 @@ class coreMoneyFlows extends core {
 
 	function add_moneyflow( $bookingdate, $invoicedate, $amount, $capitalsourceid, $contractpartnerid, $comment ) {
 		if (fix_amount( $amount )) {
-			return $this->insert_row( "INSERT INTO moneyflows (bookingdate,invoicedate,amount,capitalsourceid,contractpartnerid,comment) VALUES (STR_TO_DATE('$bookingdate',GET_FORMAT(DATE,'ISO')),STR_TO_DATE('$invoicedate',GET_FORMAT(DATE,'ISO')),'$amount','$capitalsourceid','$contractpartnerid','$comment')" );
+			return $this->insert_row( "INSERT INTO moneyflows (bookingdate,invoicedate,amount,capitalsourceid,contractpartnerid,comment) VALUES (STR_TO_DATE('$bookingdate',GET_FORMAT(DATE,'ISO')),STR_TO_DATE('$invoicedate',GET_FORMAT(DATE,'ISO')),calc_amount('$amount','IN'),'$capitalsourceid','$contractpartnerid','$comment')" );
 		} else {
 			return false;
 		}
@@ -174,6 +174,6 @@ class coreMoneyFlows extends core {
 			$WHERE_KEYWORD    = 'AND';
 		}
 
-		return $this->select_rows( 'SELECT month(bookingdate) month, year(bookingdate) year, round(sum(amount),2) amount,comment FROM moneyflows '.$WHERE_CONDITION." and bookingdate between STR_TO_DATE('".$params['startdate']."',GET_FORMAT(DATE,'ISO')) and STR_TO_DATE('".$params['enddate']."',GET_FORMAT(DATE,'ISO')) $WHEREADD group by year(bookingdate),month(bookingdate) order by year,month" );
+		return $this->select_rows( 'SELECT month(bookingdate) month, year(bookingdate) year, calc_amount(sum(amount),'."'OUT'".') amount,comment FROM moneyflows '.$WHERE_CONDITION." and bookingdate between STR_TO_DATE('".$params['startdate']."',GET_FORMAT(DATE,'ISO')) and STR_TO_DATE('".$params['enddate']."',GET_FORMAT(DATE,'ISO')) $WHEREADD group by year(bookingdate),month(bookingdate) order by year,month" );
 	}
 }

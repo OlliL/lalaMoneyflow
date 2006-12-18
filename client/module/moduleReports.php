@@ -1,12 +1,13 @@
 <?php
 
 /*
-	$Id: moduleReports.php,v 1.19 2006/11/10 09:43:06 olivleh1 Exp $
+	$Id: moduleReports.php,v 1.20 2006/12/18 12:24:12 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
 require_once 'core/coreContractPartners.php';
+require_once 'core/coreCurrencies.php';
 require_once 'core/coreMoneyFlows.php';
 require_once 'core/coreMonthlySettlement.php';
 if( ENABLE_JPGRAPH ) {
@@ -20,6 +21,7 @@ class moduleReports extends module {
 		$this->module();
 		$this->coreCapitalSources=new coreCapitalSources();
 		$this->coreContractPartners=new coreContractPartners();
+		$this->coreCurrencies=new coreCurrencies();
 		$this->coreMoneyFlows=new coreMoneyFlows();
 		$this->coreMonthlySettlement=new coreMonthlySettlement();
 	}
@@ -112,6 +114,7 @@ class moduleReports extends module {
 		$this->template->assign( 'MON_CALCAMOUNT',           $mon_calcamount           );
 		$this->template->assign( 'YEA_CALCULATEDTURNOVER',   $yea_calculatedturnover   );
 		$this->template->assign( 'MONTHLYSETTLEMENT_EXISTS', $monthlysettlement_exists );
+		$this->template->assign( 'CURRENCY',                 $this->coreCurrencies->get_displayed_currency() );
 
 		$this->parse_header();
 		return $this->template->fetch( './display_generate_report.tpl' );

@@ -25,7 +25,7 @@
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="checkbox" name="all_data[{$smarty.section.DATA.index}][checked]" value=1 {if $ALL_DATA[DATA].checked == 1}checked{/if} /><input type="hidden" name="all_data[{$smarty.section.DATA.index}][id]" value="{$ALL_DATA[DATA].id}" /></td>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][bookingdate]" value="{$ALL_DATA[DATA].bookingdate}" size=10 {if $ALL_DATA[DATA].bookingdate_error == 1}style="color:red"{/if} /></td>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][invoicedate]" value="{$ALL_DATA[DATA].invoicedate}" size=10 {if $ALL_DATA[DATA].invoicedate_error == 1}style="color:red"{/if} /></td>
-						<td class="contrastbgcolor" nowrap><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][amount]" value="{$ALL_DATA[DATA].amount}" size=8 onchange="this.form.elements[{$elements}].checked=true" style="text-align:right{if $ALL_DATA[DATA].amount_error == 1};color:red{/if}" /> EUR</td>
+						<td class="contrastbgcolor" nowrap><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][amount]" value="{$ALL_DATA[DATA].amount}" size=8 onchange="this.form.elements[{$elements}].checked=true" style="text-align:right{if $ALL_DATA[DATA].amount_error == 1};color:red{/if}" /> {$CURRENCY}</td>
 
 						{if $ALL_DATA[DATA].id eq -1 }
 						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[{$smarty.section.DATA.index}][contractpartnerid]" size=1>

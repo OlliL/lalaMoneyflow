@@ -1,12 +1,13 @@
 <?php
 
 /*
-	$Id: moduleMoneyFlows.php,v 1.22 2006/12/07 12:51:41 olivleh1 Exp $
+	$Id: moduleMoneyFlows.php,v 1.23 2006/12/18 12:24:11 olivleh1 Exp $
 */
 
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
 require_once 'core/coreContractPartners.php';
+require_once 'core/coreCurrencies.php';
 require_once 'core/coreMoneyFlows.php';
 require_once 'core/corePreDefMoneyFlows.php';
 
@@ -16,6 +17,7 @@ class moduleMoneyFlows extends module {
 		$this->module();
 		$this->coreCapitalSources=new coreCapitalSources();
 		$this->coreContractPartners=new coreContractPartners();
+		$this->coreCurrencies=new coreCurrencies();
 		$this->coreMoneyFlows=new coreMoneyFlows();
 		$this->corePreDefMoneyFlows=new corePreDefMoneyFlows();
 	}
@@ -52,7 +54,8 @@ class moduleMoneyFlows extends module {
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', get_errors() );
+		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
+		$this->template->assign( 'ERRORS',   get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->template->fetch( './display_edit_moneyflow.tpl' );
@@ -136,7 +139,8 @@ class moduleMoneyFlows extends module {
 		$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 		$this->template->assign( 'ALL_DATA',               $all_data               );
-		$this->template->assign( 'ERRORS', get_errors() );
+		$this->template->assign( 'CURRENCY',               $this->coreCurrencies->get_displayed_currency() );
+		$this->template->assign( 'ERRORS',                 get_errors() );
 
 		$this->parse_header();
 		return $this->template->fetch( './display_add_moneyflow.tpl' );
@@ -160,7 +164,8 @@ class moduleMoneyFlows extends module {
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', get_errors() );
+		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
+		$this->template->assign( 'ERRORS',   get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->template->fetch( './display_delete_moneyflow.tpl' );

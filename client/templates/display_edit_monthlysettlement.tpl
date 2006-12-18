@@ -41,7 +41,7 @@
 				{section name=DATA loop=$ALL_DATA}
 					<tr>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="hidden" name="all_data[{$ALL_DATA[DATA].id}][id]" value="{$ALL_DATA[DATA].id}">{$ALL_DATA[DATA].comment}</td>
-						<td class="contrastbgcolor" align="right"><input class="contrastbgcolor" type="text" name="all_data[{$ALL_DATA[DATA].id}][amount]" value="{$ALL_DATA[DATA].amount|string_format:"%.2f"}" size=8 align="right"/> EUR</font></td>
+						<td class="contrastbgcolor" align="right"><input class="contrastbgcolor" type="text" name="all_data[{$ALL_DATA[DATA].id}][amount]" value="{$ALL_DATA[DATA].amount|string_format:"%.2f"}" size=8 align="right"/> {$CURRENCY}</font></td>
 					</tr>
 				{/section}
 			</table>

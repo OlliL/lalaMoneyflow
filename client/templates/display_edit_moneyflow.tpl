@@ -23,7 +23,7 @@
 				<tr>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[bookingdate]" value="{$ALL_DATA.bookingdate}"                 size=10 /></td>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[invoicedate]" value="{$ALL_DATA.invoicedate}"                 size=10 /></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[amount]"      value="{$ALL_DATA.amount|string_format:"%.2f"}" size=8 align="right" /> EUR</td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[amount]"      value="{$ALL_DATA.amount|string_format:"%.2f"}" size=8 align="right" /> {$CURRENCY}</td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[capitalsourceid]" size=1>
 					{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
 						<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].id}" {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].id == $ALL_DATA.capitalsourceid}selected{/if}> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}

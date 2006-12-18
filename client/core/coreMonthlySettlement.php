@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: coreMonthlySettlement.php,v 1.12 2006/12/01 15:37:57 olivleh1 Exp $
+	$Id: coreMonthlySettlement.php,v 1.13 2006/12/18 12:24:11 olivleh1 Exp $
 */
 
 require_once 'core/core.php';
@@ -13,11 +13,11 @@ class coreMonthlySettlement extends core {
 	}
 
 	function get_amount( $sourceid, $month, $year ) {
-		return $this->select_col( "SELECT round(amount,2) FROM monthlysettlements WHERE capitalsourceid=$sourceid AND month=$month AND year=$year LIMIT 1" );
+		return $this->select_col( "SELECT calc_amount(amount,'OUT') amount FROM monthlysettlements WHERE capitalsourceid=$sourceid AND month=$month AND year=$year LIMIT 1" );
 	}
 
 	function get_sum_amount( $month, $year ) {
-		return $this->select_col( "SELECT round(sum(amount),2) FROM monthlysettlements WHERE month=$month AND year=$year LIMIT 1" );
+		return $this->select_col( "SELECT calc_amount(amount,'OUT')amount FROM monthlysettlements WHERE month=$month AND year=$year LIMIT 1" );
 	}
 
 	function monthlysettlement_exists( $month, $year, $sourceid = 0 ) {
@@ -54,7 +54,7 @@ class coreMonthlySettlement extends core {
 
 	function set_amount( $sourceid, $month, $year, $amount ) {
 		if( fix_amount( $amount ) ) {
-			return $this->insert_row( "INSERT INTO monthlysettlements (capitalsourceid,month,year,amount) VALUES ($sourceid,$month,$year,$amount) ON DUPLICATE KEY UPDATE amount=VALUES(amount)" );
+			return $this->insert_row( "INSERT INTO monthlysettlements (capitalsourceid,month,year,amount) VALUES ($sourceid,$month,$year,calc_amount($amount,'IN')) ON DUPLICATE KEY UPDATE amount=VALUES(amount)" );
 		} else {
 			return false;
 		}
