@@ -25,7 +25,7 @@
 # SUCH DAMAGE.
 #
 # $MCom: portstools/tinderbox/webui/module/moduleSession.php,v 1.3 2005/07/21 11:28:29 oliver Exp $
-# $Id: coreSession.php,v 1.1 2006/12/19 12:54:12 olivleh1 Exp $
+# $Id: coreSession.php,v 1.2 2006/12/19 15:50:55 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -67,6 +67,16 @@ class coreSession extends core {
 		return false;
 	}
 
+	function restart( ) {
+		if( !session_id() ) {
+			if( !$this->start() ) {
+				return false;
+			}
+		}
+		session_regenerate_id( true );
+		return true;
+	}
+				
 	function destroy() {
 		if( session_id() ) {
 			session_destroy();
