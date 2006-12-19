@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleUsers.php,v 1.1 2006/12/19 12:54:13 olivleh1 Exp $
+# $Id: moduleUsers.php,v 1.2 2006/12/19 15:25:08 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -40,7 +40,6 @@ class moduleUser extends module {
 	}
 
 	function is_logged_in() {
-		$this->coreSession->start();
 		if( !$this->coreSession->getAttribute( 'users_name' ) || !$this->coreSession->getAttribute( 'users_id' ) ) {
 			return false;
 		} else {
@@ -49,16 +48,21 @@ class moduleUser extends module {
 		}
 	}
 
-	function display_login_user( $realaction, $name, $password ) {
+	function display_login_user( $realaction, $name, $password, $stay_logged_in ) {
 
 		switch( $realaction ) {
 			case 'login':
+				if( $stay_logged_in == 'on' ) {
+					session_set_cookie_params(5184000);
+					session_cache_expire(86400);
+				}
 				if( $id=$this->coreUsers->check_account( $name, $password ) ) {
 					$this->coreSession->setAttribute( 'users_name', $name );
 					$this->coreSession->setAttribute( 'users_id',   $id );
 					$loginok=1;
 				} else {
-					$this->template->assign( 'NAME',   $name );
+					$this->template->assign( 'NAME',           $name );
+					$this->template->assign( 'STAY_LOGGED_IN', $stay_logged_in );
 					add_error( "username or password not OK" );
 				}
 				break;

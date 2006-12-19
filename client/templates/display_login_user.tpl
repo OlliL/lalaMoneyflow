@@ -19,6 +19,10 @@
 					<th>password</th>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="password" name="password" value="" size=10 /></td>
 				</tr>
+				<tr>
+					<th>stay logged in</th>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="checkbox" name="stay_logged_in" {if $STAY_LOGGED_IN == 1}checked{/if}></td>
+				</tr>
 			</table>
 			<br />
 			<input type="submit" name="realaction" value="login">

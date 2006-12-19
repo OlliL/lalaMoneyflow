@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.18 2006/12/19 12:54:10 olivleh1 Exp $
+# $Id: index.php,v 1.19 2006/12/19 15:25:08 olivleh1 Exp $
 #
 
 $action=$_POST['action']?$_POST['action']:$_GET['action'];
@@ -62,7 +62,8 @@ if( !$moduleUser->is_logged_in() ) {
 	$realaction=	$_POST['realaction'];
 	$name=		$_POST['name'];
 	$password=	$_POST['password'];
-	$display=$moduleUser->display_login_user( $realaction, $name, $password );
+	$stay_logged_in=$_POST['stay_logged_in'];
+	$display=$moduleUser->display_login_user( $realaction, $name, $password, $stay_logged_in );
 }
 
 if( $moduleUser->is_logged_in() ) {
@@ -191,7 +192,7 @@ switch( $action ) {
 	
 	/* users */
 	
-	case 'logout':			$display=$moduleUser->display_login_user( 'logout', NULL, NULL );
+	case 'logout':			$display=$moduleUser->display_login_user( 'logout', NULL, NULL, NULL );
 					break;
 
 	default:			$display=$moduleFrontPage->display_main();
