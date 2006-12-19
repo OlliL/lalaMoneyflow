@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: module.php,v 1.13 2006/12/19 12:54:12 olivleh1 Exp $
+# $Id: module.php,v 1.14 2006/12/19 18:28:32 olivleh1 Exp $
 #
 
 require_once 'Smarty.class.php';
@@ -58,10 +58,11 @@ class module {
 	}
 
 	function parse_header( $nonavi=0 ) {
-		$this->template->assign( 'REPORTS_YEAR',  date( 'Y' ) );
-		$this->template->assign( 'REPORTS_MONTH', date( 'm' ) );
+		$this->template->assign( 'REPORTS_YEAR',   date( 'Y' ) );
+		$this->template->assign( 'REPORTS_MONTH',  date( 'm' ) );
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
-		$this->template->assign( 'NO_NAVIGATION', $nonavi   );
+		$this->template->assign( 'VERSION',        '0.6.1' );
+		$this->template->assign( 'NO_NAVIGATION',  $nonavi );
 
 		$header=$this->template->fetch( './display_header.tpl' );
 		$this->template->assign( 'HEADER', $header );

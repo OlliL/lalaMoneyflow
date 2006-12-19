@@ -3,7 +3,7 @@
 {$HEADER}
 		<td align="center">
 		<br />
-		<h1>please login...</h1>
+		<h1>please log in...</h1>
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action" value="login_user">
 			{section name=ERROR loop=$ERRORS}
@@ -27,5 +27,8 @@
 			<br />
 			<input type="submit" name="realaction" value="login">
 		</form>
+		<br />
+		<p style="font-size:11px;color:darkblue;font-weight:bold;text-align:center">lalaMoneyflow {$VERSION} - &copy by Oliver Lehmann</p>
+		
 		</td>
 {$FOOTER}

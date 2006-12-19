@@ -10,7 +10,7 @@
 			<tr>
 {if $NO_NAVIGATION == 0}
 				<td valign="top" width="100"><nobr>
-<p style="font-size:11px;color:darkblue;font-weight:bold;text-align:center">lalaMoneyflow<br />0.6.0</p><br />
+<p style="font-size:11px;color:darkblue;font-weight:bold;text-align:center">lalaMoneyflow<br />{$VERSION}</p><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_capitalsources">list capital sources</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_contractpartners">list contract partners</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_predefmoneyflows">list predefined moneyflows</a><br />
