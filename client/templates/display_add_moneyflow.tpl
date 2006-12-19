@@ -1,5 +1,5 @@
 <html>
-	<head><title>moneyflow: add moneyflows</title>
+	<head><title>lalaMoneyflow: add moneyflows</title>
 {$HEADER}
 
 		<td align="center">

@@ -1,5 +1,5 @@
 <html>
-	<head><title>moneyflow: list contract partners</title>
+	<head><title>lalaMoneyflow: list contract partners</title>
 {$HEADER}
 
 		<td align="center" valign="top" width=600>

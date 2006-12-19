@@ -1,5 +1,5 @@
 <html>
-	<head><title>moneyflow: plot trends</title>
+	<head><title>lalaMoneyflow: plot trends</title>
 {$HEADER}
 		<td align="center" valign="top" width=600>
 			<form action="{$ENV_INDEX_PHP}" method="POST">

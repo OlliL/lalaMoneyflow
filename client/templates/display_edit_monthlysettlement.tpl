@@ -1,6 +1,6 @@
 <html>
 {if $CLOSE != 1}
-	<head><title>moneyflow: monthly settlement</title>
+	<head><title>lalaMoneyflow: monthly settlement</title>
 {$HEADER}
 
 		<td align="center">

@@ -1,6 +1,6 @@
 <html>
 {if $CLOSE != 1}
-	<head><title>moneyflow: delete predefined moneyflow</title>
+	<head><title>lalaMoneyflow: delete predefined moneyflow</title>
 {$HEADER}
 
 		<td align="center">

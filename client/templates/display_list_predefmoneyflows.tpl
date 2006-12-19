@@ -1,5 +1,5 @@
 <html>
-	<head><title>moneyflow: list predefined moneyflows</title>
+	<head><title>lalaMoneyflow: list predefined moneyflows</title>
 {$HEADER}
 
 		<td align="center" valign="top">

@@ -1,5 +1,5 @@
 <html>
-	<head><title>moneyflow: list capital sources</title>
+	<head><title>lalaMoneyflow: list capital sources</title>
 {$HEADER}
 
 		<td align="center" valign="top">

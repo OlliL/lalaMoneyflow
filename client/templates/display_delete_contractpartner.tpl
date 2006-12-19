@@ -1,6 +1,6 @@
 <html>
 {if $CLOSE != 1}
-	<head><title>moneyflow: delete contract partner</title>
+	<head><title>lalaMoneyflow: delete contract partner</title>
 {$HEADER}
 
 		<td align="center">

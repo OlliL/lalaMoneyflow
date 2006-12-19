@@ -1,5 +1,5 @@
 <html>
-	<head><title>moneyflow: list monthly settlements</title>
+	<head><title>lalaMoneyflow: list monthly settlements</title>
 {literal}
 <script type="text/javascript">
 <!--

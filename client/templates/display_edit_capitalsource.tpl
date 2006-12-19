@@ -1,6 +1,6 @@
 <html>
 {if $CLOSE != 1}
-	<head><title>moneyflow: {if $ALL_DATA.id > 0}edit{else}add{/if} capital source</title>
+	<head><title>lalaMoneyflow: {if $ALL_DATA.id > 0}edit{else}add{/if} capital source</title>
 {$HEADER}
 
 		<td align="center">
