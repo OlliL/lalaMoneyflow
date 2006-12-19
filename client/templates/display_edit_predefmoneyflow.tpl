@@ -39,7 +39,6 @@
 		</td>
 {$FOOTER}
 {else}
-<!--	<body onLoad='opener.location = "{$ENV_REFERER}" ;parent.close()'> -->
-{$ENV_REFERER}
+	<body onLoad='opener.location = "{$ENV_REFERER}" ;parent.close()'>
 	</html>
 {/if}

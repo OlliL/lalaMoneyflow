@@ -24,24 +24,22 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCurrencies.php,v 1.2 2006/12/19 12:54:11 olivleh1 Exp $
+# $Id: coreUsers.php,v 1.1 2006/12/19 12:54:12 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
-require_once 'core/coreSettings.php';
 
-class coreCurrencies extends core {
+class coreUsers extends core {
 
-	function coreCurrencies() {
+	function coreUsers() {
 		$this->core();
-		$this->coreSettings = new coreSettings();
 	}
 
-	function get_displayed_currency() {
-		return $this->get_currency( $this->coreSettings->get_displayed_currency() );
-	}
-
-	function get_currency( $id ) {
-		return $this->select_col( "SELECT currency FROM currencies WHERE id=$id AND userid=".USERID." LIMIT 1" );
+	function check_account( $name, $password ) {
+		if ( $id=$this->select_col( "SELECT id FROM users WHERE name='$name' AND password='".sha1( $password )."'" ) ) {
+			return $id;
+		} else {
+			return;
+		}
 	}
 }

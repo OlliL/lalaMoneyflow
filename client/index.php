@@ -1,8 +1,31 @@
 <?php
-
-/*
-	$Id: index.php,v 1.17 2006/11/10 09:43:05 olivleh1 Exp $
-*/
+#-
+# Copyright (c) 2005-2006 Oliver Lehmann <oliver@FreeBSD.org>
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+# 1. Redistributions of source code must retain the above copyright
+#	notice, this list of conditions and the following disclaimer
+# 2. Redistributions in binary form must reproduce the above copyright
+#	notice, this list of conditions and the following disclaimer in the
+#	documentation and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+# OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+# OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+#
+# $Id: index.php,v 1.18 2006/12/19 12:54:10 olivleh1 Exp $
+#
 
 $action=$_POST['action']?$_POST['action']:$_GET['action'];
 
@@ -20,6 +43,7 @@ require_once 'module/moduleMonthlySettlement.php';
 require_once 'module/modulePreDefMoneyFlows.php';
 require_once 'module/moduleReports.php';
 require_once 'module/moduleSearch.php';
+require_once 'module/moduleUser.php';
 require_once 'util/utilTimer.php';
 #$timer = new utilTimer();
 #$timer->mStart();
@@ -32,6 +56,16 @@ $moduleMonthlySettlement	= new moduleMonthlySettlement();
 $modulePreDefMoneyFlows		= new modulePreDefMoneyFlows();
 $moduleReports			= new moduleReports();
 $moduleSearch			= new moduleSearch();
+$moduleUser			= new moduleUser();
+
+if( !$moduleUser->is_logged_in() ) {
+	$realaction=	$_POST['realaction'];
+	$name=		$_POST['name'];
+	$password=	$_POST['password'];
+	$display=$moduleUser->display_login_user( $realaction, $name, $password );
+}
+
+if( $moduleUser->is_logged_in() ) {
 
 switch( $action ) {
 	/* capitalsources */
@@ -154,11 +188,16 @@ switch( $action ) {
 					$minus=		$_POST['minus'];
 					$display=$moduleSearch->do_search( $searchstring, $contractpart, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus );
 					break;
+	
+	/* users */
+	
+	case 'logout':			$display=$moduleUser->display_login_user( 'logout', NULL, NULL );
+					break;
 
 	default:			$display=$moduleFrontPage->display_main();
 					break;
 }
-
+}
 echo $display;
 #$timer->mPrintTime();
 ?>

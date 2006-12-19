@@ -24,50 +24,53 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: module.php,v 1.13 2006/12/19 12:54:12 olivleh1 Exp $
+# $MCom: portstools/tinderbox/webui/module/moduleSession.php,v 1.3 2005/07/21 11:28:29 oliver Exp $
+# $Id: coreSession.php,v 1.1 2006/12/19 12:54:12 olivleh1 Exp $
 #
 
-require_once 'Smarty.class.php';
+require_once 'core/core.php';
 
-class module {
-	function module() {
-		$this->template = new Smarty;
-		$this->index_php='index.php';
-		$this->template->register_modifier( 'number_format', 'my_number_format' );
-		$this->template->assign( 'ENV_INDEX_PHP', $this->index_php );
-		
-		if( !empty( $_SERVER['HTTP_REFERER'] ) ) {
-			$http_referer = $_SERVER['HTTP_REFERER'];
-		} else {
-			$http_referer = '';
+class coreSession extends core {
+
+	function coreSession() {
+		$this->core();
+	}
+
+	function setAttribute( $attribute, $value ) {
+		if( !session_id() ) {
+			if( !$this->start() ) {
+				return false;
+			}
 		}
 
-		if( !empty( $_POST['REFERER'] ) ) {
-			$referer = $_POST['REFERER'];
-		} elseif( !empty( $_GET['REFERER'] ) ) {
-			$referer = $_GET['REFERER'];
-		} else {
-			$referer ='';
-		}
+		$_SESSION[$attribute] = $value;
+		return true;
+	}
 
-		if ( ( !empty( $_POST['sr'] ) && $_POST['sr'] == 1 ) || ( !empty( $_GET['sr'] ) && $_GET['sr'] == 1 ) ) {
-			$this->template->assign( 'ENV_REFERER', $http_referer );
+	function getAttribute( $attribute ) {
+		if( isset( $_SESSION[$attribute] ) ) {
+			return $_SESSION[$attribute];
 		} else {
-			$this->template->assign( 'ENV_REFERER', $referer );
+			return false;
 		}
 	}
 
-	function parse_header( $nonavi=0 ) {
-		$this->template->assign( 'REPORTS_YEAR',  date( 'Y' ) );
-		$this->template->assign( 'REPORTS_MONTH', date( 'm' ) );
-		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
-		$this->template->assign( 'NO_NAVIGATION', $nonavi   );
+	function removeAttribute( $attribute ) {
+		unset( $_SESSION[$attribute] );
+	}
 
-		$header=$this->template->fetch( './display_header.tpl' );
-		$this->template->assign( 'HEADER', $header );
+	function start() {
+		if( !headers_sent() ) {
+			session_start();
+			return true;
+		}
+		return false;
+	}
 
-		$footer=$this->template->fetch( './display_footer.tpl' );
-		$this->template->assign( 'FOOTER', $footer );
-	}	
+	function destroy() {
+		if( session_id() ) {
+			session_destroy();
+		}
+	}
 }
 ?>

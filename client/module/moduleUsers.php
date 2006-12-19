@@ -24,24 +24,57 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCurrencies.php,v 1.2 2006/12/19 12:54:11 olivleh1 Exp $
+# $Id: moduleUsers.php,v 1.1 2006/12/19 12:54:13 olivleh1 Exp $
 #
 
-require_once 'core/core.php';
-require_once 'core/coreSettings.php';
+require_once 'module/module.php';
+require_once 'core/coreSession.php';
+require_once 'core/coreUsers.php';
 
-class coreCurrencies extends core {
+class moduleUser extends module {
 
-	function coreCurrencies() {
-		$this->core();
-		$this->coreSettings = new coreSettings();
+	function moduleUser() {
+		$this->module();
+		$this->coreSession = new coreSession();
+		$this->coreUsers = new coreUsers();
 	}
 
-	function get_displayed_currency() {
-		return $this->get_currency( $this->coreSettings->get_displayed_currency() );
+	function is_logged_in() {
+		$this->coreSession->start();
+		if( !$this->coreSession->getAttribute( 'users_name' ) || !$this->coreSession->getAttribute( 'users_id' ) ) {
+			return false;
+		} else {
+			define( USERID, $this->coreSession->getAttribute( 'users_id' ));
+			return true;
+		}
 	}
 
-	function get_currency( $id ) {
-		return $this->select_col( "SELECT currency FROM currencies WHERE id=$id AND userid=".USERID." LIMIT 1" );
+	function display_login_user( $realaction, $name, $password ) {
+
+		switch( $realaction ) {
+			case 'login':
+				if( $id=$this->coreUsers->check_account( $name, $password ) ) {
+					$this->coreSession->setAttribute( 'users_name', $name );
+					$this->coreSession->setAttribute( 'users_id',   $id );
+					$loginok=1;
+				} else {
+					$this->template->assign( 'NAME',   $name );
+					add_error( "username or password not OK" );
+				}
+				break;
+			case 'logout':
+				$this->coreSession->destroy();
+			default:
+				break;
+		}
+
+		if( $loginok==1 ) {
+			return;
+		} else {
+			$this->template->assign( 'ERRORS',   get_errors() );
+			$this->parse_header( 1 );
+			return $this->template->fetch( './display_login_user.tpl' );
+		}
 	}
 }
+?>
