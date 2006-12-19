@@ -24,7 +24,7 @@ function Go(x)
 
 {$HEADER}
 
-		<td align="center" valign="top" width=600>
+		<td align="center" valign="top">
 			<form action="#" method="get">
 			<h1>list monthly settlements</h1>
 			<table border="0" cellpadding=5>

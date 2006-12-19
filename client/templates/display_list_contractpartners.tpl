@@ -2,7 +2,7 @@
 	<head><title>lalaMoneyflow: list contract partners</title>
 {$HEADER}
 
-		<td align="center" valign="top" width=600>
+		<td align="center" valign="top">
 			<h1>list contract partners</h1>
 			<a href="{$ENV_INDEX_PHP}?action=list_contractpartners&letter=all">all</a> 
 			{section name=LETTER loop=$ALL_INDEX_LETTERS}
@@ -10,7 +10,7 @@
 			{/section}
 			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&sr=1','_blank','width=800,height=80')">add</a> 
 			{if $COUNT_ALL_DATA > 0}
-				<table border=0 width=600>
+				<table border=0>
 					<tr>
 						<th width="150">name</th>
 						<th width="200">street</th>

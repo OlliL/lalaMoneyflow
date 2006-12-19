@@ -1,7 +1,7 @@
 <html>
 	<head><title>lalaMoneyflow: plot trends</title>
 {$HEADER}
-		<td align="center" valign="top" width=600>
+		<td align="center" valign="top">
 			<form action="{$ENV_INDEX_PHP}" method="POST">
 				<input type="hidden" name="action" value="plot_trends">
 				<table border=0>
