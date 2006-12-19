@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleUsers.php,v 1.3 2006/12/19 15:50:55 olivleh1 Exp $
+# $Id: moduleUsers.php,v 1.4 2006/12/19 18:03:25 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -41,7 +41,6 @@ class moduleUser extends module {
 
 	function is_logged_in() {
 		$this->coreSession->start();
-		echo "1";
 		if( !$this->coreSession->getAttribute( 'users_name' ) || !$this->coreSession->getAttribute( 'users_id' ) ) {
 			return false;
 		} else {
