@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreContractPartners.php,v 1.7 2006/12/19 12:54:11 olivleh1 Exp $
+# $Id: coreContractPartners.php,v 1.8 2006/12/19 14:37:17 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -49,8 +49,12 @@ class coreContractPartners extends core {
 	}
 
 	function get_ids_index_letters( $ids ) {
-		$idstring=implode( $ids, ',' );
-		return $this->select_cols( "SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters FROM contractpartners WHERE id IN ($idstring) AND userid=".USERID." ORDER BY letters" );
+		if( is_array( $ids ) ) {
+			$idstring=implode( $ids, ',' );
+			return $this->select_cols( "SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters FROM contractpartners WHERE id IN ($idstring) AND userid=".USERID." ORDER BY letters" );
+		} else {
+			return;
+		}
 	}
 
 	function get_all_matched_data( $letter ) {
@@ -62,7 +66,13 @@ class coreContractPartners extends core {
 	}
 
 	function get_all_names() {
-		return $this->select_rows( 'SELECT id,name FROM contractpartners WHERE userid='.USERID.' ORDER BY name' );
+		$result=$this->select_rows( 'SELECT id,name FROM contractpartners WHERE userid='.USERID.' ORDER BY name' );
+		if( is_array( $result ) ) {
+			return $result;
+		} else {
+			add_error( 'no contract partners defined' );
+			return;
+		}
 	}
 
 	function get_name( $id ) {

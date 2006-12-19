@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.21 2006/12/19 12:54:13 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.22 2006/12/19 14:37:18 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -90,57 +90,60 @@ class moduleReports extends module {
 		}
 
 		$all_moneyflow_data=$this->coreMoneyFlows->get_all_monthly_joined_data( $month, $year, $sortby, $order );
-		$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
-		$all_capitalsources_ids=$this->coreCapitalSources->get_valid_ids( "$year-$month-1", "$year-$month-1", $sortby, $order );
+		if( is_array( $all_moneyflow_data ) ) {
+			$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
-		$i=0;
-		$lastamount=0;
-		$fixamount=0;
-		$calcamount=0;
-		foreach( $all_capitalsources_ids as $capitalsources_id ) {
-			$summary_data[$i]['id']=$capitalsources_id;
-			$summary_data[$i]['comment']=$this->coreCapitalSources->get_comment( $capitalsources_id );
-			$summary_data[$i]['type']=$this->coreCapitalSources->get_type( $capitalsources_id );
-			$summary_data[$i]['state']=$this->coreCapitalSources->get_state( $capitalsources_id );
-			$summary_data[$i]['lastamount']=$this->coreMonthlySettlement->get_amount( $capitalsources_id, date( 'm', mktime( 0, 0, 0, $month-1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1, $year ) ) );
-			$summary_data[$i]['fixamount']=$this->coreMonthlySettlement->get_amount( $capitalsources_id, $month,$year );
-			$summary_data[$i]['calcamount']=round( $summary_data[$i]['lastamount']+$this->coreMoneyFlows->get_monthly_capitalsource_movement( $capitalsources_id, $month, $year ), 2 );
-			$summary_data[$i]['difference']=$summary_data[$i]['fixamount']-$summary_data[$i]['calcamount'];
+			$all_capitalsources_ids=$this->coreCapitalSources->get_valid_ids( "$year-$month-1", "$year-$month-1", $sortby, $order );
 
-			$lastamount+=$summary_data[$i]['lastamount'];
-			$mon_calcamount+=$summary_data[$i]['calcamount'];
-			$fixamount+=$summary_data[$i]['fixamount'];
+			$i=0;
+			$lastamount=0;
+			$fixamount=0;
+			$calcamount=0;
+			foreach( $all_capitalsources_ids as $capitalsources_id ) {
+				$summary_data[$i]['id']=$capitalsources_id;
+				$summary_data[$i]['comment']=$this->coreCapitalSources->get_comment( $capitalsources_id );
+				$summary_data[$i]['type']=$this->coreCapitalSources->get_type( $capitalsources_id );
+				$summary_data[$i]['state']=$this->coreCapitalSources->get_state( $capitalsources_id );
+				$summary_data[$i]['lastamount']=$this->coreMonthlySettlement->get_amount( $capitalsources_id, date( 'm', mktime( 0, 0, 0, $month-1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1, $year ) ) );
+				$summary_data[$i]['fixamount']=$this->coreMonthlySettlement->get_amount( $capitalsources_id, $month,$year );
+				$summary_data[$i]['calcamount']=round( $summary_data[$i]['lastamount']+$this->coreMoneyFlows->get_monthly_capitalsource_movement( $capitalsources_id, $month, $year ), 2 );
+				$summary_data[$i]['difference']=$summary_data[$i]['fixamount']-$summary_data[$i]['calcamount'];
 
-			$i++;
+				$lastamount+=$summary_data[$i]['lastamount'];
+				$mon_calcamount+=$summary_data[$i]['calcamount'];
+				$fixamount+=$summary_data[$i]['fixamount'];
+
+				$i++;
+			}
+
+			$yea_calculatedturnover+=round( $summary_data[$i]['lastamount']+$this->coreMoneyFlows->get_year_capitalsource_movement( $month, $year ), 2 );
+
+			$monthlysettlement_exists=$this->coreMonthlySettlement->monthlysettlement_exists( $month, $year );
+
+			$firstamount=$this->coreMonthlySettlement->get_sum_amount( 12, $year-1 );
+
+			$month = array(
+				'nummeric' => sprintf( '%02d', $month ),
+				'name'     => strftime( '%B', strtotime( "$month/1/$year" ) )
+			);
+
+			$this->template->assign( 'MONTH',                    $month                    );
+			$this->template->assign( 'YEAR' ,                    $year                     );
+			$this->template->assign( 'SORTBY',                   $sortby                   );
+			$this->template->assign( 'ORDER',                    $neworder                 );
+			$this->template->assign( 'SUMMARY_DATA',             $summary_data             );
+			$this->template->assign( 'FIRSTAMOUNT',              $firstamount              );
+			$this->template->assign( 'LASTAMOUNT',               $lastamount               );
+			$this->template->assign( 'FIXAMOUNT',                $fixamount                );
+			$this->template->assign( 'MON_CALCAMOUNT',           $mon_calcamount           );
+			$this->template->assign( 'YEA_CALCULATEDTURNOVER',   $yea_calculatedturnover   );
+			$this->template->assign( 'MONTHLYSETTLEMENT_EXISTS', $monthlysettlement_exists );
+			$this->template->assign( 'CURRENCY',                 $this->coreCurrencies->get_displayed_currency() );
+
+			$this->parse_header();
+			return $this->template->fetch( './display_generate_report.tpl' );
 		}
-
-		$yea_calculatedturnover+=round( $summary_data[$i]['lastamount']+$this->coreMoneyFlows->get_year_capitalsource_movement( $month, $year ), 2 );
-
-		$monthlysettlement_exists=$this->coreMonthlySettlement->monthlysettlement_exists( $month, $year );
-
-		$firstamount=$this->coreMonthlySettlement->get_sum_amount( 12, $year-1 );
-
-		$month = array(
-			'nummeric' => sprintf( '%02d', $month ),
-			'name'     => strftime( '%B', strtotime( "$month/1/$year" ) )
-		);
-
-		$this->template->assign( 'MONTH',                    $month                    );
-		$this->template->assign( 'YEAR' ,                    $year                     );
-		$this->template->assign( 'SORTBY',                   $sortby                   );
-		$this->template->assign( 'ORDER',                    $neworder                 );
-		$this->template->assign( 'SUMMARY_DATA',             $summary_data             );
-		$this->template->assign( 'FIRSTAMOUNT',              $firstamount              );
-		$this->template->assign( 'LASTAMOUNT',               $lastamount               );
-		$this->template->assign( 'FIXAMOUNT',                $fixamount                );
-		$this->template->assign( 'MON_CALCAMOUNT',           $mon_calcamount           );
-		$this->template->assign( 'YEA_CALCULATEDTURNOVER',   $yea_calculatedturnover   );
-		$this->template->assign( 'MONTHLYSETTLEMENT_EXISTS', $monthlysettlement_exists );
-		$this->template->assign( 'CURRENCY',                 $this->coreCurrencies->get_displayed_currency() );
-
-		$this->parse_header();
-		return $this->template->fetch( './display_generate_report.tpl' );
 	}
 
 	function display_plot_trends( $all_data ) {

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.12 2006/12/19 12:54:11 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.13 2006/12/19 14:37:17 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -65,7 +65,13 @@ class coreCapitalSources extends core {
 	}
 
 	function get_valid_comments( $validfrom, $validtil ) {
-		return $this->select_rows( "SELECT id,comment FROM capitalsources WHERE validfrom <= '$validfrom' and validtil >= '$validtil' AND userid=".USERID." ORDER BY id" );
+		$result=$this->select_rows( "SELECT id,comment FROM capitalsources WHERE validfrom <= '$validfrom' and validtil >= '$validtil' AND userid=".USERID." ORDER BY id" );
+		if( is_array( $result ) ) {
+			return $result;
+		} else {
+			add_error( 'no capital sources defined' );
+			return;
+		}
 	}
 
 	function get_enum_type() {

@@ -1,4 +1,5 @@
 - errormessages language independend (localizable)
+- manage currencies (add, delete (not the default one), modify, def. displayed)
 
 - admin tool
   - user handling

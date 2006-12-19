@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: modulePreDefMoneyFlows.php,v 1.12 2006/12/19 12:54:13 olivleh1 Exp $
+# $Id: modulePreDefMoneyFlows.php,v 1.13 2006/12/19 14:37:18 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -74,14 +74,28 @@ class modulePreDefMoneyFlows extends module {
 
 		switch( $realaction ) {
 			case 'save':
-				if( $id == 0 )
-					$ret=$this->corePreDefMoneyFlows->add_predefmoneyflow( $all_data['amount'], $all_data['capitalsourceid'], $all_data['contractpartnerid'], $all_data['comment'] );
-				else
-					$ret=$this->corePreDefMoneyFlows->update_predefmoneyflow( $id, $all_data['amount'], $all_data['capitalsourceid'], $all_data['contractpartnerid'], $all_data['comment'] );
+				$data_is_valid=true;
+				
+				if( empty( $all_data['capitalsourceid'] ) ) {
+					add_error( "capitalsource can't be empty" );
+					$data_is_valid=false;
+				};
+				
+				if( empty( $all_data['contractpartnerid'] ) ) {
+					add_error( "contractpartner can't be empty" );
+					$data_is_valid=false;
+				};
 
-				if( $ret ) {
-					$this->template->assign( 'CLOSE', 1 );
-					break;
+				if( $data_is_valid ) {
+					if( $id == 0 )
+						$ret=$this->corePreDefMoneyFlows->add_predefmoneyflow( $all_data['amount'], $all_data['capitalsourceid'], $all_data['contractpartnerid'], $all_data['comment'] );
+					else
+						$ret=$this->corePreDefMoneyFlows->update_predefmoneyflow( $id, $all_data['amount'], $all_data['capitalsourceid'], $all_data['contractpartnerid'], $all_data['comment'] );
+	
+					if( $ret ) {
+						$this->template->assign( 'CLOSE', 1 );
+						break;
+					}
 				}
 			default:
 				if( $id > 0 ) {

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCurrencies.php,v 1.2 2006/12/19 12:54:11 olivleh1 Exp $
+# $Id: coreCurrencies.php,v 1.3 2006/12/19 14:37:17 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -38,10 +38,24 @@ class coreCurrencies extends core {
 	}
 
 	function get_displayed_currency() {
-		return $this->get_currency( $this->coreSettings->get_displayed_currency() );
+		$id=$this->coreSettings->get_displayed_currency();
+		if( !empty( $id ) ) {
+			$currency=$this->get_currency( $this->coreSettings->get_displayed_currency() );
+			if( !empty( $currency ) ) {
+				return $currency;
+			} else {
+				add_error( 'the selected currency to display does not exist' );
+			}
+		} else {
+			add_error( 'the currency to display was not specified' );
+		}
 	}
 
 	function get_currency( $id ) {
-		return $this->select_col( "SELECT currency FROM currencies WHERE id=$id AND userid=".USERID." LIMIT 1" );
+		if( !empty( $id ) ) {
+			return $this->select_col( "SELECT currency FROM currencies WHERE id=$id AND userid=".USERID." LIMIT 1" );
+		} else {
+			return;
+		}
 	}
 }

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: corePreDefMoneyFlows.php,v 1.10 2006/12/19 12:54:12 olivleh1 Exp $
+# $Id: corePreDefMoneyFlows.php,v 1.11 2006/12/19 14:37:17 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -61,8 +61,12 @@ class corePreDefMoneyFlows extends core {
 	function get_all_matched_data( $letter ) {
 		$coreContractPartners=new coreContractPartners();
 		$ids=$coreContractPartners->get_ids_matched_data( $letter );
-		$idstring=implode( $ids, ',' );
-		return $this->select_rows( "SELECT id,calc_amount(amount,'OUT',userid) amount,capitalsourceid,contractpartnerid,comment FROM predefmoneyflows WHERE contractpartnerid IN ($idstring) AND userid=".USERID." ORDER BY comment" );
+		if( is_array( $ids ) ) {
+			$idstring=implode( $ids, ',' );
+			return $this->select_rows( "SELECT id,calc_amount(amount,'OUT',userid) amount,capitalsourceid,contractpartnerid,comment FROM predefmoneyflows WHERE contractpartnerid IN ($idstring) AND userid=".USERID." ORDER BY comment" );
+		} else {
+			return;
+		}
 	}
 
 

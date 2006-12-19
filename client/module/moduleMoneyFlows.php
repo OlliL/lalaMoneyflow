@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.24 2006/12/19 12:54:13 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.25 2006/12/19 14:37:17 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -97,10 +97,19 @@ class moduleMoneyFlows extends module {
 					if ( $value['checked'] == 1 ) {
 						$nothing_checked = false;
 						
+						if( empty( $value['capitalsourceid'] ) ) {
+							add_error( "capitalsource can't be empty" );
+							$data_is_valid = false;
+						};
+						
+						if( empty( $value['contractpartnerid'] ) ) {
+							add_error( "contractpartner can't be empty" );
+							$data_is_valid = false;
+						};
+
 						if( ! empty( $value['invoicedate'] ) && ! is_date( $value['invoicedate'] ) ) {
 							add_error( "invoicedate has to be in format YYYY-MM-DD" );
 							$all_data[$id]['invoicedate_error'] = 1;
-							$data_is_valid = false;
 						}
 
 						if( ! is_date( $value['bookingdate'] ) ) {
@@ -144,14 +153,17 @@ class moduleMoneyFlows extends module {
 
 				$all_data[0]=array( 'id'          =>  -1,
 				                    'bookingdate' => date( 'Y-m-d' ) );
-				$i=1;				
-				foreach( $all_data_pre as $key => $value ) {
-					$all_data[$i]=$value;
-					$all_data[$i]['bookingdate']=$date;
-					$all_data[$i]['amount']=sprintf('%.02f',$all_data_pre[$key]['amount']);
-					$all_data[$i]['capitalsourcecomment']=$this->coreCapitalSources->get_comment( $all_data_pre[$key]['capitalsourceid'] );
-					$all_data[$i]['contractpartnername']=$this->coreContractPartners->get_name( $all_data_pre[$key]['contractpartnerid'] );
-					$i++;
+
+				if( is_array( $all_data_pre ) ) {
+					$i=1;				
+					foreach( $all_data_pre as $key => $value ) {
+						$all_data[$i]=$value;
+						$all_data[$i]['bookingdate']=$date;
+						$all_data[$i]['amount']=sprintf('%.02f',$all_data_pre[$key]['amount']);
+						$all_data[$i]['capitalsourcecomment']=$this->coreCapitalSources->get_comment( $all_data_pre[$key]['capitalsourceid'] );
+						$all_data[$i]['contractpartnername']=$this->coreContractPartners->get_name( $all_data_pre[$key]['contractpartnerid'] );
+						$i++;
+					}
 				}
 
 				break;
@@ -167,6 +179,7 @@ class moduleMoneyFlows extends module {
 
 		$this->parse_header();
 		return $this->template->fetch( './display_add_moneyflow.tpl' );
+			
 	}
 
 

@@ -6,6 +6,9 @@
 		<h1>search moneyflows</h1>
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action" value="do_search">
+			{section name=ERROR loop=$ERRORS}
+				<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
+			{/section}
 			<table border=0>
 				<tr>
 					<th>searched field</th>
