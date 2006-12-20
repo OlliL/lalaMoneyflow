@@ -1,6 +1,6 @@
 <html>
 {if $CLOSE != 1}
-	<head><title>lalaMoneyflow: {if $ALL_DATA.id > 0}edit{else}add{/if} capital source</title>
+	<head><title>lalaMoneyflow: {if $ALL_DATA.id > 0}{$TEXT_38}{else}{$TEXT_10}{/if}</title>
 {$HEADER}
 
 		<td align="center">
@@ -9,17 +9,18 @@
 		{/section}
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action"  value="edit_capitalsource">
+			<input type="hidden" name="realaction" value="save">
 			<input type="hidden" name="id"      value="{$ALL_DATA.id}">
 			<input type="hidden" name="REFERER" value="{$ENV_REFERER}">
 			<table border=0>
 				<tr>
-					<th>comment</th>
-					<th>type</th>
-					<th>state</th>
-					<th>accountnumber</th>
-					<th>bankcode</th>
-					<th>valid from</th>
-					<th>valid til</th>
+					<th>{$TEXT_21}</th>
+					<th>{$TEXT_30}</th>
+					<th>{$TEXT_31}</th>
+					<th>{$TEXT_32}</th>
+					<th>{$TEXT_33}</th>
+					<th>{$TEXT_34}</th>
+					<th>{$TEXT_35}</th>
 				</tr>
 				<tr>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]"       value="{$ALL_DATA.comment}" /></td>
@@ -39,8 +40,9 @@
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validtil]"      value="{$ALL_DATA.validtil}" size=8 /></td>
 				</tr>
 			</table>
-			<input type="submit" name="realaction" value="save">
-			<input type="button" value="cancel" onclick="javascript:void self.close();">
+			<br />
+			<input type="submit" value="{$TEXT_22}">
+			<input type="button" value="{$TEXT_23}" onclick="javascript:void self.close();">
 		</form>
 		</td>
 {$FOOTER}

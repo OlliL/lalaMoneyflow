@@ -24,13 +24,15 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: module.php,v 1.14 2006/12/19 18:28:32 olivleh1 Exp $
+# $Id: module.php,v 1.15 2006/12/20 14:22:06 olivleh1 Exp $
 #
 
 require_once 'Smarty.class.php';
+require_once 'core/coreTemplates.php';
 
 class module {
 	function module() {
+		$this->coreTemplates = new coreTemplates;
 		$this->template = new Smarty;
 		$this->index_php='index.php';
 		$this->template->register_modifier( 'number_format', 'my_number_format' );
@@ -56,6 +58,22 @@ class module {
 			$this->template->assign( 'ENV_REFERER', $referer );
 		}
 	}
+	
+	function fetch_template( $name ) {
+		$text = $this->coreTemplates->get_template_text( $name );
+		if( is_array( $text ) ) {
+			foreach( $text as $id => $value ) {
+				$this->template->assign( $value['variable'], htmlentities( $value['text'] ) );
+			}
+		}
+		$result = $this->template->fetch( './'.$name );
+		if( is_array( $text ) ) {
+			foreach( $text as $id => $value ) {
+				$this->template->clear_assign( $value['variable'] );
+			}
+		}
+		return $result;
+	}
 
 	function parse_header( $nonavi=0 ) {
 		$this->template->assign( 'REPORTS_YEAR',   date( 'Y' ) );
@@ -64,10 +82,10 @@ class module {
 		$this->template->assign( 'VERSION',        '0.6.1' );
 		$this->template->assign( 'NO_NAVIGATION',  $nonavi );
 
-		$header=$this->template->fetch( './display_header.tpl' );
+		$header=$this->fetch_template( 'display_header.tpl' );
 		$this->template->assign( 'HEADER', $header );
 
-		$footer=$this->template->fetch( './display_footer.tpl' );
+		$header=$this->fetch_template( 'display_footer.tpl' );
 		$this->template->assign( 'FOOTER', $footer );
 	}	
 }

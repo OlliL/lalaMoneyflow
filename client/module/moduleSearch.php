@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSearch.php,v 1.5 2006/12/19 14:37:18 olivleh1 Exp $
+# $Id: moduleSearch.php,v 1.6 2006/12/20 14:22:06 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -49,7 +49,7 @@ class moduleSearch extends module {
 		$this->template->assign( 'ERRORS',                 get_errors() );
 
 		$this->parse_header();
-		return $this->template->fetch( './display_search.tpl' );
+		return $this->fetch_template( 'display_search.tpl' );
 	}
 
 	function do_search( $searchstring, $contractpartner, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus ) {

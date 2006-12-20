@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCapitalSources.php,v 1.8 2006/12/19 12:54:13 olivleh1 Exp $
+# $Id: moduleCapitalSources.php,v 1.9 2006/12/20 14:22:06 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -54,7 +54,7 @@ class moduleCapitalSources extends module {
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 
 		$this->parse_header();
-		return $this->template->fetch( './display_list_capitalsources.tpl' );
+		return $this->fetch_template( 'display_list_capitalsources.tpl' );
 	}
 
 	function display_edit_capitalsource( $realaction, $id, $all_data ) {
@@ -86,7 +86,7 @@ class moduleCapitalSources extends module {
 		$this->template->assign( 'ERRORS', get_errors() );
 
 		$this->parse_header( 1 );
-		return $this->template->fetch( './display_edit_capitalsource.tpl' );
+		return $this->fetch_template( 'display_edit_capitalsource.tpl' );
 	}
 
 	function display_delete_capitalsource( $realaction, $id ) {
@@ -106,7 +106,7 @@ class moduleCapitalSources extends module {
 		$this->template->assign( 'ERRORS', get_errors() );
 
 		$this->parse_header( 1 );
-		return $this->template->fetch( './display_delete_capitalsource.tpl' );
+		return $this->fetch_template( 'display_delete_capitalsource.tpl' );
 	}
 }
 ?>

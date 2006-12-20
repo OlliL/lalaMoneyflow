@@ -16,8 +16,7 @@ BEGIN
    WHERE id = (SELECT value
                  FROM settings
                 WHERE name = 'displayed_currency'  
-                  AND userid = pi_userid)
-     AND userid = pi_userid;
+                  AND userid = pi_userid);
 
   IF pi_type = 'OUT' THEN  
     SET l_amount = ROUND(l_rate*pi_amount,2);

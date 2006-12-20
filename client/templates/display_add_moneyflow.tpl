@@ -1,23 +1,24 @@
 <html>
-	<head><title>lalaMoneyflow: add moneyflows</title>
+	<head><title>lalaMoneyflow: {$TEXT_8}</title>
 {$HEADER}
 
 		<td align="center">
-		<h1>add moneyflow</h1>
+		<h1>{$TEXT_8}</h1>
 		{section name=ERROR loop=$ERRORS}
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
 		{/section}
 		<form action="{$ENV_INDEX_PHP}?action=add_moneyflow" method="POST">
 			<input type="hidden" name="action" value="add_moneyflow">
+			<input type="hidden" name="realaction" value="save">
 			<table border=0>
 				<tr>
 					<th>&nbsp;</th>
-					<th>bookingdate</th>
-					<th>invoicedate</th>
-					<th>amount</th>
-					<th>contractpartner</th>
-					<th>comment</th>
-					<th>capitalsource</th>
+					<th>{$TEXT_16}</th>
+					<th>{$TEXT_17}</th>
+					<th>{$TEXT_18}</th>
+					<th>{$TEXT_20}</th>
+					<th>{$TEXT_21}</th>
+					<th>{$TEXT_19}</th>
 				</tr>
 				{assign var=elements value="1"}
 				{section name=DATA loop=$ALL_DATA}
@@ -52,7 +53,8 @@
 					</tr>
 				{/section}
 			</table>
-			<input type="submit" name="realaction" value="save">
+			<br />
+			<input type="submit" value="{$TEXT_22}">
 		</form>
 		</td>
 {$FOOTER}

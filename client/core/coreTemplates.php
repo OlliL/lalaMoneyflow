@@ -24,38 +24,18 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCurrencies.php,v 1.4 2006/12/20 14:22:05 olivleh1 Exp $
+# $Id: coreTemplates.php,v 1.1 2006/12/20 14:22:48 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
-require_once 'core/coreSettings.php';
 
-class coreCurrencies extends core {
+class coreTemplates extends core {
 
-	function coreCurrencies() {
+	function coreTemplates() {
 		$this->core();
-		$this->coreSettings = new coreSettings();
 	}
 
-	function get_displayed_currency() {
-		$id=$this->coreSettings->get_displayed_currency();
-		if( !empty( $id ) ) {
-			$currency=$this->get_currency( $this->coreSettings->get_displayed_currency() );
-			if( !empty( $currency ) ) {
-				return $currency;
-			} else {
-				add_error( 'the selected currency to display does not exist' );
-			}
-		} else {
-			add_error( 'the currency to display was not specified' );
-		}
-	}
-
-	function get_currency( $id ) {
-		if( !empty( $id ) ) {
-			return $this->select_col( "SELECT currency FROM currencies WHERE id=$id LIMIT 1" );
-		} else {
-			return;
-		}
+	function get_template_text( $name ) {
+		return $this->select_rows( "SELECT variable, text FROM vw_template_text WHERE name='$name' AND userid=".USERID );
 	}
 }

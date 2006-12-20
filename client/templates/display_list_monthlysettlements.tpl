@@ -1,5 +1,5 @@
 <html>
-	<head><title>lalaMoneyflow: list monthly settlements</title>
+	<head><title>lalaMoneyflow: {$TEXT_4}</title>
 {literal}
 <script type="text/javascript">
 <!--
@@ -26,10 +26,10 @@ function Go(x)
 
 		<td align="center" valign="top">
 			<form action="#" method="get">
-			<h1>list monthly settlements</h1>
+			<h1>{$TEXT_4}</h1>
 			<table border="0" cellpadding=5>
 				<tr>
-					<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_monthlysettlement&sr=1','_blank','width=500,height=300')">add</a></td>
+					<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_monthlysettlement&sr=1','_blank','width=500,height=300')">{$TEXT_29}</a></td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="monthlysettlements_year" size=1 onchange="Go(this.form.monthlysettlements_year.options[this.form.monthlysettlements_year.options.selectedIndex].value)">
 					{section name=YEAR loop=$ALL_YEARS}
 						<option {if $ALL_YEARS[YEAR] == $SELECTED_YEAR}selected{/if} value="{$ENV_INDEX_PHP}?action=list_monthlysettlements&monthlysettlements_year={$ALL_YEARS[YEAR]}"> {$ALL_YEARS[YEAR]}
@@ -44,11 +44,12 @@ function Go(x)
 			</table>
 			</form>
 			{if $COUNT_ALL_DATA > 0}
-				<h1>monthly settlement {$MONTH.name} {$YEAR}</h1>
+				<br />
+				<h1>{$TEXT_53} {$MONTH.name} {$YEAR}</h1>
 				<table border=0 width="300" cellpadding=2>
 					<tr>
-						<th>capital source</th>
-						<th width="30%">amount</th>
+						<th>{$TEXT_19}</th>
+						<th width="30%">{$TEXT_18}</th>
 					</tr>
 					{section name=DATA loop=$ALL_DATA}
 						<tr>
@@ -61,10 +62,11 @@ function Go(x)
 						<td align="right" class="contrastbgcolor"><font {if $SUMAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$SUMAMOUNT|number_format} {$CURRENCY}</u></font></td>
 					</tr>
 				</table>
+				<br />
 				<table border="0" cellpadding=2>
 					<tr>
-					<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_monthlysettlement&monthlysettlements_month={$MONTH.nummeric}&monthlysettlements_year={$YEAR}&sr=1','_blank','width=500,height=300')">edit</a></td>
-					<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_monthlysettlement&monthlysettlements_month={$MONTH.nummeric}&monthlysettlements_year={$YEAR}&sr=1','_blank','width=500,height=250')">delete</a></td>
+					<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_monthlysettlement&monthlysettlements_month={$MONTH.nummeric}&monthlysettlements_year={$YEAR}&sr=1','_blank','width=500,height=300')">{$TEXT_36}</a></td>
+					<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_monthlysettlement&monthlysettlements_month={$MONTH.nummeric}&monthlysettlements_year={$YEAR}&sr=1','_blank','width=500,height=250')">{$TEXT_37}</a></td>
 					</tr>
 				</table>
 			{/if}

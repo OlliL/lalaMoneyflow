@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleContractPartners.php,v 1.7 2006/12/19 12:54:13 olivleh1 Exp $
+# $Id: moduleContractPartners.php,v 1.8 2006/12/20 14:22:06 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -54,7 +54,7 @@ class moduleContractPartners extends module {
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 
 		$this->parse_header();
-		return $this->template->fetch( './display_list_contractpartners.tpl' );
+		return $this->fetch_template( 'display_list_contractpartners.tpl' );
 	}
 
 	function display_edit_contractpartner( $realaction, $id, $all_data ) {
@@ -80,7 +80,7 @@ class moduleContractPartners extends module {
 		$this->template->assign( 'ERRORS', get_errors() );
 
 		$this->parse_header( 1 );
-		return $this->template->fetch( './display_edit_contractpartner.tpl' );
+		return $this->fetch_template( 'display_edit_contractpartner.tpl' );
 	}
 
 	function display_delete_contractpartner( $realaction, $id ) {
@@ -100,7 +100,7 @@ class moduleContractPartners extends module {
 		$this->template->assign( 'ERRORS', get_errors() );
 
 		$this->parse_header( 1 );
-		return $this->template->fetch( './display_delete_contractpartner.tpl' );
+		return $this->fetch_template( 'display_delete_contractpartner.tpl' );
 	}
 }
 ?>

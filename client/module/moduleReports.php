@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.22 2006/12/19 14:37:18 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.23 2006/12/20 14:22:06 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -33,6 +33,7 @@ require_once 'core/coreContractPartners.php';
 require_once 'core/coreCurrencies.php';
 require_once 'core/coreMoneyFlows.php';
 require_once 'core/coreMonthlySettlement.php';
+require_once 'core/coreText.php';
 if( ENABLE_JPGRAPH ) {
 	require_once 'jpgraph.php';
 	require_once 'jpgraph_line.php';
@@ -47,6 +48,7 @@ class moduleReports extends module {
 		$this->coreCurrencies=new coreCurrencies();
 		$this->coreMoneyFlows=new coreMoneyFlows();
 		$this->coreMonthlySettlement=new coreMonthlySettlement();
+		$this->coreText=new coreText();
 	}
 
 	function display_list_reports( $month, $year, $sortby, $order ) {
@@ -60,7 +62,7 @@ class moduleReports extends module {
 			foreach( $temp_months as $key => $value ) {
 				$months[] = array(
 					'nummeric' => sprintf( '%02d', $value ),
-					'name'     => strftime( '%B', strtotime( "$value/1/$year" ) )
+					'name'     => $this->coreText->get_text( $value, 'm' )
 				);
 			}
 		}
@@ -75,7 +77,7 @@ class moduleReports extends module {
 		$this->template->assign( 'SELECTED_YEAR',  $year   );
 
 		$this->parse_header();
-		return $this->template->fetch( './display_list_reports.tpl' );
+		return $this->fetch_template( 'display_list_reports.tpl' );
 	}
 
 	function generate_report( $month, $year, $sortby, $order ) {
@@ -125,7 +127,7 @@ class moduleReports extends module {
 
 			$month = array(
 				'nummeric' => sprintf( '%02d', $month ),
-				'name'     => strftime( '%B', strtotime( "$month/1/$year" ) )
+				'name'     => $this->coreText->get_text( $month, 'm' )
 			);
 
 			$this->template->assign( 'MONTH',                    $month                    );
@@ -142,7 +144,7 @@ class moduleReports extends module {
 			$this->template->assign( 'CURRENCY',                 $this->coreCurrencies->get_displayed_currency() );
 
 			$this->parse_header();
-			return $this->template->fetch( './display_generate_report.tpl' );
+			return $this->fetch_template( 'display_generate_report.tpl' );
 		}
 	}
 
@@ -165,9 +167,10 @@ class moduleReports extends module {
 
 
 		$this->parse_header();
-		return $this->template->fetch( './display_plot_trends.tpl' );
+		return $this->fetch_template( 'display_plot_trends.tpl' );
 
 	}
+
 	function plot_graph( $capitalsources_id, $startmonth, $startyear, $endmonth, $endyear ) {
 	
 		if( $capitalsources_id == 0 ) {

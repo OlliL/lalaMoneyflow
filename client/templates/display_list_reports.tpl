@@ -26,7 +26,7 @@ function Go(x)
 
 		<td align="center" valign="top">
 			<form action="#" method="get">
-			<h1>list reports</h1>
+			<h1>{$TEXT_5}</h1>
 			<table border="0" cellpadding=5>
 				<tr>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="reports_year" size=1 onchange="Go(this.form.reports_year.options[this.form.reports_year.options.selectedIndex].value)">

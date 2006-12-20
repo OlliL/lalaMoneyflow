@@ -1,26 +1,27 @@
 <html>
 {if $CLOSE != 1}
-	<head><title>lalaMoneyflow: delete capital source</title>
+	<head><title>lalaMoneyflow: {$TEXT_39}</title>
 {$HEADER}
 
 		<td align="center">
 		{section name=ERROR loop=$ERRORS}
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
 		{/section}
-		Do you realy want delete this capitalsource?<br />
+		<u>{$TEXT_40}</u><br /><br />
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action"  value="delete_capitalsource">
+			<input type="hidden" name="realaction" value="yes">
 			<input type="hidden" name="id"      value="{$ALL_DATA.id}">
 			<input type="hidden" name="REFERER" value="{$ENV_REFERER}">
 			<table border=0>
 				<tr>
-					<th width="200">comment</th>
-					<th width="80">type</th>
-					<th width="80">state</th>
-					<th width="100">accountnumber</th>
-					<th width="100">bankcode</th>
-					<th width="60">valid from</th>
-					<th width="60">valid til</th>
+					<th width="200">{$TEXT_21}</th>
+					<th width="80" >{$TEXT_30}</th>
+					<th width="80" >{$TEXT_31}</th>
+					<th width="100">{$TEXT_32}</th>
+					<th width="100">{$TEXT_33}</th>
+					<th width="60" >{$TEXT_34}</th>
+					<th width="60" >{$TEXT_35}</th>
 				</tr>
 				<tr>
 					<td class="contrastbgcolor">{$ALL_DATA.comment}</td>
@@ -32,8 +33,8 @@
 					<td class="contrastbgcolor">{$ALL_DATA.validtil}</td>
 				</tr>
 			</table>
-			<input type="submit" name="realaction" value="yes">
-			<input type="button" value="no" onclick="javascript:void self.close();">
+			<input type="submit" value="{$TEXT_25}">
+			<input type="button" value="{$TEXT_26}" onclick="javascript:void self.close();">
 		</form>
 		</td>
 {$FOOTER}

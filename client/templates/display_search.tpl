@@ -1,21 +1,22 @@
 <html>
-	<head><title>lalaMoneyflow: search moneyflows</title>
+	<head><title>lalaMoneyflow: {$TEXT_7}</title>
 {$HEADER}
 
 		<td align="center">
-		<h1>search moneyflows</h1>
+		<h1>{$TEXT_7}</h1>
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action" value="do_search">
+			<input type="hidden" name="realaction" value="search">
 			{section name=ERROR loop=$ERRORS}
 				<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
 			{/section}
 			<table border=0>
 				<tr>
-					<th>searched field</th>
-					<td class="contrastbgcolor">comment</td>
+					<th>{$TEXT_72}</th>
+					<td class="contrastbgcolor">{$TEXT_21}</td>
 				</tr>
 				<tr>
-					<th>contract partner</th>
+					<th>{$TEXT_20}</th>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="contractpartner" size=1>
 					<option value=""> </option>
 					{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
@@ -24,45 +25,46 @@
 					</select></td>
 				</tr>
 				<tr>
-					<th>string to search</th>
+					<th>{$TEXT_73}</th>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="searchstring" value="{$SEARCHPARAMS.pattern}"></td>
 				</tr>
 				<tr>
-					<th>type of date</th>
-					<td class="contrastbgcolor">bookingdate</td>
+					<th>{$TEXT_74}</th>
+					<td class="contrastbgcolor">{$TEXT_16}</td>
 				</tr>
 				<tr>
-					<th>startdate</th>
+					<th>{$TEXT_69}</th>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="startdate" value="{$SEARCHPARAMS.startdate}"></td>
 				</tr>
 				<tr>
-					<th>enddate</th>
+					<th>{$TEXT_70}</th>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="enddate" value="{$SEARCHPARAMS.enddate}"></td>
 				</tr>
 				<tr>
-					<th>special features</th>
+					<th>{$TEXT_75}</th>
 					<td class="contrastbgcolor">
-						<input class="contrastbgcolor" type="checkbox" name="equal" {if $SEARCHPARAMS.equal == 1}checked{/if}> equal <br />
-						<input class="contrastbgcolor" type="checkbox" name="casesensitive" {if $SEARCHPARAMS.casesensitive == 1}checked{/if}> case sensitive <br />
-						<input class="contrastbgcolor" type="checkbox" name="regexp" {if $SEARCHPARAMS.regexp == 1}checked{/if}> regular expression<br />
-						<input class="contrastbgcolor" type="checkbox" name="minus" {if $SEARCHPARAMS.minus == 1}checked{/if}> only negative amount<br />
+						<input class="contrastbgcolor" type="checkbox" name="equal" {if $SEARCHPARAMS.equal == 1}checked{/if}> {$TEXT_76} <br />
+						<input class="contrastbgcolor" type="checkbox" name="casesensitive" {if $SEARCHPARAMS.casesensitive == 1}checked{/if}> {$TEXT_77} <br />
+						<input class="contrastbgcolor" type="checkbox" name="regexp" {if $SEARCHPARAMS.regexp == 1}checked{/if}> {$TEXT_78}<br />
+						<input class="contrastbgcolor" type="checkbox" name="minus" {if $SEARCHPARAMS.minus == 1}checked{/if}> {$TEXT_79}<br />
 					</td>
 				</tr>
 				<tr>
-					<th>group by</th>
-					<td class="contrastbgcolor">year+month</td>
+					<th>{$TEXT_80}</th>
+					<td class="contrastbgcolor">{$TEXT_57}+{$TEXT_56}</td>
 				</tr>
 				
 
 			</table>
-			<input type="submit" name="realaction" value="search">
+			<br />
+			<input type="submit" name="realaction" value="{$TEXT_83}">
 		</form>
 			<table border=0 width=830 align="center" cellpadding=2>
 				<tr>
-					<th width="9%">bookingyear</th>
-					<th width="9%">bookingmonth</th>
-					<th width="10%">amount</th>
-					<th >comment</th>
+					<th width="9%">{$TEXT_81}</th>
+					<th width="9%">{$TEXT_82}</th>
+					<th width="10%">{$TEXT_18}</th>
+					<th >{$TEXT_21}</th>
 				</tr>
 				{section name=DATA loop=$RESULTS}
 					<tr>

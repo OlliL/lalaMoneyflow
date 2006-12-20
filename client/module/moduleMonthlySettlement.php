@@ -24,13 +24,14 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.12 2006/12/19 12:54:13 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.13 2006/12/20 14:22:06 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
 require_once 'core/coreCurrencies.php';
 require_once 'core/coreMonthlySettlement.php';
+require_once 'core/coreText.php';
 
 class moduleMonthlySettlement extends module {
 
@@ -39,6 +40,7 @@ class moduleMonthlySettlement extends module {
 		$this->coreCapitalSources=new coreCapitalSources();
 		$this->coreCurrencies=new coreCurrencies();
 		$this->coreMonthlySettlement=new coreMonthlySettlement();
+		$this->coreText=new coreText();
 	}
 
 	function display_list_monthlysettlements( $month, $year ) {
@@ -52,7 +54,7 @@ class moduleMonthlySettlement extends module {
 			foreach( $temp_months as $key => $value ) {
 				$months[] = array(
 					'nummeric' => sprintf( '%02d', $value ),
-					'name'     => strftime( '%B', strtotime( "$value/1/$year" ) )
+					'name'     => $this->coreText->get_text( $value, 'm' )
 				);
 			}
 		}
@@ -71,7 +73,7 @@ class moduleMonthlySettlement extends module {
 
 			$month = array(
 				'nummeric' => sprintf( '%02d', $month ),
-				'name'     => strftime( '%B', strtotime( "$month/1/$year" ) )
+				'name'     => $this->coreText->get_text( $month, 'm' )
 			);
 
 			$this->template->assign( 'SUMAMOUNT',      $sumamount         );
@@ -87,7 +89,7 @@ class moduleMonthlySettlement extends module {
 		$this->template->assign( 'CURRENCY',      $this->coreCurrencies->get_displayed_currency() );
 
 		$this->parse_header();
-		return $this->template->fetch( './display_list_monthlysettlements.tpl' );
+		return $this->fetch_template( 'display_list_monthlysettlements.tpl' );
 	}
 
 	function display_edit_monthlysettlement( $realaction, $month, $year, $all_data ) {
@@ -126,7 +128,7 @@ class moduleMonthlySettlement extends module {
 
 					$month = array(
 						'nummeric' => sprintf( '%02d', $month ),
-						'name'     => strftime( '%B', strtotime( "$month/1/$year" ) )
+						'name'     => $this->coreText->get_text( $month, 'm' )
 					);
 
 					$this->template->assign( 'MONTH',          $month             );
@@ -142,7 +144,7 @@ class moduleMonthlySettlement extends module {
 		$this->template->assign( 'ERRORS',   get_errors() );
 
 		$this->parse_header( 1 );
-		return $this->template->fetch( './display_edit_monthlysettlement.tpl' );
+		return $this->fetch_template( 'display_edit_monthlysettlement.tpl' );
 	}
 
 	function display_delete_monthlysettlement( $realaction, $month, $year ) {
@@ -167,7 +169,7 @@ class moduleMonthlySettlement extends module {
 
 				$month = array(
 					'nummeric' => sprintf( '%02d', $month ),
-					'name'     => strftime( '%B', strtotime( "$month/1/$year" ) )
+					'name'     => $this->coreText->get_text( $month, 'm' )
 				);
 				$this->template->assign( 'SUMAMOUNT',      $sumamount         );
 				$this->template->assign( 'MONTH',          $month             );
@@ -181,7 +183,7 @@ class moduleMonthlySettlement extends module {
 		$this->template->assign( 'ERRORS',   get_errors() );
 
 		$this->parse_header( 1 );
-		return $this->template->fetch( './display_delete_monthlysettlement.tpl' );
+		return $this->fetch_template( 'display_delete_monthlysettlement.tpl' );
 	}
 }
 ?>

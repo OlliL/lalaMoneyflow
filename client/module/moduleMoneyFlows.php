@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.25 2006/12/19 14:37:17 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.26 2006/12/20 14:22:06 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -81,7 +81,7 @@ class moduleMoneyFlows extends module {
 		$this->template->assign( 'ERRORS',   get_errors() );
 
 		$this->parse_header( 1 );
-		return $this->template->fetch( './display_edit_moneyflow.tpl' );
+		return $this->fetch_template( 'display_edit_moneyflow.tpl' );
 	}
 
 
@@ -178,7 +178,7 @@ class moduleMoneyFlows extends module {
 		$this->template->assign( 'ERRORS',                 get_errors() );
 
 		$this->parse_header();
-		return $this->template->fetch( './display_add_moneyflow.tpl' );
+		return $this->fetch_template( 'display_add_moneyflow.tpl' );
 			
 	}
 
@@ -204,7 +204,7 @@ class moduleMoneyFlows extends module {
 		$this->template->assign( 'ERRORS',   get_errors() );
 
 		$this->parse_header( 1 );
-		return $this->template->fetch( './display_delete_moneyflow.tpl' );
+		return $this->fetch_template( 'display_delete_moneyflow.tpl' );
 	}
 }
 ?>

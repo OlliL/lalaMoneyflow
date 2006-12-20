@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: modulePreDefMoneyFlows.php,v 1.13 2006/12/19 14:37:18 olivleh1 Exp $
+# $Id: modulePreDefMoneyFlows.php,v 1.14 2006/12/20 14:22:06 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -67,7 +67,7 @@ class modulePreDefMoneyFlows extends module {
 		$this->template->assign( 'CURRENCY',          $this->coreCurrencies->get_displayed_currency() );
 
 		$this->parse_header();
-		return $this->template->fetch( './display_list_predefmoneyflows.tpl' );
+		return $this->fetch_template( 'display_list_predefmoneyflows.tpl' );
 	}
 
 	function display_edit_predefmoneyflow( $realaction, $id, $all_data ) {
@@ -122,7 +122,7 @@ class modulePreDefMoneyFlows extends module {
 		$this->template->assign( 'ERRORS',   get_errors() );
 
 		$this->parse_header( 1 );
-		return $this->template->fetch( './display_edit_predefmoneyflow.tpl' );
+		return $this->fetch_template( 'display_edit_predefmoneyflow.tpl' );
 	}
 
 	function display_delete_predefmoneyflow( $realaction, $id ) {
@@ -146,7 +146,7 @@ class modulePreDefMoneyFlows extends module {
 		$this->template->assign( 'ERRORS',   get_errors() );
 
 		$this->parse_header( 1 );
-		return $this->template->fetch( './display_delete_predefmoneyflow.tpl' );
+		return $this->fetch_template( 'display_delete_predefmoneyflow.tpl' );
 	}
 }
 ?>

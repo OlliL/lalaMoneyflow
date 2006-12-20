@@ -1,22 +1,24 @@
 <html>
 {if $CLOSE != 1}
-	<head><title>lalaMoneyflow: delete monthly settlement</title>
+	<head><title>lalaMoneyflow: {$TEXT_60}</title>
 {$HEADER}
 
 		<td align="center">
 		{section name=ERROR loop=$ERRORS}
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
 		{/section}
-		Do you realy want to delete the monthly settlement for {$MONTH.name} {$YEAR}?<br /><br />
+		<u>{$TEXT_59}</u><br />
+		<h1>{$TEXT_53} {$MONTH.name} {$YEAR}</h1>
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action"  value="delete_monthlysettlement">
+			<input type="hidden" name="realaction" value="yes">
 			<input type="hidden" name="monthlysettlements_month" value="{$MONTH.nummeric}">
 			<input type="hidden" name="monthlysettlements_year" value="{$YEAR}">
 			<input type="hidden" name="REFERER" value="{$ENV_REFERER}">
 			<table border=0 width="300" cellpadding=2>
 				<tr>
-					<th>capital source</th>
-					<th width="30%">amount</th>
+					<th>{$TEXT_19}</th>
+					<th width="30%">{$TEXT_18}</th>
 				</tr>
 				{section name=DATA loop=$ALL_DATA}
 					<tr>
@@ -29,8 +31,8 @@
 					<td align="right" class="contrastbgcolor"><font {if $SUMAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$SUMAMOUNT|number_format} {$CURRENCY}</u></font></td>
 				</tr>
 			</table><br />
-			<input type="submit" name="realaction" value="yes">
-			<input type="button" value="no" onclick="javascript:void self.close();">
+			<input type="submit" value="{$TEXT_25}">
+			<input type="button" value="{$TEXT_26}" onclick="javascript:void self.close();">
 		</form>
 		</td>
 {$FOOTER}

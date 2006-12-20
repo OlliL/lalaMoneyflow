@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleUsers.php,v 1.4 2006/12/19 18:03:25 olivleh1 Exp $
+# $Id: moduleUsers.php,v 1.5 2006/12/20 14:22:06 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -79,7 +79,7 @@ class moduleUser extends module {
 		} else {
 			$this->template->assign( 'ERRORS',   get_errors() );
 			$this->parse_header( 1 );
-			return $this->template->fetch( './display_login_user.tpl' );
+			return $this->fetch_template( 'display_login_user.tpl' );
 		}
 	}
 }

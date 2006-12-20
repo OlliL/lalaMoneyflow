@@ -1,16 +1,17 @@
 <html>
-	<head><title>lalaMoneyflow: plot trends</title>
+	<head><title>lalaMoneyflow: {$TEXT_6}</title>
 {$HEADER}
 		<td align="center" valign="top">
 			<form action="{$ENV_INDEX_PHP}" method="POST">
 				<input type="hidden" name="action" value="plot_trends">
+				<input type="hidden" name="realaction" value="plot">
 				<table border=0>
 					<tr>
 						<td align="center">
-							<h1>plot trends</h1>
+							<h1>{$TEXT_6}</h1>
 							<table>
 					<tr>
-						<th>startdate</th>
+						<th>{$TEXT_69}</th>
 						<td class="contrastbgcolor">
 							<select class="contrastbgcolor" name="all_data[startmonth]" size=1>
 								<option value="1"  {if 1 == $ALL_DATA.startmonth}selected{/if}>Jan</option>
@@ -34,7 +35,7 @@
 						</td>
 					</tr>
 					<tr>
-						<th>enddate</th>
+						<th>{$TEXT_70}</th>
 						<td class="contrastbgcolor">
 							<select class="contrastbgcolor" name="all_data[endmonth]" size=1>
 								<option value="1"  {if 1 == $ALL_DATA.endmonth}selected{/if}>Jan</option>
@@ -57,7 +58,7 @@
 							</select>
 						</td>
 					</tr>
-						<th>capitalsource</th>
+						<th>{$TEXT_19}</th>
 						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[capitalsourceid]" size=1>
 							<option value="0">all</option>
 							{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
@@ -68,7 +69,7 @@
 					<tr>
 						<td colspan="2" align="center">
 							<br />
-							<input type="submit" name="realaction" value="plot">
+							<input type="submit" value="{$TEXT_71}">
 						</td>
 					</tr>
 							</table>
