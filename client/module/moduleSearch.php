@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSearch.php,v 1.6 2006/12/20 14:22:06 olivleh1 Exp $
+# $Id: moduleSearch.php,v 1.7 2006/12/20 17:45:07 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -46,7 +46,7 @@ class moduleSearch extends module {
 		$contractpartner_values=$this->coreContractPartners->get_all_names();
 		#var_dump($contractpartner_values);
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
-		$this->template->assign( 'ERRORS',                 get_errors() );
+		$this->template->assign( 'ERRORS',                 $this->get_errors() );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_search.tpl' );

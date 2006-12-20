@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleUsers.php,v 1.5 2006/12/20 14:22:06 olivleh1 Exp $
+# $Id: moduleUsers.php,v 1.6 2006/12/20 17:45:07 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -65,7 +65,7 @@ class moduleUser extends module {
 				} else {
 					$this->template->assign( 'NAME',           $name );
 					$this->template->assign( 'STAY_LOGGED_IN', $stay_logged_in );
-					add_error( "username or password not OK" );
+					add_error( 16 );
 				}
 				break;
 			case 'logout':
@@ -77,7 +77,7 @@ class moduleUser extends module {
 		if( $loginok==1 ) {
 			return;
 		} else {
-			$this->template->assign( 'ERRORS',   get_errors() );
+			$this->template->assign( 'ERRORS',   $this->get_errors() );
 			$this->parse_header( 1 );
 			return $this->fetch_template( 'display_login_user.tpl' );
 		}

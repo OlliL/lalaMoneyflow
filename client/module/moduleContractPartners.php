@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleContractPartners.php,v 1.8 2006/12/20 14:22:06 olivleh1 Exp $
+# $Id: moduleContractPartners.php,v 1.9 2006/12/20 17:45:06 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -77,7 +77,7 @@ class moduleContractPartners extends module {
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', get_errors() );
+		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_contractpartner.tpl' );
@@ -97,7 +97,7 @@ class moduleContractPartners extends module {
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', get_errors() );
+		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_contractpartner.tpl' );

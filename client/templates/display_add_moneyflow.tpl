@@ -7,6 +7,7 @@
 		{section name=ERROR loop=$ERRORS}
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
 		{/section}
+		<br />
 		<form action="{$ENV_INDEX_PHP}?action=add_moneyflow" method="POST">
 			<input type="hidden" name="action" value="add_moneyflow">
 			<table border=0>

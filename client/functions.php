@@ -1,17 +1,19 @@
 <?php
 
 /*
-	$Id: functions.php,v 1.3 2006/12/07 12:51:41 olivleh1 Exp $
+	$Id: functions.php,v 1.4 2006/12/20 17:45:06 olivleh1 Exp $
 */
 
-function get_errors() {
-	global $ERRORS;
-	return $ERRORS;
-}
 
-function add_error( $error ) {
+function add_error( $id, $args=NULL ) {
 	global $ERRORS;
-	$ERRORS[]=$error;
+	if( is_array( $args ) ) {
+		$ERRORS[] = array( 'id'        => $id,
+		                   'arguments' => $args
+		                 );
+	} else {
+		$ERRORS[] = array( 'id'        => $id );
+	}
 }
 
 function is_date( $date ) {
@@ -31,7 +33,7 @@ function fix_amount( &$amount ) {
 	} elseif( preg_match( '/^-{0,1}[0-9]*([,][0-9][0-9][0-9]){0,}([\.][0-9]{1,2}){0,1}$/', $amount ) ) {
 		$amount = str_replace( ',', '', $amount );
 	} else {
-		add_error( "amount $amount is not in a readable format" );
+		add_error( 14, array( $amount ) );
 		$return = false;
 	}
 

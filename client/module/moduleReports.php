@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.23 2006/12/20 14:22:06 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.24 2006/12/20 17:45:07 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -62,7 +62,7 @@ class moduleReports extends module {
 			foreach( $temp_months as $key => $value ) {
 				$months[] = array(
 					'nummeric' => sprintf( '%02d', $value ),
-					'name'     => $this->coreText->get_text( $value, 'm' )
+					'name'     => $this->coreText->get_month( $value )
 				);
 			}
 		}
@@ -127,7 +127,7 @@ class moduleReports extends module {
 
 			$month = array(
 				'nummeric' => sprintf( '%02d', $month ),
-				'name'     => $this->coreText->get_text( $month, 'm' )
+				'name'     => $this->coreText->get_month( $month )
 			);
 
 			$this->template->assign( 'MONTH',                    $month                    );

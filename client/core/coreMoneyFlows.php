@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.21 2006/12/19 12:54:11 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.22 2006/12/20 17:45:06 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -147,7 +147,7 @@ class coreMoneyFlows extends core {
 				return false;
 			}
 		} else {
-			add_error( "You can't select the capital source you've choosen. It is not valid on the bookingdate you've given" );
+			add_error( 4 );
 			return false;
 		}
 	}

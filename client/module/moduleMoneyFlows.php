@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.26 2006/12/20 14:22:06 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.27 2006/12/20 17:45:07 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -73,12 +73,12 @@ class moduleMoneyFlows extends module {
 
 				$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
 				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
-				$this->template->assign( 'ERRORS',                 get_errors() );
+				$this->template->assign( 'ERRORS',                 $this->get_errors() );
 				break;
 		}
 
 		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
-		$this->template->assign( 'ERRORS',   get_errors() );
+		$this->template->assign( 'ERRORS',   $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_moneyflow.tpl' );
@@ -98,35 +98,35 @@ class moduleMoneyFlows extends module {
 						$nothing_checked = false;
 						
 						if( empty( $value['capitalsourceid'] ) ) {
-							add_error( "capitalsource can't be empty" );
+							add_error( 9 );
 							$data_is_valid = false;
 						};
 						
 						if( empty( $value['contractpartnerid'] ) ) {
-							add_error( "contractpartner can't be empty" );
+							add_error( 10 );
 							$data_is_valid = false;
 						};
 
 						if( ! empty( $value['invoicedate'] ) && ! is_date( $value['invoicedate'] ) ) {
-							add_error( "invoicedate has to be in format YYYY-MM-DD" );
+							add_error( 11 );
 							$all_data[$id]['invoicedate_error'] = 1;
 						}
 
 						if( ! is_date( $value['bookingdate'] ) ) {
-							add_error( "bookingdate has to be in format YYYY-MM-DD" );
+							add_error( 12 );
 							$all_data[$id]['bookingdate_error'] = 1;
 							$data_is_valid = false;
 						}
 	
 						if( empty( $value['comment'] ) ) {
-							add_error( "comment can't be empty" );
+							add_error( 13 );
 							$data_is_valid = false;
 						}
 							
 						if( ! (    preg_match( '/^-{0,1}[0-9]*([\.][0-9][0-9][0-9]){0,}([,][0-9]{1,2}){0,1}$/', $value['amount'] ) 
 						       ||  preg_match( '/^-{0,1}[0-9]*([,][0-9][0-9][0-9]){0,}([\.][0-9]{1,2}){0,1}$/', $value['amount'] )
 						      ) ) {
-							add_error( 'amount '.$value['amount'].' is not in a readable format' );
+							add_error( 14, array( $value['amount'] ) );
 							$all_data[$id]['amount_error'] = 1;
 							$data_is_valid = false;
 						}
@@ -134,7 +134,7 @@ class moduleMoneyFlows extends module {
 				}
 				
 				if( $nothing_checked ) {
-					add_error( "nothing marked to add!" );
+					add_error( 15 );
 					$data_is_valid = false;
 				}
 				if( $data_is_valid ) {
@@ -175,7 +175,7 @@ class moduleMoneyFlows extends module {
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 		$this->template->assign( 'ALL_DATA',               $all_data               );
 		$this->template->assign( 'CURRENCY',               $this->coreCurrencies->get_displayed_currency() );
-		$this->template->assign( 'ERRORS',                 get_errors() );
+		$this->template->assign( 'ERRORS',                 $this->get_errors() );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_add_moneyflow.tpl' );
@@ -201,7 +201,7 @@ class moduleMoneyFlows extends module {
 		}
 
 		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
-		$this->template->assign( 'ERRORS',   get_errors() );
+		$this->template->assign( 'ERRORS',   $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_moneyflow.tpl' );

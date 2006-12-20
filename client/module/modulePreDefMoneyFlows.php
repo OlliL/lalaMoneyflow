@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: modulePreDefMoneyFlows.php,v 1.14 2006/12/20 14:22:06 olivleh1 Exp $
+# $Id: modulePreDefMoneyFlows.php,v 1.15 2006/12/20 17:45:07 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -77,12 +77,12 @@ class modulePreDefMoneyFlows extends module {
 				$data_is_valid=true;
 				
 				if( empty( $all_data['capitalsourceid'] ) ) {
-					add_error( "capitalsource can't be empty" );
+					add_error( 9 );
 					$data_is_valid=false;
 				};
 				
 				if( empty( $all_data['contractpartnerid'] ) ) {
-					add_error( "contractpartner can't be empty" );
+					add_error( 10 );
 					$data_is_valid=false;
 				};
 
@@ -119,7 +119,7 @@ class modulePreDefMoneyFlows extends module {
 		}
 
 		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
-		$this->template->assign( 'ERRORS',   get_errors() );
+		$this->template->assign( 'ERRORS',   $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_predefmoneyflow.tpl' );
@@ -143,7 +143,7 @@ class modulePreDefMoneyFlows extends module {
 		}
 
 		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
-		$this->template->assign( 'ERRORS',   get_errors() );
+		$this->template->assign( 'ERRORS',   $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_predefmoneyflow.tpl' );

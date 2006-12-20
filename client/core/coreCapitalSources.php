@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.13 2006/12/19 14:37:17 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.14 2006/12/20 17:45:06 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -69,7 +69,7 @@ class coreCapitalSources extends core {
 		if( is_array( $result ) ) {
 			return $result;
 		} else {
-			add_error( 'no capital sources defined' );
+			add_error( 1 );
 			return;
 		}
 	}
@@ -102,7 +102,7 @@ class coreCapitalSources extends core {
 	function delete_capitalsource( $id ) {
 		$coreMoneyFlows=new coreMoneyFlows();
 		if( $coreMoneyFlows->capitalsource_in_use( $id ) ) {
-			add_error( "You can't delete a capital source which is still in use!" );
+			add_error( 2 );
 			return 0;
 		} else {
 			return $this->delete_row( "DELETE FROM capitalsources WHERE id=$id AND userid=".USERID." LIMIT 1" );
@@ -113,7 +113,7 @@ class coreCapitalSources extends core {
 	function update_capitalsource( $id, $type, $state, $accountnumber, $bankcode, $comment, $validfrom, $validtil ) {
 		$coreMoneyFlows=new coreMoneyFlows();
 		if( $coreMoneyFlows->capitalsource_in_use_out_of_date( $id, $validfrom, $validtil ) ) {
-			add_error( "There are some moneyflows out of the validityperiod you wanted to set!" );
+			add_error( 3 );
 			return 0;
 		} else {
 			return $this->update_row( "UPDATE capitalsources set type='$type',state='$state',accountnumber='$accountnumber',bankcode='$bankcode',comment='$comment',validfrom='$validfrom',validtil='$validtil' WHERE id=$id AND userid=".USERID." " );

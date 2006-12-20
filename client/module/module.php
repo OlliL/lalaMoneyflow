@@ -24,15 +24,17 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: module.php,v 1.15 2006/12/20 14:22:06 olivleh1 Exp $
+# $Id: module.php,v 1.16 2006/12/20 17:45:06 olivleh1 Exp $
 #
 
 require_once 'Smarty.class.php';
 require_once 'core/coreTemplates.php';
+require_once 'core/coreText.php';
 
 class module {
 	function module() {
 		$this->coreTemplates = new coreTemplates;
+		$this->coreText = new coreText;
 		$this->template = new Smarty;
 		$this->index_php='index.php';
 		$this->template->register_modifier( 'number_format', 'my_number_format' );
@@ -57,6 +59,22 @@ class module {
 		} else {
 			$this->template->assign( 'ENV_REFERER', $referer );
 		}
+	}
+	
+	function get_errors() {
+		global $ERRORS;
+		if( is_array( $ERRORS ) ) {
+			foreach( $ERRORS as $error ) {
+				$error_text = $this->coreText->get_error( $error['id'] );
+				if( is_array( $error['arguments'] ) ) {
+					foreach( $error['arguments'] as $id => $value ) {
+						$error_text = str_replace( 'A'.( $id+1 ).'A', $value, $error_text );
+					}
+				}
+				$result[] = $error_text;
+			}
+		}
+		return $result;
 	}
 	
 	function fetch_template( $name ) {

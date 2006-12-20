@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCurrencies.php,v 1.4 2006/12/20 14:22:05 olivleh1 Exp $
+# $Id: coreCurrencies.php,v 1.5 2006/12/20 17:45:06 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -44,10 +44,10 @@ class coreCurrencies extends core {
 			if( !empty( $currency ) ) {
 				return $currency;
 			} else {
-				add_error( 'the selected currency to display does not exist' );
+				add_error( 7 );
 			}
 		} else {
-			add_error( 'the currency to display was not specified' );
+			add_error( 8 );
 		}
 	}
 

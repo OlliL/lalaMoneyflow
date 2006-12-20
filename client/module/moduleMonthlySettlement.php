@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.13 2006/12/20 14:22:06 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.14 2006/12/20 17:45:07 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -54,7 +54,7 @@ class moduleMonthlySettlement extends module {
 			foreach( $temp_months as $key => $value ) {
 				$months[] = array(
 					'nummeric' => sprintf( '%02d', $value ),
-					'name'     => $this->coreText->get_text( $value, 'm' )
+					'name'     => $this->coreText->get_month( $value )
 				);
 			}
 		}
@@ -73,7 +73,7 @@ class moduleMonthlySettlement extends module {
 
 			$month = array(
 				'nummeric' => sprintf( '%02d', $month ),
-				'name'     => $this->coreText->get_text( $month, 'm' )
+				'name'     => $this->coreText->get_month( $month )
 			);
 
 			$this->template->assign( 'SUMAMOUNT',      $sumamount         );
@@ -128,20 +128,20 @@ class moduleMonthlySettlement extends module {
 
 					$month = array(
 						'nummeric' => sprintf( '%02d', $month ),
-						'name'     => $this->coreText->get_text( $month, 'm' )
+						'name'     => $this->coreText->get_month( $month )
 					);
 
 					$this->template->assign( 'MONTH',          $month             );
 					$this->template->assign( 'YEAR' ,          $year              );
 					$this->template->assign( 'ALL_DATA',       $all_data          );
 					$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
-					$this->template->assign( 'ERRORS',         get_errors() );
+					$this->template->assign( 'ERRORS',         $this->get_errors() );
 				}
 				break;
 		}
 
 		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
-		$this->template->assign( 'ERRORS',   get_errors() );
+		$this->template->assign( 'ERRORS',   $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_monthlysettlement.tpl' );
@@ -169,7 +169,7 @@ class moduleMonthlySettlement extends module {
 
 				$month = array(
 					'nummeric' => sprintf( '%02d', $month ),
-					'name'     => $this->coreText->get_text( $month, 'm' )
+					'name'     => $this->coreText->get_month( $month )
 				);
 				$this->template->assign( 'SUMAMOUNT',      $sumamount         );
 				$this->template->assign( 'MONTH',          $month             );
@@ -180,7 +180,7 @@ class moduleMonthlySettlement extends module {
 		}
 
 		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
-		$this->template->assign( 'ERRORS',   get_errors() );
+		$this->template->assign( 'ERRORS',   $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_monthlysettlement.tpl' );

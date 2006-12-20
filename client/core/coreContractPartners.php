@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreContractPartners.php,v 1.8 2006/12/19 14:37:17 olivleh1 Exp $
+# $Id: coreContractPartners.php,v 1.9 2006/12/20 17:45:06 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -70,7 +70,7 @@ class coreContractPartners extends core {
 		if( is_array( $result ) ) {
 			return $result;
 		} else {
-			add_error( 'no contract partners defined' );
+			add_error( 5 );
 			return;
 		}
 	}
@@ -83,7 +83,7 @@ class coreContractPartners extends core {
 	function delete_contractpartner( $id ) {
 		$coreMoneyFlows=new coreMoneyFlows();
 		if( $coreMoneyFlows->contractpartner_in_use( $id ) ) {
-			add_error( "You can't delete a contract partner who is still in use!" );
+			add_error( 6 );
 			return 0;
 		} else {
 			return $this->delete_row( "DELETE FROM contractpartners WHERE id=$id AND userid=".USERID." LIMIT 1" );
