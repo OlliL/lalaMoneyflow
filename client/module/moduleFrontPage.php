@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleFrontPage.php,v 1.3 2006/12/19 12:54:13 olivleh1 Exp $
+# $Id: moduleFrontPage.php,v 1.4 2006/12/20 14:23:33 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -37,7 +37,7 @@ class moduleFrontPage extends module {
 
 	function display_main() {
 		$this->parse_header();
-		return $this->template->fetch( './display_main.tpl' );
+		return $this->fetch_template( 'display_main.tpl' );
 	}
     
 }
