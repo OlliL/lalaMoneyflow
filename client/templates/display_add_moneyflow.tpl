@@ -9,7 +9,6 @@
 		{/section}
 		<form action="{$ENV_INDEX_PHP}?action=add_moneyflow" method="POST">
 			<input type="hidden" name="action" value="add_moneyflow">
-			<input type="hidden" name="realaction" value="save">
 			<table border=0>
 				<tr>
 					<th>&nbsp;</th>
@@ -54,6 +53,7 @@
 				{/section}
 			</table>
 			<br />
+			<input type="hidden" name="realaction" value="save">
 			<input type="submit" value="{$TEXT_22}">
 		</form>
 		</td>

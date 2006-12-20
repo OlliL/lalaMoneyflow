@@ -1,7 +1,9 @@
 - errormessages language independend (localizable)
-- manage currencies (add, delete (not the default one), modify, def. displayed)
-
+- manage user dependent settings
+  - displayed currency
+  - displayed language
+  - change password
 - admin tool
-  - user handling
-  - currency handling
-  - language handling(?)
+  - user handling (add, change, delete)
+  - currency handling (add, change, make default)
+  - language handling (change translation, add new language) (?)
