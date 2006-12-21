@@ -1,8 +1,5 @@
-- manage user dependent settings
-  - displayed currency
-  - displayed language
-  - change password
 - admin tool
   - user handling (add, change, delete)
   - currency handling (add, change, make default)
   - language handling (change translation, add new language) (?)
+- capitalsources.type localizable
