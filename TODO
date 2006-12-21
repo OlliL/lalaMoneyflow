@@ -1,11 +1,16 @@
-- admin tool
-  - currency handling (add, change, make default)
-  - language handling (change translation, add new language) (?)
 - when deleting a user permit it if the user still owns data
-- make it possible to delete a user recursive (CASCADE)
+
+- make it possible to delete a user recursive (CASCADE) possibly with a stored procedure
+
 - when att_new is set for a user the user has to change the password on logon.
-- capitalsources ENUMs localizable
+
 - currency handling must be rethought - enter stuff in DM, gets saved as EUR,
   and what is when then the rate EUR<->DM changes? When the user paid 20 DM
   he paid 20 DM, even when the rate changes later...
   probably solution -> validfrom/validtil for currencies (rate....)
+
+- capitalsources ENUMs localizable (probably via 'text' and different types)
+
+- admin tool
+  - currency handling (add, change, make default)
+  - language handling (change translation, add new language) (?)
