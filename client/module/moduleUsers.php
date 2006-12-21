@@ -24,16 +24,16 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleUsers.php,v 1.8 2006/12/21 16:21:22 olivleh1 Exp $
+# $Id: moduleUsers.php,v 1.9 2006/12/21 23:09:26 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
 require_once 'core/coreSession.php';
 require_once 'core/coreUsers.php';
 
-class moduleUser extends module {
+class moduleUsers extends module {
 
-	function moduleUser() {
+	function moduleUsers() {
 		$this->module();
 		$this->coreSession = new coreSession();
 		$this->coreUsers = new coreUsers();
@@ -46,7 +46,7 @@ class moduleUser extends module {
 			return false;
 		} else {
 			define( USERID, $this->coreSession->getAttribute( 'users_id' ));
-			if( !$this->coreUsers->check_permission( USERID, 'login_allowed' ) ) {
+			if( !$this->coreUsers->check_login_permission( USERID ) ) {
 				$this->coreSession->destroy();
 				add_error( 20 );
 				return false;
@@ -70,7 +70,7 @@ class moduleUser extends module {
 				} elseif( empty( $password ) ) {
 					add_error( 22 );
 				} elseif( $id=$this->coreUsers->check_account( $name, $password ) ) {
-					if( $this->coreUsers->check_permission( $id, 'login_allowed' ) ) {
+					if( $this->coreUsers->check_login_permission( $id ) ) {
 						$this->coreSession->setAttribute( 'users_name', $name );
 						$this->coreSession->setAttribute( 'users_id',   $id );
 						$loginok=1;
@@ -100,6 +100,89 @@ class moduleUser extends module {
 	function logout() {
 		$this->coreSession->start();
 		$this->coreSession->destroy();
+	}
+
+
+	function display_list_users( $letter ) {
+
+		$all_index_letters=$this->coreUsers->get_all_index_letters();
+
+		if( $letter == 'all' ) {
+			$all_data=$this->coreUsers->get_all_data();
+		} elseif( !empty( $letter ) ) {
+			$all_data=$this->coreUsers->get_all_matched_data( $letter );
+		} else {
+			$all_data=array();
+		}
+		
+		$this->template->assign( 'ALL_DATA',          $all_data          );
+		$this->template->assign( 'COUNT_ALL_DATA',    count( $all_data ) );
+		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
+
+		$this->parse_header();
+		return $this->fetch_template( 'display_list_users.tpl' );
+	}
+
+	function display_edit_user( $realaction, $id, $all_data ) {
+
+		switch( $realaction ) {
+			case 'save':
+				if( $all_data['password1'] != $all_data['password2'] ) {
+					add_error( 19 );
+				} elseif( $id == 0 ) {
+					if( empty( $all_data['password1']) ) {
+						add_error( 22 );
+					} else {
+						$ret=$this->coreUsers->add_user( $all_data['name'], $all_data['password1'], $all_data['perm_login'], $all_data['perm_admin'], $all_data['att_new'] );
+					}
+				} else {
+					$ret=$this->coreUsers->update_user( $id, $all_data['name'], $all_data['perm_login'], $all_data['perm_admin'], $all_data['att_new'] );
+					if( !empty( $all_data['password1'] ) && $ret ) {
+						$ret=$this->coreUsers->set_password( $id, $all_data['password1'] );
+					}
+				}
+
+				if( $ret ) {
+					$this->template->assign( 'CLOSE',    1 );
+				} else {
+					$this->template->assign( 'ALL_DATA', $all_data );
+				}				
+				break;
+			default:
+				if( $id > 0 ) {
+					$all_data=$this->coreUsers->get_id_data( $id );
+				} else {
+					$all_data['perm_login']=1;
+					$all_data['att_new']=1;
+				}
+				$this->template->assign( 'ALL_DATA', $all_data );
+				break;
+		}
+
+		$this->template->assign( 'ERRORS', $this->get_errors() );
+
+		$this->parse_header( 1 );
+		return $this->fetch_template( 'display_edit_user.tpl' );
+	}
+
+	function display_delete_user( $realaction, $id ) {
+
+		switch( $realaction ) {
+			case 'yes':
+				if( $this->coreUsers->delete_user( $id ) ) {
+					$this->template->assign( 'CLOSE', 1 );
+					break;
+				}
+			default:
+				$all_data=$this->coreUsers->get_id_data( $id );
+				$this->template->assign( 'ALL_DATA', $all_data );
+				break;
+		}
+
+		$this->template->assign( 'ERRORS', $this->get_errors() );
+
+		$this->parse_header( 1 );
+		return $this->fetch_template( 'display_delete_user.tpl' );
 	}
 }
 ?>

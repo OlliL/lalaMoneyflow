@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSettings.php,v 1.3 2006/12/21 16:21:22 olivleh1 Exp $
+# $Id: moduleSettings.php,v 1.4 2006/12/21 23:09:26 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -81,7 +81,7 @@ class moduleSettings extends module {
 					add_error( 19 );
 					$data_is_valid=false;
 				} elseif( !empty( $password1 ) ) {
-					$this->coreUsers->set_password( $password1 );
+					$this->coreUsers->set_password( USERID, $password1 );
 				}
 				break;
 			default:
@@ -95,9 +95,7 @@ class moduleSettings extends module {
 
 	function display_system_settings( $realaction, $language, $currency ) {
 
-		$data_is_valid=true;
-
-		$this->general_settings( $data_is_valid, 0, $realaction, $language, $currency );
+		$this->general_settings( true, 0, $realaction, $language, $currency );
 
 		return $this->fetch_template( 'display_system_settings.tpl' );
 	}

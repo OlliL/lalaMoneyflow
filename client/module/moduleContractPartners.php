@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleContractPartners.php,v 1.9 2006/12/20 17:45:06 olivleh1 Exp $
+# $Id: moduleContractPartners.php,v 1.10 2006/12/21 23:09:26 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -66,8 +66,11 @@ class moduleContractPartners extends module {
 				else
 					$ret=$this->coreContractPartners->update_contractpartner( $id, $all_data['name'], $all_data['street'], $all_data['postcode'], $all_data['town'], $all_data['country'] );
 
-				if( $ret )
-					$this->template->assign( 'CLOSE', 1 );
+				if( $ret ) {
+					$this->template->assign( 'CLOSE',    1 );
+				} else {
+					$this->template->assign( 'ALL_DATA', $all_data );
+				}				
 				break;
 			default:
 				if( $id > 0 ) {

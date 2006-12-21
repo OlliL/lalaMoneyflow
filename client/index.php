@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.23 2006/12/21 16:21:21 olivleh1 Exp $
+# $Id: index.php,v 1.24 2006/12/21 23:09:25 olivleh1 Exp $
 #
 
 $action=$_POST['action']?$_POST['action']:$_GET['action'];
@@ -44,7 +44,7 @@ require_once 'module/modulePreDefMoneyFlows.php';
 require_once 'module/moduleReports.php';
 require_once 'module/moduleSearch.php';
 require_once 'module/moduleSettings.php';
-require_once 'module/moduleUser.php';
+require_once 'module/moduleUsers.php';
 require_once 'util/utilTimer.php';
 #$timer = new utilTimer();
 #$timer->mStart();
@@ -58,22 +58,22 @@ $modulePreDefMoneyFlows		= new modulePreDefMoneyFlows();
 $moduleReports			= new moduleReports();
 $moduleSearch			= new moduleSearch();
 $moduleSettings			= new moduleSettings();
-$moduleUser			= new moduleUser();
+$moduleUsers			= new moduleUsers();
 
 
 if( $action == 'logout' ) {
-	$moduleUser->logout();
+	$moduleUsers->logout();
 }
 
-if( $action == 'login_user' || !$moduleUser->is_logged_in() ) {
+if( $action == 'login_user' || !$moduleUsers->is_logged_in() ) {
 	$realaction=	$_POST['realaction'];
 	$name=		$_POST['name'];
 	$password=	$_POST['password'];
 	$stay_logged_in=$_POST['stay_logged_in'];
-	$display=$moduleUser->display_login_user( $realaction, $name, $password, $stay_logged_in );
+	$display=$moduleUsers->display_login_user( $realaction, $name, $password, $stay_logged_in );
 }
 
-if( $moduleUser->is_logged_in() ) {
+if( $moduleUsers->is_logged_in() ) {
 
 switch( $action ) {
 	/* capitalsources */
@@ -210,6 +210,21 @@ switch( $action ) {
 					$language=      $_POST['language'];
 					$currency=      $_POST['currency'];
 					$display=$moduleSettings->display_system_settings( $realaction, $language, $currency );
+					break;
+
+	/* users */
+	
+	case 'list_users':		$letter=	$_POST['letter']?$_POST['letter']:$_GET['letter'];
+					$display=$moduleUsers->display_list_users( $letter );
+					break;
+	case 'edit_user':		$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
+					$id=		$_POST['id']?$_POST['id']:$_GET['id'];
+					$all_data=	$_POST['all_data'];
+					$display=$moduleUsers->display_edit_user( $realaction, $id, $all_data );
+					break;
+	case 'delete_user':		$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
+					$id=		$_POST['id']?$_POST['id']:$_GET['id'];
+					$display=$moduleUsers->display_delete_user( $realaction, $id );
 					break;
 
 	default:			$display=$moduleFrontPage->display_main();

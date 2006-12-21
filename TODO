@@ -1,7 +1,9 @@
 - admin tool
-  - user handling (add, change, delete)
   - currency handling (add, change, make default)
   - language handling (change translation, add new language) (?)
+- when deleting a user permit it if the user still owns data
+- make it possible to delete a user recursive (CASCADE)
+- when att_new is set for a user the user has to change the password on logon.
 - capitalsources ENUMs localizable
 - currency handling must be rethought - enter stuff in DM, gets saved as EUR,
   and what is when then the rate EUR<->DM changes? When the user paid 20 DM
