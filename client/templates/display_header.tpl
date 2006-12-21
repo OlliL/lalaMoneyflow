@@ -31,7 +31,10 @@
 					</nobr>
 					<br />
 					<br />
-					<center><a href="{$ENV_INDEX_PHP}?action=logout"><b>{$TEXT_13}</b></a></center><br />
+					<center>
+					<a href="{$ENV_INDEX_PHP}?action=settings">{$TEXT_89}</a><br /><br />
+					<a href="{$ENV_INDEX_PHP}?action=logout"><b>{$TEXT_13}</b></a>
+					</center><br />
 					
 <br />
 <p style="font-size:11px;color:darkblue;font-weight:bold;text-align:center">&copy; by Oliver Lehmann</p>

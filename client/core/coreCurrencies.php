@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCurrencies.php,v 1.5 2006/12/20 17:45:06 olivleh1 Exp $
+# $Id: coreCurrencies.php,v 1.6 2006/12/21 10:35:01 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -37,10 +37,14 @@ class coreCurrencies extends core {
 		$this->coreSettings = new coreSettings();
 	}
 
+	function get_all_data() {
+		return $this->select_rows( "SELECT id,currency,rate,att_default FROM currencies" );
+	}
+
 	function get_displayed_currency() {
 		$id=$this->coreSettings->get_displayed_currency();
 		if( !empty( $id ) ) {
-			$currency=$this->get_currency( $this->coreSettings->get_displayed_currency() );
+			$currency=$this->get_currency( $id );
 			if( !empty( $currency ) ) {
 				return $currency;
 			} else {

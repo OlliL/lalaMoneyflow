@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.20 2006/12/19 15:50:55 olivleh1 Exp $
+# $Id: index.php,v 1.21 2006/12/21 10:35:01 olivleh1 Exp $
 #
 
 $action=$_POST['action']?$_POST['action']:$_GET['action'];
@@ -43,6 +43,7 @@ require_once 'module/moduleMonthlySettlement.php';
 require_once 'module/modulePreDefMoneyFlows.php';
 require_once 'module/moduleReports.php';
 require_once 'module/moduleSearch.php';
+require_once 'module/moduleSettings.php';
 require_once 'module/moduleUser.php';
 require_once 'util/utilTimer.php';
 #$timer = new utilTimer();
@@ -56,6 +57,7 @@ $moduleMonthlySettlement	= new moduleMonthlySettlement();
 $modulePreDefMoneyFlows		= new modulePreDefMoneyFlows();
 $moduleReports			= new moduleReports();
 $moduleSearch			= new moduleSearch();
+$moduleSettings			= new moduleSettings();
 $moduleUser			= new moduleUser();
 
 if( $action == 'login_user' || !$moduleUser->is_logged_in() ) {
@@ -193,6 +195,16 @@ switch( $action ) {
 	/* users */
 	
 	case 'logout':			$display=$moduleUser->display_login_user( 'logout', NULL, NULL, NULL );
+					break;
+
+	/* settings */
+	
+	case 'settings':		$realaction=	$_POST['realaction'];
+					$language=      $_POST['language'];
+					$currency=      $_POST['currency'];
+					$password1=     $_POST['password1'];
+					$password2=     $_POST['password2'];
+					$display=$moduleSettings->display_settings( $realaction, $language, $currency, $password1, $password2 );
 					break;
 
 	default:			$display=$moduleFrontPage->display_main();

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreUsers.php,v 1.1 2006/12/19 12:54:12 olivleh1 Exp $
+# $Id: coreUsers.php,v 1.2 2006/12/21 10:35:01 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -41,5 +41,9 @@ class coreUsers extends core {
 		} else {
 			return;
 		}
+	}
+	
+	function set_password( $password ) {
+		return $this->update_row( "UPDATE users SET password='".sha1( $password )."' WHERE id=".USERID );
 	}
 }
