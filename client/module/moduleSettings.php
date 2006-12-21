@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSettings.php,v 1.1 2006/12/21 10:37:10 olivleh1 Exp $
+# $Id: moduleSettings.php,v 1.2 2006/12/21 11:32:29 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -54,19 +54,17 @@ class moduleSettings extends module {
 					$data_is_valid=false;
 				}
 
-				if( $data_is_valid ) {
+				if( !$data_is_valid ) {
+					$this->template->assign( 'CURRENCY',        $currency );
+					$this->template->assign( 'LANGUAGE',        $language );
+					break;
+				} else {
 					if( !empty( $password1 ) ) {
 						$this->coreUsers->set_password( $password1 );
 					}
 					$this->coreSettings->set_displayed_currency( $currency );
 					$this->coreSettings->set_displayed_language( $language );
-					$this->template->assign( 'CURRENCY',        $this->coreSettings->get_displayed_currency() );
-					$this->template->assign( 'LANGUAGE',        $this->coreSettings->get_displayed_language() );
-				} else {
-					$this->template->assign( 'CURRENCY',        $currency );
-					$this->template->assign( 'LANGUAGE',        $language );
 				}
-				break;
 			default:
 				$this->template->assign( 'CURRENCY',        $this->coreSettings->get_displayed_currency() );
 				$this->template->assign( 'LANGUAGE',        $this->coreSettings->get_displayed_language() );
