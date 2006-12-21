@@ -2,10 +2,10 @@ DELIMITER $$
 
 DROP FUNCTION IF EXISTS calc_amount$$
 CREATE FUNCTION calc_amount (
-  pi_amount FLOAT(7,2)
+  pi_amount FLOAT(8,2)
  ,pi_type   VARCHAR(3)
- ,pi_userid INT(10))
-  RETURNS FLOAT(7,2)
+ ,pi_userid INT(10) UNSIGNED)
+  RETURNS FLOAT(8,2)
 BEGIN
   DECLARE l_amount FLOAT(7,2);
   DECLARE l_rate FLOAT;
