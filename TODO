@@ -6,3 +6,4 @@
 - currency handling must be rethought - enter stuff in DM, gets saved as EUR,
   and what is when then the rate EUR<->DM changes? When the user paid 20 DM
   he paid 20 DM, even when the rate changes later...
+  probably solution -> validfrom/validtil for currencies (rate....)
