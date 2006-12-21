@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.21 2006/12/21 10:35:01 olivleh1 Exp $
+# $Id: index.php,v 1.22 2006/12/21 14:53:36 olivleh1 Exp $
 #
 
 $action=$_POST['action']?$_POST['action']:$_GET['action'];
@@ -59,6 +59,8 @@ $moduleReports			= new moduleReports();
 $moduleSearch			= new moduleSearch();
 $moduleSettings			= new moduleSettings();
 $moduleUser			= new moduleUser();
+
+define( USERID, 0 );
 
 if( $action == 'login_user' || !$moduleUser->is_logged_in() ) {
 	$realaction=	$_POST['realaction'];

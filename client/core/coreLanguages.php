@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreLanguages.php,v 1.1 2006/12/21 10:37:10 olivleh1 Exp $
+# $Id: coreLanguages.php,v 1.2 2006/12/21 14:53:37 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -38,7 +38,7 @@ class coreLanguages extends core {
 	}
 
 	function get_all_data() {
-		return $this->select_rows( "SELECT id,language FROM languages" );
+		return $this->select_rows( "SELECT id,language FROM languages ORDER BY language" );
 	}
 
 	function get_displayed_language() {

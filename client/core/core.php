@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: core.php,v 1.10 2006/12/19 12:54:11 olivleh1 Exp $
+# $Id: core.php,v 1.11 2006/12/21 14:53:37 olivleh1 Exp $
 #
 
 require_once 'DB.php';
@@ -40,7 +40,7 @@ class core {
 	}
 
 	function query( $query ) {
-#		echo "<pre>$query</pre>";
+		echo "<pre>$query</pre>";
 		return $this->db->query( $query );
 	}
 

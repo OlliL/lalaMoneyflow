@@ -22,7 +22,7 @@
 				</tr>
 				<tr>
 					<th>{$TEXT_87}</th>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="checkbox" name="stay_logged_in" {if $STAY_LOGGED_IN == 1}checked{/if}></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="checkbox" name="stay_logged_in" {if $STAY_LOGGED_IN == "on"}checked{/if}></td>
 				</tr>
 			</table>
 			<br />

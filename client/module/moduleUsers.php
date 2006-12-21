@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleUsers.php,v 1.6 2006/12/20 17:45:07 olivleh1 Exp $
+# $Id: moduleUsers.php,v 1.7 2006/12/21 14:53:37 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -41,11 +41,18 @@ class moduleUser extends module {
 
 	function is_logged_in() {
 		$this->coreSession->start();
-		if( !$this->coreSession->getAttribute( 'users_name' ) || !$this->coreSession->getAttribute( 'users_id' ) ) {
+		if( !$this->coreSession->getAttribute( 'users_name' )
+		 || !$this->coreSession->getAttribute( 'users_id' ) ) {
 			return false;
 		} else {
 			define( USERID, $this->coreSession->getAttribute( 'users_id' ));
-			return true;
+			if( !$this->coreUsers->check_permission( USERID, 'login_allowed' ) ) {
+				$this->coreSession->destroy();
+				add_error( 20 );
+				return false;
+			} else {
+				return true;
+			}
 		}
 	}
 
@@ -58,13 +65,19 @@ class moduleUser extends module {
 					session_cache_expire(86400);
 				}
 				$this->coreSession->restart();
-				if( $id=$this->coreUsers->check_account( $name, $password ) ) {
-					$this->coreSession->setAttribute( 'users_name', $name );
-					$this->coreSession->setAttribute( 'users_id',   $id );
-					$loginok=1;
+				if( empty( $name ) ) {
+					add_error( 21 );
+				} elseif( empty( $password ) ) {
+					add_error( 22 );
+				} elseif( $id=$this->coreUsers->check_account( $name, $password ) ) {
+					if( $this->coreUsers->check_permission( $id, 'login_allowed' ) ) {
+						$this->coreSession->setAttribute( 'users_name', $name );
+						$this->coreSession->setAttribute( 'users_id',   $id );
+						$loginok=1;
+					} else {
+						add_error( 20 );
+					}
 				} else {
-					$this->template->assign( 'NAME',           $name );
-					$this->template->assign( 'STAY_LOGGED_IN', $stay_logged_in );
 					add_error( 16 );
 				}
 				break;
@@ -77,7 +90,9 @@ class moduleUser extends module {
 		if( $loginok==1 ) {
 			return;
 		} else {
-			$this->template->assign( 'ERRORS',   $this->get_errors() );
+			$this->template->assign( 'NAME',           $name );
+			$this->template->assign( 'STAY_LOGGED_IN', $stay_logged_in );
+			$this->template->assign( 'ERRORS',         $this->get_errors() );
 			$this->parse_header( 1 );
 			return $this->fetch_template( 'display_login_user.tpl' );
 		}

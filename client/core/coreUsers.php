@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreUsers.php,v 1.2 2006/12/21 10:35:01 olivleh1 Exp $
+# $Id: coreUsers.php,v 1.3 2006/12/21 14:53:37 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -45,5 +45,21 @@ class coreUsers extends core {
 	
 	function set_password( $password ) {
 		return $this->update_row( "UPDATE users SET password='".sha1( $password )."' WHERE id=".USERID );
+	}
+	
+	function check_permission( $id, $permission ) {
+		switch( $permission ) {
+			case 'login_allowed':	$perm_bit=1;  break;
+			case 'is_admin':	$perm_bit=2;  break;
+			default:		return false; break;
+		}
+
+		$result_perm = $this->select_col( "SELECT permissions&$perm_bit FROM users WHERE id=$id" );
+		
+		if( $result_perm == $perm_bit ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

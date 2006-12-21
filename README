@@ -1,3 +1,9 @@
 regenerate mysqldump.sql:
 mysqldump -u root --default-character-set=latin1 --add-drop-table --no-data moneyflow > /mnt/www/sites/olli.homeip.net/htdocs/moneyflow/mysqldump.sql
-mysqldump -u root --default-character-set=latin1 --tables moneyflow currencies languages text templates settings |grep INSERT >> /mnt/www/sites/olli.homeip.net/htdocs/moneyflow/mysqldump.sql
+mysqldump -u root --default-character-set=latin1 --tables moneyflow currencies languages text templates |grep INSERT >> /mnt/www/sites/olli.homeip.net/htdocs/moneyflow/mysqldump.sql
+cat << EOF >> /mnt/www/sites/olli.homeip.net/htdocs/moneyflow/mysqldump.sql
+INSERT INTO settings VALUES (0,'displayed_currency','1'),(0,'displayed_language','1');
+INSERT INTO users VALUES (0,'','',0);
+UPDATE users SET id=0 WHERE username='';
+EOF
+
