@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCurrencies.php,v 1.6 2006/12/21 10:35:01 olivleh1 Exp $
+# $Id: coreCurrencies.php,v 1.7 2006/12/21 16:21:21 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -42,7 +42,7 @@ class coreCurrencies extends core {
 	}
 
 	function get_displayed_currency() {
-		$id=$this->coreSettings->get_displayed_currency();
+		$id=$this->coreSettings->get_displayed_currency( USERID );
 		if( !empty( $id ) ) {
 			$currency=$this->get_currency( $id );
 			if( !empty( $currency ) ) {

@@ -30,9 +30,15 @@
 					<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_predefmoneyflow&sr=1','_blank','width=800,height=80')">{$TEXT_12}</a><br />
 					</nobr>
 					<br />
+					<b>{$TEXT_95}</b><br />
+					<a href="{$ENV_INDEX_PHP}?action=personal_settings">{$TEXT_89}</a><br />
+{if $IS_ADMIN }
+					<a href="{$ENV_INDEX_PHP}?action=system_settings">{$TEXT_93}</a><br />
+					<a href="{$ENV_INDEX_PHP}?action=list_users">{$TEXT_94}</a><br />
+{/if}
+					<br />
 					<br />
 					<center>
-					<a href="{$ENV_INDEX_PHP}?action=settings">{$TEXT_89}</a><br /><br />
 					<a href="{$ENV_INDEX_PHP}?action=logout"><b>{$TEXT_13}</b></a>
 					</center><br />
 					

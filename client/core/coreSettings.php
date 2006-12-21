@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreSettings.php,v 1.3 2006/12/21 10:35:01 olivleh1 Exp $
+# $Id: coreSettings.php,v 1.4 2006/12/21 16:21:21 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -35,27 +35,27 @@ class coreSettings extends core {
 		$this->core();
 	}
 
-	function get_value( $name ) {
-		return $this->select_col( "SELECT value FROM settings WHERE name='$name' AND userid=".USERID." LIMIT 1" );
+	function get_value( $userid, $name ) {
+		return $this->select_col( "SELECT value FROM settings WHERE name='$name' AND userid=$userid LIMIT 1" );
 	}
 
-	function set_value( $name, $value ) {
-		return $this->insert_row( "INSERT INTO settings (userid,name,value) VALUES (".USERID.",'$name','$value') ON DUPLICATE KEY UPDATE value=VALUES(value)" );
+	function set_value( $userid, $name, $value ) {
+		return $this->insert_row( "INSERT INTO settings (userid,name,value) VALUES ($userid,'$name','$value') ON DUPLICATE KEY UPDATE value=VALUES(value)" );
 	}
 
-	function get_displayed_currency() {
-		return $this->get_value( 'displayed_currency' );
+	function get_displayed_currency( $userid ) {
+		return $this->get_value( $userid, 'displayed_currency' );
 	}
 
-	function get_displayed_language() {
-		return $this->get_value( 'displayed_language' );
+	function get_displayed_language( $userid ) {
+		return $this->get_value( $userid, 'displayed_language' );
 	}
 
-	function set_displayed_currency( $currency ) {
-		return $this->set_value( 'displayed_currency', $currency );
+	function set_displayed_currency( $userid, $currency ) {
+		return $this->set_value( $userid, 'displayed_currency', $currency );
 	}
 
-	function set_displayed_language( $language ) {
-		return $this->set_value( 'displayed_language', $language );
+	function set_displayed_language( $userid, $language ) {
+		return $this->set_value( $userid, 'displayed_language', $language );
 	}
 }

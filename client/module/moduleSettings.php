@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSettings.php,v 1.2 2006/12/21 11:32:29 olivleh1 Exp $
+# $Id: moduleSettings.php,v 1.3 2006/12/21 16:21:22 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -43,32 +43,25 @@ class moduleSettings extends module {
 		$this->coreUsers=new coreUsers();
 	}
 
-	function display_settings( $realaction, $language, $currency, $password1, $password2 ) {
+	function general_settings( $data_is_valid, $userid, $realaction, $language, $currency ) {
 
 		switch( $realaction ) {
 			case 'save':
-				$data_is_valid=true;
-				
-				if( $password1 != $password2 ) {
-					add_error( 19 );
-					$data_is_valid=false;
+				if( $data_is_valid ) {
+					$this->coreSettings->set_displayed_currency( $userid, $currency );
+					$this->coreSettings->set_displayed_language( $userid, $language );
 				}
-
-				if( !$data_is_valid ) {
-					$this->template->assign( 'CURRENCY',        $currency );
-					$this->template->assign( 'LANGUAGE',        $language );
-					break;
-				} else {
-					if( !empty( $password1 ) ) {
-						$this->coreUsers->set_password( $password1 );
-					}
-					$this->coreSettings->set_displayed_currency( $currency );
-					$this->coreSettings->set_displayed_language( $language );
-				}
-			default:
-				$this->template->assign( 'CURRENCY',        $this->coreSettings->get_displayed_currency() );
-				$this->template->assign( 'LANGUAGE',        $this->coreSettings->get_displayed_language() );
 				break;
+			default:
+				break;
+		}
+
+		if( $data_is_valid ) {
+			$this->template->assign( 'CURRENCY',        $this->coreSettings->get_displayed_currency( $userid ) );
+			$this->template->assign( 'LANGUAGE',        $this->coreSettings->get_displayed_language( $userid ) );
+		} else {
+			$this->template->assign( 'CURRENCY',        $currency );
+			$this->template->assign( 'LANGUAGE',        $language );
 		}
 
 		$this->template->assign( 'CURRENCY_VALUES', $this->coreCurrencies->get_all_data() );
@@ -76,9 +69,38 @@ class moduleSettings extends module {
 		$this->template->assign( 'ERRORS',          $this->get_errors() );
 
 		$this->parse_header();
-		return $this->fetch_template( 'display_settings.tpl' );
 	}
 
+	function display_personal_settings( $realaction, $language, $currency, $password1, $password2 ) {
+
+		$data_is_valid=true;
+		
+		switch( $realaction ) {
+			case 'save':
+				if( $password1 != $password2 ) {
+					add_error( 19 );
+					$data_is_valid=false;
+				} elseif( !empty( $password1 ) ) {
+					$this->coreUsers->set_password( $password1 );
+				}
+				break;
+			default:
+				break;
+		}
+
+		$this->general_settings( $data_is_valid, USERID, $realaction, $language, $currency );
+
+		return $this->fetch_template( 'display_personal_settings.tpl' );
+	}
+
+	function display_system_settings( $realaction, $language, $currency ) {
+
+		$data_is_valid=true;
+
+		$this->general_settings( $data_is_valid, 0, $realaction, $language, $currency );
+
+		return $this->fetch_template( 'display_system_settings.tpl' );
+	}
 
 }
 ?>

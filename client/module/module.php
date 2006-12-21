@@ -24,17 +24,19 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: module.php,v 1.16 2006/12/20 17:45:06 olivleh1 Exp $
+# $Id: module.php,v 1.17 2006/12/21 16:21:21 olivleh1 Exp $
 #
 
 require_once 'Smarty.class.php';
 require_once 'core/coreTemplates.php';
 require_once 'core/coreText.php';
+require_once 'core/coreUsers.php';
 
 class module {
 	function module() {
 		$this->coreTemplates = new coreTemplates;
 		$this->coreText = new coreText;
+		$this->coreUsers = new coreUsers;
 		$this->template = new Smarty;
 		$this->index_php='index.php';
 		$this->template->register_modifier( 'number_format', 'my_number_format' );
@@ -99,6 +101,7 @@ class module {
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
 		$this->template->assign( 'VERSION',        '0.6.1' );
 		$this->template->assign( 'NO_NAVIGATION',  $nonavi );
+		$this->template->assign( 'IS_ADMIN',       $this->coreUsers->check_permission( USERID, 'is_admin' ) );
 
 		$header=$this->fetch_template( 'display_header.tpl' );
 		$this->template->assign( 'HEADER', $header );

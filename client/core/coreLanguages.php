@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreLanguages.php,v 1.2 2006/12/21 14:53:37 olivleh1 Exp $
+# $Id: coreLanguages.php,v 1.3 2006/12/21 16:21:21 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -42,7 +42,7 @@ class coreLanguages extends core {
 	}
 
 	function get_displayed_language() {
-		$id=$this->coreSettings->get_displayed_language();
+		$id=$this->coreSettings->get_displayed_language( USERID );
 		if( !empty( $id ) ) {
 			$language=$this->get_language( $id );
 			if( !empty( $language ) ) {

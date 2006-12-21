@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleUsers.php,v 1.7 2006/12/21 14:53:37 olivleh1 Exp $
+# $Id: moduleUsers.php,v 1.8 2006/12/21 16:21:22 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -81,8 +81,6 @@ class moduleUser extends module {
 					add_error( 16 );
 				}
 				break;
-			case 'logout':
-				$this->coreSession->destroy();
 			default:
 				break;
 		}
@@ -90,12 +88,18 @@ class moduleUser extends module {
 		if( $loginok==1 ) {
 			return;
 		} else {
+			define( USERID, 0 );
 			$this->template->assign( 'NAME',           $name );
 			$this->template->assign( 'STAY_LOGGED_IN', $stay_logged_in );
 			$this->template->assign( 'ERRORS',         $this->get_errors() );
 			$this->parse_header( 1 );
 			return $this->fetch_template( 'display_login_user.tpl' );
 		}
+	}
+
+	function logout() {
+		$this->coreSession->start();
+		$this->coreSession->destroy();
 	}
 }
 ?>

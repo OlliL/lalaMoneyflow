@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.22 2006/12/21 14:53:36 olivleh1 Exp $
+# $Id: index.php,v 1.23 2006/12/21 16:21:21 olivleh1 Exp $
 #
 
 $action=$_POST['action']?$_POST['action']:$_GET['action'];
@@ -60,7 +60,10 @@ $moduleSearch			= new moduleSearch();
 $moduleSettings			= new moduleSettings();
 $moduleUser			= new moduleUser();
 
-define( USERID, 0 );
+
+if( $action == 'logout' ) {
+	$moduleUser->logout();
+}
 
 if( $action == 'login_user' || !$moduleUser->is_logged_in() ) {
 	$realaction=	$_POST['realaction'];
@@ -194,19 +197,19 @@ switch( $action ) {
 					$display=$moduleSearch->do_search( $searchstring, $contractpart, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus );
 					break;
 	
-	/* users */
-	
-	case 'logout':			$display=$moduleUser->display_login_user( 'logout', NULL, NULL, NULL );
-					break;
-
 	/* settings */
 	
-	case 'settings':		$realaction=	$_POST['realaction'];
+	case 'personal_settings':	$realaction=	$_POST['realaction'];
 					$language=      $_POST['language'];
 					$currency=      $_POST['currency'];
 					$password1=     $_POST['password1'];
 					$password2=     $_POST['password2'];
-					$display=$moduleSettings->display_settings( $realaction, $language, $currency, $password1, $password2 );
+					$display=$moduleSettings->display_personal_settings( $realaction, $language, $currency, $password1, $password2 );
+					break;
+	case 'system_settings':		$realaction=	$_POST['realaction'];
+					$language=      $_POST['language'];
+					$currency=      $_POST['currency'];
+					$display=$moduleSettings->display_system_settings( $realaction, $language, $currency );
 					break;
 
 	default:			$display=$moduleFrontPage->display_main();

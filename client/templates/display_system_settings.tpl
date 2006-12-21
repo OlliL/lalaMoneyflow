@@ -1,15 +1,15 @@
 <html>
-	<head><title>lalaMoneyflow: {$TEXT_89}</title>
+	<head><title>lalaMoneyflow: {$TEXT_93}</title>
 {$HEADER}
 
 		<td align="center" valign="top">
-		<h1>{$TEXT_89}</h1>
+		<h1>{$TEXT_93}</h1>
 		{section name=ERROR loop=$ERRORS}
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
 		{/section}
 		<br />
 		<form action="{$ENV_INDEX_PHP}" method="POST">
-			<input type="hidden" name="action" value="personal_settings">
+			<input type="hidden" name="action" value="system_settings">
 			<input type="hidden" name="realaction" value="save">
 			<table border=0>
 				<tr>
@@ -27,14 +27,6 @@
 						<option value="{$CURRENCY_VALUES[CURRENCIES].id}" {if $CURRENCY_VALUES[CURRENCIES].id == $CURRENCY}selected{/if}> {$CURRENCY_VALUES[CURRENCIES].currency}</option>
 					{/section}
 					</select></td>
-				</tr>
-				<tr>
-					<th>{$TEXT_86}</th>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="password" name="password1" size=10 value="" /></td>
-				</tr>
-				<tr>
-					<th>{$TEXT_92}</th>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="password" name="password2" size=10 value="" /></td>
 				</tr>
 			</table>
 			<br />
