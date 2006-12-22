@@ -10,7 +10,7 @@ else
         PROGPATH=$(dirname $PROGPATH)
 fi
 
-mysqldump -u root --default-character-set=latin1 --tables --add-drop-table --no-data moneyflow \
+mysqldump -u root --set-variable=quote-names=FALSE --default-character-set=latin1 --tables --add-drop-table --no-data moneyflow \
 	users \
 	settings \
 	capitalsources \
@@ -24,7 +24,7 @@ mysqldump -u root --default-character-set=latin1 --tables --add-drop-table --no-
 	text \
 		> ${PROGPATH}/mysqldump.sql
 
-mysqldump -u root --default-character-set=latin1 --tables moneyflow \
+mysqldump -u root --set-variable=quote-names=FALSE --set-variable=extended-insert=FALSE --default-character-set=latin1 --tables moneyflow \
 	currencies \
 	languages \
 	text \
