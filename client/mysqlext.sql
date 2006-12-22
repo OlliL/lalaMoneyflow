@@ -1,3 +1,32 @@
+CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_text (
+   id
+  ,text
+  ,type
+  ,userid)
+  AS SELECT mtx.id
+           ,mtx.text
+           ,mtx.type
+           ,mse.userid
+      FROM text     mtx
+          ,settings mse
+     WHERE mtx.languageid = mse.value
+       AND mse.name       = 'displayed_language';
+
+CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_template_text (
+   userid
+  ,name
+  ,variable
+  ,text)
+  AS SELECT mvt.userid
+           ,mte.name
+           ,CONCAT('TEXT_',mvt.id)
+           ,mvt.text
+      FROM templates mte
+          ,vw_text   mvt
+     WHERE mte.textid = mvt.id
+       AND mvt.type   = 't';
+
+
 DELIMITER $$
 
 DROP FUNCTION IF EXISTS calc_amount$$
