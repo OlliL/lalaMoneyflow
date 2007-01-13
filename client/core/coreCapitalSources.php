@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.14 2006/12/20 17:45:06 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.15 2007/01/13 08:14:31 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -87,11 +87,11 @@ class coreCapitalSources extends core {
 	}
 
 	function get_type( $id ) {
-		return $this->select_col( "SELECT type FROM capitalsources WHERE id=$idAND userid=".USERID."  LIMIT 1" );
+		return $this->select_col( "SELECT type FROM capitalsources WHERE id=$id AND userid=".USERID."  LIMIT 1" );
 	}
 
 	function get_state( $id ) {
-		return $this->select_col( "SELECT state FROM capitalsources WHERE id=$idAND userid=".USERID."  LIMIT 1" );
+		return $this->select_col( "SELECT state FROM capitalsources WHERE id=$id AND userid=".USERID."  LIMIT 1" );
 	}
 
 	function id_is_valid( $id, $date ) {
