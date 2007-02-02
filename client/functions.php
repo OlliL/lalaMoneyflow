@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: functions.php,v 1.4 2006/12/20 17:45:06 olivleh1 Exp $
+	$Id: functions.php,v 1.5 2007/02/02 13:24:24 olivleh1 Exp $
 */
 
 
@@ -17,11 +17,12 @@ function add_error( $id, $args=NULL ) {
 }
 
 function is_date( $date ) {
-	if( ! $foo=strptime( $date, '%Y-%m-%d') ){
-	var_dump($foo);
-		return false;
-}	else
+	$foo=strptime( $date, '%Y-%m-%d');
+	if( is_array( $foo ) && $date == sprintf( "%4d-%2d-%2d", ($foo['tm_year']+1900), $foo['tm_mon'], $foo['tm_mday'] ) ) {
 		return true;
+	} else {
+		return false;
+	}
 }
 
 function fix_amount( &$amount ) {

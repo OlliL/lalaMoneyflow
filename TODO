@@ -1,5 +1,3 @@
-- do not allow to insert dates which are not valid like 2007-02-30
-
 - do not allow the admin features when the user is no admin
 
 - copy system settings when creating a new user

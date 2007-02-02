@@ -1,8 +1,8 @@
--- MySQL dump 10.10
+-- MySQL dump 10.11
 --
 -- Host: localhost    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	5.0.27
+-- Server version	5.0.33
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -116,8 +116,8 @@ CREATE TABLE moneyflows (
   KEY mmf_mcp_pk (contractpartnerid,userid),
   KEY mmf_i_01 (userid,bookingdate),
   KEY mmf_mcs_pk (capitalsourceid,userid),
-  CONSTRAINT mmf_mcs_pk FOREIGN KEY (capitalsourceid, userid) REFERENCES capitalsources (id, userid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mcp_pk FOREIGN KEY (contractpartnerid, userid) REFERENCES contractpartners (id, userid) ON UPDATE CASCADE,
+  CONSTRAINT mmf_mcs_pk FOREIGN KEY (capitalsourceid, userid) REFERENCES capitalsources (id, userid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mur_pk FOREIGN KEY (userid) REFERENCES users (id) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mmf';
 
@@ -156,8 +156,8 @@ CREATE TABLE predefmoneyflows (
   KEY mpm_mur_pk (userid),
   KEY mpm_mcp_pk (contractpartnerid,userid),
   KEY mpm_mcs_pk (capitalsourceid,userid),
-  CONSTRAINT mpm_mcs_pk FOREIGN KEY (capitalsourceid, userid) REFERENCES capitalsources (id, userid) ON UPDATE CASCADE,
   CONSTRAINT mpm_mcp_pk FOREIGN KEY (contractpartnerid, userid) REFERENCES contractpartners (id, userid) ON UPDATE CASCADE,
+  CONSTRAINT mpm_mcs_pk FOREIGN KEY (capitalsourceid, userid) REFERENCES capitalsources (id, userid) ON UPDATE CASCADE,
   CONSTRAINT mpm_mur_pk FOREIGN KEY (userid) REFERENCES users (id) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mpm';
 
@@ -210,7 +210,7 @@ CREATE TABLE `text` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2006-12-22  0:09:00
+-- Dump completed on 2007-02-02 13:22:11
 INSERT INTO currencies VALUES (1,'EUR',1.00000,1);
 INSERT INTO currencies VALUES (2,'DM',1.95583,NULL);
 INSERT INTO languages VALUES (2,'deutsch');
@@ -277,16 +277,16 @@ INSERT INTO text VALUES (10,2,'Oktober','m');
 INSERT INTO text VALUES (10,2,'Das Feld ''Vertragspartner'' darf nicht leer sein!','e');
 INSERT INTO text VALUES (11,1,'add contractual partner','t');
 INSERT INTO text VALUES (11,1,'November','m');
-INSERT INTO text VALUES (11,1,'The field ''invoice date'' has to be in the format YYYY-MM-DD!','e');
+INSERT INTO text VALUES (11,1,'The field ''invoice date'' has to be in the format YYYY-MM-DD and must be a valid date!','e');
 INSERT INTO text VALUES (11,2,'Vertragspartner hinzufügen','t');
 INSERT INTO text VALUES (11,2,'November','m');
-INSERT INTO text VALUES (11,2,'Das Feld ''Rechnungsdatum'' muss dem Format YYYY-MM-DD entsprechen!','e');
+INSERT INTO text VALUES (11,2,'Das Feld ''Rechnungsdatum'' muss dem Format YYYY-MM-DD entsprechen und ein g&uuml;ltiges Datum sein!','e');
 INSERT INTO text VALUES (12,1,'add predefined flow of money','t');
 INSERT INTO text VALUES (12,1,'December','m');
-INSERT INTO text VALUES (12,1,'The field ''booking date'' has to be in the format YYYY-MM-DD!','e');
+INSERT INTO text VALUES (12,1,'The field ''booking date'' has to be in the format YYYY-MM-DD and must be a valid date!','e');
 INSERT INTO text VALUES (12,2,'vordef. Geldbew. hinzufügen','t');
 INSERT INTO text VALUES (12,2,'Dezember','m');
-INSERT INTO text VALUES (12,2,'Das Feld ''Buchungsdatum'' muss dem Format YYYY-MM-DD entsprechen!','e');
+INSERT INTO text VALUES (12,2,'Das Feld ''Buchungsdatum'' muss dem Format YYYY-MM-DD entsprechen und ein g&uuml;ltiges Datum sein!','e');
 INSERT INTO text VALUES (13,1,'logout','t');
 INSERT INTO text VALUES (13,1,'The field ''comment'' must not be empty!','e');
 INSERT INTO text VALUES (13,2,'Abmelden','t');
