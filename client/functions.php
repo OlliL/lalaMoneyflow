@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: functions.php,v 1.5 2007/02/02 13:24:24 olivleh1 Exp $
+	$Id: functions.php,v 1.6 2007/02/03 18:16:40 olivleh1 Exp $
 */
 
 
@@ -18,7 +18,7 @@ function add_error( $id, $args=NULL ) {
 
 function is_date( $date ) {
 	$foo=strptime( $date, '%Y-%m-%d');
-	if( is_array( $foo ) && $date == sprintf( "%4d-%2d-%2d", ($foo['tm_year']+1900), $foo['tm_mon'], $foo['tm_mday'] ) ) {
+	if( is_array( $foo ) && $date == sprintf( "%4d-%02d-%02d", ($foo['tm_year']+1900), ($foo['tm_mon']+1), $foo['tm_mday'] ) ) {
 		return true;
 	} else {
 		return false;
