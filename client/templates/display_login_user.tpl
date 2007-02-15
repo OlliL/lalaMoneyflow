@@ -1,10 +1,17 @@
 <html>
 	<head><title>lalaMoneyflow: {$TEXT_84}</title>
+{literal}
+<script language="JavaScript">
+function onload() {
+  document.loginform.name.focus();
+}
+</script>
+{/literal}
 {$HEADER}
 		<td align="center">
 		<br />
 		<h1>{$TEXT_84}</h1>
-		<form action="{$ENV_INDEX_PHP}" method="POST">
+		<form action="{$ENV_INDEX_PHP}" method="POST" name="loginform">
 			<input type="hidden" name="action" value="login_user">
 			<input type="hidden" name="realaction" value="login">
 			{section name=ERROR loop=$ERRORS}

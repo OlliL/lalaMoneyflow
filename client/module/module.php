@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: module.php,v 1.19 2007/02/02 13:24:25 olivleh1 Exp $
+# $Id: module.php,v 1.20 2007/02/15 20:01:42 olivleh1 Exp $
 #
 
 require_once 'Smarty.class.php';
@@ -106,7 +106,7 @@ class module {
 		$header=$this->fetch_template( 'display_header.tpl' );
 		$this->template->assign( 'HEADER', $header );
 
-		$header=$this->fetch_template( 'display_footer.tpl' );
+		$footer=$this->fetch_template( 'display_footer.tpl' );
 		$this->template->assign( 'FOOTER', $footer );
 	}	
 }

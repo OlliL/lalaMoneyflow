@@ -1,5 +1,11 @@
 <html>
 	<head><title>lalaMoneyflow: {$TEXT_8}</title>
+{literal}
+<script language="JavaScript">
+function onload() {
+  document.addmoney.elements[5].focus();
+</script>
+{/literal}
 {$HEADER}
 
 		<td align="center">
@@ -8,7 +14,7 @@
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
 		{/section}
 		<br />
-		<form action="{$ENV_INDEX_PHP}?action=add_moneyflow" method="POST">
+		<form action="{$ENV_INDEX_PHP}?action=add_moneyflow" method="POST" name="addmoney">
 			<input type="hidden" name="action" value="add_moneyflow">
 			<table border=0>
 				<tr>
