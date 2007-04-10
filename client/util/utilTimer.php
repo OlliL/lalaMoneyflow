@@ -33,11 +33,11 @@ class utilTimer {
         global $confTimer;
 
         $endtime = explode( ' ', microtime() );
-        $this->timer = ( $endtime[1]-$this->timer[1] )+( $endtime[0]-$this->timer[0] );
+        $timer = ( $endtime[1]-$this->timer[1] )+( $endtime[0]-$this->timer[0] );
         switch( $confTimer ) {
-            case 2: printf( '<font color="#FF0000" style="font-family:verdana,sans-serif;font-size:9px;">elapsed: %03.6f seconds, %s', $this->timer, ' </font>' );
+            case 2: printf( '<font color="#FF0000" style="font-family:verdana,sans-serif;font-size:9px;">elapsed: %03.6f seconds, %s', $timer, ' </font>' );
                     break;
-            case 1: printf( '<!-- elapsed: %03.6f seconds, %s //-->' , $this->timer, $cacharray[$iscached] );
+            case 1: printf( '<!-- elapsed: %03.6f seconds, %s //-->' , $timer, $cacharray[$iscached] );
                     break;
             case 0: break;
         }

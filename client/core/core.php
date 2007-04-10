@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: core.php,v 1.12 2006/12/21 14:54:07 olivleh1 Exp $
+# $Id: core.php,v 1.13 2007/04/10 11:39:39 olivleh1 Exp $
 #
 
 require_once 'DB.php';
@@ -33,15 +33,18 @@ class core {
 
 	function core() {
 		$this->db = DB::connect( $GLOBALS['dsn'],1 );
-
+#		$this->timer = new utilTimer();
 		if( DB::isError( $this->db ) ) {
 			die( $this->db->getMessage() );
 		}
 	}
 
 	function query( $query ) {
+#		$this->timer->mStart();
 #		echo "<pre>$query</pre>";
-		return $this->db->query( $query );
+		$result=$this->db->query( $query );
+#		$this->timer->mPrintTime();
+		return $result;
 	}
 
 	function select_col( $query ) {

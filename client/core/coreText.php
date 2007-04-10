@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreText.php,v 1.2 2006/12/20 17:45:06 olivleh1 Exp $
+# $Id: coreText.php,v 1.3 2007/04/10 11:39:39 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -45,5 +45,9 @@ class coreText extends core {
 
 	function get_error( $id ) {
 		return $this->get_text( $id, 'e' );
+	}
+
+	function get_graph( $id ) {
+		return $this->get_text( $id, 'g' );
 	}
 }

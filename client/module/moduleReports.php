@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.24 2006/12/20 17:45:07 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.25 2007/04/10 11:39:40 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -173,12 +173,20 @@ class moduleReports extends module {
 
 	function plot_graph( $capitalsources_id, $startmonth, $startyear, $endmonth, $endyear ) {
 	
+		$coreText = new coreText();
+		$graph_comment_all= $coreText->get_graph( 1 );
+		$graph_comment    = $coreText->get_graph( 2 );
+		$graph_from       = $coreText->get_graph( 3 );
+		$graph_until      = $coreText->get_graph( 4 );
+		$graph_xaxis      = $coreText->get_graph( 5 );
+		$graph_yaxis      = $coreText->get_graph( 6 );
+
 		if( $capitalsources_id == 0 ) {
 			$all_capitalsources_ids  = $this->coreCapitalSources->get_all_ids();
-			$graph_comment = 'amount trend of all capitalsources';
+			$graph_comment = $graph_comment_all;
 		} else {
 			$all_capitalsources_ids[] = $capitalsources_id;
-			$graph_comment = 'amount trend of capitalsource "'.$this->coreCapitalSources->get_comment( $capitalsources_id ).'"';
+			$graph_comment = $graph_comment.$this->coreCapitalSources->get_comment( $capitalsources_id );
 		}
 			
 		# find first recorded monthly settlement
@@ -243,7 +251,7 @@ class moduleReports extends module {
 		$graph->SetMarginColor('#E6E6FA');
 		$graph->SetFrame(true,array(0,0,0),0);
 
-		$txt = new Text($graph_comment."\nstarting from ".sprintf('%02d/%02d',$startmonth,substr($startyear,3,2)).' until '.sprintf('%02d/%02d',$endmonth,substr($endyear,3,2)));
+		$txt = new Text($graph_comment."\n".$graph_from.sprintf('%02d/%02d',$startmonth,substr($startyear,3,2)).$graph_until.sprintf('%02d/%02d',$endmonth,substr($endyear,3,2)));
 		$txt->SetFont(FF_FONT1,FS_BOLD);
 		$txt->Center(0,700);
 		$txt->ParagraphAlign('center');
@@ -254,13 +262,13 @@ class moduleReports extends module {
 		$p1->SetFillGradient('#E6E6FA','#B0C4DE');
 		$graph->Add($p1);
 
-		$graph->xaxis->title->Set("month/year");                           
+		$graph->xaxis->title->Set($graph_xaxis);
 		$graph->xaxis->SetTitleMargin(10);
 		$graph->xaxis->SetTickLabels($monthly_x);
 		$graph->xaxis->SetFont(FF_FONT0);                              
 		$graph->xaxis->title->SetFont(FF_FONT1,FS_BOLD);          
 
-		$graph->yaxis->title->Set("amount");                                         
+		$graph->yaxis->title->Set($graph_yaxis);                                         
 		$graph->yaxis->SetTitleMargin(35);
 		$graph->yaxis->SetFont(FF_FONT0);                              
 		$graph->yaxis->title->SetFont(FF_FONT1,FS_BOLD);                              

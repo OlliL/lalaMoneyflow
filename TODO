@@ -15,8 +15,6 @@
 
 - capitalsources ENUMs localizable (probably via 'text' and different types)
 
-- jpgraph localizeable
-
 - admin tool
   - currency handling (add, change, make default)
   - language handling (change translation, add new language) (?)

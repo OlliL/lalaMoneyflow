@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	5.0.33
+-- Server version	5.0.37
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -195,7 +195,7 @@ CREATE TABLE `text` (
   id int(10) unsigned NOT NULL,
   languageid int(10) unsigned NOT NULL,
   `text` varchar(255) NOT NULL,
-  `type` enum('t','m','e') NOT NULL,
+  `type` enum('t','m','e','g') NOT NULL,
   PRIMARY KEY  (id,languageid,`type`),
   KEY mte_mla_pk (languageid),
   CONSTRAINT mte_mla_pk FOREIGN KEY (languageid) REFERENCES languages (id) ON UPDATE CASCADE
@@ -210,7 +210,7 @@ CREATE TABLE `text` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-02-02 13:22:11
+-- Dump completed on 2007-04-10 11:37:26
 INSERT INTO currencies VALUES (1,'EUR',1.00000,1);
 INSERT INTO currencies VALUES (2,'DM',1.95583,NULL);
 INSERT INTO languages VALUES (2,'deutsch');
@@ -218,39 +218,51 @@ INSERT INTO languages VALUES (1,'english');
 INSERT INTO text VALUES (1,1,'sources of capital','t');
 INSERT INTO text VALUES (1,1,'January','m');
 INSERT INTO text VALUES (1,1,'No sources of capital where created in the system!','e');
+INSERT INTO text VALUES (1,1,'amount trend of all capitalsources','g');
 INSERT INTO text VALUES (1,2,'Kapitalquellen','t');
 INSERT INTO text VALUES (1,2,'Januar','m');
 INSERT INTO text VALUES (1,2,'Es wurden keine Kapitalquellen im System angelegt!','e');
+INSERT INTO text VALUES (1,2,'Vermögenstrend aller Kapitalquellen','g');
 INSERT INTO text VALUES (2,1,'contractual partners','t');
 INSERT INTO text VALUES (2,1,'February','m');
 INSERT INTO text VALUES (2,1,'You may not delete a source of capital while it is referenced by a flow of money!','e');
+INSERT INTO text VALUES (2,1,'Vermögenstrend der Kapitalquelle ','g');
 INSERT INTO text VALUES (2,2,'Vertragspartner','t');
 INSERT INTO text VALUES (2,2,'Februar','m');
 INSERT INTO text VALUES (2,2,'Es dürfen keine Kapitalquellen gelöscht werden, welche noch von einer Geldbewegung referenziert sind!','e');
+INSERT INTO text VALUES (2,2,'amount trend of capitalsource ','g');
 INSERT INTO text VALUES (3,1,'predefined flows of money','t');
 INSERT INTO text VALUES (3,1,'March','m');
 INSERT INTO text VALUES (3,1,'There are flows of money for this source of capital outside the period of validitiy you''ve choosen!','e');
+INSERT INTO text VALUES (3,1,'starting from ','g');
 INSERT INTO text VALUES (3,2,'vordefinierte Geldbewegungen','t');
 INSERT INTO text VALUES (3,2,'März','m');
 INSERT INTO text VALUES (3,2,'Es existieren Geldbewegungen für diese Kapitalquelle ausserhalb des gwählten Gültigkeitszeitraums','e');
+INSERT INTO text VALUES (3,2,'von ','g');
 INSERT INTO text VALUES (4,1,'monthly balances','t');
 INSERT INTO text VALUES (4,1,'April','m');
 INSERT INTO text VALUES (4,1,'The source of capital you''ve choosen is not valid on the booking date you''ve specified!','e');
+INSERT INTO text VALUES (4,1,' until ','g');
 INSERT INTO text VALUES (4,2,'Monatsabschlüsse','t');
 INSERT INTO text VALUES (4,2,'April','m');
 INSERT INTO text VALUES (4,2,'Das Buchungsdatum liegt nicht im Gültigkeitszeitraum der gewählten Kapitalquelle!','e');
+INSERT INTO text VALUES (4,2,' bis ','g');
 INSERT INTO text VALUES (5,1,'reports','t');
 INSERT INTO text VALUES (5,1,'May','m');
 INSERT INTO text VALUES (5,1,'No contractual partners where created in the system!','e');
+INSERT INTO text VALUES (5,1,'month/year','g');
 INSERT INTO text VALUES (5,2,'Reports','t');
 INSERT INTO text VALUES (5,2,'Mai','m');
 INSERT INTO text VALUES (5,2,'Es wurden keine Vertragspartner im System angelegt!','e');
+INSERT INTO text VALUES (5,2,'Monat/Jahr','g');
 INSERT INTO text VALUES (6,1,'trends','t');
 INSERT INTO text VALUES (6,1,'June','m');
 INSERT INTO text VALUES (6,1,'You may not delete a contractual partner who is still referenced by a flow of money!','e');
+INSERT INTO text VALUES (6,1,'amount','g');
 INSERT INTO text VALUES (6,2,'Trends','t');
 INSERT INTO text VALUES (6,2,'Juni','m');
 INSERT INTO text VALUES (6,2,'Es dürfen keine Vertragspartner gelöscht werden, welche noch von einer Geldbewegung referenziert sind!','e');
+INSERT INTO text VALUES (6,2,'Betrag','g');
 INSERT INTO text VALUES (7,1,'search for flows of money','t');
 INSERT INTO text VALUES (7,1,'July','m');
 INSERT INTO text VALUES (7,1,'The selected currency to display does not exist in the system!','e');

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.27 2006/12/20 17:45:07 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.28 2007/04/10 11:39:40 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -88,6 +88,8 @@ class moduleMoneyFlows extends module {
 	function display_add_moneyflow( $realaction, $all_data ) {
 
 		$date=date( 'Y-m-d' );
+		$capitalsource_values=$this->coreCapitalSources->get_valid_comments( $date, $date );
+		$contractpartner_values=$this->coreContractPartners->get_all_names();
 
 		switch( $realaction ) {
 			case 'save':
@@ -168,8 +170,8 @@ class moduleMoneyFlows extends module {
 
 				break;
 		}
-		$capitalsource_values=$this->coreCapitalSources->get_valid_comments( $date, $date );
-		$contractpartner_values=$this->coreContractPartners->get_all_names();
+#		$capitalsource_values=$this->coreCapitalSources->get_valid_comments( $date, $date );
+#		$contractpartner_values=$this->coreContractPartners->get_all_names();
 
 		$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
