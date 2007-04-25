@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.25 2007/04/25 15:03:39 olivleh1 Exp $
+# $Id: index.php,v 1.26 2007/04/25 15:04:33 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -39,9 +39,9 @@ require_once 'module/moduleReports.php';
 require_once 'module/moduleSearch.php';
 require_once 'module/moduleSettings.php';
 require_once 'module/moduleUsers.php';
-require_once 'util/utilTimer.php';
-$timer = new utilTimer();
-$timer->mStart();
+#require_once 'util/utilTimer.php';
+#$timer = new utilTimer();
+#$timer->mStart();
 
 
 $action=$_POST['action']?$_POST['action']:$_GET['action'];
@@ -261,5 +261,5 @@ if( $moduleUsers->is_logged_in() ) {
 	}
 }
 echo $display;
-$timer->mPrintTime();
+#$timer->mPrintTime();
 ?>
