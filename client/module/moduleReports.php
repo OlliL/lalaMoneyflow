@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.25 2007/04/10 11:39:40 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.26 2007/06/26 19:05:29 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -74,6 +74,7 @@ class moduleReports extends module {
 
 		$this->template->assign( 'ALL_YEARS',      $years  );
 		$this->template->assign( 'ALL_MONTHS',     $months );
+		$this->template->assign( 'SELECTED_MONTH', $month  );
 		$this->template->assign( 'SELECTED_YEAR',  $year   );
 
 		$this->parse_header();
