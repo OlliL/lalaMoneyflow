@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.15 2007/01/13 08:14:31 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.16 2007/07/01 09:12:17 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -39,6 +39,7 @@ class moduleMonthlySettlement extends module {
 		$this->module();
 		$this->coreCapitalSources=new coreCapitalSources();
 		$this->coreCurrencies=new coreCurrencies();
+		$this->coreMoneyFlows=new coreMoneyFlows();
 		$this->coreMonthlySettlement=new coreMonthlySettlement();
 		$this->coreText=new coreText();
 	}
@@ -113,6 +114,7 @@ class moduleMonthlySettlement extends module {
 					$timestamp=$this->coreMonthlySettlement->get_next_date();
 					$month=date( 'm', $timestamp );
 					$year=date( 'Y', $timestamp );
+					$new = 1;
 					$this->template->assign( 'NEW', 1 );
 				} elseif ( $all_data['new'] == 1 ) {
 					$this->template->assign( 'NEW', 1 );
@@ -122,10 +124,16 @@ class moduleMonthlySettlement extends module {
 					$all_ids=$this->coreCapitalSources->get_valid_ids( "$year-$month-1", "$year-$month-1" );
 					$all_data=array();
 					foreach( $all_ids as $id ) {
+						if( $new == 1 ) {
+							$amount = $this->coreMonthlySettlement->get_amount( $id, date( 'm', mktime( 0, 0, 0, $month-1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1, $year ) ) );;
+							$amount += round( $lastamount+$this->coreMoneyFlows->get_monthly_capitalsource_movement( $id, $month, $year ), 2 );
+						} else {
+							$amount = $this->coreMonthlySettlement->get_amount( $id,$month, $year );
+						}
 						$all_data[]=array(
 							'id'      => $id,
 							'comment' => $this->coreCapitalSources->get_comment( $id ),
-							'amount'  => $this->coreMonthlySettlement->get_amount( $id,$month, $year )
+							'amount'  => $amount
 						);
 					}
 
