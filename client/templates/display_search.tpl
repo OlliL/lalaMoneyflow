@@ -10,6 +10,7 @@
 			{section name=ERROR loop=$ERRORS}
 				<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
 			{/section}
+			<br />
 			<table border=0>
 				<tr>
 					<th>{$TEXT_72}</th>

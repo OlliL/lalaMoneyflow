@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSearch.php,v 1.7 2006/12/20 17:45:07 olivleh1 Exp $
+# $Id: moduleSearch.php,v 1.8 2007/07/14 16:36:56 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -69,7 +69,11 @@ class moduleSearch extends module {
 		$searchparams['startdate'] = $startdate;
 		$searchparams['enddate']   = $enddate;
 
-		$results = $this->coreMoneyFlows->search_moneyflows( $searchparams );
+		if( empty($searchparams['contractpartnerid']) && empty($searchparams['pattern']) ) {
+			add_error( 23);
+		} else {
+			$results = $this->coreMoneyFlows->search_moneyflows( $searchparams );
+		}
 	    
 		$this->template->assign( 'SEARCHPARAMS', $searchparams );
 		$this->template->assign( 'RESULTS',      $results );
