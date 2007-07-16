@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleUsers.php,v 1.9 2006/12/21 23:09:26 olivleh1 Exp $
+# $Id: moduleUsers.php,v 1.10 2007/07/16 06:29:19 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -56,7 +56,7 @@ class moduleUsers extends module {
 		}
 	}
 
-	function display_login_user( $realaction, $name, $password, $stay_logged_in ) {
+	function display_login_user( $realaction, $name, $password, $stay_logged_in, $request_uri ) {
 
 		switch( $realaction ) {
 			case 'login':
@@ -92,6 +92,7 @@ class moduleUsers extends module {
 			$this->template->assign( 'NAME',           $name );
 			$this->template->assign( 'STAY_LOGGED_IN', $stay_logged_in );
 			$this->template->assign( 'ERRORS',         $this->get_errors() );
+			$this->template->assign( 'REQUEST_URI',    $request_uri );
 			$this->parse_header( 1 );
 			return $this->fetch_template( 'display_login_user.tpl' );
 		}

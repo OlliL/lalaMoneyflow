@@ -14,6 +14,7 @@ function onload() {
 		<form action="{$ENV_INDEX_PHP}" method="POST" name="loginform">
 			<input type="hidden" name="action" value="login_user">
 			<input type="hidden" name="realaction" value="login">
+			<input type="hidden" name="request_uri" value="{$REQUEST_URI}">
 			{section name=ERROR loop=$ERRORS}
 				<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
 			{/section}

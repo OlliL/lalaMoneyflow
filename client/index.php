@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.26 2007/04/25 15:04:33 olivleh1 Exp $
+# $Id: index.php,v 1.27 2007/07/16 06:29:19 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -52,8 +52,11 @@ function my_number_format($number) {
 
 $moduleUsers = new moduleUsers();
 
+$request_uri = $_SERVER['REQUEST_URI'];
+
 if( $action == 'logout' ) {
 	$moduleUsers->logout();
+	$request_uri = $_SERVER['PHP_SELF'];
 }
 
 if( $action == 'login_user' || !$moduleUsers->is_logged_in() ) {
@@ -61,7 +64,8 @@ if( $action == 'login_user' || !$moduleUsers->is_logged_in() ) {
 	$name=		$_POST['name'];
 	$password=	$_POST['password'];
 	$stay_logged_in=$_POST['stay_logged_in'];
-	$display=$moduleUsers->display_login_user( $realaction, $name, $password, $stay_logged_in );
+	$display=$moduleUsers->display_login_user( $realaction, $name, $password, $stay_logged_in, $request_uri );
+	header("Location: ".$_SRVER['HTTP_HOST'].$_POST['request_uri']);
 }
 
 if( $moduleUsers->is_logged_in() ) {
