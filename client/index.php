@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.27 2007/07/16 06:29:19 olivleh1 Exp $
+# $Id: index.php,v 1.28 2007/07/21 18:15:52 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -227,7 +227,10 @@ if( $moduleUsers->is_logged_in() ) {
 						$casesensitive=	$_POST['casesensitive'];
 						$regexp=	$_POST['regexp'];
 						$minus=		$_POST['minus'];
-						$display=$moduleSearch->do_search( $searchstring, $contractpart, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus );
+						$grouping1=	$_POST['grouping1'];
+						$grouping2=	$_POST['grouping2'];
+						$order=		$_POST['order'];
+						$display=$moduleSearch->do_search( $searchstring, $contractpart, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus, $grouping1, $grouping2, $order );
 						break;
 		
 		/* settings */

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.22 2006/12/20 17:45:06 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.23 2007/07/21 18:15:54 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -161,8 +161,39 @@ class coreMoneyFlows extends core {
 	}
 
 	function search_moneyflows( $params ) {
-		$SEARCHCOL       = 'comment';
-		$WHERE_KEYWORD   = 'WHERE';
+		$SEARCHCOL      = 'a.comment';
+		$WHERE_KEYWORD  = 'WHERE';
+
+		function create_group_by( $group ) {
+
+			if( !empty( $group['by'] ) ) {
+	
+				switch( $group['by'] ) {
+					case 'year':		$group['group']   .= $group['gkeyword'].' YEAR(a.bookingdate)';
+								$group['order']   .= $group['okeyword'].' year';
+								$group['select']  .= ', YEAR(a.bookingdate) year';
+								break;
+					case 'month':		$group['group']   .= $group['gkeyword'].' MONTH(a.bookingdate)';
+								$group['order']   .= $group['okeyword'].' month';
+								$group['select']  .= ', MONTH(a.bookingdate) month';
+								break;
+					case 'contractpartner':	$group['join']    .= $group['jkeyword'].' contractpartners b';
+								$group['where']   .= $group['wkeyword'].' b.id = a.contractpartnerid';
+								$group['group']   .= $group['gkeyword'].' b.name';
+								$group['order']   .= $group['okeyword'].' b.name';
+								$group['select']  .= ', b.name';
+								break;
+				}
+				$group['gkeyword']  = ',';
+				$group['okeyword']  = ',';
+				$group['jkeyword']  = ',';
+				$group['wkeyword']  = ',';
+			}
+			
+			return( $group );
+		}
+
+
 		if( empty( $params['startdate'] ) )
 			$params['startdate'] = '0000-00-00';
 		if( empty( $params['enddate'] ) )
@@ -188,15 +219,46 @@ class coreMoneyFlows extends core {
 		}
 		
 		if( $params['minus'] == 1 ) {
-			$WHERE_CONDITION .= $WHERE_KEYWORD.' amount < 0';
+			$WHERE_CONDITION .= $WHERE_KEYWORD.' a.amount < 0';
 			$WHERE_KEYWORD    = 'AND';
 		}
 
 		if( !empty( $params['contractpartnerid'] ) ) {
-			$WHERE_CONDITION .=  $WHERE_KEYWORD.' contractpartnerid = '.$params['contractpartnerid'];
+			$WHERE_CONDITION .=  $WHERE_KEYWORD.' a.contractpartnerid = '.$params['contractpartnerid'];
 			$WHERE_KEYWORD    = 'AND';
 		}
+		
+		$group['gkeyword']  = 'GROUP BY';
+		$group['okeyword']  = 'ORDER BY';
+		$group['jkeyword']  = 'JOIN';
+		$group['wkeyword']  = $WHERE_KEYWORD;
+		$group['where']     = $WHERE_CONDITION;
 
-		return $this->select_rows( "SELECT MONTH(bookingdate) month, YEAR(bookingdate) year, calc_amount(sum(amount),'OUT',".USERID.") amount,comment FROM moneyflows $WHERE_CONDITION AND bookingdate BETWEEN STR_TO_DATE('".$params['startdate']."',GET_FORMAT(DATE,'ISO')) AND STR_TO_DATE('".$params['enddate']."',GET_FORMAT(DATE,'ISO')) AND userid=".USERID." $WHEREADD GROUP BY YEAR(bookingdate),MONTH(bookingdate) ORDER BY year,month" );
+		$group['by']      = $params['grouping1'];
+		$group = create_group_by( $group );
+
+		$group['by']      = $params['grouping2'];
+		$group = create_group_by( $group );
+
+		$GROUP_CONDITION  = $group['group'];
+		$SELECT_CONDITION = $group['select'];
+		$WHERE_CONDITION  = $group['where'];
+		$JOIN_CONDITION   = $group['join'];
+
+		if( $params['order'] == 'grouping' ) {
+			$ORDER_CONDITION = $group['order'];
+		} else {
+			$ORDER_CONDITION = 'ORDER BY';
+			switch( $params['order'] ) {
+				case 'comment': $ORDER_CONDITION .= ' comment';
+						break;
+				case 'amount':
+				default:	$ORDER_CONDITION .= ' amount';
+						break;
+
+			}
+		}
+
+		return $this->select_rows( "SELECT calc_amount(sum(a.amount),'OUT',".USERID.") amount,GROUP_CONCAT( DISTINCT a.comment ORDER BY comment DESC SEPARATOR ',') comment $SELECT_CONDITION FROM moneyflows a $JOIN_CONDITION $WHERE_CONDITION AND a.bookingdate BETWEEN STR_TO_DATE('".$params['startdate']."',GET_FORMAT(DATE,'ISO')) AND STR_TO_DATE('".$params['enddate']."',GET_FORMAT(DATE,'ISO')) AND a.userid=".USERID." $GROUP_CONDITION $ORDER_CONDITION" );
 	}
 }

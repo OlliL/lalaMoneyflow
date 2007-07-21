@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	5.0.37
+-- Server version	5.0.41
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -210,7 +210,7 @@ CREATE TABLE `text` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-04-10 11:37:26
+-- Dump completed on 2007-07-21 18:14:44
 INSERT INTO currencies VALUES (1,'EUR',1.00000,1);
 INSERT INTO currencies VALUES (2,'DM',1.95583,NULL);
 INSERT INTO languages VALUES (2,'deutsch');
@@ -340,11 +340,17 @@ INSERT INTO text VALUES (22,1,'You must specifiy a password!','e');
 INSERT INTO text VALUES (22,2,'Speichern','t');
 INSERT INTO text VALUES (22,2,'Sie müssen ein Passwort angeben!','e');
 INSERT INTO text VALUES (23,1,'cancel','t');
+INSERT INTO text VALUES (23,1,'No search criteria specified','e');
 INSERT INTO text VALUES (23,2,'Abbrechen','t');
+INSERT INTO text VALUES (23,2,'Keine Suchkriterien angegeben','e');
 INSERT INTO text VALUES (24,1,'delete flow of money','t');
+INSERT INTO text VALUES (24,1,'At least one grouping criteria has to be specified!','e');
 INSERT INTO text VALUES (24,2,'Geldbewegung löschen','t');
+INSERT INTO text VALUES (24,2,'Mindestens ein Gruppierungskriterium muss angegeben werden!','e');
 INSERT INTO text VALUES (25,1,'yes','t');
+INSERT INTO text VALUES (25,1,'No matching data found','e');
 INSERT INTO text VALUES (25,2,'Ja','t');
+INSERT INTO text VALUES (25,2,'Keine passenden Daten gefunden','e');
 INSERT INTO text VALUES (26,1,'no','t');
 INSERT INTO text VALUES (26,2,'Nein','t');
 INSERT INTO text VALUES (27,1,'Do you really want to delete this moneyflow?','t');
@@ -453,8 +459,8 @@ INSERT INTO text VALUES (78,1,'regular expression','t');
 INSERT INTO text VALUES (78,2,'regulärer Ausdruck','t');
 INSERT INTO text VALUES (79,1,'only negative amounts','t');
 INSERT INTO text VALUES (79,2,'nur negative Beträge','t');
-INSERT INTO text VALUES (80,1,'group by','t');
-INSERT INTO text VALUES (80,2,'gruppieren nach','t');
+INSERT INTO text VALUES (80,1,'1st grouping criteria','t');
+INSERT INTO text VALUES (80,2,'1. Gruppierungskriterium','t');
 INSERT INTO text VALUES (81,1,'booking year','t');
 INSERT INTO text VALUES (81,2,'Buchungsjahr','t');
 INSERT INTO text VALUES (82,1,'booking month','t');
@@ -499,6 +505,12 @@ INSERT INTO text VALUES (101,1,'delete user','t');
 INSERT INTO text VALUES (101,2,'Benutzer löschen','t');
 INSERT INTO text VALUES (102,1,'Do you really want to delete this user?','t');
 INSERT INTO text VALUES (102,2,'Wollen sie diesen Benutzer wirklich löschen? ','t');
+INSERT INTO text VALUES (103,1,'2nd grouping criteria','t');
+INSERT INTO text VALUES (103,2,'2. Gruppierungskriterium','t');
+INSERT INTO text VALUES (104,1,'Sort by','t');
+INSERT INTO text VALUES (104,2,'Sortieren nach','t');
+INSERT INTO text VALUES (105,1,'Grouping','t');
+INSERT INTO text VALUES (105,2,'Gruppierung','t');
 INSERT INTO templates VALUES ('display_header.tpl',1);
 INSERT INTO templates VALUES ('display_list_capitalsources.tpl',1);
 INSERT INTO templates VALUES ('display_header.tpl',2);
@@ -747,6 +759,9 @@ INSERT INTO templates VALUES ('display_edit_user.tpl',99);
 INSERT INTO templates VALUES ('display_edit_user.tpl',100);
 INSERT INTO templates VALUES ('display_delete_user.tpl',101);
 INSERT INTO templates VALUES ('display_delete_user.tpl',102);
+INSERT INTO templates VALUES ('display_search.tpl',103);
+INSERT INTO templates VALUES ('display_search.tpl',104);
+INSERT INTO templates VALUES ('display_search.tpl',105);
 INSERT INTO settings VALUES (0,'displayed_currency','1'),(0,'displayed_language','1');
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,1);
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('','',0,0,0);

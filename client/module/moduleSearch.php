@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSearch.php,v 1.8 2007/07/14 16:36:56 olivleh1 Exp $
+# $Id: moduleSearch.php,v 1.9 2007/07/21 18:15:55 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -44,7 +44,13 @@ class moduleSearch extends module {
 	function display_search() {
 
 		$contractpartner_values=$this->coreContractPartners->get_all_names();
-		#var_dump($contractpartner_values);
+		$searchparams = $this->template->get_template_vars( 'SEARCHPARAMS' );
+		if( empty( $searchparams ) ) {
+			$searchparams['grouping1'] = 'year';
+			$searchparams['grouping2'] = 'month';
+			$searchparams['order']     = 'grouping';
+			$this->template->assign( 'SEARCHPARAMS', $searchparams );
+		}
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 		$this->template->assign( 'ERRORS',                 $this->get_errors() );
 
@@ -52,7 +58,7 @@ class moduleSearch extends module {
 		return $this->fetch_template( 'display_search.tpl' );
 	}
 
-	function do_search( $searchstring, $contractpartner, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus ) {
+	function do_search( $searchstring, $contractpartner, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus, $grouping1, $grouping2, $order ) {
 		if($equal)
 			$searchparams['equal'] = 1;
 		if($casesensitive)
@@ -68,14 +74,28 @@ class moduleSearch extends module {
 		$searchparams['pattern']   = stripslashes( $searchstring );
 		$searchparams['startdate'] = $startdate;
 		$searchparams['enddate']   = $enddate;
+		$searchparams['grouping1'] = $grouping1;
+		$searchparams['grouping2'] = $grouping2;
+		$searchparams['order']     = $order;
 
-		if( empty($searchparams['contractpartnerid']) && empty($searchparams['pattern']) ) {
-			add_error( 23);
-		} else {
+		if( empty( $searchparams['contractpartnerid'] ) && empty( $searchparams['pattern'] ) ) {
+			add_error( 23 );
+		} elseif ( empty( $searchparams['grouping1'] ) && empty( $searchparams['grouping2'] ) ) {
+			add_error( 24 );
+		}else {
 			$results = $this->coreMoneyFlows->search_moneyflows( $searchparams );
+			if( is_array( $results ) ) {
+				$this->template->assign( 'SEARCH_DONE', 1 );
+				foreach( array_keys( $results[0] ) as $column ) {
+					$columns[$column]=1;
+				}
+			} else {
+				add_error( 25 );
+			}
 		}
 	    
 		$this->template->assign( 'SEARCHPARAMS', $searchparams );
+		$this->template->assign( 'COLUMNS',      $columns );
 		$this->template->assign( 'RESULTS',      $results );
 		$this->template->assign( 'CURRENCY',     $this->coreCurrencies->get_displayed_currency() );
 		return $this->display_search();
