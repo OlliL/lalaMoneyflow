@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCapitalSources.php,v 1.10 2006/12/20 17:45:06 olivleh1 Exp $
+# $Id: moduleCapitalSources.php,v 1.11 2007/07/21 21:25:27 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -40,6 +40,11 @@ class moduleCapitalSources extends module {
 	function display_list_capitalsources( $letter ) {
 
 		$all_index_letters=$this->coreCapitalSources->get_all_index_letters();
+		$num_sources = $this->coreCapitalSources->count_all_data();
+		
+		if( empty($letter) && $num_sources < MAX_ROWS ) {
+			$letter = 'all';
+		}
 
 		if( $letter == 'all' ) {
 			$all_data=$this->coreCapitalSources->get_all_data();

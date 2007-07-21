@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleUsers.php,v 1.10 2007/07/16 06:29:19 olivleh1 Exp $
+# $Id: moduleUsers.php,v 1.11 2007/07/21 21:25:28 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -106,9 +106,14 @@ class moduleUsers extends module {
 
 	function display_list_users( $letter ) {
 
-		$all_index_letters=$this->coreUsers->get_all_index_letters();
-
-		if( $letter == 'all' ) {
+		$all_index_letters = $this->coreUsers->get_all_index_letters();
+		$num_users = $this->coreUsers->count_all_data();
+		
+		if( empty($letter) && $num_users < MAX_ROWS ) {
+			$letter = 'all';
+		}
+		
+		if( $letter == 'all') {
 			$all_data=$this->coreUsers->get_all_data();
 		} elseif( !empty( $letter ) ) {
 			$all_data=$this->coreUsers->get_all_matched_data( $letter );

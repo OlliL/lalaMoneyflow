@@ -41,11 +41,12 @@ BEGIN
 
   SELECT rate
     INTO l_rate
-    FROM currencies
-   WHERE id = (SELECT value
-                 FROM settings
-                WHERE name = 'displayed_currency'  
-                  AND userid = pi_userid);
+    FROM currencyrates
+   WHERE currencyid = (SELECT value
+                         FROM settings
+                        WHERE name = 'displayed_currency'  
+                          AND userid = pi_userid)
+     AND NOW() BETWEEN validfrom AND validtil;
 
   IF pi_type = 'OUT' THEN  
     SET l_amount = ROUND(l_rate*pi_amount,2);

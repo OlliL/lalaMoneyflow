@@ -4,5 +4,6 @@
 $confTimer=2;
 $dsn = "mysql://moneyflow:moneyflow@db/moneyflow";
 define( "ENABLE_JPGRAPH", true );
+define( "MAX_ROWS", 40 );
 
 ?>

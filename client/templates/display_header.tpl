@@ -35,6 +35,8 @@
 {if $IS_ADMIN }
 					<a href="{$ENV_INDEX_PHP}?action=system_settings">{$TEXT_93}</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_users">{$TEXT_94}</a><br />
+					<a href="{$ENV_INDEX_PHP}?action=list_currencies">{$TEXT_106}</a><br />
+					<a href="{$ENV_INDEX_PHP}?action=list_currencyrates">{$TEXT_110}</a><br />
 {/if}
 					<br />
 					<br />

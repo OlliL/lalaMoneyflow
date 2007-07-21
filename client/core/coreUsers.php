@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreUsers.php,v 1.4 2006/12/21 23:09:25 olivleh1 Exp $
+# $Id: coreUsers.php,v 1.5 2007/07/21 21:25:26 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -69,6 +69,14 @@ class coreUsers extends core {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	function count_all_data() {
+		if ( $num=$this->select_col( 'SELECT count(*) FROM users' ) ) {
+			return $num;
+		} else {
+			return;
 		}
 	}
 

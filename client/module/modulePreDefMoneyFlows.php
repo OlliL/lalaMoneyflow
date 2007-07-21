@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: modulePreDefMoneyFlows.php,v 1.15 2006/12/20 17:45:07 olivleh1 Exp $
+# $Id: modulePreDefMoneyFlows.php,v 1.16 2007/07/21 21:25:28 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -47,6 +47,12 @@ class modulePreDefMoneyFlows extends module {
 	function display_list_predefmoneyflows( $letter ) {
 
 		$all_index_letters=$this->corePreDefMoneyFlows->get_all_index_letters();
+		$num_flows = $this->corePreDefMoneyFlows->count_all_data();
+		
+		if( empty($letter) && $num_clows < MAX_ROWS ) {
+			$letter = 'all';
+		}
+
 
 		if( $letter == 'all' ) {
 			$all_data=$this->corePreDefMoneyFlows->get_all_data();

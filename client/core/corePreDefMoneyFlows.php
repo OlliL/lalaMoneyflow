@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: corePreDefMoneyFlows.php,v 1.11 2006/12/19 14:37:17 olivleh1 Exp $
+# $Id: corePreDefMoneyFlows.php,v 1.12 2007/07/21 21:25:26 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -34,6 +34,14 @@ class corePreDefMoneyFlows extends core {
 
 	function corePreDefMoneyFlows() {
 		$this->core();
+	}
+
+	function count_all_data() {
+		if ( $num=$this->select_col( 'SELECT count(*) FROM predefmoneyflows' ) ) {
+			return $num;
+		} else {
+			return;
+		}
 	}
 
 	function get_all_data() {

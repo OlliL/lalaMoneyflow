@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.28 2007/07/21 18:15:52 olivleh1 Exp $
+# $Id: index.php,v 1.29 2007/07/21 21:25:25 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -39,6 +39,8 @@ require_once 'module/moduleReports.php';
 require_once 'module/moduleSearch.php';
 require_once 'module/moduleSettings.php';
 require_once 'module/moduleUsers.php';
+require_once 'module/moduleCurrencies.php';
+require_once 'module/moduleCurrencyRates.php';
 #require_once 'util/utilTimer.php';
 #$timer = new utilTimer();
 #$timer->mStart();
@@ -100,6 +102,12 @@ if( $moduleUsers->is_logged_in() ) {
 						break;
 		case'personal_settings':	
 		case'system_settings':		$moduleSettings			= new moduleSettings();
+						break;
+		case'list_currencies':		$moduleCurrencies		= new moduleCurrencies();
+						break;
+		case'list_currencyrates':
+		case'edit_currencyrate':
+		case'delete_currencyrate':	$moduleCurrencyRates		= new moduleCurrencyRates();
 						break;
 		case'list_users':		
 		case'edit_user':
@@ -248,6 +256,29 @@ if( $moduleUsers->is_logged_in() ) {
 						$display=$moduleSettings->display_system_settings( $realaction, $language, $currency );
 						break;
 	
+		/* currencies */
+		
+		case 'list_currencies':		$letter=	$_POST['letter']?$_POST['letter']:$_GET['letter'];
+						$display=$moduleCurrencies->display_list_currencies( $letter );
+						break;
+	
+		/* currencyrates */
+		
+		case 'list_currencyrates':	$letter=	$_POST['letter']?$_POST['letter']:$_GET['letter'];
+						$display=$moduleCurrencyRates->display_list_currencyrates( $letter );
+						break;
+		case 'edit_currencyrate':	$realaction=	$_POST['realaction'];
+						$currencyid=	$_POST['currencyid']?$_POST['currencyid']:$_GET['currencyid'];
+						$validfrom=	$_POST['validfrom']?$_POST['validfrom']:$_GET['validfrom'];
+						$all_data=	$_POST['all_data'];
+						$display=$moduleCurrencyRates->display_edit_currencyrate( $realaction, $currencyid, $validfrom, $all_data );
+						break;
+		case 'delete_currencyrate':	$realaction=	$_POST['realaction'];
+						$currencyid=	$_POST['currencyid']?$_POST['currencyid']:$_GET['currencyid'];
+						$validfrom=	$_POST['validfrom']?$_POST['validfrom']:$_GET['validfrom'];
+						$display=$moduleCurrencyRates->display_delete_currencyrate( $realaction, $currencyid, $validfrom );
+						break;
+
 		/* users */
 		
 		case 'list_users':		$letter=	$_POST['letter']?$_POST['letter']:$_GET['letter'];

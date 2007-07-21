@@ -24,57 +24,43 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCurrencies.php,v 1.8 2007/07/21 21:25:26 olivleh1 Exp $
+# $Id: moduleCurrencies.php,v 1.1 2007/07/21 21:25:27 olivleh1 Exp $
 #
 
-require_once 'core/core.php';
-require_once 'core/coreSettings.php';
+require_once 'module/module.php';
+require_once 'core/coreCurrencies.php';
 
-class coreCurrencies extends core {
+class moduleCurrencies extends module {
 
-	function coreCurrencies() {
-		$this->core();
-		$this->coreSettings = new coreSettings();
+	function moduleCurrencies() {
+		$this->module();
+		$this->coreCurrencies = new coreCurrencies();
 	}
 
-	function count_all_data() {
-		if ( $num=$this->select_col( 'SELECT count(*) FROM currencies' ) ) {
-			return $num;
-		} else {
-			return;
+	function display_list_currencies( $letter ) {
+
+		$all_index_letters = $this->coreCurrencies->get_all_index_letters();
+		$num_currencies = $this->coreCurrencies->count_all_data();
+		
+		if( empty($letter) && $num_currencies < MAX_ROWS ) {
+			$letter = 'all';
 		}
-	}
-	function get_all_data() {
-		return $this->select_rows( "SELECT id,currency,att_default FROM currencies" );
-	}
-
-	function get_all_index_letters() {
-		return $this->select_cols( 'SELECT DISTINCT UPPER(SUBSTR(currency,1,1)) letters FROM currencies ORDER BY letters' );
-	}
-
-	function get_all_matched_data( $letter ) {
-		return $this->select_rows( "SELECT id,currency,att_default FROM currencies WHERE UPPER(currency) LIKE UPPER('$letter%') ORDER BY currency" );
-	}
-
-	function get_displayed_currency() {
-		$id=$this->coreSettings->get_displayed_currency( USERID );
-		if( !empty( $id ) ) {
-			$currency=$this->get_currency( $id );
-			if( !empty( $currency ) ) {
-				return $currency;
-			} else {
-				add_error( 7 );
-			}
+		
+		if( $letter == 'all') {
+			$all_data=$this->coreCurrencies->get_all_data();
+		} elseif( !empty( $letter ) ) {
+			$all_data=$this->coreCurrencies->get_all_matched_data( $letter );
 		} else {
-			add_error( 8 );
+			$all_data=array();
 		}
+		
+		$this->template->assign( 'ALL_DATA',          $all_data          );
+		$this->template->assign( 'COUNT_ALL_DATA',    count( $all_data ) );
+		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
+
+		$this->parse_header();
+		return $this->fetch_template( 'display_list_currencies.tpl' );
 	}
 
-	function get_currency( $id ) {
-		if( !empty( $id ) ) {
-			return $this->select_col( "SELECT currency FROM currencies WHERE id=$id LIMIT 1" );
-		} else {
-			return;
-		}
-	}
 }
+?>

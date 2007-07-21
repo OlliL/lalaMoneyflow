@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreContractPartners.php,v 1.9 2006/12/20 17:45:06 olivleh1 Exp $
+# $Id: coreContractPartners.php,v 1.10 2007/07/21 21:25:26 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -36,6 +36,13 @@ class coreContractPartners extends core {
 		$this->core();
 	}
 
+	function count_all_data() {
+		if ( $num=$this->select_col( 'SELECT count(*) FROM contractpartners' ) ) {
+			return $num;
+		} else {
+			return;
+		}
+	}
 	function get_all_data() {
 		return $this->select_rows( 'SELECT id,name,street,postcode,town,country FROM contractpartners WHERE userid='.USERID.' ORDER BY name' );
 	}
