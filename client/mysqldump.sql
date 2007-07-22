@@ -93,8 +93,7 @@ CREATE TABLE currencies (
   currency varchar(20) NOT NULL,
   att_default tinyint(1) default NULL,
   PRIMARY KEY  (id),
-  UNIQUE KEY currency (currency),
-  UNIQUE KEY mcu_i_01 (att_default)
+  UNIQUE KEY currency (currency)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcu';
 
 --
@@ -151,6 +150,7 @@ CREATE TABLE predefmoneyflows (
   capitalsourceid int(10) unsigned NOT NULL,
   contractpartnerid int(10) unsigned NOT NULL default '0',
   `comment` varchar(100) NOT NULL default '',
+  createdate date NOT NULL,
   PRIMARY KEY  (id,userid),
   KEY mpm_mur_pk (userid),
   KEY mpm_mcp_pk (contractpartnerid,userid),
@@ -159,6 +159,16 @@ CREATE TABLE predefmoneyflows (
   CONSTRAINT mpm_mcs_pk FOREIGN KEY (capitalsourceid, userid) REFERENCES capitalsources (id, userid) ON UPDATE CASCADE,
   CONSTRAINT mpm_mur_pk FOREIGN KEY (userid) REFERENCES users (id) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mpm';
+
+/*!50003 SET @OLD_SQL_MODE=@@SQL_MODE*/;
+DELIMITER ;;
+/*!50003 SET SESSION SQL_MODE="" */;;
+/*!50003 CREATE */ /*!50017 DEFINER=root@localhost */ /*!50003 TRIGGER mpm_trg_01 BEFORE INSERT ON `predefmoneyflows` FOR EACH ROW BEGIN
+    SET NEW.createdate = NOW();
+  END */;;
+
+DELIMITER ;
+/*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;
 
 --
 -- Table structure for table `languages`
@@ -209,9 +219,9 @@ CREATE TABLE `text` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-07-21 21:25:24
+-- Dump completed on 2007-07-22 12:25:18
 INSERT INTO currencies VALUES (1,'EUR',1);
-INSERT INTO currencies VALUES (2,'DM',NULL);
+INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO languages VALUES (2,'deutsch');
 INSERT INTO languages VALUES (1,'english');
 INSERT INTO text VALUES (1,1,'sources of capital','t');
@@ -351,9 +361,13 @@ INSERT INTO text VALUES (25,1,'No matching data found','e');
 INSERT INTO text VALUES (25,2,'Ja','t');
 INSERT INTO text VALUES (25,2,'Keine passenden Daten gefunden','e');
 INSERT INTO text VALUES (26,1,'no','t');
+INSERT INTO text VALUES (26,1,'At least one currency must be the default currency!','e');
 INSERT INTO text VALUES (26,2,'Nein','t');
+INSERT INTO text VALUES (26,2,'Mindestens eine Währung muss vom Typ Standardwährung sein!','e');
 INSERT INTO text VALUES (27,1,'Do you really want to delete this moneyflow?','t');
+INSERT INTO text VALUES (27,1,'You cannot delete the default currency!','e');
 INSERT INTO text VALUES (27,2,'Wollen sie diese Geldbewegung wirklich löschen?','t');
+INSERT INTO text VALUES (27,2,'Die Standardwaährung kann nicht gelöscht werden!','e');
 INSERT INTO text VALUES (28,1,'all','t');
 INSERT INTO text VALUES (28,2,'Alle','t');
 INSERT INTO text VALUES (29,1,'add','t');
@@ -528,6 +542,14 @@ INSERT INTO text VALUES (113,1,'Delete Currency Rate','t');
 INSERT INTO text VALUES (113,2,'Währungsfaktor löschen','t');
 INSERT INTO text VALUES (114,1,'Do you really like to delete this Currency Rate?','t');
 INSERT INTO text VALUES (114,2,'Wollen Sie wirklich diesen Währungsfaktor löschen?','t');
+INSERT INTO text VALUES (115,1,'Add Currency','t');
+INSERT INTO text VALUES (115,2,'Währung hinzufügen','t');
+INSERT INTO text VALUES (116,1,'Edit Currency','t');
+INSERT INTO text VALUES (116,2,'Währung bearbeiten','t');
+INSERT INTO text VALUES (117,1,'Delete Currency','t');
+INSERT INTO text VALUES (117,2,'Währung löschen','t');
+INSERT INTO text VALUES (118,1,'Do you really want to delete this Currency?','t');
+INSERT INTO text VALUES (118,2,'Wollen Sie wirklich diese Währung löschen?','t');
 INSERT INTO templates VALUES ('display_header.tpl',1);
 INSERT INTO templates VALUES ('display_list_capitalsources.tpl',1);
 INSERT INTO templates VALUES ('display_header.tpl',2);
@@ -606,6 +628,7 @@ INSERT INTO templates VALUES ('display_search.tpl',21);
 INSERT INTO templates VALUES ('display_add_moneyflow.tpl',22);
 INSERT INTO templates VALUES ('display_edit_capitalsource.tpl',22);
 INSERT INTO templates VALUES ('display_edit_contractpartner.tpl',22);
+INSERT INTO templates VALUES ('display_edit_currencies.tpl',22);
 INSERT INTO templates VALUES ('display_edit_currencyrates.tpl',22);
 INSERT INTO templates VALUES ('display_edit_moneyflow.tpl',22);
 INSERT INTO templates VALUES ('display_edit_monthlysettlement.tpl',22);
@@ -616,6 +639,7 @@ INSERT INTO templates VALUES ('display_personal_settings.tpl',22);
 INSERT INTO templates VALUES ('display_system_settings.tpl',22);
 INSERT INTO templates VALUES ('display_edit_capitalsource.tpl',23);
 INSERT INTO templates VALUES ('display_edit_contractpartner.tpl',23);
+INSERT INTO templates VALUES ('display_edit_currencies.tpl',23);
 INSERT INTO templates VALUES ('display_edit_currencyrates.tpl',23);
 INSERT INTO templates VALUES ('display_edit_moneyflow.tpl',23);
 INSERT INTO templates VALUES ('display_edit_monthlysettlement.tpl',23);
@@ -625,22 +649,26 @@ INSERT INTO templates VALUES ('display_header.tpl',23);
 INSERT INTO templates VALUES ('display_delete_moneyflow.tpl',24);
 INSERT INTO templates VALUES ('display_delete_capitalsource.tpl',25);
 INSERT INTO templates VALUES ('display_delete_contractpartner.tpl',25);
+INSERT INTO templates VALUES ('display_delete_currencies.tpl',25);
 INSERT INTO templates VALUES ('display_delete_currencyrates.tpl',25);
 INSERT INTO templates VALUES ('display_delete_moneyflow.tpl',25);
 INSERT INTO templates VALUES ('display_delete_monthlysettlement.tpl',25);
 INSERT INTO templates VALUES ('display_delete_predefmoneyflow.tpl',25);
 INSERT INTO templates VALUES ('display_delete_user.tpl',25);
+INSERT INTO templates VALUES ('display_edit_currencies.tpl',25);
 INSERT INTO templates VALUES ('display_edit_user.tpl',25);
 INSERT INTO templates VALUES ('display_list_currencies.tpl',25);
 INSERT INTO templates VALUES ('display_list_currencyrates.tpl',25);
 INSERT INTO templates VALUES ('display_list_users.tpl',25);
 INSERT INTO templates VALUES ('display_delete_capitalsource.tpl',26);
 INSERT INTO templates VALUES ('display_delete_contractpartner.tpl',26);
+INSERT INTO templates VALUES ('display_delete_currencies.tpl',26);
 INSERT INTO templates VALUES ('display_delete_currencyrates.tpl',26);
 INSERT INTO templates VALUES ('display_delete_moneyflow.tpl',26);
 INSERT INTO templates VALUES ('display_delete_monthlysettlement.tpl',26);
 INSERT INTO templates VALUES ('display_delete_predefmoneyflow.tpl',26);
 INSERT INTO templates VALUES ('display_delete_user.tpl',26);
+INSERT INTO templates VALUES ('display_edit_currencies.tpl',26);
 INSERT INTO templates VALUES ('display_edit_user.tpl',26);
 INSERT INTO templates VALUES ('display_list_currencies.tpl',26);
 INSERT INTO templates VALUES ('display_list_currencyrates.tpl',26);
@@ -808,15 +836,19 @@ INSERT INTO templates VALUES ('display_search.tpl',104);
 INSERT INTO templates VALUES ('display_search.tpl',105);
 INSERT INTO templates VALUES ('display_header.tpl',106);
 INSERT INTO templates VALUES ('display_list_currencies.tpl',106);
+INSERT INTO templates VALUES ('display_delete_currencies.tpl',107);
 INSERT INTO templates VALUES ('display_delete_currencyrates.tpl',107);
+INSERT INTO templates VALUES ('display_edit_currencies.tpl',107);
 INSERT INTO templates VALUES ('display_edit_currencyrates.tpl',107);
 INSERT INTO templates VALUES ('display_header.tpl',107);
 INSERT INTO templates VALUES ('display_list_currencies.tpl',107);
 INSERT INTO templates VALUES ('display_list_currencyrates.tpl',107);
+INSERT INTO templates VALUES ('display_delete_currencies.tpl',108);
 INSERT INTO templates VALUES ('display_delete_currencyrates.tpl',108);
 INSERT INTO templates VALUES ('display_edit_currencyrates.tpl',108);
 INSERT INTO templates VALUES ('display_header.tpl',108);
 INSERT INTO templates VALUES ('display_list_currencyrates.tpl',108);
+INSERT INTO templates VALUES ('display_edit_currencies.tpl',109);
 INSERT INTO templates VALUES ('display_list_currencies.tpl',109);
 INSERT INTO templates VALUES ('display_header.tpl',110);
 INSERT INTO templates VALUES ('display_list_currencyrates.tpl',110);
@@ -826,6 +858,10 @@ INSERT INTO templates VALUES ('display_edit_currencyrates.tpl',112);
 INSERT INTO templates VALUES ('display_header.tpl',112);
 INSERT INTO templates VALUES ('display_delete_currencyrates.tpl',113);
 INSERT INTO templates VALUES ('display_delete_currencyrates.tpl',114);
+INSERT INTO templates VALUES ('display_edit_currencies.tpl',115);
+INSERT INTO templates VALUES ('display_edit_currencies.tpl',116);
+INSERT INTO templates VALUES ('display_delete_currencies.tpl',117);
+INSERT INTO templates VALUES ('display_delete_currencies.tpl',118);
 INSERT INTO settings VALUES (0,'displayed_currency','1'),(0,'displayed_language','1');
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,1);
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('','',0,0,0);
