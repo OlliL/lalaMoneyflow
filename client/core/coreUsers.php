@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreUsers.php,v 1.5 2007/07/21 21:25:26 olivleh1 Exp $
+# $Id: coreUsers.php,v 1.6 2007/07/22 06:55:55 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -104,7 +104,7 @@ class coreUsers extends core {
 		return $this->insert_row( "INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('$name','".sha1( $password )."',$perm_login,$perm_admin,$att_new);" );
 	}
 
-	function update_user( $id, $name, $password1, $perm_login, $perm_admin, $att_new ) {
+	function update_user( $id, $name, $perm_login, $perm_admin, $att_new ) {
 		return $this->update_row( "UPDATE users SET name='$name',perm_login=$perm_login,perm_admin=$perm_admin,att_new=$att_new WHERE id=$id;" );
 	}
 }
