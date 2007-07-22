@@ -10,12 +10,13 @@ else
         PROGPATH=$(dirname $PROGPATH)
 fi
 
-mysqldump -u root --set-variable=quote-names=FALSE --default-character-set=latin1 --tables --add-drop-table --no-data moneyflow \
+mysqldump -u root --set-variable=triggers=FALSE --set-variable=quote-names=FALSE --default-character-set=latin1 --tables --add-drop-table --no-data moneyflow \
 	users \
 	settings \
 	capitalsources \
 	contractpartners \
 	currencies \
+	currencyrates \
 	moneyflows \
 	monthlysettlements \
 	predefmoneyflows \
@@ -26,6 +27,7 @@ mysqldump -u root --set-variable=quote-names=FALSE --default-character-set=latin
 
 mysqldump -u root --set-variable=quote-names=FALSE --set-variable=extended-insert=FALSE --default-character-set=latin1 --tables moneyflow \
 	currencies \
+	currencyrates \
 	languages \
 	text \
 	templates \

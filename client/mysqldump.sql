@@ -91,10 +91,25 @@ DROP TABLE IF EXISTS currencies;
 CREATE TABLE currencies (
   id int(10) unsigned NOT NULL auto_increment,
   currency varchar(20) NOT NULL,
-  att_default tinyint(1) default NULL,
+  att_default tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (id),
   UNIQUE KEY currency (currency)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcu';
+
+--
+-- Table structure for table `currencyrates`
+--
+
+DROP TABLE IF EXISTS currencyrates;
+CREATE TABLE currencyrates (
+  currencyid int(10) unsigned NOT NULL,
+  rate float(11,5) NOT NULL,
+  validfrom date NOT NULL,
+  validtil date NOT NULL,
+  PRIMARY KEY  (currencyid,validfrom),
+  KEY mcr_mcu_pk (currencyid),
+  CONSTRAINT mcr_mcu_pk FOREIGN KEY (currencyid) REFERENCES currencies (id) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcr';
 
 --
 -- Table structure for table `moneyflows`
@@ -160,16 +175,6 @@ CREATE TABLE predefmoneyflows (
   CONSTRAINT mpm_mur_pk FOREIGN KEY (userid) REFERENCES users (id) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mpm';
 
-/*!50003 SET @OLD_SQL_MODE=@@SQL_MODE*/;
-DELIMITER ;;
-/*!50003 SET SESSION SQL_MODE="" */;;
-/*!50003 CREATE */ /*!50017 DEFINER=root@localhost */ /*!50003 TRIGGER mpm_trg_01 BEFORE INSERT ON `predefmoneyflows` FOR EACH ROW BEGIN
-    SET NEW.createdate = NOW();
-  END */;;
-
-DELIMITER ;
-/*!50003 SET SESSION SQL_MODE=@OLD_SQL_MODE */;
-
 --
 -- Table structure for table `languages`
 --
@@ -219,9 +224,11 @@ CREATE TABLE `text` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-07-22 12:25:18
+-- Dump completed on 2007-07-22 12:31:14
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
+INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
+INSERT INTO currencyrates VALUES (2,1.95583,'1970-01-01','2999-12-31');
 INSERT INTO languages VALUES (2,'deutsch');
 INSERT INTO languages VALUES (1,'english');
 INSERT INTO text VALUES (1,1,'sources of capital','t');
