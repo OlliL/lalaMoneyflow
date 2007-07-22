@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.16 2007/07/21 21:25:26 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.17 2007/07/22 10:59:14 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -64,8 +64,9 @@ class coreCapitalSources extends core {
 		return $this->select_cols( 'SELECT id FROM capitalsources WHERE userid='.USERID.' ORDER BY id' );
 	}
 
-	function get_valid_ids( $validfrom, $validtil ) {
-		return $this->select_cols( "SELECT id FROM capitalsources WHERE validfrom <= '$validfrom' and validtil >= '$validtil' AND userid=".USERID." ORDER BY id" );
+	function get_valid_ids( $date='' ) {
+		$date = $this->make_date($date);
+		return $this->select_cols( "SELECT id FROM capitalsources WHERE $date BETWEEN validfrom and validtil AND userid=".USERID." ORDER BY id" );
 	}
 
 	function get_all_comments() {
@@ -102,8 +103,9 @@ class coreCapitalSources extends core {
 		return $this->select_col( "SELECT state FROM capitalsources WHERE id=$id AND userid=".USERID."  LIMIT 1" );
 	}
 
-	function id_is_valid( $id, $date ) {
-		return $this->select_col( "SELECT 1 from capitalsources WHERE id=$id AND validfrom <= '$date' AND validtil >= '$date' AND userid=".USERID." LIMIT 1" );
+	function id_is_valid( $id, $date='' ) {
+		$date = $this->make_date($date);
+		return $this->select_col( "SELECT 1 from capitalsources WHERE $date BETWEEN validfrom and validtil AND userid=".USERID." LIMIT 1" );
 	}
 
 

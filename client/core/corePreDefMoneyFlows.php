@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: corePreDefMoneyFlows.php,v 1.12 2007/07/21 21:25:26 olivleh1 Exp $
+# $Id: corePreDefMoneyFlows.php,v 1.13 2007/07/22 10:59:14 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -45,15 +45,15 @@ class corePreDefMoneyFlows extends core {
 	}
 
 	function get_all_data() {
-		return $this->select_rows( "SELECT id,calc_amount(amount,'OUT',userid) amount,capitalsourceid,contractpartnerid,comment FROM predefmoneyflows WHERE userid=".USERID." ORDER BY id" );
+		return $this->select_rows( "SELECT id,calc_amount(amount,'OUT',userid,createdate) amount,capitalsourceid,contractpartnerid,comment FROM predefmoneyflows WHERE userid=".USERID." ORDER BY id" );
 	}
 
 	function get_valid_data( $validfrom, $validtil ) {
-		return $this->select_rows( "SELECT a.id,calc_amount(a.amount,'OUT',a.userid) amount,a.capitalsourceid,a.contractpartnerid,a.comment FROM predefmoneyflows a, capitalsources b, contractpartners c WHERE a.capitalsourceid=b.id AND validfrom <= '$validfrom' and validtil >= '$validtil' AND a.contractpartnerid=c.id AND a.userid=".USERID." AND b.userid=a.userid AND c.userid=a.userid ORDER BY id" );
+		return $this->select_rows( "SELECT a.id,calc_amount(a.amount,'OUT',a.userid,createdate) amount,a.capitalsourceid,a.contractpartnerid,a.comment FROM predefmoneyflows a, capitalsources b, contractpartners c WHERE a.capitalsourceid=b.id AND validfrom <= '$validfrom' and validtil >= '$validtil' AND a.contractpartnerid=c.id AND a.userid=".USERID." AND b.userid=a.userid AND c.userid=a.userid ORDER BY id" );
 	}
 
 	function get_id_data( $id ) {
-		return $this->select_row( "SELECT id,calc_amount(amount,'OUT',userid) amount,capitalsourceid,contractpartnerid,comment FROM predefmoneyflows WHERE id=$id AND userid=".USERID );
+		return $this->select_row( "SELECT id,calc_amount(amount,'OUT',userid,createdate) amount,capitalsourceid,contractpartnerid,comment FROM predefmoneyflows WHERE id=$id AND userid=".USERID );
 	}
 
 	function get_capitalsourceid( $id ) {
@@ -71,7 +71,7 @@ class corePreDefMoneyFlows extends core {
 		$ids=$coreContractPartners->get_ids_matched_data( $letter );
 		if( is_array( $ids ) ) {
 			$idstring=implode( $ids, ',' );
-			return $this->select_rows( "SELECT id,calc_amount(amount,'OUT',userid) amount,capitalsourceid,contractpartnerid,comment FROM predefmoneyflows WHERE contractpartnerid IN ($idstring) AND userid=".USERID." ORDER BY comment" );
+			return $this->select_rows( "SELECT id,calc_amount(amount,'OUT',userid,createdate) amount,capitalsourceid,contractpartnerid,comment FROM predefmoneyflows WHERE contractpartnerid IN ($idstring) AND userid=".USERID." ORDER BY comment" );
 		} else {
 			return;
 		}
@@ -85,7 +85,7 @@ class corePreDefMoneyFlows extends core {
 
 	function update_predefmoneyflow( $id, $amount, $capitalsourceid, $contractpartnerid, $comment ) {
 		if( fix_amount( $amount ) ) {
-			return $this->update_row( "UPDATE predefmoneyflows set amount=calc_amount('$amount','IN',".USERID."),capitalsourceid='$capitalsourceid',contractpartnerid='$contractpartnerid',comment='$comment' WHERE id=$id AND userid=".USERID );
+			return $this->update_row( "UPDATE predefmoneyflows set amount=calc_amount('$amount','IN',".USERID.",createdate),capitalsourceid='$capitalsourceid',contractpartnerid='$contractpartnerid',comment='$comment' WHERE id=$id AND userid=".USERID );
 		} else {
 			return false;
 		}
@@ -93,7 +93,7 @@ class corePreDefMoneyFlows extends core {
 
 	function add_predefmoneyflow( $amount, $capitalsourceid, $contractpartnerid, $comment ) {
 		if( fix_amount( $amount ) ) {
-			return $this->insert_row( "INSERT INTO predefmoneyflows (userid,amount,capitalsourceid,contractpartnerid,comment) VALUES (".USERID.",calc_amount('$amount','IN',".USERID."),'$capitalsourceid','$contractpartnerid','$comment')" );
+			return $this->insert_row( "INSERT INTO predefmoneyflows (userid,amount,capitalsourceid,contractpartnerid,comment) VALUES (".USERID.",calc_amount('$amount','IN',".USERID.",NOW()),'$capitalsourceid','$contractpartnerid','$comment')" );
 		} else {
 			return false;
 		}

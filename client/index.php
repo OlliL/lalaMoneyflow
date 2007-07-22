@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.29 2007/07/21 21:25:25 olivleh1 Exp $
+# $Id: index.php,v 1.30 2007/07/22 10:59:14 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -103,7 +103,9 @@ if( $moduleUsers->is_logged_in() ) {
 		case'personal_settings':	
 		case'system_settings':		$moduleSettings			= new moduleSettings();
 						break;
-		case'list_currencies':		$moduleCurrencies		= new moduleCurrencies();
+		case'list_currencies':
+		case'edit_currency':
+		case'delete_currency':		$moduleCurrencies		= new moduleCurrencies();
 						break;
 		case'list_currencyrates':
 		case'edit_currencyrate':
@@ -261,6 +263,16 @@ if( $moduleUsers->is_logged_in() ) {
 		case 'list_currencies':		$letter=	$_POST['letter']?$_POST['letter']:$_GET['letter'];
 						$display=$moduleCurrencies->display_list_currencies( $letter );
 						break;
+		case 'edit_currency':		$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
+						$id=		$_POST['id']?$_POST['id']:$_GET['id'];
+						$all_data=	$_POST['all_data'];
+						$display=$moduleCurrencies->display_edit_currency( $realaction, $id, $all_data );
+						break;
+		case 'delete_currency':		$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
+						$id=		$_POST['id']?$_POST['id']:$_GET['id'];
+						$display=$moduleCurrencies->display_delete_currency( $realaction, $id );
+						break;
+
 	
 		/* currencyrates */
 		

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: core.php,v 1.13 2007/04/10 11:39:39 olivleh1 Exp $
+# $Id: core.php,v 1.14 2007/07/22 10:59:14 olivleh1 Exp $
 #
 
 require_once 'DB.php';
@@ -117,5 +117,15 @@ class core {
 		$enum = explode( '\',\'', substr( $enum, 1, -1 ) );
 
 		return $enum;
+	}
+	
+	function make_date( $date ) {
+		if( empty($date) ) {
+			$date='NOW()';
+		} else {
+			$date="STR_TO_DATE('$date',GET_FORMAT(DATE,'ISO'))";
+		}
+		
+		return $date;
 	}
 }

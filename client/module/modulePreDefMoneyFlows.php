@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: modulePreDefMoneyFlows.php,v 1.16 2007/07/21 21:25:28 olivleh1 Exp $
+# $Id: modulePreDefMoneyFlows.php,v 1.17 2007/07/22 10:59:17 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -108,13 +108,13 @@ class modulePreDefMoneyFlows extends module {
 					$all_data=$this->corePreDefMoneyFlows->get_id_data( $id );
 					$this->template->assign( 'ALL_DATA', $all_data );
 					$capitalsourceid=$this->corePreDefMoneyFlows->get_capitalsourceid( $id );
-					if ( $this->coreCapitalSources->id_is_valid( $capitalsourceid, date( 'Y-m-d' ) ) ) {
-						$capitalsource_values=$this->coreCapitalSources->get_valid_comments( date( 'Y-m-d' ), date( 'Y-m-d' ) );
+					if ( $this->coreCapitalSources->id_is_valid( $capitalsourceid ) ) {
+						$capitalsource_values=$this->coreCapitalSources->get_valid_comments();
 					} else {
 						$capitalsource_values=$this->coreCapitalSources->get_all_comments();
 					}
 				} else {
-					$capitalsource_values=$this->coreCapitalSources->get_valid_comments( date( 'Y-m-d' ), date( 'Y-m-d' ) );
+					$capitalsource_values=$this->coreCapitalSources->get_valid_comments();
 				}				
 
 				$contractpartner_values=$this->coreContractPartners->get_all_names();

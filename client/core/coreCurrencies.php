@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCurrencies.php,v 1.8 2007/07/21 21:25:26 olivleh1 Exp $
+# $Id: coreCurrencies.php,v 1.9 2007/07/22 10:59:14 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -44,8 +44,15 @@ class coreCurrencies extends core {
 			return;
 		}
 	}
+	function get_default_id() {
+		return $this->select_col( 'SELECT id FROM currencies WHERE att_default=1' );
+	}
 	function get_all_data() {
-		return $this->select_rows( "SELECT id,currency,att_default FROM currencies" );
+		return $this->select_rows( 'SELECT id,currency,att_default FROM currencies' );
+	}
+
+	function get_id_data( $id ) {
+		return $this->select_row( "SELECT id,currency,att_default FROM currencies WHERE id=$id" );
 	}
 
 	function get_all_index_letters() {
@@ -54,6 +61,40 @@ class coreCurrencies extends core {
 
 	function get_all_matched_data( $letter ) {
 		return $this->select_rows( "SELECT id,currency,att_default FROM currencies WHERE UPPER(currency) LIKE UPPER('$letter%') ORDER BY currency" );
+	}
+
+	function add_currency( $currency, $att_default ) {
+		$default_id=$this->get_default_id();
+		
+		if( $att_default == 1 && !empty($default_id) ) {
+			$this->update_row( 'UPDATE currencies SET att_default=0 WHERE id='.$default_id );
+		} elseif ($att_default == 0 && empty($default_id) ) {
+			add_error( 26 );
+			return;
+		}
+		return $this->update_row( "INSERT INTO currencies (currency,att_default) VALUES ('$currency','$att_default')" );
+	}
+
+	function update_currency( $id, $currency, $att_default ) {
+		$default_id=$this->get_default_id();
+		
+		if( $att_default == 1 && $default_id != $id ) {
+			$this->update_row( 'UPDATE currencies SET att_default=0 WHERE id='.$default_id );
+		} elseif ($att_default == 0 && $default_id == $id ) {
+			add_error( 26 );
+			return;
+		}
+		return $this->update_row( "UPDATE currencies SET currency='$currency', att_default='$att_default' WHERE id=$id" );
+	}
+
+	function delete_currency( $id ) {
+		$default_id=$this->get_default_id();
+		
+		if( $default_id == $id ) {
+			add_error( 27 );
+			return false;
+		}
+		return $this->update_row( "DELETE FROM currencies WHERE id=$id" );
 	}
 
 	function get_displayed_currency() {

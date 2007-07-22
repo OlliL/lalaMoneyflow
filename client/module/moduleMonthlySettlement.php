@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.16 2007/07/01 09:12:17 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.17 2007/07/22 10:59:17 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -61,7 +61,7 @@ class moduleMonthlySettlement extends module {
 		}
 
 		if( $month > 0 && $year > 0 ) {
-			$all_ids=$this->coreCapitalSources->get_valid_ids( "$year-$month-1", "$year-$month-1" );
+			$all_ids=$this->coreCapitalSources->get_valid_ids();
 			foreach( $all_ids as $id ) {
 				$all_data[]=array(
 					'id'      => $id,
@@ -121,7 +121,7 @@ class moduleMonthlySettlement extends module {
 				}
 
 				if( $month > 0 && $year > 0 ) {
-					$all_ids=$this->coreCapitalSources->get_valid_ids( "$year-$month-1", "$year-$month-1" );
+					$all_ids=$this->coreCapitalSources->get_valid_ids();
 					$all_data=array();
 					foreach( $all_ids as $id ) {
 						if( $new == 1 ) {
@@ -168,7 +168,7 @@ class moduleMonthlySettlement extends module {
 					break;
 				}
 			default:
-				$all_ids=$this->coreCapitalSources->get_valid_ids( "$year-$month-1", "$year-$month-1" );
+				$all_ids=$this->coreCapitalSources->get_valid_ids();
 				foreach( $all_ids as $id ) {
 					$all_data[]=array(
 						'id'      => $id,

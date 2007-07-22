@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMonthlySettlement.php,v 1.14 2006/12/19 12:54:12 olivleh1 Exp $
+# $Id: coreMonthlySettlement.php,v 1.15 2007/07/22 10:59:14 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -36,11 +36,13 @@ class coreMonthlySettlement extends core {
 	}
 
 	function get_amount( $sourceid, $month, $year ) {
-		return $this->select_col( "SELECT calc_amount(amount,'OUT',userid) amount FROM monthlysettlements WHERE capitalsourceid=$sourceid AND month=$month AND year=$year AND userid=".USERID." LIMIT 1" );
+		$date = $year."-".$month."-01";
+		return $this->select_col( "SELECT calc_amount(amount,'OUT',userid,LAST_DAY(STR_TO_DATE('$date',GET_FORMAT(DATE,'ISO')))) amount FROM monthlysettlements WHERE capitalsourceid=$sourceid AND month=$month AND year=$year AND userid=".USERID." LIMIT 1" );
 	}
 
 	function get_sum_amount( $month, $year ) {
-		return $this->select_col( "SELECT SUM(calc_amount(amount,'OUT',userid)) amount FROM monthlysettlements WHERE month=$month AND year=$year AND userid=".USERID." LIMIT 1" );
+		$date = $year."-".$month."-01";
+		return $this->select_col( "SELECT SUM(calc_amount(amount,'OUT',userid,STR_TO_DATE('$date',GET_FORMAT(DATE,'ISO')))) amount FROM monthlysettlements WHERE month=$month AND year=$year AND userid=".USERID." LIMIT 1" );
 	}
 
 	function monthlysettlement_exists( $month, $year, $sourceid = 0 ) {
@@ -76,8 +78,9 @@ class coreMonthlySettlement extends core {
 
 
 	function set_amount( $sourceid, $month, $year, $amount ) {
+		$date = $year."-".$month."-01";
 		if( fix_amount( $amount ) ) {
-			return $this->insert_row( "INSERT INTO monthlysettlements (userid,capitalsourceid,month,year,amount) VALUES (".USERID.",$sourceid,$month,$year,calc_amount($amount,'IN',".USERID.")) ON DUPLICATE KEY UPDATE amount=VALUES(amount)" );
+			return $this->insert_row( "INSERT INTO monthlysettlements (userid,capitalsourceid,month,year,amount) VALUES (".USERID.",$sourceid,$month,$year,calc_amount($amount,'IN',".USERID.",STR_TO_DATE('$date',GET_FORMAT(DATE,'ISO')))) ON DUPLICATE KEY UPDATE amount=VALUES(amount)" );
 		} else {
 			return false;
 		}

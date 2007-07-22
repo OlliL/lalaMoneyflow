@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCurrencies.php,v 1.1 2007/07/21 21:25:27 olivleh1 Exp $
+# $Id: moduleCurrencies.php,v 1.2 2007/07/22 10:59:17 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -62,5 +62,57 @@ class moduleCurrencies extends module {
 		return $this->fetch_template( 'display_list_currencies.tpl' );
 	}
 
+	function display_edit_currency( $realaction, $id, $all_data ) {
+
+		switch( $realaction ) {
+			case 'save':
+				if( $id == 0 ) {
+					$ret=$this->coreCurrencies->add_currency( $all_data['currency'], $all_data['att_default'] );
+				} else {
+					$ret=$this->coreCurrencies->update_currency( $id, $all_data['currency'], $all_data['att_default'] );
+				}
+
+				if( $ret ) {
+					$this->template->assign( 'CLOSE',    1 );
+				} else {
+					$all_data['id'] = $id;
+					$this->template->assign( 'ALL_DATA', $all_data );
+				}				
+				break;
+			default:
+				if( $id > 0 ) {
+					$all_data=$this->coreCurrencies->get_id_data( $id );
+				} else {
+					$all_data['att_default']=0;
+				}
+				$this->template->assign( 'ALL_DATA', $all_data );
+				break;
+		}
+
+		$this->template->assign( 'ERRORS', $this->get_errors() );
+
+		$this->parse_header( 1 );
+		return $this->fetch_template( 'display_edit_currencies.tpl' );
+	}
+
+	function display_delete_currency( $realaction, $id ) {
+
+		switch( $realaction ) {
+			case 'yes':
+				if( $this->coreCurrencies->delete_currency( $id ) ) {
+					$this->template->assign( 'CLOSE', 1 );
+					break;
+				}
+			default:
+				$all_data=$this->coreCurrencies->get_id_data( $id );
+				$this->template->assign( 'ALL_DATA', $all_data );
+				break;
+		}
+
+		$this->template->assign( 'ERRORS', $this->get_errors() );
+
+		$this->parse_header( 1 );
+		return $this->fetch_template( 'display_delete_currencies.tpl' );
+	}
 }
 ?>

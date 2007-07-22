@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.26 2007/06/26 19:05:29 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.27 2007/07/22 10:59:17 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -97,7 +97,7 @@ class moduleReports extends module {
 		if( is_array( $all_moneyflow_data ) ) {
 			$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
-			$all_capitalsources_ids=$this->coreCapitalSources->get_valid_ids( "$year-$month-1", "$year-$month-1", $sortby, $order );
+			$all_capitalsources_ids=$this->coreCapitalSources->get_valid_ids();
 
 			$i=0;
 			$lastamount=0;

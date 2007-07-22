@@ -33,7 +33,8 @@ DROP FUNCTION IF EXISTS calc_amount$$
 CREATE FUNCTION calc_amount (
   pi_amount FLOAT(8,2)
  ,pi_type   VARCHAR(3)
- ,pi_userid INT(10) UNSIGNED)
+ ,pi_userid INT(10) UNSIGNED
+ ,pi_date   DATE)
   RETURNS FLOAT(8,2)
 BEGIN
   DECLARE l_amount FLOAT(7,2);
@@ -46,7 +47,7 @@ BEGIN
                          FROM settings
                         WHERE name = 'displayed_currency'  
                           AND userid = pi_userid)
-     AND NOW() BETWEEN validfrom AND validtil;
+     AND pi_date BETWEEN validfrom AND validtil;
 
   IF pi_type = 'OUT' THEN  
     SET l_amount = ROUND(l_rate*pi_amount,2);
@@ -56,6 +57,13 @@ BEGIN
 
   RETURN l_amount;
 END;$$
+
+DROP TRIGGER IF EXISTS mpm_trg_01$$
+CREATE TRIGGER mpm_trg_01 BEFORE INSERT ON predefmoneyflows
+  FOR EACH ROW BEGIN
+    SET NEW.createdate = NOW();
+  END;
+$$
 
 DELIMITER ;
 
