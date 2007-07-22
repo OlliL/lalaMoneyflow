@@ -93,7 +93,7 @@ CREATE TABLE currencies (
   currency varchar(20) NOT NULL,
   att_default tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (id),
-  UNIQUE KEY currency (currency)
+  UNIQUE KEY mcu_i_01 (currency)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcu';
 
 --
@@ -224,7 +224,7 @@ CREATE TABLE `text` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-07-22 16:30:09
+-- Dump completed on 2007-07-22 20:04:04
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
