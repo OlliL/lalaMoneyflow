@@ -52,7 +52,7 @@ CREATE TABLE settings (
 DROP TABLE IF EXISTS capitalsources;
 CREATE TABLE capitalsources (
   userid int(10) unsigned NOT NULL,
-  id int(10) unsigned NOT NULL auto_increment,
+  capitalsourceid int(10) unsigned NOT NULL auto_increment,
   `type` enum('current asset','long-term asset') NOT NULL default 'current asset',
   state enum('non cash','cash') NOT NULL default 'non cash',
   accountnumber bigint(20) default NULL,
@@ -60,7 +60,7 @@ CREATE TABLE capitalsources (
   `comment` varchar(255) default NULL,
   validtil date NOT NULL default '2999-12-31',
   validfrom date NOT NULL default '1970-01-01',
-  PRIMARY KEY  (id,userid),
+  PRIMARY KEY  (capitalsourceid,userid),
   KEY mcs_i_01 (userid),
   CONSTRAINT mcs_mur_pk FOREIGN KEY (userid) REFERENCES users (id) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcs';
@@ -130,7 +130,7 @@ CREATE TABLE moneyflows (
   KEY mmf_i_01 (userid,bookingdate),
   KEY mmf_mcs_pk (capitalsourceid,userid),
   CONSTRAINT mmf_mcp_pk FOREIGN KEY (contractpartnerid, userid) REFERENCES contractpartners (id, userid) ON UPDATE CASCADE,
-  CONSTRAINT mmf_mcs_pk FOREIGN KEY (capitalsourceid, userid) REFERENCES capitalsources (id, userid) ON UPDATE CASCADE,
+  CONSTRAINT mmf_mcs_pk FOREIGN KEY (capitalsourceid, userid) REFERENCES capitalsources (capitalsourceid, userid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mur_pk FOREIGN KEY (userid) REFERENCES users (id) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mmf';
 
@@ -149,7 +149,7 @@ CREATE TABLE monthlysettlements (
   PRIMARY KEY  (id,userid),
   UNIQUE KEY mms_i_01 (userid,`month`,`year`,capitalsourceid),
   KEY mms_mcs_pk (capitalsourceid,userid),
-  CONSTRAINT mms_mcs_pk FOREIGN KEY (capitalsourceid, userid) REFERENCES capitalsources (id, userid) ON UPDATE CASCADE,
+  CONSTRAINT mms_mcs_pk FOREIGN KEY (capitalsourceid, userid) REFERENCES capitalsources (capitalsourceid, userid) ON UPDATE CASCADE,
   CONSTRAINT mms_mur_pk FOREIGN KEY (userid) REFERENCES users (id) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mms';
 
@@ -171,7 +171,7 @@ CREATE TABLE predefmoneyflows (
   KEY mpm_mcp_pk (contractpartnerid,userid),
   KEY mpm_mcs_pk (capitalsourceid,userid),
   CONSTRAINT mpm_mcp_pk FOREIGN KEY (contractpartnerid, userid) REFERENCES contractpartners (id, userid) ON UPDATE CASCADE,
-  CONSTRAINT mpm_mcs_pk FOREIGN KEY (capitalsourceid, userid) REFERENCES capitalsources (id, userid) ON UPDATE CASCADE,
+  CONSTRAINT mpm_mcs_pk FOREIGN KEY (capitalsourceid, userid) REFERENCES capitalsources (capitalsourceid, userid) ON UPDATE CASCADE,
   CONSTRAINT mpm_mur_pk FOREIGN KEY (userid) REFERENCES users (id) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mpm';
 
@@ -224,7 +224,7 @@ CREATE TABLE `text` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-07-22 12:31:14
+-- Dump completed on 2007-07-22 16:30:09
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -242,11 +242,11 @@ INSERT INTO text VALUES (1,2,'Vermögenstrend aller Kapitalquellen','g');
 INSERT INTO text VALUES (2,1,'contractual partners','t');
 INSERT INTO text VALUES (2,1,'February','m');
 INSERT INTO text VALUES (2,1,'You may not delete a source of capital while it is referenced by a flow of money!','e');
-INSERT INTO text VALUES (2,1,'Vermögenstrend der Kapitalquelle ','g');
+INSERT INTO text VALUES (2,1,'amount trend of capitalsource ','g');
 INSERT INTO text VALUES (2,2,'Vertragspartner','t');
 INSERT INTO text VALUES (2,2,'Februar','m');
 INSERT INTO text VALUES (2,2,'Es dürfen keine Kapitalquellen gelöscht werden, welche noch von einer Geldbewegung referenziert sind!','e');
-INSERT INTO text VALUES (2,2,'amount trend of capitalsource ','g');
+INSERT INTO text VALUES (2,2,'Vermögenstrend der Kapitalquelle ','g');
 INSERT INTO text VALUES (3,1,'predefined flows of money','t');
 INSERT INTO text VALUES (3,1,'March','m');
 INSERT INTO text VALUES (3,1,'There are flows of money for this source of capital outside the period of validitiy you''ve choosen!','e');

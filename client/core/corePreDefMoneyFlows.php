@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: corePreDefMoneyFlows.php,v 1.13 2007/07/22 10:59:14 olivleh1 Exp $
+# $Id: corePreDefMoneyFlows.php,v 1.14 2007/07/22 16:32:05 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -48,8 +48,9 @@ class corePreDefMoneyFlows extends core {
 		return $this->select_rows( "SELECT id,calc_amount(amount,'OUT',userid,createdate) amount,capitalsourceid,contractpartnerid,comment FROM predefmoneyflows WHERE userid=".USERID." ORDER BY id" );
 	}
 
-	function get_valid_data( $validfrom, $validtil ) {
-		return $this->select_rows( "SELECT a.id,calc_amount(a.amount,'OUT',a.userid,createdate) amount,a.capitalsourceid,a.contractpartnerid,a.comment FROM predefmoneyflows a, capitalsources b, contractpartners c WHERE a.capitalsourceid=b.id AND validfrom <= '$validfrom' and validtil >= '$validtil' AND a.contractpartnerid=c.id AND a.userid=".USERID." AND b.userid=a.userid AND c.userid=a.userid ORDER BY id" );
+	function get_valid_data( $date='' ) {
+		$date = $this->make_date($date);
+		return $this->select_rows( "SELECT a.id,calc_amount(a.amount,'OUT',a.userid,createdate) amount,a.capitalsourceid,a.contractpartnerid,a.comment FROM predefmoneyflows a, capitalsources b, contractpartners c WHERE a.capitalsourceid=b.capitalsourceid AND $date BETWEEN validfrom AND validtil AND a.contractpartnerid=c.id AND a.userid=".USERID." AND b.userid=a.userid AND c.userid=a.userid ORDER BY id" );
 	}
 
 	function get_id_data( $id ) {

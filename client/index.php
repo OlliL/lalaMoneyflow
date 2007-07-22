@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.30 2007/07/22 10:59:14 olivleh1 Exp $
+# $Id: index.php,v 1.31 2007/07/22 16:32:05 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -125,15 +125,15 @@ if( $moduleUsers->is_logged_in() ) {
 						$display=$moduleCapitalSources->display_list_capitalsources( $letter );
 						break;
 	
-		case 'edit_capitalsource':	$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
-						$id=		$_POST['id']?$_POST['id']:$_GET['id'];
-						$all_data=	$_POST['all_data'];
-						$display=$moduleCapitalSources->display_edit_capitalsource( $realaction, $id, $all_data );
+		case 'edit_capitalsource':	$realaction=		$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
+						$capitalsourceid=	$_POST['capitalsourceid']?$_POST['capitalsourceid']:$_GET['capitalsourceid'];
+						$all_data=		$_POST['all_data'];
+						$display=$moduleCapitalSources->display_edit_capitalsource( $realaction, $capitalsourceid, $all_data );
 						break;
 	
-		case 'delete_capitalsource':	$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
-						$id=		$_POST['id']?$_POST['id']:$_GET['id'];
-						$display=$moduleCapitalSources->display_delete_capitalsource( $realaction, $id );
+		case 'delete_capitalsource':	$realaction=		$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
+						$capitalsourceid=	$_POST['capitalsourceid']?$_POST['capitalsourceid']:$_GET['capitalsourceid'];
+						$display=$moduleCapitalSources->display_delete_capitalsource( $realaction, $capitalsourceid );
 						break;
 	
 		/* contractpartners */

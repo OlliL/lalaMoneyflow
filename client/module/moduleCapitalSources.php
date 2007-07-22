@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCapitalSources.php,v 1.11 2007/07/21 21:25:27 olivleh1 Exp $
+# $Id: moduleCapitalSources.php,v 1.12 2007/07/22 16:32:06 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -62,22 +62,26 @@ class moduleCapitalSources extends module {
 		return $this->fetch_template( 'display_list_capitalsources.tpl' );
 	}
 
-	function display_edit_capitalsource( $realaction, $id, $all_data ) {
-
+	function display_edit_capitalsource( $realaction, $capitalsourceid, $all_data ) {
+echo $capitalsourceid;
 		switch( $realaction ) {
 			case 'save':
-				if( $id == 0 )
+				if( $capitalsourceid == 0 )
 					$ret=$this->coreCapitalSources->add_capitalsource( $all_data['type'], $all_data['state'], $all_data['accountnumber'], $all_data['bankcode'], $all_data['comment'], $all_data['validfrom'], $all_data['validtil'] );
 				else
-					$ret=$this->coreCapitalSources->update_capitalsource( $id, $all_data['type'], $all_data['state'], $all_data['accountnumber'], $all_data['bankcode'], $all_data['comment'], $all_data['validfrom'], $all_data['validtil'] );
+					$ret=$this->coreCapitalSources->update_capitalsource( $capitalsourceid, $all_data['type'], $all_data['state'], $all_data['accountnumber'], $all_data['bankcode'], $all_data['comment'], $all_data['validfrom'], $all_data['validtil'] );
 
 				if( $ret ) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
 			default:
-				if( $id > 0 ) {
-					$all_data=$this->coreCapitalSources->get_id_data( $id );
+				if( $capitalsourceid > 0 ) {
+					if( !is_array($all_data) ) {
+						$all_data=$this->coreCapitalSources->get_id_data( $capitalsourceid );
+					} else {
+						$all_data['capitalsource'] = $capitalsourceid;
+					}				
 					$this->template->assign( 'ALL_DATA', $all_data );
 				}
 				$type_values=$this->coreCapitalSources->get_enum_type();
@@ -94,16 +98,16 @@ class moduleCapitalSources extends module {
 		return $this->fetch_template( 'display_edit_capitalsource.tpl' );
 	}
 
-	function display_delete_capitalsource( $realaction, $id ) {
+	function display_delete_capitalsource( $realaction, $capitalsourceid ) {
 
 		switch( $realaction ) {
 			case 'yes':
-				if( $this->coreCapitalSources->delete_capitalsource( $id ) ) {
+				if( $this->coreCapitalSources->delete_capitalsource( $capitalsourceid ) ) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
 			default:
-				$all_data=$this->coreCapitalSources->get_id_data( $id );
+				$all_data=$this->coreCapitalSources->get_id_data( $capitalsourceid );
 				$this->template->assign( 'ALL_DATA', $all_data );
 				break;
 		}

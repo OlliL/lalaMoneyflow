@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.24 2007/07/22 10:59:14 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.25 2007/07/22 16:32:05 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -74,7 +74,7 @@ class coreMoneyFlows extends core {
 							break;
 			default:			$sortby='';
 		}
-		return $this->select_rows( "SELECT a.id,a.bookingdate,a.invoicedate,calc_amount(a.amount,'OUT',a.userid,invoicedate) amount,a.comment,b.name contractpartnername,c.comment capitalsourcecomment FROM moneyflows a, contractpartners b, capitalsources c WHERE a.userid=".USERID." AND b.userid=a.userid AND c.userid=a.userid AND a.bookingdate BETWEEN STR_TO_DATE('$date',GET_FORMAT(DATE,'ISO')) AND LAST_DAY(STR_TO_DATE('$date',GET_FORMAT(DATE,'ISO'))) AND a.contractpartnerid=b.id AND a.capitalsourceid=c.id ORDER BY $sortby $sortbyadd" );
+		return $this->select_rows( "SELECT a.id,a.bookingdate,a.invoicedate,calc_amount(a.amount,'OUT',a.userid,invoicedate) amount,a.comment,b.name contractpartnername,c.comment capitalsourcecomment FROM moneyflows a, contractpartners b, capitalsources c WHERE a.userid=".USERID." AND b.userid=a.userid AND c.userid=a.userid AND a.bookingdate BETWEEN STR_TO_DATE('$date',GET_FORMAT(DATE,'ISO')) AND LAST_DAY(STR_TO_DATE('$date',GET_FORMAT(DATE,'ISO'))) AND a.contractpartnerid=b.id AND a.capitalsourceid=c.capitalsourceid ORDER BY $sortby $sortbyadd" );
 	}
 
 	function capitalsource_in_use( $id ) {

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.29 2007/07/22 10:59:17 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.30 2007/07/22 16:32:06 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -87,7 +87,6 @@ class moduleMoneyFlows extends module {
 
 	function display_add_moneyflow( $realaction, $all_data ) {
 
-		$date=date( 'Y-m-d' );
 		$capitalsource_values=$this->coreCapitalSources->get_valid_comments();
 		$contractpartner_values=$this->coreContractPartners->get_all_names();
 
@@ -151,10 +150,11 @@ class moduleMoneyFlows extends module {
 					break;
 				}
 			default:
-				$all_data_pre=$this->corePreDefMoneyFlows->get_valid_data( $date, $date );
+				$date = date( 'Y-m-d' );
+				$all_data_pre=$this->corePreDefMoneyFlows->get_valid_data();
 
 				$all_data[0]=array( 'id'          =>  -1,
-				                    'bookingdate' => date( 'Y-m-d' ) );
+				                    'bookingdate' => $date );
 
 				if( is_array( $all_data_pre ) ) {
 					$i=1;				
