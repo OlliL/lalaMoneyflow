@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.18 2007/07/22 16:32:05 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.19 2007/07/22 20:15:08 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -37,7 +37,8 @@ class coreCapitalSources extends core {
 	}
 
 	function count_all_data() {
-		if ( $num=$this->select_col( 'SELECT count(*) FROM capitalsources' ) ) {
+		if ( $num = $this->select_col( 'SELECT count(*)
+		                                FROM capitalsources' ) ) {
 			return $num;
 		} else {
 			return;
@@ -45,37 +46,88 @@ class coreCapitalSources extends core {
 	}
 	
 	function get_all_data() {
-		return $this->select_rows( 'SELECT capitalsourceid,type,state,accountnumber,bankcode,comment,validtil,validfrom FROM capitalsources WHERE userid='.USERID.' ORDER BY capitalsourceid' );
+		return $this->select_rows( 'SELECT capitalsourceid
+						  ,type
+						  ,state
+						  ,accountnumber
+						  ,bankcode
+						  ,comment
+						  ,validtil
+						  ,validfrom
+					      FROM capitalsources
+					     WHERE userid='.USERID.'
+					     ORDER BY capitalsourceid' );
 	}
 
 	function get_id_data( $id ) {
-		return $this->select_row( "SELECT capitalsourceid,type,state,accountnumber,bankcode,comment,validtil,validfrom FROM capitalsources WHERE capitalsourceid=$id AND userid=".USERID." LIMIT 1" );
+		return $this->select_row( "SELECT capitalsourceid
+		                                 ,type
+						 ,state
+						 ,accountnumber
+						 ,bankcode
+						 ,comment
+						 ,validtil
+						 ,validfrom
+					     FROM capitalsources
+					    WHERE capitalsourceid=$id
+					      AND userid=".USERID."
+					    LIMIT 1" );
 	}
 
 	function get_all_index_letters() {
-		return $this->select_cols( 'SELECT DISTINCT UPPER(SUBSTR(comment,1,1)) letters FROM capitalsources WHERE userid='.USERID.' ORDER BY letters' );
+		return $this->select_cols( 'SELECT DISTINCT UPPER(SUBSTR(comment,1,1)) letters
+		                              FROM capitalsources
+					     WHERE userid='.USERID.'
+					     ORDER BY letters' );
 	}
 
 	function get_all_matched_data( $letter ) {
-		return $this->select_rows( "SELECT capitalsourceid,type,state,accountnumber,bankcode,comment,validtil,validfrom FROM capitalsources WHERE UPPER(comment) LIKE UPPER('$letter%') AND userid=".USERID." ORDER BY comment" );
+		return $this->select_rows( "SELECT capitalsourceid
+		                                  ,type
+						  ,state
+						  ,accountnumber
+						  ,bankcode
+						  ,comment
+						  ,validtil
+						  ,validfrom
+					      FROM capitalsources
+					     WHERE UPPER(comment) LIKE UPPER('$letter%')
+					       AND userid=".USERID."
+					     ORDER BY comment" );
 	}
 
 	function get_all_ids() {
-		return $this->select_cols( 'SELECT capitalsourceid FROM capitalsources WHERE userid='.USERID.' ORDER BY capitalsourceid' );
+		return $this->select_cols( 'SELECT capitalsourceid
+		                              FROM capitalsources
+					     WHERE userid='.USERID.'
+					     ORDER BY capitalsourceid' );
 	}
 
 	function get_valid_ids( $date='' ) {
 		$date = $this->make_date($date);
-		return $this->select_cols( "SELECT capitalsourceid FROM capitalsources WHERE $date BETWEEN validfrom and validtil AND userid=".USERID." ORDER BY capitalsourceid" );
+		return $this->select_cols( "SELECT capitalsourceid
+		                              FROM capitalsources
+					     WHERE $date BETWEEN validfrom AND validtil
+					       AND userid=".USERID."
+					     ORDER BY capitalsourceid" );
 	}
 
 	function get_all_comments() {
-		return $this->select_rows( 'SELECT capitalsourceid,comment FROM capitalsources WHERE userid='.USERID.' ORDER BY capitalsourceid' );
+		return $this->select_rows( 'SELECT capitalsourceid
+		                                  ,comment
+					      FROM capitalsources
+					     WHERE userid='.USERID.'
+					     ORDER BY capitalsourceid' );
 	}
 
 	function get_valid_comments( $date='' ) {
 		$date = $this->make_date($date);
-		$result=$this->select_rows( "SELECT capitalsourceid,comment FROM capitalsources WHERE $date BETWEEN validfrom AND validtil AND userid=".USERID." ORDER BY capitalsourceid" );
+		$result=$this->select_rows( "SELECT capitalsourceid
+		                                   ,comment
+					       FROM capitalsources
+					      WHERE $date BETWEEN validfrom AND validtil
+					        AND userid=".USERID."
+					      ORDER BY capitalsourceid" );
 		if( is_array( $result ) ) {
 			return $result;
 		} else {
@@ -93,20 +145,37 @@ class coreCapitalSources extends core {
 	}
 
 	function get_comment( $id ) {
-		return $this->select_col( "SELECT comment FROM capitalsources WHERE capitalsourceid=$id AND userid=".USERID." LIMIT 1" );
+		return $this->select_col( "SELECT comment
+		                             FROM capitalsources
+					    WHERE capitalsourceid=$id
+					      AND userid=".USERID."
+					    LIMIT 1" );
 	}
 
 	function get_type( $id ) {
-		return $this->select_col( "SELECT type FROM capitalsources WHERE capitalsourceid=$id AND userid=".USERID."  LIMIT 1" );
+		return $this->select_col( "SELECT type
+		                             FROM capitalsources
+					    WHERE capitalsourceid=$id
+					      AND userid=".USERID."
+					    LIMIT 1" );
 	}
 
 	function get_state( $id ) {
-		return $this->select_col( "SELECT state FROM capitalsources WHERE capitalsourceid=$id AND userid=".USERID."  LIMIT 1" );
+		return $this->select_col( "SELECT state
+		                             FROM capitalsources
+					    WHERE capitalsourceid=$id
+					      AND userid=".USERID."
+					    LIMIT 1" );
 	}
 
 	function id_is_valid( $id, $date='' ) {
 		$date = $this->make_date($date);
-		return $this->select_col( "SELECT 1 from capitalsources WHERE capitalsourceid=$id AND $date BETWEEN validfrom and validtil AND userid=".USERID." LIMIT 1" );
+		return $this->select_col( "SELECT 1
+		                             FROM capitalsources
+					    WHERE capitalsourceid=$id
+					      AND $date BETWEEN validfrom AND validtil
+					      AND userid=".USERID."
+					    LIMIT 1" );
 	}
 
 
@@ -116,28 +185,61 @@ class coreCapitalSources extends core {
 			add_error( 2 );
 			return 0;
 		} else {
-			return $this->delete_row( "DELETE FROM capitalsources WHERE capitalsourceid=$id AND userid=".USERID." LIMIT 1" );
+			return $this->delete_row( "DELETE FROM capitalsources
+			                            WHERE capitalsourceid=$id
+						      AND userid=".USERID."
+						    LIMIT 1" );
 		}
 	}
 
 
 	function update_capitalsource( $id, $type, $state, $accountnumber, $bankcode, $comment, $validfrom, $validtil ) {
-		$coreMoneyFlows=new coreMoneyFlows();
+		$coreMoneyFlows = new coreMoneyFlows();
 		if( $coreMoneyFlows->capitalsource_in_use_out_of_date( $id, $validfrom, $validtil ) ) {
 			add_error( 3 );
 			return 0;
 		} else {
-			return $this->update_row( "UPDATE capitalsources set type='$type',state='$state',accountnumber='$accountnumber',bankcode='$bankcode',comment='$comment',validfrom='$validfrom',validtil='$validtil' WHERE capitalsourceid=$id AND userid=".USERID." " );
+			$validtil  = $this->make_date($validtil);
+			$validfrom = $this->make_date($validfrom);
+			return $this->update_row( "UPDATE capitalsources
+			                              SET type='$type'
+						         ,state='$state'
+							 ,accountnumber='$accountnumber'
+							 ,bankcode='$bankcode'
+							 ,comment='$comment'
+							 ,validfrom=$validfrom
+							 ,validtil=$validtil
+						    WHERE capitalsourceid=$id
+						      AND userid=".USERID." 
+						    LIMIT 1" );
 		}
 	}
 
 	function add_capitalsource( $type, $state, $accountnumber, $bankcode, $comment, $validfrom, $validtil ) {
-		$validfrom=$this->make_date($validfrom);
-
 		if( empty( $validtil ) )
 			$validtil='2999-12-31';
-		$validtil=$this->make_date($validtil);
+		$validtil  = $this->make_date($validtil);
+		$validfrom = $this->make_date($validfrom);
 
-		return $this->insert_row( "INSERT INTO capitalsources (userid,type,state,accountnumber,bankcode,comment,validfrom,validtil) VALUES (".USERID.",'$type','$state','$accountnumber','$bankcode','$comment',$validfrom,$validtil)" );
+		return $this->insert_row( "INSERT INTO capitalsources 
+		                                 (userid
+						 ,type
+						 ,state
+						 ,accountnumber
+						 ,bankcode
+						 ,comment
+						 ,validfrom
+						 ,validtil
+						 )
+						  VALUES
+						 (".USERID."
+						 ,'$type'
+						 ,'$state'
+						 ,'$accountnumber'
+						 ,'$bankcode'
+						 ,'$comment'
+						 ,$validfrom
+						 ,$validtil
+						 )" );
 	}
 }
