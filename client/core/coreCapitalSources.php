@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.19 2007/07/22 20:15:08 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.20 2007/07/23 04:17:13 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -38,7 +38,7 @@ class coreCapitalSources extends core {
 
 	function count_all_data() {
 		if ( $num = $this->select_col( 'SELECT count(*)
-		                                FROM capitalsources' ) ) {
+		                                  FROM capitalsources' ) ) {
 			return $num;
 		} else {
 			return;

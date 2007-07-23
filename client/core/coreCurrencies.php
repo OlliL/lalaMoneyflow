@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCurrencies.php,v 1.9 2007/07/22 10:59:14 olivleh1 Exp $
+# $Id: coreCurrencies.php,v 1.10 2007/07/23 04:17:13 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -38,53 +38,89 @@ class coreCurrencies extends core {
 	}
 
 	function count_all_data() {
-		if ( $num=$this->select_col( 'SELECT count(*) FROM currencies' ) ) {
+		if ( $num=$this->select_col( 'SELECT count(*)
+		                                FROM currencies' ) ) {
 			return $num;
 		} else {
 			return;
 		}
 	}
 	function get_default_id() {
-		return $this->select_col( 'SELECT id FROM currencies WHERE att_default=1' );
+		return $this->select_col( 'SELECT id
+		                             FROM currencies
+					    WHERE att_default=1
+					    LIMIT 1' );
 	}
 	function get_all_data() {
-		return $this->select_rows( 'SELECT id,currency,att_default FROM currencies' );
+		return $this->select_rows( 'SELECT id
+		                                  ,currency
+						  ,att_default
+					      FROM currencies' );
 	}
 
 	function get_id_data( $id ) {
-		return $this->select_row( "SELECT id,currency,att_default FROM currencies WHERE id=$id" );
+		return $this->select_row( "SELECT id
+		                                 ,currency
+						 ,att_default
+					     FROM currencies
+					    WHERE id=$id
+					    LIMIT 1" );
 	}
 
 	function get_all_index_letters() {
-		return $this->select_cols( 'SELECT DISTINCT UPPER(SUBSTR(currency,1,1)) letters FROM currencies ORDER BY letters' );
+		return $this->select_cols( 'SELECT DISTINCT UPPER(SUBSTR(currency,1,1)) letters
+		                              FROM currencies
+					     ORDER BY letters' );
 	}
 
 	function get_all_matched_data( $letter ) {
-		return $this->select_rows( "SELECT id,currency,att_default FROM currencies WHERE UPPER(currency) LIKE UPPER('$letter%') ORDER BY currency" );
+		return $this->select_rows( "SELECT id
+		                                  ,currency
+						  ,att_default
+					      FROM currencies
+					     WHERE UPPER(currency) LIKE UPPER('$letter%')
+					     ORDER BY currency" );
 	}
 
 	function add_currency( $currency, $att_default ) {
 		$default_id=$this->get_default_id();
 		
 		if( $att_default == 1 && !empty($default_id) ) {
-			$this->update_row( 'UPDATE currencies SET att_default=0 WHERE id='.$default_id );
+			$this->update_row( "UPDATE currencies
+			                       SET att_default=0
+					     WHERE id=.$default_id
+					     LIMIT 1" );
 		} elseif ($att_default == 0 && empty($default_id) ) {
 			add_error( 26 );
 			return;
 		}
-		return $this->update_row( "INSERT INTO currencies (currency,att_default) VALUES ('$currency','$att_default')" );
+		return $this->update_row( "INSERT INTO currencies
+		                                 (currency
+						 ,att_default
+						 )
+						  VALUES
+						 ('$currency'
+						 ,'$att_default'
+						 )" );
 	}
 
 	function update_currency( $id, $currency, $att_default ) {
 		$default_id=$this->get_default_id();
 		
 		if( $att_default == 1 && $default_id != $id ) {
-			$this->update_row( 'UPDATE currencies SET att_default=0 WHERE id='.$default_id );
+			$this->update_row( "UPDATE currencies
+			                       SET att_default=0
+					     WHERE id=.$default_id
+					     LIMIT 1" );
 		} elseif ($att_default == 0 && $default_id == $id ) {
 			add_error( 26 );
 			return;
 		}
-		return $this->update_row( "UPDATE currencies SET currency='$currency', att_default='$att_default' WHERE id=$id" );
+		return $this->update_row( "UPDATE currencies
+		                              SET currency='$currency'
+					         ,att_default='$att_default'
+					    WHERE id=$id
+					    LIMIT 1");
 	}
 
 	function delete_currency( $id ) {
@@ -94,7 +130,9 @@ class coreCurrencies extends core {
 			add_error( 27 );
 			return false;
 		}
-		return $this->update_row( "DELETE FROM currencies WHERE id=$id" );
+		return $this->update_row( "DELETE FROM currencies
+		                            WHERE id=$id
+					    LIMIT 1" );
 	}
 
 	function get_displayed_currency() {
@@ -113,7 +151,10 @@ class coreCurrencies extends core {
 
 	function get_currency( $id ) {
 		if( !empty( $id ) ) {
-			return $this->select_col( "SELECT currency FROM currencies WHERE id=$id LIMIT 1" );
+			return $this->select_col( "SELECT currency
+			                             FROM currencies
+						    WHERE id=$id
+						    LIMIT 1" );
 		} else {
 			return;
 		}

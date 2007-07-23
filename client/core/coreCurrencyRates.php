@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCurrencyRates.php,v 1.1 2007/07/21 21:25:26 olivleh1 Exp $
+# $Id: coreCurrencyRates.php,v 1.2 2007/07/23 04:17:13 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -37,48 +37,114 @@ class coreCurrencyRates extends core {
 	}
 
 	function count_all_data() {
-		if ( $num=$this->select_col( 'SELECT count(*) FROM currencyrates' ) ) {
+		if ( $num=$this->select_col( 'SELECT count(*)
+		                                FROM currencyrates' ) ) {
 			return $num;
 		} else {
 			return;
 		}
 	}
 	function get_all_data() {
-		return $this->select_rows( "SELECT a.currencyid,b.currency,a.rate,a.validfrom,a.validtil FROM currencyrates a,currencies b where a.currencyid=b.id" );
+		return $this->select_rows( 'SELECT mcr.currencyid
+		                                  ,mcu.currency
+						  ,mcr.rate
+						  ,mcr.validfrom
+						  ,mcr.validtil
+					      FROM currencyrates mcr
+					          ,currencies    mcu
+					     WHERE mcr.currencyid = mcu.id' );
 	}
 
 	function get_id_data( $currencyid, $validfrom ) {
-		return $this->select_row( "SELECT a.currencyid,b.currency,a.rate,a.validfrom,a.validtil FROM currencyrates a,currencies b where a.currencyid=b.id AND currencyid=$currencyid AND validfrom='$validfrom'" );
+		$validfrom = $this->make_date( $validfrom );
+		return $this->select_row( "SELECT mcr.currencyid
+		                                 ,mcu.currency
+						 ,mcr.rate
+						 ,mcr.validfrom
+						 ,mcr.validtil
+					     FROM currencyrates mcr
+					         ,currencies    mcu
+					    WHERE mcr.currencyid = mcu.id
+					      AND mcr.currencyid = $currencyid
+					      AND mcr.validfrom  = $validfrom
+					    LIMIT 1" );
 	}
 
 	function get_all_matched_data( $letter ) {
-		return $this->select_rows( "SELECT a.currencyid,b.currency,a.rate,a.validfrom,a.validtil FROM currencyrates a,currencies b where a.currencyid=b.id AND UPPER(currency) LIKE UPPER('$letter%') ORDER BY currency" );
+		return $this->select_rows( "SELECT mcr.currencyid
+		                                 ,mcu.currency
+						 ,mcr.rate
+						 ,mcr.validfrom
+						 ,mcr.validtil
+					     FROM currencyrates mcr
+					         ,currencies    mcu
+					    WHERE mcr.currencyid    = mcu.id
+					      AND UPPER(mcu.currency) LIKE UPPER('$letter%')
+					    ORDER BY mcu.currency" );
 	}
 
 	function update_currencyrate( $_currencyid, $_validfrom, $currencyid, $rate ) {
-		return $this->update_row( "UPDATE currencyrates set currencyid='$currencyid',rate=$rate WHERE currencyid=$_currencyid AND validfrom='$_validfrom'" );
+		$_validfrom = $this->make_date( $_validfrom );
+		return $this->update_row( "UPDATE currencyrates
+		                              SET currencyid='$currencyid'
+					         ,rate=$rate
+					    WHERE currencyid = $_currencyid
+					      AND validfrom  = $_validfrom" );
 	}
 
 	function add_currencyrate( $currencyid, $validfrom, $validtil, $rate ) {
+		$validfrom = $this->make_date( $validfrom );
+		$validtil  = $this->make_date( $validtil );
 		/* check if there is a currencyrate for this currencyid which is valid at the
 		 * desired valid from date - if that is the case, the existing dataset has to
 		 * be terminated
 		 */
-		$num=$this->select_col( "SELECT count(*) FROM currencyrates WHERE currencyid=$currencyid AND '$validfrom' BETWEEN validfrom AND validtil" );
+		$num = $this->select_col( "SELECT count(*)
+		                             FROM currencyrates
+					    WHERE currencyid=$currencyid
+					      AND $validfrom BETWEEN validfrom AND validtil
+					    LIMIT 1" );
 		if( $num == 1 ) {
-			$this->update_row( "UPDATE currencyrates set validtil=DATE_ADD('$validfrom', INTERVAL -1 DAY) WHERE currencyid=$currencyid AND '$validfrom' BETWEEN validfrom AND validtil" );
+			$this->update_row( "UPDATE currencyrates
+			                       SET validtil=DATE_ADD($validfrom, INTERVAL -1 DAY)
+					     WHERE currencyid = $currencyid
+					       AND $validfrom BETWEEN validfrom AND validtil
+					     LIMIT 1" );
 		}
-		return $this->update_row( "INSERT INTO currencyrates (currencyid,rate,validfrom,validtil) VALUES ($currencyid,$rate,'$validfrom','$validtil')" );
+		return $this->update_row( "INSERT INTO currencyrates
+		                                 (currencyid
+						 ,rate
+						 ,validfrom
+						 ,validtil
+						 )
+						  VALUES
+						 ($currencyid
+						 ,$rate
+						 ,$validfrom
+						 ,$validtil
+						 )" );
 	}
 
 	function delete_currencyrate( $currencyid, $validfrom ) {
+		$validfrom = $this->make_date( $validfrom );
 		/* when delete a currencyrate, make sure the most recent currencyrate left for
 		 * this currencyid becomes valid.
 		 */
-		$num=$this->select_col( "SELECT COUNT(*) FROM currencyrates WHERE currencyid=$currencyid AND DATE_ADD('$validfrom', INTERVAL -1 DAY) BETWEEN validfrom AND validtil" );
+		$num = $this->select_col( "SELECT count(*)
+		                             FROM currencyrates
+					    WHERE currencyid=$currencyid
+					      AND $validfrom BETWEEN validfrom AND validtil
+					    LIMIT 1" );
 		if( $num == 1 ) {
-			$this->update_row( "UPDATE currencyrates set validtil='2999-12-31' WHERE currencyid=$currencyid AND DATE_ADD('$validfrom', INTERVAL -1 DAY) BETWEEN validfrom AND validtil" );
+			$this->update_row( "UPDATE currencyrates
+			                       SET validtil='2999-12-31'
+					     WHERE currencyid=$currencyid
+					       AND DATE_ADD($validfrom, INTERVAL -1 DAY) BETWEEN validfrom AND validtil
+					     LIMIT 1" );
 		}		
-		return $this->delete_row( "DELETE FROM currencyrates WHERE currencyid=$currencyid AND validfrom='$validfrom'" );
+		return $this->delete_row( "DELETE FROM currencyrates
+		                            WHERE currencyid=$currencyid
+					      AND validfrom=$validfrom
+					    LIMIT 1" );
 	}
 }
