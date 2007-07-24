@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCurrencyRates.php,v 1.3 2007/07/24 18:22:06 olivleh1 Exp $
+# $Id: coreCurrencyRates.php,v 1.4 2007/07/24 18:34:31 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -112,7 +112,7 @@ class coreCurrencyRates extends core {
 						   AND validfrom      = $validfrom" );
 	}
 
-	function add_currencyrate( $currencyid, $validfrom, $validtil, $rate ) {
+	function add_currencyrate( $currencyid, $validfrom, $rate ) {
 		/*
 		   2 things need to be considered here
 		   
@@ -132,7 +132,7 @@ class coreCurrencyRates extends core {
 		}
 
 		$validfrom  = $this->make_date( $validfrom );
-		$validtil   = $this->make_date( $validtil );
+		$validtil   = $this->make_date( '2999-12-31' );
 
 
 		/* 1st check */

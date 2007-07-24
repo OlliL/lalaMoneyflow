@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCurrencyRates.php,v 1.2 2007/07/24 18:22:08 olivleh1 Exp $
+# $Id: moduleCurrencyRates.php,v 1.3 2007/07/24 18:34:31 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -86,7 +86,7 @@ class moduleCurrencyRates extends module {
 						$valid = false;
 					}
 					if( $valid )			
-						$ret = $this->coreCurrencyRates->add_currencyrate( $all_data['mcu_currencyid'], $all_data['validfrom'], '2999-12-31', $all_data['rate'] );
+						$ret = $this->coreCurrencyRates->add_currencyrate( $all_data['mcu_currencyid'], $all_data['validfrom'], $all_data['rate'] );
 				} else {
 					$ret = $this->coreCurrencyRates->update_currencyrate( $currencyid, $validfrom, $all_data['rate'] );
 				}
@@ -104,9 +104,7 @@ class moduleCurrencyRates extends module {
 				} else {
 					$this->template->assign( 'NEW', 1 );
 					if( empty( $all_data['validfrom'] ) ) 
-						$all_data['validfrom'] = date( 'Y-m-d' );
-					if( empty( $all_data['validtoö'] ) ) 
-						$all_data['validtil']  = '2999-12-31';
+						$all_data['validfrom'] = date( 'Y-m-d', time()+86400 );
 				}
 				$this->template->assign( 'ALL_DATA', $all_data );
 				break;
@@ -118,29 +116,6 @@ class moduleCurrencyRates extends module {
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_currencyrates.tpl' );
-	}
-
-	function display_delete_currencyrate( $realaction, $currencyid, $validfrom ) {
-
-		switch( $realaction ) {
-			case 'yes':
-				if( $this->coreCurrencyRates->delete_currencyrate( $currencyid, $validfrom ) ) {
-					$this->template->assign( 'CLOSE', 1 );
-					break;
-				}
-
-			default:
-				$all_data=$this->coreCurrencyRates->get_id_data( $currencyid, $validfrom );
-				$this->template->assign( 'CURRENCYID', $currencyid );
-				$this->template->assign( 'VALIDFROM',  $validfrom );
-				$this->template->assign( 'ALL_DATA', $all_data );
-				break;
-		}
-
-		$this->template->assign( 'ERRORS',   $this->get_errors() );
-
-		$this->parse_header( 1 );
-		return $this->fetch_template( 'display_delete_currencyrates.tpl' );
 	}
 }
 ?>
