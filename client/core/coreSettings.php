@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreSettings.php,v 1.5 2007/07/24 18:22:07 olivleh1 Exp $
+# $Id: coreSettings.php,v 1.6 2007/07/24 19:32:50 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -45,15 +45,29 @@ class coreSettings extends core {
 
 	function set_value( $userid, $name, $value ) {
 		return $this->insert_row( "	INSERT INTO settings
-							   (mur_userid
-						 	   ,name
-							   ,value
-							   )
-							    VALUES
-							   ($userid
-							   ,'$name'
-							   ,'$value'
-							   )
+						           (mur_userid
+						           ,name
+						           ,value
+						           )
+						            VALUES
+						           ($userid
+						           ,'$name'
+						           ,'$value'
+						           )
+						           ON DUPLICATE KEY UPDATE value = VALUES(value)" );
+	}
+
+	function init_settings( $userid ) {
+		return $this->insert_row( "	INSERT INTO settings
+						           (mur_userid
+						           ,name
+						           ,value
+						           )
+						           (SELECT $userid
+						                  ,name
+						                  ,value
+						              FROM settings
+						             WHERE mur_userid = 0)
 							   ON DUPLICATE KEY UPDATE value = VALUES(value)" );
 	}
 

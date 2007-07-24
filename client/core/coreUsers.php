@@ -24,10 +24,11 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreUsers.php,v 1.7 2007/07/24 18:22:07 olivleh1 Exp $
+# $Id: coreUsers.php,v 1.8 2007/07/24 19:32:50 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
+require_once 'core/coreSettings.php';
 
 class coreUsers extends core {
 
@@ -140,7 +141,7 @@ class coreUsers extends core {
 	}
 
 	function add_user( $name, $password, $perm_login, $perm_admin, $att_new ) {
-		return $this->insert_row( "	INSERT INTO users 
+		$userid = $this->insert_row( "	INSERT INTO users 
 						      (name
 						      ,password
 						      ,perm_login
@@ -154,6 +155,14 @@ class coreUsers extends core {
 						      ,$perm_admin
 						      ,$att_new
 						      );" );
+		if( $userid > 0 ) {
+			$coreSettings = new coreSettings();
+			if( ! $coreSettings->init_settings( $userid ) ) {
+				$this->delete_user( $userid );
+				return;
+			}
+		}
+		return $userid;
 	}
 
 	function update_user( $id, $name, $perm_login, $perm_admin, $att_new ) {
