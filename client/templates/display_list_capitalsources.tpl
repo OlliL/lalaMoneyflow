@@ -30,8 +30,8 @@
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].bankcode}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].validfrom}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].validtil}</td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&capitalsourceid={$ALL_DATA[DATA].capitalsourceid}&sr=1','_blank','width=800,height=80')">{$TEXT_36}</a></td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_capitalsource&capitalsourceid={$ALL_DATA[DATA].capitalsourceid}&sr=1','_blank','width=800,height=80')">{$TEXT_37}</a></td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&capitalsourceid={$ALL_DATA[DATA].mcs_capitalsourceid}&sr=1','_blank','width=800,height=80')">{$TEXT_36}</a></td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_capitalsource&capitalsourceid={$ALL_DATA[DATA].mcs_capitalsourceid}&sr=1','_blank','width=800,height=80')">{$TEXT_37}</a></td>
 						</tr>
 					{/section}
 				</table>

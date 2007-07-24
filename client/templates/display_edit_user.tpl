@@ -8,10 +8,10 @@
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
 		{/section}
 		<form action="{$ENV_INDEX_PHP}" method="POST">
-			<input type="hidden" name="action"  value="edit_user">
+			<input type="hidden" name="action"     value="edit_user">
 			<input type="hidden" name="realaction" value="save">
-			<input type="hidden" name="id"      value="{$ALL_DATA.id}">
-			<input type="hidden" name="REFERER" value="{$ENV_REFERER}">
+			<input type="hidden" name="userid"     value="{$ALL_DATA.userid}">
+			<input type="hidden" name="REFERER"    value="{$ENV_REFERER}">
 			<table border=0>
 				<tr>
 					<th>{$TEXT_85}</th>

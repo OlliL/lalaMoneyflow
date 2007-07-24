@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCapitalSources.php,v 1.12 2007/07/22 16:32:06 olivleh1 Exp $
+# $Id: moduleCapitalSources.php,v 1.13 2007/07/24 18:22:08 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -63,7 +63,7 @@ class moduleCapitalSources extends module {
 	}
 
 	function display_edit_capitalsource( $realaction, $capitalsourceid, $all_data ) {
-echo $capitalsourceid;
+
 		switch( $realaction ) {
 			case 'save':
 				if( $capitalsourceid == 0 )

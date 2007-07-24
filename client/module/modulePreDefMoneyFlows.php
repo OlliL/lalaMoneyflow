@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: modulePreDefMoneyFlows.php,v 1.17 2007/07/22 10:59:17 olivleh1 Exp $
+# $Id: modulePreDefMoneyFlows.php,v 1.18 2007/07/24 18:22:09 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -62,8 +62,8 @@ class modulePreDefMoneyFlows extends module {
 
 		if( is_array( $all_data ) ) {
 			foreach( $all_data as $key => $value ) {
-				$all_data[$key]['capitalsource_comment']=$this->coreCapitalSources->get_comment( $all_data[$key]['capitalsourceid'] );
-				$all_data[$key]['contractpartner_name']=$this->coreContractPartners->get_name( $all_data[$key]['contractpartnerid'] );
+				$all_data[$key]['capitalsource_comment']=$this->coreCapitalSources->get_comment( $all_data[$key]['mcs_capitalsourceid'] );
+				$all_data[$key]['contractpartner_name']=$this->coreContractPartners->get_name( $all_data[$key]['mcp_contractpartnerid'] );
 			}
 		}
 
@@ -82,21 +82,21 @@ class modulePreDefMoneyFlows extends module {
 			case 'save':
 				$data_is_valid=true;
 				
-				if( empty( $all_data['capitalsourceid'] ) ) {
+				if( empty( $all_data['mcs_capitalsourceid'] ) ) {
 					add_error( 9 );
 					$data_is_valid=false;
 				};
 				
-				if( empty( $all_data['contractpartnerid'] ) ) {
+				if( empty( $all_data['mcp_contractpartnerid'] ) ) {
 					add_error( 10 );
 					$data_is_valid=false;
 				};
 
 				if( $data_is_valid ) {
 					if( $id == 0 )
-						$ret=$this->corePreDefMoneyFlows->add_predefmoneyflow( $all_data['amount'], $all_data['capitalsourceid'], $all_data['contractpartnerid'], $all_data['comment'] );
+						$ret=$this->corePreDefMoneyFlows->add_predefmoneyflow( $all_data['amount'], $all_data['mcs_capitalsourceid'], $all_data['mcp_contractpartnerid'], $all_data['comment'] );
 					else
-						$ret=$this->corePreDefMoneyFlows->update_predefmoneyflow( $id, $all_data['amount'], $all_data['capitalsourceid'], $all_data['contractpartnerid'], $all_data['comment'] );
+						$ret=$this->corePreDefMoneyFlows->update_predefmoneyflow( $id, $all_data['amount'], $all_data['mcs_capitalsourceid'], $all_data['mcp_contractpartnerid'], $all_data['comment'] );
 	
 					if( $ret ) {
 						$this->template->assign( 'CLOSE', 1 );
@@ -142,8 +142,8 @@ class modulePreDefMoneyFlows extends module {
 
 			default:
 				$all_data=$this->corePreDefMoneyFlows->get_id_data( $id );
-				$all_data['capitalsource_comment']=$this->coreCapitalSources->get_comment( $all_data['capitalsourceid'] );
-				$all_data['contractpartner_name']=$this->coreContractPartners->get_name( $all_data['contractpartnerid'] );
+				$all_data['capitalsource_comment']=$this->coreCapitalSources->get_comment( $all_data['mcs_capitalsourceid'] );
+				$all_data['contractpartner_name']=$this->coreContractPartners->get_name( $all_data['mcp_contractpartnerid'] );
 				$this->template->assign( 'ALL_DATA', $all_data );
 				break;
 		}

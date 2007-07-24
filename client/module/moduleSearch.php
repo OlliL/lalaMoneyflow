@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSearch.php,v 1.9 2007/07/21 18:15:55 olivleh1 Exp $
+# $Id: moduleSearch.php,v 1.10 2007/07/24 18:22:09 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -70,7 +70,7 @@ class moduleSearch extends module {
 		if($minus)
 			$searchparams['minus'] = 1;
 
-		$searchparams['contractpartnerid']   = $contractpartner;
+		$searchparams['mcp_contractpartnerid']   = $contractpartner;
 		$searchparams['pattern']   = stripslashes( $searchstring );
 		$searchparams['startdate'] = $startdate;
 		$searchparams['enddate']   = $enddate;
@@ -78,7 +78,7 @@ class moduleSearch extends module {
 		$searchparams['grouping2'] = $grouping2;
 		$searchparams['order']     = $order;
 
-		if( empty( $searchparams['contractpartnerid'] ) && empty( $searchparams['pattern'] ) ) {
+		if( empty( $searchparams['mcp_contractpartnerid'] ) && empty( $searchparams['pattern'] ) ) {
 			add_error( 23 );
 		} elseif ( empty( $searchparams['grouping1'] ) && empty( $searchparams['grouping2'] ) ) {
 			add_error( 24 );

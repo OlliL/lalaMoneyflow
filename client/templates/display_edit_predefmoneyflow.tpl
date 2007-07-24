@@ -5,10 +5,10 @@
 
 		<td align="center">
 		<form action="{$ENV_INDEX_PHP}" method="POST">
-			<input type="hidden" name="action"  value="edit_predefmoneyflow">
+			<input type="hidden" name="action"     value="edit_predefmoneyflow">
 			<input type="hidden" name="realaction" value="save">
-			<input type="hidden" name="id"      value="{$ALL_DATA.id}">
-			<input type="hidden" name="REFERER" value="{$ENV_REFERER}">
+			<input type="hidden" name="userid"     value="{$ALL_DATA.userid}">
+			<input type="hidden" name="REFERER"    value="{$ENV_REFERER}">
 			{section name=ERROR loop=$ERRORS}
 				<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
 			{/section}
@@ -21,15 +21,15 @@
 				</tr>
 				<tr>
 					<td class="contrastbgcolor"><nobr><input class="contrastbgcolor" type="text" name="all_data[amount]" value="{$ALL_DATA.amount|string_format:"%.2f"}" align="right" size="8"/> {$CURRENCY}</nobr></td>
-					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[contractpartnerid]" size=1>
+					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcp_contractpartnerid]" size=1>
 					{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
-						<option {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].id == $ALL_DATA.contractpartnerid}selected{/if} value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].id}"> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}
+						<option {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $ALL_DATA.mcp_contractpartnerid}selected{/if} value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}
 					{/section}
 					</select></td>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]" value="{$ALL_DATA.comment}" size="48"/></td>
-					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[capitalsourceid]" size=1>
+					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcs_capitalsourceid]" size=1>
 					{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
-						<option {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceidid == $ALL_DATA.capitalsourceid}selected{/if} value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}"> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}
+						<option {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceidid == $ALL_DATA.mcs_capitalsourceid}selected{/if} value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}"> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}
 					{/section}
 					</select></td>
 				</tr>

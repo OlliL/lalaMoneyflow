@@ -1,30 +1,30 @@
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_text (
-   id
+   textid
   ,text
   ,type
-  ,userid)
-  AS SELECT mtx.id
+  ,mur_userid)
+  AS SELECT mtx.textid
            ,mtx.text
            ,mtx.type
-           ,mse.userid
+           ,mse.mur_userid
       FROM text     mtx
           ,settings mse
-     WHERE mtx.languageid = mse.value
-       AND mse.name       = 'displayed_language';
+     WHERE mtx.mla_languageid = mse.value
+       AND mse.name           = 'displayed_language';
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_template_text (
-   userid
+   mur_userid
   ,name
   ,variable
   ,text)
-  AS SELECT mvt.userid
+  AS SELECT mvt.mur_userid
            ,mte.name
-           ,CONCAT('TEXT_',mvt.id)
+           ,CONCAT('TEXT_',mvt.textid)
            ,mvt.text
       FROM templates mte
           ,vw_text   mvt
-     WHERE mte.textid = mvt.id
-       AND mvt.type   = 't';
+     WHERE mte.mtx_textid = mvt.textid
+       AND mvt.type       = 't';
 
 
 DELIMITER $$
@@ -43,10 +43,10 @@ BEGIN
   SELECT rate
     INTO l_rate
     FROM currencyrates
-   WHERE currencyid = (SELECT value
-                         FROM settings
-                        WHERE name = 'displayed_currency'  
-                          AND userid = pi_userid)
+   WHERE mcu_currencyid = (SELECT value
+                             FROM settings
+                            WHERE name = 'displayed_currency'  
+                              AND mur_userid = pi_userid)
      AND pi_date BETWEEN validfrom AND validtil;
 
   IF pi_type = 'OUT' THEN  

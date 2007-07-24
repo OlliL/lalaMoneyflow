@@ -59,10 +59,10 @@
 						</td>
 					</tr>
 						<th>{$TEXT_19}</th>
-						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[capitalsourceid]" size=1>
+						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcs_capitalsourceid]" size=1>
 							<option value="0">all</option>
 							{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
-							<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}" {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid == $ALL_DATA.capitalsourceid}selected{/if}> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}
+							<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}" {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid == $ALL_DATA.mcs_capitalsourceid}selected{/if}> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}
 							{/section}
 						</select></td>
 					</tr>
@@ -79,7 +79,7 @@
 					<tr>
 						<td align="center">
 							<br />
-							<img border="0" src="{$ENV_INDEX_PHP}?action=plot_graph&id={$ALL_DATA.capitalsourceid}&startmonth={$ALL_DATA.startmonth}&startyear={$ALL_DATA.startyear}&endmonth={$ALL_DATA.endmonth}&endyear={$ALL_DATA.endyear}" />
+							<img border="0" src="{$ENV_INDEX_PHP}?action=plot_graph&id={$ALL_DATA.mcs_capitalsourceid}&startmonth={$ALL_DATA.startmonth}&startyear={$ALL_DATA.startyear}&endmonth={$ALL_DATA.endmonth}&endyear={$ALL_DATA.endyear}" />
 						</td>
 					</tr>
 					{/if}

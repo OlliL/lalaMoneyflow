@@ -16,7 +16,7 @@
 					<th>{$TEXT_90}</th>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="language" size=1>
 					{section name=LANGUAGES loop=$LANGUAGE_VALUES}
-						<option value="{$LANGUAGE_VALUES[LANGUAGES].id}" {if $LANGUAGE_VALUES[LANGUAGES].id == $LANGUAGE}selected{/if}> {$LANGUAGE_VALUES[LANGUAGES].language}</option>
+						<option value="{$LANGUAGE_VALUES[LANGUAGES].languageid}" {if $LANGUAGE_VALUES[LANGUAGES].languageid == $LANGUAGE}selected{/if}> {$LANGUAGE_VALUES[LANGUAGES].language}</option>
 					{/section}
 					</select></td>
 				</tr>
@@ -24,7 +24,7 @@
 					<th>{$TEXT_91}</th>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="currency" size=1>
 					{section name=CURRENCIES loop=$CURRENCY_VALUES}
-						<option value="{$CURRENCY_VALUES[CURRENCIES].id}" {if $CURRENCY_VALUES[CURRENCIES].id == $CURRENCY}selected{/if}> {$CURRENCY_VALUES[CURRENCIES].currency}</option>
+						<option value="{$CURRENCY_VALUES[CURRENCIES].currencyid}" {if $CURRENCY_VALUES[CURRENCIES].currencyid == $CURRENCY}selected{/if}> {$CURRENCY_VALUES[CURRENCIES].currency}</option>
 					{/section}
 					</select></td>
 				</tr>

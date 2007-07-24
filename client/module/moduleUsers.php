@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleUsers.php,v 1.11 2007/07/21 21:25:28 olivleh1 Exp $
+# $Id: moduleUsers.php,v 1.12 2007/07/24 18:22:09 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -69,7 +69,7 @@ class moduleUsers extends module {
 					add_error( 21 );
 				} elseif( empty( $password ) ) {
 					add_error( 22 );
-				} elseif( $id=$this->coreUsers->check_account( $name, $password ) ) {
+				} elseif( $id = $this->coreUsers->check_account( $name, $password ) ) {
 					if( $this->coreUsers->check_login_permission( $id ) ) {
 						$this->coreSession->setAttribute( 'users_name', $name );
 						$this->coreSession->setAttribute( 'users_id',   $id );
@@ -85,7 +85,7 @@ class moduleUsers extends module {
 				break;
 		}
 
-		if( $loginok==1 ) {
+		if( $loginok == 1 ) {
 			return;
 		} else {
 			define( USERID, 0 );

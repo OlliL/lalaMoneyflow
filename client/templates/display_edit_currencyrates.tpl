@@ -5,11 +5,11 @@
 
 		<td align="center">
 		<form action="{$ENV_INDEX_PHP}" method="POST">
-			<input type="hidden" name="action" value="edit_currencyrate">
-			<input type="hidden" name="realaction" value="save">
-			<input type="hidden" name="currencyid" value="{$CURRENCYID}">
-			<input type="hidden" name="validfrom"  value="{$VALIDFROM}">
-			<input type="hidden" name="REFERER" value="{$ENV_REFERER}">
+			<input type="hidden" name="action"         value="edit_currencyrate">
+			<input type="hidden" name="realaction"     value="save">
+			<input type="hidden" name="mcu_currencyid" value="{$CURRENCYID}">
+			<input type="hidden" name="validfrom"      value="{$VALIDFROM}">
+			<input type="hidden" name="REFERER"        value="{$ENV_REFERER}">
 			{section name=ERROR loop=$ERRORS}
 				<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
 			{/section}
@@ -21,13 +21,21 @@
 					<th width="60" >{$TEXT_35}</th>
 				</tr>
 				<tr>
-					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[currencyid]" size=1>
+					{if $NEW == 1}
+					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcu_currencyid]" size=1>
 					{section name=CURRENCY loop=$CURRENCY_VALUES}
-						<option value="{$CURRENCY_VALUES[CURRENCY].id}"  {if $CURRENCY_VALUES[CURRENCY].id == $ALL_DATA.currencyid}selected{/if}> {$CURRENCY_VALUES[CURRENCY].currency}
+						<option value="{$CURRENCY_VALUES[CURRENCY].currencyid}"  {if $CURRENCY_VALUES[CURRENCY].currencyid == $ALL_DATA.mcu_currencyid}selected{/if}> {$CURRENCY_VALUES[CURRENCY].currency}
 					{/section}
 					</select></td>
+					{else}
+					<td class="contrastbgcolor">{$ALL_DATA.currency}</td>
+					{/if}
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[rate]"      value="{$ALL_DATA.rate}"      size=10 /></td>
+					{if $NEW == 1}
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validfrom]" value="{$ALL_DATA.validfrom}" size=10 /></td>
+					{else}
 					<td class="contrastbgcolor">{$ALL_DATA.validfrom}</td>
+					{/if}
 					<td class="contrastbgcolor">{$ALL_DATA.validtil}</td>
 				</tr>
 			</table>

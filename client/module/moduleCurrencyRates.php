@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCurrencyRates.php,v 1.1 2007/07/21 21:25:28 olivleh1 Exp $
+# $Id: moduleCurrencyRates.php,v 1.2 2007/07/24 18:22:08 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -49,13 +49,13 @@ class moduleCurrencyRates extends module {
 		}
 		
 		if( $letter == 'all') {
-			$all_data=$this->coreCurrencyRates->get_all_data();
+			$all_data = $this->coreCurrencyRates->get_all_data();
 		} elseif( !empty( $letter ) ) {
-			$all_data=$this->coreCurrencyRates->get_all_matched_data( $letter );
+			$all_data = $this->coreCurrencyRates->get_all_matched_data( $letter );
 		} else {
 			$all_data=array();
 		}
-		
+
 		$this->template->assign( 'ALL_DATA',          $all_data          );
 		$this->template->assign( 'COUNT_ALL_DATA',    count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
@@ -68,17 +68,33 @@ class moduleCurrencyRates extends module {
 
 		switch( $realaction ) {
 			case 'save':
-				if( $currencyid == 0 )
-					$ret=$this->coreCurrencyRates->add_currencyrate( $all_data['currencyid'], $all_data['validfrom'], $all_data['validtil'], $all_data['rate'] );
-				else
-					$ret=$this->coreCurrencyRates->update_currencyrate( $currencyid, $validfrom, $all_data['currencyid'], $all_data['rate'] );
+				if( $currencyid == 0 ) {
+					$valid = true;
+					if( ! is_date( $all_data['validfrom'] ) ) {
+						add_error( 29 );
+						$valid = false;
+					} elseif( strtotime( $all_data['validfrom'] ) < time() ) {
+						add_error( 30 );
+						$valid = false;
+					}
+					
+					if( empty( $all_data['rate'] ) ) {
+						add_error( 31 );
+						$valid = false;
+					} elseif( !is_numeric( $all_data['rate'] ) ) {
+						add_error( 32 );
+						$valid = false;
+					}
+					if( $valid )			
+						$ret = $this->coreCurrencyRates->add_currencyrate( $all_data['mcu_currencyid'], $all_data['validfrom'], '2999-12-31', $all_data['rate'] );
+				} else {
+					$ret = $this->coreCurrencyRates->update_currencyrate( $currencyid, $validfrom, $all_data['rate'] );
+				}
 
 				if( $ret ) {
 					$this->template->assign( 'CLOSE',    1 );
-				} else {
-					$this->template->assign( 'ALL_DATA', $all_data );
+					break;
 				}				
-				break;
 			default:
 				$currency_values=$this->coreCurrencies->get_all_data();
 
@@ -86,8 +102,11 @@ class moduleCurrencyRates extends module {
 				if( $currencyid > 0 && !empty( $validfrom ) ) {
 					$all_data=$this->coreCurrencyRates->get_id_data( $currencyid, $validfrom );
 				} else {
-					$all_data['validfrom'] = date( 'Y-m-d' );
-					$all_data['validtil']  = '2999-12-31';
+					$this->template->assign( 'NEW', 1 );
+					if( empty( $all_data['validfrom'] ) ) 
+						$all_data['validfrom'] = date( 'Y-m-d' );
+					if( empty( $all_data['validtoö'] ) ) 
+						$all_data['validtil']  = '2999-12-31';
 				}
 				$this->template->assign( 'ALL_DATA', $all_data );
 				break;

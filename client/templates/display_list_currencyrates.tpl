@@ -24,8 +24,7 @@
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].rate}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].validfrom}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].validtil}</td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_currencyrate&currencyid={$ALL_DATA[DATA].currencyid}&validfrom={$ALL_DATA[DATA].validfrom}&sr=1','_blank','width=800,height=80')">{$TEXT_36}</a></td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_currencyrate&currencyid={$ALL_DATA[DATA].currencyid}&validfrom={$ALL_DATA[DATA].validfrom}&sr=1','_blank','width=800,height=80')">{$TEXT_37}</a></td>
+							{if $ALL_DATA[DATA].att_past == 0}<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_currencyrate&mcu_currencyid={$ALL_DATA[DATA].mcu_currencyid}&validfrom={$ALL_DATA[DATA].validfrom}&sr=1','_blank','width=800,height=80')">{$TEXT_36}</a></td>{/if}
 						</tr>
 					{/section}
 				</table>

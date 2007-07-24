@@ -9,10 +9,10 @@
 		{/section}
 		<u>{$TEXT_118}</u><br /><br />
 		<form action="{$ENV_INDEX_PHP}" method="POST">
-			<input type="hidden" name="action" value="delete_currency">
-			<input type="hidden" name="realaction"    value="yes">
-			<input type="hidden" name="id"            value="{$ALL_DATA.id}">
-			<input type="hidden" name="REFERER" value="{$ENV_REFERER}">
+			<input type="hidden" name="action"     value="delete_currency">
+			<input type="hidden" name="realaction" value="yes">
+			<input type="hidden" name="currencyid" value="{$ALL_DATA.currencyid}">
+			<input type="hidden" name="REFERER"    value="{$ENV_REFERER}">
 			<table border=0>
 				<tr>
 					<th width="100">{$TEXT_107}</th>

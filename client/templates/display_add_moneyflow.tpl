@@ -35,25 +35,25 @@ function onload() {
 						<td class="contrastbgcolor" nowrap><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][amount]" value="{$ALL_DATA[DATA].amount}" size=8 onchange="this.form.elements[{$elements}].checked=true" style="text-align:right{if $ALL_DATA[DATA].amount_error == 1};color:red{/if}" /> {$CURRENCY}</td>
 
 						{if $ALL_DATA[DATA].id eq -1 }
-						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[{$smarty.section.DATA.index}][contractpartnerid]" size=1>
+						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[{$smarty.section.DATA.index}][mcp_contractpartnerid]" size=1>
 						{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
-							<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].id}" {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].id == $ALL_DATA[DATA].contractpartnerid}selected{/if}> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}</option>
+							<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}" {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $ALL_DATA[DATA].mcp_contractpartnerid}selected{/if}> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}</option>
 						{/section}
 						</select></td>
 						{else}
-						<td class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][contractpartnerid]" value="{$ALL_DATA[DATA].contractpartnerid}" /><input type="hidden" name="all_data[{$smarty.section.DATA.index}][contractpartnername]" value="{$ALL_DATA[DATA].contractpartnername}" />{$ALL_DATA[DATA].contractpartnername}</td>
+						<td class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][mcp_contractpartnerid]" value="{$ALL_DATA[DATA].mcp_contractpartnerid}" /><input type="hidden" name="all_data[{$smarty.section.DATA.index}][contractpartnername]" value="{$ALL_DATA[DATA].contractpartnername}" />{$ALL_DATA[DATA].contractpartnername}</td>
 						{/if}
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][comment]" value="{$ALL_DATA[DATA].comment}" size="50" {if $ALL_DATA[DATA].comment_error == 1}style="color:red"{/if}/></td>
 
 						{if $ALL_DATA[DATA].id eq -1 }
-						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[{$smarty.section.DATA.index}][capitalsourceid]" size=1>
+						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[{$smarty.section.DATA.index}][mcs_capitalsourceid]" size=1>
 						{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
-							<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}" {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid == $ALL_DATA[DATA].capitalsourceid}selected{/if}> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}</option>
+							<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}" {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid == $ALL_DATA[DATA].mcs_capitalsourceid}selected{/if}> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}</option>
 						{/section}
 						</select></td>
 						{assign var="elements" value="`$elements+8`"}
 						{else}
-						<td class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][capitalsourceid]" value="{$ALL_DATA[DATA].capitalsourceid}" /><input type="hidden" name="all_data[{$smarty.section.DATA.index}][capitalsourcecomment]" value="{$ALL_DATA[DATA].capitalsourcecomment}" />{$ALL_DATA[DATA].capitalsourcecomment}</td>
+						<td class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][mcs_capitalsourceid]" value="{$ALL_DATA[DATA].mcs_capitalsourceid}" /><input type="hidden" name="all_data[{$smarty.section.DATA.index}][capitalsourcecomment]" value="{$ALL_DATA[DATA].capitalsourcecomment}" />{$ALL_DATA[DATA].capitalsourcecomment}</td>
 						{assign var="elements" value="`$elements+10`"}
 						{/if}
 					</tr>

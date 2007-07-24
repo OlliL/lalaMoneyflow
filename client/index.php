@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.31 2007/07/22 16:32:05 olivleh1 Exp $
+# $Id: index.php,v 1.32 2007/07/24 18:22:05 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -109,7 +109,7 @@ if( $moduleUsers->is_logged_in() ) {
 						break;
 		case'list_currencyrates':
 		case'edit_currencyrate':
-		case'delete_currencyrate':	$moduleCurrencyRates		= new moduleCurrencyRates();
+/*		case'delete_currencyrate':	*/$moduleCurrencyRates		= new moduleCurrencyRates();
 						break;
 		case'list_users':		
 		case'edit_user':
@@ -121,107 +121,107 @@ if( $moduleUsers->is_logged_in() ) {
 	switch( $action ) {
 		/* capitalsources */
 	
-		case 'list_capitalsources':	$letter=	$_POST['letter']?$_POST['letter']:$_GET['letter'];
+		case 'list_capitalsources':	$letter=		$_REQUEST['letter'];
 						$display=$moduleCapitalSources->display_list_capitalsources( $letter );
 						break;
 	
-		case 'edit_capitalsource':	$realaction=		$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
-						$capitalsourceid=	$_POST['capitalsourceid']?$_POST['capitalsourceid']:$_GET['capitalsourceid'];
-						$all_data=		$_POST['all_data'];
+		case 'edit_capitalsource':	$realaction=		$_REQUEST['realaction'];
+						$capitalsourceid=	$_REQUEST['capitalsourceid'];
+						$all_data=		$_REQUEST['all_data'];
 						$display=$moduleCapitalSources->display_edit_capitalsource( $realaction, $capitalsourceid, $all_data );
 						break;
 	
-		case 'delete_capitalsource':	$realaction=		$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
-						$capitalsourceid=	$_POST['capitalsourceid']?$_POST['capitalsourceid']:$_GET['capitalsourceid'];
+		case 'delete_capitalsource':	$realaction=		$_REQUEST['realaction'];
+						$capitalsourceid=	$_REQUEST['capitalsourceid'];
 						$display=$moduleCapitalSources->display_delete_capitalsource( $realaction, $capitalsourceid );
 						break;
 	
 		/* contractpartners */
 	
-		case 'list_contractpartners':	$letter=	$_POST['letter']?$_POST['letter']:$_GET['letter'];
+		case 'list_contractpartners':	$letter=		$_REQUEST['letter'];
 						$display=$moduleContractPartners->display_list_contractpartners( $letter );
 						break;
 	
-		case 'edit_contractpartner':	$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
-						$id=		$_POST['id']?$_POST['id']:$_GET['id'];
-						$all_data=	$_POST['all_data'];
+		case 'edit_contractpartner':	$realaction=		$_REQUEST['realaction'];
+						$id=			$_REQUEST['contractpernerid'];
+						$all_data=		$_REQUEST['all_data'];
 						$display=$moduleContractPartners->display_edit_contractpartner( $realaction, $id, $all_data );
 						break;
 	
-		case 'delete_contractpartner':	$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
-						$id=		$_POST['id']?$_POST['id']:$_GET['id'];
+		case 'delete_contractpartner':	$realaction=		$_REQUEST['realaction'];
+						$id=			$_REQUEST['contractpartnerid'];
 						$display=$moduleContractPartners->display_delete_contractpartner( $realaction, $id );
 						break;
 	
 		/* predefmoneyflows */
 	
-		case 'list_predefmoneyflows':	$letter=	$_POST['letter']?$_POST['letter']:$_GET['letter'];
+		case 'list_predefmoneyflows':	$letter=		$_REQUEST['letter'];
 						$display=$modulePreDefMoneyFlows->display_list_predefmoneyflows( $letter );
 						break;
 	
-		case 'edit_predefmoneyflow':	$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
-						$id=		$_POST['id']?$_POST['id']:$_GET['id'];
-						$all_data=	$_POST['all_data'];
+		case 'edit_predefmoneyflow':	$realaction=		$_REQUEST['realaction'];
+						$id=			$_REQUEST['predefmoneyflowid'];
+						$all_data=		$_REQUEST['all_data'];
 						$display=$modulePreDefMoneyFlows->display_edit_predefmoneyflow( $realaction, $id, $all_data );
 						break;
 	
-		case 'delete_predefmoneyflow':	$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
-						$id=		$_POST['id']?$_POST['id']:$_GET['id'];
+		case 'delete_predefmoneyflow':	$realaction=		$_REQUEST['realaction'];
+						$id=			$_REQUEST['predefmoneyflowid'];
 						$display=$modulePreDefMoneyFlows->display_delete_predefmoneyflow( $realaction, $id );
 						break;
 	
 		/* moneyflows */
 	
-		case 'add_moneyflow':		$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
-						$all_data=	$_POST['all_data'];
+		case 'add_moneyflow':		$realaction=		$_REQUEST['realaction'];
+						$all_data=		$_REQUEST['all_data'];
 						$display=$moduleMoneyFlows->display_add_moneyflow( $realaction, $all_data );
 						break;
-		case 'edit_moneyflow':		$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
-						$id=		$_POST['id']?$_POST['id']:$_GET['id'];
-						$all_data=	$_POST['all_data'];
+		case 'edit_moneyflow':		$realaction=		$_REQUEST['realaction'];
+						$id=			$_REQUEST['moneyflowid'];
+						$all_data=		$_REQUEST['all_data'];
 						$display=$moduleMoneyFlows->display_edit_moneyflow( $realaction, $id, $all_data );
 						break;
 	
-		case 'delete_moneyflow':	$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
-						$id=		$_POST['id']?$_POST['id']:$_GET['id'];
+		case 'delete_moneyflow':	$realaction=		$_REQUEST['realaction'];
+						$id=			$_REQUEST['moneyflowid'];
 						$display=$moduleMoneyFlows->display_delete_moneyflow( $realaction, $id );
 						break;
 	
 	
 		/* monthlysettlements */
 	
-		case 'list_monthlysettlements':	$month=		$_GET['monthlysettlements_month'];
-						$year=		$_GET['monthlysettlements_year'];
+		case 'list_monthlysettlements':	$month=			$_REQUEST['monthlysettlements_month'];
+						$year=			$_REQUEST['monthlysettlements_year'];
 						$display=$moduleMonthlySettlement->display_list_monthlysettlements( $month, $year );
 						break;
-		case 'edit_monthlysettlement':	$month=		$_POST['monthlysettlements_month']?$_POST['monthlysettlements_month']:$_GET['monthlysettlements_month'];
-						$year=		$_POST['monthlysettlements_year']?$_POST['monthlysettlements_year']:$_GET['monthlysettlements_year'];
-						$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
-						$all_data=	$_POST['all_data'];
+		case 'edit_monthlysettlement':	$month=			$_REQUEST['monthlysettlements_month'];
+						$year=			$_REQUEST['monthlysettlements_year'];
+						$realaction=		$_REQUEST['realaction'];
+						$all_data=		$_REQUEST['all_data'];
 						$display=$moduleMonthlySettlement->display_edit_monthlysettlement( $realaction, $month, $year, $all_data );
 						break;
-		case 'delete_monthlysettlement':$month=		$_POST['monthlysettlements_month']?$_POST['monthlysettlements_month']:$_GET['monthlysettlements_month'];
-						$year=		$_POST['monthlysettlements_year']?$_POST['monthlysettlements_year']:$_GET['monthlysettlements_year'];
-						$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
+		case 'delete_monthlysettlement':$month=			$_REQUEST['monthlysettlements_month'];
+						$year=			$_REQUEST['monthlysettlements_year'];
+						$realaction=		$_REQUEST['realaction'];
 						$display=$moduleMonthlySettlement->display_delete_monthlysettlement( $realaction, $month, $year );
 						break;
 	
 		/* reports */
 	
-		case 'list_reports':		$month=		$_GET['reports_month'];
-						$year=		$_GET['reports_year'];
-						$sortby=	$_GET['reports_sortby'];
-						$order=		$_GET['reports_order'];
+		case 'list_reports':		$month=			$_REQUEST['reports_month'];
+						$year=			$_REQUEST['reports_year'];
+						$sortby=		$_REQUEST['reports_sortby'];
+						$order=			$_REQUEST['reports_order'];
 						$display=$moduleReports->display_list_reports( $month, $year, $sortby, $order );
 						break;
-		case 'plot_trends':		$all_data=	$_POST['all_data'];
+		case 'plot_trends':		$all_data=		$_REQUEST['all_data'];
 						$display = ( ENABLE_JPGRAPH ? $moduleReports->display_plot_trends($all_data) : '' );
 						break;
-		case 'plot_graph':		$id=		$_GET['id'];
-						$startmonth=	$_GET['startmonth'];
-						$startyear=	$_GET['startyear'];
-						$endmonth=	$_GET['endmonth'];
-						$endyear=	$_GET['endyear'];
+		case 'plot_graph':		$id=			$_REQUEST['id'];
+						$startmonth=		$_REQUEST['startmonth'];
+						$startyear=		$_REQUEST['startyear'];
+						$endmonth=		$_REQUEST['endmonth'];
+						$endyear=		$_REQUEST['endyear'];
 						$display = ( ENABLE_JPGRAPH ? $moduleReports->plot_graph( $id, $startmonth, $startyear, $endmonth, $endyear ) : '' );
 						break;
 	
@@ -229,80 +229,75 @@ if( $moduleUsers->is_logged_in() ) {
 	
 		case 'search':			$display=$moduleSearch->display_search();
 						break;
-		case 'do_search':		$searchstring=	$_POST['searchstring'];
-						$contractpart=	$_POST['contractpartner'];
-						$startdate=	$_POST['startdate'];
-						$enddate=	$_POST['enddate'];
-						$equal=		$_POST['equal'];
-						$casesensitive=	$_POST['casesensitive'];
-						$regexp=	$_POST['regexp'];
-						$minus=		$_POST['minus'];
-						$grouping1=	$_POST['grouping1'];
-						$grouping2=	$_POST['grouping2'];
-						$order=		$_POST['order'];
+		case 'do_search':		$searchstring=		$_REQUEST['searchstring'];
+						$contractpart=		$_REQUEST['contractpartner'];
+						$startdate=		$_REQUEST['startdate'];
+						$enddate=		$_REQUEST['enddate'];
+						$equal=			$_REQUEST['equal'];
+						$casesensitive=		$_REQUEST['casesensitive'];
+						$regexp=		$_REQUEST['regexp'];
+						$minus=			$_REQUEST['minus'];
+						$grouping1=		$_REQUEST['grouping1'];
+						$grouping2=		$_REQUEST['grouping2'];
+						$order=			$_REQUEST['order'];
 						$display=$moduleSearch->do_search( $searchstring, $contractpart, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus, $grouping1, $grouping2, $order );
 						break;
 		
 		/* settings */
 		
-		case 'personal_settings':	$realaction=	$_POST['realaction'];
-						$language=      $_POST['language'];
-						$currency=      $_POST['currency'];
-						$password1=     $_POST['password1'];
-						$password2=     $_POST['password2'];
+		case 'personal_settings':	$realaction=		$_REQUEST['realaction'];
+						$language=      	$_REQUEST['language'];
+						$currency=      	$_REQUEST['currency'];
+						$password1=     	$_REQUEST['password1'];
+						$password2=     	$_REQUEST['password2'];
 						$display=$moduleSettings->display_personal_settings( $realaction, $language, $currency, $password1, $password2 );
 						break;
-		case 'system_settings':		$realaction=	$_POST['realaction'];
-						$language=      $_POST['language'];
-						$currency=      $_POST['currency'];
+		case 'system_settings':		$realaction=		$_REQUEST['realaction'];
+						$language=      	$_REQUEST['language'];
+						$currency=      	$_REQUEST['currency'];
 						$display=$moduleSettings->display_system_settings( $realaction, $language, $currency );
 						break;
 	
 		/* currencies */
 		
-		case 'list_currencies':		$letter=	$_POST['letter']?$_POST['letter']:$_GET['letter'];
+		case 'list_currencies':		$letter=		$_REQUEST['letter'];
 						$display=$moduleCurrencies->display_list_currencies( $letter );
 						break;
-		case 'edit_currency':		$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
-						$id=		$_POST['id']?$_POST['id']:$_GET['id'];
-						$all_data=	$_POST['all_data'];
+		case 'edit_currency':		$realaction=		$_REQUEST['realaction'];
+						$id=			$_REQUEST['currencyid'];
+						$all_data=		$_REQUEST['all_data'];
 						$display=$moduleCurrencies->display_edit_currency( $realaction, $id, $all_data );
 						break;
-		case 'delete_currency':		$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
-						$id=		$_POST['id']?$_POST['id']:$_GET['id'];
+		case 'delete_currency':		$realaction=		$_REQUEST['realaction'];
+						$id=			$_REQUEST['currencyid'];
 						$display=$moduleCurrencies->display_delete_currency( $realaction, $id );
 						break;
 
 	
 		/* currencyrates */
 		
-		case 'list_currencyrates':	$letter=	$_POST['letter']?$_POST['letter']:$_GET['letter'];
+		case 'list_currencyrates':	$letter=		$_REQUEST['letter'];
 						$display=$moduleCurrencyRates->display_list_currencyrates( $letter );
 						break;
-		case 'edit_currencyrate':	$realaction=	$_POST['realaction'];
-						$currencyid=	$_POST['currencyid']?$_POST['currencyid']:$_GET['currencyid'];
-						$validfrom=	$_POST['validfrom']?$_POST['validfrom']:$_GET['validfrom'];
-						$all_data=	$_POST['all_data'];
+		case 'edit_currencyrate':	$realaction=		$_REQUEST['realaction'];
+						$currencyid=		$_REQUEST['mcu_currencyid'];
+						$validfrom=		$_REQUEST['validfrom'];
+						$all_data=		$_REQUEST['all_data'];
 						$display=$moduleCurrencyRates->display_edit_currencyrate( $realaction, $currencyid, $validfrom, $all_data );
-						break;
-		case 'delete_currencyrate':	$realaction=	$_POST['realaction'];
-						$currencyid=	$_POST['currencyid']?$_POST['currencyid']:$_GET['currencyid'];
-						$validfrom=	$_POST['validfrom']?$_POST['validfrom']:$_GET['validfrom'];
-						$display=$moduleCurrencyRates->display_delete_currencyrate( $realaction, $currencyid, $validfrom );
 						break;
 
 		/* users */
 		
-		case 'list_users':		$letter=	$_POST['letter']?$_POST['letter']:$_GET['letter'];
+		case 'list_users':		$letter=		$_REQUEST['letter'];
 						$display=$moduleUsers->display_list_users( $letter );
 						break;
-		case 'edit_user':		$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
-						$id=		$_POST['id']?$_POST['id']:$_GET['id'];
-						$all_data=	$_POST['all_data'];
+		case 'edit_user':		$realaction=		$_REQUEST['realaction'];
+						$id=			$_REQUEST['userid'];
+						$all_data=		$_REQUEST['all_data'];
 						$display=$moduleUsers->display_edit_user( $realaction, $id, $all_data );
 						break;
-		case 'delete_user':		$realaction=	$_POST['realaction']?$_POST['realaction']:$_GET['realaction'];
-						$id=		$_POST['id']?$_POST['id']:$_GET['id'];
+		case 'delete_user':		$realaction=		$_REQUEST['realaction'];
+						$id=			$_REQUEST['userid'];
 						$display=$moduleUsers->display_delete_user( $realaction, $id );
 						break;
 	

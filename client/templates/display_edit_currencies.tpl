@@ -5,10 +5,10 @@
 
 		<td align="center">
 		<form action="{$ENV_INDEX_PHP}" method="POST">
-			<input type="hidden" name="action" value="edit_currency">
-			<input type="hidden" name="realaction"    value="save">
-			<input type="hidden" name="id"            value="{$ALL_DATA.id}">
-			<input type="hidden" name="REFERER" value="{$ENV_REFERER}">
+			<input type="hidden" name="action"     value="edit_currency">
+			<input type="hidden" name="realaction" value="save">
+			<input type="hidden" name="currencyid" value="{$ALL_DATA.currencyid}">
+			<input type="hidden" name="REFERER"    value="{$ENV_REFERER}">
 			{section name=ERROR loop=$ERRORS}
 				<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
 			{/section}

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: corePreDefMoneyFlows.php,v 1.14 2007/07/22 16:32:05 olivleh1 Exp $
+# $Id: corePreDefMoneyFlows.php,v 1.15 2007/07/24 18:22:06 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -37,7 +37,8 @@ class corePreDefMoneyFlows extends core {
 	}
 
 	function count_all_data() {
-		if ( $num=$this->select_col( 'SELECT count(*) FROM predefmoneyflows' ) ) {
+		if ( $num = $this->select_col( '	SELECT count(*)
+							  FROM predefmoneyflows' ) ) {
 			return $num;
 		} else {
 			return;
@@ -45,25 +46,58 @@ class corePreDefMoneyFlows extends core {
 	}
 
 	function get_all_data() {
-		return $this->select_rows( "SELECT id,calc_amount(amount,'OUT',userid,createdate) amount,capitalsourceid,contractpartnerid,comment FROM predefmoneyflows WHERE userid=".USERID." ORDER BY id" );
+		return $this->select_rows( "	SELECT predefmoneyflowid
+						      ,calc_amount(amount,'OUT',mur_userid,createdate) amount
+						      ,mcs_capitalsourceid
+						      ,mcp_contractpartnerid
+						      ,comment
+						  FROM predefmoneyflows
+						 WHERE mur_userid = ".USERID."
+						 ORDER BY predefmoneyflowid" );
 	}
 
 	function get_valid_data( $date='' ) {
 		$date = $this->make_date($date);
-		return $this->select_rows( "SELECT a.id,calc_amount(a.amount,'OUT',a.userid,createdate) amount,a.capitalsourceid,a.contractpartnerid,a.comment FROM predefmoneyflows a, capitalsources b, contractpartners c WHERE a.capitalsourceid=b.capitalsourceid AND $date BETWEEN validfrom AND validtil AND a.contractpartnerid=c.id AND a.userid=".USERID." AND b.userid=a.userid AND c.userid=a.userid ORDER BY id" );
+		return $this->select_rows( "	SELECT mpm.predefmoneyflowid
+						      ,calc_amount(mpm.amount,'OUT',mpm.mur_userid,mpm.createdate) amount
+						      ,mpm.mcs_capitalsourceid
+						      ,mpm.mcp_contractpartnerid
+						      ,mpm.comment
+						  FROM predefmoneyflows mpm
+						      ,capitalsources   mcs
+						      ,contractpartners mcp
+						 WHERE mpm.mcs_capitalsourceid   = mcs.capitalsourceid
+						   AND $date                       BETWEEN mcs.validfrom AND mcs.validtil
+						   AND mpm.mcp_contractpartnerid = mcp.contractpartnerid 
+						   AND mpm.mur_userid            = ".USERID."
+						   AND mcs.mur_userid            = mpm.mur_userid
+						   AND mcp.mur_userid            = mpm.mur_userid
+						 ORDER BY predefmoneyflowid" );
 	}
 
 	function get_id_data( $id ) {
-		return $this->select_row( "SELECT id,calc_amount(amount,'OUT',userid,createdate) amount,capitalsourceid,contractpartnerid,comment FROM predefmoneyflows WHERE id=$id AND userid=".USERID );
+		return $this->select_row( "	SELECT predefmoneyflowid
+						      ,calc_amount(amount,'OUT',mur_userid,createdate) amount
+						      ,mcs_capitalsourceid
+						      ,mcp_contractpartnerid
+						      ,comment
+						  FROM predefmoneyflows
+						 WHERE predefmoneyflowid = $id
+						   AND mur_userid        = ".USERID );
 	}
 
 	function get_capitalsourceid( $id ) {
-		return $this->select_col( "SELECT capitalsourceid FROM predefmoneyflows WHERE id=$id AND userid=".USERID );
+		return $this->select_col( "	SELECT capitalsourceid
+						  FROM predefmoneyflows
+						 WHERE predefmoneyflowid = $id
+						   AND mur_userid        = ".USERID );
 	}
 
 	function get_all_index_letters() {
 		$coreContractPartners=new coreContractPartners();
-		$temp=$this->select_cols( 'SELECT DISTINCT contractpartnerid FROM predefmoneyflows WHERE userid='.USERID );
+		$temp=$this->select_cols( '	SELECT DISTINCT mcp_contractpartnerid
+						  FROM predefmoneyflows
+						 WHERE mur_userid = '.USERID );
 		return $coreContractPartners->get_ids_index_letters( $temp );
 	}
 
@@ -72,7 +106,15 @@ class corePreDefMoneyFlows extends core {
 		$ids=$coreContractPartners->get_ids_matched_data( $letter );
 		if( is_array( $ids ) ) {
 			$idstring=implode( $ids, ',' );
-			return $this->select_rows( "SELECT id,calc_amount(amount,'OUT',userid,createdate) amount,capitalsourceid,contractpartnerid,comment FROM predefmoneyflows WHERE contractpartnerid IN ($idstring) AND userid=".USERID." ORDER BY comment" );
+			return $this->select_rows( "	SELECT predefmoneyflowid
+							      ,calc_amount(amount,'OUT',mur_userid,createdate) amount
+							      ,capitalsourceid
+							      ,mcp_contractpartnerid
+							      ,comment
+							  FROM predefmoneyflows
+							 WHERE mcp_contractpartnerid IN ($idstring)
+							   AND mur_userid            = ".USERID."
+							 ORDER BY comment" );
 		} else {
 			return;
 		}
@@ -80,13 +122,22 @@ class corePreDefMoneyFlows extends core {
 
 
 	function delete_predefmoneyflow( $id ) {
-		return $this->delete_row( "DELETE FROM predefmoneyflows WHERE id=$id AND userid=".USERID." LIMIT 1" );
+		return $this->delete_row( "	DELETE FROM predefmoneyflows
+						 WHERE predefmoneyflowid = $id
+						   AND mur_userid        = ".USERID."
+						 LIMIT 1" );
 	}
 
 
 	function update_predefmoneyflow( $id, $amount, $capitalsourceid, $contractpartnerid, $comment ) {
 		if( fix_amount( $amount ) ) {
-			return $this->update_row( "UPDATE predefmoneyflows set amount=calc_amount('$amount','IN',".USERID.",createdate),capitalsourceid='$capitalsourceid',contractpartnerid='$contractpartnerid',comment='$comment' WHERE id=$id AND userid=".USERID );
+			return $this->update_row( "	UPDATE predefmoneyflows
+							   SET amount                = calc_amount('$amount','IN',".USERID.",createdate)
+							      ,mcs_capitalsourceid   = '$capitalsourceid'
+							      ,mcp_contractpartnerid = '$contractpartnerid'
+							      ,comment               = '$comment'
+							 WHERE predefmoneyflowid = $id
+							   AND mur_userid        = ".USERID );
 		} else {
 			return false;
 		}
@@ -94,7 +145,20 @@ class corePreDefMoneyFlows extends core {
 
 	function add_predefmoneyflow( $amount, $capitalsourceid, $contractpartnerid, $comment ) {
 		if( fix_amount( $amount ) ) {
-			return $this->insert_row( "INSERT INTO predefmoneyflows (userid,amount,capitalsourceid,contractpartnerid,comment) VALUES (".USERID.",calc_amount('$amount','IN',".USERID.",NOW()),'$capitalsourceid','$contractpartnerid','$comment')" );
+			return $this->insert_row( "	INSERT INTO predefmoneyflows 
+							      (mur_userid
+							      ,amount
+							      ,mcs_capitalsourceid
+							      ,mcp_contractpartnerid
+							      ,comment
+							      )
+							       VALUES
+							      (".USERID."
+							      ,calc_amount('$amount','IN',".USERID.",NOW())
+							      ,'$capitalsourceid'
+							      ,'$contractpartnerid'
+							      ,'$comment'
+							      )" );
 		} else {
 			return false;
 		}

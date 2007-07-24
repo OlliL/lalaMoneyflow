@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.30 2007/07/22 16:32:06 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.31 2007/07/24 18:22:08 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -49,7 +49,7 @@ class moduleMoneyFlows extends module {
 
 		switch( $realaction ) {
 			case 'save':
-				$ret=$this->coreMoneyFlows->update_moneyflow( $id, $all_data['bookingdate'], $all_data['invoicedate'], $all_data['amount'], $all_data['capitalsourceid'], $all_data['contractpartnerid'], $all_data['comment'] );
+				$ret=$this->coreMoneyFlows->update_moneyflow( $id, $all_data['bookingdate'], $all_data['invoicedate'], $all_data['amount'], $all_data['mcs_capitalsourceid'], $all_data['mcp_contractpartnerid'], $all_data['comment'] );
 
 				if( $ret ) {
 					$this->template->assign( 'CLOSE', 1 );
@@ -98,12 +98,12 @@ class moduleMoneyFlows extends module {
 					if ( $value['checked'] == 1 ) {
 						$nothing_checked = false;
 						
-						if( empty( $value['capitalsourceid'] ) ) {
+						if( empty( $value['mcs_capitalsourceid'] ) ) {
 							add_error( 9 );
 							$data_is_valid = false;
 						};
 						
-						if( empty( $value['contractpartnerid'] ) ) {
+						if( empty( $value['mcp_contractpartnerid'] ) ) {
 							add_error( 10 );
 							$data_is_valid = false;
 						};
@@ -143,7 +143,7 @@ class moduleMoneyFlows extends module {
 						if ( $value['checked'] == 1 ) {
 							if( empty( $value['invoicedate'] ) )
 								$value['invoicedate']=$value['bookingdate'];
-							$ret=$this->coreMoneyFlows->add_moneyflow( $value['bookingdate'], $value['invoicedate'], $value['amount'], $value['capitalsourceid'], $value['contractpartnerid'], $value['comment'] );
+							$ret=$this->coreMoneyFlows->add_moneyflow( $value['bookingdate'], $value['invoicedate'], $value['amount'], $value['mcs_capitalsourceid'], $value['mcp_contractpartnerid'], $value['comment'] );
 						}
 					}
 				} else {
@@ -162,8 +162,8 @@ class moduleMoneyFlows extends module {
 						$all_data[$i]=$value;
 						$all_data[$i]['bookingdate']=$date;
 						$all_data[$i]['amount']=sprintf('%.02f',$all_data_pre[$key]['amount']);
-						$all_data[$i]['capitalsourcecomment']=$this->coreCapitalSources->get_comment( $all_data_pre[$key]['capitalsourceid'] );
-						$all_data[$i]['contractpartnername']=$this->coreContractPartners->get_name( $all_data_pre[$key]['contractpartnerid'] );
+						$all_data[$i]['capitalsourcecomment']=$this->coreCapitalSources->get_comment( $all_data_pre[$key]['mcs_capitalsourceid'] );
+						$all_data[$i]['contractpartnername']=$this->coreContractPartners->get_name( $all_data_pre[$key]['mcp_contractpartnerid'] );
 						$i++;
 					}
 				}
@@ -182,29 +182,5 @@ class moduleMoneyFlows extends module {
 			
 	}
 
-
-	function display_delete_moneyflow( $realaction, $id ) {
-
-		switch( $realaction ) {
-			case 'yes':
-				if( $this->coreMoneyFlows->delete_moneyflow( $id ) ) {
-					$this->template->assign( 'CLOSE', 1 );
-					break;
-				}
-
-			default:
-				$all_data=$this->coreMoneyFlows->get_id_data( $id );
-				$all_data['capitalsource_comment']=$this->coreCapitalSources->get_comment( $all_data['capitalsourceid'] );
-				$all_data['contractpartner_name']=$this->coreContractPartners->get_name( $all_data['contractpartnerid'] );
-				$this->template->assign( 'ALL_DATA', $all_data );
-				break;
-		}
-
-		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
-		$this->template->assign( 'ERRORS',   $this->get_errors() );
-
-		$this->parse_header( 1 );
-		return $this->fetch_template( 'display_delete_moneyflow.tpl' );
-	}
 }
 ?>

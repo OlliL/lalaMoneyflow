@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMonthlySettlement.php,v 1.15 2007/07/22 10:59:14 olivleh1 Exp $
+# $Id: coreMonthlySettlement.php,v 1.16 2007/07/24 18:22:06 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -36,20 +36,42 @@ class coreMonthlySettlement extends core {
 	}
 
 	function get_amount( $sourceid, $month, $year ) {
-		$date = $year."-".$month."-01";
-		return $this->select_col( "SELECT calc_amount(amount,'OUT',userid,LAST_DAY(STR_TO_DATE('$date',GET_FORMAT(DATE,'ISO')))) amount FROM monthlysettlements WHERE capitalsourceid=$sourceid AND month=$month AND year=$year AND userid=".USERID." LIMIT 1" );
+		$date = $this->make_date( $year."-".$month."-01" );
+		return $this->select_col( "	SELECT calc_amount(amount,'OUT',mur_userid,LAST_DAY($date)) amount
+						  FROM monthlysettlements
+						 WHERE mcs_capitalsourceid = $sourceid
+						   AND month               = $month
+						   AND year                = $year
+						   AND mur_userid          = ".USERID."
+						 LIMIT 1" );
 	}
 
 	function get_sum_amount( $month, $year ) {
-		$date = $year."-".$month."-01";
-		return $this->select_col( "SELECT SUM(calc_amount(amount,'OUT',userid,STR_TO_DATE('$date',GET_FORMAT(DATE,'ISO')))) amount FROM monthlysettlements WHERE month=$month AND year=$year AND userid=".USERID." LIMIT 1" );
+		$date = $this->make_date( $year."-".$month."-01" );
+		return $this->select_col( "	SELECT SUM(calc_amount(amount,'OUT',mur_userid,LAST_DAY($date))) amount
+						  FROM monthlysettlements
+						 WHERE month      = $month
+						   AND year       = $year
+						   AND mur_userid = ".USERID."
+						 LIMIT 1" );
 	}
 
 	function monthlysettlement_exists( $month, $year, $sourceid = 0 ) {
 		if( $sourceid == 0 )
-			$result = $this->select_col( "SELECT 1 FROM monthlysettlements WHERE month=$month AND year=$year AND userid=".USERID." LIMIT 1" );
+			$result = $this->select_col( "	SELECT 1
+							  FROM monthlysettlements
+							 WHERE month      = $month
+							   AND year       = $year
+							   AND mur_userid = ".USERID."
+							 LIMIT 1" );
 		else
-			$result = $this->select_col( "SELECT 1 FROM monthlysettlements WHERE month=$month AND year=$year AND capitalsourceid=$sourceid AND userid=".USERID." LIMIT 1" );
+			$result = $this->select_col( "	SELECT 1
+							  FROM monthlysettlements
+							 WHERE mcs_capitalsourceid = $sourceid
+							   AND month               = $month
+							   AND year                = $year
+							   AND mur_userid          = ".USERID."
+							 LIMIT 1" );
 
 		if( $result == 1 )
 			return true;
@@ -58,29 +80,59 @@ class coreMonthlySettlement extends core {
 	}
 
 	function get_all_years() {
-		return $this->select_cols( 'SELECT DISTINCT year FROM monthlysettlements WHERE userid='.USERID.' ORDER BY year ASC' );
+		return $this->select_cols( '	SELECT DISTINCT year
+						  FROM monthlysettlements
+						 WHERE mur_userid = '.USERID.'
+						 ORDER BY year ASC' );
 	}
 
 	function get_all_months( $year ) {
-		return $this->select_cols( "SELECT DISTINCT month FROM monthlysettlements WHERE year = $year AND userid=".USERID." ORDER BY month ASC" );
+		return $this->select_cols( "     SELECT DISTINCT month
+						   FROM monthlysettlements
+						  WHERE year       = $year
+						    AND mur_userid = ".USERID."
+						  ORDER BY month ASC" );
 	}
 
 	function get_next_date() {
-		$result=$this->select_row( 'SELECT MAX(month) month,MAX(year) year FROM monthlysettlements WHERE year=(SELECT MAX(year) FROM monthlysettlements WHERE userid='.USERID.') AND userid='.USERID.'' );
+		$result = $this->select_row( '	SELECT MAX(month) month
+						      ,MAX(year)  year
+						  FROM monthlysettlements
+						 WHERE year       = (SELECT MAX(year)
+								       FROM monthlysettlements
+								      WHERE mur_userid = '.USERID.')
+						   AND mur_userid = '.USERID.'' );
 		return mktime( 0, 0, 0, $result['month']+1, 1, $result['year'] );
 	}
 
 
 	function delete_amount( $month, $year ) {
-		$this->insert_row( "DELETE FROM monthlysettlements WHERE month=$month AND year=$year AND userid=".USERID );
+		$this->insert_row( "     DELETE FROM monthlysettlements
+					  WHERE month      = $month
+					    AND year       = $year
+					    AND mur_userid = ".USERID );
 		return true;
 	}
 
 
 	function set_amount( $sourceid, $month, $year, $amount ) {
-		$date = $year."-".$month."-01";
+		$date = $this->make_date( $year."-".$month."-01" );
 		if( fix_amount( $amount ) ) {
-			return $this->insert_row( "INSERT INTO monthlysettlements (userid,capitalsourceid,month,year,amount) VALUES (".USERID.",$sourceid,$month,$year,calc_amount($amount,'IN',".USERID.",STR_TO_DATE('$date',GET_FORMAT(DATE,'ISO')))) ON DUPLICATE KEY UPDATE amount=VALUES(amount)" );
+			return $this->insert_row( "	INSERT INTO monthlysettlements
+							      (mur_userid
+							      ,mcs_capitalsourceid
+							      ,month
+							      ,year
+							      ,amount
+							      )
+							       VALUES
+							      (".USERID."
+							      ,$sourceid
+							      ,$month
+							      ,$year
+							      ,calc_amount($amount,'IN',".USERID.",LAST_DAY($date))
+							      )
+							    ON DUPLICATE KEY UPDATE amount = VALUES(amount)" );
 		} else {
 			return false;
 		}

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreTemplates.php,v 1.1 2006/12/20 14:22:48 olivleh1 Exp $
+# $Id: coreTemplates.php,v 1.2 2007/07/24 18:22:07 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -36,6 +36,10 @@ class coreTemplates extends core {
 	}
 
 	function get_template_text( $name ) {
-		return $this->select_rows( "SELECT variable, text FROM vw_template_text WHERE name='$name' AND userid=".USERID );
+		return $this->select_rows( "	SELECT variable
+						      ,text
+						  FROM vw_template_text
+						 WHERE name       = '$name'
+						   AND mur_userid = ".USERID );
 	}
 }

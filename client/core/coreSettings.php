@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreSettings.php,v 1.4 2006/12/21 16:21:21 olivleh1 Exp $
+# $Id: coreSettings.php,v 1.5 2007/07/24 18:22:07 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -36,11 +36,25 @@ class coreSettings extends core {
 	}
 
 	function get_value( $userid, $name ) {
-		return $this->select_col( "SELECT value FROM settings WHERE name='$name' AND userid=$userid LIMIT 1" );
+		return $this->select_col( "	SELECT value
+						  FROM settings
+						 WHERE name       = '$name'
+						   AND mur_userid = $userid
+						 LIMIT 1" );
 	}
 
 	function set_value( $userid, $name, $value ) {
-		return $this->insert_row( "INSERT INTO settings (userid,name,value) VALUES ($userid,'$name','$value') ON DUPLICATE KEY UPDATE value=VALUES(value)" );
+		return $this->insert_row( "	INSERT INTO settings
+							   (mur_userid
+						 	   ,name
+							   ,value
+							   )
+							    VALUES
+							   ($userid
+							   ,'$name'
+							   ,'$value'
+							   )
+							   ON DUPLICATE KEY UPDATE value = VALUES(value)" );
 	}
 
 	function get_displayed_currency( $userid ) {

@@ -20,8 +20,8 @@
 						<tr>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].currency}</td>
 							<td class="contrastbgcolor" align="center"><b>{if $ALL_DATA[DATA].att_default == 1}<font color="green">{$TEXT_25}{else}<font color="red">{$TEXT_26}{/if}</font></b></td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_currency&id={$ALL_DATA[DATA].id}&sr=1','_blank','width=800,height=80')">{$TEXT_36}</a></td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_currency&id={$ALL_DATA[DATA].id}&sr=1','_blank','width=800,height=80')">{$TEXT_37}</a></td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_currency&currencyid={$ALL_DATA[DATA].currencyid}&sr=1','_blank','width=800,height=80')">{$TEXT_36}</a></td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_currency&currencyid={$ALL_DATA[DATA].currencyid}&sr=1','_blank','width=800,height=80')">{$TEXT_37}</a></td>
 						</tr>
 					{/section}
 				</table>

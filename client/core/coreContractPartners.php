@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreContractPartners.php,v 1.11 2007/07/23 04:04:02 olivleh1 Exp $
+# $Id: coreContractPartners.php,v 1.12 2007/07/24 18:22:06 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -37,84 +37,85 @@ class coreContractPartners extends core {
 	}
 
 	function count_all_data() {
-		if ( $num=$this->select_col( 'SELECT count(*) FROM contractpartners' ) ) {
+		if ( $num = $this->select_col( 'SELECT count(*)
+						  FROM contractpartners' ) ) {
 			return $num;
 		} else {
 			return;
 		}
 	}
 	function get_all_data() {
-		return $this->select_rows( 'SELECT id
-		                                  ,name
-						  ,street
-						  ,postcode
-						  ,town
-						  ,country
-					       FROM contractpartners
-					      WHERE userid='.USERID.'
-					      ORDER BY name' );
+		return $this->select_rows( '	SELECT contractpartnerid
+						      ,name
+						      ,street
+						      ,postcode
+						      ,town
+						      ,country
+						   FROM contractpartners
+						  WHERE mur_userid = '.USERID.'
+						  ORDER BY name' );
 	}
 
 	function get_id_data( $id ) {
-		return $this->select_row( "SELECT id
-		                                 ,name
-					         ,street
-						 ,postcode
-						 ,town
-						 ,country
-					     FROM contractpartners
-					    WHERE id=$id
-					      AND userid=".USERID."
-					    LIMIT 1" );
+		return $this->select_row( "	SELECT contractpartnerid
+						      ,name
+						      ,street
+						      ,postcode
+						      ,town
+						      ,country
+						  FROM contractpartners
+						 WHERE contractpartnerid = $id
+						   AND mur_userid        = ".USERID."
+						 LIMIT 1" );
 	}
 
 	function get_all_index_letters() {
-		return $this->select_cols( 'SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters
-		                              FROM contractpartners
-					     WHERE userid='.USERID.'
-					     ORDER BY letters' );
+		return $this->select_cols( '	SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters
+						  FROM contractpartners
+						 WHERE mur_userid='.USERID.'
+						 ORDER BY letters' );
 	}
 
 	function get_ids_index_letters( $ids ) {
 		if( is_array( $ids ) ) {
-			$idstring=implode( $ids, ',' );
-			return $this->select_cols( "SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters
-			                              FROM contractpartners
-						     WHERE id IN ($idstring)
-						       AND userid=".USERID."
-						     ORDER BY letters" );
+			$idstring = implode( $ids, ',' );
+			return $this->select_cols( "	SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters
+							  FROM contractpartners
+							 WHERE contractpartnerid IN ($idstring)
+							   AND mur_userid         =  ".USERID."
+							 ORDER BY letters" );
 		} else {
 			return;
 		}
 	}
 
 	function get_all_matched_data( $letter ) {
-		return $this->select_rows( "SELECT id
-		                                  ,name
-						  ,street
-						  ,postcode
-						  ,town
-						  ,country
-					      FROM contractpartners
-					     WHERE UPPER(name) LIKE UPPER('$letter%')
-					       AND userid=".USERID."
-					     ORDER BY name" );
+		return $this->select_rows( "	SELECT contractpartnerid
+						      ,name
+						      ,street
+						      ,postcode
+						      ,town
+						      ,country
+						  FROM contractpartners
+						 WHERE UPPER(name) LIKE UPPER('$letter%')
+						   AND mur_userid  = ".USERID."
+						 ORDER BY name" );
 	}
 
 	function get_ids_matched_data( $letter ) {
-		return $this->select_cols( "SELECT id
-		                              FROM contractpartners
-					     WHERE UPPER(name) LIKE UPPER('$letter%')
-					       AND userid=".USERID."
-					     ORDER BY name" );
+		return $this->select_cols( "	SELECT contractpartnerid
+						  FROM contractpartners
+						 WHERE UPPER(name) LIKE UPPER('$letter%')
+						   AND mur_userid  = ".USERID."
+						 ORDER BY name" );
 	}
 
 	function get_all_names() {
-		$result=$this->select_rows( 'SELECT id
-		                                   ,name
-					       FROM contractpartners
-					      WHERE userid='.USERID.'
-					      ORDER BY name' );
+		$result = $this->select_rows( '	SELECT contractpartnerid
+						      ,name
+						  FROM contractpartners
+						 WHERE mur_userid = '.USERID.'
+						 ORDER BY name' );
 		if( is_array( $result ) ) {
 			return $result;
 		} else {
@@ -124,57 +125,57 @@ class coreContractPartners extends core {
 	}
 
 	function get_name( $id ) {
-		return $this->select_col( "SELECT name
-		                             FROM contractpartners
-					    WHERE ID=$id
-					      AND userid=".USERID."
-					    LIMIT 1" );
+		return $this->select_col( "	SELECT name
+						  FROM contractpartners
+						 WHERE contractpartnerid = $id
+						   AND mur_userid        = ".USERID."
+						 LIMIT 1" );
 	}
 
 
 	function delete_contractpartner( $id ) {
-		$coreMoneyFlows=new coreMoneyFlows();
+		$coreMoneyFlows = new coreMoneyFlows();
 		if( $coreMoneyFlows->contractpartner_in_use( $id ) ) {
 			add_error( 6 );
 			return 0;
 		} else {
-			return $this->delete_row( "DELETE FROM contractpartners
-			                            WHERE id=$id
-						      AND userid=".USERID."
-						    LIMIT 1" );
+			return $this->delete_row( "	DELETE FROM contractpartners
+							 WHERE contractpartnerid = $id
+							   AND mur_userid        = ".USERID."
+							 LIMIT 1" );
 		}
 		exit;
 	}
 
 
 	function update_contractpartner( $id, $name, $street, $postcode, $town, $country ) {
-		return $this->update_row( "UPDATE contractpartners
-		                              SET name='$name'
-					         ,street='$street'
-						 ,postcode='$postcode'
-						 ,town='$town'
-						 ,country='$country'
-					    WHERE id=$id
-					      AND userid=".USERID."
-					    LIMIT 1" );
+		return $this->update_row( "	UPDATE contractpartners
+						   SET name     = '$name'
+						      ,street   = '$street'
+						      ,postcode = '$postcode'
+						      ,town     = '$town'
+						      ,country  = '$country'
+						 WHERE contractpartnerid = $id
+						   AND mur_userid	= ".USERID."
+						 LIMIT 1" );
 	}
 
 	function add_contractpartner( $name, $street, $postcode, $town, $country ) {
-		return $this->insert_row( "INSERT INTO contractpartners
-		                                 (userid
-						 ,name
-						 ,street
-						 ,postcode
-						 ,town
-						 ,country
-						 )
-						  VALUES
-						 (".USERID."
-						 ,'$name'
-						 ,'$street'
-						 ,'$postcode'
-						 ,'$town'
-						 ,'$country'
-						 )" );
+		return $this->insert_row( "	INSERT INTO contractpartners
+						      (mur_userid
+						      ,name
+						      ,street
+						      ,postcode
+						      ,town
+						      ,country
+						      )
+						       VALUES
+						      (".USERID."
+						      ,'$name'
+						      ,'$street'
+						      ,'$postcode'
+						      ,'$town'
+						      ,'$country'
+						      )" );
 	}
 }

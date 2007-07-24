@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreUsers.php,v 1.6 2007/07/22 06:55:55 olivleh1 Exp $
+# $Id: coreUsers.php,v 1.7 2007/07/24 18:22:07 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -36,7 +36,10 @@ class coreUsers extends core {
 	}
 
 	function check_account( $name, $password ) {
-		if ( $id=$this->select_col( "SELECT id FROM users WHERE name='$name' AND password='".sha1( $password )."'" ) ) {
+		if ( $id=$this->select_col( "	SELECT userid
+						  FROM users
+						 WHERE name     = '$name'
+						   AND password = '".sha1( $password )."'" ) ) {
 			return $id;
 		} else {
 			return;
@@ -44,12 +47,16 @@ class coreUsers extends core {
 	}
 	
 	function set_password( $id, $password ) {
-		return $this->update_row( "UPDATE users SET password='".sha1( $password )."' WHERE id=$id" );
+		return $this->update_row( "	UPDATE users
+						   SET password = '".sha1( $password )."'
+						 WHERE userid = $id" );
 	}
 	
 
 	function check_login_permission( $id ) {
-		if( $this->select_col( "SELECT perm_login FROM users WHERE id=$id" ) == 1 ) {
+		if( $this->select_col( "	SELECT perm_login
+						  FROM users
+						 WHERE userid = $id" ) == 1 ) {
 			return true;
 		} else {
 			return false;
@@ -57,7 +64,9 @@ class coreUsers extends core {
 	}
 
 	function check_admin_permission( $id ) {
-		if( $this->select_col( "SELECT perm_admin FROM users WHERE id=$id" ) == 1 ) {
+		if( $this->select_col( "	SELECT perm_admin
+						  FROM users
+						 WHERE userid = $id" ) == 1 ) {
 			return true;
 		} else {
 			return false;
@@ -65,7 +74,9 @@ class coreUsers extends core {
 	}
 
 	function check_new_attribute( $id ) {
-		if( $this->select_col( "SELECT att_new FROM users WHERE id=$id" ) == 1 ) {
+		if( $this->select_col( "	SELECT att_new
+						  FROM users
+						 WHERE userid = $id" ) == 1 ) {
 			return true;
 		} else {
 			return false;
@@ -81,30 +92,76 @@ class coreUsers extends core {
 	}
 
 	function get_all_data() {
-		return $this->select_rows( 'SELECT id,name,perm_login,perm_admin,att_new FROM users WHERE id!=0 ORDER BY id' );
+		return $this->select_rows( '	SELECT userid
+						      ,name
+						      ,perm_login
+						      ,perm_admin
+						      ,att_new
+						  FROM users
+						 WHERE userid != 0
+						 ORDER BY userid' );
 	}
 
 	function get_id_data( $id ) {
-		return $this->select_row( "SELECT id,name,perm_login,perm_admin,att_new FROM users WHERE id=$id AND id!=0 LIMIT 1" );
+		return $this->select_row( "	SELECT userid
+						      ,name
+						      ,perm_login
+						      ,perm_admin
+						      ,att_new
+						  FROM users
+						 WHERE userid  = $id
+						   AND userid != 0
+						 LIMIT 1" );
 	}
 
 	function get_all_index_letters() {
-		return $this->select_cols( 'SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters FROM users WHERE id!=0 ORDER BY letters' );
+		return $this->select_cols( '	SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters
+						  FROM users
+						 WHERE userid != 0
+						 ORDER BY letters' );
 	}
 
 	function get_all_matched_data( $letter ) {
-		return $this->select_rows( "SELECT id,name,perm_login,perm_admin,att_new FROM users WHERE UPPER(name) LIKE UPPER('$letter%') AND id!=0 ORDER BY name" );
+		return $this->select_rows( "	SELECT userid
+						      ,name
+						      ,perm_login
+						      ,perm_admin
+						      ,att_new
+						  FROM users
+						 WHERE UPPER(name) LIKE UPPER('$letter%')
+						   AND userid	!= 0
+						 ORDER BY name" );
 	}
 
 	function delete_user( $id ) {
-		return $this->delete_row( "DELETE FROM users WHERE id=$id LIMIT 1" );
+		return $this->delete_row( "	DELETE FROM users
+						 WHERE userid = $id
+						 LIMIT 1" );
 	}
 
 	function add_user( $name, $password, $perm_login, $perm_admin, $att_new ) {
-		return $this->insert_row( "INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('$name','".sha1( $password )."',$perm_login,$perm_admin,$att_new);" );
+		return $this->insert_row( "	INSERT INTO users 
+						      (name
+						      ,password
+						      ,perm_login
+						      ,perm_admin
+						      ,att_new
+						      )
+						       VALUES
+						      ('$name'
+						      ,'".sha1( $password )."'
+						      ,$perm_login
+						      ,$perm_admin
+						      ,$att_new
+						      );" );
 	}
 
 	function update_user( $id, $name, $perm_login, $perm_admin, $att_new ) {
-		return $this->update_row( "UPDATE users SET name='$name',perm_login=$perm_login,perm_admin=$perm_admin,att_new=$att_new WHERE id=$id;" );
+		return $this->update_row( "	UPDATE users
+						   SET name       = '$name'
+						      ,perm_login = $perm_login
+						      ,perm_admin = $perm_admin
+						      ,att_new    = $att_new
+						 WHERE userid = $id;" );
 	}
 }

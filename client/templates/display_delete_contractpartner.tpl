@@ -9,10 +9,10 @@
 		{/section}
 		<u>{$TEXT_47}</u><br /><br />
 		<form action="{$ENV_INDEX_PHP}" method="POST">
-			<input type="hidden" name="action"  value="delete_contractpartner">
-			<input type="hidden" name="realaction" value="yes">
-			<input type="hidden" name="id"      value="{$ALL_DATA.id}">
-			<input type="hidden" name="REFERER" value="{$ENV_REFERER}">
+			<input type="hidden" name="action"            value="delete_contractpartner">
+			<input type="hidden" name="realaction"        value="yes">
+			<input type="hidden" name="contractpartnerid" value="{$ALL_DATA.contractpartnerid}">
+			<input type="hidden" name="REFERER"           value="{$ENV_REFERER}">
 			<table border=0 width=600>
 				<tr>
 					<th width="150">{$TEXT_41}</th>

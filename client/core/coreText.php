@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreText.php,v 1.3 2007/04/10 11:39:39 olivleh1 Exp $
+# $Id: coreText.php,v 1.4 2007/07/24 18:22:07 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -36,7 +36,12 @@ class coreText extends core {
 	}
 
 	function get_text( $id, $type ) {
-		return $this->select_col( "SELECT text FROM vw_text WHERE id=$id AND type='$type' AND userid=".USERID." LIMIT 1" );
+		return $this->select_col( "	SELECT text
+						  FROM vw_text
+						 WHERE textid     = $id
+						   AND type       = '$type'
+						   AND mur_userid = ".USERID."
+					 	 LIMIT 1" );
 	}
 	
 	function get_month( $id ) {

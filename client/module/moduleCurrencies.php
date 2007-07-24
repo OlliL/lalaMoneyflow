@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCurrencies.php,v 1.3 2007/07/22 16:32:06 olivleh1 Exp $
+# $Id: moduleCurrencies.php,v 1.4 2007/07/24 18:22:08 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -81,7 +81,7 @@ class moduleCurrencies extends module {
 					if( !is_array($all_data) ) {
 						$all_data=$this->coreCurrencies->get_id_data( $id );
 					} else {
-						$all_data['id'] = $id;
+						$all_data['currencyid'] = $id;
 					}				
 				} else {
 					$all_data['att_default']=0;

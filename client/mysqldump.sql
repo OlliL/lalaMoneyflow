@@ -21,13 +21,13 @@
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE users (
-  id int(10) unsigned NOT NULL auto_increment,
+  userid int(10) unsigned NOT NULL auto_increment,
   `name` varchar(20) NOT NULL,
   `password` varchar(40) NOT NULL,
   att_new tinyint(1) unsigned NOT NULL,
   perm_login tinyint(1) unsigned NOT NULL,
   perm_admin tinyint(1) unsigned NOT NULL,
-  PRIMARY KEY  (id),
+  PRIMARY KEY  (userid),
   UNIQUE KEY mur_i_01 (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mur';
 
@@ -37,12 +37,12 @@ CREATE TABLE users (
 
 DROP TABLE IF EXISTS settings;
 CREATE TABLE settings (
-  userid int(10) unsigned NOT NULL,
+  mur_userid int(10) unsigned NOT NULL,
   `name` varchar(50) NOT NULL default '',
   `value` varchar(50) default NULL,
-  PRIMARY KEY  (`name`,userid),
-  KEY mse_mur_pk (userid),
-  CONSTRAINT mse_mur_pk FOREIGN KEY (userid) REFERENCES users (id) ON UPDATE CASCADE
+  PRIMARY KEY  (`name`,mur_userid),
+  KEY mse_mur_pk (mur_userid),
+  CONSTRAINT mse_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mse';
 
 --
@@ -51,7 +51,7 @@ CREATE TABLE settings (
 
 DROP TABLE IF EXISTS capitalsources;
 CREATE TABLE capitalsources (
-  userid int(10) unsigned NOT NULL,
+  mur_userid int(10) unsigned NOT NULL,
   capitalsourceid int(10) unsigned NOT NULL auto_increment,
   `type` enum('current asset','long-term asset') NOT NULL default 'current asset',
   state enum('non cash','cash') NOT NULL default 'non cash',
@@ -60,9 +60,9 @@ CREATE TABLE capitalsources (
   `comment` varchar(255) default NULL,
   validtil date NOT NULL default '2999-12-31',
   validfrom date NOT NULL default '1970-01-01',
-  PRIMARY KEY  (capitalsourceid,userid),
-  KEY mcs_i_01 (userid),
-  CONSTRAINT mcs_mur_pk FOREIGN KEY (userid) REFERENCES users (id) ON UPDATE CASCADE
+  PRIMARY KEY  (capitalsourceid,mur_userid),
+  KEY mcs_i_01 (mur_userid),
+  CONSTRAINT mcs_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcs';
 
 --
@@ -71,16 +71,16 @@ CREATE TABLE capitalsources (
 
 DROP TABLE IF EXISTS contractpartners;
 CREATE TABLE contractpartners (
-  userid int(10) unsigned NOT NULL,
-  id int(10) unsigned NOT NULL auto_increment,
+  mur_userid int(10) unsigned NOT NULL,
+  contractpartnerid int(10) unsigned NOT NULL auto_increment,
   `name` varchar(100) NOT NULL default '',
   street varchar(100) NOT NULL default '',
   postcode int(12) NOT NULL default '0',
   town varchar(100) NOT NULL default '',
   country varchar(100) NOT NULL default '',
-  PRIMARY KEY  (id,userid),
-  UNIQUE KEY mcp_i_01 (userid,`name`),
-  CONSTRAINT mcp_mur_pk FOREIGN KEY (userid) REFERENCES users (id) ON UPDATE CASCADE
+  PRIMARY KEY  (contractpartnerid,mur_userid),
+  UNIQUE KEY mcp_i_01 (mur_userid,`name`),
+  CONSTRAINT mcp_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcp';
 
 --
@@ -89,10 +89,10 @@ CREATE TABLE contractpartners (
 
 DROP TABLE IF EXISTS currencies;
 CREATE TABLE currencies (
-  id int(10) unsigned NOT NULL auto_increment,
+  currencyid int(10) unsigned NOT NULL auto_increment,
   currency varchar(20) NOT NULL,
   att_default tinyint(1) NOT NULL default '0',
-  PRIMARY KEY  (id),
+  PRIMARY KEY  (currencyid),
   UNIQUE KEY mcu_i_01 (currency)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcu';
 
@@ -102,13 +102,13 @@ CREATE TABLE currencies (
 
 DROP TABLE IF EXISTS currencyrates;
 CREATE TABLE currencyrates (
-  currencyid int(10) unsigned NOT NULL,
+  mcu_currencyid int(10) unsigned NOT NULL,
   rate float(11,5) NOT NULL,
   validfrom date NOT NULL,
   validtil date NOT NULL,
-  PRIMARY KEY  (currencyid,validfrom),
-  KEY mcr_mcu_pk (currencyid),
-  CONSTRAINT mcr_mcu_pk FOREIGN KEY (currencyid) REFERENCES currencies (id) ON UPDATE CASCADE
+  PRIMARY KEY  (mcu_currencyid,validfrom),
+  KEY mcr_mcu_pk (mcu_currencyid),
+  CONSTRAINT mcr_mcu_pk FOREIGN KEY (mcu_currencyid) REFERENCES currencies (currencyid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcr';
 
 --
@@ -117,21 +117,21 @@ CREATE TABLE currencyrates (
 
 DROP TABLE IF EXISTS moneyflows;
 CREATE TABLE moneyflows (
-  userid int(10) unsigned NOT NULL,
-  id int(10) unsigned NOT NULL auto_increment,
+  mur_userid int(10) unsigned NOT NULL,
+  moneyflowid int(10) unsigned NOT NULL auto_increment,
   bookingdate date NOT NULL default '0000-00-00',
   invoicedate date NOT NULL default '0000-00-00',
   amount float(8,2) NOT NULL default '0.00',
-  capitalsourceid int(10) unsigned NOT NULL,
-  contractpartnerid int(10) unsigned NOT NULL default '0',
+  mcs_capitalsourceid int(10) unsigned NOT NULL,
+  mcp_contractpartnerid int(10) unsigned NOT NULL default '0',
   `comment` varchar(100) NOT NULL default '',
-  PRIMARY KEY  (id,userid),
-  KEY mmf_mcp_pk (contractpartnerid,userid),
-  KEY mmf_i_01 (userid,bookingdate),
-  KEY mmf_mcs_pk (capitalsourceid,userid),
-  CONSTRAINT mmf_mcp_pk FOREIGN KEY (contractpartnerid, userid) REFERENCES contractpartners (id, userid) ON UPDATE CASCADE,
-  CONSTRAINT mmf_mcs_pk FOREIGN KEY (capitalsourceid, userid) REFERENCES capitalsources (capitalsourceid, userid) ON UPDATE CASCADE,
-  CONSTRAINT mmf_mur_pk FOREIGN KEY (userid) REFERENCES users (id) ON UPDATE CASCADE
+  PRIMARY KEY  (moneyflowid,mur_userid),
+  KEY mmf_mcp_pk (mcp_contractpartnerid,mur_userid),
+  KEY mmf_i_01 (mur_userid,bookingdate),
+  KEY mmf_mcs_pk (mcs_capitalsourceid,mur_userid),
+  CONSTRAINT mmf_mcp_pk FOREIGN KEY (mcp_contractpartnerid, mur_userid) REFERENCES contractpartners (contractpartnerid, mur_userid) ON UPDATE CASCADE,
+  CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
+  CONSTRAINT mmf_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mmf';
 
 --
@@ -140,17 +140,17 @@ CREATE TABLE moneyflows (
 
 DROP TABLE IF EXISTS monthlysettlements;
 CREATE TABLE monthlysettlements (
-  userid int(10) unsigned NOT NULL,
-  id int(10) NOT NULL auto_increment,
-  capitalsourceid int(10) unsigned NOT NULL,
+  mur_userid int(10) unsigned NOT NULL,
+  monthlysettlementid int(10) NOT NULL auto_increment,
+  mcs_capitalsourceid int(10) unsigned NOT NULL,
   `month` tinyint(4) NOT NULL default '0',
   `year` year(4) NOT NULL default '0000',
   amount float(8,2) NOT NULL default '0.00',
-  PRIMARY KEY  (id,userid),
-  UNIQUE KEY mms_i_01 (userid,`month`,`year`,capitalsourceid),
-  KEY mms_mcs_pk (capitalsourceid,userid),
-  CONSTRAINT mms_mcs_pk FOREIGN KEY (capitalsourceid, userid) REFERENCES capitalsources (capitalsourceid, userid) ON UPDATE CASCADE,
-  CONSTRAINT mms_mur_pk FOREIGN KEY (userid) REFERENCES users (id) ON UPDATE CASCADE
+  PRIMARY KEY  (monthlysettlementid,mur_userid),
+  UNIQUE KEY mms_i_01 (mur_userid,`month`,`year`,mcs_capitalsourceid),
+  KEY mms_mcs_pk (mcs_capitalsourceid,mur_userid),
+  CONSTRAINT mms_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
+  CONSTRAINT mms_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mms';
 
 --
@@ -159,20 +159,20 @@ CREATE TABLE monthlysettlements (
 
 DROP TABLE IF EXISTS predefmoneyflows;
 CREATE TABLE predefmoneyflows (
-  userid int(10) unsigned NOT NULL,
-  id int(10) unsigned NOT NULL auto_increment,
+  mur_userid int(10) unsigned NOT NULL,
+  predefmoneyflowid int(10) unsigned NOT NULL auto_increment,
   amount float(8,2) NOT NULL default '0.00',
-  capitalsourceid int(10) unsigned NOT NULL,
-  contractpartnerid int(10) unsigned NOT NULL default '0',
+  mcs_capitalsourceid int(10) unsigned NOT NULL,
+  mcp_contractpartnerid int(10) unsigned NOT NULL default '0',
   `comment` varchar(100) NOT NULL default '',
   createdate date NOT NULL,
-  PRIMARY KEY  (id,userid),
-  KEY mpm_mur_pk (userid),
-  KEY mpm_mcp_pk (contractpartnerid,userid),
-  KEY mpm_mcs_pk (capitalsourceid,userid),
-  CONSTRAINT mpm_mcp_pk FOREIGN KEY (contractpartnerid, userid) REFERENCES contractpartners (id, userid) ON UPDATE CASCADE,
-  CONSTRAINT mpm_mcs_pk FOREIGN KEY (capitalsourceid, userid) REFERENCES capitalsources (capitalsourceid, userid) ON UPDATE CASCADE,
-  CONSTRAINT mpm_mur_pk FOREIGN KEY (userid) REFERENCES users (id) ON UPDATE CASCADE
+  PRIMARY KEY  (predefmoneyflowid,mur_userid),
+  KEY mpm_mur_pk (mur_userid),
+  KEY mpm_mcp_pk (mcp_contractpartnerid,mur_userid),
+  KEY mpm_mcs_pk (mcs_capitalsourceid,mur_userid),
+  CONSTRAINT mpm_mcp_pk FOREIGN KEY (mcp_contractpartnerid, mur_userid) REFERENCES contractpartners (contractpartnerid, mur_userid) ON UPDATE CASCADE,
+  CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
+  CONSTRAINT mpm_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mpm';
 
 --
@@ -181,9 +181,9 @@ CREATE TABLE predefmoneyflows (
 
 DROP TABLE IF EXISTS languages;
 CREATE TABLE languages (
-  id int(10) unsigned NOT NULL auto_increment,
+  languageid int(10) unsigned NOT NULL auto_increment,
   `language` varchar(10) NOT NULL,
-  PRIMARY KEY  (id),
+  PRIMARY KEY  (languageid),
   UNIQUE KEY mla_i_01 (`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mla';
 
@@ -194,10 +194,10 @@ CREATE TABLE languages (
 DROP TABLE IF EXISTS templates;
 CREATE TABLE templates (
   `name` varchar(50) NOT NULL,
-  textid int(10) unsigned NOT NULL,
-  PRIMARY KEY  (`name`,textid),
-  KEY mtm_mtx_pk (textid),
-  CONSTRAINT mtm_mtx_pk FOREIGN KEY (textid) REFERENCES `text` (id) ON UPDATE CASCADE
+  mtx_textid int(10) unsigned NOT NULL,
+  PRIMARY KEY  (`name`,mtx_textid),
+  KEY mtm_mtx_pk (mtx_textid),
+  CONSTRAINT mtm_mtx_pk FOREIGN KEY (mtx_textid) REFERENCES `text` (textid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mtm';
 
 --
@@ -206,13 +206,13 @@ CREATE TABLE templates (
 
 DROP TABLE IF EXISTS text;
 CREATE TABLE `text` (
-  id int(10) unsigned NOT NULL,
-  languageid int(10) unsigned NOT NULL,
+  textid int(10) unsigned NOT NULL,
+  mla_languageid int(10) unsigned NOT NULL,
   `text` varchar(255) NOT NULL,
   `type` enum('t','m','e','g') NOT NULL,
-  PRIMARY KEY  (id,languageid,`type`),
-  KEY mte_mla_pk (languageid),
-  CONSTRAINT mte_mla_pk FOREIGN KEY (languageid) REFERENCES languages (id) ON UPDATE CASCADE
+  PRIMARY KEY  (textid,mla_languageid,`type`),
+  KEY mte_mla_pk (mla_languageid),
+  CONSTRAINT mte_mla_pk FOREIGN KEY (mla_languageid) REFERENCES languages (languageid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mtx';
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -224,7 +224,7 @@ CREATE TABLE `text` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-07-22 20:04:04
+-- Dump completed on 2007-07-24 18:17:06
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -356,17 +356,17 @@ INSERT INTO text VALUES (22,1,'You must specifiy a password!','e');
 INSERT INTO text VALUES (22,2,'Speichern','t');
 INSERT INTO text VALUES (22,2,'Sie müssen ein Passwort angeben!','e');
 INSERT INTO text VALUES (23,1,'cancel','t');
-INSERT INTO text VALUES (23,1,'No search criteria specified','e');
+INSERT INTO text VALUES (23,1,'No search criteria specified!','e');
 INSERT INTO text VALUES (23,2,'Abbrechen','t');
-INSERT INTO text VALUES (23,2,'Keine Suchkriterien angegeben','e');
+INSERT INTO text VALUES (23,2,'Keine Suchkriterien angegeben!','e');
 INSERT INTO text VALUES (24,1,'delete flow of money','t');
 INSERT INTO text VALUES (24,1,'At least one grouping criteria has to be specified!','e');
 INSERT INTO text VALUES (24,2,'Geldbewegung löschen','t');
 INSERT INTO text VALUES (24,2,'Mindestens ein Gruppierungskriterium muss angegeben werden!','e');
 INSERT INTO text VALUES (25,1,'yes','t');
-INSERT INTO text VALUES (25,1,'No matching data found','e');
+INSERT INTO text VALUES (25,1,'No matching data found!','e');
 INSERT INTO text VALUES (25,2,'Ja','t');
-INSERT INTO text VALUES (25,2,'Keine passenden Daten gefunden','e');
+INSERT INTO text VALUES (25,2,'Keine passenden Daten gefunden!','e');
 INSERT INTO text VALUES (26,1,'no','t');
 INSERT INTO text VALUES (26,1,'At least one currency must be the default currency!','e');
 INSERT INTO text VALUES (26,2,'Nein','t');
@@ -374,17 +374,27 @@ INSERT INTO text VALUES (26,2,'Mindestens eine Währung muss vom Typ Standardwähr
 INSERT INTO text VALUES (27,1,'Do you really want to delete this moneyflow?','t');
 INSERT INTO text VALUES (27,1,'You cannot delete the default currency!','e');
 INSERT INTO text VALUES (27,2,'Wollen sie diese Geldbewegung wirklich löschen?','t');
-INSERT INTO text VALUES (27,2,'Die Standardwaährung kann nicht gelöscht werden!','e');
+INSERT INTO text VALUES (27,2,'Die Standardwährung kann nicht gelöscht werden!','e');
 INSERT INTO text VALUES (28,1,'all','t');
+INSERT INTO text VALUES (28,1,'There exists already a currency rate with the same startingdate!','e');
 INSERT INTO text VALUES (28,2,'Alle','t');
+INSERT INTO text VALUES (28,2,'Es existiert bereits ein Währungsfaktor mit dem selben Startdatum!','e');
 INSERT INTO text VALUES (29,1,'add','t');
+INSERT INTO text VALUES (29,1,'The dateformat is not correct please use YYYY-MM-DD!','e');
 INSERT INTO text VALUES (29,2,'Hinzufügen','t');
+INSERT INTO text VALUES (29,2,'Das Datumsformat ist nicht korrekt bitte benutzen Sie JJJJ-MM-TT!','e');
 INSERT INTO text VALUES (30,1,'type','t');
+INSERT INTO text VALUES (30,1,'A currency rate must not start in the past!','e');
 INSERT INTO text VALUES (30,2,'Typ','t');
+INSERT INTO text VALUES (30,2,'Ein Währungsfaktor darf nicht in der Vergangenheit starten!','e');
 INSERT INTO text VALUES (31,1,'state','t');
+INSERT INTO text VALUES (31,1,'Rate must not be empty!','e');
 INSERT INTO text VALUES (31,2,'Status','t');
+INSERT INTO text VALUES (31,2,'Der Faktor darf nicht leer sein!','e');
 INSERT INTO text VALUES (32,1,'account number','t');
+INSERT INTO text VALUES (32,1,'Rate must be a number!','e');
 INSERT INTO text VALUES (32,2,'Kontonummer','t');
+INSERT INTO text VALUES (32,2,'Der Faktor muß eine Zahl sein!','e');
 INSERT INTO text VALUES (33,1,'bankcode','t');
 INSERT INTO text VALUES (33,2,'Bankleitzahl','t');
 INSERT INTO text VALUES (34,1,'valid from','t');
@@ -527,9 +537,9 @@ INSERT INTO text VALUES (102,1,'Do you really want to delete this user?','t');
 INSERT INTO text VALUES (102,2,'Wollen sie diesen Benutzer wirklich löschen? ','t');
 INSERT INTO text VALUES (103,1,'2nd grouping criteria','t');
 INSERT INTO text VALUES (103,2,'2. Gruppierungskriterium','t');
-INSERT INTO text VALUES (104,1,'Sort by','t');
+INSERT INTO text VALUES (104,1,'sort by','t');
 INSERT INTO text VALUES (104,2,'Sortieren nach','t');
-INSERT INTO text VALUES (105,1,'Grouping','t');
+INSERT INTO text VALUES (105,1,'grouping','t');
 INSERT INTO text VALUES (105,2,'Gruppierung','t');
 INSERT INTO text VALUES (106,1,'currencies','t');
 INSERT INTO text VALUES (106,2,'Währungen','t');
@@ -539,21 +549,21 @@ INSERT INTO text VALUES (108,1,'rate','t');
 INSERT INTO text VALUES (108,2,'Faktor','t');
 INSERT INTO text VALUES (109,1,'default currency','t');
 INSERT INTO text VALUES (109,2,'Standardwährung','t');
-INSERT INTO text VALUES (110,1,'Currency Rates','t');
+INSERT INTO text VALUES (110,1,'currency rates','t');
 INSERT INTO text VALUES (110,2,'Währungsfaktoren','t');
-INSERT INTO text VALUES (111,1,'edit Currency Rate','t');
+INSERT INTO text VALUES (111,1,'edit currency rate','t');
 INSERT INTO text VALUES (111,2,'Währungsfaktor editieren','t');
-INSERT INTO text VALUES (112,1,'add Currency Rate','t');
+INSERT INTO text VALUES (112,1,'add currency rate','t');
 INSERT INTO text VALUES (112,2,'Währungsfaktor hinzufügen','t');
-INSERT INTO text VALUES (113,1,'Delete Currency Rate','t');
+INSERT INTO text VALUES (113,1,'delete currency rate','t');
 INSERT INTO text VALUES (113,2,'Währungsfaktor löschen','t');
 INSERT INTO text VALUES (114,1,'Do you really like to delete this Currency Rate?','t');
 INSERT INTO text VALUES (114,2,'Wollen Sie wirklich diesen Währungsfaktor löschen?','t');
-INSERT INTO text VALUES (115,1,'Add Currency','t');
+INSERT INTO text VALUES (115,1,'add currency','t');
 INSERT INTO text VALUES (115,2,'Währung hinzufügen','t');
-INSERT INTO text VALUES (116,1,'Edit Currency','t');
+INSERT INTO text VALUES (116,1,'edit currency','t');
 INSERT INTO text VALUES (116,2,'Währung bearbeiten','t');
-INSERT INTO text VALUES (117,1,'Delete Currency','t');
+INSERT INTO text VALUES (117,1,'delete currency','t');
 INSERT INTO text VALUES (117,2,'Währung löschen','t');
 INSERT INTO text VALUES (118,1,'Do you really want to delete this Currency?','t');
 INSERT INTO text VALUES (118,2,'Wollen Sie wirklich diese Währung löschen?','t');

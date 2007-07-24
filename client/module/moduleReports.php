@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.27 2007/07/22 10:59:17 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.28 2007/07/24 18:22:09 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -104,7 +104,7 @@ class moduleReports extends module {
 			$fixamount=0;
 			$calcamount=0;
 			foreach( $all_capitalsources_ids as $capitalsources_id ) {
-				$summary_data[$i]['id']=$capitalsources_id;
+				$summary_data[$i]['capitalsourceid']=$capitalsources_id;
 				$summary_data[$i]['comment']=$this->coreCapitalSources->get_comment( $capitalsources_id );
 				$summary_data[$i]['type']=$this->coreCapitalSources->get_type( $capitalsources_id );
 				$summary_data[$i]['state']=$this->coreCapitalSources->get_state( $capitalsources_id );
@@ -156,7 +156,7 @@ class moduleReports extends module {
 		$years=$this->coreMonthlySettlement->get_all_years();
 		$this->template->assign( 'ALL_YEARS',      $years  );
 
-		if( is_array( $all_data ) && isset($all_data[capitalsourceid]) ) {
+		if( is_array( $all_data ) && isset($all_data['mcs_capitalsourceid']) ) {
 			$this->template->assign( 'PLOT_GRAPH',       1  );
 		} else {
 			$all_data['endyear']  = $years[count($years)-1];

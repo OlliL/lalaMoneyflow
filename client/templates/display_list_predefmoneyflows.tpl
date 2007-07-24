@@ -24,8 +24,8 @@
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].contractpartner_name}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].comment}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].capitalsource_comment}</td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_predefmoneyflow&id={$ALL_DATA[DATA].id}&sr=1','_blank','width=800,height=80')">{$TEXT_36}</a></td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_predefmoneyflow&id={$ALL_DATA[DATA].id}&sr=1','_blank','width=800,height=80')">{$TEXT_37}</a></td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_predefmoneyflow&predefmoneyflowid={$ALL_DATA[DATA].predefmoneyflowid}&sr=1','_blank','width=800,height=80')">{$TEXT_36}</a></td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_predefmoneyflow&predefmoneyflowid={$ALL_DATA[DATA].predefmoneyflowid}&sr=1','_blank','width=800,height=80')">{$TEXT_37}</a></td>
 						</tr>
 					{/section}
 				</table>
