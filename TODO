@@ -1,5 +1,3 @@
-- do not allow the admin features when the user is no admin
-
 - capitalsources ENUMs localizable (probably via 'text' and different types)
 
 - admin tool

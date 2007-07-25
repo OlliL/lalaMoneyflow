@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.34 2007/07/25 11:53:46 olivleh1 Exp $
+# $Id: index.php,v 1.35 2007/07/25 12:03:37 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -102,34 +102,34 @@ if( $is_logged_in == 2 ) {
 if( $is_logged_in == 0 ) {
 
 	switch( $action ) {
-		case'list_capitalsources':	
-		case'edit_capitalsource':	
+		case'list_capitalsources':
+		case'edit_capitalsource':
 		case'delete_capitalsource':	$moduleCapitalSources		= new moduleCapitalSources();
 						break;
-		case'list_contractpartners':	
-		case'edit_contractpartner':	
+		case'list_contractpartners':
+		case'edit_contractpartner':
 		case'delete_contractpartner':	$moduleContractPartners		= new moduleContractPartners();
 						break;
-		case'list_predefmoneyflows':	
-		case'edit_predefmoneyflow':	
+		case'list_predefmoneyflows':
+		case'edit_predefmoneyflow':
 		case'delete_predefmoneyflow':	$modulePreDefMoneyFlows		= new modulePreDefMoneyFlows();
 						break;
-		case'add_moneyflow':		
-		case'edit_moneyflow':		
+		case'add_moneyflow':
+		case'edit_moneyflow':
 		case'delete_moneyflow':		$moduleMoneyFlows		= new moduleMoneyFlows();
 						break;
-		case'list_monthlysettlements':	
-		case'edit_monthlysettlement':	
+		case'list_monthlysettlements':
+		case'edit_monthlysettlement':
 		case'delete_monthlysettlement':	$moduleMonthlySettlement	= new moduleMonthlySettlement();
 						break;
-		case'list_reports':		
-		case'plot_trends':		
+		case'list_reports':
+		case'plot_trends':
 		case'plot_graph':		$moduleReports			= new moduleReports();
 						break;
-		case'search':			
+		case'search':
 		case'do_search':		$moduleSearch			= new moduleSearch();
 						break;
-		case'personal_settings':	
+		case'personal_settings':
 		case'system_settings':		break;
 		case'list_currencies':
 		case'edit_currency':
@@ -138,67 +138,120 @@ if( $is_logged_in == 0 ) {
 		case'list_currencyrates':
 		case'edit_currencyrate':	$moduleCurrencyRates		= new moduleCurrencyRates();
 						break;
-		case'list_users':		
+		case'list_users':
 		case'edit_user':
-		case'delete_user':		break;	
+		case'delete_user':		break;
 		default:			$moduleFrontPage		= new moduleFrontPage();
 						break;
 	}
-	
+
+	if( $moduleUser->is_admin() ) {
+		switch( $action ) {
+			case 'system_settings':		$realaction=		$_REQUEST['realaction'];
+							$language=      	$_REQUEST['language'];
+							$currency=      	$_REQUEST['currency'];
+							$display=$moduleSettings->display_system_settings( $realaction, $language, $currency );
+							break;
+
+			/* currencies */
+
+			case 'list_currencies':		$letter=		$_REQUEST['letter'];
+							$display=$moduleCurrencies->display_list_currencies( $letter );
+							break;
+			case 'edit_currency':		$realaction=		$_REQUEST['realaction'];
+							$id=			$_REQUEST['currencyid'];
+							$all_data=		$_REQUEST['all_data'];
+							$display=$moduleCurrencies->display_edit_currency( $realaction, $id, $all_data );
+							break;
+			case 'delete_currency':		$realaction=		$_REQUEST['realaction'];
+							$id=			$_REQUEST['currencyid'];
+							$display=$moduleCurrencies->display_delete_currency( $realaction, $id );
+							break;
+
+			/* currencyrates */
+
+			case 'list_currencyrates':	$letter=		$_REQUEST['letter'];
+							$display=$moduleCurrencyRates->display_list_currencyrates( $letter );
+							break;
+			case 'edit_currencyrate':	$realaction=		$_REQUEST['realaction'];
+							$currencyid=		$_REQUEST['mcu_currencyid'];
+							$validfrom=		$_REQUEST['validfrom'];
+							$all_data=		$_REQUEST['all_data'];
+							$display=$moduleCurrencyRates->display_edit_currencyrate( $realaction, $currencyid, $validfrom, $all_data );
+							break;
+
+			/* users */
+
+			case 'list_users':		$letter=		$_REQUEST['letter'];
+							$display=$moduleUsers->display_list_users( $letter );
+							break;
+			case 'edit_user':		$realaction=		$_REQUEST['realaction'];
+							$id=			$_REQUEST['userid'];
+							$all_data=		$_REQUEST['all_data'];
+							$display=$moduleUsers->display_edit_user( $realaction, $id, $all_data );
+							break;
+			case 'delete_user':		$realaction=		$_REQUEST['realaction'];
+							$id=			$_REQUEST['userid'];
+							$force=			$_REQUEST['force'];
+							$display=$moduleUsers->display_delete_user( $realaction, $id, $force );
+							break;
+		}
+	}
+
 	switch( $action ) {
 		/* capitalsources */
-	
+
 		case 'list_capitalsources':	$letter=		$_REQUEST['letter'];
 						$display=$moduleCapitalSources->display_list_capitalsources( $letter );
 						break;
-	
+
 		case 'edit_capitalsource':	$realaction=		$_REQUEST['realaction'];
 						$capitalsourceid=	$_REQUEST['capitalsourceid'];
 						$all_data=		$_REQUEST['all_data'];
 						$display=$moduleCapitalSources->display_edit_capitalsource( $realaction, $capitalsourceid, $all_data );
 						break;
-	
+
 		case 'delete_capitalsource':	$realaction=		$_REQUEST['realaction'];
 						$capitalsourceid=	$_REQUEST['capitalsourceid'];
 						$display=$moduleCapitalSources->display_delete_capitalsource( $realaction, $capitalsourceid );
 						break;
-	
+
 		/* contractpartners */
-	
+
 		case 'list_contractpartners':	$letter=		$_REQUEST['letter'];
 						$display=$moduleContractPartners->display_list_contractpartners( $letter );
 						break;
-	
+
 		case 'edit_contractpartner':	$realaction=		$_REQUEST['realaction'];
 						$id=			$_REQUEST['contractpernerid'];
 						$all_data=		$_REQUEST['all_data'];
 						$display=$moduleContractPartners->display_edit_contractpartner( $realaction, $id, $all_data );
 						break;
-	
+
 		case 'delete_contractpartner':	$realaction=		$_REQUEST['realaction'];
 						$id=			$_REQUEST['contractpartnerid'];
 						$display=$moduleContractPartners->display_delete_contractpartner( $realaction, $id );
 						break;
-	
+
 		/* predefmoneyflows */
-	
+
 		case 'list_predefmoneyflows':	$letter=		$_REQUEST['letter'];
 						$display=$modulePreDefMoneyFlows->display_list_predefmoneyflows( $letter );
 						break;
-	
+
 		case 'edit_predefmoneyflow':	$realaction=		$_REQUEST['realaction'];
 						$id=			$_REQUEST['predefmoneyflowid'];
 						$all_data=		$_REQUEST['all_data'];
 						$display=$modulePreDefMoneyFlows->display_edit_predefmoneyflow( $realaction, $id, $all_data );
 						break;
-	
+
 		case 'delete_predefmoneyflow':	$realaction=		$_REQUEST['realaction'];
 						$id=			$_REQUEST['predefmoneyflowid'];
 						$display=$modulePreDefMoneyFlows->display_delete_predefmoneyflow( $realaction, $id );
 						break;
-	
+
 		/* moneyflows */
-	
+
 		case 'add_moneyflow':		$realaction=		$_REQUEST['realaction'];
 						$all_data=		$_REQUEST['all_data'];
 						$display=$moduleMoneyFlows->display_add_moneyflow( $realaction, $all_data );
@@ -208,15 +261,15 @@ if( $is_logged_in == 0 ) {
 						$all_data=		$_REQUEST['all_data'];
 						$display=$moduleMoneyFlows->display_edit_moneyflow( $realaction, $id, $all_data );
 						break;
-	
+
 		case 'delete_moneyflow':	$realaction=		$_REQUEST['realaction'];
 						$id=			$_REQUEST['moneyflowid'];
 						$display=$moduleMoneyFlows->display_delete_moneyflow( $realaction, $id );
 						break;
-	
-	
+
+
 		/* monthlysettlements */
-	
+
 		case 'list_monthlysettlements':	$month=			$_REQUEST['monthlysettlements_month'];
 						$year=			$_REQUEST['monthlysettlements_year'];
 						$display=$moduleMonthlySettlement->display_list_monthlysettlements( $month, $year );
@@ -232,9 +285,9 @@ if( $is_logged_in == 0 ) {
 						$realaction=		$_REQUEST['realaction'];
 						$display=$moduleMonthlySettlement->display_delete_monthlysettlement( $realaction, $month, $year );
 						break;
-	
+
 		/* reports */
-	
+
 		case 'list_reports':		$month=			$_REQUEST['reports_month'];
 						$year=			$_REQUEST['reports_year'];
 						$sortby=		$_REQUEST['reports_sortby'];
@@ -251,9 +304,9 @@ if( $is_logged_in == 0 ) {
 						$endyear=		$_REQUEST['endyear'];
 						$display = ( ENABLE_JPGRAPH ? $moduleReports->plot_graph( $id, $startmonth, $startyear, $endmonth, $endyear ) : '' );
 						break;
-	
+
 		/* search */
-	
+
 		case 'search':			$display=$moduleSearch->display_search();
 						break;
 		case 'do_search':		$searchstring=		$_REQUEST['searchstring'];
@@ -269,9 +322,9 @@ if( $is_logged_in == 0 ) {
 						$order=			$_REQUEST['order'];
 						$display=$moduleSearch->do_search( $searchstring, $contractpart, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus, $grouping1, $grouping2, $order );
 						break;
-		
+
 		/* settings */
-		
+
 		case 'personal_settings':	$realaction=		$_REQUEST['realaction'];
 						$language=      	$_REQUEST['language'];
 						$currency=      	$_REQUEST['currency'];
@@ -279,56 +332,7 @@ if( $is_logged_in == 0 ) {
 						$password2=     	$_REQUEST['password2'];
 						$display=$moduleSettings->display_personal_settings( $realaction, $language, $currency, $password1, $password2 );
 						break;
-		case 'system_settings':		$realaction=		$_REQUEST['realaction'];
-						$language=      	$_REQUEST['language'];
-						$currency=      	$_REQUEST['currency'];
-						$display=$moduleSettings->display_system_settings( $realaction, $language, $currency );
-						break;
-	
-		/* currencies */
-		
-		case 'list_currencies':		$letter=		$_REQUEST['letter'];
-						$display=$moduleCurrencies->display_list_currencies( $letter );
-						break;
-		case 'edit_currency':		$realaction=		$_REQUEST['realaction'];
-						$id=			$_REQUEST['currencyid'];
-						$all_data=		$_REQUEST['all_data'];
-						$display=$moduleCurrencies->display_edit_currency( $realaction, $id, $all_data );
-						break;
-		case 'delete_currency':		$realaction=		$_REQUEST['realaction'];
-						$id=			$_REQUEST['currencyid'];
-						$display=$moduleCurrencies->display_delete_currency( $realaction, $id );
-						break;
 
-	
-		/* currencyrates */
-		
-		case 'list_currencyrates':	$letter=		$_REQUEST['letter'];
-						$display=$moduleCurrencyRates->display_list_currencyrates( $letter );
-						break;
-		case 'edit_currencyrate':	$realaction=		$_REQUEST['realaction'];
-						$currencyid=		$_REQUEST['mcu_currencyid'];
-						$validfrom=		$_REQUEST['validfrom'];
-						$all_data=		$_REQUEST['all_data'];
-						$display=$moduleCurrencyRates->display_edit_currencyrate( $realaction, $currencyid, $validfrom, $all_data );
-						break;
-
-		/* users */
-		
-		case 'list_users':		$letter=		$_REQUEST['letter'];
-						$display=$moduleUsers->display_list_users( $letter );
-						break;
-		case 'edit_user':		$realaction=		$_REQUEST['realaction'];
-						$id=			$_REQUEST['userid'];
-						$all_data=		$_REQUEST['all_data'];
-						$display=$moduleUsers->display_edit_user( $realaction, $id, $all_data );
-						break;
-		case 'delete_user':		$realaction=		$_REQUEST['realaction'];
-						$id=			$_REQUEST['userid'];
-						$force=			$_REQUEST['force'];
-						$display=$moduleUsers->display_delete_user( $realaction, $id, $force );
-						break;
-	
 		default:			$display=$moduleFrontPage->display_main();
 						break;
 	}

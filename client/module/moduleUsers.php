@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleUsers.php,v 1.14 2007/07/25 11:53:47 olivleh1 Exp $
+# $Id: moduleUsers.php,v 1.15 2007/07/25 12:03:37 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -106,10 +106,11 @@ class moduleUsers extends module {
 	}
 
 
-	function display_list_users( $letter ) {
+	function is_admin() {
+		return $this->coreUsers->check_admin_permission( USERID );
+	}
 
-		if( !$this->coreUsers->check_admin_permission( USERID ) )
-			return;
+	function display_list_users( $letter ) {
 
 		$all_index_letters = $this->coreUsers->get_all_index_letters();
 		$num_users = $this->coreUsers->count_all_data();
@@ -135,9 +136,6 @@ class moduleUsers extends module {
 	}
 
 	function display_edit_user( $realaction, $id, $all_data ) {
-
-		if( !$this->coreUsers->check_admin_permission( USERID ) )
-			return;
 
 		switch( $realaction ) {
 			case 'save':
@@ -180,9 +178,6 @@ class moduleUsers extends module {
 	}
 
 	function display_delete_user( $realaction, $id, $force ) {
-
-		if( !$this->coreUsers->check_admin_permission( USERID ) )
-			return;
 
 		switch( $realaction ) {
 			case 'yes':
