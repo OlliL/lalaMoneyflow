@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.20 2007/07/25 16:03:38 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.21 2007/07/25 18:35:53 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -95,13 +95,28 @@ class moduleMonthlySettlement extends module {
 
 	function display_edit_monthlysettlement( $realaction, $month, $year, $all_data ) {
 
+
 		switch( $realaction ) {
 			case 'save':
-				$ret = true;
+				$ret    = true;
+				$exists = $this->coreMonthlySettlement->monthlysettlement_exists( $month, $year );
 				foreach( $all_data as $id => $value ) {
 				 	if( is_array( $value ) ) {
-						if( !$this->coreMonthlySettlement->set_amount( $value['mcs_capitalsourceid'], $month, $year, $value['amount'] ) )
-							$ret=false;
+						if( $value['new'] === "1" ) {
+							$new = 2;
+							if( $exists === false ) {
+								if( !$this->coreMonthlySettlement->insert_monthlysettlement( $value['mcs_capitalsourceid'], $month, $year, $value['amount'] ) )
+									$ret = false;
+							} elseif( $ret === true ) {
+								add_error( 36 );
+#								$month = 0;
+#								$year  = 0;
+								$ret   = false;
+							}
+						} else {
+							if( !$this->coreMonthlySettlement->update_monthlysettlement( $value['mcs_capitalsourceid'], $month, $year, $value['amount'] ) )
+								$ret=false;
+						}
 					}
 				}
 
@@ -121,21 +136,26 @@ class moduleMonthlySettlement extends module {
 					}
 					$new = 1;
 					$this->template->assign( 'NEW', 1 );
-				} elseif ( $all_data['new'] == 1 ) {
+				} elseif ( $new === 2 ) {
 					$this->template->assign( 'NEW', 1 );
 				}
 
 				if( $month > 0 && $year > 0 ) {
-					$all_ids  = $this->coreCapitalSources->get_valid_ids();
-					$all_data = array();
+					$all_ids      = $this->coreCapitalSources->get_valid_ids();
+					$all_data_new = array();
 					foreach( $all_ids as $id ) {
-						if( $new == 1 ) {
+						if( $new === 1 ) {
 							$amount = $this->coreMonthlySettlement->get_amount( $id, date( 'm', mktime( 0, 0, 0, $month-1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1, $year ) ) );;
 							$amount += round( $lastamount+$this->coreMoneyFlows->get_monthly_capitalsource_movement( $id, $month, $year ), 2 );
-						} else {
+						} elseif( $realaction !== 'save' ) {
 							$amount = $this->coreMonthlySettlement->get_amount( $id,$month, $year );
+						} elseif( !empty( $all_data[$id]['amount'] ) ) {
+							$amount = $all_data[$id]['amount'];
+						} else {
+							$amount = 0;
 						}
-						$all_data[]=array(
+
+						$all_data_new[] = array(
 							'id'      => $id,
 							'comment' => $this->coreCapitalSources->get_comment( $id ),
 							'amount'  => $amount
@@ -148,8 +168,8 @@ class moduleMonthlySettlement extends module {
 					);
 					$this->template->assign( 'MONTH',          $month             );
 					$this->template->assign( 'YEAR' ,          $year              );
-					$this->template->assign( 'ALL_DATA',       $all_data          );
-					$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
+					$this->template->assign( 'ALL_DATA',       $all_data_new          );
+					$this->template->assign( 'COUNT_ALL_DATA', count( $all_data_new ) );
 					$this->template->assign( 'ERRORS',         $this->get_errors() );
 				}
 				break;
@@ -166,7 +186,7 @@ class moduleMonthlySettlement extends module {
 
 		switch( $realaction ) {
 			case 'yes':
-				if( $this->coreMonthlySettlement->delete_amount( $month, $year ) ) {
+				if( $this->coreMonthlySettlement->delete_monthlysettlement( $month, $year ) ) {
 					$this->template->assign( 'ENV_REFERER', $this->index_php.'?action=list_monthlysettlements' );
 					$this->template->assign( 'CLOSE', 1 );
 					break;

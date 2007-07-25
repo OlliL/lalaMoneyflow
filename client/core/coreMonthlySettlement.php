@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMonthlySettlement.php,v 1.18 2007/07/25 16:03:37 olivleh1 Exp $
+# $Id: coreMonthlySettlement.php,v 1.19 2007/07/25 18:35:52 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -110,8 +110,8 @@ class coreMonthlySettlement extends core {
 	}
 
 
-	function delete_amount( $month, $year ) {
-		$this->insert_row( "     DELETE FROM monthlysettlements
+	function delete_monthlysettlement( $month, $year ) {
+		$this->delete_row( "     DELETE FROM monthlysettlements
 					  WHERE month      = $month
 					    AND year       = $year
 					    AND mur_userid = ".USERID );
@@ -119,7 +119,20 @@ class coreMonthlySettlement extends core {
 	}
 
 
-	function set_amount( $sourceid, $month, $year, $amount ) {
+	function update_monthlysettlement( $sourceid, $month, $year, $amount ) {
+		$date = $this->make_date( $year."-".$month."-01" );
+		if( fix_amount( $amount ) ) {
+			return $this->update_row("	UPDATE monthlysettlements
+							   SET amount = calc_amount($amount,'IN',".USERID.",LAST_DAY($date))
+							 WHERE month               = $month
+							   AND year                = $year
+							   AND mcs_capitalsourceid = $sourceid");
+		} else {
+			return false;
+		}
+	}
+	
+	function insert_monthlysettlement( $sourceid, $month, $year, $amount ) {
 		$date = $this->make_date( $year."-".$month."-01" );
 		if( fix_amount( $amount ) ) {
 			return $this->insert_row( "	INSERT INTO monthlysettlements
@@ -135,8 +148,7 @@ class coreMonthlySettlement extends core {
 							      ,$month
 							      ,$year
 							      ,calc_amount($amount,'IN',".USERID.",LAST_DAY($date))
-							      )
-							    ON DUPLICATE KEY UPDATE amount = VALUES(amount)" );
+							      )" );
 		} else {
 			return false;
 		}

@@ -4,10 +4,10 @@
 {$HEADER}
 
 		<td align="center">
-		<h1>{$TEXT_53} {$MONTH.name} {$YEAR}</h1>
+		<h1>{$TEXT_53} {if $NEW != 1 }{$MONTH.name} {$YEAR}{/if}</h1>
 		{section name=ERROR loop=$ERRORS}
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
-		{/section}
+		{/section}<br />
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action" value="edit_monthlysettlement">
 			<input type="hidden" name="realaction" value="">
@@ -15,7 +15,6 @@
 				<input type="hidden" name="monthlysettlements_month" value="{$MONTH.nummeric}">
 				<input type="hidden" name="monthlysettlements_year" value="{$YEAR}">
 			{else}
-				<input type="hidden" name="all_data[new]" value="1">
 				{$TEXT_56} <select class="contrastbgcolor" name="monthlysettlements_month">
 				<option {if $MONTH.nummeric == "01"}selected{/if}> 01
 				<option {if $MONTH.nummeric == "02"}selected{/if}> 02
@@ -31,7 +30,6 @@
 				<option {if $MONTH.nummeric == "12"}selected{/if}> 12
 				</select>
 				{$TEXT_57} <input class="contrastbgcolor" type="text" name="monthlysettlements_year" value="{$YEAR}" size=4">
-				<input type="submit" value="{$TEXT_58}" onClick="this.form.realaction.value = 'reload'"><br /><br />
 			{/if}
 			<input type="hidden" name="REFERER" value="{$ENV_REFERER}">
 			<table border=0 width="350" cellpadding=2>
@@ -41,6 +39,7 @@
 				</tr>
 				{section name=DATA loop=$ALL_DATA}
 					<tr>
+						{if $NEW == 1 }<input type="hidden" name="all_data[{$ALL_DATA[DATA].id}][new]" value="1">{/if}
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="hidden" name="all_data[{$ALL_DATA[DATA].id}][mcs_capitalsourceid]" value="{$ALL_DATA[DATA].id}">{$ALL_DATA[DATA].comment}</td>
 						<td class="contrastbgcolor" align="right"><input class="contrastbgcolor" type="text" name="all_data[{$ALL_DATA[DATA].id}][amount]" value="{$ALL_DATA[DATA].amount|string_format:"%.2f"}" size=8 align="right"/> {$CURRENCY}</font></td>
 					</tr>
