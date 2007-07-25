@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.19 2007/07/25 12:21:01 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.20 2007/07/25 16:03:38 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -146,7 +146,6 @@ class moduleMonthlySettlement extends module {
 						'nummeric' => sprintf( '%02d', $month ),
 						'name'     => $this->coreText->get_month( $month )
 					);
-
 					$this->template->assign( 'MONTH',          $month             );
 					$this->template->assign( 'YEAR' ,          $year              );
 					$this->template->assign( 'ALL_DATA',       $all_data          );

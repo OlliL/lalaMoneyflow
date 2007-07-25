@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMonthlySettlement.php,v 1.17 2007/07/25 12:21:00 olivleh1 Exp $
+# $Id: coreMonthlySettlement.php,v 1.18 2007/07/25 16:03:37 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -99,8 +99,8 @@ class coreMonthlySettlement extends core {
 						      ,MAX(year)  year
 						  FROM monthlysettlements
 						 WHERE year       = (SELECT MAX(year)
-								       FROM monthlysettlements
-								      WHERE mur_userid = '.USERID.')
+						                       FROM monthlysettlements
+						                      WHERE mur_userid = '.USERID.')
 						   AND mur_userid = '.USERID.'' );
 		if( !empty( $result['month'] ) && !empty( $result['year'] ) ) {
 			return mktime( 0, 0, 0, $result['month']+1, 1, $result['year'] );

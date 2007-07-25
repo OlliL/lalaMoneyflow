@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleUsers.php,v 1.15 2007/07/25 12:03:37 olivleh1 Exp $
+# $Id: moduleUsers.php,v 1.16 2007/07/25 16:03:38 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -181,12 +181,16 @@ class moduleUsers extends module {
 
 		switch( $realaction ) {
 			case 'yes':
-				$ret = $this->coreUsers->delete_user( $id, $force );
-				if( $ret == "user_owns_data" ) {
+				if( empty($force) && $this->coreUsers->user_owns_data( $id ) ) {
+					add_error( 33 );
 					$this->template->assign( 'ASK', 1 );
-				} elseif ( $ret == 1 ) {
-					$this->template->assign( 'CLOSE', 1 );
-					break;
+				} else {
+					if( $this->coreUsers->delete_user( $id ) ) {
+						$this->template->assign( 'CLOSE', 1 );
+						break;
+					} else {
+						add_error( 35 );
+					}
 				}
 			default:
 				$all_data=$this->coreUsers->get_id_data( $id );

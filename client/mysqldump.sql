@@ -107,6 +107,7 @@ CREATE TABLE currencyrates (
   validfrom date NOT NULL,
   validtil date NOT NULL,
   PRIMARY KEY  (mcu_currencyid,validfrom),
+  UNIQUE KEY mcr_i_01 (mcu_currencyid,validtil),
   KEY mcr_mcu_pk (mcu_currencyid),
   CONSTRAINT mcr_mcu_pk FOREIGN KEY (mcu_currencyid) REFERENCES currencies (currencyid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcr';
@@ -224,7 +225,7 @@ CREATE TABLE `text` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-07-25  5:04:34
+-- Dump completed on 2007-07-25 16:02:14
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -400,9 +401,13 @@ INSERT INTO text VALUES (33,1,'There belongs data to this user! Deleting the use
 INSERT INTO text VALUES (33,2,'Bankleitzahl','t');
 INSERT INTO text VALUES (33,2,'Der Benutzer hat bereits Daten im System. Wenn Sie diesen Benutzer löschen, werden auch alle seine Daten gelöscht. Sind Sie sicher?','e');
 INSERT INTO text VALUES (34,1,'valid from','t');
+INSERT INTO text VALUES (34,1,'You have to change your password!','e');
 INSERT INTO text VALUES (34,2,'gültig von','t');
+INSERT INTO text VALUES (34,2,'Sie müssen Ihr Passwort ändern!','e');
 INSERT INTO text VALUES (35,1,'valid til','t');
+INSERT INTO text VALUES (35,1,'An error occured while deleting the user. The user got not deleted!','e');
 INSERT INTO text VALUES (35,2,'gültig bis','t');
+INSERT INTO text VALUES (35,2,'Während der Benutzerlöschung trat ein Fehler auf. Der Benutzer wurde nicht gelöscht!','e');
 INSERT INTO text VALUES (36,1,'edit','t');
 INSERT INTO text VALUES (36,2,'bearbeiten','t');
 INSERT INTO text VALUES (37,1,'delete','t');

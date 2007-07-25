@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreUsers.php,v 1.10 2007/07/25 11:53:47 olivleh1 Exp $
+# $Id: coreUsers.php,v 1.11 2007/07/25 16:03:37 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -135,25 +135,24 @@ class coreUsers extends core {
 						 ORDER BY name" );
 	}
 
-	function delete_user( $id, $force ) {
-		if( $force == 1 ) {
-			$this->exec_procedure( "user_delete_data( $id )" );
-		} else {
-			if( $this->exec_function( "user_owns_data( $id )" ) == 1 ) {
-				add_error( 33 );
-				return 'user_owns_data';
-			}
-		}
+	function user_owns_data( $id ) {
 
-		if( $this->delete_row( "	DELETE FROM settings
-						 WHERE mur_userid = $id" ) ) {
-			if ( $this->delete_row( "	DELETE FROM users
-							 WHERE userid = $id
-							 LIMIT 1" ) ) {
-				return 1;
-			} else {
-				return 0;
-			}
+		$ret = $this->exec_function( "user_owns_data( $id )" );
+
+		if( $ret == 0 ) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	function delete_user( $id ) {
+	
+		$ret = $this->exec_procedure( "user_delete( $id, @po_ret )" );
+
+		if( $ret['@po_ret'] == 1 ) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 

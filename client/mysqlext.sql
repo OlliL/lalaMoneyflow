@@ -50,9 +50,9 @@ BEGIN
      AND pi_date BETWEEN validfrom AND validtil;
 
   IF pi_type = 'OUT' THEN  
-    SET l_amount = ROUND(l_rate*pi_amount,2);
+    SET l_amount := ROUND(l_rate*pi_amount,2);
   ELSEIF pi_type = 'IN' THEN
-    SET l_amount = ROUND(pi_amount/l_rate,2);
+    SET l_amount := ROUND(pi_amount/l_rate,2);
   END IF;
 
   RETURN l_amount;
@@ -102,7 +102,7 @@ BEGIN
      WHERE mur_userid = pi_userid
      LIMIT 1;
 
-  DECLARE CONTINUE HANDLER FOR NOT FOUND SET l_num = 0;
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET l_num := 0;
 
   OPEN  c_mcs;
   FETCH c_mcs INTO l_num;
@@ -144,11 +144,17 @@ BEGIN
   
 END;$$
 
-DROP PROCEDURE IF EXISTS user_delete_data$$
-CREATE PROCEDURE user_delete_data (
-  pi_userid INT(10) UNSIGNED)
+DROP PROCEDURE IF EXISTS user_delete$$
+CREATE PROCEDURE user_delete (
+  IN  pi_userid INT(10) UNSIGNED
+ ,OUT po_ret    INT(1) UNSIGNED)
 BEGIN
   DECLARE l_num INT(1);
+  DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
+
+  SET po_ret := 0;
+
+  START TRANSACTION;
   
   DELETE FROM moneyflows
    WHERE mur_userid = pi_userid;
@@ -165,7 +171,16 @@ BEGIN
   DELETE FROM contractpartners
    WHERE mur_userid = pi_userid;
 
+  DELETE FROM settings
+   WHERE mur_userid = pi_userid;
+  
+  DELETE FROM users
+   WHERE userid = pi_userid;
+
   COMMIT;
+
+  SET po_ret := 1;
+
 END;$$
 
 DELIMITER ;

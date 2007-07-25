@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: core.php,v 1.16 2007/07/25 05:06:12 olivleh1 Exp $
+# $Id: core.php,v 1.17 2007/07/25 16:03:37 olivleh1 Exp $
 #
 
 require_once 'DB.php';
@@ -114,7 +114,30 @@ class core {
 	}
 
 	function exec_procedure( $procedure ) {
-		return $this->query( 'CALL '.$procedure );
+		$ret = $this->query( 'CALL '.$procedure );
+
+		$all_params_string = preg_replace( '/[^\(]*\([\s]*(.*)[\s]*\)/','$1', $procedure );
+		$all_params_array  = preg_split( '/,[\s]*/', $all_params_string );
+
+		foreach( $all_params_array as $key => $param ) {
+			$pos = strpos( $param, '@' );
+			if( $pos === 0 ) {
+				$out_params_array[] = $param;
+			}
+		}
+
+		if( is_array( $out_params_array ) ) {
+			$out_params_string = implode( ',', $out_params_array );
+			preg_replace( '/\s/', '', $out_params_string );
+			$out_params = $this->select_row( "SELECT $out_params_string FROM DUAL" );
+			if( is_array ( $out_params ) ) {
+				$ret = $out_params;
+			} else {
+				$ret = array();
+			}
+		}
+		
+		return $ret;
 	}
 
 	function real_get_enum_values( $table, $column ) {

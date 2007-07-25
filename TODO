@@ -4,4 +4,8 @@
 
 - put the MAX_ROWS stuff from include.php into settings table
 
-- make the date format which is used in moneyflow's input forms a setting parameter
+- make the date format which is used in moneyflow's input forms a setting
+  parameter
+
+- when creating a new monthly balance make sure there is none already created
+  for that month.
