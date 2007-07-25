@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.36 2007/07/25 12:04:39 olivleh1 Exp $
+# $Id: index.php,v 1.37 2007/07/25 12:21:00 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -198,143 +198,144 @@ if( $is_logged_in == 0 ) {
 		}
 	}
 
-	switch( $action ) {
-		/* capitalsources */
+	if( empty( $display ) ) {
+		switch( $action ) {
+			/* capitalsources */
 
-		case 'list_capitalsources':	$letter=		$_REQUEST['letter'];
-						$display=$moduleCapitalSources->display_list_capitalsources( $letter );
-						break;
+			case 'list_capitalsources':	$letter=		$_REQUEST['letter'];
+							$display=$moduleCapitalSources->display_list_capitalsources( $letter );
+							break;
 
-		case 'edit_capitalsource':	$realaction=		$_REQUEST['realaction'];
-						$capitalsourceid=	$_REQUEST['capitalsourceid'];
-						$all_data=		$_REQUEST['all_data'];
-						$display=$moduleCapitalSources->display_edit_capitalsource( $realaction, $capitalsourceid, $all_data );
-						break;
+			case 'edit_capitalsource':	$realaction=		$_REQUEST['realaction'];
+							$capitalsourceid=	$_REQUEST['capitalsourceid'];
+							$all_data=		$_REQUEST['all_data'];
+							$display=$moduleCapitalSources->display_edit_capitalsource( $realaction, $capitalsourceid, $all_data );
+							break;
 
-		case 'delete_capitalsource':	$realaction=		$_REQUEST['realaction'];
-						$capitalsourceid=	$_REQUEST['capitalsourceid'];
-						$display=$moduleCapitalSources->display_delete_capitalsource( $realaction, $capitalsourceid );
-						break;
+			case 'delete_capitalsource':	$realaction=		$_REQUEST['realaction'];
+							$capitalsourceid=	$_REQUEST['capitalsourceid'];
+							$display=$moduleCapitalSources->display_delete_capitalsource( $realaction, $capitalsourceid );
+							break;
 
-		/* contractpartners */
+			/* contractpartners */
 
-		case 'list_contractpartners':	$letter=		$_REQUEST['letter'];
-						$display=$moduleContractPartners->display_list_contractpartners( $letter );
-						break;
+			case 'list_contractpartners':	$letter=		$_REQUEST['letter'];
+							$display=$moduleContractPartners->display_list_contractpartners( $letter );
+							break;
 
-		case 'edit_contractpartner':	$realaction=		$_REQUEST['realaction'];
-						$id=			$_REQUEST['contractpernerid'];
-						$all_data=		$_REQUEST['all_data'];
-						$display=$moduleContractPartners->display_edit_contractpartner( $realaction, $id, $all_data );
-						break;
+			case 'edit_contractpartner':	$realaction=		$_REQUEST['realaction'];
+							$id=			$_REQUEST['contractpernerid'];
+							$all_data=		$_REQUEST['all_data'];
+							$display=$moduleContractPartners->display_edit_contractpartner( $realaction, $id, $all_data );
+							break;
 
-		case 'delete_contractpartner':	$realaction=		$_REQUEST['realaction'];
-						$id=			$_REQUEST['contractpartnerid'];
-						$display=$moduleContractPartners->display_delete_contractpartner( $realaction, $id );
-						break;
+			case 'delete_contractpartner':	$realaction=		$_REQUEST['realaction'];
+							$id=			$_REQUEST['contractpartnerid'];
+							$display=$moduleContractPartners->display_delete_contractpartner( $realaction, $id );
+							break;
 
-		/* predefmoneyflows */
+			/* predefmoneyflows */
 
-		case 'list_predefmoneyflows':	$letter=		$_REQUEST['letter'];
-						$display=$modulePreDefMoneyFlows->display_list_predefmoneyflows( $letter );
-						break;
+			case 'list_predefmoneyflows':	$letter=		$_REQUEST['letter'];
+							$display=$modulePreDefMoneyFlows->display_list_predefmoneyflows( $letter );
+							break;
 
-		case 'edit_predefmoneyflow':	$realaction=		$_REQUEST['realaction'];
-						$id=			$_REQUEST['predefmoneyflowid'];
-						$all_data=		$_REQUEST['all_data'];
-						$display=$modulePreDefMoneyFlows->display_edit_predefmoneyflow( $realaction, $id, $all_data );
-						break;
+			case 'edit_predefmoneyflow':	$realaction=		$_REQUEST['realaction'];
+							$id=			$_REQUEST['predefmoneyflowid'];
+							$all_data=		$_REQUEST['all_data'];
+							$display=$modulePreDefMoneyFlows->display_edit_predefmoneyflow( $realaction, $id, $all_data );
+							break;
 
-		case 'delete_predefmoneyflow':	$realaction=		$_REQUEST['realaction'];
-						$id=			$_REQUEST['predefmoneyflowid'];
-						$display=$modulePreDefMoneyFlows->display_delete_predefmoneyflow( $realaction, $id );
-						break;
+			case 'delete_predefmoneyflow':	$realaction=		$_REQUEST['realaction'];
+							$id=			$_REQUEST['predefmoneyflowid'];
+							$display=$modulePreDefMoneyFlows->display_delete_predefmoneyflow( $realaction, $id );
+							break;
 
-		/* moneyflows */
+			/* moneyflows */
 
-		case 'add_moneyflow':		$realaction=		$_REQUEST['realaction'];
-						$all_data=		$_REQUEST['all_data'];
-						$display=$moduleMoneyFlows->display_add_moneyflow( $realaction, $all_data );
-						break;
-		case 'edit_moneyflow':		$realaction=		$_REQUEST['realaction'];
-						$id=			$_REQUEST['moneyflowid'];
-						$all_data=		$_REQUEST['all_data'];
-						$display=$moduleMoneyFlows->display_edit_moneyflow( $realaction, $id, $all_data );
-						break;
+			case 'add_moneyflow':		$realaction=		$_REQUEST['realaction'];
+							$all_data=		$_REQUEST['all_data'];
+							$display=$moduleMoneyFlows->display_add_moneyflow( $realaction, $all_data );
+							break;
+			case 'edit_moneyflow':		$realaction=		$_REQUEST['realaction'];
+							$id=			$_REQUEST['moneyflowid'];
+							$all_data=		$_REQUEST['all_data'];
+							$display=$moduleMoneyFlows->display_edit_moneyflow( $realaction, $id, $all_data );
+							break;
 
-		case 'delete_moneyflow':	$realaction=		$_REQUEST['realaction'];
-						$id=			$_REQUEST['moneyflowid'];
-						$display=$moduleMoneyFlows->display_delete_moneyflow( $realaction, $id );
-						break;
+			case 'delete_moneyflow':	$realaction=		$_REQUEST['realaction'];
+							$id=			$_REQUEST['moneyflowid'];
+							$display=$moduleMoneyFlows->display_delete_moneyflow( $realaction, $id );
+							break;
 
+			/* monthlysettlements */
 
-		/* monthlysettlements */
+			case 'list_monthlysettlements':	$month=			$_REQUEST['monthlysettlements_month'];
+							$year=			$_REQUEST['monthlysettlements_year'];
+							$display=$moduleMonthlySettlement->display_list_monthlysettlements( $month, $year );
+							break;
+			case 'edit_monthlysettlement':	$month=			$_REQUEST['monthlysettlements_month'];
+							$year=			$_REQUEST['monthlysettlements_year'];
+							$realaction=		$_REQUEST['realaction'];
+							$all_data=		$_REQUEST['all_data'];
+							$display=$moduleMonthlySettlement->display_edit_monthlysettlement( $realaction, $month, $year, $all_data );
+							break;
+			case 'delete_monthlysettlement':$month=			$_REQUEST['monthlysettlements_month'];
+							$year=			$_REQUEST['monthlysettlements_year'];
+							$realaction=		$_REQUEST['realaction'];
+							$display=$moduleMonthlySettlement->display_delete_monthlysettlement( $realaction, $month, $year );
+							break;
 
-		case 'list_monthlysettlements':	$month=			$_REQUEST['monthlysettlements_month'];
-						$year=			$_REQUEST['monthlysettlements_year'];
-						$display=$moduleMonthlySettlement->display_list_monthlysettlements( $month, $year );
-						break;
-		case 'edit_monthlysettlement':	$month=			$_REQUEST['monthlysettlements_month'];
-						$year=			$_REQUEST['monthlysettlements_year'];
-						$realaction=		$_REQUEST['realaction'];
-						$all_data=		$_REQUEST['all_data'];
-						$display=$moduleMonthlySettlement->display_edit_monthlysettlement( $realaction, $month, $year, $all_data );
-						break;
-		case 'delete_monthlysettlement':$month=			$_REQUEST['monthlysettlements_month'];
-						$year=			$_REQUEST['monthlysettlements_year'];
-						$realaction=		$_REQUEST['realaction'];
-						$display=$moduleMonthlySettlement->display_delete_monthlysettlement( $realaction, $month, $year );
-						break;
+			/* reports */
 
-		/* reports */
+			case 'list_reports':		$month=			$_REQUEST['reports_month'];
+							$year=			$_REQUEST['reports_year'];
+							$sortby=		$_REQUEST['reports_sortby'];
+							$order=			$_REQUEST['reports_order'];
+							$display=$moduleReports->display_list_reports( $month, $year, $sortby, $order );
+							break;
+			case 'plot_trends':		$all_data=		$_REQUEST['all_data'];
+							$display = ( ENABLE_JPGRAPH ? $moduleReports->display_plot_trends($all_data) : '' );
+							break;
+			case 'plot_graph':		$id=			$_REQUEST['id'];
+							$startmonth=		$_REQUEST['startmonth'];
+							$startyear=		$_REQUEST['startyear'];
+							$endmonth=		$_REQUEST['endmonth'];
+							$endyear=		$_REQUEST['endyear'];
+							$display = ( ENABLE_JPGRAPH ? $moduleReports->plot_graph( $id, $startmonth, $startyear, $endmonth, $endyear ) : '' );
+							break;
 
-		case 'list_reports':		$month=			$_REQUEST['reports_month'];
-						$year=			$_REQUEST['reports_year'];
-						$sortby=		$_REQUEST['reports_sortby'];
-						$order=			$_REQUEST['reports_order'];
-						$display=$moduleReports->display_list_reports( $month, $year, $sortby, $order );
-						break;
-		case 'plot_trends':		$all_data=		$_REQUEST['all_data'];
-						$display = ( ENABLE_JPGRAPH ? $moduleReports->display_plot_trends($all_data) : '' );
-						break;
-		case 'plot_graph':		$id=			$_REQUEST['id'];
-						$startmonth=		$_REQUEST['startmonth'];
-						$startyear=		$_REQUEST['startyear'];
-						$endmonth=		$_REQUEST['endmonth'];
-						$endyear=		$_REQUEST['endyear'];
-						$display = ( ENABLE_JPGRAPH ? $moduleReports->plot_graph( $id, $startmonth, $startyear, $endmonth, $endyear ) : '' );
-						break;
+			/* search */
 
-		/* search */
+			case 'search':			$display=$moduleSearch->display_search();
+							break;
+			case 'do_search':		$searchstring=		$_REQUEST['searchstring'];
+							$contractpart=		$_REQUEST['contractpartner'];
+							$startdate=		$_REQUEST['startdate'];
+							$enddate=		$_REQUEST['enddate'];
+							$equal=			$_REQUEST['equal'];
+							$casesensitive=		$_REQUEST['casesensitive'];
+							$regexp=		$_REQUEST['regexp'];
+							$minus=			$_REQUEST['minus'];
+							$grouping1=		$_REQUEST['grouping1'];
+							$grouping2=		$_REQUEST['grouping2'];
+							$order=			$_REQUEST['order'];
+							$display=$moduleSearch->do_search( $searchstring, $contractpart, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus, $grouping1, $grouping2, $order );
+							break;
 
-		case 'search':			$display=$moduleSearch->display_search();
-						break;
-		case 'do_search':		$searchstring=		$_REQUEST['searchstring'];
-						$contractpart=		$_REQUEST['contractpartner'];
-						$startdate=		$_REQUEST['startdate'];
-						$enddate=		$_REQUEST['enddate'];
-						$equal=			$_REQUEST['equal'];
-						$casesensitive=		$_REQUEST['casesensitive'];
-						$regexp=		$_REQUEST['regexp'];
-						$minus=			$_REQUEST['minus'];
-						$grouping1=		$_REQUEST['grouping1'];
-						$grouping2=		$_REQUEST['grouping2'];
-						$order=			$_REQUEST['order'];
-						$display=$moduleSearch->do_search( $searchstring, $contractpart, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus, $grouping1, $grouping2, $order );
-						break;
+			/* settings */
 
-		/* settings */
+			case 'personal_settings':	$realaction=		$_REQUEST['realaction'];
+							$language=      	$_REQUEST['language'];
+							$currency=      	$_REQUEST['currency'];
+							$password1=     	$_REQUEST['password1'];
+							$password2=     	$_REQUEST['password2'];
+							$display=$moduleSettings->display_personal_settings( $realaction, $language, $currency, $password1, $password2 );
+							break;
 
-		case 'personal_settings':	$realaction=		$_REQUEST['realaction'];
-						$language=      	$_REQUEST['language'];
-						$currency=      	$_REQUEST['currency'];
-						$password1=     	$_REQUEST['password1'];
-						$password2=     	$_REQUEST['password2'];
-						$display=$moduleSettings->display_personal_settings( $realaction, $language, $currency, $password1, $password2 );
-						break;
-
-		default:			$display=$moduleFrontPage->display_main();
-						break;
+			default:			$display=$moduleFrontPage->display_main();
+							break;
+		}
 	}
 }
 echo $display;

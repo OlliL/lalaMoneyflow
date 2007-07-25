@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.18 2007/07/24 18:22:09 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.19 2007/07/25 12:21:01 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -97,7 +97,7 @@ class moduleMonthlySettlement extends module {
 
 		switch( $realaction ) {
 			case 'save':
-				$ret=true;
+				$ret = true;
 				foreach( $all_data as $id => $value ) {
 				 	if( is_array( $value ) ) {
 						if( !$this->coreMonthlySettlement->set_amount( $value['mcs_capitalsourceid'], $month, $year, $value['amount'] ) )
@@ -110,10 +110,15 @@ class moduleMonthlySettlement extends module {
 					break;
 				}
 			default:
-				if( $month==0 && $year==0 ) {
-					$timestamp=$this->coreMonthlySettlement->get_next_date();
-					$month=date( 'm', $timestamp );
-					$year=date( 'Y', $timestamp );
+				if( $month == 0 && $year == 0 ) {
+					$timestamp = $this->coreMonthlySettlement->get_next_date();
+					if( !$timestamp ) {
+						$month = date( 'm', time() );
+						$year  = date( 'Y', time() );
+					} else {
+						$month = date( 'm', $timestamp );
+						$year  = date( 'Y', $timestamp );
+					}
 					$new = 1;
 					$this->template->assign( 'NEW', 1 );
 				} elseif ( $all_data['new'] == 1 ) {
@@ -121,8 +126,8 @@ class moduleMonthlySettlement extends module {
 				}
 
 				if( $month > 0 && $year > 0 ) {
-					$all_ids=$this->coreCapitalSources->get_valid_ids();
-					$all_data=array();
+					$all_ids  = $this->coreCapitalSources->get_valid_ids();
+					$all_data = array();
 					foreach( $all_ids as $id ) {
 						if( $new == 1 ) {
 							$amount = $this->coreMonthlySettlement->get_amount( $id, date( 'm', mktime( 0, 0, 0, $month-1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1, $year ) ) );;

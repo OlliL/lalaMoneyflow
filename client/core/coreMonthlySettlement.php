@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMonthlySettlement.php,v 1.16 2007/07/24 18:22:06 olivleh1 Exp $
+# $Id: coreMonthlySettlement.php,v 1.17 2007/07/25 12:21:00 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -102,7 +102,11 @@ class coreMonthlySettlement extends core {
 								       FROM monthlysettlements
 								      WHERE mur_userid = '.USERID.')
 						   AND mur_userid = '.USERID.'' );
-		return mktime( 0, 0, 0, $result['month']+1, 1, $result['year'] );
+		if( !empty( $result['month'] ) && !empty( $result['year'] ) ) {
+			return mktime( 0, 0, 0, $result['month']+1, 1, $result['year'] );
+		} else {
+			return false;
+		} 
 	}
 
 

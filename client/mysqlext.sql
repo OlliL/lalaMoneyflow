@@ -150,12 +150,6 @@ CREATE PROCEDURE user_delete_data (
 BEGIN
   DECLARE l_num INT(1);
   
-  DELETE FROM capitalsources
-   WHERE mur_userid = pi_userid;
-
-  DELETE FROM contractpartners
-   WHERE mur_userid = pi_userid;
-
   DELETE FROM moneyflows
    WHERE mur_userid = pi_userid;
 
@@ -163,6 +157,12 @@ BEGIN
    WHERE mur_userid = pi_userid;
 
   DELETE FROM predefmoneyflows
+   WHERE mur_userid = pi_userid;
+
+  DELETE FROM capitalsources
+   WHERE mur_userid = pi_userid;
+
+  DELETE FROM contractpartners
    WHERE mur_userid = pi_userid;
 
   COMMIT;
