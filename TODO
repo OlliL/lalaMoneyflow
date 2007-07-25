@@ -1,4 +1,7 @@
 - capitalsources ENUMs localizable (probably via 'text' and different types)
 
-- admin tool
-  - language handling (change translation, add new language) (?)
+- language handling (change translation, add new language) (?)
+
+- put the MAX_ROWS stuff from include.php into settings table
+
+- make the date format which is used in moneyflow's input forms a setting parameter
