@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleUsers.php,v 1.13 2007/07/25 05:06:13 olivleh1 Exp $
+# $Id: moduleUsers.php,v 1.14 2007/07/25 11:53:47 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -43,15 +43,17 @@ class moduleUsers extends module {
 		$this->coreSession->start();
 		if( !$this->coreSession->getAttribute( 'users_name' )
 		 || !$this->coreSession->getAttribute( 'users_id' ) ) {
-			return false;
+			return 3;
 		} else {
 			define( USERID, $this->coreSession->getAttribute( 'users_id' ));
 			if( !$this->coreUsers->check_login_permission( USERID ) ) {
 				$this->coreSession->destroy();
 				add_error( 20 );
-				return false;
+				return 1;
+			} if( $this->coreUsers->check_new_attribute( USERID ) ) {
+				return 2;
 			} else {
-				return true;
+				return 0;
 			}
 		}
 	}
@@ -106,6 +108,9 @@ class moduleUsers extends module {
 
 	function display_list_users( $letter ) {
 
+		if( !$this->coreUsers->check_admin_permission( USERID ) )
+			return;
+
 		$all_index_letters = $this->coreUsers->get_all_index_letters();
 		$num_users = $this->coreUsers->count_all_data();
 		
@@ -130,6 +135,9 @@ class moduleUsers extends module {
 	}
 
 	function display_edit_user( $realaction, $id, $all_data ) {
+
+		if( !$this->coreUsers->check_admin_permission( USERID ) )
+			return;
 
 		switch( $realaction ) {
 			case 'save':
@@ -172,6 +180,9 @@ class moduleUsers extends module {
 	}
 
 	function display_delete_user( $realaction, $id, $force ) {
+
+		if( !$this->coreUsers->check_admin_permission( USERID ) )
+			return;
 
 		switch( $realaction ) {
 			case 'yes':

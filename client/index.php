@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.33 2007/07/25 05:06:11 olivleh1 Exp $
+# $Id: index.php,v 1.34 2007/07/25 11:53:46 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -52,25 +52,54 @@ function my_number_format($number) {
 	return number_format($number,2);
 }
 
-$moduleUsers = new moduleUsers();
+$moduleUsers    = new moduleUsers();
+$moduleSettings = new moduleSettings();
 
 $request_uri = $_SERVER['REQUEST_URI'];
 
 if( $action == 'logout' ) {
+
+	/* user tries to logout */
+
 	$moduleUsers->logout();
 	$request_uri = $_SERVER['PHP_SELF'];
 }
 
-if( $action == 'login_user' || !$moduleUsers->is_logged_in() ) {
-	$realaction=	$_POST['realaction'];
-	$name=		$_POST['name'];
-	$password=	$_POST['password'];
-	$stay_logged_in=$_POST['stay_logged_in'];
-	$display=$moduleUsers->display_login_user( $realaction, $name, $password, $stay_logged_in, $request_uri );
-	header("Location: ".$_SRVER['HTTP_HOST'].$_POST['request_uri']);
+$is_logged_in = $moduleUsers->is_logged_in();
+
+if( $is_logged_in == 2 ) {
+
+	/* user is new and must change his password */
+
+	if( empty($_POST['realaction']) || $_POST['realaction'] != 'save' ) {
+		add_error( 34 );
+	}
+	$realaction =		$_REQUEST['realaction'];
+	$language =		$_REQUEST['language'];
+	$currency =		$_REQUEST['currency'];
+	$password1 =		$_REQUEST['password1'];
+	$password2 =		$_REQUEST['password2'];
+	$display = $moduleSettings->display_personal_settings( $realaction, $language, $currency, $password1, $password2 );
+
+	if( $_POST['realaction'] == 'save' && !is_array( $ERRORS ) )
+		header("Location: ".$_SERVER['PHP_SELF']);
+
+} elseif( $action == 'login_user' || $is_logged_in != 0 ) {
+
+	/* user tries to login */
+
+	$realaction =		$_REQUEST['realaction'];
+	$name =			$_REQUEST['name'];
+	$password =		$_REQUEST['password'];
+	$stay_logged_in =	$_REQUEST['stay_logged_in'];
+	$display = $moduleUsers->display_login_user( $realaction, $name, $password, $stay_logged_in, $request_uri );
+
+	if( $_POST['request_uri'] && !is_array( $ERRORS ) )
+		header("Location: ".$_POST['request_uri']);
+
 }
 
-if( $moduleUsers->is_logged_in() ) {
+if( $is_logged_in == 0 ) {
 
 	switch( $action ) {
 		case'list_capitalsources':	
@@ -101,15 +130,13 @@ if( $moduleUsers->is_logged_in() ) {
 		case'do_search':		$moduleSearch			= new moduleSearch();
 						break;
 		case'personal_settings':	
-		case'system_settings':		$moduleSettings			= new moduleSettings();
-						break;
+		case'system_settings':		break;
 		case'list_currencies':
 		case'edit_currency':
 		case'delete_currency':		$moduleCurrencies		= new moduleCurrencies();
 						break;
 		case'list_currencyrates':
-		case'edit_currencyrate':
-/*		case'delete_currencyrate':	*/$moduleCurrencyRates		= new moduleCurrencyRates();
+		case'edit_currencyrate':	$moduleCurrencyRates		= new moduleCurrencyRates();
 						break;
 		case'list_users':		
 		case'edit_user':

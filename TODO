@@ -1,7 +1,5 @@
 - do not allow the admin features when the user is no admin
 
-- when att_new is set for a user the user has to change the password on logon.
-
 - capitalsources ENUMs localizable (probably via 'text' and different types)
 
 - admin tool

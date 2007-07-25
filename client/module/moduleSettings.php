@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSettings.php,v 1.4 2006/12/21 23:09:26 olivleh1 Exp $
+# $Id: moduleSettings.php,v 1.5 2007/07/25 11:53:47 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -77,9 +77,12 @@ class moduleSettings extends module {
 		
 		switch( $realaction ) {
 			case 'save':
-				if( $password1 != $password2 ) {
+				if( $this->coreUsers->check_new_attribute( USERID ) == 1 && ( empty( $password1 ) && empty( $password2 ) ) ) {
+					add_error( 34 );
+					$data_is_valid = false;
+				} elseif( $password1 != $password2 ) {
 					add_error( 19 );
-					$data_is_valid=false;
+					$data_is_valid = false;
 				} elseif( !empty( $password1 ) ) {
 					$this->coreUsers->set_password( USERID, $password1 );
 				}
@@ -90,6 +93,7 @@ class moduleSettings extends module {
 
 		$this->general_settings( $data_is_valid, USERID, $realaction, $language, $currency );
 
+		
 		return $this->fetch_template( 'display_personal_settings.tpl' );
 	}
 
