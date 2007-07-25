@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.32 2007/07/24 18:22:05 olivleh1 Exp $
+# $Id: index.php,v 1.33 2007/07/25 05:06:11 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -298,7 +298,8 @@ if( $moduleUsers->is_logged_in() ) {
 						break;
 		case 'delete_user':		$realaction=		$_REQUEST['realaction'];
 						$id=			$_REQUEST['userid'];
-						$display=$moduleUsers->display_delete_user( $realaction, $id );
+						$force=			$_REQUEST['force'];
+						$display=$moduleUsers->display_delete_user( $realaction, $id, $force );
 						break;
 	
 		default:			$display=$moduleFrontPage->display_main();

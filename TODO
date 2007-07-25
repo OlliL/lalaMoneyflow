@@ -1,9 +1,5 @@
 - do not allow the admin features when the user is no admin
 
-- when deleting a user permit it if the user still owns data
-
-- make it possible to delete a user recursive (CASCADE) possibly with a stored procedure
-
 - when att_new is set for a user the user has to change the password on logon.
 
 - capitalsources ENUMs localizable (probably via 'text' and different types)

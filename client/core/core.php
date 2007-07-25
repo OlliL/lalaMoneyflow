@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: core.php,v 1.15 2007/07/24 18:22:06 olivleh1 Exp $
+# $Id: core.php,v 1.16 2007/07/25 05:06:12 olivleh1 Exp $
 #
 
 require_once 'DB.php';
@@ -107,6 +107,14 @@ class core {
 
 	function update_row( $query ) {
 		return $this->generic_query( $query );
+	}
+
+	function exec_function( $function ) {
+		return $this->select_col( 'SELECT '.$function.' FROM DUAL' );
+	}
+
+	function exec_procedure( $procedure ) {
+		return $this->query( 'CALL '.$procedure );
 	}
 
 	function real_get_enum_values( $table, $column ) {

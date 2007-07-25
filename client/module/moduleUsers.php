@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleUsers.php,v 1.12 2007/07/24 18:22:09 olivleh1 Exp $
+# $Id: moduleUsers.php,v 1.13 2007/07/25 05:06:13 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -171,11 +171,14 @@ class moduleUsers extends module {
 		return $this->fetch_template( 'display_edit_user.tpl' );
 	}
 
-	function display_delete_user( $realaction, $id ) {
+	function display_delete_user( $realaction, $id, $force ) {
 
 		switch( $realaction ) {
 			case 'yes':
-				if( $this->coreUsers->delete_user( $id ) ) {
+				$ret = $this->coreUsers->delete_user( $id, $force );
+				if( $ret == "user_owns_data" ) {
+					$this->template->assign( 'ASK', 1 );
+				} elseif ( $ret == 1 ) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}

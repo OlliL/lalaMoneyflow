@@ -65,6 +65,109 @@ CREATE TRIGGER mpm_trg_01 BEFORE INSERT ON predefmoneyflows
   END;
 $$
 
+DROP FUNCTION IF EXISTS user_owns_data$$
+CREATE FUNCTION user_owns_data (
+  pi_userid INT(10) UNSIGNED)
+  RETURNS INT(1)
+BEGIN
+  DECLARE l_num INT(1);
+  
+  DECLARE c_mcs CURSOR FOR
+    SELECT 1
+      FROM capitalsources
+     WHERE mur_userid = pi_userid
+     LIMIT 1;
+
+  DECLARE c_mcp CURSOR FOR
+    SELECT 1
+      FROM contractpartners
+     WHERE mur_userid = pi_userid
+     LIMIT 1;
+
+  DECLARE c_mmf CURSOR FOR
+    SELECT 1
+      FROM moneyflows
+     WHERE mur_userid = pi_userid
+     LIMIT 1;
+
+  DECLARE c_mms CURSOR FOR
+    SELECT 1
+      FROM monthlysettlements
+     WHERE mur_userid = pi_userid
+     LIMIT 1;
+
+  DECLARE c_mpm CURSOR FOR
+    SELECT 1
+      FROM predefmoneyflows
+     WHERE mur_userid = pi_userid
+     LIMIT 1;
+
+  DECLARE CONTINUE HANDLER FOR NOT FOUND SET l_num = 0;
+
+  OPEN  c_mcs;
+  FETCH c_mcs INTO l_num;
+  CLOSE c_mcs;
+  
+  IF l_num = 0 THEN
+
+    OPEN  c_mcp;
+    FETCH c_mcp INTO l_num;
+    CLOSE c_mcp;
+
+    IF l_num = 0 THEN
+
+      OPEN  c_mmf;
+      FETCH c_mmf INTO l_num;
+      CLOSE c_mmf;
+
+      IF l_num = 0 THEN
+
+        OPEN  c_mms;
+        FETCH c_mms INTO l_num;
+        CLOSE c_mms;
+
+        IF l_num = 0 THEN
+
+          OPEN  c_mpm;
+          FETCH c_mpm INTO l_num;
+          CLOSE c_mpm;
+
+        END IF;
+
+      END IF;
+
+    END IF;
+
+  END IF;
+
+  RETURN l_num;
+  
+END;$$
+
+DROP PROCEDURE IF EXISTS user_delete_data$$
+CREATE PROCEDURE user_delete_data (
+  pi_userid INT(10) UNSIGNED)
+BEGIN
+  DECLARE l_num INT(1);
+  
+  DELETE FROM capitalsources
+   WHERE mur_userid = pi_userid;
+
+  DELETE FROM contractpartners
+   WHERE mur_userid = pi_userid;
+
+  DELETE FROM moneyflows
+   WHERE mur_userid = pi_userid;
+
+  DELETE FROM monthlysettlements
+   WHERE mur_userid = pi_userid;
+
+  DELETE FROM predefmoneyflows
+   WHERE mur_userid = pi_userid;
+
+  COMMIT;
+END;$$
+
 DELIMITER ;
 
 

@@ -13,6 +13,9 @@
 			<input type="hidden" name="realaction" value="yes">
 			<input type="hidden" name="userid"     value="{$ALL_DATA.userid}">
 			<input type="hidden" name="REFERER"    value="{$ENV_REFERER}">
+			{if $ASK == 1}
+			<input type="hidden" name="force"      value="1">
+			{/if}
 			<table border=0>
 				<tr>
 					<th width="200">{$TEXT_85}</th>

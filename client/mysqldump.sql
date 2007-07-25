@@ -224,7 +224,7 @@ CREATE TABLE `text` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-07-24 18:17:06
+-- Dump completed on 2007-07-25  5:04:34
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -396,7 +396,9 @@ INSERT INTO text VALUES (32,1,'Rate must be a number!','e');
 INSERT INTO text VALUES (32,2,'Kontonummer','t');
 INSERT INTO text VALUES (32,2,'Der Faktor muß eine Zahl sein!','e');
 INSERT INTO text VALUES (33,1,'bankcode','t');
+INSERT INTO text VALUES (33,1,'There belongs data to this user! Deleting the user will also delete all his data. Are you sure to delete the user?','e');
 INSERT INTO text VALUES (33,2,'Bankleitzahl','t');
+INSERT INTO text VALUES (33,2,'Der Benutzer hat bereits Daten im System. Wenn Sie diesen Benutzer löschen, werden auch alle seine Daten gelöscht. Sind Sie sicher?','e');
 INSERT INTO text VALUES (34,1,'valid from','t');
 INSERT INTO text VALUES (34,2,'gültig von','t');
 INSERT INTO text VALUES (35,1,'valid til','t');
