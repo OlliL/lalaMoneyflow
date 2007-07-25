@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.35 2007/07/25 12:03:37 olivleh1 Exp $
+# $Id: index.php,v 1.36 2007/07/25 12:04:39 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -145,7 +145,7 @@ if( $is_logged_in == 0 ) {
 						break;
 	}
 
-	if( $moduleUser->is_admin() ) {
+	if( $moduleUsers->is_admin() ) {
 		switch( $action ) {
 			case 'system_settings':		$realaction=		$_REQUEST['realaction'];
 							$language=      	$_REQUEST['language'];
