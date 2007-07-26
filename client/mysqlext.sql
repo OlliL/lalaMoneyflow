@@ -15,17 +15,17 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_text (
 
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_template_text (
    mur_userid
-  ,name
+  ,templatename
   ,variable
   ,text
   ) AS
      SELECT mvt.mur_userid
-           ,mte.name
+           ,mtv.mte_templatename
            ,CONCAT('TEXT_',mvt.textid)
            ,mvt.text
-      FROM templates mte
-          ,vw_text   mvt
-     WHERE mte.mtx_textid = mvt.textid
+      FROM templatevalues mtv
+          ,vw_text        mvt
+     WHERE mtv.mtx_textid = mvt.textid
        AND mvt.type       = 't';
 
 
