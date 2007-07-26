@@ -1,5 +1,3 @@
-- capitalsources ENUMs localizable (probably via 'text' and different types)
-
 - language handling (change translation, add new language) (?)
 
 - put the MAX_ROWS stuff from include.php into settings table

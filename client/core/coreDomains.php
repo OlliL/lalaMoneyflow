@@ -24,40 +24,22 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreText.php,v 1.7 2007/07/26 18:32:36 olivleh1 Exp $
+# $Id: coreDomains.php,v 1.1 2007/07/26 18:32:36 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
 
-class coreText extends core {
+class coreDomains extends core {
 
-	function coreText() {
+	function coreDomains() {
 		$this->core();
 	}
 
-	function get_text( $id, $type ) {
-		return $this->select_col( "	SELECT text
-						  FROM vw_text
-						 WHERE textid     = $id
-						   AND type       = '$type'
-						   AND mur_userid = ".USERID."
-					 	 LIMIT 1" );
+	function get_domain_data( $domain ) {
+		return $this->select_rows( "	SELECT value
+		                                      ,domain_meaning('$domain',value,".USERID.") text
+						  FROM domainvalues
+						 WHERE mdm_domain = '$domain'");
 	}
 	
-	function get_month( $id ) {
-		return $this->get_text( $id+154, 'm' );  # month are starting with textid=155
-	}
-
-	function get_error( $id ) {
-		return $this->get_text( $id, 'e' );
-	}
-
-	function get_graph( $id ) {
-		return $this->get_text( $id, 'g' );
-	}
-
-	function get_dbtext( $id ) {
-		return $this->get_text( $id, 'd' );
-	}
-
 }

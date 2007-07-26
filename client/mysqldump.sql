@@ -53,8 +53,8 @@ DROP TABLE IF EXISTS capitalsources;
 CREATE TABLE capitalsources (
   mur_userid int(10) unsigned NOT NULL,
   capitalsourceid int(10) unsigned NOT NULL auto_increment,
-  `type` enum('a','b') NOT NULL default 'a',
-  state enum('c','d') NOT NULL default 'c',
+  `type` enum('1','2') NOT NULL default '1',
+  state enum('1','2') NOT NULL default '1',
   accountnumber bigint(20) default NULL,
   bankcode bigint(20) default NULL,
   `comment` varchar(255) default NULL,
@@ -217,14 +217,25 @@ CREATE TABLE `text` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mtx';
 
 --
--- Table structure for table `enumvalues`
+-- Table structure for table `domains`
 --
 
-DROP TABLE IF EXISTS enumvalues;
-CREATE TABLE enumvalues (
-  enumvalue varchar(2) NOT NULL,
+DROP TABLE IF EXISTS domains;
+CREATE TABLE domains (
+  domain varchar(30) NOT NULL COMMENT 'mdm',
+  PRIMARY KEY  (domain)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `domainvalues`
+--
+
+DROP TABLE IF EXISTS domainvalues;
+CREATE TABLE domainvalues (
+  mdm_domain varchar(30) NOT NULL,
+  `value` varchar(3) NOT NULL,
   mtx_textid int(10) NOT NULL,
-  PRIMARY KEY  (enumvalue),
+  PRIMARY KEY  (mdm_domain,`value`),
   KEY mtm_mtx_pk (mtx_textid)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='mev';
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -237,7 +248,7 @@ CREATE TABLE enumvalues (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-07-26 17:49:26
+-- Dump completed on 2007-07-26 18:30:40
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -904,10 +915,12 @@ INSERT INTO templates VALUES ('display_edit_currencies.tpl',115);
 INSERT INTO templates VALUES ('display_edit_currencies.tpl',116);
 INSERT INTO templates VALUES ('display_delete_currencies.tpl',117);
 INSERT INTO templates VALUES ('display_delete_currencies.tpl',118);
-INSERT INTO enumvalues VALUES ('a',173);
-INSERT INTO enumvalues VALUES ('b',174);
-INSERT INTO enumvalues VALUES ('c',175);
-INSERT INTO enumvalues VALUES ('d',176);
+INSERT INTO domains VALUES ('CAPITALSOURCE_STATE');
+INSERT INTO domains VALUES ('CAPITALSOURCE_TYPE');
+INSERT INTO domainvalues VALUES ('CAPITALSOURCE_TYPE','1',173);
+INSERT INTO domainvalues VALUES ('CAPITALSOURCE_TYPE','2',174);
+INSERT INTO domainvalues VALUES ('CAPITALSOURCE_STATE','1',175);
+INSERT INTO domainvalues VALUES ('CAPITALSOURCE_STATE','2',176);
 INSERT INTO settings VALUES (0,'displayed_currency','1'),(0,'displayed_language','1');
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,1);
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('','',0,0,0);

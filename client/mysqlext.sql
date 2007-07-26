@@ -13,62 +13,6 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_text (
      WHERE mtx.mla_languageid = mse.value
        AND mse.name           = 'displayed_language';
 
-CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_capitalsources_text (
-   mur_userid     
-  ,capitalsourceid
-  ,type	       
-  ,typecomment
-  ,state	
-  ,statecomment
-  ,accountnumber  
-  ,bankcode       
-  ,comment        
-  ,validtil       
-  ,validfrom
-  ) AS
-     SELECT mcs.mur_userid     
-           ,mcs.capitalsourceid
-           ,mcs.type
-           ,mtx1.text
-           ,mcs.state	
-           ,mtx2.text
-           ,mcs.accountnumber  
-           ,mcs.bankcode       
-           ,mcs.comment        
-           ,mcs.validtil       
-           ,mcs.validfrom
-      FROM capitalsources mcs
-          ,text           mtx1
-          ,text           mtx2
-	  ,enumvalues     mev1
-	  ,enumvalues     mev2
-          ,settings       mse
-     WHERE mse.name            = 'displayed_language'
-       AND mse.mur_userid      = mcs.mur_userid
-       AND mev1.enumvalue      = mcs.type
-       AND mev2.enumvalue      = mcs.state
-       AND mtx1.textid         = mev1.mtx_textid
-       AND mtx1.mla_languageid = mse.value
-       AND mtx2.textid         = mev2.mtx_textid
-       AND mtx2.mla_languageid = mse.value;
-
-CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_enumvalues_text (
-   enumvalue
-  ,textid
-  ,text
-  ,mur_userid
-  ) AS
-     SELECT mev.enumvalue
-           ,mtx.textid
-           ,mtx.text
-           ,mse.mur_userid
-      FROM text           mtx
-          ,enumvalues     mev
-          ,settings       mse
-     WHERE mse.name           = 'displayed_language'
-       AND mtx.textid         = mev.mtx_textid
-       AND mtx.mla_languageid = mse.value;
-
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_template_text (
    mur_userid
   ,name
@@ -86,6 +30,30 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_template_text (
 
 
 DELIMITER $$
+
+DROP FUNCTION IF EXISTS domain_meaning$$
+CREATE FUNCTION domain_meaning (
+  pi_domain VARCHAR(30)
+ ,pi_value  VARCHAR(3)
+ ,pi_userid INT(10) UNSIGNED)
+  RETURNS VARCHAR(255)
+BEGIN
+  DECLARE l_text VARCHAR(255);
+
+  SELECT mtx.text
+    INTO l_text
+    FROM text         mtx
+        ,domainvalues mdv
+        ,settings     mse
+   WHERE mdv.mdm_domain     = pi_domain
+     AND mdv.value          = pi_value
+     AND mtx.textid         = mdv.mtx_textid
+     AND mtx.mla_languageid = mse.value
+     AND mse.name           = 'displayed_language'
+     AND mse.mur_userid     = pi_userid;
+
+  RETURN l_text;
+END;$$
 
 DROP FUNCTION IF EXISTS calc_amount$$
 CREATE FUNCTION calc_amount (

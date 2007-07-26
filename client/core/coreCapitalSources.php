@@ -24,12 +24,12 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.23 2007/07/26 17:56:26 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.24 2007/07/26 18:32:36 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
 require_once 'core/coreMoneyFlows.php';
-require_once 'core/coreText.php';
+require_once 'core/coreDomains.php';
 
 class coreCapitalSources extends core {
 
@@ -47,32 +47,33 @@ class coreCapitalSources extends core {
 	}
 	
 	function get_all_data() {
-		return $this->select_rows( '	SELECT capitalsourceid
+		return $this->select_rows( "	SELECT capitalsourceid
 						      ,type
-						      ,typecomment
+						      ,domain_meaning('CAPITALSOURCE_TYPE',type,".USERID.") typecomment
 						      ,state
-						      ,statecomment
+						      ,domain_meaning('CAPITALSOURCE_STATE',state,".USERID.") statecomment
 						      ,accountnumber
 						      ,bankcode
 						      ,comment
 						      ,validtil
 						      ,validfrom
-						  FROM vw_capitalsources_text
-						 WHERE mur_userid = '.USERID.'
-						 ORDER BY capitalsourceid' );
+						  FROM capitalsources
+						 WHERE mur_userid = ".USERID."
+						 ORDER BY capitalsourceid" );
 	}
 
 	function get_id_data( $id ) {
 		return $this->select_row( "	SELECT capitalsourceid
-						      ,typecomment
+						      ,type
+						      ,domain_meaning('CAPITALSOURCE_TYPE',type,".USERID.") typecomment
 						      ,state
-						      ,statecomment
+						      ,domain_meaning('CAPITALSOURCE_STATE',state,".USERID.") statecomment
 						      ,accountnumber
 						      ,bankcode
 						      ,comment
 						      ,validtil
 						      ,validfrom
-						  FROM vw_capitalsources_text
+						  FROM capitalsources
 						 WHERE capitalsourceid = $id
 						   AND mur_userid      = ".USERID."
 						 LIMIT 1" );
@@ -87,15 +88,16 @@ class coreCapitalSources extends core {
 
 	function get_all_matched_data( $letter ) {
 		return $this->select_rows( "	SELECT capitalsourceid
-						      ,typecomment
+						      ,type
+						      ,domain_meaning('CAPITALSOURCE_TYPE',type,".USERID.") typecomment
 						      ,state
-						      ,statecomment
+						      ,domain_meaning('CAPITALSOURCE_STATE',state,".USERID.") statecomment
 						      ,accountnumber
 						      ,bankcode
 						      ,comment
 						      ,validtil
 						      ,validfrom
-						  FROM vw_capitalsources_text
+						  FROM capitalsources
 						 WHERE UPPER(comment) LIKE UPPER('$letter%')
 						   AND mur_userid = ".USERID."
 						 ORDER BY comment" );
@@ -142,13 +144,13 @@ class coreCapitalSources extends core {
 	}
 
 	function get_enum_type() {
-		$coreText = new coreText();
-		return $coreText->real_get_enum_values( 'capitalsources', 'type' );
+		$coreDomains = new coreDomains();
+		return $coreDomains->get_domain_data( 'CAPITALSOURCE_TYPE');
 	}
 
 	function get_enum_state() {
-		$coreText = new coreText();
-		return $coreText->real_get_enum_values( 'capitalsources', 'state' );
+		$coreDomains = new coreDomains();
+		return $coreDomains->get_domain_data( 'CAPITALSOURCE_STATE');
 	}
 
 	function get_comment( $id ) {
@@ -161,8 +163,8 @@ class coreCapitalSources extends core {
 
 	function get_type( $id ) {
 		return $this->select_row( "	SELECT type
-						      ,typecomment
-						  FROM vw_capitalsources_text
+						      ,domain_meaning('CAPITALSOURCE_TYPE',type,".USERID.") typecomment
+						  FROM capitalsources
 						 WHERE capitalsourceid = $id
 						   AND mur_userid      = ".USERID."
 						 LIMIT 1" );
@@ -170,8 +172,8 @@ class coreCapitalSources extends core {
 
 	function get_state( $id ) {
 		return $this->select_row( "	SELECT state
-						      ,statecomment
-						  FROM vw_capitalsources_text
+						      ,domain_meaning('CAPITALSOURCE_STATE',state,".USERID.") statecomment
+						  FROM capitalsources
 						 WHERE capitalsourceid = $id
 						   AND mur_userid      = ".USERID."
 						 LIMIT 1" );
