@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.31 2007/07/24 18:22:08 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.32 2007/07/26 15:36:54 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -99,35 +99,35 @@ class moduleMoneyFlows extends module {
 						$nothing_checked = false;
 						
 						if( empty( $value['mcs_capitalsourceid'] ) ) {
-							add_error( 9 );
+							add_error( 127 );
 							$data_is_valid = false;
 						};
 						
 						if( empty( $value['mcp_contractpartnerid'] ) ) {
-							add_error( 10 );
+							add_error( 128 );
 							$data_is_valid = false;
 						};
 
 						if( ! empty( $value['invoicedate'] ) && ! is_date( $value['invoicedate'] ) ) {
-							add_error( 11 );
+							add_error( 129 );
 							$all_data[$id]['invoicedate_error'] = 1;
 						}
 
 						if( ! is_date( $value['bookingdate'] ) ) {
-							add_error( 12 );
+							add_error( 130 );
 							$all_data[$id]['bookingdate_error'] = 1;
 							$data_is_valid = false;
 						}
 	
 						if( empty( $value['comment'] ) ) {
-							add_error( 13 );
+							add_error( 131 );
 							$data_is_valid = false;
 						}
 							
 						if( ! (    preg_match( '/^-{0,1}[0-9]*([\.][0-9][0-9][0-9]){0,}([,][0-9]{1,2}){0,1}$/', $value['amount'] ) 
 						       ||  preg_match( '/^-{0,1}[0-9]*([,][0-9][0-9][0-9]){0,}([\.][0-9]{1,2}){0,1}$/', $value['amount'] )
 						      ) ) {
-							add_error( 14, array( $value['amount'] ) );
+							add_error( 132, array( $value['amount'] ) );
 							$all_data[$id]['amount_error'] = 1;
 							$data_is_valid = false;
 						}
@@ -135,7 +135,7 @@ class moduleMoneyFlows extends module {
 				}
 				
 				if( $nothing_checked ) {
-					add_error( 15 );
+					add_error( 133 );
 					$data_is_valid = false;
 				}
 				if( $data_is_valid ) {

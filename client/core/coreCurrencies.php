@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCurrencies.php,v 1.11 2007/07/24 18:22:06 olivleh1 Exp $
+# $Id: coreCurrencies.php,v 1.12 2007/07/26 15:36:52 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -91,7 +91,7 @@ class coreCurrencies extends core {
 						 WHERE currencyid  = $default_id
 						 LIMIT 1" );
 		} elseif ($att_default == 0 && empty($default_id) ) {
-			add_error( 26 );
+			add_error( 144 );
 			return;
 		}
 		return $this->update_row( "	INSERT INTO currencies
@@ -113,7 +113,7 @@ class coreCurrencies extends core {
 						 WHERE currencyid  = $default_id
 						 LIMIT 1" );
 		} elseif ($att_default == 0 && $default_id == $id ) {
-			add_error( 26 );
+			add_error( 144 );
 			return;
 		}
 		return $this->update_row( "	UPDATE currencies
@@ -127,7 +127,7 @@ class coreCurrencies extends core {
 		$default_id = $this->get_default_id();
 		
 		if( $default_id == $id ) {
-			add_error( 27 );
+			add_error( 145 );
 			return false;
 		}
 		return $this->update_row( "	DELETE FROM currencies
@@ -142,10 +142,10 @@ class coreCurrencies extends core {
 			if( !empty( $currency ) ) {
 				return $currency;
 			} else {
-				add_error( 7 );
+				add_error( 125 );
 			}
 		} else {
-			add_error( 8 );
+			add_error( 126 );
 		}
 	}
 

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.27 2007/07/24 18:22:06 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.28 2007/07/26 15:36:52 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -234,7 +234,7 @@ class coreMoneyFlows extends core {
 				return false;
 			}
 		} else {
-			add_error( 4 );
+			add_error( 122 );
 			return false;
 		}
 	}

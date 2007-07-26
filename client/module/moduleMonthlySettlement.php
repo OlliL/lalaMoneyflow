@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.21 2007/07/25 18:35:53 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.22 2007/07/26 15:36:54 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -108,7 +108,7 @@ class moduleMonthlySettlement extends module {
 								if( !$this->coreMonthlySettlement->insert_monthlysettlement( $value['mcs_capitalsourceid'], $month, $year, $value['amount'] ) )
 									$ret = false;
 							} elseif( $ret === true ) {
-								add_error( 36 );
+								add_error( 154 );
 #								$month = 0;
 #								$year  = 0;
 								$ret   = false;

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.37 2007/07/25 12:21:00 olivleh1 Exp $
+# $Id: index.php,v 1.38 2007/07/26 15:36:51 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -72,7 +72,7 @@ if( $is_logged_in == 2 ) {
 	/* user is new and must change his password */
 
 	if( empty($_POST['realaction']) || $_POST['realaction'] != 'save' ) {
-		add_error( 34 );
+		add_error( 152 );
 	}
 	$realaction =		$_REQUEST['realaction'];
 	$language =		$_REQUEST['language'];

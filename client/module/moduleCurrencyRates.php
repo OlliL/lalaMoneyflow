@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCurrencyRates.php,v 1.3 2007/07/24 18:34:31 olivleh1 Exp $
+# $Id: moduleCurrencyRates.php,v 1.4 2007/07/26 15:36:53 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -71,18 +71,18 @@ class moduleCurrencyRates extends module {
 				if( $currencyid == 0 ) {
 					$valid = true;
 					if( ! is_date( $all_data['validfrom'] ) ) {
-						add_error( 29 );
+						add_error( 147 );
 						$valid = false;
 					} elseif( strtotime( $all_data['validfrom'] ) < time() ) {
-						add_error( 30 );
+						add_error( 148 );
 						$valid = false;
 					}
 					
 					if( empty( $all_data['rate'] ) ) {
-						add_error( 31 );
+						add_error( 149 );
 						$valid = false;
 					} elseif( !is_numeric( $all_data['rate'] ) ) {
-						add_error( 32 );
+						add_error( 150 );
 						$valid = false;
 					}
 					if( $valid )			

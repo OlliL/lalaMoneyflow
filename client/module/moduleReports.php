@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.28 2007/07/24 18:22:09 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.29 2007/07/26 15:36:54 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -175,12 +175,12 @@ class moduleReports extends module {
 	function plot_graph( $capitalsources_id, $startmonth, $startyear, $endmonth, $endyear ) {
 	
 		$coreText = new coreText();
-		$graph_comment_all= $coreText->get_graph( 1 );
-		$graph_comment    = $coreText->get_graph( 2 );
-		$graph_from       = $coreText->get_graph( 3 );
-		$graph_until      = $coreText->get_graph( 4 );
-		$graph_xaxis      = $coreText->get_graph( 5 );
-		$graph_yaxis      = $coreText->get_graph( 6 );
+		$graph_comment_all= $coreText->get_graph( 167 );
+		$graph_comment    = $coreText->get_graph( 168 );
+		$graph_from       = $coreText->get_graph( 169 );
+		$graph_until      = $coreText->get_graph( 170 );
+		$graph_xaxis      = $coreText->get_graph( 171 );
+		$graph_yaxis      = $coreText->get_graph( 172 );
 
 		if( $capitalsources_id == 0 ) {
 			$all_capitalsources_ids  = $this->coreCapitalSources->get_all_ids();

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: functions.php,v 1.6 2007/02/03 18:16:40 olivleh1 Exp $
+	$Id: functions.php,v 1.7 2007/07/26 15:36:51 olivleh1 Exp $
 */
 
 
@@ -34,7 +34,7 @@ function fix_amount( &$amount ) {
 	} elseif( preg_match( '/^-{0,1}[0-9]*([,][0-9][0-9][0-9]){0,}([\.][0-9]{1,2}){0,1}$/', $amount ) ) {
 		$amount = str_replace( ',', '', $amount );
 	} else {
-		add_error( 14, array( $amount ) );
+		add_error( 132, array( $amount ) );
 		$return = false;
 	}
 

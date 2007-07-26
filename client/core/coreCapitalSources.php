@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.21 2007/07/24 18:22:06 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.22 2007/07/26 15:36:52 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -131,7 +131,7 @@ class coreCapitalSources extends core {
 		if( is_array( $result ) ) {
 			return $result;
 		} else {
-			add_error( 1 );
+			add_error( 119 );
 			return;
 		}
 	}
@@ -182,7 +182,7 @@ class coreCapitalSources extends core {
 	function delete_capitalsource( $id ) {
 		$coreMoneyFlows=new coreMoneyFlows();
 		if( $coreMoneyFlows->capitalsource_in_use( $id ) ) {
-			add_error( 2 );
+			add_error( 120 );
 			return 0;
 		} else {
 			return $this->delete_row( "	DELETE FROM capitalsources
@@ -196,7 +196,7 @@ class coreCapitalSources extends core {
 	function update_capitalsource( $id, $type, $state, $accountnumber, $bankcode, $comment, $validfrom, $validtil ) {
 		$coreMoneyFlows = new coreMoneyFlows();
 		if( $coreMoneyFlows->capitalsource_in_use_out_of_date( $id, $validfrom, $validtil ) ) {
-			add_error( 3 );
+			add_error( 121 );
 			return 0;
 		} else {
 			$validtil  = $this->make_date($validtil);

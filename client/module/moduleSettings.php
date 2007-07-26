@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSettings.php,v 1.5 2007/07/25 11:53:47 olivleh1 Exp $
+# $Id: moduleSettings.php,v 1.6 2007/07/26 15:36:54 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -78,10 +78,10 @@ class moduleSettings extends module {
 		switch( $realaction ) {
 			case 'save':
 				if( $this->coreUsers->check_new_attribute( USERID ) == 1 && ( empty( $password1 ) && empty( $password2 ) ) ) {
-					add_error( 34 );
+					add_error( 152 );
 					$data_is_valid = false;
 				} elseif( $password1 != $password2 ) {
-					add_error( 19 );
+					add_error( 137 );
 					$data_is_valid = false;
 				} elseif( !empty( $password1 ) ) {
 					$this->coreUsers->set_password( USERID, $password1 );

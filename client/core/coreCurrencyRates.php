@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCurrencyRates.php,v 1.4 2007/07/24 18:34:31 olivleh1 Exp $
+# $Id: coreCurrencyRates.php,v 1.5 2007/07/26 15:36:52 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -127,7 +127,7 @@ class coreCurrencyRates extends core {
 		/* check if there already exists a currencyrate with the validfrom date */
 
 		if( $this->check_if_exists( $currencyid, $validfrom ) == 1 ) {
-			add_error( 28 );
+			add_error( 146 );
 			return false;
 		}
 

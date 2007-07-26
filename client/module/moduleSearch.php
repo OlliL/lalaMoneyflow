@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSearch.php,v 1.10 2007/07/24 18:22:09 olivleh1 Exp $
+# $Id: moduleSearch.php,v 1.11 2007/07/26 15:36:54 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -79,9 +79,9 @@ class moduleSearch extends module {
 		$searchparams['order']     = $order;
 
 		if( empty( $searchparams['mcp_contractpartnerid'] ) && empty( $searchparams['pattern'] ) ) {
-			add_error( 23 );
+			add_error( 141 );
 		} elseif ( empty( $searchparams['grouping1'] ) && empty( $searchparams['grouping2'] ) ) {
-			add_error( 24 );
+			add_error( 142 );
 		}else {
 			$results = $this->coreMoneyFlows->search_moneyflows( $searchparams );
 			if( is_array( $results ) ) {
@@ -90,7 +90,7 @@ class moduleSearch extends module {
 					$columns[$column]=1;
 				}
 			} else {
-				add_error( 25 );
+				add_error( 143 );
 			}
 		}
 	    

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleUsers.php,v 1.16 2007/07/25 16:03:38 olivleh1 Exp $
+# $Id: moduleUsers.php,v 1.17 2007/07/26 15:36:54 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -48,7 +48,7 @@ class moduleUsers extends module {
 			define( USERID, $this->coreSession->getAttribute( 'users_id' ));
 			if( !$this->coreUsers->check_login_permission( USERID ) ) {
 				$this->coreSession->destroy();
-				add_error( 20 );
+				add_error( 138 );
 				return 1;
 			} if( $this->coreUsers->check_new_attribute( USERID ) ) {
 				return 2;
@@ -68,19 +68,19 @@ class moduleUsers extends module {
 				}
 				$this->coreSession->restart();
 				if( empty( $name ) ) {
-					add_error( 21 );
+					add_error( 139 );
 				} elseif( empty( $password ) ) {
-					add_error( 22 );
+					add_error( 140 );
 				} elseif( $id = $this->coreUsers->check_account( $name, $password ) ) {
 					if( $this->coreUsers->check_login_permission( $id ) ) {
 						$this->coreSession->setAttribute( 'users_name', $name );
 						$this->coreSession->setAttribute( 'users_id',   $id );
 						$loginok=1;
 					} else {
-						add_error( 20 );
+						add_error( 138 );
 					}
 				} else {
-					add_error( 16 );
+					add_error( 134 );
 				}
 				break;
 			default:
@@ -140,10 +140,10 @@ class moduleUsers extends module {
 		switch( $realaction ) {
 			case 'save':
 				if( $all_data['password1'] != $all_data['password2'] ) {
-					add_error( 19 );
+					add_error( 137 );
 				} elseif( $id == 0 ) {
 					if( empty( $all_data['password1']) ) {
-						add_error( 22 );
+						add_error( 140 );
 					} else {
 						$ret=$this->coreUsers->add_user( $all_data['name'], $all_data['password1'], $all_data['perm_login'], $all_data['perm_admin'], $all_data['att_new'] );
 					}
@@ -182,14 +182,14 @@ class moduleUsers extends module {
 		switch( $realaction ) {
 			case 'yes':
 				if( empty($force) && $this->coreUsers->user_owns_data( $id ) ) {
-					add_error( 33 );
+					add_error( 151 );
 					$this->template->assign( 'ASK', 1 );
 				} else {
 					if( $this->coreUsers->delete_user( $id ) ) {
 						$this->template->assign( 'CLOSE', 1 );
 						break;
 					} else {
-						add_error( 35 );
+						add_error( 153 );
 					}
 				}
 			default:

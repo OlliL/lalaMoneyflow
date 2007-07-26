@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreLanguages.php,v 1.5 2007/07/24 18:22:06 olivleh1 Exp $
+# $Id: coreLanguages.php,v 1.6 2007/07/26 15:36:52 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -51,10 +51,10 @@ class coreLanguages extends core {
 			if( !empty( $language ) ) {
 				return $language;
 			} else {
-				add_error( 17 );
+				add_error( 135 );
 			}
 		} else {
-			add_error( 18 );
+			add_error( 136 );
 		}
 	}
 

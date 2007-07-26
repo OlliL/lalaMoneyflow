@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreContractPartners.php,v 1.12 2007/07/24 18:22:06 olivleh1 Exp $
+# $Id: coreContractPartners.php,v 1.13 2007/07/26 15:36:52 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -119,7 +119,7 @@ class coreContractPartners extends core {
 		if( is_array( $result ) ) {
 			return $result;
 		} else {
-			add_error( 5 );
+			add_error( 123 );
 			return;
 		}
 	}
@@ -136,7 +136,7 @@ class coreContractPartners extends core {
 	function delete_contractpartner( $id ) {
 		$coreMoneyFlows = new coreMoneyFlows();
 		if( $coreMoneyFlows->contractpartner_in_use( $id ) ) {
-			add_error( 6 );
+			add_error( 124 );
 			return 0;
 		} else {
 			return $this->delete_row( "	DELETE FROM contractpartners

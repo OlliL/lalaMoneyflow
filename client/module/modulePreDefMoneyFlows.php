@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: modulePreDefMoneyFlows.php,v 1.18 2007/07/24 18:22:09 olivleh1 Exp $
+# $Id: modulePreDefMoneyFlows.php,v 1.19 2007/07/26 15:36:54 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -83,12 +83,12 @@ class modulePreDefMoneyFlows extends module {
 				$data_is_valid=true;
 				
 				if( empty( $all_data['mcs_capitalsourceid'] ) ) {
-					add_error( 9 );
+					add_error( 127 );
 					$data_is_valid=false;
 				};
 				
 				if( empty( $all_data['mcp_contractpartnerid'] ) ) {
-					add_error( 10 );
+					add_error( 128 );
 					$data_is_valid=false;
 				};
 
