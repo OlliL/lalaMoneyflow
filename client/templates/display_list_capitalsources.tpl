@@ -24,8 +24,8 @@
 					{section name=DATA loop=$ALL_DATA}
 						<tr>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].comment}</td>
-							<td class="contrastbgcolor">{$ALL_DATA[DATA].type}</td>
-							<td class="contrastbgcolor">{$ALL_DATA[DATA].state}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].typecomment}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].statecomment}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].accountnumber}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].bankcode}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].validfrom}</td>

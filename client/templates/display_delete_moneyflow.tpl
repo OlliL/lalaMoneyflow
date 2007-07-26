@@ -18,7 +18,7 @@
 				 	 <th width="80">{$TEXT_16}</th>
 				 	 <th width="80">{$TEXT_17}</th>
 				 	 <th width="80">{$TEXT_18}</th>
-				 	 <th width="200">{$TEXT_20}</th>
+				 	 <th width="200">{$TEXT_2}</th>
 				 	 <th width="200">{$TEXT_21}</th>
 				 	 <th width="100">{$TEXT_19}</th>
 				</tr>

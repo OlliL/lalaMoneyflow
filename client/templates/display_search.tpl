@@ -17,7 +17,7 @@
 					<td class="contrastbgcolor">{$TEXT_21}</td>
 				</tr>
 				<tr>
-					<th align="right">{$TEXT_20}</th>
+					<th align="right">{$TEXT_2}</th>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="contractpartner" size=1>
 					<option value=""> </option>
 					{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
@@ -56,7 +56,7 @@
 					<option value=""> </option>
 					<option value="year"             {if $SEARCHPARAMS.grouping1 == "year"           }selected{/if}> {$TEXT_57}</option>
 					<option value="month"            {if $SEARCHPARAMS.grouping1 == "month"          }selected{/if}> {$TEXT_56}</option>
-					<option value="contractpartner"  {if $SEARCHPARAMS.grouping1 == "contractpartner"}selected{/if}> {$TEXT_20}</option>
+					<option value="contractpartner"  {if $SEARCHPARAMS.grouping1 == "contractpartner"}selected{/if}> {$TEXT_2}</option>
 					</select></td>
 				<tr>
 					<th align="right">{$TEXT_103}</th>
@@ -64,7 +64,7 @@
 					<option value=""> </option>
 					<option value="year"             {if $SEARCHPARAMS.grouping2 == "year"           }selected{/if}> {$TEXT_57}</option>
 					<option value="month"            {if $SEARCHPARAMS.grouping2 == "month"          }selected{/if}> {$TEXT_56}</option>
-					<option value="contractpartner"  {if $SEARCHPARAMS.grouping2 == "contractpartner"}selected{/if}> {$TEXT_20}</option>
+					<option value="contractpartner"  {if $SEARCHPARAMS.grouping2 == "contractpartner"}selected{/if}> {$TEXT_2}</option>
 					</select></td>
 				</tr>
 				<tr>
@@ -87,7 +87,7 @@
 				<tr>
 					{if $COLUMNS.year  == "1"}<th width="9%">{$TEXT_81}</th>{/if}
 					{if $COLUMNS.month == "1"}<th width="9%">{$TEXT_82}</th>{/if}
-					{if $COLUMNS.name  == "1"}<th width=16%>{$TEXT_20}</th>{/if}
+					{if $COLUMNS.name  == "1"}<th width=16%>{$TEXT_2}</th>{/if}
 					<th width="10%">{$TEXT_18}</th>
 					<th >{$TEXT_21}</th>
 				</tr>

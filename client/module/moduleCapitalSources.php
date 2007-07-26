@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCapitalSources.php,v 1.13 2007/07/24 18:22:08 olivleh1 Exp $
+# $Id: moduleCapitalSources.php,v 1.14 2007/07/26 17:56:27 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -76,6 +76,8 @@ class moduleCapitalSources extends module {
 					break;
 				}
 			default:
+				$coreText = new coreText();
+				
 				if( $capitalsourceid > 0 ) {
 					if( !is_array($all_data) ) {
 						$all_data=$this->coreCapitalSources->get_id_data( $capitalsourceid );

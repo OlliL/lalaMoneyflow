@@ -5,7 +5,7 @@
 					<th width="9%"><a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$MONTH.nummeric}&reports_year={$YEAR}&reports_sortby=moneyflows_bookingdate&reports_order={$ORDER}" >{$TEXT_16}</a></th>
 					<th width="9%"><a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$MONTH.nummeric}&reports_year={$YEAR}&reports_sortby=moneyflows_invoicedate&reports_order={$ORDER}" >{$TEXT_17}</a></th>
 					<th width="10%"><a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$MONTH.nummeric}&reports_year={$YEAR}&reports_sortby=moneyflows_amount&reports_order={$ORDER}"     >{$TEXT_18}</a></th>
-					<th width="16%"><a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$MONTH.nummeric}&reports_year={$YEAR}&reports_sortby=contractpartners_name&reports_order={$ORDER}" >{$TEXT_20}</a></th>
+					<th width="16%"><a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$MONTH.nummeric}&reports_year={$YEAR}&reports_sortby=contractpartners_name&reports_order={$ORDER}" >{$TEXT_2}</a></th>
 					<th ><a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$MONTH.nummeric}&reports_year={$YEAR}&reports_sortby=moneyflows_comment&reports_order={$ORDER}"               >{$TEXT_21}</a></th>
 					<th width="22%"><a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$MONTH.nummeric}&reports_year={$YEAR}&reports_sortby=capitalsources_comment&reports_order={$ORDER}">{$TEXT_19}</a></th>
 					<th width="2%">&nbsp</th>
@@ -48,8 +48,8 @@
 				</tr>
 				{section name=DATA loop=$SUMMARY_DATA}
 					<tr>
-						<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].type}</td>
-						<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].state}</td>
+						<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].typecomment}</td>
+						<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].statecomment}</td>
 						<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].comment}</td>
 						<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].lastamount < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].lastamount|number_format} {$CURRENCY}</font></td>
 						{if $MONTHLYSETTLEMENT_EXISTS == true}

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreText.php,v 1.5 2007/07/26 15:36:52 olivleh1 Exp $
+# $Id: coreText.php,v 1.6 2007/07/26 17:56:26 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -54,5 +54,18 @@ class coreText extends core {
 
 	function get_graph( $id ) {
 		return $this->get_text( $id, 'g' );
+	}
+
+	function get_dbtext( $id ) {
+		return $this->get_text( $id, 'd' );
+	}
+
+	function real_get_enum_values( $table, $column ) {
+		$definition=$this->select_row( "SHOW COLUMNS FROM $table LIKE '$column'" );
+
+		$enum = str_replace( 'enum(', '', $definition['Type'] );
+		$enum = ereg_replace( '\\)$', '', $enum );
+
+		return $this->select_rows( "SELECT enumvalue,text FROM vw_enumvalues_text WHERE enumvalue IN ($enum) AND mur_userid = ".USERID);
 	}
 }

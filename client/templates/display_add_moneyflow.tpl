@@ -22,7 +22,7 @@ function onload() {
 					<th>{$TEXT_16}</th>
 					<th>{$TEXT_17}</th>
 					<th>{$TEXT_18}</th>
-					<th>{$TEXT_20}</th>
+					<th>{$TEXT_2}</th>
 					<th>{$TEXT_21}</th>
 					<th>{$TEXT_19}</th>
 				</tr>

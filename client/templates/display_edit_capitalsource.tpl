@@ -26,12 +26,12 @@
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]"       value="{$ALL_DATA.comment}" /></td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[type]"  size=1>
 					{section name=TYPE loop=$TYPE_VALUES}
-						<option {if $TYPE_VALUES[TYPE]   == $ALL_DATA.type}selected{/if} > {$TYPE_VALUES[TYPE]}
+						<option {if $TYPE_VALUES[TYPE].enumvalue   == $ALL_DATA.type}selected{/if} value="{$TYPE_VALUES[TYPE].enumvalue}" > {$TYPE_VALUES[TYPE].text}
 					{/section}
 					</select></td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[state]" size=1>
 					{section name=STATE loop=$STATE_VALUES}
-						<option {if $STATE_VALUES[STATE] == $ALL_DATA.state}selected{/if}> {$STATE_VALUES[STATE]}
+						<option {if $STATE_VALUES[STATE].enumvalue == $ALL_DATA.state}selected{/if} value="{$STATE_VALUES[STATE].enumvalue}"> {$STATE_VALUES[STATE].text}
 					{/section}
 					</select></td>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[accountnumber]" value="{$ALL_DATA.accountnumber}" /></td>

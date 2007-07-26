@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: core.php,v 1.17 2007/07/25 16:03:37 olivleh1 Exp $
+# $Id: core.php,v 1.18 2007/07/26 17:56:26 olivleh1 Exp $
 #
 
 require_once 'DB.php';
@@ -140,16 +140,7 @@ class core {
 		return $ret;
 	}
 
-	function real_get_enum_values( $table, $column ) {
-		$definition=$this->select_row( "SHOW COLUMNS FROM $table LIKE '$column'" );
 
-		$enum = str_replace( 'enum(', '', $definition['Type'] );
-		$enum = ereg_replace( '\\)$', '', $enum );
-		$enum = explode( '\',\'', substr( $enum, 1, -1 ) );
-
-		return $enum;
-	}
-	
 	function make_date( $date ) {
 		if( empty($date) ) {
 			$date='NOW()';

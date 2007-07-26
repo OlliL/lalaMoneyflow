@@ -23,6 +23,7 @@ mysqldump -u root --set-variable=triggers=FALSE --set-variable=quote-names=FALSE
 	languages \
 	templates \
 	text \
+	enumvalues \
 		> ${PROGPATH}/mysqldump.sql
 
 mysqldump -u root --set-variable=quote-names=FALSE --set-variable=extended-insert=FALSE --default-character-set=latin1 --tables moneyflow \
@@ -31,6 +32,7 @@ mysqldump -u root --set-variable=quote-names=FALSE --set-variable=extended-inser
 	languages \
 	text \
 	templates \
+	enumvalues \
 		|grep INSERT >> ${PROGPATH}/mysqldump.sql
 
 cat << EOF >> ${PROGPATH}/mysqldump.sql

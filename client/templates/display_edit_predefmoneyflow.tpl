@@ -1,6 +1,6 @@
 <html>
 {if $CLOSE != 1}
-	<head><title>lalaMoneyflow: {if $ALL_DATA.id > 0}{$TEXT_49}{else}{$TEXT_50}{/if}</title>
+	<head><title>lalaMoneyflow: {if $ALL_DATA.id > 0}{$TEXT_49}{else}{$TEXT_12}{/if}</title>
 {$HEADER}
 
 		<td align="center">
@@ -15,7 +15,7 @@
 			<table border=0>
 				<tr>
 					<th>{$TEXT_18}</th>
-					<th>{$TEXT_20}</th>
+					<th>{$TEXT_2}</th>
 					<th>{$TEXT_21}</th>
 					<th>{$TEXT_19}</th>
 				</tr>

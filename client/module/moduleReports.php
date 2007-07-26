@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.29 2007/07/26 15:36:54 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.30 2007/07/26 17:56:27 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -97,34 +97,36 @@ class moduleReports extends module {
 		if( is_array( $all_moneyflow_data ) ) {
 			$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
-			$all_capitalsources_ids=$this->coreCapitalSources->get_valid_ids();
+			$all_capitalsources_ids = $this->coreCapitalSources->get_valid_ids();
 
-			$i=0;
-			$lastamount=0;
-			$fixamount=0;
-			$calcamount=0;
+			$i          = 0;
+			$lastamount = 0;
+			$fixamount  = 0;
+			$calcamount = 0;
 			foreach( $all_capitalsources_ids as $capitalsources_id ) {
-				$summary_data[$i]['capitalsourceid']=$capitalsources_id;
-				$summary_data[$i]['comment']=$this->coreCapitalSources->get_comment( $capitalsources_id );
-				$summary_data[$i]['type']=$this->coreCapitalSources->get_type( $capitalsources_id );
-				$summary_data[$i]['state']=$this->coreCapitalSources->get_state( $capitalsources_id );
-				$summary_data[$i]['lastamount']=$this->coreMonthlySettlement->get_amount( $capitalsources_id, date( 'm', mktime( 0, 0, 0, $month-1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1, $year ) ) );
-				$summary_data[$i]['fixamount']=$this->coreMonthlySettlement->get_amount( $capitalsources_id, $month,$year );
-				$summary_data[$i]['calcamount']=round( $summary_data[$i]['lastamount']+$this->coreMoneyFlows->get_monthly_capitalsource_movement( $capitalsources_id, $month, $year ), 2 );
-				$summary_data[$i]['difference']=$summary_data[$i]['fixamount']-$summary_data[$i]['calcamount'];
+				$type  = $this->coreCapitalSources->get_type( $capitalsources_id );;
+				$state = $this->coreCapitalSources->get_state( $capitalsources_id );
+				$summary_data[$i]['capitalsourceid'] = $capitalsources_id;
+				$summary_data[$i]['comment']         = $this->coreCapitalSources->get_comment( $capitalsources_id );
+				$summary_data[$i]['typecomment']     = $type['typecomment'];
+				$summary_data[$i]['statecomment']    = $state['statecomment'];
+				$summary_data[$i]['lastamount']      = $this->coreMonthlySettlement->get_amount( $capitalsources_id, date( 'm', mktime( 0, 0, 0, $month-1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1, $year ) ) );
+				$summary_data[$i]['fixamount']       = $this->coreMonthlySettlement->get_amount( $capitalsources_id, $month,$year );
+				$summary_data[$i]['calcamount']      = round( $summary_data[$i]['lastamount']+$this->coreMoneyFlows->get_monthly_capitalsource_movement( $capitalsources_id, $month, $year ), 2 );
+				$summary_data[$i]['difference']      = $summary_data[$i]['fixamount']-$summary_data[$i]['calcamount'];
 
-				$lastamount+=$summary_data[$i]['lastamount'];
-				$mon_calcamount+=$summary_data[$i]['calcamount'];
-				$fixamount+=$summary_data[$i]['fixamount'];
+				$lastamount     += $summary_data[$i]['lastamount'];
+				$mon_calcamount += $summary_data[$i]['calcamount'];
+				$fixamount      += $summary_data[$i]['fixamount'];
 
 				$i++;
 			}
 
-			$yea_calculatedturnover+=round( $summary_data[$i]['lastamount']+$this->coreMoneyFlows->get_year_capitalsource_movement( $month, $year ), 2 );
+			$yea_calculatedturnover += round( $summary_data[$i]['lastamount']+$this->coreMoneyFlows->get_year_capitalsource_movement( $month, $year ), 2 );
 
-			$monthlysettlement_exists=$this->coreMonthlySettlement->monthlysettlement_exists( $month, $year );
+			$monthlysettlement_exists = $this->coreMonthlySettlement->monthlysettlement_exists( $month, $year );
 
-			$firstamount=$this->coreMonthlySettlement->get_sum_amount( 12, $year-1 );
+			$firstamount = $this->coreMonthlySettlement->get_sum_amount( 12, $year-1 );
 
 			$month = array(
 				'nummeric' => sprintf( '%02d', $month ),

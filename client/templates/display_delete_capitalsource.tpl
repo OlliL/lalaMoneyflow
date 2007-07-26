@@ -25,8 +25,8 @@
 				</tr>
 				<tr>
 					<td class="contrastbgcolor">{$ALL_DATA.comment}</td>
-					<td class="contrastbgcolor">{$ALL_DATA.type}</td>
-					<td class="contrastbgcolor">{$ALL_DATA.state}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.typecomment}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.statecomment}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.accountnumber}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.bankcode}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.validfrom}</td>

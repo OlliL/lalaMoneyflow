@@ -24,11 +24,12 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.22 2007/07/26 15:36:52 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.23 2007/07/26 17:56:26 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
 require_once 'core/coreMoneyFlows.php';
+require_once 'core/coreText.php';
 
 class coreCapitalSources extends core {
 
@@ -48,27 +49,30 @@ class coreCapitalSources extends core {
 	function get_all_data() {
 		return $this->select_rows( '	SELECT capitalsourceid
 						      ,type
+						      ,typecomment
 						      ,state
+						      ,statecomment
 						      ,accountnumber
 						      ,bankcode
 						      ,comment
 						      ,validtil
 						      ,validfrom
-						  FROM capitalsources
+						  FROM vw_capitalsources_text
 						 WHERE mur_userid = '.USERID.'
 						 ORDER BY capitalsourceid' );
 	}
 
 	function get_id_data( $id ) {
 		return $this->select_row( "	SELECT capitalsourceid
-						      ,type
+						      ,typecomment
 						      ,state
+						      ,statecomment
 						      ,accountnumber
 						      ,bankcode
 						      ,comment
 						      ,validtil
 						      ,validfrom
-						  FROM capitalsources
+						  FROM vw_capitalsources_text
 						 WHERE capitalsourceid = $id
 						   AND mur_userid      = ".USERID."
 						 LIMIT 1" );
@@ -83,14 +87,15 @@ class coreCapitalSources extends core {
 
 	function get_all_matched_data( $letter ) {
 		return $this->select_rows( "	SELECT capitalsourceid
-						      ,type
+						      ,typecomment
 						      ,state
+						      ,statecomment
 						      ,accountnumber
 						      ,bankcode
 						      ,comment
 						      ,validtil
 						      ,validfrom
-						  FROM capitalsources
+						  FROM vw_capitalsources_text
 						 WHERE UPPER(comment) LIKE UPPER('$letter%')
 						   AND mur_userid = ".USERID."
 						 ORDER BY comment" );
@@ -137,11 +142,13 @@ class coreCapitalSources extends core {
 	}
 
 	function get_enum_type() {
-		return $this->real_get_enum_values( 'capitalsources', 'type' );
+		$coreText = new coreText();
+		return $coreText->real_get_enum_values( 'capitalsources', 'type' );
 	}
 
 	function get_enum_state() {
-		return $this->real_get_enum_values( 'capitalsources', 'state' );
+		$coreText = new coreText();
+		return $coreText->real_get_enum_values( 'capitalsources', 'state' );
 	}
 
 	function get_comment( $id ) {
@@ -153,16 +160,18 @@ class coreCapitalSources extends core {
 	}
 
 	function get_type( $id ) {
-		return $this->select_col( "	SELECT type
-						  FROM capitalsources
+		return $this->select_row( "	SELECT type
+						      ,typecomment
+						  FROM vw_capitalsources_text
 						 WHERE capitalsourceid = $id
 						   AND mur_userid      = ".USERID."
 						 LIMIT 1" );
 	}
 
 	function get_state( $id ) {
-		return $this->select_col( "	SELECT state
-						  FROM capitalsources
+		return $this->select_row( "	SELECT state
+						      ,statecomment
+						  FROM vw_capitalsources_text
 						 WHERE capitalsourceid = $id
 						   AND mur_userid      = ".USERID."
 						 LIMIT 1" );
@@ -201,7 +210,7 @@ class coreCapitalSources extends core {
 		} else {
 			$validtil  = $this->make_date($validtil);
 			$validfrom = $this->make_date($validfrom);
-			return $this->update_row( "	UPDATE capitalsources
+			return $this->update_row("	UPDATE capitalsources
 							   SET type          = '$type'
 							      ,state         = '$state'
 							      ,accountnumber = '$accountnumber'
