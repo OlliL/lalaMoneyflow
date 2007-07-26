@@ -22,6 +22,7 @@ mysqldump -u root --set-variable=triggers=FALSE --set-variable=quote-names=FALSE
 	predefmoneyflows \
 	languages \
 	templates \
+	templatevalues \
 	text \
 	domains \
 	domainvalues \
@@ -33,6 +34,7 @@ mysqldump -u root --set-variable=quote-names=FALSE --set-variable=extended-inser
 	languages \
 	text \
 	templates \
+	templatevalues \
 	domains \
 	domainvalues \
 		|grep INSERT >> ${PROGPATH}/mysqldump.sql
