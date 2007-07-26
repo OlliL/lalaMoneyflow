@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: core.php,v 1.18 2007/07/26 17:56:26 olivleh1 Exp $
+# $Id: core.php,v 1.19 2007/07/26 20:20:18 olivleh1 Exp $
 #
 
 require_once 'DB.php';
@@ -41,7 +41,8 @@ class core {
 
 	function query( $query ) {
 #		$this->timer->mStart();
-#		echo "<pre>".str_replace("	","",$query)."</pre>";
+#		$query = str_replace("	","",$query);
+#		echo '<pre><a href="explain.php?query='.urlencode($query).'">'.$query.'</a></pre>';
 		$result=$this->db->query( $query );
 #		$this->timer->mPrintTime();
 		return $result;

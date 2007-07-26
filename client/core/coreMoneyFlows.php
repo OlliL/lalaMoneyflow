@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.28 2007/07/26 15:36:52 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.29 2007/07/26 20:20:18 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -317,9 +317,10 @@ class coreMoneyFlows extends core {
 					$params['pattern'] = str_replace('\]','\\\]',$params['pattern']);
 					$params['pattern'] = str_replace('\[','\\\[',$params['pattern']);
 				}
-				else
+				else {
 					$LIKE    = 'LIKE';
 					$params['pattern'] = '%'.$params['pattern'].'%';
+				}
 				if( $params['casesensitive'] == 1 )
 					$LIKE   .=' BINARY';
 			}
