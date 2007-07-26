@@ -262,7 +262,7 @@ CREATE TABLE domainvalues (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-07-26 18:48:13
+-- Dump completed on 2007-07-26 19:03:28
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -963,6 +963,19 @@ INSERT INTO templatevalues VALUES ('display_delete_currencies.tpl',117);
 INSERT INTO templatevalues VALUES ('display_delete_currencies.tpl',118);
 INSERT INTO domains VALUES ('CAPITALSOURCE_STATE');
 INSERT INTO domains VALUES ('CAPITALSOURCE_TYPE');
+INSERT INTO domains VALUES ('MONTHS');
+INSERT INTO domainvalues VALUES ('MONTHS','1',155);
+INSERT INTO domainvalues VALUES ('MONTHS','2',156);
+INSERT INTO domainvalues VALUES ('MONTHS','3',157);
+INSERT INTO domainvalues VALUES ('MONTHS','4',158);
+INSERT INTO domainvalues VALUES ('MONTHS','5',159);
+INSERT INTO domainvalues VALUES ('MONTHS','6',160);
+INSERT INTO domainvalues VALUES ('MONTHS','7',161);
+INSERT INTO domainvalues VALUES ('MONTHS','8',162);
+INSERT INTO domainvalues VALUES ('MONTHS','9',163);
+INSERT INTO domainvalues VALUES ('MONTHS','10',164);
+INSERT INTO domainvalues VALUES ('MONTHS','11',165);
+INSERT INTO domainvalues VALUES ('MONTHS','12',166);
 INSERT INTO domainvalues VALUES ('CAPITALSOURCE_TYPE','1',173);
 INSERT INTO domainvalues VALUES ('CAPITALSOURCE_TYPE','2',174);
 INSERT INTO domainvalues VALUES ('CAPITALSOURCE_STATE','1',175);

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreDomains.php,v 1.1 2007/07/26 18:32:36 olivleh1 Exp $
+# $Id: coreDomains.php,v 1.2 2007/07/26 19:04:37 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -40,6 +40,10 @@ class coreDomains extends core {
 		                                      ,domain_meaning('$domain',value,".USERID.") text
 						  FROM domainvalues
 						 WHERE mdm_domain = '$domain'");
+	}
+	
+	function get_domain_meaning( $domain, $value ) {
+		return $this->exec_function( "domain_meaning( '$domain', '$value', ".USERID.")" );
 	}
 	
 }

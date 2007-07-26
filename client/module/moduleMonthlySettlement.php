@@ -24,14 +24,14 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.22 2007/07/26 15:36:54 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.23 2007/07/26 19:04:38 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
 require_once 'core/coreCurrencies.php';
 require_once 'core/coreMonthlySettlement.php';
-require_once 'core/coreText.php';
+require_once 'core/coreDomains.php';
 
 class moduleMonthlySettlement extends module {
 
@@ -41,7 +41,7 @@ class moduleMonthlySettlement extends module {
 		$this->coreCurrencies=new coreCurrencies();
 		$this->coreMoneyFlows=new coreMoneyFlows();
 		$this->coreMonthlySettlement=new coreMonthlySettlement();
-		$this->coreText=new coreText();
+		$this->coreDomains=new coreDomains();
 	}
 
 	function display_list_monthlysettlements( $month, $year ) {
@@ -55,7 +55,7 @@ class moduleMonthlySettlement extends module {
 			foreach( $temp_months as $key => $value ) {
 				$months[] = array(
 					'nummeric' => sprintf( '%02d', $value ),
-					'name'     => $this->coreText->get_month( $value )
+					'name'     => $this-> coreDomains->get_domain_meaning( 'MONTHS', (int)$value )
 				);
 			}
 		}
@@ -74,7 +74,7 @@ class moduleMonthlySettlement extends module {
 
 			$month = array(
 				'nummeric' => sprintf( '%02d', $month ),
-				'name'     => $this->coreText->get_month( $month )
+				'name'     => $this-> coreDomains->get_domain_meaning( 'MONTHS', (int)$month )
 			);
 
 			$this->template->assign( 'SUMAMOUNT',      $sumamount         );
@@ -164,7 +164,7 @@ class moduleMonthlySettlement extends module {
 
 					$month = array(
 						'nummeric' => sprintf( '%02d', $month ),
-						'name'     => $this->coreText->get_month( $month )
+						'name'     => $this-> coreDomains->get_domain_meaning( 'MONTHS', (int)$month )
 					);
 					$this->template->assign( 'MONTH',          $month             );
 					$this->template->assign( 'YEAR' ,          $year              );
@@ -204,7 +204,7 @@ class moduleMonthlySettlement extends module {
 
 				$month = array(
 					'nummeric' => sprintf( '%02d', $month ),
-					'name'     => $this->coreText->get_month( $month )
+					'name'     => $this-> coreDomains->get_domain_meaning( 'MONTHS', (int)$month )
 				);
 				$this->template->assign( 'SUMAMOUNT',      $sumamount         );
 				$this->template->assign( 'MONTH',          $month             );

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreText.php,v 1.7 2007/07/26 18:32:36 olivleh1 Exp $
+# $Id: coreText.php,v 1.8 2007/07/26 19:04:38 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -44,10 +44,6 @@ class coreText extends core {
 					 	 LIMIT 1" );
 	}
 	
-	function get_month( $id ) {
-		return $this->get_text( $id+154, 'm' );  # month are starting with textid=155
-	}
-
 	function get_error( $id ) {
 		return $this->get_text( $id, 'e' );
 	}
@@ -55,9 +51,4 @@ class coreText extends core {
 	function get_graph( $id ) {
 		return $this->get_text( $id, 'g' );
 	}
-
-	function get_dbtext( $id ) {
-		return $this->get_text( $id, 'd' );
-	}
-
 }
