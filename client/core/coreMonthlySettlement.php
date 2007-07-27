@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMonthlySettlement.php,v 1.20 2007/07/27 06:42:26 olivleh1 Exp $
+# $Id: coreMonthlySettlement.php,v 1.21 2007/07/27 22:28:28 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -35,9 +35,10 @@ class coreMonthlySettlement extends core {
 		$this->core();
 	}
 
-	function get_amount( $sourceid, $month, $year ) {
+	function get_data( $sourceid, $month, $year ) {
 		$date = $this->make_date( $year."-".$month."-01" );
-		return $this->select_col( "	SELECT calc_amount(amount,'OUT',mur_userid,LAST_DAY($date)) amount
+		return $this->select_row( "	SELECT calc_amount(amount,'OUT',mur_userid,LAST_DAY($date)) amount
+						      ,movement_calculated
 						  FROM monthlysettlements
 						 WHERE mcs_capitalsourceid = $sourceid
 						   AND month               = $month
@@ -46,14 +47,25 @@ class coreMonthlySettlement extends core {
 						 LIMIT 1" );
 	}
 
-	function get_sum_amount( $month, $year ) {
+	function get_sum_data( $month, $year ) {
 		$date = $this->make_date( $year."-".$month."-01" );
-		return $this->select_col( "	SELECT SUM(calc_amount(amount,'OUT',mur_userid,LAST_DAY($date))) amount
+		return $this->select_row( "	SELECT SUM(calc_amount(amount,'OUT',mur_userid,LAST_DAY($date))) amount
+						      ,SUM(movement_calculated) movement_calculated
 						  FROM monthlysettlements
 						 WHERE month      = $month
 						   AND year       = $year
 						   AND mur_userid = ".USERID."
 						 LIMIT 1" );
+	}
+
+	function get_amount( $sourceid, $month, $year ) {
+		$result = $this->get_data( $sourceid, $month, $year );
+		return $result['amount'];
+	}
+
+	function get_sum_amount( $month, $year ) {
+		$result = $this->get_sum_data( $month, $year );
+		return $result['amount'];
 	}
 
 	function monthlysettlement_exists( $month, $year, $sourceid = 0 ) {
@@ -73,7 +85,7 @@ class coreMonthlySettlement extends core {
 							   AND mur_userid          = ".USERID."
 							 LIMIT 1" );
 
-		if( $result == 1 )
+		if( $result === '1' )
 			return true;
 		else
 			return false;
@@ -109,6 +121,17 @@ class coreMonthlySettlement extends core {
 		} 
 	}
 
+
+	function get_year_movement( $month, $year ) {
+
+		$ret = $this->select_row( "	SELECT SUM(movement_calculated) movement_calculated
+						      ,MAX(month) month
+						  FROM monthlysettlements
+						 WHERE mur_userid = ".USERID."
+						   AND year   = $year
+						   AND month <= $month" );
+		return $ret;
+	}
 
 	function delete_monthlysettlement( $month, $year ) {
 		$this->delete_row( "     DELETE FROM monthlysettlements

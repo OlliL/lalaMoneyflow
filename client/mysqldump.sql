@@ -144,9 +144,10 @@ CREATE TABLE monthlysettlements (
   mur_userid int(10) unsigned NOT NULL,
   monthlysettlementid int(10) NOT NULL auto_increment,
   mcs_capitalsourceid int(10) unsigned NOT NULL,
-  `month` tinyint(4) NOT NULL default '0',
+  `month` tinyint(4) unsigned NOT NULL default '0',
   `year` year(4) NOT NULL default '0000',
   amount float(8,2) NOT NULL default '0.00',
+  movement_calculated float(8,2) default NULL,
   PRIMARY KEY  (monthlysettlementid,mur_userid),
   UNIQUE KEY mms_i_01 (mur_userid,`month`,`year`,mcs_capitalsourceid),
   KEY mms_mcs_pk (mcs_capitalsourceid,mur_userid),
@@ -262,7 +263,7 @@ CREATE TABLE domainvalues (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-07-27  9:39:11
+-- Dump completed on 2007-07-27 22:20:12
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.33 2007/07/27 06:42:29 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.34 2007/07/27 22:28:29 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -182,5 +182,28 @@ class moduleMoneyFlows extends module {
 			
 	}
 
+	function display_delete_moneyflow( $realaction, $id ) {
+
+		switch( $realaction ) {
+			case 'yes':
+				if( $this->coreMoneyFlows->delete_moneyflow( $id ) ) {
+					$this->template->assign( 'CLOSE', 1 );
+					break;
+				}
+
+			default:
+				$all_data = $this->coreMoneyFlows->get_id_data( $id );
+				$all_data['capitalsource_comment'] = $this->coreCapitalSources->get_comment( $all_data['mcs_capitalsourceid'] );
+				$all_data['contractpartner_name']  = $this->coreContractPartners->get_name( $all_data['mcp_contractpartnerid'] );
+				$this->template->assign( 'ALL_DATA', $all_data );
+				break;
+		}
+
+		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
+		$this->template->assign( 'ERRORS',   $this->get_errors() );
+
+		$this->parse_header( 1 );
+		return $this->fetch_template( 'display_delete_moneyflow.tpl' );
+	}
 }
 ?>

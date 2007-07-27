@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.30 2007/07/27 06:42:26 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.31 2007/07/27 22:28:28 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -168,15 +168,11 @@ class coreMoneyFlows extends core {
 		return $movement;
 	}
 
-	function get_year_capitalsource_movement( $month, $year ) {
-		$start =  $this->make_date($year."-01-01");
-		if( empty( $month ) ) {
-			$end =  $this->make_date($year."-12-31");
-		} else {
-			$end   = 'LAST_DAY('.$this->make_date($year."-".$month."-01").')';
-		}
+	function get_range_movement( $startmonth, $endmonth, $year ) {
+		$start = $this->make_date($year.'-'.$startmonth.'-01');
+		$end   = 'LAST_DAY('.$this->make_date($year.'-'.$endmonth.'-01').')';
 
-		$movement=$this->select_col( "	SELECT SUM(calc_amount(amount,'OUT',mur_userid,invoicedate)) amount
+		$movement = $this->select_col( "SELECT SUM(calc_amount(amount,'OUT',mur_userid,invoicedate)) amount
 						  FROM moneyflows
 						 WHERE mur_userid = ".USERID."
 						   AND bookingdate  BETWEEN $start AND $end" );
@@ -209,17 +205,17 @@ class coreMoneyFlows extends core {
 	}
 
 	function get_capitalsourceid( $id ) {
-		return $this->select_col( "	SELECT capitalsourceid
+		return $this->select_col( "	SELECT mcs_capitalsourceid
 						  FROM moneyflows
 						 WHERE moneyflowid = $id
 						   AND mur_userid  = ".USERID );
 	}
 
 	function update_moneyflow( $id, $bookingdate, $invoicedate, $amount, $capitalsourceid, $contractpartnerid, $comment ) {
-		$bookingdate = $this->make_date($bookingdate);
-		$invoicedate = $this->make_date($invoicedate);
 		$coreCapitalSources = new coreCapitalSources();
 		if( $coreCapitalSources->id_is_valid( $capitalsourceid, $bookingdate ) ) {
+			$bookingdate = $this->make_date($bookingdate);
+			$invoicedate = $this->make_date($invoicedate);
 			if( fix_amount( $amount ) ) {
 				return $this->update_row( "	UPDATE moneyflows
 								   SET bookingdate           = $bookingdate

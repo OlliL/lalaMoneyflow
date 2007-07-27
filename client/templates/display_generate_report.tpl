@@ -11,7 +11,6 @@
 					<th width="2%">&nbsp</th>
 					<th width="3%">&nbsp</th>
 				</tr>
-				{assign var=MON_CALCULATEDTURNOVER value=0}
 				{section name=DATA loop=$ALL_MONEYFLOW_DATA}
 					<tr>
 						<td class="contrastbgcolor"><p style="margin-left:8px;">{$ALL_MONEYFLOW_DATA[DATA].bookingdate}</p></td>
@@ -23,7 +22,6 @@
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&sr=1','_blank','width=1024,height=80')">{$TEXT_36}</a></td>
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&sr=1','_blank','width=1024,height=80')">{$TEXT_37}</a></td>
 					</tr>
-					{math equation="x + y" x=$ALL_MONEYFLOW_DATA[DATA].amount y=$MON_CALCULATEDTURNOVER assign=MON_CALCULATEDTURNOVER}
 				{/section}
 				<tr>
 					<td></td>

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.33 2007/07/27 09:41:21 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.34 2007/07/27 22:28:29 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -85,6 +85,12 @@ class moduleReports extends module {
 
 	function generate_report( $month, $year, $sortby, $order ) {
 
+		$lastamount                = 0;
+		$fixamount                 = 0;
+		$movement_calculated_month = 0;
+		$calcamount                = 0;
+		$i                         = 0;
+
 		switch( $order ) {
 			case 'DESC':	$neworder='ASC';
 					break;
@@ -99,34 +105,80 @@ class moduleReports extends module {
 		if( is_array( $all_moneyflow_data ) ) {
 			$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
-			$all_capitalsources_ids = $this->coreCapitalSources->get_valid_ids();
+			# 1. check if there is already a monthly settlement entered in mms
+			$mms_exists = $this->coreMonthlySettlement->monthlysettlement_exists( $month, $year );
 
-			$i              = 0;
-			$lastamount     = 0; # the monthly settlement amount of a all capitalsources from the previous month
-			$fixamount      = 0; # the monthly settlement amount of a all capitalsources from the actual month
-			$mon_calcamount = 0; # the calculated amount (using last monthly settlement + flows from the actual month)
-			foreach( $all_capitalsources_ids as $capitalsources_id ) {
-				$type  = $this->coreCapitalSources->get_type( $capitalsources_id );;
-				$state = $this->coreCapitalSources->get_state( $capitalsources_id );
-				$summary_data[$i]['capitalsourceid'] = $capitalsources_id;
-				$summary_data[$i]['comment']         = $this->coreCapitalSources->get_comment( $capitalsources_id );
-				$summary_data[$i]['typecomment']     = $type['typecomment'];
-				$summary_data[$i]['statecomment']    = $state['statecomment'];
-				$summary_data[$i]['lastamount']      = $this->coreMonthlySettlement->get_amount( $capitalsources_id, date( 'm', mktime( 0, 0, 0, $month-1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1, $year ) ) );
-				$summary_data[$i]['fixamount']       = $this->coreMonthlySettlement->get_amount( $capitalsources_id, $month,$year );
-				$summary_data[$i]['calcamount']      = round( $summary_data[$i]['lastamount']+$this->coreMoneyFlows->get_monthly_capitalsource_movement( $capitalsources_id, $month, $year ), 2 );
-				$summary_data[$i]['difference']      = $summary_data[$i]['fixamount']-$summary_data[$i]['calcamount'];
+			# 2. go through all capitalsources and determine there
+			#      a) comment
+			#      b) type comment
+			#      c) state comment
+			#      d) amount they had at the end of the previous month
+			#      e) amount they had at the end of the month (if mms_exists)
+			#      f) movement during the month
+			#      g) amount they should had at the end of the month
+			#      h) differnece between e and f (if mms_exists)
 
-				$lastamount     += $summary_data[$i]['lastamount'];
-				$mon_calcamount += $summary_data[$i]['calcamount'];
-				$fixamount      += $summary_data[$i]['fixamount'];
+			$all_capitalsources = $this->coreCapitalSources->get_valid_data( $year.'-'.$month.'-01' );
+			foreach( $all_capitalsources as $capitalsource ) {
+				$capitalsourceid = $capitalsource['capitalsourceid'];
+				
+				$summary_data[$i]['comment']            = $capitalsource['comment'];
+				$summary_data[$i]['typecomment']        = $capitalsource['typecomment'];
+				$summary_data[$i]['statecomment']       = $capitalsource['statecomment'];
+				$summary_data[$i]['lastamount']         = $this->coreMonthlySettlement->get_amount( $capitalsourceid, date( 'm', mktime( 0, 0, 0, $month-1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1, $year ) ) );
+				if( $mms_exists === true ) {
+					$settlement_data = $this->coreMonthlySettlement->get_data( $capitalsourceid, $month,$year );
 
+					$summary_data[$i]['fixamount']  = $settlement_data['amount'];
+					$summary_data[$i]['movement']   = round( $settlement_data['movement_calculated'], 2 );
+					$summary_data[$i]['calcamount'] = $summary_data[$i]['lastamount'] + $summary_data[$i]['movement'];
+					$summary_data[$i]['difference'] = $summary_data[$i]['fixamount'] - $summary_data[$i]['calcamount'];
+				} else {
+					$summary_data[$i]['movement']   = round( $this->coreMoneyFlows->get_monthly_capitalsource_movement( $capitalsourceid, $month, $year ), 2 );
+					$summary_data[$i]['calcamount'] = $summary_data[$i]['lastamount'] + $summary_data[$i]['movement'];
+				}
+				
+				# 3. sum fields up for various sum statistics
+				#      a) sum the amount of all capitalsources of the last month up
+				#      b) sum the amount of all capitalsources of the month up (if mms_exists)
+				#      c) sum the calculated amount of all capitalsources of the month up
+
+				$lastamount                += $summary_data[$i]['lastamount'];
+				if( $mms_exists === true ) 
+					$fixamount         += $summary_data[$i]['fixamount'];
+				$movement_calculated_month += $summary_data[$i]['movement'];
+				$calcamount                += $summary_data[$i]['calcamount'];
+				
 				$i++;
 			}
+				
+			# 4. retrieve the movement over the year until the selected month by using the values stored in mms
 
-			$yea_calculatedturnover = round( $this->coreMoneyFlows->get_year_capitalsource_movement( $month, $year ), 2 );
+			$movement_calculated_year_data  = $this->coreMonthlySettlement->get_year_movement( $month, $year );
+			$movement_calculated_year       = $movement_calculated_year_data['movement_calculated'];
+			$movement_calculated_year_month = $movement_calculated_year_data['month'];
 
-			$monthlysettlement_exists = $this->coreMonthlySettlement->monthlysettlement_exists( $month, $year );
+			# 4a.if mms doesn't contain all data up to the selected month, retrieve the missing data by using 
+			#    the value calculated for the selected month (if the diference is just this month), or if the
+			#    difference is higher then calculate the missing range vby using mmf
+
+			if( $movement_calculated_year_month != $month ) {
+				$startmonth = date( 'm', mktime( 0, 0, 0, $movement_calculated_year_month+1, 1, $year ) );
+				if( $startmonth == $month ) {
+					$movement_calculated_year += $movement_calculated_month;
+				} else {
+					$movement_calculated_year += $this->coreMoneyFlows->get_range_movement( $startmonth
+					                                                                       ,$month
+					                                                                       ,$year);
+				}
+			}
+
+			# 4b.finally round it
+
+			$movement_calculated_year = round( $movement_calculated_year, 2 );
+
+
+			# 5. select the final amount of the last year (to calculate the turnover/movement since the last year)
 
 			$firstamount = $this->coreMonthlySettlement->get_sum_amount( 12, $year-1 );
 
@@ -140,15 +192,15 @@ class moduleReports extends module {
 			$this->template->assign( 'SORTBY',                   $sortby                   );
 			$this->template->assign( 'ORDER',                    $neworder                 );
 			$this->template->assign( 'SUMMARY_DATA',             $summary_data             );
-			$this->template->assign( 'FIRSTAMOUNT',              $firstamount              );
 			$this->template->assign( 'LASTAMOUNT',               $lastamount               );
+			$this->template->assign( 'FIRSTAMOUNT',              $firstamount              );
 			$this->template->assign( 'FIXAMOUNT',                $fixamount                );
-			$this->template->assign( 'MON_CALCAMOUNT',           $mon_calcamount           );
-			$this->template->assign( 'YEA_CALCULATEDTURNOVER',   $yea_calculatedturnover   );
-			$this->template->assign( 'MONTHLYSETTLEMENT_EXISTS', $monthlysettlement_exists );
+			$this->template->assign( 'MON_CALCAMOUNT',           $calcamount               );
+			$this->template->assign( 'MON_CALCULATEDTURNOVER',   $movement_calculated_month);
+			$this->template->assign( 'YEA_CALCULATEDTURNOVER',   $movement_calculated_year );
+			$this->template->assign( 'MONTHLYSETTLEMENT_EXISTS', $mms_exists               );
 			$this->template->assign( 'CURRENCY',                 $this->coreCurrencies->get_displayed_currency() );
 
-			$this->parse_header();
 			return $this->fetch_template( 'display_generate_report.tpl' );
 		}
 	}

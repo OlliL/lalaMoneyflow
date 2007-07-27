@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.25 2007/07/27 06:42:26 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.26 2007/07/27 22:28:28 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -59,6 +59,24 @@ class coreCapitalSources extends core {
 						      ,validfrom
 						  FROM capitalsources
 						 WHERE mur_userid = ".USERID."
+						 ORDER BY capitalsourceid" );
+	}
+
+	function get_valid_data( $date='' ) {
+		$date = $this->make_date($date);
+		return $this->select_rows( "	SELECT capitalsourceid
+						      ,type
+						      ,domain_meaning('CAPITALSOURCE_TYPE',type,".USERID.") typecomment
+						      ,state
+						      ,domain_meaning('CAPITALSOURCE_STATE',state,".USERID.") statecomment
+						      ,accountnumber
+						      ,bankcode
+						      ,comment
+						      ,validtil
+						      ,validfrom
+						  FROM capitalsources
+						 WHERE $date        BETWEEN validfrom AND validtil
+						   AND mur_userid = ".USERID."
 						 ORDER BY capitalsourceid" );
 	}
 
