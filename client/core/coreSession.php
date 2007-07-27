@@ -1,6 +1,6 @@
 <?php
 #-
-# Copyright (c) 2005-2006 Oliver Lehmann <oliver@FreeBSD.org>
+# Copyright (c) 2005-2007 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 # SUCH DAMAGE.
 #
 # $MCom: portstools/tinderbox/webui/module/moduleSession.php,v 1.3 2005/07/21 11:28:29 oliver Exp $
-# $Id: coreSession.php,v 1.2 2006/12/19 15:50:55 olivleh1 Exp $
+# $Id: coreSession.php,v 1.3 2007/07/27 06:42:27 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
