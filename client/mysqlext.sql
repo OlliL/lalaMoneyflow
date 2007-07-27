@@ -250,7 +250,7 @@ BEGIN
   DECLARE c_mms CURSOR FOR
     SELECT month
           ,year
-	  ,mcs_capitalsourceid
+          ,mcs_capitalsourceid
       FROM monthlysettlements
      WHERE mur_userid = pi_userid;
 
@@ -262,10 +262,10 @@ BEGIN
     IF l_found THEN
       UPDATE monthlysettlements
          SET movement_calculated = mms_calc_movement_calculated(pi_userid, l_month, l_year, l_capitalsourceid)
-       WHERE month		 = l_month
-         AND year		 = l_year
+       WHERE month               = l_month
+         AND year                = l_year
          AND mcs_capitalsourceid = l_capitalsourceid
-         AND mur_userid 	 = pi_userid;
+         AND mur_userid          = pi_userid;
     END IF;
   UNTIL NOT l_found END REPEAT;
   CLOSE c_mms;
@@ -275,7 +275,7 @@ $$
 DROP PROCEDURE IF EXISTS mmf_trg_procedure$$
 CREATE PROCEDURE mmf_trg_procedure(IN pi_bookingdate     DATE
                                   ,IN pi_userid          INT(10) UNSIGNED
-				  ,IN pi_capitalsourceid INT(10) UNSIGNED
+                                  ,IN pi_capitalsourceid INT(10) UNSIGNED
                                   )
 BEGIN
   DECLARE l_found  BOOLEAN             DEFAULT TRUE;
@@ -298,7 +298,7 @@ BEGIN
     UPDATE monthlysettlements
        SET movement_calculated = mms_calc_movement_calculated(pi_userid, l_month, l_year, pi_capitalsourceid)
      WHERE month               = l_month
-       AND year	               = l_year
+       AND year                = l_year
        AND mcs_capitalsourceid = pi_capitalsourceid
        AND mur_userid          = pi_userid;
   END IF;
