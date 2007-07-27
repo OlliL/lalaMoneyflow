@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleContractPartners.php,v 1.12 2007/07/27 06:42:29 olivleh1 Exp $
+# $Id: moduleContractPartners.php,v 1.13 2007/07/27 09:41:21 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -42,7 +42,7 @@ class moduleContractPartners extends module {
 		$all_index_letters=$this->coreContractPartners->get_all_index_letters();
 		$num_partners = $this->coreContractPartners->count_all_data();
 		
-		if( empty($letter) && $num_partners < MAX_ROWS ) {
+		if( empty($letter) && $num_partners < $this->coreTemplates->get_max_rows() ) {
 			$letter = 'all';
 		}
 

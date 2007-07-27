@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSettings.php,v 1.7 2007/07/27 06:42:29 olivleh1 Exp $
+# $Id: moduleSettings.php,v 1.8 2007/07/27 09:41:21 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -43,13 +43,14 @@ class moduleSettings extends module {
 		$this->coreUsers=new coreUsers();
 	}
 
-	function general_settings( $data_is_valid, $userid, $realaction, $language, $currency ) {
+	function general_settings( $data_is_valid, $userid, $realaction, $language, $currency, $maxrows ) {
 
 		switch( $realaction ) {
 			case 'save':
 				if( $data_is_valid ) {
 					$this->coreSettings->set_displayed_currency( $userid, $currency );
 					$this->coreSettings->set_displayed_language( $userid, $language );
+					$this->coreSettings->set_max_rows( $userid, $maxrows );
 				}
 				break;
 			default:
@@ -59,9 +60,11 @@ class moduleSettings extends module {
 		if( $data_is_valid ) {
 			$this->template->assign( 'CURRENCY',        $this->coreSettings->get_displayed_currency( $userid ) );
 			$this->template->assign( 'LANGUAGE',        $this->coreSettings->get_displayed_language( $userid ) );
+			$this->template->assign( 'MAXROWS',         $this->coreSettings->get_max_rows( $userid )           );
 		} else {
 			$this->template->assign( 'CURRENCY',        $currency );
 			$this->template->assign( 'LANGUAGE',        $language );
+			$this->template->assign( 'MAXROWS',         $maxrows  );
 		}
 
 		$this->template->assign( 'CURRENCY_VALUES', $this->coreCurrencies->get_all_data() );
@@ -71,7 +74,7 @@ class moduleSettings extends module {
 		$this->parse_header();
 	}
 
-	function display_personal_settings( $realaction, $language, $currency, $password1, $password2 ) {
+	function display_personal_settings( $realaction, $language, $currency, $password1, $password2, $maxrows ) {
 
 		$data_is_valid=true;
 		
@@ -91,15 +94,15 @@ class moduleSettings extends module {
 				break;
 		}
 
-		$this->general_settings( $data_is_valid, USERID, $realaction, $language, $currency );
+		$this->general_settings( $data_is_valid, USERID, $realaction, $language, $currency, $maxrows );
 
 		
 		return $this->fetch_template( 'display_personal_settings.tpl' );
 	}
 
-	function display_system_settings( $realaction, $language, $currency ) {
+	function display_system_settings( $realaction, $language, $currency, $maxrows ) {
 
-		$this->general_settings( true, 0, $realaction, $language, $currency );
+		$this->general_settings( true, 0, $realaction, $language, $currency, $maxrows );
 
 		return $this->fetch_template( 'display_system_settings.tpl' );
 	}

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.39 2007/07/27 06:42:26 olivleh1 Exp $
+# $Id: index.php,v 1.40 2007/07/27 09:41:18 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -41,9 +41,11 @@ require_once 'module/moduleSettings.php';
 require_once 'module/moduleUsers.php';
 require_once 'module/moduleCurrencies.php';
 require_once 'module/moduleCurrencyRates.php';
-#require_once 'util/utilTimer.php';
-#$timer = new utilTimer();
-#$timer->mStart();
+if( $money_debug === true ) {
+	require_once 'util/utilTimer.php';
+	$timer = new utilTimer();
+	$timer->mStart();
+}
 
 
 $action=$_POST['action']?$_POST['action']:$_GET['action'];
@@ -99,6 +101,10 @@ if( $is_logged_in == 2 ) {
 
 }
 
+if( $money_debug === true )
+	error_reporting(E_ALL);
+
+
 if( $is_logged_in == 0 ) {
 
 	switch( $action ) {
@@ -150,7 +156,8 @@ if( $is_logged_in == 0 ) {
 			case 'system_settings':		$realaction=		$_REQUEST['realaction'];
 							$language=      	$_REQUEST['language'];
 							$currency=      	$_REQUEST['currency'];
-							$display=$moduleSettings->display_system_settings( $realaction, $language, $currency );
+							$maxrows=		$_REQUEST['maxrows'];
+							$display=$moduleSettings->display_system_settings( $realaction, $language, $currency, $maxrows );
 							break;
 
 			/* currencies */
@@ -330,7 +337,8 @@ if( $is_logged_in == 0 ) {
 							$currency=      	$_REQUEST['currency'];
 							$password1=     	$_REQUEST['password1'];
 							$password2=     	$_REQUEST['password2'];
-							$display=$moduleSettings->display_personal_settings( $realaction, $language, $currency, $password1, $password2 );
+							$maxrows=		$_REQUEST['maxrows'];
+							$display=$moduleSettings->display_personal_settings( $realaction, $language, $currency, $password1, $password2, $maxrows );
 							break;
 
 			default:			$display=$moduleFrontPage->display_main();
@@ -339,5 +347,11 @@ if( $is_logged_in == 0 ) {
 	}
 }
 echo $display;
-#$timer->mPrintTime();
+if( $money_debug === true ) {
+	echo "SQL Queries: ";
+	$timer->mPrintTime( $sql_querytime );
+	echo "<br />";
+	echo "overall: ";
+	$timer->mPrintTime();
+}
 ?>

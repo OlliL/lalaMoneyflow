@@ -11,7 +11,7 @@
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action" value="system_settings">
 			<input type="hidden" name="realaction" value="save">
-			<table border=0>
+			<table border="0" width="300">
 				<tr>
 					<th>{$TEXT_90}</th>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="language" size=1>
@@ -27,6 +27,10 @@
 						<option value="{$CURRENCY_VALUES[CURRENCIES].currencyid}" {if $CURRENCY_VALUES[CURRENCIES].currencyid == $CURRENCY}selected{/if}> {$CURRENCY_VALUES[CURRENCIES].currency}</option>
 					{/section}
 					</select></td>
+				</tr>
+				<tr>
+					<th>{$TEXT_177}</th>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" size="10" value="{$MAXROWS}" /></td>
 				</tr>
 			</table>
 			<br />

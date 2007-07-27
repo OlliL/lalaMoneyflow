@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: explain.php,v 1.2 2007/07/27 06:42:26 olivleh1 Exp $
+# $Id: explain.php,v 1.3 2007/07/27 09:41:18 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -39,7 +39,7 @@ function print_query( $reslink ) {
 		if( $header_printed === false ) {
 			echo "<tr>";
 			foreach( $val as $key => $value ) {
-				echo "<th>".$key."</th";
+				echo "<th>".$key."</th>";
 			}
 			echo "</tr>";
 			$header_printed = true;
@@ -47,7 +47,7 @@ function print_query( $reslink ) {
 	
 		echo "<tr>";
 		foreach( $val as $key => $value ) {
-			echo "<td>".$value."</td";
+			echo "<td>".$value."</td>";
 		}
 		echo "</tr>";
 	}

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreSettings.php,v 1.7 2007/07/27 06:42:27 olivleh1 Exp $
+# $Id: coreSettings.php,v 1.8 2007/07/27 09:41:19 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -79,11 +79,19 @@ class coreSettings extends core {
 		return $this->get_value( $userid, 'displayed_language' );
 	}
 
+	function get_max_rows( $userid ) {
+		return $this->get_value( $userid, 'max_rows' );
+	}
+
 	function set_displayed_currency( $userid, $currency ) {
 		return $this->set_value( $userid, 'displayed_currency', $currency );
 	}
 
 	function set_displayed_language( $userid, $language ) {
 		return $this->set_value( $userid, 'displayed_language', $language );
+	}
+
+	function set_max_rows( $userid, $maxnum ) {
+		return $this->set_value( $userid, 'max_rows', $maxnum );
 	}
 }

@@ -28,12 +28,13 @@ class utilTimer {
         return sprintf( 'elapsed: %03.6f seconds', $this->timer );
     }
 
-    function mPrintTime() {
+    function mPrintTime( $timer = 0 ) {
         global $iscached;
         global $confTimer;
 
-        $endtime = explode( ' ', microtime() );
-        $timer = ( $endtime[1]-$this->timer[1] )+( $endtime[0]-$this->timer[0] );
+	if( $timer === 0 )
+		$timer = $this->mGetTime();
+
         switch( $confTimer ) {
             case 2: printf( '<font color="#FF0000" style="font-family:verdana,sans-serif;font-size:9px;">elapsed: %03.6f seconds, %s', $timer, ' </font>' );
                     break;

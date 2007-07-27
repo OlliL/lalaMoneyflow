@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCurrencies.php,v 1.5 2007/07/27 06:42:29 olivleh1 Exp $
+# $Id: moduleCurrencies.php,v 1.6 2007/07/27 09:41:21 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -42,7 +42,7 @@ class moduleCurrencies extends module {
 		$all_index_letters = $this->coreCurrencies->get_all_index_letters();
 		$num_currencies = $this->coreCurrencies->count_all_data();
 		
-		if( empty($letter) && $num_currencies < MAX_ROWS ) {
+		if( empty($letter) && $num_currencies < $this->coreTemplates->get_max_rows() ) {
 			$letter = 'all';
 		}
 		

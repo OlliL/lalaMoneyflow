@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: core.php,v 1.20 2007/07/27 06:42:26 olivleh1 Exp $
+# $Id: core.php,v 1.21 2007/07/27 09:41:19 olivleh1 Exp $
 #
 
 require_once 'DB.php';
@@ -33,18 +33,27 @@ class core {
 
 	function core() {
 		$this->db = DB::connect( $GLOBALS['dsn'],1 );
-#		$this->timer = new utilTimer();
 		if( DB::isError( $this->db ) ) {
 			die( $this->db->getMessage() );
 		}
 	}
 
 	function query( $query ) {
-#		$this->timer->mStart();
-#		$query = str_replace("	","",$query);
-#		echo '<pre><a href="explain.php?query='.urlencode($query).'">'.$query.'</a></pre>';
+		GLOBAL $money_debug;
+
+		if( $money_debug === true ) {
+			GLOBAL $sql_querytime;
+			$query = str_replace("	","",$query);
+			echo '<a href="explain.php?query='.urlencode($query).'" style="text-decoration:none"><pre>'.$query.'</pre></a>';
+			$timer = new utilTimer();
+			$timer->mStart();
+		}
 		$result=$this->db->query( $query );
-#		$this->timer->mPrintTime();
+		if( $money_debug === true ) {
+			$querytime      = $timer->mGetTime();
+			$sql_querytime += $querytime;
+			$timer->mPrintTime( $querytime );
+		}
 		return $result;
 	}
 
@@ -61,6 +70,7 @@ class core {
 	}
 
 	function select_cols( $query ) {
+		$retval  = false;
 		$reslink = $this->query( $query );
 		if( DB::isError( $reslink ) )
 			die( $reslink->getMessage() );
@@ -82,12 +92,14 @@ class core {
 	}
 
 	function select_rows( $query ) {
+		$retval  = false;
 		$reslink = $this->query( $query );
 		if( DB::isError( $reslink ) )
 			die( $reslink->getMessage() );
 		while ( $val = $reslink->fetchrow( DB_FETCHMODE_ASSOC ) )
-		$retval[]=$val;
+			$retval[] = $val;
 		return $retval;
+		
 	}
 
 	function generic_query( $query ) {

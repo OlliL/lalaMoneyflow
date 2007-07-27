@@ -1,6 +1,4 @@
 - language handling (change translation, add new language) (?)
 
-- put the MAX_ROWS stuff from include.php into settings table
-
 - make the date format which is used in moneyflow's input forms a setting
   parameter

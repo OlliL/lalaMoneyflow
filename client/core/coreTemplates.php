@@ -24,16 +24,17 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreTemplates.php,v 1.4 2007/07/27 06:42:27 olivleh1 Exp $
+# $Id: coreTemplates.php,v 1.5 2007/07/27 09:41:19 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
+require_once 'core/coreSettings.php';
 
 class coreTemplates extends core {
 
 	function coreTemplates() {
 		$this->core();
-	}
+		$this->coreSettings = new coreSettings();	}
 
 	function get_template_text( $name ) {
 		return $this->select_rows( "	SELECT variable
@@ -41,5 +42,9 @@ class coreTemplates extends core {
 						  FROM vw_template_text
 						 WHERE templatename       = '$name'
 						   AND mur_userid = ".USERID );
+	}
+
+	function get_max_rows( ) {
+		return $this->coreSettings->get_max_rows( USERID );
 	}
 }

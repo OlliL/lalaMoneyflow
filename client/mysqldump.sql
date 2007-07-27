@@ -164,7 +164,7 @@ CREATE TABLE predefmoneyflows (
   predefmoneyflowid int(10) unsigned NOT NULL auto_increment,
   amount float(8,2) NOT NULL default '0.00',
   mcs_capitalsourceid int(10) unsigned NOT NULL,
-  mcp_contractpartnerid int(10) unsigned NOT NULL default '0',
+  mcp_contractpartnerid int(10) unsigned NOT NULL,
   `comment` varchar(100) NOT NULL default '',
   createdate date NOT NULL,
   PRIMARY KEY  (predefmoneyflowid,mur_userid),
@@ -262,7 +262,7 @@ CREATE TABLE domainvalues (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-07-26 19:03:28
+-- Dump completed on 2007-07-27  9:39:11
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -617,6 +617,8 @@ INSERT INTO text VALUES (175,1,'non cash','d');
 INSERT INTO text VALUES (175,2,'unbar','d');
 INSERT INTO text VALUES (176,1,'cash','d');
 INSERT INTO text VALUES (176,2,'bar','d');
+INSERT INTO text VALUES (177,1,'maximum number of rows to choose automaticly the \"all\" display','t');
+INSERT INTO text VALUES (177,2,'maximale Anzahl der Zeilen zur automatischen Wahl der \"Alle\" Anzeige','t');
 INSERT INTO templates VALUES ('display_add_moneyflow.tpl');
 INSERT INTO templates VALUES ('display_delete_capitalsource.tpl');
 INSERT INTO templates VALUES ('display_delete_contractpartner.tpl');
@@ -961,6 +963,8 @@ INSERT INTO templatevalues VALUES ('display_edit_currencies.tpl',115);
 INSERT INTO templatevalues VALUES ('display_edit_currencies.tpl',116);
 INSERT INTO templatevalues VALUES ('display_delete_currencies.tpl',117);
 INSERT INTO templatevalues VALUES ('display_delete_currencies.tpl',118);
+INSERT INTO templatevalues VALUES ('display_personal_settings.tpl',177);
+INSERT INTO templatevalues VALUES ('display_system_settings.tpl',177);
 INSERT INTO domains VALUES ('CAPITALSOURCE_STATE');
 INSERT INTO domains VALUES ('CAPITALSOURCE_TYPE');
 INSERT INTO domains VALUES ('MONTHS');

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.32 2007/07/27 06:42:29 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.33 2007/07/27 09:41:21 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -101,10 +101,10 @@ class moduleReports extends module {
 
 			$all_capitalsources_ids = $this->coreCapitalSources->get_valid_ids();
 
-			$i          = 0;
-			$lastamount = 0;
-			$fixamount  = 0;
-			$calcamount = 0;
+			$i              = 0;
+			$lastamount     = 0; # the monthly settlement amount of a all capitalsources from the previous month
+			$fixamount      = 0; # the monthly settlement amount of a all capitalsources from the actual month
+			$mon_calcamount = 0; # the calculated amount (using last monthly settlement + flows from the actual month)
 			foreach( $all_capitalsources_ids as $capitalsources_id ) {
 				$type  = $this->coreCapitalSources->get_type( $capitalsources_id );;
 				$state = $this->coreCapitalSources->get_state( $capitalsources_id );
@@ -124,7 +124,7 @@ class moduleReports extends module {
 				$i++;
 			}
 
-			$yea_calculatedturnover += round( $summary_data[$i]['lastamount']+$this->coreMoneyFlows->get_year_capitalsource_movement( $month, $year ), 2 );
+			$yea_calculatedturnover = round( $this->coreMoneyFlows->get_year_capitalsource_movement( $month, $year ), 2 );
 
 			$monthlysettlement_exists = $this->coreMonthlySettlement->monthlysettlement_exists( $month, $year );
 
