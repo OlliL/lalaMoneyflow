@@ -44,6 +44,7 @@ INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('admin',
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('','',0,0,0);
 UPDATE users SET id=0 WHERE username='';
 INSERT INTO settings VALUES (0,'displayed_currency','1'),(0,'displayed_language','1'),(0,'max_rows','40'),(0,'date_format','YYYY-MM-DD');
+INSERT INTO settings (SELECT (SELECT userid FROM users WHERE name='admin'),name,value FROM settings WHERE mur_userid=0);
 EOF
 
 sed -i.bak "s/\\\'/''/g" ${PROGPATH}/mysqldump.sql && rm -f ${PROGPATH}/mysqldump.sql.bak

@@ -1,5 +1,5 @@
 <html>
-	<head><title>lalaMoneyflow: {$TEXT_1}</title>
+	<head><title>lalaMoneyflow: {$TEXT_110}</title>
 {$HEADER}
 
 		<td align="center" valign="top">
