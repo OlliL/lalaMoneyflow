@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.35 2007/07/28 19:33:58 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.36 2007/07/28 20:26:28 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -45,7 +45,9 @@ class moduleMoneyFlows extends module {
 		$this->coreMoneyFlows       = new coreMoneyFlows();
 		$this->corePreDefMoneyFlows = new corePreDefMoneyFlows();
 		$this->coreSettings         = new coreSettings();
-		$this->date_format = $this->coreSettings->get_date_format( USERID );
+
+		$date_format = $this->coreSettings->get_date_format( USERID );
+		$this->date_format = $date_format['dateformat'];
 	}
 
 	function display_edit_moneyflow( $realaction, $id, $all_data ) {
