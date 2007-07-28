@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.34 2007/07/27 22:28:29 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.35 2007/07/28 19:33:58 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -33,52 +33,83 @@ require_once 'core/coreContractPartners.php';
 require_once 'core/coreCurrencies.php';
 require_once 'core/coreMoneyFlows.php';
 require_once 'core/corePreDefMoneyFlows.php';
+require_once 'core/coreSettings.php';
 
 class moduleMoneyFlows extends module {
 
 	function moduleMoneyFlows() {
 		$this->module();
-		$this->coreCapitalSources=new coreCapitalSources();
-		$this->coreContractPartners=new coreContractPartners();
-		$this->coreCurrencies=new coreCurrencies();
-		$this->coreMoneyFlows=new coreMoneyFlows();
-		$this->corePreDefMoneyFlows=new corePreDefMoneyFlows();
+		$this->coreCapitalSources   = new coreCapitalSources();
+		$this->coreContractPartners = new coreContractPartners();
+		$this->coreCurrencies       = new coreCurrencies();
+		$this->coreMoneyFlows       = new coreMoneyFlows();
+		$this->corePreDefMoneyFlows = new corePreDefMoneyFlows();
+		$this->coreSettings         = new coreSettings();
+		$this->date_format = $this->coreSettings->get_date_format( USERID );
 	}
 
 	function display_edit_moneyflow( $realaction, $id, $all_data ) {
 
+		if( empty( $id ) )
+			return;
+			
+		$bookingdate_orig = $all_data['bookingdate'];
+		$invoicedate_orig = $all_data['invoicedate'];
+
 		switch( $realaction ) {
 			case 'save':
-				$ret=$this->coreMoneyFlows->update_moneyflow( $id, $all_data['bookingdate'], $all_data['invoicedate'], $all_data['amount'], $all_data['mcs_capitalsourceid'], $all_data['mcp_contractpartnerid'], $all_data['comment'] );
+				$all_data['bookingdate'] = convert_date_to_db( $all_data['bookingdate'], $this->date_format );
+				$all_data['invoicedate'] = convert_date_to_db( $all_data['invoicedate'], $this->date_format );
+				$valid_data = true;
 
-				if( $ret ) {
-					$this->template->assign( 'CLOSE', 1 );
-					break;
+				if( $all_data['bookingdate'] === false ) {
+					add_error( 147, array($this->date_format) );
+					$all_data['bookingdate']       = $bookingdate_orig;
+					$all_data['bookingdate_error'] = 1;
+					$valid_data = false;
+				}
+				if( $all_data['invoicedate'] === false ) {
+					add_error( 147, array($this->date_format) );
+					$all_data['invoicedate']       = $invoicedate_orig;
+					$all_data['invoicedate_error'] = 1;
+					$valid_data = false;
+				}
+
+				if( $valid_data === true ) {
+					$ret = $this->coreMoneyFlows->update_moneyflow( $id, $all_data['bookingdate'], $all_data['invoicedate'], $all_data['amount'], $all_data['mcs_capitalsourceid'], $all_data['mcp_contractpartnerid'], $all_data['comment'] );
+					if( $ret === true ) {
+						$this->template->assign( 'CLOSE', 1 );
+						break;
+					}
 				}
 			default:
-				if( $id > 0 ) {
-					$all_data=$this->coreMoneyFlows->get_id_data( $id );
-					$this->template->assign( 'ALL_DATA', $all_data );
+				if( !is_array($all_data) ) {
+					$all_data = $this->coreMoneyFlows->get_id_data( $id );
 				}
 
-				$capitalsourceid=$this->coreMoneyFlows->get_capitalsourceid( $id );
+				$capitalsourceid = $this->coreMoneyFlows->get_capitalsourceid( $id );
 
 				if ( $this->coreCapitalSources->id_is_valid( $capitalsourceid, date( 'Y-m-d' ) ) ) {
-					$capitalsource_values=$this->coreCapitalSources->get_valid_comments();
+					$capitalsource_values = $this->coreCapitalSources->get_valid_comments();
 				} else {
-					$capitalsource_values=$this->coreCapitalSources->get_all_comments();
+					$capitalsource_values = $this->coreCapitalSources->get_all_comments();
 				}
 
-				$contractpartner_values=$this->coreContractPartners->get_all_names();
+				$contractpartner_values = $this->coreContractPartners->get_all_names();
 
 				$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
 				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
-				$this->template->assign( 'ERRORS',                 $this->get_errors() );
 				break;
 		}
 
-		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
-		$this->template->assign( 'ERRORS',   $this->get_errors() );
+		if( empty( $all_data['bookingdate_error'] ) )
+			$all_data['bookingdate'] = convert_date_to_gui( $all_data['bookingdate'], $this->date_format );
+		if( empty( $all_data['invoicedate_error'] ) )
+			$all_data['invoicedate'] = convert_date_to_gui( $all_data['invoicedate'], $this->date_format );
+		$this->template->assign( 'ALL_DATA',    $all_data );
+		$this->template->assign( 'MONEYFLOWID', $id       );
+		$this->template->assign( 'CURRENCY',    $this->coreCurrencies->get_displayed_currency() );
+		$this->template->assign( 'ERRORS',      $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_moneyflow.tpl' );
@@ -87,8 +118,8 @@ class moduleMoneyFlows extends module {
 
 	function display_add_moneyflow( $realaction, $all_data ) {
 
-		$capitalsource_values=$this->coreCapitalSources->get_valid_comments();
-		$contractpartner_values=$this->coreContractPartners->get_all_names();
+		$capitalsource_values   = $this->coreCapitalSources->get_valid_comments();
+		$contractpartner_values = $this->coreContractPartners->get_all_names();
 
 		switch( $realaction ) {
 			case 'save':
@@ -96,25 +127,34 @@ class moduleMoneyFlows extends module {
 				$nothing_checked = true;
 				foreach( $all_data as $id => $value ) {
 					if ( $value['checked'] == 1 ) {
+						$bookingdate_orig = $value['bookingdate'];
+						$invoicedate_orig = $value['invoicedate'];
+
 						$nothing_checked = false;
+						$all_data[$id]['bookingdate'] = convert_date_to_db( $value['bookingdate'], $this->date_format );
 						
 						if( empty( $value['mcs_capitalsourceid'] ) ) {
 							add_error( 127 );
 							$data_is_valid = false;
-						};
+						}
 						
 						if( empty( $value['mcp_contractpartnerid'] ) ) {
 							add_error( 128 );
 							$data_is_valid = false;
-						};
-
-						if( ! empty( $value['invoicedate'] ) && ! is_date( $value['invoicedate'] ) ) {
-							add_error( 129 );
-							$all_data[$id]['invoicedate_error'] = 1;
 						}
 
-						if( ! is_date( $value['bookingdate'] ) ) {
-							add_error( 130 );
+						if( ! empty( $value['invoicedate'] ) ) {
+							$all_data[$id]['invoicedate'] = convert_date_to_db( $value['invoicedate'], $this->date_format );
+							if( $all_data[$id]['invoicedate'] === false ) {
+								add_error( 129, array( $this->date_format ) );
+								$all_data[$id]['invoicedate']       = $invoicedate_orig;
+								$all_data[$id]['invoicedate_error'] = 1;
+							}
+						}
+
+						if( $all_data[$id]['bookingdate'] === false ) {
+							add_error( 130, array( $this->date_format ) );
+							$all_data[$id]['bookingdate']       = $bookingdate_orig;
 							$all_data[$id]['bookingdate_error'] = 1;
 							$data_is_valid = false;
 						}
@@ -142,7 +182,7 @@ class moduleMoneyFlows extends module {
 					foreach( $all_data as $id => $value ) {
 						if ( $value['checked'] == 1 ) {
 							if( empty( $value['invoicedate'] ) )
-								$value['invoicedate']=$value['bookingdate'];
+								$value['invoicedate'] = $value['bookingdate'];
 							$ret=$this->coreMoneyFlows->add_moneyflow( $value['bookingdate'], $value['invoicedate'], $value['amount'], $value['mcs_capitalsourceid'], $value['mcp_contractpartnerid'], $value['comment'] );
 						}
 					}
@@ -160,7 +200,7 @@ class moduleMoneyFlows extends module {
 					$i=1;				
 					foreach( $all_data_pre as $key => $value ) {
 						$all_data[$i]=$value;
-						$all_data[$i]['bookingdate']=$date;
+						$all_data[$i]['bookingdate'] = $date;
 						$all_data[$i]['amount']=sprintf('%.02f',$all_data_pre[$key]['amount']);
 						$all_data[$i]['capitalsourcecomment']=$this->coreCapitalSources->get_comment( $all_data_pre[$key]['mcs_capitalsourceid'] );
 						$all_data[$i]['contractpartnername']=$this->coreContractPartners->get_name( $all_data_pre[$key]['mcp_contractpartnerid'] );
@@ -169,6 +209,13 @@ class moduleMoneyFlows extends module {
 				}
 
 				break;
+		}
+
+		foreach( $all_data as $key => $value ) {
+			if( empty( $all_data[$key]['bookingdate_error'] ) )
+				$all_data[$key]['bookingdate'] = convert_date_to_gui( $all_data[$key]['bookingdate'], $this->date_format );
+			if( empty( $all_data[$key]['invoicedate_error'] ) )
+				$all_data[$key]['invoicedate'] = convert_date_to_gui( $all_data[$key]['invoicedate'], $this->date_format );
 		}
 
 		$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
@@ -195,6 +242,8 @@ class moduleMoneyFlows extends module {
 				$all_data = $this->coreMoneyFlows->get_id_data( $id );
 				$all_data['capitalsource_comment'] = $this->coreCapitalSources->get_comment( $all_data['mcs_capitalsourceid'] );
 				$all_data['contractpartner_name']  = $this->coreContractPartners->get_name( $all_data['mcp_contractpartnerid'] );
+				$all_data['bookingdate']           = convert_date_to_gui( $all_data['bookingdate'], $this->date_format );
+				$all_data['invoicedate']           = convert_date_to_gui( $all_data['invoicedate'], $this->date_format );
 				$this->template->assign( 'ALL_DATA', $all_data );
 				break;
 		}

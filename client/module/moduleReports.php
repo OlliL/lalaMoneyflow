@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.34 2007/07/27 22:28:29 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.35 2007/07/28 19:33:58 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -35,6 +35,7 @@ require_once 'core/coreMoneyFlows.php';
 require_once 'core/coreMonthlySettlement.php';
 require_once 'core/coreText.php';
 require_once 'core/coreDomains.php';
+require_once 'core/coreSettings.php';
 
 if( ENABLE_JPGRAPH ) {
 	require_once 'jpgraph.php';
@@ -45,12 +46,14 @@ class moduleReports extends module {
 
 	function moduleReports() {
 		$this->module();
-		$this->coreCapitalSources=new coreCapitalSources();
-		$this->coreContractPartners=new coreContractPartners();
-		$this->coreCurrencies=new coreCurrencies();
-		$this->coreMoneyFlows=new coreMoneyFlows();
-		$this->coreMonthlySettlement=new coreMonthlySettlement();
-		$this->coreDomains=new coreDomains();
+		$this->coreCapitalSources    = new coreCapitalSources();
+		$this->coreContractPartners  = new coreContractPartners();
+		$this->coreCurrencies        = new coreCurrencies();
+		$this->coreMoneyFlows        = new coreMoneyFlows();
+		$this->coreMonthlySettlement = new coreMonthlySettlement();
+		$this->coreDomains           = new coreDomains();
+		$this->coreSettings          = new coreSettings();
+		$this->date_format = $this->coreSettings->get_date_format( USERID );
 	}
 
 	function display_list_reports( $month, $year, $sortby, $order ) {
@@ -100,9 +103,13 @@ class moduleReports extends module {
 					$neworder='ASC';
 		}
 
-		$all_moneyflow_data=$this->coreMoneyFlows->get_all_monthly_joined_data( $month, $year, $sortby, $order );
+		$all_moneyflow_data = $this->coreMoneyFlows->get_all_monthly_joined_data( $month, $year, $sortby, $order );
 
 		if( is_array( $all_moneyflow_data ) ) {
+			foreach( $all_moneyflow_data as $key => $value ) {
+				$all_moneyflow_data[$key]['bookingdate'] = convert_date_to_gui( $value['bookingdate'], $this->date_format );
+				$all_moneyflow_data[$key]['invoicedate'] = convert_date_to_gui( $value['invoicedate'], $this->date_format );
+			}
 			$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
 			# 1. check if there is already a monthly settlement entered in mms

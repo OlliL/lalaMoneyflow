@@ -34,7 +34,7 @@
 					{/if}
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[rate]"      value="{$ALL_DATA.rate}"      size=10 /></td>
 					{if $NEW == 1}
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validfrom]" value="{$ALL_DATA.validfrom}" size=10 /></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validfrom]" value="{$ALL_DATA.validfrom}" size=10 {if $ALL_DATA.validfrom_error == 1}style="color:red"{/if} /></td>
 					{else}
 					<td class="contrastbgcolor">{$ALL_DATA.validfrom}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.validtil}</td>

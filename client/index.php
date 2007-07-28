@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.40 2007/07/27 09:41:18 olivleh1 Exp $
+# $Id: index.php,v 1.41 2007/07/28 19:33:56 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -154,10 +154,8 @@ if( $is_logged_in == 0 ) {
 	if( $moduleUsers->is_admin() ) {
 		switch( $action ) {
 			case 'system_settings':		$realaction=		$_REQUEST['realaction'];
-							$language=      	$_REQUEST['language'];
-							$currency=      	$_REQUEST['currency'];
-							$maxrows=		$_REQUEST['maxrows'];
-							$display=$moduleSettings->display_system_settings( $realaction, $language, $currency, $maxrows );
+							$all_data=		$_REQUEST['all_data'];
+							$display=$moduleSettings->display_system_settings( $realaction, $all_data );
 							break;
 
 			/* currencies */
@@ -333,12 +331,8 @@ if( $is_logged_in == 0 ) {
 			/* settings */
 
 			case 'personal_settings':	$realaction=		$_REQUEST['realaction'];
-							$language=      	$_REQUEST['language'];
-							$currency=      	$_REQUEST['currency'];
-							$password1=     	$_REQUEST['password1'];
-							$password2=     	$_REQUEST['password2'];
-							$maxrows=		$_REQUEST['maxrows'];
-							$display=$moduleSettings->display_personal_settings( $realaction, $language, $currency, $password1, $password2, $maxrows );
+							$all_data=		$_REQUEST['all_data'];
+							$display=$moduleSettings->display_personal_settings( $realaction, $all_data );
 							break;
 
 			default:			$display=$moduleFrontPage->display_main();

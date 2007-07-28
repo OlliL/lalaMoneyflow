@@ -24,12 +24,13 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCurrencyRates.php,v 1.6 2007/07/27 09:41:21 olivleh1 Exp $
+# $Id: moduleCurrencyRates.php,v 1.7 2007/07/28 19:33:58 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
 require_once 'core/coreCurrencyRates.php';
 require_once 'core/coreCurrencies.php';
+require_once 'core/coreSettings.php';
 
 class moduleCurrencyRates extends module {
 
@@ -37,23 +38,30 @@ class moduleCurrencyRates extends module {
 		$this->module();
 		$this->coreCurrencyRates = new coreCurrencyRates();
 		$this->coreCurrencies    = new coreCurrencies();
+		$this->coreSettings      = new coreSettings();
+		$this->date_format = $this->coreSettings->get_date_format( USERID );
 	}
 
 	function display_list_currencyrates( $letter ) {
 
 		$all_index_letters = $this->coreCurrencies->get_all_index_letters();
-		$num_currencies = $this->coreCurrencyRates->count_all_data();
+		$num_currencies    = $this->coreCurrencyRates->count_all_data();
 		
-		if( empty($letter) && $num_currencies < $this->coreTemplates->get_max_rows() ) {
+		if( empty( $letter ) && $num_currencies < $this->coreTemplates->get_max_rows() ) {
 			$letter = 'all';
 		}
 		
-		if( $letter == 'all') {
+		if( $letter == 'all' ) {
 			$all_data = $this->coreCurrencyRates->get_all_data();
 		} elseif( !empty( $letter ) ) {
 			$all_data = $this->coreCurrencyRates->get_all_matched_data( $letter );
 		} else {
-			$all_data=array();
+			$all_data = array();
+		}
+
+		foreach( $all_data as $key => $value ) {
+			$all_data[$key]['validfrom'] = convert_date_to_gui( $all_data[$key]['validfrom'], $this->date_format );
+			$all_data[$key]['validtil']  = convert_date_to_gui( $all_data[$key]['validtil'],  $this->date_format );
 		}
 
 		$this->template->assign( 'ALL_DATA',          $all_data          );
@@ -66,13 +74,21 @@ class moduleCurrencyRates extends module {
 
 	function display_edit_currencyrate( $realaction, $currencyid, $validfrom, $all_data ) {
 
+		$validfrom_orig = $all_data['validfrom'];
+
 		switch( $realaction ) {
 			case 'save':
-				if( $currencyid == 0 ) {
-					$valid = true;
-					if( ! is_date( $all_data['validfrom'] ) ) {
-						add_error( 147 );
-						$valid = false;
+				$validfrom             = convert_date_to_db( $validfrom, $this->date_format );
+				$all_data['validfrom'] = convert_date_to_db( $all_data['validfrom'], $this->date_format );
+
+				if( empty( $currencyid )  ) {
+					$valid_data = true;
+
+					if( $all_data['validfrom'] === false ) {
+						add_error( 147, array($this->date_format) );
+						$all_data['validfrom']       = $validfrom_orig;
+						$all_data['validfrom_error'] = 1;
+						$valid_data = false;
 					} elseif( strtotime( $all_data['validfrom'] ) < time() ) {
 						add_error( 148 );
 						$valid = false;
@@ -85,31 +101,38 @@ class moduleCurrencyRates extends module {
 						add_error( 150 );
 						$valid = false;
 					}
-					if( $valid )			
+
+					if( $valid_data === true )
 						$ret = $this->coreCurrencyRates->add_currencyrate( $all_data['mcu_currencyid'], $all_data['validfrom'], $all_data['rate'] );
 				} else {
 					$ret = $this->coreCurrencyRates->update_currencyrate( $currencyid, $validfrom, $all_data['rate'] );
 				}
 
-				if( $ret ) {
+				if( $ret === true || $ret > 0 ) {
 					$this->template->assign( 'CLOSE',    1 );
 					break;
 				}				
 			default:
-				$currency_values=$this->coreCurrencies->get_all_data();
+				$currency_values = $this->coreCurrencies->get_all_data();
 
 				$this->template->assign( 'CURRENCY_VALUES',   $currency_values   );
-				if( $currencyid > 0 && !empty( $validfrom ) ) {
-					$all_data=$this->coreCurrencyRates->get_id_data( $currencyid, $validfrom );
+
+				if( $currencyid > 0 && !empty( $validfrom ) && !is_array( $all_data ) ) {
+					$all_data = $this->coreCurrencyRates->get_id_data( $currencyid, $validfrom );
 				} else {
 					$this->template->assign( 'NEW', 1 );
 					if( empty( $all_data['validfrom'] ) ) 
 						$all_data['validfrom'] = date( 'Y-m-d', time()+86400 );
 				}
-				$this->template->assign( 'ALL_DATA', $all_data );
 				break;
 		}
 
+		$validfrom             = convert_date_to_gui( $validfrom, $this->date_format );
+		$all_data['validtil']  = convert_date_to_gui( $all_data['validtil'], $this->date_format );
+		if( empty( $all_data['validfrom_error'] ) )
+			$all_data['validfrom'] = convert_date_to_gui( $all_data['validfrom'], $this->date_format );
+
+		$this->template->assign( 'ALL_DATA',   $all_data );
 		$this->template->assign( 'CURRENCYID', $currencyid );
 		$this->template->assign( 'VALIDFROM',  $validfrom );
 		$this->template->assign( 'ERRORS',     $this->get_errors() );

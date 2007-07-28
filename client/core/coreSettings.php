@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreSettings.php,v 1.8 2007/07/27 09:41:19 olivleh1 Exp $
+# $Id: coreSettings.php,v 1.9 2007/07/28 19:33:57 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -44,17 +44,10 @@ class coreSettings extends core {
 	}
 
 	function set_value( $userid, $name, $value ) {
-		return $this->insert_row( "	INSERT INTO settings
-						           (mur_userid
-						           ,name
-						           ,value
-						           )
-						            VALUES
-						           ($userid
-						           ,'$name'
-						           ,'$value'
-						           )
-						           ON DUPLICATE KEY UPDATE value = VALUES(value)" );
+		return $this->insert_row( "	UPDATE settings
+						   SET value = '$value'
+						 WHERE name       = '$name'
+						   AND mur_userid = $userid" );
 	}
 
 	function init_settings( $userid ) {
@@ -83,6 +76,35 @@ class coreSettings extends core {
 		return $this->get_value( $userid, 'max_rows' );
 	}
 
+	function get_date_format( $userid ) {
+		$dateformat = $this->get_value( $userid, 'date_format' );
+
+		$patterns[0] = '/YYYY/';
+		$patterns[1] = '/MM/';
+		$patterns[2] = '/DD/';
+	
+		$replacements[0] = '';
+		$replacements[1] = '';
+		$replacements[2] = '';
+	
+		$delimiter = preg_replace( $patterns, $replacements, $dateformat );
+		
+		$ret['date_delimiter1'] = substr( $delimiter, 0, 1 );
+		$ret['date_delimiter2'] = substr( $delimiter, 1, 1 );
+		
+		$pos_delimiter1 = strpos( $dateformat, $ret['date_delimiter1'] );
+		$pos_delimiter2 = strpos( substr( $dateformat, $pos_delimiter1+1 ), $ret['date_delimiter2'] )+$pos_delimiter1+1;
+
+		$ret['date_data1'] = substr( $dateformat, 0, $pos_delimiter1 );
+		$ret['date_data2'] = substr( $dateformat, $pos_delimiter1+1, $pos_delimiter2-$pos_delimiter1-1 );
+		$ret['date_data3'] = substr( $dateformat, $pos_delimiter2+1 );
+		
+		$ret['dateformat'] = $dateformat;
+		
+		return $ret;
+
+	}
+
 	function set_displayed_currency( $userid, $currency ) {
 		return $this->set_value( $userid, 'displayed_currency', $currency );
 	}
@@ -94,4 +116,9 @@ class coreSettings extends core {
 	function set_max_rows( $userid, $maxnum ) {
 		return $this->set_value( $userid, 'max_rows', $maxnum );
 	}
+
+	function set_date_format( $userid, $dateformat ) {
+		return $this->set_value( $userid, 'date_format', $dateformat );
+	}
 }
+

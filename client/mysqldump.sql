@@ -61,6 +61,7 @@ CREATE TABLE capitalsources (
   validtil date NOT NULL default '2999-12-31',
   validfrom date NOT NULL default '1970-01-01',
   PRIMARY KEY  (capitalsourceid,mur_userid),
+  UNIQUE KEY mcs_i_02 (mur_userid,`comment`),
   KEY mcs_i_01 (mur_userid),
   CONSTRAINT mcs_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcs';
@@ -263,7 +264,7 @@ CREATE TABLE domainvalues (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-07-27 22:20:12
+-- Dump completed on 2007-07-28 19:27:13
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -522,10 +523,10 @@ INSERT INTO text VALUES (127,1,'The field ''source of capital'' must not be empt
 INSERT INTO text VALUES (127,2,'Das Feld ''Kapitalquelle'' darf nicht leer sein!','e');
 INSERT INTO text VALUES (128,1,'The field ''contractual partner'' must not be empty!','e');
 INSERT INTO text VALUES (128,2,'Das Feld ''Vertragspartner'' darf nicht leer sein!','e');
-INSERT INTO text VALUES (129,1,'The field ''invoice date'' has to be in the format YYYY-MM-DD and must be a valid date!','e');
-INSERT INTO text VALUES (129,2,'Das Feld ''Rechnungsdatum'' muss dem Format YYYY-MM-DD entsprechen und ein g&uuml;ltiges Datum sein!','e');
-INSERT INTO text VALUES (130,1,'The field ''booking date'' has to be in the format YYYY-MM-DD and must be a valid date!','e');
-INSERT INTO text VALUES (130,2,'Das Feld ''Buchungsdatum'' muss dem Format YYYY-MM-DD entsprechen und ein g&uuml;ltiges Datum sein!','e');
+INSERT INTO text VALUES (129,1,'The field ''invoice date'' has to be in the format A1A and must be a valid date!','e');
+INSERT INTO text VALUES (129,2,'Das Feld ''Rechnungsdatum'' muss dem Format A1A entsprechen und ein g&uuml;ltiges Datum sein!','e');
+INSERT INTO text VALUES (130,1,'The field ''booking date'' has to be in the format A1A and must be a valid date!','e');
+INSERT INTO text VALUES (130,2,'Das Feld ''Buchungsdatum'' muss dem Format A1A entsprechen und ein g&uuml;ltiges Datum sein!','e');
 INSERT INTO text VALUES (131,1,'The field ''comment'' must not be empty!','e');
 INSERT INTO text VALUES (131,2,'Das Feld ''Kommentar'' darf nicht leer sein!','e');
 INSERT INTO text VALUES (132,1,'The amount ''A1A'' is in a format which is not readable by the system!','e');
@@ -558,8 +559,8 @@ INSERT INTO text VALUES (145,1,'You cannot delete the default currency!','e');
 INSERT INTO text VALUES (145,2,'Die Standardwährung kann nicht gelöscht werden!','e');
 INSERT INTO text VALUES (146,1,'There exists already a currency rate with the same startingdate!','e');
 INSERT INTO text VALUES (146,2,'Es existiert bereits ein Währungsfaktor mit dem selben Startdatum!','e');
-INSERT INTO text VALUES (147,1,'The dateformat is not correct please use YYYY-MM-DD!','e');
-INSERT INTO text VALUES (147,2,'Das Datumsformat ist nicht korrekt bitte benutzen Sie JJJJ-MM-TT!','e');
+INSERT INTO text VALUES (147,1,'The dateformat is not correct please use A1A!','e');
+INSERT INTO text VALUES (147,2,'Das Datumsformat ist nicht korrekt bitte benutzen Sie A1A!','e');
 INSERT INTO text VALUES (148,1,'A currency rate must not start in the past!','e');
 INSERT INTO text VALUES (148,2,'Ein Währungsfaktor darf nicht in der Vergangenheit starten!','e');
 INSERT INTO text VALUES (149,1,'Rate must not be empty!','e');
@@ -620,6 +621,12 @@ INSERT INTO text VALUES (176,1,'cash','d');
 INSERT INTO text VALUES (176,2,'bar','d');
 INSERT INTO text VALUES (177,1,'maximum number of rows to choose automaticly the \"all\" display','t');
 INSERT INTO text VALUES (177,2,'maximale Anzahl der Zeilen zur automatischen Wahl der \"Alle\" Anzeige','t');
+INSERT INTO text VALUES (178,1,'date format','t');
+INSERT INTO text VALUES (178,2,'Datumsformat','t');
+INSERT INTO text VALUES (179,1,'day','t');
+INSERT INTO text VALUES (179,2,'Tag','t');
+INSERT INTO text VALUES (180,1,'The date format you have choosen is not valid!','e');
+INSERT INTO text VALUES (180,2,'Das von Ihnen gewählte Datumsformat ist nicht gültig','e');
 INSERT INTO templates VALUES ('display_add_moneyflow.tpl');
 INSERT INTO templates VALUES ('display_delete_capitalsource.tpl');
 INSERT INTO templates VALUES ('display_delete_contractpartner.tpl');
@@ -865,10 +872,14 @@ INSERT INTO templatevalues VALUES ('display_edit_monthlysettlement.tpl',54);
 INSERT INTO templatevalues VALUES ('display_edit_monthlysettlement.tpl',55);
 INSERT INTO templatevalues VALUES ('display_edit_monthlysettlement.tpl',56);
 INSERT INTO templatevalues VALUES ('display_generate_report.tpl',56);
+INSERT INTO templatevalues VALUES ('display_personal_settings.tpl',56);
 INSERT INTO templatevalues VALUES ('display_search.tpl',56);
+INSERT INTO templatevalues VALUES ('display_system_settings.tpl',56);
 INSERT INTO templatevalues VALUES ('display_edit_monthlysettlement.tpl',57);
 INSERT INTO templatevalues VALUES ('display_generate_report.tpl',57);
+INSERT INTO templatevalues VALUES ('display_personal_settings.tpl',57);
 INSERT INTO templatevalues VALUES ('display_search.tpl',57);
+INSERT INTO templatevalues VALUES ('display_system_settings.tpl',57);
 INSERT INTO templatevalues VALUES ('display_edit_monthlysettlement.tpl',58);
 INSERT INTO templatevalues VALUES ('display_delete_monthlysettlement.tpl',59);
 INSERT INTO templatevalues VALUES ('display_delete_monthlysettlement.tpl',60);
@@ -966,6 +977,10 @@ INSERT INTO templatevalues VALUES ('display_delete_currencies.tpl',117);
 INSERT INTO templatevalues VALUES ('display_delete_currencies.tpl',118);
 INSERT INTO templatevalues VALUES ('display_personal_settings.tpl',177);
 INSERT INTO templatevalues VALUES ('display_system_settings.tpl',177);
+INSERT INTO templatevalues VALUES ('display_personal_settings.tpl',178);
+INSERT INTO templatevalues VALUES ('display_system_settings.tpl',178);
+INSERT INTO templatevalues VALUES ('display_personal_settings.tpl',179);
+INSERT INTO templatevalues VALUES ('display_system_settings.tpl',179);
 INSERT INTO domains VALUES ('CAPITALSOURCE_STATE');
 INSERT INTO domains VALUES ('CAPITALSOURCE_TYPE');
 INSERT INTO domains VALUES ('MONTHS');
@@ -985,7 +1000,7 @@ INSERT INTO domainvalues VALUES ('CAPITALSOURCE_TYPE','1',173);
 INSERT INTO domainvalues VALUES ('CAPITALSOURCE_TYPE','2',174);
 INSERT INTO domainvalues VALUES ('CAPITALSOURCE_STATE','1',175);
 INSERT INTO domainvalues VALUES ('CAPITALSOURCE_STATE','2',176);
-INSERT INTO settings VALUES (0,'displayed_currency','1'),(0,'displayed_language','1');
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,1);
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('','',0,0,0);
 UPDATE users SET id=0 WHERE username='';
+INSERT INTO settings VALUES (0,'displayed_currency','1'),(0,'displayed_language','1'),(0,'max_rows','40'),(0,'date_format','YYYY-MM-DD');

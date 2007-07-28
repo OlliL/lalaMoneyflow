@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: modulePreDefMoneyFlows.php,v 1.21 2007/07/27 09:41:21 olivleh1 Exp $
+# $Id: modulePreDefMoneyFlows.php,v 1.22 2007/07/28 19:33:58 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -37,16 +37,16 @@ class modulePreDefMoneyFlows extends module {
 
 	function modulePreDefMoneyFlows() {
 		$this->module();
-		$this->coreCapitalSources=new coreCapitalSources();
-		$this->coreContractPartners=new coreContractPartners();
-		$this->coreCurrencies=new coreCurrencies();
-		$this->corePreDefMoneyFlows=new corePreDefMoneyFlows();
+		$this->coreCapitalSources   = new coreCapitalSources();
+		$this->coreContractPartners = new coreContractPartners();
+		$this->coreCurrencies       = new coreCurrencies();
+		$this->corePreDefMoneyFlows = new corePreDefMoneyFlows();
 	}
 
 
 	function display_list_predefmoneyflows( $letter ) {
 
-		$all_index_letters=$this->corePreDefMoneyFlows->get_all_index_letters();
+		$all_index_letters = $this->corePreDefMoneyFlows->get_all_index_letters();
 		$num_flows = $this->corePreDefMoneyFlows->count_all_data();
 		
 		if( empty($letter) && $num_clows < $this->coreTemplates->get_max_rows() ) {
@@ -80,44 +80,44 @@ class modulePreDefMoneyFlows extends module {
 
 		switch( $realaction ) {
 			case 'save':
-				$data_is_valid=true;
+				$data_is_valid = true;
 				
 				if( empty( $all_data['mcs_capitalsourceid'] ) ) {
 					add_error( 127 );
-					$data_is_valid=false;
+					$data_is_valid = false;
 				};
 				
 				if( empty( $all_data['mcp_contractpartnerid'] ) ) {
 					add_error( 128 );
-					$data_is_valid=false;
+					$data_is_valid = false;
 				};
 
 				if( $data_is_valid ) {
 					if( $id == 0 )
-						$ret=$this->corePreDefMoneyFlows->add_predefmoneyflow( $all_data['amount'], $all_data['mcs_capitalsourceid'], $all_data['mcp_contractpartnerid'], $all_data['comment'] );
+						$ret = $this->corePreDefMoneyFlows->add_predefmoneyflow( $all_data['amount'], $all_data['mcs_capitalsourceid'], $all_data['mcp_contractpartnerid'], $all_data['comment'] );
 					else
-						$ret=$this->corePreDefMoneyFlows->update_predefmoneyflow( $id, $all_data['amount'], $all_data['mcs_capitalsourceid'], $all_data['mcp_contractpartnerid'], $all_data['comment'] );
+						$ret = $this->corePreDefMoneyFlows->update_predefmoneyflow( $id, $all_data['amount'], $all_data['mcs_capitalsourceid'], $all_data['mcp_contractpartnerid'], $all_data['comment'] );
 	
-					if( $ret ) {
+					if( $ret === true || $ret > 0 ) {
 						$this->template->assign( 'CLOSE', 1 );
 						break;
 					}
 				}
 			default:
 				if( $id > 0 ) {
-					$all_data=$this->corePreDefMoneyFlows->get_id_data( $id );
+					$all_data = $this->corePreDefMoneyFlows->get_id_data( $id );
 					$this->template->assign( 'ALL_DATA', $all_data );
-					$capitalsourceid=$this->corePreDefMoneyFlows->get_capitalsourceid( $id );
+					$capitalsourceid = $this->corePreDefMoneyFlows->get_capitalsourceid( $id );
 					if ( $this->coreCapitalSources->id_is_valid( $capitalsourceid ) ) {
-						$capitalsource_values=$this->coreCapitalSources->get_valid_comments();
+						$capitalsource_values = $this->coreCapitalSources->get_valid_comments();
 					} else {
-						$capitalsource_values=$this->coreCapitalSources->get_all_comments();
+						$capitalsource_values = $this->coreCapitalSources->get_all_comments();
 					}
 				} else {
-					$capitalsource_values=$this->coreCapitalSources->get_valid_comments();
+					$capitalsource_values = $this->coreCapitalSources->get_valid_comments();
 				}				
 
-				$contractpartner_values=$this->coreContractPartners->get_all_names();
+				$contractpartner_values = $this->coreContractPartners->get_all_names();
 
 				$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
 				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
@@ -141,9 +141,9 @@ class modulePreDefMoneyFlows extends module {
 				}
 
 			default:
-				$all_data=$this->corePreDefMoneyFlows->get_id_data( $id );
-				$all_data['capitalsource_comment']=$this->coreCapitalSources->get_comment( $all_data['mcs_capitalsourceid'] );
-				$all_data['contractpartner_name']=$this->coreContractPartners->get_name( $all_data['mcp_contractpartnerid'] );
+				$all_data = $this->corePreDefMoneyFlows->get_id_data( $id );
+				$all_data['capitalsource_comment'] = $this->coreCapitalSources->get_comment( $all_data['mcs_capitalsourceid'] );
+				$all_data['contractpartner_name']  = $this->coreContractPartners->get_name( $all_data['mcp_contractpartnerid'] );
 				$this->template->assign( 'ALL_DATA', $all_data );
 				break;
 		}

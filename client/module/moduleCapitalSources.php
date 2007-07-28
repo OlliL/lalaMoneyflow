@@ -24,34 +24,42 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCapitalSources.php,v 1.16 2007/07/27 09:41:21 olivleh1 Exp $
+# $Id: moduleCapitalSources.php,v 1.17 2007/07/28 19:33:58 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
+require_once 'core/coreSettings.php';
 
 class moduleCapitalSources extends module {
 
 	function moduleCapitalSources() {
 		$this->module();
-		$this->coreCapitalSources=new coreCapitalSources();
+		$this->coreCapitalSources = new coreCapitalSources();
+		$this->coreSettings       = new coreSettings();
+		$this->date_format = $this->coreSettings->get_date_format( USERID );
 	}
 
 	function display_list_capitalsources( $letter ) {
 
-		$all_index_letters=$this->coreCapitalSources->get_all_index_letters();
-		$num_sources = $this->coreCapitalSources->count_all_data();
+		$all_index_letters = $this->coreCapitalSources->get_all_index_letters();
+		$num_sources       = $this->coreCapitalSources->count_all_data();
 		
-		if( empty($letter) && $num_sources < $this->coreTemplates->get_max_rows() ) {
+		if( empty( $letter ) && $num_sources < $this->coreTemplates->get_max_rows() ) {
 			$letter = 'all';
 		}
 
 		if( $letter == 'all' ) {
-			$all_data=$this->coreCapitalSources->get_all_data();
+			$all_data = $this->coreCapitalSources->get_all_data();
 		} elseif( !empty( $letter ) ) {
-			$all_data=$this->coreCapitalSources->get_all_matched_data( $letter );
+			$all_data = $this->coreCapitalSources->get_all_matched_data( $letter );
 		} else {
-			$all_data=array();
+			$all_data = array();
+		}
+
+		foreach( $all_data as $key => $value ) {
+			$all_data[$key]['validfrom'] = convert_date_to_gui( $all_data[$key]['validfrom'], $this->date_format );
+			$all_data[$key]['validtil']  = convert_date_to_gui( $all_data[$key]['validtil'],  $this->date_format );
 		}
 
 		$this->template->assign( 'ALL_DATA',          $all_data          );
@@ -64,37 +72,64 @@ class moduleCapitalSources extends module {
 
 	function display_edit_capitalsource( $realaction, $capitalsourceid, $all_data ) {
 
-		switch( $realaction ) {
-			case 'save':
-				if( $capitalsourceid == 0 )
-					$ret=$this->coreCapitalSources->add_capitalsource( $all_data['type'], $all_data['state'], $all_data['accountnumber'], $all_data['bankcode'], $all_data['comment'], $all_data['validfrom'], $all_data['validtil'] );
-				else
-					$ret=$this->coreCapitalSources->update_capitalsource( $capitalsourceid, $all_data['type'], $all_data['state'], $all_data['accountnumber'], $all_data['bankcode'], $all_data['comment'], $all_data['validfrom'], $all_data['validtil'] );
+		$validfrom_orig = $all_data['validfrom'];
+		$validtil_orig  = $all_data['validtil'];
 
-				if( $ret ) {
+		switch( $realaction ) {
+			case 'save':;
+				$all_data['validfrom'] = convert_date_to_db( $all_data['validfrom'], $this->date_format );
+				$all_data['validtil']  = convert_date_to_db( $all_data['validtil'],  $this->date_format );
+				$valid_data = true;
+
+				if( $all_data['validfrom'] === false ) {
+					add_error( 147, array($this->date_format) );
+					$all_data['validfrom']       = $validfrom_orig;
+					$all_data['validfrom_error'] = 1;
+					$valid_data = false;
+				}
+				if( $all_data['validtil'] === false ) {
+					add_error( 147, array($this->date_format) );
+					$all_data['validtil']       = $validtil_orig;
+					$all_data['validtil_error'] = 1;
+					$valid_data = false;
+				}
+
+				if( $valid_data === true ) {
+					if( $capitalsourceid == 0 )
+						$ret = $this->coreCapitalSources->add_capitalsource( $all_data['type'], $all_data['state'], $all_data['accountnumber'], $all_data['bankcode'], $all_data['comment'], $all_data['validfrom'], $all_data['validtil'] );
+					else
+						$ret = $this->coreCapitalSources->update_capitalsource( $capitalsourceid, $all_data['type'], $all_data['state'], $all_data['accountnumber'], $all_data['bankcode'], $all_data['comment'], $all_data['validfrom'], $all_data['validtil'] );
+				}
+
+				if( $ret === true || $ret > 0 ) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
 			default:
-				$coreText = new coreText();
-				
-				if( $capitalsourceid > 0 ) {
-					if( !is_array($all_data) ) {
-						$all_data=$this->coreCapitalSources->get_id_data( $capitalsourceid );
+				if( !is_array($all_data) ) {
+					if( $capitalsourceid > 0 ) {
+						$all_data              = $this->coreCapitalSources->get_id_data( $capitalsourceid );
 					} else {
-						$all_data['capitalsource'] = $capitalsourceid;
-					}				
-					$this->template->assign( 'ALL_DATA', $all_data );
+						$all_data['validfrom'] = date( 'Y-m-d', time() );
+						$all_data['validtil']  = MAX_YEAR;
+					}
 				}
-				$type_values=$this->coreCapitalSources->get_enum_type();
-				$state_values=$this->coreCapitalSources->get_enum_state();
+				$type_values  = $this->coreCapitalSources->get_enum_type();
+				$state_values = $this->coreCapitalSources->get_enum_state();
 
 				$this->template->assign( 'TYPE_VALUES',  $type_values  );
 				$this->template->assign( 'STATE_VALUES', $state_values );
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		if( empty( $all_data['validfrom_error'] ) )
+			$all_data['validfrom'] = convert_date_to_gui( $all_data['validfrom'],  $this->date_format );
+		if( empty( $all_data['validtil_error'] ) )
+			$all_data['validtil']  = convert_date_to_gui( $all_data['validtil'],   $this->date_format );
+
+		$this->template->assign( 'ALL_DATA',        $all_data           );
+		$this->template->assign( 'CAPITALSOURCEID', $capitalsourceid    );
+		$this->template->assign( 'ERRORS',          $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_capitalsource.tpl' );
@@ -109,7 +144,9 @@ class moduleCapitalSources extends module {
 					break;
 				}
 			default:
-				$all_data=$this->coreCapitalSources->get_id_data( $capitalsourceid );
+				$all_data              = $this->coreCapitalSources->get_id_data( $capitalsourceid );
+				$all_data['validfrom'] = convert_date_to_gui( $all_data['validfrom'], $this->date_format );
+				$all_data['validtil']  = convert_date_to_gui( $all_data['validtil'],  $this->date_format );
 				$this->template->assign( 'ALL_DATA', $all_data );
 				break;
 		}

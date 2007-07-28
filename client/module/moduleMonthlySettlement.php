@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.24 2007/07/27 06:42:29 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.25 2007/07/28 19:33:58 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -109,8 +109,6 @@ class moduleMonthlySettlement extends module {
 									$ret = false;
 							} elseif( $ret === true ) {
 								add_error( 154 );
-#								$month = 0;
-#								$year  = 0;
 								$ret   = false;
 							}
 						} else {

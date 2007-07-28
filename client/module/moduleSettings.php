@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSettings.php,v 1.8 2007/07/27 09:41:21 olivleh1 Exp $
+# $Id: moduleSettings.php,v 1.9 2007/07/28 19:33:58 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -43,30 +43,41 @@ class moduleSettings extends module {
 		$this->coreUsers=new coreUsers();
 	}
 
-	function general_settings( $data_is_valid, $userid, $realaction, $language, $currency, $maxrows ) {
+	function general_settings( $data_is_valid, $userid, $realaction, $all_data ) {
 
 		switch( $realaction ) {
 			case 'save':
-				if( $data_is_valid ) {
-					$this->coreSettings->set_displayed_currency( $userid, $currency );
-					$this->coreSettings->set_displayed_language( $userid, $language );
-					$this->coreSettings->set_max_rows( $userid, $maxrows );
+				if( $data_is_valid === true ) {
+					if( $all_data['date_data1'] == $all_data['date_data2'] ||
+					    $all_data['date_data1'] == $all_data['date_data3'] ||
+					    $all_data['date_data2'] == $all_data['date_data4'] ) {
+					    	$data_is_valid = false;
+						add_error( 180 );
+					} else {
+						$this->coreSettings->set_displayed_currency( $userid, $all_data['currency'] );
+						$this->coreSettings->set_displayed_language( $userid, $all_data['language'] );
+						$this->coreSettings->set_max_rows( $userid, $all_data['maxrows'] );
+						$this->coreSettings->set_date_format( $userid, $all_data['date_data1'].
+						                                               $all_data['date_delimiter1'].
+						                                               $all_data['date_data2'].
+						                                               $all_data['date_delimiter2'].
+						                                               $all_data['date_data3'] );
+					}
 				}
 				break;
 			default:
 				break;
 		}
 
-		if( $data_is_valid ) {
-			$this->template->assign( 'CURRENCY',        $this->coreSettings->get_displayed_currency( $userid ) );
-			$this->template->assign( 'LANGUAGE',        $this->coreSettings->get_displayed_language( $userid ) );
-			$this->template->assign( 'MAXROWS',         $this->coreSettings->get_max_rows( $userid )           );
-		} else {
-			$this->template->assign( 'CURRENCY',        $currency );
-			$this->template->assign( 'LANGUAGE',        $language );
-			$this->template->assign( 'MAXROWS',         $maxrows  );
+		if( $data_is_valid === true ) {
+			$all_data['currency'] = $this->coreSettings->get_displayed_currency( $userid );
+			$all_data['language'] = $this->coreSettings->get_displayed_language( $userid );
+			$all_data['maxrows']  = $this->coreSettings->get_max_rows( $userid );
+			$dateformat           = $this->coreSettings->get_date_format( $userid );
+			$all_data = array_merge( $all_data, $dateformat );
 		}
 
+		$this->template->assign( 'ALL_DATA',        $all_data );
 		$this->template->assign( 'CURRENCY_VALUES', $this->coreCurrencies->get_all_data() );
 		$this->template->assign( 'LANGUAGE_VALUES', $this->coreLanguages->get_all_data() );
 		$this->template->assign( 'ERRORS',          $this->get_errors() );
@@ -74,35 +85,34 @@ class moduleSettings extends module {
 		$this->parse_header();
 	}
 
-	function display_personal_settings( $realaction, $language, $currency, $password1, $password2, $maxrows ) {
+	function display_personal_settings( $realaction, $all_data ) {
 
-		$data_is_valid=true;
+		$data_is_valid = true;
 		
 		switch( $realaction ) {
 			case 'save':
-				if( $this->coreUsers->check_new_attribute( USERID ) == 1 && ( empty( $password1 ) && empty( $password2 ) ) ) {
+				if( $this->coreUsers->check_new_attribute( USERID ) == 1 && ( empty( $all_data['password1'] ) && empty( $all_data['password2'] ) ) ) {
 					add_error( 152 );
 					$data_is_valid = false;
-				} elseif( $password1 != $password2 ) {
+				} elseif( $all_data['password1'] != $all_data['password2'] ) {
 					add_error( 137 );
 					$data_is_valid = false;
-				} elseif( !empty( $password1 ) ) {
-					$this->coreUsers->set_password( USERID, $password1 );
+				} elseif( !empty( $all_data['password1'] ) ) {
+					$this->coreUsers->set_password( USERID, $all_data['password1'] );
 				}
 				break;
 			default:
 				break;
 		}
 
-		$this->general_settings( $data_is_valid, USERID, $realaction, $language, $currency, $maxrows );
+		$this->general_settings( $data_is_valid, USERID, $realaction, $all_data );
 
-		
 		return $this->fetch_template( 'display_personal_settings.tpl' );
 	}
 
-	function display_system_settings( $realaction, $language, $currency, $maxrows ) {
+	function display_system_settings( $realaction, $all_data ) {
 
-		$this->general_settings( true, 0, $realaction, $language, $currency, $maxrows );
+		$this->general_settings( true, 0, $realaction, $realaction, $all_data );
 
 		return $this->fetch_template( 'display_system_settings.tpl' );
 	}

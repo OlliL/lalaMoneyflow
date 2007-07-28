@@ -24,13 +24,16 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: explain.php,v 1.3 2007/07/27 09:41:18 olivleh1 Exp $
+# $Id: explain.php,v 1.4 2007/07/28 19:33:56 olivleh1 Exp $
 #
 
 require_once 'include.php';
 require_once 'DB.php';
 require_once 'util/utilTimer.php';
 $timer = new utilTimer();
+
+if( $money_debug !== true )
+	exit;
 
 function print_query( $reslink ) {
 	$header_printed = false;

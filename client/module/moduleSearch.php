@@ -24,26 +24,29 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSearch.php,v 1.12 2007/07/27 06:42:29 olivleh1 Exp $
+# $Id: moduleSearch.php,v 1.13 2007/07/28 19:33:58 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
 require_once 'core/coreContractPartners.php';
 require_once 'core/coreCurrencies.php';
 require_once 'core/coreMoneyFlows.php';
+require_once 'core/coreSettings.php';
 
 class moduleSearch extends module {
 
 	function moduleSearch() {
 		$this->module();
-		$this->coreContractPartners=new coreContractPartners();
-		$this->coreCurrencies=new coreCurrencies();
-		$this->coreMoneyFlows=new coreMoneyFlows();
+		$this->coreContractPartners = new coreContractPartners();
+		$this->coreCurrencies       = new coreCurrencies();
+		$this->coreMoneyFlows       = new coreMoneyFlows();
+		$this->coreSettings         = new coreSettings();
+		$this->date_format = $this->coreSettings->get_date_format( USERID );
 	}
 
 	function display_search() {
 
-		$contractpartner_values=$this->coreContractPartners->get_all_names();
+		$contractpartner_values = $this->coreContractPartners->get_all_names();
 		$searchparams = $this->template->get_template_vars( 'SEARCHPARAMS' );
 		if( empty( $searchparams ) ) {
 			$searchparams['grouping1'] = 'year';
@@ -70,6 +73,30 @@ class moduleSearch extends module {
 		if($minus)
 			$searchparams['minus'] = 1;
 
+		$valid_data = true;
+		$startdate_orig = $startdate;
+		$enddate_orig   = $enddate;
+
+		if( !empty( $startdate ) ) {
+			$startdate             = convert_date_to_db( $startdate, $this->date_format );
+			if( $startdate === false ) {
+				add_error( 147, array($this->date_format) );
+				$startdate                       = $startdate_orig;
+				$searchparams['startdate_error'] = 1;
+				$valid_data = false;
+			}
+		}
+
+		if( !empty( $enddate ) ) {
+			$enddate             = convert_date_to_db( $enddate, $this->date_format );
+			if( $enddate === false ) {
+				add_error( 147, array($this->date_format) );
+				$enddate                       = $startdate_orig;
+				$searchparams['enddate_error'] = 1;
+				$valid_data = false;
+			}
+		}
+
 		$searchparams['mcp_contractpartnerid']   = $contractpartner;
 		$searchparams['pattern']   = stripslashes( $searchstring );
 		$searchparams['startdate'] = $startdate;
@@ -82,7 +109,7 @@ class moduleSearch extends module {
 			add_error( 141 );
 		} elseif ( empty( $searchparams['grouping1'] ) && empty( $searchparams['grouping2'] ) ) {
 			add_error( 142 );
-		}else {
+		} else {
 			$results = $this->coreMoneyFlows->search_moneyflows( $searchparams );
 			if( is_array( $results ) ) {
 				$this->template->assign( 'SEARCH_DONE', 1 );
@@ -94,6 +121,11 @@ class moduleSearch extends module {
 			}
 		}
 	    
+		if( empty( $searchparams['startdate_error'] ) && !empty( $searchparams['startdate'] ) )
+			$searchparams['startdate'] = convert_date_to_gui( $searchparams['startdate'], $this->date_format );
+		if( empty( $searchparams['enddate_error'] ) && !empty( $searchparams['enddate'] ) )
+			$searchparams['enddate'] = convert_date_to_gui( $searchparams['enddate'], $this->date_format );
+
 		$this->template->assign( 'SEARCHPARAMS', $searchparams );
 		$this->template->assign( 'COLUMNS',      $columns );
 		$this->template->assign( 'RESULTS',      $results );

@@ -10,7 +10,7 @@
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action"           value="edit_capitalsource">
 			<input type="hidden" name="realaction"       value="save">
-			<input type="hidden" name="capitalsourceid"  value="{$ALL_DATA.capitalsourceid}">
+			<input type="hidden" name="capitalsourceid"  value="{$CAPITALSOURCEID}">
 			<input type="hidden" name="REFERER"          value="{$ENV_REFERER}">
 			<table border=0>
 				<tr>
@@ -36,8 +36,8 @@
 					</select></td>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[accountnumber]" value="{$ALL_DATA.accountnumber}" /></td>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[bankcode]"      value="{$ALL_DATA.bankcode}" /></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validfrom]"     value="{$ALL_DATA.validfrom}" size=8 /></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validtil]"      value="{$ALL_DATA.validtil}" size=8 /></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validfrom]"     value="{$ALL_DATA.validfrom}" size=8 {if $ALL_DATA.validfrom_error == 1}style="color:red"{/if} /></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validtil]"      value="{$ALL_DATA.validtil}"  size=8 {if $ALL_DATA.validtil_error  == 1}style="color:red"{/if} /></td>
 				</tr>
 			</table>
 			<br />

@@ -35,11 +35,11 @@
 				</tr>
 				<tr>
 					<th align="right">{$TEXT_69}</th>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="startdate" value="{$SEARCHPARAMS.startdate}"></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="startdate" value="{$SEARCHPARAMS.startdate}" {if $SEARCHPARAMS.startdate_error == 1}style="color:red"{/if}></td>
 				</tr>
 				<tr>
 					<th align="right">{$TEXT_70}</th>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="enddate" value="{$SEARCHPARAMS.enddate}"></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="enddate"   value="{$SEARCHPARAMS.enddate}"   {if $SEARCHPARAMS.enddate_error == 1}style="color:red"{/if}></td>
 				</tr>
 				<tr>
 					<th align="right">{$TEXT_75}</th>
