@@ -1,7 +1,7 @@
 <?php
 
 /*
-	$Id: functions.php,v 1.8 2007/07/28 19:33:56 olivleh1 Exp $
+	$Id: functions.php,v 1.9 2007/07/28 19:41:10 olivleh1 Exp $
 */
 
 
@@ -88,15 +88,6 @@ function convert_date_to_gui( $date, $dateformat ) {
 	$replacements[2] = sprintf( '%02d', $date_array['tm_mday'] );
 	
 	return preg_replace( $patterns, $replacements, $dateformat );
-}
-
-function is_date( $date, $dateformat ) {
-	$foo=strptime( $date, '%Y-%m-%d');
-	if( is_array( $foo ) && $date == sprintf( "%4d-%02d-%02d", ($foo['tm_year']+1900), ($foo['tm_mon']+1), $foo['tm_mday'] ) ) {
-		return true;
-	} else {
-		return false;
-	}
 }
 
 function fix_amount( &$amount ) {

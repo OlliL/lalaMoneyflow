@@ -264,7 +264,7 @@ CREATE TABLE domainvalues (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-07-28 19:27:13
+-- Dump completed on 2007-07-28 19:39:40
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -524,9 +524,9 @@ INSERT INTO text VALUES (127,2,'Das Feld ''Kapitalquelle'' darf nicht leer sein!
 INSERT INTO text VALUES (128,1,'The field ''contractual partner'' must not be empty!','e');
 INSERT INTO text VALUES (128,2,'Das Feld ''Vertragspartner'' darf nicht leer sein!','e');
 INSERT INTO text VALUES (129,1,'The field ''invoice date'' has to be in the format A1A and must be a valid date!','e');
-INSERT INTO text VALUES (129,2,'Das Feld ''Rechnungsdatum'' muss dem Format A1A entsprechen und ein g&uuml;ltiges Datum sein!','e');
+INSERT INTO text VALUES (129,2,'Das Feld ''Rechnungsdatum'' muss dem Format A1A entsprechen und ein gültiges Datum sein!','e');
 INSERT INTO text VALUES (130,1,'The field ''booking date'' has to be in the format A1A and must be a valid date!','e');
-INSERT INTO text VALUES (130,2,'Das Feld ''Buchungsdatum'' muss dem Format A1A entsprechen und ein g&uuml;ltiges Datum sein!','e');
+INSERT INTO text VALUES (130,2,'Das Feld ''Buchungsdatum'' muss dem Format A1A entsprechen und ein gültiges Datum sein!','e');
 INSERT INTO text VALUES (131,1,'The field ''comment'' must not be empty!','e');
 INSERT INTO text VALUES (131,2,'Das Feld ''Kommentar'' darf nicht leer sein!','e');
 INSERT INTO text VALUES (132,1,'The amount ''A1A'' is in a format which is not readable by the system!','e');
