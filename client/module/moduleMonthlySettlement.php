@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.25 2007/07/28 19:33:58 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.26 2007/07/29 19:15:20 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -84,10 +84,11 @@ class moduleMonthlySettlement extends module {
 			$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		}
 
-		$this->template->assign( 'ALL_YEARS',     $years  );
-		$this->template->assign( 'ALL_MONTHS',    $months );
-		$this->template->assign( 'SELECTED_YEAR', $year   );
-		$this->template->assign( 'CURRENCY',      $this->coreCurrencies->get_displayed_currency() );
+		$this->template->assign( 'ALL_YEARS',      $years  );
+		$this->template->assign( 'ALL_MONTHS',     $months );
+		$this->template->assign( 'SELECTED_MONTH', $month['nummeric']  );
+		$this->template->assign( 'SELECTED_YEAR',  $year   );
+		$this->template->assign( 'CURRENCY',       $this->coreCurrencies->get_displayed_currency() );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_monthlysettlements.tpl' );

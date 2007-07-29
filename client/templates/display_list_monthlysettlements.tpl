@@ -37,7 +37,11 @@ function Go(x)
 					</select></td>
 					{section name=MONTH loop=$ALL_MONTHS}
 						<td class="contrastbgcolor">
+							{if $ALL_MONTHS[MONTH].nummeric ne $SELECTED_MONTH}
 							<a href="{$ENV_INDEX_PHP}?action=list_monthlysettlements&monthlysettlements_month={$ALL_MONTHS[MONTH].nummeric}&monthlysettlements_year={$SELECTED_YEAR}">{$ALL_MONTHS[MONTH].name}</a> 
+							{else}
+							{$ALL_MONTHS[MONTH].name}
+							{/if}
 						</td>
 					{/section}
 				</tr>
