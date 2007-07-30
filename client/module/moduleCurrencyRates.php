@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCurrencyRates.php,v 1.8 2007/07/28 20:26:28 olivleh1 Exp $
+# $Id: moduleCurrencyRates.php,v 1.9 2007/07/30 12:46:34 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -87,7 +87,7 @@ class moduleCurrencyRates extends module {
 					$valid_data = true;
 
 					if( $all_data['validfrom'] === false ) {
-						add_error( 147, array($this->date_format) );
+						add_error( 147, array( $this->date_format ) );
 						$all_data['validfrom']       = $validfrom_orig;
 						$all_data['validfrom_error'] = 1;
 						$valid_data = false;
@@ -123,8 +123,9 @@ class moduleCurrencyRates extends module {
 					$all_data = $this->coreCurrencyRates->get_id_data( $currencyid, $validfrom );
 				} else {
 					$this->template->assign( 'NEW', 1 );
-					if( empty( $all_data['validfrom'] ) ) 
+					if( empty( $all_data['validfrom'] ) ) {
 						$all_data['validfrom'] = date( 'Y-m-d', time()+86400 );
+					}
 				}
 				break;
 		}

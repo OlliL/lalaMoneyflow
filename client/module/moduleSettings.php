@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSettings.php,v 1.9 2007/07/28 19:33:58 olivleh1 Exp $
+# $Id: moduleSettings.php,v 1.10 2007/07/30 12:46:34 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -37,10 +37,10 @@ class moduleSettings extends module {
 
 	function moduleSettings() {
 		$this->module();
-		$this->coreCurrencies=new coreCurrencies();
-		$this->coreLanguages=new coreLanguages();
-		$this->coreSettings=new coreSettings();
-		$this->coreUsers=new coreUsers();
+		$this->coreCurrencies = new coreCurrencies();
+		$this->coreLanguages  = new coreLanguages();
+		$this->coreSettings   = new coreSettings();
+		$this->coreUsers      = new coreUsers();
 	}
 
 	function general_settings( $data_is_valid, $userid, $realaction, $all_data ) {

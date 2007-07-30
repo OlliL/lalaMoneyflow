@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleUsers.php,v 1.19 2007/07/27 09:41:21 olivleh1 Exp $
+# $Id: moduleUsers.php,v 1.20 2007/07/30 12:46:34 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -45,7 +45,7 @@ class moduleUsers extends module {
 		 || !$this->coreSession->getAttribute( 'users_id' ) ) {
 			return 3;
 		} else {
-			define( USERID, $this->coreSession->getAttribute( 'users_id' ));
+			define( USERID, $this->coreSession->getAttribute( 'users_id' ) );
 			if( !$this->coreUsers->check_login_permission( USERID ) ) {
 				$this->coreSession->destroy();
 				add_error( 138 );
@@ -63,8 +63,8 @@ class moduleUsers extends module {
 		switch( $realaction ) {
 			case 'login':
 				if( $stay_logged_in == 'on' ) {
-					session_set_cookie_params(5184000);
-					session_cache_expire(86400);
+					session_set_cookie_params( 5184000 );
+					session_cache_expire( 86400 );
 				}
 				$this->coreSession->restart();
 				if( empty( $name ) ) {
@@ -75,7 +75,7 @@ class moduleUsers extends module {
 					if( $this->coreUsers->check_login_permission( $id ) ) {
 						$this->coreSession->setAttribute( 'users_name', $name );
 						$this->coreSession->setAttribute( 'users_id',   $id );
-						$loginok=1;
+						$loginok = 1;
 					} else {
 						add_error( 138 );
 					}
@@ -115,16 +115,16 @@ class moduleUsers extends module {
 		$all_index_letters = $this->coreUsers->get_all_index_letters();
 		$num_users = $this->coreUsers->count_all_data();
 		
-		if( empty($letter) && $num_users < $this->coreTemplates->get_max_rows() ) {
+		if( empty( $letter ) && $num_users < $this->coreTemplates->get_max_rows() ) {
 			$letter = 'all';
 		}
 		
-		if( $letter == 'all') {
-			$all_data=$this->coreUsers->get_all_data();
+		if( $letter == 'all' ) {
+			$all_data = $this->coreUsers->get_all_data();
 		} elseif( !empty( $letter ) ) {
-			$all_data=$this->coreUsers->get_all_matched_data( $letter );
+			$all_data = $this->coreUsers->get_all_matched_data( $letter );
 		} else {
-			$all_data=array();
+			$all_data = array();
 		}
 		
 		$this->template->assign( 'ALL_DATA',          $all_data          );
@@ -142,15 +142,15 @@ class moduleUsers extends module {
 				if( $all_data['password1'] != $all_data['password2'] ) {
 					add_error( 137 );
 				} elseif( $id == 0 ) {
-					if( empty( $all_data['password1']) ) {
+					if( empty( $all_data['password1'] ) ) {
 						add_error( 140 );
 					} else {
-						$ret=$this->coreUsers->add_user( $all_data['name'], $all_data['password1'], $all_data['perm_login'], $all_data['perm_admin'], $all_data['att_new'] );
+						$ret = $this->coreUsers->add_user( $all_data['name'], $all_data['password1'], $all_data['perm_login'], $all_data['perm_admin'], $all_data['att_new'] );
 					}
 				} else {
-					$ret=$this->coreUsers->update_user( $id, $all_data['name'], $all_data['perm_login'], $all_data['perm_admin'], $all_data['att_new'] );
+					$ret = $this->coreUsers->update_user( $id, $all_data['name'], $all_data['perm_login'], $all_data['perm_admin'], $all_data['att_new'] );
 					if( !empty( $all_data['password1'] ) && $ret ) {
-						$ret=$this->coreUsers->set_password( $id, $all_data['password1'] );
+						$ret = $this->coreUsers->set_password( $id, $all_data['password1'] );
 					}
 				}
 
@@ -162,10 +162,10 @@ class moduleUsers extends module {
 				break;
 			default:
 				if( $id > 0 ) {
-					$all_data=$this->coreUsers->get_id_data( $id );
+					$all_data = $this->coreUsers->get_id_data( $id );
 				} else {
-					$all_data['perm_login']=1;
-					$all_data['att_new']=1;
+					$all_data['perm_login'] = 1;
+					$all_data['att_new'] = 1;
 				}
 				$this->template->assign( 'ALL_DATA', $all_data );
 				break;
@@ -181,7 +181,7 @@ class moduleUsers extends module {
 
 		switch( $realaction ) {
 			case 'yes':
-				if( empty($force) && $this->coreUsers->user_owns_data( $id ) ) {
+				if( empty( $force ) && $this->coreUsers->user_owns_data( $id ) ) {
 					add_error( 151 );
 					$this->template->assign( 'ASK', 1 );
 				} else {
@@ -193,7 +193,7 @@ class moduleUsers extends module {
 					}
 				}
 			default:
-				$all_data=$this->coreUsers->get_id_data( $id );
+				$all_data = $this->coreUsers->get_id_data( $id );
 				$this->template->assign( 'ALL_DATA', $all_data );
 				break;
 		}

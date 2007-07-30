@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCurrencies.php,v 1.6 2007/07/27 09:41:21 olivleh1 Exp $
+# $Id: moduleCurrencies.php,v 1.7 2007/07/30 12:46:34 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -42,16 +42,16 @@ class moduleCurrencies extends module {
 		$all_index_letters = $this->coreCurrencies->get_all_index_letters();
 		$num_currencies = $this->coreCurrencies->count_all_data();
 		
-		if( empty($letter) && $num_currencies < $this->coreTemplates->get_max_rows() ) {
+		if( empty( $letter ) && $num_currencies < $this->coreTemplates->get_max_rows() ) {
 			$letter = 'all';
 		}
 		
-		if( $letter == 'all') {
-			$all_data=$this->coreCurrencies->get_all_data();
+		if( $letter == 'all' ) {
+			$all_data = $this->coreCurrencies->get_all_data();
 		} elseif( !empty( $letter ) ) {
-			$all_data=$this->coreCurrencies->get_all_matched_data( $letter );
+			$all_data = $this->coreCurrencies->get_all_matched_data( $letter );
 		} else {
-			$all_data=array();
+			$all_data = array();
 		}
 		
 		$this->template->assign( 'ALL_DATA',          $all_data          );
@@ -67,9 +67,9 @@ class moduleCurrencies extends module {
 		switch( $realaction ) {
 			case 'save':
 				if( $id == 0 ) {
-					$ret=$this->coreCurrencies->add_currency( $all_data['currency'], $all_data['att_default'] );
+					$ret = $this->coreCurrencies->add_currency( $all_data['currency'], $all_data['att_default'] );
 				} else {
-					$ret=$this->coreCurrencies->update_currency( $id, $all_data['currency'], $all_data['att_default'] );
+					$ret = $this->coreCurrencies->update_currency( $id, $all_data['currency'], $all_data['att_default'] );
 				}
 
 				if( $ret ) {
@@ -78,13 +78,13 @@ class moduleCurrencies extends module {
 				}				
 			default:
 				if( $id > 0 ) {
-					if( !is_array($all_data) ) {
-						$all_data=$this->coreCurrencies->get_id_data( $id );
+					if( !is_array( $all_data ) ) {
+						$all_data = $this->coreCurrencies->get_id_data( $id );
 					} else {
 						$all_data['currencyid'] = $id;
 					}				
 				} else {
-					$all_data['att_default']=0;
+					$all_data['att_default'] = 0;
 				}
 				$this->template->assign( 'ALL_DATA', $all_data );
 				break;
@@ -105,7 +105,7 @@ class moduleCurrencies extends module {
 					break;
 				}
 			default:
-				$all_data=$this->coreCurrencies->get_id_data( $id );
+				$all_data = $this->coreCurrencies->get_id_data( $id );
 				$this->template->assign( 'ALL_DATA', $all_data );
 				break;
 		}

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSearch.php,v 1.14 2007/07/28 20:26:28 olivleh1 Exp $
+# $Id: moduleSearch.php,v 1.15 2007/07/30 12:46:34 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -64,15 +64,15 @@ class moduleSearch extends module {
 	}
 
 	function do_search( $searchstring, $contractpartner, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus, $grouping1, $grouping2, $order ) {
-		if($equal)
+		if( $equal )
 			$searchparams['equal'] = 1;
-		if($casesensitive)
+		if( $casesensitive )
 			$searchparams['casesensitive'] = 1;
-		if($regexp)
+		if( $regexp )
 			$searchparams['regexp'] = 1;
-		if($orderbyseries)
+		if( $orderbyseries )
 			$searchparams['orderbyseries'] = 1;
-		if($minus)
+		if( $minus )
 			$searchparams['minus'] = 1;
 
 		$valid_data = true;
@@ -82,7 +82,7 @@ class moduleSearch extends module {
 		if( !empty( $startdate ) ) {
 			$startdate             = convert_date_to_db( $startdate, $this->date_format );
 			if( $startdate === false ) {
-				add_error( 147, array($this->date_format) );
+				add_error( 147, array( $this->date_format ) );
 				$startdate                       = $startdate_orig;
 				$searchparams['startdate_error'] = 1;
 				$valid_data = false;
@@ -92,7 +92,7 @@ class moduleSearch extends module {
 		if( !empty( $enddate ) ) {
 			$enddate             = convert_date_to_db( $enddate, $this->date_format );
 			if( $enddate === false ) {
-				add_error( 147, array($this->date_format) );
+				add_error( 147, array( $this->date_format ) );
 				$enddate                       = $startdate_orig;
 				$searchparams['enddate_error'] = 1;
 				$valid_data = false;
@@ -116,7 +116,7 @@ class moduleSearch extends module {
 			if( is_array( $results ) ) {
 				$this->template->assign( 'SEARCH_DONE', 1 );
 				foreach( array_keys( $results[0] ) as $column ) {
-					$columns[$column]=1;
+					$columns[$column] = 1;
 				}
 			} else {
 				add_error( 143 );

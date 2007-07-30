@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: module.php,v 1.29 2007/07/28 19:33:58 olivleh1 Exp $
+# $Id: module.php,v 1.30 2007/07/30 12:46:34 olivleh1 Exp $
 #
 
 require_once 'Smarty.class.php';
@@ -35,10 +35,10 @@ require_once 'core/coreUsers.php';
 class module {
 	function module() {
 		$this->coreTemplates = new coreTemplates;
-		$this->coreText = new coreText;
+		$this->coreText  = new coreText;
 		$this->coreUsers = new coreUsers;
-		$this->template = new Smarty;
-		$this->index_php='index.php';
+		$this->template  = new Smarty;
+		$this->index_php = 'index.php';
 		$this->template->register_modifier( 'number_format', 'my_number_format' );
 		$this->template->assign( 'ENV_INDEX_PHP', $this->index_php );
 		
@@ -95,7 +95,7 @@ class module {
 		return $result;
 	}
 
-	function parse_header( $nonavi=0 ) {
+	function parse_header( $nonavi = 0 ) {
 		$this->template->assign( 'REPORTS_YEAR',   date( 'Y' ) );
 		$this->template->assign( 'REPORTS_MONTH',  date( 'm' ) );
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
@@ -103,10 +103,10 @@ class module {
 		$this->template->assign( 'NO_NAVIGATION',  $nonavi );
 		$this->template->assign( 'IS_ADMIN',       $this->coreUsers->check_admin_permission( USERID ) );
 
-		$header=$this->fetch_template( 'display_header.tpl' );
+		$header = $this->fetch_template( 'display_header.tpl' );
 		$this->template->assign( 'HEADER', $header );
 
-		$footer=$this->fetch_template( 'display_footer.tpl' );
+		$footer = $this->fetch_template( 'display_footer.tpl' );
 		$this->template->assign( 'FOOTER', $footer );
 	}	
 }

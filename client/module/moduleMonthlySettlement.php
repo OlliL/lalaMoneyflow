@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.26 2007/07/29 19:15:20 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.27 2007/07/30 12:46:34 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -37,17 +37,17 @@ class moduleMonthlySettlement extends module {
 
 	function moduleMonthlySettlement() {
 		$this->module();
-		$this->coreCapitalSources=new coreCapitalSources();
-		$this->coreCurrencies=new coreCurrencies();
-		$this->coreMoneyFlows=new coreMoneyFlows();
-		$this->coreMonthlySettlement=new coreMonthlySettlement();
-		$this->coreDomains=new coreDomains();
+		$this->coreCapitalSources    = new coreCapitalSources();
+		$this->coreCurrencies        = new coreCurrencies();
+		$this->coreMoneyFlows        = new coreMoneyFlows();
+		$this->coreMonthlySettlement = new coreMonthlySettlement();
+		$this->coreDomains           = new coreDomains();
 	}
 
 	function display_list_monthlysettlements( $month, $year ) {
 
 		if( !$year )
-			$year=date( 'Y' );
+			$year = date( 'Y' );
 
 		$years = $this->coreMonthlySettlement->get_all_years();
 		$temp_months = $this->coreMonthlySettlement->get_all_months( $year );
@@ -55,26 +55,26 @@ class moduleMonthlySettlement extends module {
 			foreach( $temp_months as $key => $value ) {
 				$months[] = array(
 					'nummeric' => sprintf( '%02d', $value ),
-					'name'     => $this-> coreDomains->get_domain_meaning( 'MONTHS', (int)$value )
+					'name'     => $this-> coreDomains->get_domain_meaning( 'MONTHS', ( int )$value )
 				);
 			}
 		}
 
 		if( $month > 0 && $year > 0 ) {
-			$all_ids=$this->coreCapitalSources->get_valid_ids();
+			$all_ids = $this->coreCapitalSources->get_valid_ids();
 			foreach( $all_ids as $id ) {
-				$all_data[]=array(
+				$all_data[] = array(
 					'id'      => $id,
 					'comment' => $this->coreCapitalSources->get_comment( $id ),
 					'amount'  => $this->coreMonthlySettlement->get_amount( $id, $month, $year )
 				);
 			}
 
-			$sumamount=$this->coreMonthlySettlement->get_sum_amount( $month, $year );
+			$sumamount = $this->coreMonthlySettlement->get_sum_amount( $month, $year );
 
 			$month = array(
 				'nummeric' => sprintf( '%02d', $month ),
-				'name'     => $this-> coreDomains->get_domain_meaning( 'MONTHS', (int)$month )
+				'name'     => $this-> coreDomains->get_domain_meaning( 'MONTHS', ( int )$month )
 			);
 
 			$this->template->assign( 'SUMAMOUNT',      $sumamount         );
@@ -110,11 +110,11 @@ class moduleMonthlySettlement extends module {
 									$ret = false;
 							} elseif( $ret === true ) {
 								add_error( 154 );
-								$ret   = false;
+								$ret = false;
 							}
 						} else {
 							if( !$this->coreMonthlySettlement->update_monthlysettlement( $value['mcs_capitalsourceid'], $month, $year, $value['amount'] ) )
-								$ret=false;
+								$ret = false;
 						}
 					}
 				}
@@ -163,7 +163,7 @@ class moduleMonthlySettlement extends module {
 
 					$month = array(
 						'nummeric' => sprintf( '%02d', $month ),
-						'name'     => $this-> coreDomains->get_domain_meaning( 'MONTHS', (int)$month )
+						'name'     => $this-> coreDomains->get_domain_meaning( 'MONTHS', ( int )$month )
 					);
 					$this->template->assign( 'MONTH',          $month             );
 					$this->template->assign( 'YEAR' ,          $year              );
@@ -191,19 +191,19 @@ class moduleMonthlySettlement extends module {
 					break;
 				}
 			default:
-				$all_ids=$this->coreCapitalSources->get_valid_ids();
+				$all_ids = $this->coreCapitalSources->get_valid_ids();
 				foreach( $all_ids as $id ) {
-					$all_data[]=array(
+					$all_data[] = array(
 						'id'      => $id,
 						'comment' => $this->coreCapitalSources->get_comment( $id ),
 						'amount'  => $this->coreMonthlySettlement->get_amount( $id, $month, $year )
 					);
 				}
-				$sumamount=$this->coreMonthlySettlement->get_sum_amount( $month, $year );
+				$sumamount = $this->coreMonthlySettlement->get_sum_amount( $month, $year );
 
 				$month = array(
 					'nummeric' => sprintf( '%02d', $month ),
-					'name'     => $this-> coreDomains->get_domain_meaning( 'MONTHS', (int)$month )
+					'name'     => $this-> coreDomains->get_domain_meaning( 'MONTHS', ( int )$month )
 				);
 				$this->template->assign( 'SUMAMOUNT',      $sumamount         );
 				$this->template->assign( 'MONTH',          $month             );

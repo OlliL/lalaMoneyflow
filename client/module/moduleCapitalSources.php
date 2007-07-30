@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCapitalSources.php,v 1.18 2007/07/28 20:26:28 olivleh1 Exp $
+# $Id: moduleCapitalSources.php,v 1.19 2007/07/30 12:46:34 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -84,13 +84,13 @@ class moduleCapitalSources extends module {
 				$valid_data = true;
 
 				if( $all_data['validfrom'] === false ) {
-					add_error( 147, array($this->date_format) );
+					add_error( 147, array( $this->date_format ) );
 					$all_data['validfrom']       = $validfrom_orig;
 					$all_data['validfrom_error'] = 1;
 					$valid_data = false;
 				}
 				if( $all_data['validtil'] === false ) {
-					add_error( 147, array($this->date_format) );
+					add_error( 147, array( $this->date_format ) );
 					$all_data['validtil']       = $validtil_orig;
 					$all_data['validtil_error'] = 1;
 					$valid_data = false;
@@ -108,7 +108,7 @@ class moduleCapitalSources extends module {
 					break;
 				}
 			default:
-				if( !is_array($all_data) ) {
+				if( !is_array( $all_data ) ) {
 					if( $capitalsourceid > 0 ) {
 						$all_data              = $this->coreCapitalSources->get_id_data( $capitalsourceid );
 					} else {

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.36 2007/07/28 20:26:28 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.37 2007/07/30 12:46:34 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -65,13 +65,13 @@ class moduleMoneyFlows extends module {
 				$valid_data = true;
 
 				if( $all_data['bookingdate'] === false ) {
-					add_error( 147, array($this->date_format) );
+					add_error( 147, array( $this->date_format ) );
 					$all_data['bookingdate']       = $bookingdate_orig;
 					$all_data['bookingdate_error'] = 1;
 					$valid_data = false;
 				}
 				if( $all_data['invoicedate'] === false ) {
-					add_error( 147, array($this->date_format) );
+					add_error( 147, array( $this->date_format ) );
 					$all_data['invoicedate']       = $invoicedate_orig;
 					$all_data['invoicedate_error'] = 1;
 					$valid_data = false;
@@ -85,7 +85,7 @@ class moduleMoneyFlows extends module {
 					}
 				}
 			default:
-				if( !is_array($all_data) ) {
+				if( !is_array( $all_data ) ) {
 					$all_data = $this->coreMoneyFlows->get_id_data( $id );
 				}
 
@@ -185,7 +185,7 @@ class moduleMoneyFlows extends module {
 						if ( $value['checked'] == 1 ) {
 							if( empty( $value['invoicedate'] ) )
 								$value['invoicedate'] = $value['bookingdate'];
-							$ret=$this->coreMoneyFlows->add_moneyflow( $value['bookingdate'], $value['invoicedate'], $value['amount'], $value['mcs_capitalsourceid'], $value['mcp_contractpartnerid'], $value['comment'] );
+							$ret = $this->coreMoneyFlows->add_moneyflow( $value['bookingdate'], $value['invoicedate'], $value['amount'], $value['mcs_capitalsourceid'], $value['mcp_contractpartnerid'], $value['comment'] );
 						}
 					}
 				} else {
@@ -193,19 +193,19 @@ class moduleMoneyFlows extends module {
 				}
 			default:
 				$date = date( 'Y-m-d' );
-				$all_data_pre=$this->corePreDefMoneyFlows->get_valid_data();
+				$all_data_pre = $this->corePreDefMoneyFlows->get_valid_data();
 
-				$all_data[0]=array( 'id'          =>  -1,
+				$all_data[0] = array( 'id'          =>  -1,
 				                    'bookingdate' => $date );
 
 				if( is_array( $all_data_pre ) ) {
-					$i=1;				
+					$i = 1;				
 					foreach( $all_data_pre as $key => $value ) {
-						$all_data[$i]=$value;
+						$all_data[$i] = $value;
 						$all_data[$i]['bookingdate'] = $date;
-						$all_data[$i]['amount']=sprintf('%.02f',$all_data_pre[$key]['amount']);
-						$all_data[$i]['capitalsourcecomment']=$this->coreCapitalSources->get_comment( $all_data_pre[$key]['mcs_capitalsourceid'] );
-						$all_data[$i]['contractpartnername']=$this->coreContractPartners->get_name( $all_data_pre[$key]['mcp_contractpartnerid'] );
+						$all_data[$i]['amount'] = sprintf( '%.02f', $all_data_pre[$key]['amount'] );
+						$all_data[$i]['capitalsourcecomment'] = $this->coreCapitalSources->get_comment( $all_data_pre[$key]['mcs_capitalsourceid'] );
+						$all_data[$i]['contractpartnername']  = $this->coreContractPartners->get_name( $all_data_pre[$key]['mcp_contractpartnerid'] );
 						$i++;
 					}
 				}

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: modulePreDefMoneyFlows.php,v 1.22 2007/07/28 19:33:58 olivleh1 Exp $
+# $Id: modulePreDefMoneyFlows.php,v 1.23 2007/07/30 12:46:34 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -49,21 +49,21 @@ class modulePreDefMoneyFlows extends module {
 		$all_index_letters = $this->corePreDefMoneyFlows->get_all_index_letters();
 		$num_flows = $this->corePreDefMoneyFlows->count_all_data();
 		
-		if( empty($letter) && $num_clows < $this->coreTemplates->get_max_rows() ) {
+		if( empty( $letter ) && $num_clows < $this->coreTemplates->get_max_rows() ) {
 			$letter = 'all';
 		}
 
 
 		if( $letter == 'all' ) {
-			$all_data=$this->corePreDefMoneyFlows->get_all_data();
+			$all_data = $this->corePreDefMoneyFlows->get_all_data();
 		} elseif( !empty( $letter ) ) {
-			$all_data=$this->corePreDefMoneyFlows->get_all_matched_data( $letter );
+			$all_data = $this->corePreDefMoneyFlows->get_all_matched_data( $letter );
 		}
 
 		if( is_array( $all_data ) ) {
 			foreach( $all_data as $key => $value ) {
-				$all_data[$key]['capitalsource_comment']=$this->coreCapitalSources->get_comment( $all_data[$key]['mcs_capitalsourceid'] );
-				$all_data[$key]['contractpartner_name']=$this->coreContractPartners->get_name( $all_data[$key]['mcp_contractpartnerid'] );
+				$all_data[$key]['capitalsource_comment'] = $this->coreCapitalSources->get_comment( $all_data[$key]['mcs_capitalsourceid'] );
+				$all_data[$key]['contractpartner_name']  = $this->coreContractPartners->get_name( $all_data[$key]['mcp_contractpartnerid'] );
 			}
 		}
 
