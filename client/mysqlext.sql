@@ -328,8 +328,9 @@ $$
 DROP TRIGGER IF EXISTS mmf_trg_02$$
 CREATE TRIGGER mmf_trg_02 AFTER UPDATE ON moneyflows
   FOR EACH ROW BEGIN
-    IF OLD.amount != NEW.amount THEN
-      CALL mmf_trg_procedure(NEW.bookingdate
+    IF OLD.amount != NEW.amount OR
+       OLD.bookingdate != NEW.bookingdate THEN
+      CALL mmf_trg_procedure(OLD.bookingdate
                             ,NEW.mur_userid
                             ,NEW.mcs_capitalsourceid
                             );
