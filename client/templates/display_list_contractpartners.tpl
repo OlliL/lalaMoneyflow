@@ -26,8 +26,8 @@
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].postcode}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].town}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].country}</td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&contractpartnerid={$ALL_DATA[DATA].id}&sr=1','_blank','width=800,height=80')">{$TEXT_36}</a></td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_contractpartner&contractpartnerid={$ALL_DATA[DATA].id}&sr=1','_blank','width=800,height=80')">{$TEXT_37}</a></td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&sr=1','_blank','width=800,height=80')">{$TEXT_36}</a></td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_contractpartner&contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&sr=1','_blank','width=800,height=80')">{$TEXT_37}</a></td>
 						</tr>
 					{/section}
 				</table>

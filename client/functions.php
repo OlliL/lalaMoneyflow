@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: functions.php,v 1.10 2007/07/28 19:49:25 olivleh1 Exp $
+# $Id: functions.php,v 1.11 2007/09/06 19:18:22 olivleh1 Exp $
 #
 
 
@@ -54,7 +54,7 @@ function check_date( $year, $month, $day ) {
 		     $year % 400 === 0 ) {
 			$maxday = 29;
 		} else {
-			$mayday = 28;
+			$maxday = 28;
 		}
 	} else {
 		$maxday = 30;

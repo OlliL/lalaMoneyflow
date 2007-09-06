@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: corePreDefMoneyFlows.php,v 1.16 2007/07/27 06:42:26 olivleh1 Exp $
+# $Id: corePreDefMoneyFlows.php,v 1.17 2007/09/06 19:18:24 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -87,7 +87,7 @@ class corePreDefMoneyFlows extends core {
 	}
 
 	function get_capitalsourceid( $id ) {
-		return $this->select_col( "	SELECT capitalsourceid
+		return $this->select_col( "	SELECT mcs_capitalsourceid
 						  FROM predefmoneyflows
 						 WHERE predefmoneyflowid = $id
 						   AND mur_userid        = ".USERID );

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: modulePreDefMoneyFlows.php,v 1.23 2007/07/30 12:46:34 olivleh1 Exp $
+# $Id: modulePreDefMoneyFlows.php,v 1.24 2007/09/06 19:18:24 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -113,6 +113,7 @@ class modulePreDefMoneyFlows extends module {
 					} else {
 						$capitalsource_values = $this->coreCapitalSources->get_all_comments();
 					}
+					$this->template->assign( 'PREDEFMONEYFLOWID',   $id   );
 				} else {
 					$capitalsource_values = $this->coreCapitalSources->get_valid_comments();
 				}				

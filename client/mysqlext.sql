@@ -305,6 +305,91 @@ BEGIN
 END;
 $$
 
+DROP PROCEDURE IF EXISTS imp_moneyflows$$
+CREATE PROCEDURE imp_moneyflows (IN pi_userid   INT(10) UNSIGNED
+                                ,IN pi_write    INT(1)  UNSIGNED
+                                )
+BEGIN
+  DECLARE l_found             BOOLEAN             DEFAULT TRUE;
+  DECLARE l_insert            BOOLEAN             DEFAULT TRUE;
+  DECLARE l_contractpartnerid INT(10);
+  DECLARE l_capitalsourceid   INT(10);
+  DECLARE l_dataid            INT(10);
+  DECLARE l_date              VARCHAR(100);
+  DECLARE l_amount            VARCHAR(100);
+  DECLARE l_comment           VARCHAR(100);
+
+  DECLARE c_mid CURSOR FOR
+    SELECT mcp.contractpartnerid
+          ,mcs.capitalsourceid
+          ,mid.dataid
+          ,mid.date
+          ,mid.amount
+          ,mid.comment
+      FROM                 imp_data            mid
+           LEFT OUTER JOIN imp_mapping_source  mis ON mid.source  = mis.source_from
+           LEFT OUTER JOIN imp_mapping_partner mip ON mid.partner = mip.partner_from
+           LEFT OUTER JOIN capitalsources      mcs ON IFNULL(mis.source_to,mid.source)   = mcs.comment AND mcs.mur_userid = pi_userid
+           LEFT OUTER JOIN contractpartners    mcp ON IFNULL(mip.partner_to,mid.partner) = mcp.name    AND mcp.mur_userid = pi_userid
+     WHERE mid.status = 1;
+
+  DECLARE CONTINUE HANDLER FOR NOT FOUND        SET l_found  := FALSE;
+  DECLARE CONTINUE HANDLER FOR SQLSTATE '23000' SET l_insert := FALSE;
+
+  UPDATE imp_data SET status=1 WHERE status=3;
+
+  OPEN c_mid;
+  REPEAT
+    FETCH c_mid INTO l_contractpartnerid, l_capitalsourceid, l_dataid, l_date, l_amount, l_comment;
+    IF l_found THEN
+
+      START TRANSACTION;
+
+      SET l_insert := TRUE;
+
+      INSERT INTO moneyflows
+            (mur_userid
+            ,bookingdate
+            ,invoicedate
+            ,amount
+            ,mcs_capitalsourceid
+            ,mcp_contractpartnerid
+            ,comment
+            )
+              VALUES
+            (pi_userid
+            ,str_to_date(l_date,'%d.%m.%Y')
+            ,str_to_date(l_date,'%d.%m.%Y')
+            ,l_amount
+            ,l_capitalsourceid
+            ,l_contractpartnerid
+            ,l_comment
+            );
+
+      IF pi_write = 1 AND l_insert = TRUE THEN
+        COMMIT;
+      ELSE
+        ROLLBACK;
+      END IF;
+      
+      START TRANSACTION;
+      IF l_insert = FALSE THEN
+        UPDATE imp_data 
+           SET status = 3
+         WHERE dataid = l_dataid;
+      ELSE
+        UPDATE imp_data 
+           SET status = 2
+         WHERE dataid = l_dataid;
+      END IF;
+      COMMIT;
+
+    END IF;
+  UNTIL NOT l_found END REPEAT;
+  CLOSE c_mid;
+END;
+$$
+
 
 -- TRIGGERS
 

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.41 2007/07/28 19:33:56 olivleh1 Exp $
+# $Id: index.php,v 1.42 2007/09/06 19:18:22 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -229,7 +229,7 @@ if( $is_logged_in == 0 ) {
 							break;
 
 			case 'edit_contractpartner':	$realaction=		$_REQUEST['realaction'];
-							$id=			$_REQUEST['contractpernerid'];
+							$id=			$_REQUEST['contractpartnerid'];
 							$all_data=		$_REQUEST['all_data'];
 							$display=$moduleContractPartners->display_edit_contractpartner( $realaction, $id, $all_data );
 							break;

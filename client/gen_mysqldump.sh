@@ -26,6 +26,9 @@ mysqldump -u root --set-variable=triggers=FALSE --set-variable=quote-names=FALSE
 	text \
 	domains \
 	domainvalues \
+	imp_data \
+	imp_mapping_source \
+	imp_mapping_partner \
 		> ${PROGPATH}/mysqldump.sql
 
 mysqldump -u root --set-variable=quote-names=FALSE --set-variable=extended-insert=FALSE --default-character-set=latin1 --tables moneyflow \
