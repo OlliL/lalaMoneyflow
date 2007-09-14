@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.37 2007/07/30 12:46:34 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.38 2007/09/14 20:05:00 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -127,7 +127,7 @@ class moduleReports extends module {
 			#      g) amount they should had at the end of the month
 			#      h) differnece between e and f (if mms_exists)
 
-			$all_capitalsources = $this->coreCapitalSources->get_valid_data( $year.'-'.$month.'-01' );
+			$all_capitalsources = $this->coreCapitalSources->get_valid_data( date( 'Y-m-d', mktime( 0, 0, 0, $month, 1, $year ) ), date( 'Y-m-d', mktime( 0, 0, 0, $month+1, 0, $year ) ) );
 			foreach( $all_capitalsources as $capitalsource ) {
 				$capitalsourceid = $capitalsource['capitalsourceid'];
 				
