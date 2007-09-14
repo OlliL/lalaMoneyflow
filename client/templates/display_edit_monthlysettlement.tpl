@@ -1,6 +1,18 @@
 <html>
 {if $CLOSE != 1}
 	<head><title>lalaMoneyflow: {if $NEW != 1}{$TEXT_54}{else}{$TEXT_55}{/if}</title>
+{literal}
+<script type="text/javascript">
+<!--
+function Go(month,year)
+{
+   location.href = "index.php?action=edit_monthlysettlement&sr=1&monthlysettlements_month=" + month + "&monthlysettlements_year=" + year;
+   document.monthlysettlements.reset();
+   document.monthlysettlements.elements[0].blur();
+}
+//-->
+</script>
+{/literal}
 {$HEADER}
 
 		<td align="center">
@@ -15,21 +27,21 @@
 				<input type="hidden" name="monthlysettlements_month" value="{$MONTH.nummeric}">
 				<input type="hidden" name="monthlysettlements_year" value="{$YEAR}">
 			{else}
-				{$TEXT_56} <select class="contrastbgcolor" name="monthlysettlements_month">
-				<option {if $MONTH.nummeric == "01"}selected{/if}> 01
-				<option {if $MONTH.nummeric == "02"}selected{/if}> 02
-				<option {if $MONTH.nummeric == "03"}selected{/if}> 03
-				<option {if $MONTH.nummeric == "04"}selected{/if}> 04
-				<option {if $MONTH.nummeric == "05"}selected{/if}> 05
-				<option {if $MONTH.nummeric == "06"}selected{/if}> 06
-				<option {if $MONTH.nummeric == "07"}selected{/if}> 07
-				<option {if $MONTH.nummeric == "08"}selected{/if}> 08
-				<option {if $MONTH.nummeric == "09"}selected{/if}> 09
-				<option {if $MONTH.nummeric == "10"}selected{/if}> 10
-				<option {if $MONTH.nummeric == "11"}selected{/if}> 11
-				<option {if $MONTH.nummeric == "12"}selected{/if}> 12
+				{$TEXT_56} <select class="contrastbgcolor" name="monthlysettlements_month" onchange="Go(this.form.monthlysettlements_month.options[this.form.monthlysettlements_month.options.selectedIndex].value,this.form.monthlysettlements_year.value)">
+				<option {if $MONTH.nummeric == "01"}selected{/if} value="01"> 01
+				<option {if $MONTH.nummeric == "02"}selected{/if} value="02"> 02
+				<option {if $MONTH.nummeric == "03"}selected{/if} value="03"> 03
+				<option {if $MONTH.nummeric == "04"}selected{/if} value="04"> 04
+				<option {if $MONTH.nummeric == "05"}selected{/if} value="05"> 05
+				<option {if $MONTH.nummeric == "06"}selected{/if} value="06"> 06
+				<option {if $MONTH.nummeric == "07"}selected{/if} value="07"> 07
+				<option {if $MONTH.nummeric == "08"}selected{/if} value="08"> 08
+				<option {if $MONTH.nummeric == "09"}selected{/if} value="09"> 09
+				<option {if $MONTH.nummeric == "10"}selected{/if} value="10"> 10
+				<option {if $MONTH.nummeric == "11"}selected{/if} value="11"> 11
+				<option {if $MONTH.nummeric == "12"}selected{/if} value="12"> 12
 				</select>
-				{$TEXT_57} <input class="contrastbgcolor" type="text" name="monthlysettlements_year" value="{$YEAR}" size=4">
+				{$TEXT_57} <input class="contrastbgcolor" type="text" name="monthlysettlements_year" value="{$YEAR}" size=4" onchange="Go(this.form.monthlysettlements_month.options[this.form.monthlysettlements_month.options.selectedIndex].value,this.form.monthlysettlements_year.value)">
 			{/if}
 			<input type="hidden" name="REFERER" value="{$ENV_REFERER}">
 			<table border=0 width="350" cellpadding=2>

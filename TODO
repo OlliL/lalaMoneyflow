@@ -1,1 +1,4 @@
+when changing the year and the month when creating a monthly settlement, the
+valid capitalsources have to be checked.
+
 - language handling (change translation, add new language) (?)

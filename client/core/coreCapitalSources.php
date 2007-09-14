@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.26 2007/07/27 22:28:28 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.27 2007/09/14 19:36:16 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -128,11 +128,18 @@ class coreCapitalSources extends core {
 						 ORDER BY capitalsourceid' );
 	}
 
-	function get_valid_ids( $date='' ) {
-		$date = $this->make_date($date);
+	function get_valid_ids( $datefrom='', $datetil='' ) {
+		$datefrom = $this->make_date( $datefrom );
+
+		if( empty( $datetil ) )
+			$datetil = $datefrom;
+		else
+			$datetil = $this->make_date( $datetil );
+
 		return $this->select_cols( "	SELECT capitalsourceid
 						  FROM capitalsources
-						 WHERE $date BETWEEN validfrom AND validtil
+						 WHERE validfrom <= $datetil
+						   AND validtil  >= $datefrom
 						   AND mur_userid = ".USERID."
 						 ORDER BY capitalsourceid" );
 	}

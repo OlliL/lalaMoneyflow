@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.37 2007/07/30 12:46:34 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.38 2007/09/14 19:36:16 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -92,7 +92,7 @@ class moduleMoneyFlows extends module {
 				$capitalsourceid = $this->coreMoneyFlows->get_capitalsourceid( $id );
 
 				if ( $this->coreCapitalSources->id_is_valid( $capitalsourceid, date( 'Y-m-d' ) ) ) {
-					$capitalsource_values = $this->coreCapitalSources->get_valid_comments();
+					$capitalsource_values = $this->coreCapitalSources->get_valid_comments( $all_data['bookingdate'] );
 				} else {
 					$capitalsource_values = $this->coreCapitalSources->get_all_comments();
 				}

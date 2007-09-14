@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.27 2007/07/30 12:46:34 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.28 2007/09/14 19:36:17 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -61,7 +61,7 @@ class moduleMonthlySettlement extends module {
 		}
 
 		if( $month > 0 && $year > 0 ) {
-			$all_ids = $this->coreCapitalSources->get_valid_ids();
+			$all_ids = $this->coreCapitalSources->get_valid_ids( date( 'Y-m-d', mktime( 0, 0, 0, $month, 1, $year ) ), date( 'Y-m-d', mktime( 0, 0, 0, $month+1, 0, $year ) ) );
 			foreach( $all_ids as $id ) {
 				$all_data[] = array(
 					'id'      => $id,
@@ -108,7 +108,7 @@ class moduleMonthlySettlement extends module {
 							if( $exists === false ) {
 								if( !$this->coreMonthlySettlement->insert_monthlysettlement( $value['mcs_capitalsourceid'], $month, $year, $value['amount'] ) )
 									$ret = false;
-							} elseif( $ret === true ) {
+							} else {
 								add_error( 154 );
 								$ret = false;
 							}
@@ -124,6 +124,12 @@ class moduleMonthlySettlement extends module {
 					break;
 				}
 			default:
+				if( !empty( $month ) && !empty( $year ) ) {
+					$exists = $this->coreMonthlySettlement->monthlysettlement_exists( $month, $year );
+					if( $exists === false )
+						$new = 2;
+				}
+
 				if( $month == 0 && $year == 0 ) {
 					$timestamp = $this->coreMonthlySettlement->get_next_date();
 					if( !$timestamp ) {
@@ -140,11 +146,11 @@ class moduleMonthlySettlement extends module {
 				}
 
 				if( $month > 0 && $year > 0 ) {
-					$all_ids      = $this->coreCapitalSources->get_valid_ids();
+					$all_ids      = $this->coreCapitalSources->get_valid_ids( date( 'Y-m-d', mktime( 0, 0, 0, $month, 1, $year ) ), date( 'Y-m-d', mktime( 0, 0, 0, $month+1, 0, $year ) ) );
 					$all_data_new = array();
 					foreach( $all_ids as $id ) {
 						if( $new === 1 ) {
-							$amount = $this->coreMonthlySettlement->get_amount( $id, date( 'm', mktime( 0, 0, 0, $month-1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1, $year ) ) );;
+							$amount = $this->coreMonthlySettlement->get_amount( $id, date( 'm', mktime( 0, 0, 0, $month-1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1, $year ) ) );
 							$amount += round( $lastamount+$this->coreMoneyFlows->get_monthly_capitalsource_movement( $id, $month, $year ), 2 );
 						} elseif( $realaction !== 'save' ) {
 							$amount = $this->coreMonthlySettlement->get_amount( $id,$month, $year );
@@ -191,7 +197,7 @@ class moduleMonthlySettlement extends module {
 					break;
 				}
 			default:
-				$all_ids = $this->coreCapitalSources->get_valid_ids();
+				$all_ids = $this->coreCapitalSources->get_valid_ids( date( 'Y-m-d', mktime( 0, 0, 0, $month, 1, $year ) ), date( 'Y-m-d', mktime( 0, 0, 0, $month+1, 0, $year ) ) );
 				foreach( $all_ids as $id ) {
 					$all_data[] = array(
 						'id'      => $id,

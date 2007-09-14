@@ -418,10 +418,11 @@ CREATE TRIGGER mmf_trg_02 AFTER UPDATE ON moneyflows
                             ,NEW.mur_userid
                             ,NEW.mcs_capitalsourceid
                             );
-    ELSEIF LAST_DAY(OLD.bookingdate) != LAST_DAY(NEW.bookingdate) THEN
+    ELSEIF LAST_DAY(OLD.bookingdate) != LAST_DAY(NEW.bookingdate) OR
+           OLD.mcs_capitalsourceid   != NEW.mcs_capitalsourceid   THEN
       CALL mmf_trg_procedure(OLD.bookingdate
-                            ,NEW.mur_userid
-                            ,NEW.mcs_capitalsourceid
+                            ,OLD.mur_userid
+                            ,OLD.mcs_capitalsourceid
                             );
       CALL mmf_trg_procedure(NEW.bookingdate
                             ,NEW.mur_userid
