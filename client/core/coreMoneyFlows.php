@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.31 2007/07/27 22:28:28 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.32 2007/09/17 15:27:01 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -280,7 +280,7 @@ class coreMoneyFlows extends core {
 								$group['select']  .= ',MONTH(a.bookingdate) month';
 								break;
 					case 'contractpartner':	$group['join']    .= $group['jkeyword'].' contractpartners b';
-								$group['where']   .= $group['wkeyword'].' b.contractpartnerid = a.mcp_contractpartnerid';
+								$group['where']   .= $group['wkeyword'].' b.contractpartnerid = a.mcp_contractpartnerid ';
 								$group['group']   .= $group['gkeyword'].' b.name';
 								$group['order']   .= $group['okeyword'].' b.name';
 								$group['select']  .= ', b.name';
@@ -320,12 +320,12 @@ class coreMoneyFlows extends core {
 				if( $params['casesensitive'] == 1 )
 					$LIKE   .=' BINARY';
 			}
-			$WHERE_CONDITION  = $WHERE_KEYWORD.' '.$SEARCHCOL.' '.$LIKE." '".$params["pattern"]."'";
+			$WHERE_CONDITION  = $WHERE_KEYWORD.' '.$SEARCHCOL.' '.$LIKE." '".$params["pattern"]."' ";
 			$WHERE_KEYWORD    = 'AND';
 		}
 		
 		if( $params['minus'] == 1 ) {
-			$WHERE_CONDITION .= $WHERE_KEYWORD.' a.amount < 0';
+			$WHERE_CONDITION .= $WHERE_KEYWORD.' a.amount < 0 ';
 			$WHERE_KEYWORD    = 'AND';
 		}
 

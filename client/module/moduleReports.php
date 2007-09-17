@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.38 2007/09/14 20:05:00 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.39 2007/09/17 15:27:02 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -140,8 +140,8 @@ class moduleReports extends module {
 
 					$summary_data[$i]['fixamount']  = $settlement_data['amount'];
 					$summary_data[$i]['movement']   = round( $settlement_data['movement_calculated'], 2 );
-					$summary_data[$i]['calcamount'] = $summary_data[$i]['lastamount'] + $summary_data[$i]['movement'];
-					$summary_data[$i]['difference'] = $summary_data[$i]['fixamount'] - $summary_data[$i]['calcamount'];
+					$summary_data[$i]['calcamount'] = round( $summary_data[$i]['lastamount'] + $summary_data[$i]['movement'], 2 );
+					$summary_data[$i]['difference'] = round( $summary_data[$i]['fixamount'] - $summary_data[$i]['calcamount'], 2 );
 				} else {
 					$summary_data[$i]['movement']   = round( $this->coreMoneyFlows->get_monthly_capitalsource_movement( $capitalsourceid, $month, $year ), 2 );
 					$summary_data[$i]['calcamount'] = $summary_data[$i]['lastamount'] + $summary_data[$i]['movement'];

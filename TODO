@@ -1,3 +1,15 @@
+when adding a settlement, do not switch into the "edit" mode when changing the
+date. this prevents adding a settlement for a month in a previous year, when
+for the same month this year a settlement already exists. (change month, you'll
+get the "edit" mode for the current year and can't leave)
+maybe just display the navigation drop down boxes all the time...?
+
+do not allow to add moneyflows with sources when they are not valid on the added
+date
+
+when changing the date during adding a settlement, the hidden REFERER variable
+gets wrong
+
 when adding a monthly settlement with an error, do not insert any settlement
 
 - language handling (change translation, add new language) (?)

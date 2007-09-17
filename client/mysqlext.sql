@@ -327,7 +327,7 @@ BEGIN
           ,mid.amount
           ,mid.comment
       FROM                 imp_data            mid
-           LEFT OUTER JOIN imp_mapping_source  mis ON mid.source  = mis.source_from
+           LEFT OUTER JOIN imp_mapping_source  mis ON mid.source  LIKE mis.source_from
            LEFT OUTER JOIN imp_mapping_partner mip ON mid.partner = mip.partner_from
            LEFT OUTER JOIN capitalsources      mcs ON IFNULL(mis.source_to,mid.source)   = mcs.comment AND mcs.mur_userid = pi_userid
            LEFT OUTER JOIN contractpartners    mcp ON IFNULL(mip.partner_to,mid.partner) = mcp.name    AND mcp.mur_userid = pi_userid
