@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.38 2007/09/14 19:36:16 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.39 2007/10/01 13:49:47 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -58,6 +58,8 @@ class moduleMoneyFlows extends module {
 		$bookingdate_orig = $all_data['bookingdate'];
 		$invoicedate_orig = $all_data['invoicedate'];
 
+		$checkdate = $all_data['bookingdate'];
+
 		switch( $realaction ) {
 			case 'save':
 				$all_data['bookingdate'] = convert_date_to_db( $all_data['bookingdate'], $this->date_format );
@@ -69,6 +71,7 @@ class moduleMoneyFlows extends module {
 					$all_data['bookingdate']       = $bookingdate_orig;
 					$all_data['bookingdate_error'] = 1;
 					$valid_data = false;
+					$checkdate = $this->coreMoneyFlows->get_bookingdate( $id );
 				}
 				if( $all_data['invoicedate'] === false ) {
 					add_error( 147, array( $this->date_format ) );
@@ -92,7 +95,7 @@ class moduleMoneyFlows extends module {
 				$capitalsourceid = $this->coreMoneyFlows->get_capitalsourceid( $id );
 
 				if ( $this->coreCapitalSources->id_is_valid( $capitalsourceid, date( 'Y-m-d' ) ) ) {
-					$capitalsource_values = $this->coreCapitalSources->get_valid_comments( $all_data['bookingdate'] );
+					$capitalsource_values = $this->coreCapitalSources->get_valid_comments( $checkdate );
 				} else {
 					$capitalsource_values = $this->coreCapitalSources->get_all_comments();
 				}
@@ -160,7 +163,13 @@ class moduleMoneyFlows extends module {
 							$all_data[$id]['bookingdate_error'] = 1;
 							$data_is_valid = false;
 						}
-	
+
+						if( ! $this->coreCapitalSources->id_is_valid( $value['mcs_capitalsourceid'], $all_data[$id]['bookingdate'] ) ) {
+							add_error( 181 );
+							$all_data[$id]['capitalsource_error'] = 1;
+							$data_is_valid = false;
+						}
+
 						if( empty( $value['comment'] ) ) {
 							add_error( 131 );
 							$data_is_valid = false;

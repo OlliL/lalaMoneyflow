@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.32 2007/09/17 15:27:01 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.33 2007/10/01 13:49:46 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -206,6 +206,13 @@ class coreMoneyFlows extends core {
 
 	function get_capitalsourceid( $id ) {
 		return $this->select_col( "	SELECT mcs_capitalsourceid
+						  FROM moneyflows
+						 WHERE moneyflowid = $id
+						   AND mur_userid  = ".USERID );
+	}
+
+	function get_bookingdate( $id ) {
+		return $this->select_col( "	SELECT bookingdate
 						  FROM moneyflows
 						 WHERE moneyflowid = $id
 						   AND mur_userid  = ".USERID );

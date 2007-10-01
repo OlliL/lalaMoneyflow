@@ -16,18 +16,15 @@ function Go(month,year)
 {$HEADER}
 
 		<td align="center">
-		<h1>{$TEXT_53} {if $NEW != 1 }{$MONTH.name} {$YEAR}{/if}</h1>
+		<h1>{if $NEW != 1}{$TEXT_54}{else}{$TEXT_55}{/if}</h1>
 		{section name=ERROR loop=$ERRORS}
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
 		{/section}<br />
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action" value="edit_monthlysettlement">
 			<input type="hidden" name="realaction" value="">
-			{if $NEW != 1 }
-				<input type="hidden" name="monthlysettlements_month" value="{$MONTH.nummeric}">
-				<input type="hidden" name="monthlysettlements_year" value="{$YEAR}">
-			{else}
-				{$TEXT_56} <select class="contrastbgcolor" name="monthlysettlements_month" onchange="Go(this.form.monthlysettlements_month.options[this.form.monthlysettlements_month.options.selectedIndex].value,this.form.monthlysettlements_year.value)">
+			{$TEXT_56}
+			<select class="contrastbgcolor" name="monthlysettlements_month" onchange="Go(this.form.monthlysettlements_month.options[this.form.monthlysettlements_month.options.selectedIndex].value,this.form.monthlysettlements_year.value)">
 				<option {if $MONTH.nummeric == "01"}selected{/if} value="01"> 01
 				<option {if $MONTH.nummeric == "02"}selected{/if} value="02"> 02
 				<option {if $MONTH.nummeric == "03"}selected{/if} value="03"> 03
@@ -40,9 +37,9 @@ function Go(month,year)
 				<option {if $MONTH.nummeric == "10"}selected{/if} value="10"> 10
 				<option {if $MONTH.nummeric == "11"}selected{/if} value="11"> 11
 				<option {if $MONTH.nummeric == "12"}selected{/if} value="12"> 12
-				</select>
-				{$TEXT_57} <input class="contrastbgcolor" type="text" name="monthlysettlements_year" value="{$YEAR}" size=4" onchange="Go(this.form.monthlysettlements_month.options[this.form.monthlysettlements_month.options.selectedIndex].value,this.form.monthlysettlements_year.value)">
-			{/if}
+			</select>
+			{$TEXT_57}
+			<input class="contrastbgcolor" type="text" name="monthlysettlements_year" value="{$YEAR}" size=4" onchange="Go(this.form.monthlysettlements_month.options[this.form.monthlysettlements_month.options.selectedIndex].value,this.form.monthlysettlements_year.value)">
 			<input type="hidden" name="REFERER" value="{$ENV_REFERER}">
 			<table border=0 width="350" cellpadding=2>
 				<tr>
@@ -53,7 +50,7 @@ function Go(month,year)
 					<tr>
 						{if $NEW == 1 }<input type="hidden" name="all_data[{$ALL_DATA[DATA].id}][new]" value="1">{/if}
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="hidden" name="all_data[{$ALL_DATA[DATA].id}][mcs_capitalsourceid]" value="{$ALL_DATA[DATA].id}">{$ALL_DATA[DATA].comment}</td>
-						<td class="contrastbgcolor" align="right"><input class="contrastbgcolor" type="text" name="all_data[{$ALL_DATA[DATA].id}][amount]" value="{$ALL_DATA[DATA].amount|string_format:"%.2f"}" size=8 align="right"/> {$CURRENCY}</font></td>
+						<td class="contrastbgcolor" align="right"><input class="contrastbgcolor" type="text" name="all_data[{$ALL_DATA[DATA].id}][amount]" value="{$ALL_DATA[DATA].amount}" {if $ALL_DATA[DATA].amount_error == 1}style="color:red"{/if} size=8 align="right"/> {$CURRENCY}</font></td>
 					</tr>
 				{/section}
 			</table>
