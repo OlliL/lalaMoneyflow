@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.39 2007/09/17 15:27:02 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.40 2007/10/02 13:37:06 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -239,6 +239,9 @@ class moduleReports extends module {
 
 	function plot_graph( $capitalsources_id, $startmonth, $startyear, $endmonth, $endyear ) {
 	
+		$endmonth_orig = $endmonth;
+		$endyear_orig  = $endyear;
+
 		$coreText = new coreText();
 		$graph_comment_all = $coreText->get_graph( 167 );
 		$graph_comment     = $coreText->get_graph( 168 );
@@ -304,6 +307,9 @@ class moduleReports extends module {
 					$monthly_data[$i] += $this->coreMonthlySettlement->get_amount( $capitalsources_id, $month,$year );
 				}
 				$monthly_x[$i] = sprintf( '%02d/%02d', $month, substr( $year, 3, 2 ) );
+				$last_month  = $month;
+				$last_year   = $year;
+				$last_amount = $monthly_data[$i];
 				$month++;
 				$i++;
 			}
@@ -311,6 +317,39 @@ class moduleReports extends module {
 			$month = 1;
 		}
 
+		$year  = $last_year;
+		$month = $last_month + 1;
+		if( $month == 13 ) {
+			$year++;
+			$month = 1;
+		}
+
+		if( $endyear != $endyear_orig || $endmonth != $endmonth_orig ) {
+			$a = 0;
+			while( $a < $i ) {
+				$monthly2_data[$a] = NULL;
+				$a++;
+			}
+			$monthly2_data[$a-1] = $last_amount;
+
+			$max_moneyflow_date = $this->coreMoneyFlows->get_max_year_month();
+
+			while( $year <= $endyear_orig && $year <= $max_moneyflow_date['year'] ) {
+				while( $month <= 12 && ( ( $month <= $endmonth_orig && $month <= $max_moneyflow_date['month'] )|| $year != $endyear_orig ) ) {
+					foreach( $all_capitalsources_ids as $capitalsources_id ) {
+						$monthly2_data[$a] += $this->coreMoneyFlows->get_monthly_capitalsource_movement($capitalsources_id, $month, $year );
+					}
+					$monthly2_data[$a] += $last_amount;
+					$last_amount        = $monthly2_data[$i];
+					$monthly_x[$x] = sprintf( '%02d/%02d', $month, substr( $year, 3, 2 ) );
+					$month++;
+					$i++;
+				}
+				$year++;
+				$month = 1;
+			}
+		}
+		
 		$graph = new Graph( 700, 400 );
 		$graph->SetMargin( 50, 20, 40, 35 );
 		$graph->SetScale( "intlin" );
@@ -326,7 +365,14 @@ class moduleReports extends module {
 		$p1 = new LinePlot( $monthly_data );
 		$p1->SetWeight( 1 );
 		$p1->SetFillGradient( '#E6E6FA', '#B0C4DE' );
+		$p1->mark->SetType(MARK_STAR);
 		$graph->Add( $p1 );
+
+		$p2 = new LinePlot( $monthly2_data );
+		$p2->SetWeight( 1 );
+		$p2->SetFillGradient( '#EE22EE', '#BB44BB' );
+		$p2->mark->SetType(MARK_STAR);
+		$graph->Add( $p2 );
 
 		$graph->xaxis->title->Set( $graph_xaxis );
 		$graph->xaxis->SetTitleMargin( 10 );

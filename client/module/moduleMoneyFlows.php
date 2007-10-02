@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.39 2007/10/01 13:49:47 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.40 2007/10/02 13:37:06 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -111,6 +111,7 @@ class moduleMoneyFlows extends module {
 			$all_data['bookingdate'] = convert_date_to_gui( $all_data['bookingdate'], $this->date_format );
 		if( empty( $all_data['invoicedate_error'] ) )
 			$all_data['invoicedate'] = convert_date_to_gui( $all_data['invoicedate'], $this->date_format );
+
 		$this->template->assign( 'ALL_DATA',    $all_data );
 		$this->template->assign( 'MONEYFLOWID', $id       );
 		$this->template->assign( 'CURRENCY',    $this->coreCurrencies->get_displayed_currency() );
