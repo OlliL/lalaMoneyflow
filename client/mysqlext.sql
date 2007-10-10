@@ -413,17 +413,27 @@ $$
 DROP TRIGGER IF EXISTS mmf_trg_02$$
 CREATE TRIGGER mmf_trg_02 AFTER UPDATE ON moneyflows
   FOR EACH ROW BEGIN
-    IF OLD.amount != NEW.amount THEN
-      CALL mmf_trg_procedure(OLD.bookingdate
-                            ,NEW.mur_userid
-                            ,NEW.mcs_capitalsourceid
-                            );
-    ELSEIF LAST_DAY(OLD.bookingdate) != LAST_DAY(NEW.bookingdate) OR
-           OLD.mcs_capitalsourceid   != NEW.mcs_capitalsourceid   THEN
+    DECLARE l_calc_new    BOOLEAN             DEFAULT FALSE;
+    DECLARE l_calc_old    BOOLEAN             DEFAULT FALSE;
+    
+    IF OLD.amount                != NEW.amount                THEN
+      SET l_calc_new := TRUE;
+    END IF;
+    
+    IF LAST_DAY(OLD.bookingdate) != LAST_DAY(NEW.bookingdate) OR
+       OLD.mcs_capitalsourceid   != NEW.mcs_capitalsourceid   THEN
+      SET l_calc_old := TRUE;
+      SET l_calc_new := TRUE;
+    END IF;
+       
+    IF l_calc_old THEN
       CALL mmf_trg_procedure(OLD.bookingdate
                             ,OLD.mur_userid
                             ,OLD.mcs_capitalsourceid
                             );
+    END IF;
+
+    IF l_calc_new THEN
       CALL mmf_trg_procedure(NEW.bookingdate
                             ,NEW.mur_userid
                             ,NEW.mcs_capitalsourceid
