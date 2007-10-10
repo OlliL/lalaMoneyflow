@@ -29,7 +29,19 @@ mysqldump -u root --set-variable=triggers=FALSE --set-variable=quote-names=FALSE
 	imp_data \
 	imp_mapping_source \
 	imp_mapping_partner \
-		> ${PROGPATH}/mysqldump.sql
+		| awk '
+	{
+		if( $1 == ")" ) {
+			printf("%s",$1)
+			for( i=2 ; i <= NF ; i++ ) {
+				if( $i !~ /AUTO_INCREMENT=[0-9]*/ )
+					printf (" %s",$i)
+			}
+			printf("\n")
+		} else {
+			print
+		}
+	}' > ${PROGPATH}/mysqldump.sql
 
 mysqldump -u root --set-variable=quote-names=FALSE --set-variable=extended-insert=FALSE --default-character-set=latin1 --tables moneyflow \
 	currencies \

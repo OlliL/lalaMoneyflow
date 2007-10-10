@@ -29,7 +29,7 @@ CREATE TABLE users (
   perm_admin tinyint(1) unsigned NOT NULL,
   PRIMARY KEY  (userid),
   UNIQUE KEY mur_i_01 (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COMMENT='mur';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mur';
 
 --
 -- Table structure for table `settings`
@@ -64,7 +64,7 @@ CREATE TABLE capitalsources (
   UNIQUE KEY mcs_i_02 (mur_userid,`comment`),
   KEY mcs_i_01 (mur_userid),
   CONSTRAINT mcs_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1 COMMENT='mcs';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcs';
 
 --
 -- Table structure for table `contractpartners`
@@ -82,7 +82,7 @@ CREATE TABLE contractpartners (
   PRIMARY KEY  (contractpartnerid,mur_userid),
   UNIQUE KEY mcp_i_01 (mur_userid,`name`),
   CONSTRAINT mcp_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=338 DEFAULT CHARSET=latin1 COMMENT='mcp';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcp';
 
 --
 -- Table structure for table `currencies`
@@ -95,7 +95,7 @@ CREATE TABLE currencies (
   att_default tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (currencyid),
   UNIQUE KEY mcu_i_01 (currency)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COMMENT='mcu';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcu';
 
 --
 -- Table structure for table `currencyrates`
@@ -134,7 +134,7 @@ CREATE TABLE moneyflows (
   CONSTRAINT mmf_mcp_pk FOREIGN KEY (mcp_contractpartnerid, mur_userid) REFERENCES contractpartners (contractpartnerid, mur_userid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4574 DEFAULT CHARSET=latin1 COMMENT='mmf';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mmf';
 
 --
 -- Table structure for table `monthlysettlements`
@@ -154,7 +154,7 @@ CREATE TABLE monthlysettlements (
   KEY mms_mcs_pk (mcs_capitalsourceid,mur_userid),
   CONSTRAINT mms_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
   CONSTRAINT mms_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=211 DEFAULT CHARSET=latin1 COMMENT='mms';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mms';
 
 --
 -- Table structure for table `predefmoneyflows`
@@ -176,7 +176,7 @@ CREATE TABLE predefmoneyflows (
   CONSTRAINT mpm_mcp_pk FOREIGN KEY (mcp_contractpartnerid, mur_userid) REFERENCES contractpartners (contractpartnerid, mur_userid) ON UPDATE CASCADE,
   CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
   CONSTRAINT mpm_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1 COMMENT='mpm';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mpm';
 
 --
 -- Table structure for table `languages`
@@ -188,7 +188,7 @@ CREATE TABLE languages (
   `language` varchar(10) NOT NULL,
   PRIMARY KEY  (languageid),
   UNIQUE KEY mla_i_01 (`language`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COMMENT='mla';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mla';
 
 --
 -- Table structure for table `templates`
@@ -196,9 +196,9 @@ CREATE TABLE languages (
 
 DROP TABLE IF EXISTS templates;
 CREATE TABLE templates (
-  templatename varchar(50) NOT NULL COMMENT 'mte',
+  templatename varchar(50) NOT NULL,
   PRIMARY KEY  (templatename)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mte';
 
 --
 -- Table structure for table `templatevalues`
@@ -236,9 +236,9 @@ CREATE TABLE `text` (
 
 DROP TABLE IF EXISTS domains;
 CREATE TABLE domains (
-  domain varchar(30) NOT NULL COMMENT 'mdm',
+  domain varchar(30) NOT NULL,
   PRIMARY KEY  (domain)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mdm';
 
 --
 -- Table structure for table `domainvalues`
@@ -269,7 +269,7 @@ CREATE TABLE imp_data (
   `comment` varchar(100) NOT NULL,
   `status` tinyint(1) unsigned NOT NULL default '1',
   PRIMARY KEY  (dataid)
-) ENGINE=InnoDB AUTO_INCREMENT=636 DEFAULT CHARSET=latin1 COMMENT='mid';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mid';
 
 --
 -- Table structure for table `imp_mapping_source`
@@ -302,7 +302,7 @@ CREATE TABLE imp_mapping_partner (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-09-06 19:17:28
+-- Dump completed on 2007-10-10 19:02:35
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -665,6 +665,8 @@ INSERT INTO text VALUES (179,1,'day','t');
 INSERT INTO text VALUES (179,2,'Tag','t');
 INSERT INTO text VALUES (180,1,'The date format you have choosen is not valid!','e');
 INSERT INTO text VALUES (180,2,'Das von Ihnen gewählte Datumsformat ist nicht gültig','e');
+INSERT INTO text VALUES (181,1,'The contractual partner is not valid on the specified date','e');
+INSERT INTO text VALUES (181,2,'Der Vertragspartner ist nicht gültig am angegebnen Datum','e');
 INSERT INTO templates VALUES ('display_add_moneyflow.tpl');
 INSERT INTO templates VALUES ('display_delete_capitalsource.tpl');
 INSERT INTO templates VALUES ('display_delete_contractpartner.tpl');
