@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.40 2007/10/02 13:37:06 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.41 2007/10/10 18:08:10 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -370,7 +370,7 @@ class moduleReports extends module {
 
 		$p2 = new LinePlot( $monthly2_data );
 		$p2->SetWeight( 1 );
-		$p2->SetFillGradient( '#EE22EE', '#BB44BB' );
+		$p2->SetFillGradient( '#aeaefa', '#689bde' );
 		$p2->mark->SetType(MARK_STAR);
 		$graph->Add( $p2 );
 

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.33 2007/10/01 13:49:46 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.34 2007/10/10 18:08:10 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -196,6 +196,17 @@ class coreMoneyFlows extends core {
 						 ORDER BY month ASC" );
 	}
 
+	function get_max_year_month() {
+		return $this->select_row( '	SELECT MONTH(bookingdate) month
+						      ,YEAR(bookingdate) year
+						  FROM moneyflows
+						 WHERE mur_userid  = '.USERID.'
+						   AND bookingdate = (SELECT MAX(bookingdate)
+						                        FROM moneyflows
+						                       WHERE mur_userid = '.USERID.'
+						                       LIMIT 1)
+						 LIMIT 1');
+	}
 
 	function delete_moneyflow( $id ) {
 		return $this->delete_row( "	DELETE FROM moneyflows
@@ -296,7 +307,7 @@ class coreMoneyFlows extends core {
 				$group['gkeyword']  = ',';
 				$group['okeyword']  = ',';
 				$group['jkeyword']  = ',';
-				$group['wkeyword']  = ',';
+				$group['wkeyword']  = 'AND';
 			}
 			
 			return( $group );
@@ -362,10 +373,10 @@ class coreMoneyFlows extends core {
 			$ORDER_CONDITION = $group['order'];
 		} else {
 			switch( $params['order'] ) {
-				case 'comment': $ORDER_CONDITION .= ' comment';
+				case 'comment': $ORDER_CONDITION = ' comment';
 						break;
 				case 'amount':
-				default:	$ORDER_CONDITION .= ' amount';
+				default:	$ORDER_CONDITION = ' amount';
 						break;
 
 			}
