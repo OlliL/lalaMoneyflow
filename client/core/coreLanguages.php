@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreLanguages.php,v 1.7 2007/07/27 06:42:26 olivleh1 Exp $
+# $Id: coreLanguages.php,v 1.8 2007/10/13 19:53:43 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -37,12 +37,47 @@ class coreLanguages extends core {
 		$this->coreSettings = new coreSettings();
 	}
 
+	function count_all_data() {
+		if ( $num = $this->select_col( 'SELECT count(*)
+						  FROM languages' ) ) {
+			return $num;
+		} else {
+			return;
+		}
+	}
+
 	function get_all_data() {
 		return $this->select_rows( '	SELECT languageid
 						      ,language
 					          FROM languages
 					         ORDER BY language' );
 	}
+
+	function get_all_matched_data( $letter ) {
+		return $this->select_rows( "	SELECT languageid
+						      ,language
+					          FROM languages
+						 WHERE UPPER(language) LIKE UPPER('$letter%')
+						 ORDER BY language" );
+	}
+
+	function get_all_index_letters() {
+		return $this->select_cols( '	SELECT DISTINCT UPPER(SUBSTR(language,1,1)) letters
+						  FROM languages
+						 ORDER BY letters' );
+	}
+
+	function add_language( $language, $source ) {
+
+		$ret = $this->exec_function( "add_language( '$language', $source )" );
+
+		if( $ret == 0 ) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
 
 	function get_displayed_language() {
 		$id =$this->coreSettings->get_displayed_language( USERID );

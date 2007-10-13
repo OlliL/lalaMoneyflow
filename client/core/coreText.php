@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreText.php,v 1.9 2007/07/27 06:42:27 olivleh1 Exp $
+# $Id: coreText.php,v 1.10 2007/10/13 19:53:43 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -44,6 +44,20 @@ class coreText extends core {
 					 	 LIMIT 1" );
 	}
 	
+	function get_lang_data( $id ) {
+		return $this->select_rows( "	SELECT textid
+						      ,text
+						  FROM text
+						 WHERE mla_languageid = $id" );
+	}
+
+	function update_text( $id, $languageid, $text ) {
+		return $this->update_row( "	UPDATE text
+						   SET text = '$text'
+						 WHERE textid         = $id
+						   AND mla_languageid = $languageid" );
+	}
+
 	function get_error( $id ) {
 		return $this->get_text( $id, 'e' );
 	}

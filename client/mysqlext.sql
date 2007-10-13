@@ -162,6 +162,39 @@ BEGIN
   
 END;$$
 
+DROP FUNCTION IF EXISTS add_language$$
+CREATE FUNCTION add_language (pi_language VARCHAR(10)
+                             ,pi_source   INT(10) UNSIGNED
+                             ) RETURNS  INT(10)
+BEGIN
+  DECLARE l_languageid INT(10);
+  
+  INSERT INTO languages (language
+                        )
+                          VALUES
+                        (pi_language
+                        );
+
+  SELECT LAST_INSERT_ID()
+    INTO l_languageid
+    FROM DUAL;
+
+  INSERT INTO text (textid
+                   ,mla_languageid
+                   ,text
+                   ,type
+                   )
+                   SELECT textid
+                         ,l_languageid
+                         ,text
+                         ,type
+                     FROM text
+		    WHERE mla_languageid = pi_source;
+
+  RETURN l_languageid;
+  
+END;$$
+
 DROP FUNCTION IF EXISTS mms_calc_movement_calculated$$
 CREATE FUNCTION mms_calc_movement_calculated(pi_userid          INT(10)    UNSIGNED
                                             ,pi_month           TINYINT(4) UNSIGNED

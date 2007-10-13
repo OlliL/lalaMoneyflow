@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCurrencies.php,v 1.13 2007/07/27 06:42:26 olivleh1 Exp $
+# $Id: coreCurrencies.php,v 1.14 2007/10/13 19:53:43 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -45,12 +45,14 @@ class coreCurrencies extends core {
 			return;
 		}
 	}
+
 	function get_default_id() {
 		return $this->select_col( '	SELECT currencyid
 						  FROM currencies
 						 WHERE att_default = 1
 						 LIMIT 1' );
 	}
+
 	function get_all_data() {
 		return $this->select_rows( '	SELECT currencyid
 						      ,currency

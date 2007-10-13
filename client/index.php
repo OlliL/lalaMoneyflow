@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.42 2007/09/06 19:18:22 olivleh1 Exp $
+# $Id: index.php,v 1.43 2007/10/13 19:53:41 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -32,6 +32,7 @@ require_once 'functions.php';
 require_once 'module/moduleCapitalSources.php';
 require_once 'module/moduleContractPartners.php';
 require_once 'module/moduleFrontPage.php';
+require_once 'module/moduleLanguages.php';
 require_once 'module/moduleMoneyFlows.php';
 require_once 'module/moduleMonthlySettlement.php';
 require_once 'module/modulePreDefMoneyFlows.php';
@@ -144,6 +145,10 @@ if( $is_logged_in == 0 ) {
 		case'list_currencyrates':
 		case'edit_currencyrate':	$moduleCurrencyRates		= new moduleCurrencyRates();
 						break;
+		case'list_languages':
+		case'edit_language':
+		case'add_language':		$moduleLanguages		= new moduleLanguages();
+						break;
 		case'list_users':
 		case'edit_user':
 		case'delete_user':		break;
@@ -183,6 +188,21 @@ if( $is_logged_in == 0 ) {
 							$validfrom=		$_REQUEST['validfrom'];
 							$all_data=		$_REQUEST['all_data'];
 							$display=$moduleCurrencyRates->display_edit_currencyrate( $realaction, $currencyid, $validfrom, $all_data );
+							break;
+
+			/* languages */
+
+			case 'list_languages':		$letter=		$_REQUEST['letter'];
+							$display=$moduleLanguages->display_list_languages( $letter );
+							break;
+			case 'edit_language':		$realaction=		$_REQUEST['realaction'];
+							$id=			$_REQUEST['languageid'];
+							$all_data=		$_REQUEST['all_data'];
+							$display=$moduleLanguages->display_edit_language( $realaction, $id, $all_data );
+							break;
+			case 'add_language':		$realaction=		$_REQUEST['realaction'];
+							$all_data=		$_REQUEST['all_data'];
+							$display=$moduleLanguages->display_add_language( $realaction, $all_data );
 							break;
 
 			/* users */

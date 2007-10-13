@@ -37,6 +37,7 @@
 					<a href="{$ENV_INDEX_PHP}?action=list_users">{$TEXT_94}</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_currencies">{$TEXT_106}</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_currencyrates">{$TEXT_110}</a><br />
+					<a href="{$ENV_INDEX_PHP}?action=list_languages">{$TEXT_182}</a><br />
 {/if}
 					<br />
 					<br />
