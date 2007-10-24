@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreUsers.php,v 1.12 2007/07/27 06:42:27 olivleh1 Exp $
+# $Id: coreUsers.php,v 1.13 2007/10/24 19:10:15 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -145,6 +145,7 @@ class coreUsers extends core {
 			return true;
 		}
 	}
+
 	function delete_user( $id ) {
 	
 		$ret = $this->exec_procedure( "user_delete( $id, @po_ret )" );
