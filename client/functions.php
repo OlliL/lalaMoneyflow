@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: functions.php,v 1.11 2007/09/06 19:18:22 olivleh1 Exp $
+# $Id: functions.php,v 1.12 2007/10/25 12:58:07 olivleh1 Exp $
 #
 
 
@@ -90,6 +90,31 @@ function convert_date_to_db( $date, $dateformat ) {
 
 	if( is_array( $date_array ) && check_date( ( $date_array['tm_year']+1900 ), ( $date_array['tm_mon'] + 1 ), $date_array['tm_mday'] ) ) {
 		$retval = sprintf( '%4d-%02d-%02d', ( $date_array['tm_year']+1900 ), ( $date_array['tm_mon'] + 1 ), $date_array['tm_mday'] );
+	}
+
+	return $retval;
+}
+
+function convert_date_to_timestamp( $date, $dateformat ) {
+	if( empty( $date ) )
+		return false;
+
+	$patterns[0] = '/YYYY/';
+	$patterns[1] = '/MM/';
+	$patterns[2] = '/DD/';
+	
+	$replacements[0] = '%Y';
+	$replacements[1] = '%m';
+	$replacements[2] = '%d';
+	
+	$strptime_format = preg_replace( $patterns, $replacements, $dateformat );
+
+	$date_array = strptime( $date, $strptime_format);
+
+	$retval = false;
+
+	if( is_array( $date_array ) && check_date( ( $date_array['tm_year']+1900 ), ( $date_array['tm_mon'] + 1 ), $date_array['tm_mday'] ) ) {
+		$retval = mktime(0, 0, 0, $date_array['tm_mon'] + 1, $date_array['tm_mday'], $date_array['tm_year']+1900);
 	}
 
 	return $retval;

@@ -292,6 +292,30 @@ CREATE TABLE imp_mapping_partner (
   partner_to varchar(100) NOT NULL,
   UNIQUE KEY mip_i_01 (partner_from)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mip';
+
+--
+-- Table structure for table `cmp_data_formats`
+--
+
+DROP TABLE IF EXISTS cmp_data_formats;
+CREATE TABLE cmp_data_formats (
+  formatid int(11) NOT NULL auto_increment,
+  `name` varchar(50) NOT NULL,
+  startline varchar(255) NOT NULL,
+  delimiter varchar(1) NOT NULL,
+  pos_date tinyint(2) NOT NULL,
+  pos_partner tinyint(2) default NULL,
+  pos_amount tinyint(2) NOT NULL,
+  pos_comment tinyint(2) default NULL,
+  fmt_date varchar(10) NOT NULL,
+  fmt_amount_decimal varchar(1) NOT NULL,
+  fmt_amount_thousand varchar(1) default NULL,
+  pos_partner_alt tinyint(2) default NULL,
+  pos_partner_alt_pos_key tinyint(2) default NULL,
+  pos_partner_alt_keyword varchar(255) default NULL,
+  PRIMARY KEY  (formatid),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcf';
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -302,7 +326,7 @@ CREATE TABLE imp_mapping_partner (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-10-13 18:53:30
+-- Dump completed on 2007-10-25 12:58:46
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -673,7 +697,33 @@ INSERT INTO text VALUES (183,1,'language','t');
 INSERT INTO text VALUES (183,2,'Sprache','t');
 INSERT INTO text VALUES (184,1,'edit language','t');
 INSERT INTO text VALUES (184,2,'Sprache bearbeiten','t');
+INSERT INTO text VALUES (185,1,'add language','t');
+INSERT INTO text VALUES (185,2,'Sprache hinzufügen','t');
+INSERT INTO text VALUES (186,1,'source','t');
+INSERT INTO text VALUES (186,2,'Vorlage','t');
+INSERT INTO text VALUES (187,1,'compare data','t');
+INSERT INTO text VALUES (187,2,'Datenvergleich','t');
+INSERT INTO text VALUES (188,1,'filename','t');
+INSERT INTO text VALUES (188,2,'Dateiname','t');
+INSERT INTO text VALUES (189,1,'format','t');
+INSERT INTO text VALUES (189,2,'Format','t');
+INSERT INTO text VALUES (190,1,'continue','t');
+INSERT INTO text VALUES (190,2,'Weiter','t');
+INSERT INTO text VALUES (191,1,'fileupload failed','e');
+INSERT INTO text VALUES (191,2,'Dateiupload fehlgeschlagen','e');
+INSERT INTO text VALUES (192,1,'source','t');
+INSERT INTO text VALUES (192,2,'Quelle','t');
+INSERT INTO text VALUES (193,1,'file','t');
+INSERT INTO text VALUES (193,2,'Datei','t');
+INSERT INTO text VALUES (194,1,'lalaMoneyFlow','t');
+INSERT INTO text VALUES (194,2,'lalaMoneyFlow','t');
+INSERT INTO text VALUES (195,1,'matching data','t');
+INSERT INTO text VALUES (195,2,'passende Daten','t');
+INSERT INTO text VALUES (196,1,'not matching data','t');
+INSERT INTO text VALUES (196,2,'nicht passende Daten','t');
+INSERT INTO templates VALUES ('display_add_language.tpl');
 INSERT INTO templates VALUES ('display_add_moneyflow.tpl');
+INSERT INTO templates VALUES ('display_analyze_cmp_data.tpl');
 INSERT INTO templates VALUES ('display_delete_capitalsource.tpl');
 INSERT INTO templates VALUES ('display_delete_contractpartner.tpl');
 INSERT INTO templates VALUES ('display_delete_currencies.tpl');
@@ -707,9 +757,11 @@ INSERT INTO templates VALUES ('display_personal_settings.tpl');
 INSERT INTO templates VALUES ('display_plot_trends.tpl');
 INSERT INTO templates VALUES ('display_search.tpl');
 INSERT INTO templates VALUES ('display_system_settings.tpl');
+INSERT INTO templates VALUES ('display_upfrm_cmp_data.tpl');
 INSERT INTO templatevalues VALUES ('display_header.tpl',1);
 INSERT INTO templatevalues VALUES ('display_list_capitalsources.tpl',1);
 INSERT INTO templatevalues VALUES ('display_add_moneyflow.tpl',2);
+INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',2);
 INSERT INTO templatevalues VALUES ('display_delete_moneyflow.tpl',2);
 INSERT INTO templatevalues VALUES ('display_delete_predefmoneyflow.tpl',2);
 INSERT INTO templatevalues VALUES ('display_edit_moneyflow.tpl',2);
@@ -742,15 +794,18 @@ INSERT INTO templatevalues VALUES ('display_header.tpl',13);
 INSERT INTO templatevalues VALUES ('display_header.tpl',14);
 INSERT INTO templatevalues VALUES ('display_edit_moneyflow.tpl',15);
 INSERT INTO templatevalues VALUES ('display_add_moneyflow.tpl',16);
+INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',16);
 INSERT INTO templatevalues VALUES ('display_delete_moneyflow.tpl',16);
 INSERT INTO templatevalues VALUES ('display_edit_moneyflow.tpl',16);
 INSERT INTO templatevalues VALUES ('display_generate_report.tpl',16);
 INSERT INTO templatevalues VALUES ('display_search.tpl',16);
 INSERT INTO templatevalues VALUES ('display_add_moneyflow.tpl',17);
+INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',17);
 INSERT INTO templatevalues VALUES ('display_delete_moneyflow.tpl',17);
 INSERT INTO templatevalues VALUES ('display_edit_moneyflow.tpl',17);
 INSERT INTO templatevalues VALUES ('display_generate_report.tpl',17);
 INSERT INTO templatevalues VALUES ('display_add_moneyflow.tpl',18);
+INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',18);
 INSERT INTO templatevalues VALUES ('display_delete_moneyflow.tpl',18);
 INSERT INTO templatevalues VALUES ('display_delete_monthlysettlement.tpl',18);
 INSERT INTO templatevalues VALUES ('display_delete_predefmoneyflow.tpl',18);
@@ -762,6 +817,7 @@ INSERT INTO templatevalues VALUES ('display_list_monthlysettlements.tpl',18);
 INSERT INTO templatevalues VALUES ('display_list_predefmoneyflows.tpl',18);
 INSERT INTO templatevalues VALUES ('display_search.tpl',18);
 INSERT INTO templatevalues VALUES ('display_add_moneyflow.tpl',19);
+INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',19);
 INSERT INTO templatevalues VALUES ('display_delete_moneyflow.tpl',19);
 INSERT INTO templatevalues VALUES ('display_delete_monthlysettlement.tpl',19);
 INSERT INTO templatevalues VALUES ('display_delete_predefmoneyflow.tpl',19);
@@ -772,7 +828,9 @@ INSERT INTO templatevalues VALUES ('display_generate_report.tpl',19);
 INSERT INTO templatevalues VALUES ('display_list_monthlysettlements.tpl',19);
 INSERT INTO templatevalues VALUES ('display_list_predefmoneyflows.tpl',19);
 INSERT INTO templatevalues VALUES ('display_plot_trends.tpl',19);
+INSERT INTO templatevalues VALUES ('display_upfrm_cmp_data.tpl',19);
 INSERT INTO templatevalues VALUES ('display_add_moneyflow.tpl',21);
+INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',21);
 INSERT INTO templatevalues VALUES ('display_delete_capitalsource.tpl',21);
 INSERT INTO templatevalues VALUES ('display_delete_moneyflow.tpl',21);
 INSERT INTO templatevalues VALUES ('display_delete_predefmoneyflow.tpl',21);
@@ -796,6 +854,7 @@ INSERT INTO templatevalues VALUES ('display_edit_user.tpl',22);
 INSERT INTO templatevalues VALUES ('display_header.tpl',22);
 INSERT INTO templatevalues VALUES ('display_personal_settings.tpl',22);
 INSERT INTO templatevalues VALUES ('display_system_settings.tpl',22);
+INSERT INTO templatevalues VALUES ('display_add_language.tpl',23);
 INSERT INTO templatevalues VALUES ('display_edit_capitalsource.tpl',23);
 INSERT INTO templatevalues VALUES ('display_edit_contractpartner.tpl',23);
 INSERT INTO templatevalues VALUES ('display_edit_currencies.tpl',23);
@@ -841,6 +900,7 @@ INSERT INTO templatevalues VALUES ('display_list_currencyrates.tpl',28);
 INSERT INTO templatevalues VALUES ('display_list_languages.tpl',28);
 INSERT INTO templatevalues VALUES ('display_list_predefmoneyflows.tpl',28);
 INSERT INTO templatevalues VALUES ('display_list_users.tpl',28);
+INSERT INTO templatevalues VALUES ('display_add_language.tpl',29);
 INSERT INTO templatevalues VALUES ('display_list_capitalsources.tpl',29);
 INSERT INTO templatevalues VALUES ('display_list_contractpartners.tpl',29);
 INSERT INTO templatevalues VALUES ('display_list_currencies.tpl',29);
@@ -946,8 +1006,10 @@ INSERT INTO templatevalues VALUES ('display_generate_report.tpl',67);
 INSERT INTO templatevalues VALUES ('display_generate_report.tpl',68);
 INSERT INTO templatevalues VALUES ('display_plot_trends.tpl',69);
 INSERT INTO templatevalues VALUES ('display_search.tpl',69);
+INSERT INTO templatevalues VALUES ('display_upfrm_cmp_data.tpl',69);
 INSERT INTO templatevalues VALUES ('display_plot_trends.tpl',70);
 INSERT INTO templatevalues VALUES ('display_search.tpl',70);
+INSERT INTO templatevalues VALUES ('display_upfrm_cmp_data.tpl',70);
 INSERT INTO templatevalues VALUES ('display_plot_trends.tpl',71);
 INSERT INTO templatevalues VALUES ('display_search.tpl',72);
 INSERT INTO templatevalues VALUES ('display_search.tpl',73);
@@ -1036,8 +1098,23 @@ INSERT INTO templatevalues VALUES ('display_personal_settings.tpl',179);
 INSERT INTO templatevalues VALUES ('display_system_settings.tpl',179);
 INSERT INTO templatevalues VALUES ('display_header.tpl',182);
 INSERT INTO templatevalues VALUES ('display_list_languages.tpl',182);
+INSERT INTO templatevalues VALUES ('display_add_language.tpl',183);
 INSERT INTO templatevalues VALUES ('display_list_languages.tpl',183);
 INSERT INTO templatevalues VALUES ('display_edit_language.tpl',184);
+INSERT INTO templatevalues VALUES ('display_add_language.tpl',185);
+INSERT INTO templatevalues VALUES ('display_add_language.tpl',186);
+INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',187);
+INSERT INTO templatevalues VALUES ('display_header.tpl',187);
+INSERT INTO templatevalues VALUES ('display_upfrm_cmp_data.tpl',187);
+INSERT INTO templatevalues VALUES ('display_upfrm_cmp_data.tpl',188);
+INSERT INTO templatevalues VALUES ('display_upfrm_cmp_data.tpl',189);
+INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',190);
+INSERT INTO templatevalues VALUES ('display_upfrm_cmp_data.tpl',190);
+INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',192);
+INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',193);
+INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',194);
+INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',195);
+INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',196);
 INSERT INTO domains VALUES ('CAPITALSOURCE_STATE');
 INSERT INTO domains VALUES ('CAPITALSOURCE_TYPE');
 INSERT INTO domains VALUES ('MONTHS');
@@ -1057,6 +1134,7 @@ INSERT INTO domainvalues VALUES ('CAPITALSOURCE_TYPE','1',173);
 INSERT INTO domainvalues VALUES ('CAPITALSOURCE_TYPE','2',174);
 INSERT INTO domainvalues VALUES ('CAPITALSOURCE_STATE','1',175);
 INSERT INTO domainvalues VALUES ('CAPITALSOURCE_STATE','2',176);
+INSERT INTO cmp_data_formats VALUES (1,'Postbank','/^Datum	Wertstellung	Art/','	',1,5,7,4,'DD.MM.YYYY',',','.',6,3,'Überweisung');
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,1);
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('','',0,0,0);
 UPDATE users SET id=0 WHERE username='';

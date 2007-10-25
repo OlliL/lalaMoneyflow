@@ -22,6 +22,7 @@
 					<br />
 					<a href="{$ENV_INDEX_PHP}?action=search">{$TEXT_7}</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=add_moneyflow">{$TEXT_8}</a><br />
+					<a href="{$ENV_INDEX_PHP}?action=upfrm_cmp_data">{$TEXT_187}</a><br />
 					<br />
 					<b>{$TEXT_14}</b><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$REPORTS_MONTH}&reports_year={$REPORTS_YEAR}">{$TEXT_9} {$REPORTS_YEAR}-{$REPORTS_MONTH}</a><br />

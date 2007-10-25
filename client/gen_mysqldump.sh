@@ -29,6 +29,7 @@ mysqldump -u root --set-variable=triggers=FALSE --set-variable=quote-names=FALSE
 	imp_data \
 	imp_mapping_source \
 	imp_mapping_partner \
+	cmp_data_formats \
 		| awk '
 	{
 		if( $1 == ")" ) {
@@ -52,6 +53,7 @@ mysqldump -u root --set-variable=quote-names=FALSE --set-variable=extended-inser
 	templatevalues \
 	domains \
 	domainvalues \
+	cmp_data_formats \
 		|grep INSERT >> ${PROGPATH}/mysqldump.sql
 
 cat << EOF >> ${PROGPATH}/mysqldump.sql

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.34 2007/10/10 18:08:10 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.35 2007/10/25 12:58:08 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -65,7 +65,7 @@ class coreMoneyFlows extends core {
 	}
 
 	function get_all_monthly_data( $month, $year ) {
-		$date = $this->make_date($year."-".$month."-01");
+		$date = $this->make_date( $year."-".$month."-01" );
 		return $this->select_rows( "	SELECT moneyflowid
 						      ,bookingdate
 						      ,invoicedate
@@ -80,8 +80,27 @@ class coreMoneyFlows extends core {
 							 ,invoicedate" );
 	}
 
+	function get_all_date_source_data( $capitalsourceid, $startdate, $endate ) {
+		$startdate = $this->make_date( $startdate );
+		$enddate   = $this->make_date( $enddate );
+		
+		return $this->select_rows( "	SELECT moneyflowid
+						      ,bookingdate
+						      ,invoicedate
+						      ,calc_amount(amount,'OUT',mur_userid,invoicedate) amount
+						      ,mcs_capitalsourceid
+						      ,mcp_contractpartnerid
+						      ,comment
+						  FROM moneyflows
+						 WHERE bookingdate           BETWEEN $startdate AND $enddate
+						   AND mcs_capitalsourceid = $capitalsourceid
+						   AND mur_userid          = ".USERID."
+						 ORDER BY bookingdate
+							 ,invoicedate" );
+	}
+
 	function get_all_monthly_joined_data( $month, $year, $sortby, $order ) {
-		$date = $this->make_date($year."-".$month."-01");
+		$date = $this->make_date( $year."-".$month."-01" );
 		$sortbyadd=' mmf.bookingdate,mmf.invoicedate,mmf.moneyflowid';
 		switch( $sortby ) {
 			case 'capitalsources_comment':	$sortby='capitalsourcecomment '.$order.',';
@@ -155,7 +174,7 @@ class coreMoneyFlows extends core {
 	}
 
 	function get_monthly_capitalsource_movement( $id, $month, $year ) {
-		$start = $this->make_date($year."-".$month."-01");
+		$start = $this->make_date( $year."-".$month."-01" );
 		$end   = "LAST_DAY($start)";
 
 		$movement=$this->select_col( "	SELECT SUM(calc_amount(amount,'OUT',mur_userid,invoicedate)) amount
@@ -232,8 +251,8 @@ class coreMoneyFlows extends core {
 	function update_moneyflow( $id, $bookingdate, $invoicedate, $amount, $capitalsourceid, $contractpartnerid, $comment ) {
 		$coreCapitalSources = new coreCapitalSources();
 		if( $coreCapitalSources->id_is_valid( $capitalsourceid, $bookingdate ) ) {
-			$bookingdate = $this->make_date($bookingdate);
-			$invoicedate = $this->make_date($invoicedate);
+			$bookingdate = $this->make_date( $bookingdate );
+			$invoicedate = $this->make_date( $invoicedate );
 			if( fix_amount( $amount ) ) {
 				return $this->update_row( "	UPDATE moneyflows
 								   SET bookingdate           = $bookingdate
@@ -254,8 +273,8 @@ class coreMoneyFlows extends core {
 	}
 
 	function add_moneyflow( $bookingdate, $invoicedate, $amount, $capitalsourceid, $contractpartnerid, $comment ) {
-		$bookingdate = $this->make_date($bookingdate);
-		$invoicedate = $this->make_date($invoicedate);
+		$bookingdate = $this->make_date( $bookingdate );
+		$invoicedate = $this->make_date( $invoicedate );
 		if (fix_amount( $amount )) {
 			return $this->insert_row( "	INSERT INTO moneyflows
 							      (mur_userid
@@ -392,5 +411,14 @@ class coreMoneyFlows extends core {
 						   AND a.mur_userid  =".USERID."
 						 GROUP BY$GROUP_CONDITION
 						 ORDER BY$ORDER_CONDITION" );
+	}
+
+	function find_single_moneyflow( $date, $date_days_around, $amount ) {
+		$date = $this->make_date( $date );
+		return $this->select_cols( "	SELECT moneyflowid
+						  FROM moneyflows
+						 WHERE bookingdate BETWEEN DATE_SUB($date, INTERVAL $date_days_around DAY) AND DATE_ADD($date, INTERVAL $date_days_around DAY)
+						   AND amount     = $amount
+						   AND mur_userid = ".USERID );
 	}
 }

@@ -24,13 +24,16 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.43 2007/10/13 19:53:41 olivleh1 Exp $
+# $Id: index.php,v 1.44 2007/10/25 12:58:07 olivleh1 Exp $
 #
 
 require_once 'include.php';
 require_once 'functions.php';
 require_once 'module/moduleCapitalSources.php';
 require_once 'module/moduleContractPartners.php';
+require_once 'module/moduleCompare.php';
+require_once 'module/moduleCurrencies.php';
+require_once 'module/moduleCurrencyRates.php';
 require_once 'module/moduleFrontPage.php';
 require_once 'module/moduleLanguages.php';
 require_once 'module/moduleMoneyFlows.php';
@@ -40,8 +43,6 @@ require_once 'module/moduleReports.php';
 require_once 'module/moduleSearch.php';
 require_once 'module/moduleSettings.php';
 require_once 'module/moduleUsers.php';
-require_once 'module/moduleCurrencies.php';
-require_once 'module/moduleCurrencyRates.php';
 if( $money_debug === true ) {
 	require_once 'util/utilTimer.php';
 	$timer = new utilTimer();
@@ -105,7 +106,6 @@ if( $is_logged_in == 2 ) {
 if( $money_debug === true )
 	error_reporting(E_ALL);
 
-
 if( $is_logged_in == 0 ) {
 
 	switch( $action ) {
@@ -152,6 +152,10 @@ if( $is_logged_in == 0 ) {
 		case'list_users':
 		case'edit_user':
 		case'delete_user':		break;
+
+		case 'upfrm_cmp_data':
+		case 'analyze_cmp_data':	$moduleCompare			= new moduleCompare();
+						break;
 		default:			$moduleFrontPage		= new moduleFrontPage();
 						break;
 	}
@@ -353,6 +357,13 @@ if( $is_logged_in == 0 ) {
 			case 'personal_settings':	$realaction=		$_REQUEST['realaction'];
 							$all_data=		$_REQUEST['all_data'];
 							$display=$moduleSettings->display_personal_settings( $realaction, $all_data );
+							break;
+			
+			case 'upfrm_cmp_data':		$display=$moduleCompare->display_upload_form();
+							break;
+			case 'analyze_cmp_data':	$all_data=		$_REQUEST['all_data'];
+							$file=			$_FILES['file'];		
+							$display=$moduleCompare->display_analyze_form( $file, $all_data );
 							break;
 
 			default:			$display=$moduleFrontPage->display_main();
