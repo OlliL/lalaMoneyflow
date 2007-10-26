@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCompare.php,v 1.1 2007/10/25 12:58:08 olivleh1 Exp $
+# $Id: moduleCompare.php,v 1.2 2007/10/26 09:37:08 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -52,6 +52,11 @@ class moduleCompare extends module {
 
 		$format_values        = $this->coreCompare->get_all_data();
 		$capitalsource_values = $this->coreCapitalSources->get_valid_comments();
+
+		if( count( $all_data ) === 0 ) {
+			$all_data['startdate'] = convert_date_to_gui(date("Y-m-d", mktime(0, 0, 0, date( 'm', time() )  , 1, date( 'Y', time() ) ) ), $this->date_format );
+			$all_data['enddate']   = convert_date_to_gui(date("Y-m-d", mktime(0, 0, 0, date( 'm', time() )+1, 0, date( 'Y', time() ) ) ), $this->date_format );
+		}
 
 		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 		$this->template->assign( 'FORMAT_VALUES',        $format_values        );
@@ -114,6 +119,9 @@ class moduleCompare extends module {
 				}
 				if( $match === 1 ) {
 					$cmp_data   = split( $format_data['delimiter'], $line );
+					foreach( $cmp_data as $ind => $data ) {
+						$cmp_data[$ind] = preg_replace('/^"(.*)"$/','$1',$data);
+					}
 					$date       = $cmp_data[$format_data['pos_date'] -1];
 					$date_stamp = convert_date_to_timestamp( $date, $format_data['fmt_date'] );
 					$date_db    = convert_date_to_db( $date, $format_data['fmt_date'] );

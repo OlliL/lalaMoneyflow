@@ -15,6 +15,8 @@
 				<th width="16%">{$TEXT_2} </th>
 				<th >           {$TEXT_21}</th>
 				<th width="22%">{$TEXT_19}</th>
+				<th width="2%">&nbsp</th>
+				<th width="3%">&nbsp</th>
 			</tr>
 			{section name=DATA loop=$ALL_NOT_CMP_DATA}
 				<tr>
@@ -25,6 +27,8 @@
 					<td class="contrastbgcolor">{$ALL_NOT_CMP_DATA[DATA].contractpartnername}</td>
 					<td class="contrastbgcolor">{$ALL_NOT_CMP_DATA[DATA].comment}</td>
 					<td class="contrastbgcolor">{$ALL_NOT_CMP_DATA[DATA].capitalsourcecomment}</td>
+					<td>&nbsp</td>
+					<td>&nbsp</td>
 				</tr>
 			{/section}
 		</table>
@@ -39,6 +43,8 @@
 				<th width="16%">{$TEXT_2} </th>
 				<th >           {$TEXT_21}</th>
 				<th width="22%">{$TEXT_19}</th>
+				<th width="2%">&nbsp</th>
+				<th width="3%">&nbsp</th>
 			</tr>
 			{section name=DATA loop=$ALL_NOT_MON_DATA}
 				<tr>
@@ -49,6 +55,8 @@
 					<td class="contrastbgcolor">{$ALL_NOT_MON_DATA[DATA].contractpartnername}</td>
 					<td class="contrastbgcolor">{$ALL_NOT_MON_DATA[DATA].comment}</td>
 					<td class="contrastbgcolor">{$ALL_NOT_MON_DATA[DATA].capitalsourcecomment}</td>
+					<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&sr=1','_blank','width=1024,height=80')">{$TEXT_36}</a></td>
+					<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&sr=1','_blank','width=1024,height=80')">{$TEXT_37}</a></td>
 				</tr>
 			{/section}
 		</table>
@@ -65,6 +73,8 @@
 				<th width="16%">{$TEXT_2} </th>
 				<th >           {$TEXT_21}</th>
 				<th width="22%">{$TEXT_19}</th>
+				<th width="2%">&nbsp</th>
+				<th width="3%">&nbsp</th>
 			</tr>
 			{section name=DATA loop=$ALL_CMP_DATA}
 				<tr>
@@ -75,6 +85,8 @@
 					<td class="contrastbgcolor">{$ALL_CMP_DATA[DATA].cmp.contractpartnername}</td>
 					<td class="contrastbgcolor">{$ALL_CMP_DATA[DATA].cmp.comment}</td>
 					<td class="contrastbgcolor">{$ALL_CMP_DATA[DATA].cmp.capitalsourcecomment}</td>
+					<td>&nbsp</td>
+					<td>&nbsp</td>
 				</tr>
 
 				<tr>
@@ -85,6 +97,8 @@
 					<td class="contrastbgcolor">{$ALL_CMP_DATA[DATA].mon.contractpartnername}</td>
 					<td class="contrastbgcolor">{$ALL_CMP_DATA[DATA].mon.comment}</td>
 					<td class="contrastbgcolor">{$ALL_CMP_DATA[DATA].mon.capitalsourcecomment}</td>
+					<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&sr=1','_blank','width=1024,height=80')">{$TEXT_36}</a></td>
+					<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&sr=1','_blank','width=1024,height=80')">{$TEXT_37}</a></td>
 				</tr>
 				<tr><td colspan=6>&nbsp;</td></tr>
 			{/section}
