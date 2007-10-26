@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCompare.php,v 1.2 2007/10/26 09:37:08 olivleh1 Exp $
+# $Id: moduleCompare.php,v 1.3 2007/10/26 17:49:22 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -223,6 +223,7 @@ class moduleCompare extends module {
 							}
 							$all_cmp_data[$all_cmp_data_cnt]['mon']['contractpartnername']          = $this->coreContractPartners->get_name( $moneyflow['mcp_contractpartnerid'] );
 							$all_cmp_data[$all_cmp_data_cnt]['mon']['comment']                      = $moneyflow['comment'];
+							$all_cmp_data[$all_cmp_data_cnt]['mon']['moneyflowid']                  = $moneyflowid;
 
 							$all_cmp_data_cnt++;
 						} else {
@@ -249,16 +250,17 @@ class moduleCompare extends module {
 			foreach( $moneyflows as $moneyflow ) {
 				if( array_search( $moneyflow['moneyflowid'], $matching_moneyflowids ) === FALSE ) {
 				
-					$all_not_mon_data[$all_not_mon_data_cnt]['bookingdate'] 		 = convert_date_to_gui( $moneyflow['bookingdate'], $this->date_format );
-					$all_not_mon_data[$all_not_mon_data_cnt]['invoicedate'] 		 = convert_date_to_gui( $moneyflow['invoicedate'], $this->date_format );
-					$all_not_mon_data[$all_not_mon_data_cnt]['amount']			 = $moneyflow['amount'];
+					$all_not_mon_data[$all_not_mon_data_cnt]['bookingdate']                  = convert_date_to_gui( $moneyflow['bookingdate'], $this->date_format );
+					$all_not_mon_data[$all_not_mon_data_cnt]['invoicedate']                  = convert_date_to_gui( $moneyflow['invoicedate'], $this->date_format );
+					$all_not_mon_data[$all_not_mon_data_cnt]['amount']                       = $moneyflow['amount'];
 					if( $moneyflow['mcs_capitalsourceid'] == $all_data['mcs_capitalsourceid'] ) {
 						$all_not_mon_data[$all_not_mon_data_cnt]['capitalsourcecomment'] = $capitalsourcecomment;
 					} else {
 						$all_not_mon_data[$all_not_mon_data_cnt]['capitalsourcecomment'] = $this->coreCapitalSources->get_comment( $moneyflow['mcs_capitalsourceid'] );
 					}
-					$all_not_mon_data[$all_not_mon_data_cnt]['contractpartnername'] 	 = $this->coreContractPartners->get_name( $moneyflow['mcp_contractpartnerid'] );
-					$all_not_mon_data[$all_not_mon_data_cnt]['comment']			 = $moneyflow['comment'];
+					$all_not_mon_data[$all_not_mon_data_cnt]['contractpartnername']          = $this->coreContractPartners->get_name( $moneyflow['mcp_contractpartnerid'] );
+					$all_not_mon_data[$all_not_mon_data_cnt]['comment']                      = $moneyflow['comment'];
+					$all_not_mon_data[$all_not_mon_data_cnt]['moneyflowid']	                 = $moneyflow['moneyflowid'];
 					$all_not_mon_data_cnt++;
 				}
 			}
