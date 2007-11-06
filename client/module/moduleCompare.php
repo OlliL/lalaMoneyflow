@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCompare.php,v 1.3 2007/10/26 17:49:22 olivleh1 Exp $
+# $Id: moduleCompare.php,v 1.4 2007/11/06 05:52:52 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -139,7 +139,7 @@ class moduleCompare extends module {
 						}
 
 						if( $format_data['pos_partner_alt'] ) {
-							if( $cmp_data[$format_data['pos_partner_alt_pos_key'] - 1 ] == $format_data['pos_partner_alt_keyword'] ) {
+							if( preg_match( $format_data['pos_partner_alt_keyword'], $cmp_data[$format_data['pos_partner_alt_pos_key'] - 1 ] ) ) {
 								$partner = $cmp_data[$format_data['pos_partner_alt'] - 1];
 							}
 						}

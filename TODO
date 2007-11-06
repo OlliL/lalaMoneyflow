@@ -1,2 +1,3 @@
+do not allow adding "-" or "0" as amount....
 - put the available countries into the db and have them selectable when
   handling contractual partners instead of having it free editable
