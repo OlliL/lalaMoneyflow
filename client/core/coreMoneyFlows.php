@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.35 2007/10/25 12:58:08 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.36 2007/12/06 20:38:40 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -80,10 +80,10 @@ class coreMoneyFlows extends core {
 							 ,invoicedate" );
 	}
 
-	function get_all_date_source_data( $capitalsourceid, $startdate, $endate ) {
+	function get_all_date_source_data( $capitalsourceid, $startdate, $enddate ) {
 		$startdate = $this->make_date( $startdate );
 		$enddate   = $this->make_date( $enddate );
-		
+
 		return $this->select_rows( "	SELECT moneyflowid
 						      ,bookingdate
 						      ,invoicedate
