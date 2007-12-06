@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCompare.php,v 1.4 2007/11/06 05:52:52 olivleh1 Exp $
+# $Id: moduleCompare.php,v 1.5 2007/12/06 20:34:53 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -65,6 +65,42 @@ class moduleCompare extends module {
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_upfrm_cmp_data.tpl' );
+	}
+
+	function fill_file_array( $data_array,  $bookingdate, $amount, $capitalsourcecomment, $contractpartnername, $comment ) {
+
+		if( !is_array( $data_array ) ) {
+			$i = 1;
+		} else {
+			$i = count($data_array) + 1;
+		}
+		
+		$data_array[$i]['bookingdate']          = $bookingdate;
+		$data_array[$i]['amount']               = $amount;
+		$data_array[$i]['capitalsourcecomment'] = $capitalsourcecomment;
+		$data_array[$i]['contractpartnername']  = $contractpartnername;
+		$data_array[$i]['comment']              = $comment;
+		
+		return( $data_array );
+	}
+	
+	function fill_db_array( $data_array, $bookingdate, $invoicedate, $amount, $capitalsourcecomment, $contractpartnername, $comment, $moneyflowid ) {
+
+		if( !is_array( $data_array ) ) {
+			$i = 1;
+		} else {
+			$i = count($data_array) + 1;
+		}
+		
+		$data_array[$i]['bookingdate']          = $bookingdate;
+		$data_array[$i]['invoicedate']          = $invoicedate;
+		$data_array[$i]['amount']               = $amount;
+		$data_array[$i]['capitalsourcecomment'] = $capitalsourcecomment;
+		$data_array[$i]['contractpartnername']  = $contractpartnername;
+		$data_array[$i]['comment']              = $comment;
+		$data_array[$i]['moneyflowid']          = $moneyflowid;
+		
+		return( $data_array );
 	}
 
 	function display_analyze_form( $file, $all_data ) {
@@ -110,8 +146,6 @@ class moduleCompare extends module {
 
 			$lines = file( $file['tmp_name'] );
 			$match = 0;
-			$all_cmp_data_cnt     = 0;
-			$all_not_cmp_data_cnt = 0;
 			foreach ($lines as $line_num => $line) {
 				if( preg_match( $format_data['startline'], $line ) ) {
 					$match = 1;
@@ -144,6 +178,21 @@ class moduleCompare extends module {
 							}
 						}
 						
+						if( !empty( $format_data['pos_comment'] ) ) {
+							$comment = $cmp_data[$format_data['pos_comment'] - 1];
+						} else {
+							$comment = '';
+						}
+						
+						$file_array = $this->fill_file_array( $file_array
+						                                    , convert_date_to_gui( $date_db, $this->date_format )
+									            , $amount
+									            , $capitalsourcecomment
+									            , $partner
+									            , $comment
+									            );
+						$file_array_id = count($file_array);
+
 						$results = $this->coreMoneyFlows->find_single_moneyflow( $date_db, 5, $amount );
 						if( is_array( $results ) ) {
 							$result_count = count( $results );
@@ -203,41 +252,37 @@ class moduleCompare extends module {
 							$moneyflow = $mon_data[$moneyflowid];
 							
 							$matching_moneyflowids[] = $moneyflowid;
-							$all_cmp_data[$all_cmp_data_cnt]['cmp']['bookingdate']                  = convert_date_to_gui( $date_db, $this->date_format );
-							$all_cmp_data[$all_cmp_data_cnt]['cmp']['amount']                       = $amount;
-							$all_cmp_data[$all_cmp_data_cnt]['cmp']['capitalsourcecomment']         = $capitalsourcecomment;
-							if( !empty( $partner ) ) {
-								$all_cmp_data[$all_cmp_data_cnt]['cmp']['contractpartnername']  = $partner;
-							}
-							if( !empty( $format_data['pos_comment'] ) ) {
-								$all_cmp_data[$all_cmp_data_cnt]['cmp']['comment']              = $cmp_data[$format_data['pos_comment'] - 1];
+
+							if( $moneyflow['mcs_capitalsourceid'] == $all_data['mcs_capitalsourceid'] ) {
+								$my_capitalsourcecomment = $capitalsourcecomment;
+								$diff_capitalsource      = false;
+							} else {
+								$my_capitalsourcecomment = $this->coreCapitalSources->get_comment( $moneyflow['mcs_capitalsourceid'] );
+								$diff_capitalsource      = true;
 							}
 							
-							$all_cmp_data[$all_cmp_data_cnt]['mon']['bookingdate']                  = convert_date_to_gui( $moneyflow['bookingdate'], $this->date_format );
-							$all_cmp_data[$all_cmp_data_cnt]['mon']['invoicedate']                  = convert_date_to_gui( $moneyflow['invoicedate'], $this->date_format );
-							$all_cmp_data[$all_cmp_data_cnt]['mon']['amount']                       = $moneyflow['amount'];
-							if( $moneyflow['mcs_capitalsourceid'] == $all_data['mcs_capitalsourceid'] ) {
-								$all_cmp_data[$all_cmp_data_cnt]['mon']['capitalsourcecomment'] = $capitalsourcecomment;
+							$db_array = $this->fill_db_array( $db_array
+							                                , convert_date_to_gui( $moneyflow['bookingdate'], $this->date_format )
+											, convert_date_to_gui( $moneyflow['invoicedate'], $this->date_format )
+										        , $moneyflow['amount']
+										        , $my_capitalsourcecomment
+										        , $this->coreContractPartners->get_name( $moneyflow['mcp_contractpartnerid'] )
+										        , $moneyflow['comment']
+											, $moneyflowid
+										        );
+							$db_array_id = count($db_array);
+
+							if( $diff_capitalsource === false ) {
+								$matching_ids[]     = array( 'file' => $file_array_id
+								                           , 'db'   => $db_array_id
+								                           );
 							} else {
-								$all_cmp_data[$all_cmp_data_cnt]['mon']['capitalsourcecomment'] = $this->coreCapitalSources->get_comment( $moneyflow['mcs_capitalsourceid'] );
+								$diff_source_ids[]  = array( 'file' => $file_array_id
+								                           , 'db'   => $db_array_id
+								                           );
 							}
-							$all_cmp_data[$all_cmp_data_cnt]['mon']['contractpartnername']          = $this->coreContractPartners->get_name( $moneyflow['mcp_contractpartnerid'] );
-							$all_cmp_data[$all_cmp_data_cnt]['mon']['comment']                      = $moneyflow['comment'];
-							$all_cmp_data[$all_cmp_data_cnt]['mon']['moneyflowid']                  = $moneyflowid;
-
-							$all_cmp_data_cnt++;
 						} else {
-							$all_not_cmp_data[$all_not_cmp_data_cnt]['bookingdate']                  = convert_date_to_gui( $date_db, $this->date_format );
-							$all_not_cmp_data[$all_not_cmp_data_cnt]['amount']                       = $amount;
-							$all_not_cmp_data[$all_not_cmp_data_cnt]['capitalsourcecomment']         = $capitalsourcecomment;
-							if( !empty( $partner ) ) {
-								$all_not_cmp_data[$all_not_cmp_data_cnt]['contractpartnername']  = $partner;
-							}
-							if( !empty( $format_data['pos_comment'] ) ) {
-								$all_not_cmp_data[$all_not_cmp_data_cnt]['comment']              = $cmp_data[$format_data['pos_comment'] - 1];
-							}
-
-							$all_not_cmp_data_cnt++;
+							$only_in_file_ids[] = array( 'file'    => $file_array_id);
 						}
 					}
 				}
@@ -249,24 +294,36 @@ class moduleCompare extends module {
 			$all_not_mon_data_cnt = 0;
 			foreach( $moneyflows as $moneyflow ) {
 				if( array_search( $moneyflow['moneyflowid'], $matching_moneyflowids ) === FALSE ) {
-				
-					$all_not_mon_data[$all_not_mon_data_cnt]['bookingdate']                  = convert_date_to_gui( $moneyflow['bookingdate'], $this->date_format );
-					$all_not_mon_data[$all_not_mon_data_cnt]['invoicedate']                  = convert_date_to_gui( $moneyflow['invoicedate'], $this->date_format );
-					$all_not_mon_data[$all_not_mon_data_cnt]['amount']                       = $moneyflow['amount'];
+
 					if( $moneyflow['mcs_capitalsourceid'] == $all_data['mcs_capitalsourceid'] ) {
-						$all_not_mon_data[$all_not_mon_data_cnt]['capitalsourcecomment'] = $capitalsourcecomment;
+						$my_capitalsourcecomment = $capitalsourcecomment;
 					} else {
-						$all_not_mon_data[$all_not_mon_data_cnt]['capitalsourcecomment'] = $this->coreCapitalSources->get_comment( $moneyflow['mcs_capitalsourceid'] );
+						$my_capitalsourcecomment = $this->coreCapitalSources->get_comment( $moneyflow['mcs_capitalsourceid'] );
 					}
-					$all_not_mon_data[$all_not_mon_data_cnt]['contractpartnername']          = $this->coreContractPartners->get_name( $moneyflow['mcp_contractpartnerid'] );
-					$all_not_mon_data[$all_not_mon_data_cnt]['comment']                      = $moneyflow['comment'];
-					$all_not_mon_data[$all_not_mon_data_cnt]['moneyflowid']	                 = $moneyflow['moneyflowid'];
-					$all_not_mon_data_cnt++;
+
+					$db_array = $this->fill_db_array( $db_array
+								        , convert_date_to_gui( $moneyflow['bookingdate'], $this->date_format )
+								        , convert_date_to_gui( $moneyflow['invoicedate'], $this->date_format )
+								        , $moneyflow['amount']
+								        , $my_capitalsourcecomment
+								        , $this->coreContractPartners->get_name( $moneyflow['mcp_contractpartnerid'] )
+								        , $moneyflow['comment']
+								        , $moneyflow['moneyflowid']
+								        );
+					$db_array_id = count($db_array);
+
+					$only_in_db_ids[] = array( 'db' => $db_array_id);
 				}
 			}
-			$this->template->assign( 'ALL_CMP_DATA',     $all_cmp_data     );
-			$this->template->assign( 'ALL_NOT_CMP_DATA', $all_not_cmp_data );
-			$this->template->assign( 'ALL_NOT_MON_DATA', $all_not_mon_data );
+
+			$this->template->assign( 'DB_ARRAY',         $db_array         );
+			$this->template->assign( 'FILE_ARRAY',       $file_array       );
+
+			$this->template->assign( 'ONLY_IN_FILE_IDS', $only_in_file_ids );
+			$this->template->assign( 'ONLY_IN_DB_IDS',   $only_in_db_ids   );
+			$this->template->assign( 'DIFF_SOURCE_IDS',  $diff_source_ids  );
+			$this->template->assign( 'MATCHING_IDS',     $matching_ids     );
+
 			$this->parse_header();
 			return $this->fetch_template( 'display_analyze_cmp_data.tpl' );
 		}

@@ -326,7 +326,7 @@ CREATE TABLE cmp_data_formats (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-11-06  5:55:12
+-- Dump completed on 2007-12-06 20:32:26
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -717,10 +717,14 @@ INSERT INTO text VALUES (193,1,'file','t');
 INSERT INTO text VALUES (193,2,'Datei','t');
 INSERT INTO text VALUES (194,1,'lalaMoneyFlow','t');
 INSERT INTO text VALUES (194,2,'lalaMoneyFlow','t');
-INSERT INTO text VALUES (195,1,'matching data','t');
-INSERT INTO text VALUES (195,2,'passende Daten','t');
-INSERT INTO text VALUES (196,1,'not matching data','t');
-INSERT INTO text VALUES (196,2,'nicht passende Daten','t');
+INSERT INTO text VALUES (195,1,'matching data:','t');
+INSERT INTO text VALUES (195,2,'passende Daten:','t');
+INSERT INTO text VALUES (196,1,'matching data but with wrong capitalsource:','t');
+INSERT INTO text VALUES (196,2,'passende Daten jedoch mit falscher Kapitalquelle:','t');
+INSERT INTO text VALUES (197,1,'Data the file contains, but not the database:','t');
+INSERT INTO text VALUES (197,2,'Daten die in der Datei, aber nicht in der Datenbank, enthalten sind:','t');
+INSERT INTO text VALUES (198,1,'Data the database contains, but not the file:','t');
+INSERT INTO text VALUES (198,2,'Daten die in der Datenbank, aber nicht in der Datei, enthalten sind:','t');
 INSERT INTO templates VALUES ('display_add_language.tpl');
 INSERT INTO templates VALUES ('display_add_moneyflow.tpl');
 INSERT INTO templates VALUES ('display_analyze_cmp_data.tpl');
@@ -1117,6 +1121,8 @@ INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',193);
 INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',194);
 INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',195);
 INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',196);
+INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',197);
+INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',198);
 INSERT INTO domains VALUES ('CAPITALSOURCE_STATE');
 INSERT INTO domains VALUES ('CAPITALSOURCE_TYPE');
 INSERT INTO domains VALUES ('MONTHS');
