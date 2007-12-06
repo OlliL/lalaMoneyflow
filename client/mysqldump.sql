@@ -326,7 +326,7 @@ CREATE TABLE cmp_data_formats (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-12-06 20:32:26
+-- Dump completed on 2007-12-06 20:58:35
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -721,10 +721,10 @@ INSERT INTO text VALUES (195,1,'matching data:','t');
 INSERT INTO text VALUES (195,2,'passende Daten:','t');
 INSERT INTO text VALUES (196,1,'matching data but with wrong capitalsource:','t');
 INSERT INTO text VALUES (196,2,'passende Daten jedoch mit falscher Kapitalquelle:','t');
-INSERT INTO text VALUES (197,1,'Data the file contains, but not the database:','t');
-INSERT INTO text VALUES (197,2,'Daten die in der Datei, aber nicht in der Datenbank, enthalten sind:','t');
-INSERT INTO text VALUES (198,1,'Data the database contains, but not the file:','t');
-INSERT INTO text VALUES (198,2,'Daten die in der Datenbank, aber nicht in der Datei, enthalten sind:','t');
+INSERT INTO text VALUES (197,1,'Data the export-file contains, but not the database:','t');
+INSERT INTO text VALUES (197,2,'Daten die in der Export-Datei, aber nicht in der Datenbank, enthalten sind:','t');
+INSERT INTO text VALUES (198,1,'Data the database contains, but not the export-file:','t');
+INSERT INTO text VALUES (198,2,'Daten die in der Datenbank, aber nicht in der Export-Datei, enthalten sind:','t');
 INSERT INTO templates VALUES ('display_add_language.tpl');
 INSERT INTO templates VALUES ('display_add_moneyflow.tpl');
 INSERT INTO templates VALUES ('display_analyze_cmp_data.tpl');
@@ -1147,5 +1147,5 @@ INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','/^Buchungstag	Wertstellung
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,1);
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('','',0,0,0);
 UPDATE users SET id=0 WHERE username='';
-INSERT INTO settings VALUES (0,'displayed_currency','1'),(0,'displayed_language','1'),(0,'max_rows','40'),(0,'date_format','YYYY-MM-DD');
+INSERT INTO settings VALUES (0,'displayed_currency','1'),(0,'displayed_language','1'),(0,'max_rows','40'),(0,'date_format','YYYY-MM-DD'),(0,'compare_capitalsource','0'),(0,'compare_format','0');
 INSERT INTO settings (SELECT (SELECT userid FROM users WHERE name='admin'),name,value FROM settings WHERE mur_userid=0);

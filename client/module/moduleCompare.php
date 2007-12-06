@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCompare.php,v 1.5 2007/12/06 20:34:53 olivleh1 Exp $
+# $Id: moduleCompare.php,v 1.6 2007/12/06 20:59:11 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -56,6 +56,8 @@ class moduleCompare extends module {
 		if( count( $all_data ) === 0 ) {
 			$all_data['startdate'] = convert_date_to_gui(date("Y-m-d", mktime(0, 0, 0, date( 'm', time() )  , 1, date( 'Y', time() ) ) ), $this->date_format );
 			$all_data['enddate']   = convert_date_to_gui(date("Y-m-d", mktime(0, 0, 0, date( 'm', time() )+1, 0, date( 'Y', time() ) ) ), $this->date_format );
+			$all_data['format' ]              = $this->coreSettings->get_compare_format( USERID );
+			$all_data['mcs_capitalsourceid' ] = $this->coreSettings->get_compare_capitalsource( USERID );
 		}
 
 		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
@@ -136,6 +138,13 @@ class moduleCompare extends module {
 			return $this->display_upload_form( $all_data );
 		} else {
 		
+			if( $all_data['mcs_capitalsourceid' ] != $this->coreSettings->get_compare_capitalsource( USERID ) ) {
+				$this->coreSettings->set_compare_capitalsource( USERID, $all_data['mcs_capitalsourceid'] );
+			}
+			if( $all_data['format' ] != $this->coreSettings->get_compare_format( USERID ) ) {
+				$this->coreSettings->set_compare_format( USERID, $all_data['format'] );
+			}
+
 			# change given date to timespam for later "between" comparsion
 			$startdate = convert_date_to_timestamp( $all_data['startdate'], $this->date_format );
 			$enddate   = convert_date_to_timestamp( $all_data['enddate'], $this->date_format );

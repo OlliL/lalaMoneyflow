@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreSettings.php,v 1.9 2007/07/28 19:33:57 olivleh1 Exp $
+# $Id: coreSettings.php,v 1.10 2007/12/06 20:59:10 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -76,6 +76,14 @@ class coreSettings extends core {
 		return $this->get_value( $userid, 'max_rows' );
 	}
 
+	function get_compare_capitalsource( $userid ) {
+		return $this->get_value( $userid, 'compare_capitalsource' );
+	}
+
+	function get_compare_format( $userid ) {
+		return $this->get_value( $userid, 'compare_format' );
+	}
+
 	function get_date_format( $userid ) {
 		$dateformat = $this->get_value( $userid, 'date_format' );
 
@@ -115,6 +123,14 @@ class coreSettings extends core {
 
 	function set_max_rows( $userid, $maxnum ) {
 		return $this->set_value( $userid, 'max_rows', $maxnum );
+	}
+
+	function set_compare_capitalsource( $userid, $capitalsource ) {
+		return $this->set_value( $userid, 'compare_capitalsource', $capitalsource );
+	}
+
+	function set_compare_format( $userid, $format ) {
+		return $this->set_value( $userid, 'compare_format', $format );
 	}
 
 	function set_date_format( $userid, $dateformat ) {
