@@ -19,7 +19,7 @@
 					<td>
 						<select class="contrastbgcolor" name="all_data[format]" size=1>
 						{section name=FORMAT loop=$FORMAT_VALUES}
-							<option value="{$FORMAT_VALUES[FORMAT].formatid}" {if $FORMAT_VALUES[FORMAT].formatid == $ALL_DATA.format}selected{/if}> {$FORMAT_VALUES[FORMAT].name}</option>
+							<option value="{$FORMAT_VALUES[FORMAT].formatid}" {if $FORMAT_VALUES[FORMAT].formatid == $ALL_DATA.format}selected{/if}>{$FORMAT_VALUES[FORMAT].name}</option>
 						{/section}
 						</select>
 					</td>
@@ -35,7 +35,7 @@
 					<td>
 					<select class="contrastbgcolor" name="all_data[mcs_capitalsourceid]" size=1>
 						{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
-							<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}" {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid == $ALL_DATA.mcs_capitalsourceid}selected{/if} {if $ALL_DATA.capitalsource_error == 1}style="color:red"{/if}> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}</option>
+							<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}" {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid == $ALL_DATA.mcs_capitalsourceid}selected{/if} {if $ALL_DATA.capitalsource_error == 1}style="color:red"{/if}>{$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}</option>
 						{/section}
 						</select>
 					</td>
