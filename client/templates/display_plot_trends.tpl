@@ -60,7 +60,7 @@
 					</tr>
 						<th>{$TEXT_19}</th>
 						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcs_capitalsourceid]" size=1>
-							<option value="0">all</option>
+							<option value="0">{$TEXT_28}</option>
 							{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
 							<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}" {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid == $ALL_DATA.mcs_capitalsourceid}selected{/if}> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}
 							{/section}

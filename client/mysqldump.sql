@@ -326,7 +326,7 @@ CREATE TABLE cmp_data_formats (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-12-06 20:58:35
+-- Dump completed on 2007-12-07 19:30:17
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -725,6 +725,10 @@ INSERT INTO text VALUES (197,1,'Data the export-file contains, but not the datab
 INSERT INTO text VALUES (197,2,'Daten die in der Export-Datei, aber nicht in der Datenbank, enthalten sind:','t');
 INSERT INTO text VALUES (198,1,'Data the database contains, but not the export-file:','t');
 INSERT INTO text VALUES (198,2,'Daten die in der Datenbank, aber nicht in der Export-Datei, enthalten sind:','t');
+INSERT INTO text VALUES (199,1,'The specified file is not parseable! Maybe you''ve selected the wrong format or file?','e');
+INSERT INTO text VALUES (199,2,'Die angegebene Datei konnte nicht geparsed werden! Eventuell haben Sie eine falsche Datei oder das falsche Format angegeben?','e');
+INSERT INTO text VALUES (200,1,'The amount must be higher or lower than 0 but not 0!','e');
+INSERT INTO text VALUES (200,2,'Der Betrag muss ungleich 0 sein!','e');
 INSERT INTO templates VALUES ('display_add_language.tpl');
 INSERT INTO templates VALUES ('display_add_moneyflow.tpl');
 INSERT INTO templates VALUES ('display_analyze_cmp_data.tpl');
@@ -904,6 +908,7 @@ INSERT INTO templatevalues VALUES ('display_list_currencyrates.tpl',28);
 INSERT INTO templatevalues VALUES ('display_list_languages.tpl',28);
 INSERT INTO templatevalues VALUES ('display_list_predefmoneyflows.tpl',28);
 INSERT INTO templatevalues VALUES ('display_list_users.tpl',28);
+INSERT INTO templatevalues VALUES ('display_plot_trends.tpl',28);
 INSERT INTO templatevalues VALUES ('display_add_language.tpl',29);
 INSERT INTO templatevalues VALUES ('display_list_capitalsources.tpl',29);
 INSERT INTO templatevalues VALUES ('display_list_contractpartners.tpl',29);

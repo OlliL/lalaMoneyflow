@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.40 2007/10/02 13:37:06 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.41 2007/12/07 19:30:46 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -175,11 +175,17 @@ class moduleMoneyFlows extends module {
 							add_error( 131 );
 							$data_is_valid = false;
 						}
-							
+
 						if( ! (    preg_match( '/^-{0,1}[0-9]*([\.][0-9][0-9][0-9]){0,}([,][0-9]{1,2}){0,1}$/', $value['amount'] ) 
 						       ||  preg_match( '/^-{0,1}[0-9]*([,][0-9][0-9][0-9]){0,}([\.][0-9]{1,2}){0,1}$/', $value['amount'] )
 						      ) ) {
 							add_error( 132, array( $value['amount'] ) );
+							$all_data[$id]['amount_error'] = 1;
+							$data_is_valid = false;
+						}
+						
+						if( preg_match( '/^[-0\.,]{1,}$/', $value['amount'] ) ) {
+							add_error( 200 );
 							$all_data[$id]['amount_error'] = 1;
 							$data_is_valid = false;
 						}
