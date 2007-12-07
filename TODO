@@ -1,4 +1,3 @@
-- errormessage if export file is not parseable for the given format
 - translate "all" in the capitalsource-drop-down box when requeqsting graphic trends
 - do not allow adding "-" or "0" as amount....
 - put the available countries into the db and have them selectable when
