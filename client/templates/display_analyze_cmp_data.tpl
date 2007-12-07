@@ -33,9 +33,11 @@ function toggle(div_name) {
 
 		<td align="center" valign="top">
 		<h1>{$TEXT_187}</h1>
+		<br>
+		<ul style="margin-left:12px">
 		{if $ONLY_IN_FILE_IDS|@count gt 0 }
 			<br />
-			<a href="javascript:toggle('only_in_file_ids')"><h2>{$TEXT_197} {$ONLY_IN_FILE_IDS|@count}</h2></a>
+			<li><a href="javascript:toggle('only_in_file_ids')"><p style="font-weight:bold;text-align:left;font-size:12px;"><li>{$TEXT_197} <font color="red">{$ONLY_IN_FILE_IDS|@count}</font></p></a></li>
 			<div id="only_in_file_ids" style="display: none">
 			<table border=0 width=830 align="center" cellpadding=2>
 				<tr>
@@ -66,11 +68,10 @@ function toggle(div_name) {
 			</table>
 			</div>
 		{else}
-			<h2>{$TEXT_197} 0</h2>
+			<li><p style="font-weight:bold;text-align:left;font-size:12px;">{$TEXT_197} <font color="limegreen">0</font></p></li>
 		{/if}
-		<br />
 		{if $ONLY_IN_DB_IDS|@count gt 0 }
-			<a href="javascript:toggle('only_in_db_ids')"><h2>{$TEXT_198} {$ONLY_IN_DB_IDS|@count}</h2></a>
+			<li><a href="javascript:toggle('only_in_db_ids')"><p style="font-weight:bold;text-align:left;font-size:12px;">{$TEXT_198} <font color="red">{$ONLY_IN_DB_IDS|@count}</font></p></a></li>
 			<div id="only_in_db_ids" style="display: none">
 			<table border=0 width=830 align="center" cellpadding=2>
 				<tr>
@@ -101,11 +102,10 @@ function toggle(div_name) {
 			</table>
 			</div>
 		{else}
-			<h2>{$TEXT_198} 0</h2>
+			<li><p style="font-weight:bold;text-align:left;font-size:12px;">{$TEXT_198} <font color="limegreen">0</font></p></li>
 		{/if}
-		<br />
 		{if $DIFF_SOURCE_IDS|@count gt 0 }
-			<a href="javascript:toggle('diff_source_ids')"><h2>{$TEXT_196} {$DIFF_SOURCE_IDS|@count}</h2></a>
+			<li><a href="javascript:toggle('diff_source_ids')"><p style="font-weight:bold;text-align:left;font-size:12px;">{$TEXT_196} <font color="red">{$DIFF_SOURCE_IDS|@count}</font></p></a></li>
 			<div id="diff_source_ids" style="display: none">
 			<table border=0 width=830 align="center" cellpadding=2>
 				<tr>
@@ -150,11 +150,10 @@ function toggle(div_name) {
 			</table>
 			</div>
 		{else}
-			<h2>{$TEXT_196} 0</h2>
+			<li><p style="font-weight:bold;text-align:left;font-size:12px;">{$TEXT_196} <font color="limegreen">0</font></p></li>
 		{/if}
-		<br />
 		{if $MATCHING_IDS|@count gt 0 }
-			<a href="javascript:toggle('matching_ids')"><h2>{$TEXT_195} {$MATCHING_IDS|@count}</h2></a>
+			<li><a href="javascript:toggle('matching_ids')"><p style="font-weight:bold;text-align:left;font-size:12px;">{$TEXT_195} <font color="limegreen">{$MATCHING_IDS|@count}</font></p></a></li>
 			<div id="matching_ids" style="display: none">
 			<table border=0 width=830 align="center" cellpadding=2>
 				<tr>
@@ -199,7 +198,8 @@ function toggle(div_name) {
 			</table>
 			</div>
 		{else}
-			<h2>{$TEXT_195} 0</h2>
+			<li><p style="font-weight:bold;text-align:left;font-size:12px;">{$TEXT_195} <font color="limegreen">0</font></p></li>
 		{/if}
+		</ul>
 		</td>
 {$FOOTER}

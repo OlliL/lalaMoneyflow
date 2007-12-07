@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCompare.php,v 1.6 2007/12/06 20:59:11 olivleh1 Exp $
+# $Id: moduleCompare.php,v 1.7 2007/12/07 17:17:47 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -297,31 +297,38 @@ class moduleCompare extends module {
 				}
 				
 			}
+			
+			if( $match === 0 ) {
+				add_error( 199 );
+				return $this->display_upload_form( $all_data );
+			}
 
 			$moneyflows = $this->coreMoneyFlows->get_all_date_source_data( $all_data['mcs_capitalsourceid'], $all_data['startdate'], $all_data['enddate'] );
 
 			$all_not_mon_data_cnt = 0;
-			foreach( $moneyflows as $moneyflow ) {
-				if( array_search( $moneyflow['moneyflowid'], $matching_moneyflowids ) === FALSE ) {
+			if( $matching_moneyflowids ) {
+				foreach( $moneyflows as $moneyflow ) {
+					if( array_search( $moneyflow['moneyflowid'], $matching_moneyflowids ) === FALSE ) {
 
-					if( $moneyflow['mcs_capitalsourceid'] == $all_data['mcs_capitalsourceid'] ) {
-						$my_capitalsourcecomment = $capitalsourcecomment;
-					} else {
-						$my_capitalsourcecomment = $this->coreCapitalSources->get_comment( $moneyflow['mcs_capitalsourceid'] );
+						if( $moneyflow['mcs_capitalsourceid'] == $all_data['mcs_capitalsourceid'] ) {
+							$my_capitalsourcecomment = $capitalsourcecomment;
+						} else {
+							$my_capitalsourcecomment = $this->coreCapitalSources->get_comment( $moneyflow['mcs_capitalsourceid'] );
+						}
+
+						$db_array = $this->fill_db_array( $db_array
+									        , convert_date_to_gui( $moneyflow['bookingdate'], $this->date_format )
+									        , convert_date_to_gui( $moneyflow['invoicedate'], $this->date_format )
+									        , $moneyflow['amount']
+									        , $my_capitalsourcecomment
+									        , $this->coreContractPartners->get_name( $moneyflow['mcp_contractpartnerid'] )
+									        , $moneyflow['comment']
+								        	, $moneyflow['moneyflowid']
+									        );
+						$db_array_id = count($db_array);
+
+						$only_in_db_ids[] = array( 'db' => $db_array_id);
 					}
-
-					$db_array = $this->fill_db_array( $db_array
-								        , convert_date_to_gui( $moneyflow['bookingdate'], $this->date_format )
-								        , convert_date_to_gui( $moneyflow['invoicedate'], $this->date_format )
-								        , $moneyflow['amount']
-								        , $my_capitalsourcecomment
-								        , $this->coreContractPartners->get_name( $moneyflow['mcp_contractpartnerid'] )
-								        , $moneyflow['comment']
-								        , $moneyflow['moneyflowid']
-								        );
-					$db_array_id = count($db_array);
-
-					$only_in_db_ids[] = array( 'db' => $db_array_id);
 				}
 			}
 
