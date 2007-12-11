@@ -1,12 +1,5 @@
 <html>
 	<head><title>lalaMoneyflow: {$TEXT_84}</title>
-{literal}
-<script language="JavaScript">
-function onload() {
-  document.loginform.name.focus();
-}
-</script>
-{/literal}
 {$HEADER}
 		<td align="center">
 		<br />
@@ -24,6 +17,11 @@ function onload() {
 					<th>{$TEXT_85}</th>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="name" value="{$NAME}" size=10 /></td>
 				</tr>
+{literal}
+<script language="JavaScript">
+  document.loginform.name.focus();
+</script>
+{/literal}
 				<tr>
 					<th>{$TEXT_86}</th>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="password" name="password" value="" size=10 /></td>
