@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.41 2007/10/10 18:08:10 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.42 2008/01/01 14:25:20 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -65,6 +65,14 @@ class moduleReports extends module {
 
 		$years = $this->coreMoneyFlows->get_all_years();
 		$temp_months = $this->coreMoneyFlows->get_all_months( $year );
+		
+		# there are no months for the selected year
+		if( !is_array( $temp_months ) ) {
+			$year = $years[count( $years ) - 1];
+			$temp_months = $this->coreMoneyFlows->get_all_months( $year );
+			$month = $temp_months[count( $temp_months ) - 1];
+		}
+		
 		if( is_array( $temp_months ) ) {
 			foreach( $temp_months as $key => $value ) {
 				$months[] = array(

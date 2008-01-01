@@ -37,7 +37,7 @@ function toggle(div_name) {
 		<ul style="margin-left:12px">
 		{if $ONLY_IN_FILE_IDS|@count gt 0 }
 			<br />
-			<li><a href="javascript:toggle('only_in_file_ids')"><p style="font-weight:bold;text-align:left;font-size:12px;"><li>{$TEXT_197} <font color="red">{$ONLY_IN_FILE_IDS|@count}</font></p></a></li>
+			<li><a href="javascript:toggle('only_in_file_ids')"><p style="font-weight:bold;text-align:left;font-size:12px;">{$TEXT_197} <font color="red">{$ONLY_IN_FILE_IDS|@count}</font></p></a></li>
 			<div id="only_in_file_ids" style="display: none">
 			<table border=0 width=830 align="center" cellpadding=2>
 				<tr>
