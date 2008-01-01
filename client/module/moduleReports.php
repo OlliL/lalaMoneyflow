@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.42 2008/01/01 14:25:20 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.43 2008/01/01 14:43:48 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -70,7 +70,7 @@ class moduleReports extends module {
 		if( !is_array( $temp_months ) ) {
 			$year = $years[count( $years ) - 1];
 			$temp_months = $this->coreMoneyFlows->get_all_months( $year );
-			$month = $temp_months[count( $temp_months ) - 1];
+			$month = NULL;
 		}
 		
 		if( is_array( $temp_months ) ) {
@@ -227,6 +227,11 @@ class moduleReports extends module {
 		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 		
 		$years = $this->coreMonthlySettlement->get_all_years();
+		# add the actual year to the years if the year changed no monthlysettlement
+		# exists in that year during january - but you might want to see a prognose
+		if( $years[count( $years ) + 1] != date( 'Y' ) ) {
+			$years[] = date( 'Y' );
+		}
 		$this->template->assign( 'ALL_YEARS',      $years  );
 
 		if( is_array( $all_data ) && isset( $all_data['mcs_capitalsourceid'] ) ) {
@@ -357,7 +362,7 @@ class moduleReports extends module {
 				$month = 1;
 			}
 		}
-		
+
 		$graph = new Graph( 700, 400 );
 		$graph->SetMargin( 50, 20, 40, 35 );
 		$graph->SetScale( "intlin" );
@@ -376,11 +381,13 @@ class moduleReports extends module {
 		$p1->mark->SetType(MARK_STAR);
 		$graph->Add( $p1 );
 
-		$p2 = new LinePlot( $monthly2_data );
-		$p2->SetWeight( 1 );
-		$p2->SetFillGradient( '#aeaefa', '#689bde' );
-		$p2->mark->SetType(MARK_STAR);
-		$graph->Add( $p2 );
+		if( is_array( $monthly2_data) ) {
+			$p2 = new LinePlot( $monthly2_data );
+			$p2->SetWeight( 1 );
+			$p2->SetFillGradient( '#aeaefa', '#689bde' );
+			$p2->mark->SetType(MARK_STAR);
+			$graph->Add( $p2 );
+		}
 
 		$graph->xaxis->title->Set( $graph_xaxis );
 		$graph->xaxis->SetTitleMargin( 10 );
