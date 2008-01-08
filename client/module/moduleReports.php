@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.43 2008/01/01 14:43:48 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.44 2008/01/08 16:51:36 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -199,10 +199,38 @@ class moduleReports extends module {
 
 			$firstamount = $this->coreMonthlySettlement->get_sum_amount( 12, $year-1 );
 
+
+			if( $month == 1) {
+				$prev_month = 12;
+				$prev_year  = $year - 1;
+				$next_month = $month + 1;
+				$next_year  = $year;
+			} elseif ( $month == 12 ) {
+				$prev_month = $month - 1;
+				$prev_year  = $year;
+				$next_month = 1;
+				$next_year  = $year + 1;
+			} else {
+				$prev_month = $month - 1;
+				$prev_year  = $year;
+				$next_month = $month + 1;
+				$next_year  = $year;
+			}
+
+			$prev_link = $this->coreMoneyFlows->month_has_moneyflows( $prev_month, $prev_year );
+			$next_link = $this->coreMoneyFlows->month_has_moneyflows( $next_month, $next_year );
+
 			$month = array(
 				'nummeric' => sprintf( '%02d', $month ),
-				'name'     => $this-> coreDomains->get_domain_meaning( 'MONTHS', ( int )$month )
+				'name'     => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int )$month )
 			);
+			
+			$this->template->assign( 'PREV_MONTH',               $prev_month                );
+			$this->template->assign( 'PREV_YEAR',                $prev_year                 );
+			$this->template->assign( 'PREV_LINK',                $prev_link                 );
+			$this->template->assign( 'NEXT_MONTH',               $next_month                );
+			$this->template->assign( 'NEXT_YEAR',                $next_year                 );
+			$this->template->assign( 'NEXT_LINK',                $next_link                 );
 
 			$this->template->assign( 'MONTH',                    $month                     );
 			$this->template->assign( 'YEAR' ,                    $year                      );

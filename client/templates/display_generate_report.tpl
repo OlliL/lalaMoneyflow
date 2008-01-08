@@ -1,5 +1,21 @@
 			<br />
-			<h1>{$TEXT_61} {$MONTH.name} {$YEAR}</h1>
+			<table width="830" border=0>
+				<tr>
+					<td width="20%" algin="left" >
+						{if $PREV_LINK == true }
+							<a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$PREV_MONTH}&reports_year={$PREV_YEAR}">&lt;&lt; {$TEXT_202}</a></td>
+						{else}
+							&nbsp;
+						{/if}
+					<td width="60%" align="center"><h1>{$TEXT_61} {$MONTH.name} {$YEAR}</h1></td>
+					<td width="20%" align="right">
+						{if $NEXT_LINK == true }
+							<a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$NEXT_MONTH}&reports_year={$NEXT_YEAR}">{$TEXT_201} &gt;&gt;</a></td>
+						{else}
+							&nbsp;
+						{/if}
+				</tr>
+			</table>
 			<table border=0 width=830 align="center" cellpadding=2>
 				<tr>
 					<th width="9%"><a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$MONTH.nummeric}&reports_year={$YEAR}&reports_sortby=moneyflows_bookingdate&reports_order={$ORDER}" >{$TEXT_16}</a></th>
@@ -27,6 +43,22 @@
 					<td></td>
 					<td align="right">&sum;</td>
 					<td align="right" class="contrastbgcolor"><font {if $MON_CALCULATEDTURNOVER < 0}color="red"{else}color="black"{/if}><u>{$MON_CALCULATEDTURNOVER|number_format} {$CURRENCY}</u></font></td>
+			</table>
+			<table width="830" border=0>
+				<tr>
+					<td width="50%" algin="left" >
+						{if $PREV_LINK == true }
+							<a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$PREV_MONTH}&reports_year={$PREV_YEAR}">&lt;&lt; {$TEXT_202}</a></td>
+						{else}
+							&nbsp;
+						{/if}
+					<td width="50%" align="right">
+						{if $NEXT_LINK == true }
+							<a href="{$ENV_INDEX_PHP}?action=list_reports&reports_month={$NEXT_MONTH}&reports_year={$NEXT_YEAR}">{$TEXT_201} &gt;&gt;</a></td>
+						{else}
+							&nbsp;
+						{/if}
+				</tr>
 			</table>
 			<br />
 			<hr align="center" width="830"/>

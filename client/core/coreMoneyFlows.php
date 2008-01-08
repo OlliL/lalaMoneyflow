@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.36 2007/12/06 20:38:40 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.37 2008/01/08 16:51:36 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -421,4 +421,21 @@ class coreMoneyFlows extends core {
 						   AND amount     = $amount
 						   AND mur_userid = ".USERID );
 	}
+	
+	function month_has_moneyflows( $month, $year ) {
+		$date = $this->make_date( $year."-".$month."-01" );
+		$value = $this->select_col( "	SELECT 1
+						  FROM moneyflows
+						 WHERE bookingdate BETWEEN $date AND LAST_DAY($date)
+						   AND mur_userid  = ".USERID."
+						LIMIT 1" );
+		if( $value != 1 ) {
+			$value = false;
+		} else {
+			$value = true;
+		}
+
+		return $value;
+	}
+	
 }

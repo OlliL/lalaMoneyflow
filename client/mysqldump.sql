@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	5.0.45
+-- Server version	5.0.51
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -20,6 +20,8 @@
 --
 
 DROP TABLE IF EXISTS users;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE users (
   userid int(10) unsigned NOT NULL auto_increment,
   `name` varchar(20) NOT NULL,
@@ -30,12 +32,15 @@ CREATE TABLE users (
   PRIMARY KEY  (userid),
   UNIQUE KEY mur_i_01 (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mur';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `settings`
 --
 
 DROP TABLE IF EXISTS settings;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE settings (
   mur_userid int(10) unsigned NOT NULL,
   `name` varchar(50) NOT NULL default '',
@@ -44,12 +49,15 @@ CREATE TABLE settings (
   KEY mse_mur_pk (mur_userid),
   CONSTRAINT mse_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mse';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `capitalsources`
 --
 
 DROP TABLE IF EXISTS capitalsources;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE capitalsources (
   mur_userid int(10) unsigned NOT NULL,
   capitalsourceid int(10) unsigned NOT NULL auto_increment,
@@ -65,12 +73,15 @@ CREATE TABLE capitalsources (
   KEY mcs_i_01 (mur_userid),
   CONSTRAINT mcs_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcs';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `contractpartners`
 --
 
 DROP TABLE IF EXISTS contractpartners;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE contractpartners (
   mur_userid int(10) unsigned NOT NULL,
   contractpartnerid int(10) unsigned NOT NULL auto_increment,
@@ -83,12 +94,15 @@ CREATE TABLE contractpartners (
   UNIQUE KEY mcp_i_01 (mur_userid,`name`),
   CONSTRAINT mcp_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcp';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `currencies`
 --
 
 DROP TABLE IF EXISTS currencies;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE currencies (
   currencyid int(10) unsigned NOT NULL auto_increment,
   currency varchar(20) NOT NULL,
@@ -96,12 +110,15 @@ CREATE TABLE currencies (
   PRIMARY KEY  (currencyid),
   UNIQUE KEY mcu_i_01 (currency)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcu';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `currencyrates`
 --
 
 DROP TABLE IF EXISTS currencyrates;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE currencyrates (
   mcu_currencyid int(10) unsigned NOT NULL,
   rate float(11,5) NOT NULL,
@@ -112,12 +129,15 @@ CREATE TABLE currencyrates (
   KEY mcr_mcu_pk (mcu_currencyid),
   CONSTRAINT mcr_mcu_pk FOREIGN KEY (mcu_currencyid) REFERENCES currencies (currencyid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcr';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `moneyflows`
 --
 
 DROP TABLE IF EXISTS moneyflows;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE moneyflows (
   mur_userid int(10) unsigned NOT NULL,
   moneyflowid int(10) unsigned NOT NULL auto_increment,
@@ -135,12 +155,15 @@ CREATE TABLE moneyflows (
   CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mmf';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `monthlysettlements`
 --
 
 DROP TABLE IF EXISTS monthlysettlements;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE monthlysettlements (
   mur_userid int(10) unsigned NOT NULL,
   monthlysettlementid int(10) unsigned NOT NULL auto_increment,
@@ -155,12 +178,15 @@ CREATE TABLE monthlysettlements (
   CONSTRAINT mms_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
   CONSTRAINT mms_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mms';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `predefmoneyflows`
 --
 
 DROP TABLE IF EXISTS predefmoneyflows;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE predefmoneyflows (
   mur_userid int(10) unsigned NOT NULL,
   predefmoneyflowid int(10) unsigned NOT NULL auto_increment,
@@ -177,34 +203,43 @@ CREATE TABLE predefmoneyflows (
   CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
   CONSTRAINT mpm_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mpm';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `languages`
 --
 
 DROP TABLE IF EXISTS languages;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE languages (
   languageid int(10) unsigned NOT NULL auto_increment,
   `language` varchar(10) NOT NULL,
   PRIMARY KEY  (languageid),
   UNIQUE KEY mla_i_01 (`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mla';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `templates`
 --
 
 DROP TABLE IF EXISTS templates;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE templates (
   templatename varchar(50) NOT NULL,
   PRIMARY KEY  (templatename)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mte';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `templatevalues`
 --
 
 DROP TABLE IF EXISTS templatevalues;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE templatevalues (
   mte_templatename varchar(50) NOT NULL,
   mtx_textid int(10) unsigned NOT NULL,
@@ -214,12 +249,15 @@ CREATE TABLE templatevalues (
   CONSTRAINT mtv_mte_pk FOREIGN KEY (mte_templatename) REFERENCES templates (templatename) ON UPDATE CASCADE,
   CONSTRAINT templatevalues_ibfk_1 FOREIGN KEY (mtx_textid) REFERENCES `text` (textid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mtm';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `text`
 --
 
 DROP TABLE IF EXISTS text;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE `text` (
   textid int(10) unsigned NOT NULL,
   mla_languageid int(10) unsigned NOT NULL,
@@ -229,22 +267,28 @@ CREATE TABLE `text` (
   KEY mte_mla_pk (mla_languageid),
   CONSTRAINT mte_mla_pk FOREIGN KEY (mla_languageid) REFERENCES languages (languageid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mtx';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `domains`
 --
 
 DROP TABLE IF EXISTS domains;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE domains (
   domain varchar(30) NOT NULL,
   PRIMARY KEY  (domain)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mdm';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `domainvalues`
 --
 
 DROP TABLE IF EXISTS domainvalues;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE domainvalues (
   mdm_domain varchar(30) NOT NULL,
   `value` varchar(3) NOT NULL,
@@ -254,12 +298,15 @@ CREATE TABLE domainvalues (
   KEY mdv_mdm_pk (mdm_domain),
   CONSTRAINT mdm_mdv_pk FOREIGN KEY (mdm_domain) REFERENCES domains (domain) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mdv';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `imp_data`
 --
 
 DROP TABLE IF EXISTS imp_data;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE imp_data (
   dataid int(10) unsigned NOT NULL auto_increment,
   `date` varchar(10) NOT NULL,
@@ -270,34 +317,43 @@ CREATE TABLE imp_data (
   `status` tinyint(1) unsigned NOT NULL default '1',
   PRIMARY KEY  (dataid)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mid';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `imp_mapping_source`
 --
 
 DROP TABLE IF EXISTS imp_mapping_source;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE imp_mapping_source (
   source_from varchar(100) NOT NULL,
   source_to varchar(100) NOT NULL,
   UNIQUE KEY mis_i_01 (source_from)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mis';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `imp_mapping_partner`
 --
 
 DROP TABLE IF EXISTS imp_mapping_partner;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE imp_mapping_partner (
   partner_from varchar(100) NOT NULL,
   partner_to varchar(100) NOT NULL,
   UNIQUE KEY mip_i_01 (partner_from)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mip';
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `cmp_data_formats`
 --
 
 DROP TABLE IF EXISTS cmp_data_formats;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
 CREATE TABLE cmp_data_formats (
   formatid int(11) NOT NULL auto_increment,
   `name` varchar(50) NOT NULL,
@@ -316,6 +372,7 @@ CREATE TABLE cmp_data_formats (
   PRIMARY KEY  (formatid),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcf';
+SET character_set_client = @saved_cs_client;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -326,7 +383,7 @@ CREATE TABLE cmp_data_formats (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2007-12-07 19:30:17
+-- Dump completed on 2008-01-08 16:50:39
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -729,6 +786,10 @@ INSERT INTO text VALUES (199,1,'The specified file is not parseable! Maybe you''
 INSERT INTO text VALUES (199,2,'Die angegebene Datei konnte nicht geparsed werden! Eventuell haben Sie eine falsche Datei oder das falsche Format angegeben?','e');
 INSERT INTO text VALUES (200,1,'The amount must be higher or lower than 0 but not 0!','e');
 INSERT INTO text VALUES (200,2,'Der Betrag muss ungleich 0 sein!','e');
+INSERT INTO text VALUES (201,1,'next month','t');
+INSERT INTO text VALUES (201,2,'nächster Monat','t');
+INSERT INTO text VALUES (202,1,'previous month','t');
+INSERT INTO text VALUES (202,2,'voriger Monat','t');
 INSERT INTO templates VALUES ('display_add_language.tpl');
 INSERT INTO templates VALUES ('display_add_moneyflow.tpl');
 INSERT INTO templates VALUES ('display_analyze_cmp_data.tpl');
@@ -1128,6 +1189,8 @@ INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',195);
 INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',196);
 INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',197);
 INSERT INTO templatevalues VALUES ('display_analyze_cmp_data.tpl',198);
+INSERT INTO templatevalues VALUES ('display_generate_report.tpl',201);
+INSERT INTO templatevalues VALUES ('display_generate_report.tpl',202);
 INSERT INTO domains VALUES ('CAPITALSOURCE_STATE');
 INSERT INTO domains VALUES ('CAPITALSOURCE_TYPE');
 INSERT INTO domains VALUES ('MONTHS');
