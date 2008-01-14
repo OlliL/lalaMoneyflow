@@ -1,11 +1,5 @@
 <html>
 	<head><title>lalaMoneyflow: {$TEXT_8}</title>
-{literal}
-<script language="JavaScript">
-function onload() {
-  document.addmoney.elements[5].focus();
-</script>
-{/literal}
 {$HEADER}
 
 		<td align="center">
@@ -58,6 +52,11 @@ function onload() {
 						{/if}
 					</tr>
 				{/section}
+{literal}
+<script language="JavaScript">
+  document.addmoney.elements[5].focus();
+</script>
+{/literal}
 			</table>
 			<br />
 			<input type="hidden" name="realaction" value="save">
