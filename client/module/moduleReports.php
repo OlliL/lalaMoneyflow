@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.44 2008/01/08 16:51:36 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.45 2008/03/26 19:56:22 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -280,9 +280,6 @@ class moduleReports extends module {
 
 	function plot_graph( $capitalsources_id, $startmonth, $startyear, $endmonth, $endyear ) {
 	
-		$endmonth_orig = $endmonth;
-		$endyear_orig  = $endyear;
-
 		$coreText = new coreText();
 		$graph_comment_all = $coreText->get_graph( 167 );
 		$graph_comment     = $coreText->get_graph( 168 );
@@ -298,97 +295,83 @@ class moduleReports extends module {
 			$all_capitalsources_ids[] = $capitalsources_id;
 			$graph_comment = $graph_comment.$this->coreCapitalSources->get_comment( $capitalsources_id );
 		}
-			
+
+		$startdate      = new DateTime($startyear."-".$startmonth."-01");
+		$enddate        = new DateTime($endyear."-".$endmonth."-01");
+		$startdate_orig = clone $startdate;
+		$enddate_orig   = clone $enddate;
+
 		# find first recorded monthly settlement
-		$testmonth = $startmonth;
-		$testyear  = $startyear;
-		$exists    = false;
-		while( !$exists  && ( $testmonth < $endmonth || $testyear != $endyear ) ) {
-			$exists = $this->coreMonthlySettlement->monthlysettlement_exists( $testmonth, $testyear, $capitalsources_id );
-			if( !$exists ) {
-				if( $testmonth == 12 ) {
-					$testmonth = 1;
-					$testyear++;
-				} else {
-					$testmonth++;
-				}
-			}
+		$exists = false;
+		while( $exists === false && $startdate->format( "U" ) <= $enddate->format( "U" ) ) {
+			$exists = $this->coreMonthlySettlement->monthlysettlement_exists( $startdate->format( "m" )
+				                                                        , $startdate->format( "Y" )
+			                                                                , $capitalsources_id );
+			if( $exists === false )
+				$startdate->modify("+1 month");
 		}
-		$startmonth = $testmonth;
-		$startyear  = $testyear;
 
-		for( $testmonth = $startmonth; $testmonth <= 12 && ! $this->coreMonthlySettlement->monthlysettlement_exists( $testmonth, $startyear, $capitalsources_id ); $testmonth++ );
-		$startmonth = $testmonth;
+		# find last recorded monthly settlement
+		$exists  = false;
+		while( $exists === false && $enddate->format( "U" ) >= $startdate->format( "U" ) ) {
+			$exists = $this->coreMonthlySettlement->monthlysettlement_exists( $enddate->format( "m" )
+				                                                        , $enddate->format( "Y" )
+			                                                                , $capitalsources_id );
+			if( $exists === false )
+				$enddate->modify("-1 month");
 
-		# find latest recorded monthly settlement
-		$testmonth = $endmonth;
-		$testyear  = $endyear;
-		$exists    = 0;
-		while( $exists == 0  && ( $testmonth > $startmonth || $testyear != $startyear ) ) {
-			$exists = $this->coreMonthlySettlement->monthlysettlement_exists( $testmonth, $testyear, $capitalsources_id );
-			if( $exists == 0 ) {
-				if( $testmonth == 1 ) {
-					$testmonth = 12;
-					$testyear--;
-				} else {
-					$testmonth--;
-				}
-			}
 		}
-		$endmonth = $testmonth;
-		$endyear  = $testyear;
 
-		$month = $startmonth;
-		$year  = $startyear;
+		$startdate_real = clone $startdate;
+		$enddate_real   = clone $enddate;
+
+		# build the 1st graph containing all monthly settlements
 		$i = 0;
-		
-		while( $year <= $endyear ) {
-			while( $month <= 12 && ( $month <= $endmonth || $year != $endyear ) ) {
+		while( $startdate->format( "U" ) <= $enddate->format( "U" ) ) {
+			foreach( $all_capitalsources_ids as $capitalsources_id ) {
+				$monthly_data[$i] += $this->coreMonthlySettlement->get_amount( $capitalsources_id
+				                                                             , $startdate->format( "m" )
+				                                                             , $startdate->format( "Y" )
+				                                                             );
+			}
+			$monthly2_data[$i] = NULL;
+			$monthly_x[$i]     = $startdate->format( "m/y" );
+			$i++;
+			$startdate->modify("+1 month");
+		}
+
+		# build the 12st graph containing all calculated monthly settlements based on the moneyflows happend after the last settlement
+		if( $startdate->format( "U" ) < $enddate_orig->format( "U" ) ) {
+			$last_amount         = $monthly_data[$i-1];
+			$monthly2_data[$i-1] = $last_amount;
+			$max_moneyflow_date  = $this->coreMoneyFlows->get_max_year_month();
+
+			$enddate             = new DateTime($max_moneyflow_date['year']."-".$max_moneyflow_date['month']."-01");
+			$enddate_real        = clone $enddate;
+			
+			while( $startdate->format( "U" ) <= $enddate->format( "U" ) ) {
 				foreach( $all_capitalsources_ids as $capitalsources_id ) {
-					$monthly_data[$i] += $this->coreMonthlySettlement->get_amount( $capitalsources_id, $month,$year );
+					$monthly2_data[$i] += $this->coreMoneyFlows->get_monthly_capitalsource_movement( $capitalsources_id
+					                                                                               , $startdate->format( "m" )
+					                                                                               , $startdate->format( "Y" )
+					                                                                               );
 				}
-				$monthly_x[$i] = sprintf( '%02d/%02d', $month, substr( $year, 3, 2 ) );
-				$last_month  = $month;
-				$last_year   = $year;
-				$last_amount = $monthly_data[$i];
-				$month++;
+				$monthly2_data[$i] += $last_amount;
+				$last_amount        = $monthly2_data[$i];
+				$monthly_x[$i]      = $startdate->format( "m/y" );
 				$i++;
+				$startdate->modify("+1 month");
 			}
-			$year++;
-			$month = 1;
+		} else {
+			$monthly2_data = NULL;
 		}
 
-		$year  = $last_year;
-		$month = $last_month + 1;
-		if( $month == 13 ) {
-			$year++;
-			$month = 1;
-		}
-
-		if( $endyear != $endyear_orig || $endmonth != $endmonth_orig ) {
-			$a = 0;
-			while( $a < $i ) {
-				$monthly2_data[$a] = NULL;
-				$a++;
-			}
-			$monthly2_data[$a-1] = $last_amount;
-
-			$max_moneyflow_date = $this->coreMoneyFlows->get_max_year_month();
-
-			while( $year <= $endyear_orig && $year <= $max_moneyflow_date['year'] ) {
-				while( $month <= 12 && ( ( $month <= $endmonth_orig && $month <= $max_moneyflow_date['month'] )|| $year != $endyear_orig ) ) {
-					foreach( $all_capitalsources_ids as $capitalsources_id ) {
-						$monthly2_data[$a] += $this->coreMoneyFlows->get_monthly_capitalsource_movement($capitalsources_id, $month, $year );
-					}
-					$monthly2_data[$a] += $last_amount;
-					$last_amount        = $monthly2_data[$i];
-					$monthly_x[$x] = sprintf( '%02d/%02d', $month, substr( $year, 3, 2 ) );
-					$month++;
-					$i++;
-				}
-				$year++;
-				$month = 1;
-			}
+		$i--;
+		# fill dummy x labels because the graph gets always stretcht x-wide as a multiple of 5
+		while( $i % 5 != 0 ) {
+			$i++;
+			$monthly_x[$i] = $startdate->format( "m/y" );
+			$startdate->modify("+1 month");
 		}
 
 		$graph = new Graph( 700, 400 );
@@ -397,7 +380,7 @@ class moduleReports extends module {
 		$graph->SetMarginColor( '#E6E6FA' );
 		$graph->SetFrame( true, array( 0, 0, 0 ), 0 );
 
-		$txt = new Text( $graph_comment."\n".$graph_from.sprintf( '%02d/%02d', $startmonth, substr( $startyear, 3, 2 ) ).$graph_until.sprintf( '%02d/%02d', $endmonth, substr( $endyear, 3, 2 ) ) );
+		$txt = new Text( $graph_comment."\n".$graph_from.$startdate_real->format( "m/y" ).$graph_until.$enddate_real->format( "m/y" ) );
 		$txt->SetFont( FF_FONT1, FS_BOLD );
 		$txt->Center( 0, 700 );
 		$txt->ParagraphAlign( 'center' );
@@ -427,6 +410,8 @@ class moduleReports extends module {
 		$graph->yaxis->SetTitleMargin( 35 );
 		$graph->yaxis->SetFont( FF_FONT0 );
 		$graph->yaxis->title->SetFont( FF_FONT1, FS_BOLD );
+
+		$graph->xgrid->Show();
 
 		$graph->Stroke();
 	}
