@@ -1,2 +1,5 @@
+- when entering a new contractpartner, it has to be checked first if there
+  exists already a contractpartner with the same name (unique key constraint
+  violation otherwise)
 - put the available countries into the db and have them selectable when
   handling contractual partners instead of having it free editable
