@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCompare.php,v 1.7 2007/12/07 17:17:47 olivleh1 Exp $
+# $Id: moduleCompare.php,v 1.8 2008/05/14 18:10:20 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -207,58 +207,61 @@ class moduleCompare extends module {
 							$result_count = count( $results );
 							
 							foreach( $results as $moneyflowid ) {
-								$moneyflow = $this->coreMoneyFlows->get_id_data( $moneyflowid );
+								if( $moneyflow_used[$moneyflowid] != 1 ) {
+									$moneyflow = $this->coreMoneyFlows->get_id_data( $moneyflowid );
 								
-								$mon_data[$moneyflowid] = $moneyflow;
+									$mon_data[$moneyflowid] = $moneyflow;
 								
-								$hitlist[$moneyflowid] = 0;
+									$hitlist[$moneyflowid] = 0;
 								
-								if( $result_count > 1 ) {
-									# more than one result the program has now trying to find the right one
-									# this is done by counting different aspects of a flow to generate a hitlist
-									# the result with the highest hitcount is treated as the matching one.
+									if( $result_count > 1 ) {
+										# more than one result the program has now trying to find the right one
+										# this is done by counting different aspects of a flow to generate a hitlist
+										# the result with the highest hitcount is treated as the matching one.
 									
-									if( $moneyflow['bookingdate'] == $date_db )
-										$hitlist[$moneyflowid] += 10;
+										if( $moneyflow['bookingdate'] == $date_db )
+											$hitlist[$moneyflowid] += 10;
 										
-									if( $moneyflow['invoiceate'] == $date_db )
-										$hitlist[$moneyflowid] += 5;
+										if( $moneyflow['invoiceate'] == $date_db )
+											$hitlist[$moneyflowid] += 5;
 
-									if( $moneyflow['mcs_capitalsourceid'] == $all_data['mcs_capitalsourceid'] )
-										$hitlist[$moneyflowid] += 5;
+										if( $moneyflow['mcs_capitalsourceid'] == $all_data['mcs_capitalsourceid'] )
+											$hitlist[$moneyflowid] += 5;
 										
-									# does our input-file contain contractpartner information?
-									if( !empty( $partner ) ) {
-										$cmp_partner = $partner;
-										$mon_partner = $this->coreContractPartners->get_name( $moneyflow['mcp_contractpartnerid'] );
+										# does our input-file contain contractpartner information?
+										if( !empty( $partner ) ) {
+											$cmp_partner = $partner;
+											$mon_partner = $this->coreContractPartners->get_name( $moneyflow['mcp_contractpartnerid'] );
 										
-										$split_pattern = '[\., -]';
+											$split_pattern = '[\., -]';
 										
-										$matching_words = 0;
-										$words          = 0;
-										foreach( split( $split_pattern, $cmp_partner ) as $cmp_word ) {
-											$words++;
-											foreach( split( $split_pattern, $mon_partner) as $mon_word ) {
-												if( strcasecmp( $mon_word, $cmp_word ) === 0 ) {
-													$hitlist[$moneyflowid] += 10;
-													$matching_words++;
-												} elseif( soundex( $mon_word ) == soundex( $cmp_word ) ) {
-													$hitlist[$moneyflowid] += 8;
-													$matching_words++;
+											$matching_words = 0;
+											$words          = 0;
+											foreach( split( $split_pattern, $cmp_partner ) as $cmp_word ) {
+												$words++;
+												foreach( split( $split_pattern, $mon_partner) as $mon_word ) {
+													if( strcasecmp( $mon_word, $cmp_word ) === 0 ) {
+														$hitlist[$moneyflowid] += 10;
+														$matching_words++;
+													} elseif( soundex( $mon_word ) == soundex( $cmp_word ) ) {
+														$hitlist[$moneyflowid] += 8;
+														$matching_words++;
+													}
 												}
 											}
-										}
 										
-										if( $matching_words == $words && $matching_words != 0 )
-											$hitlist[$moneyflowid] += 5;
+											if( $matching_words == $words && $matching_words != 0 )
+												$hitlist[$moneyflowid] += 5;
+										}
+									} else {
+										$hitlist[$moneyflowid] = 100;
 									}
-								} else {
-									$hitlist[$moneyflowid] = 100;
 								}
 							}
 							arsort($hitlist);
 							$moneyflowid = key($hitlist);
 							$moneyflow = $mon_data[$moneyflowid];
+							$moneyflow_used[$moneyflowid] = 1;
 							
 							$matching_moneyflowids[] = $moneyflowid;
 
