@@ -9,6 +9,9 @@
 			<input type="hidden" name="realaction"        value="save">
 			<input type="hidden" name="contractpartnerid" value="{$ALL_DATA.contractpartnerid}">
 			<input type="hidden" name="REFERER"           value="{$ENV_REFERER}">
+			{section name=ERROR loop=$ERRORS}
+				<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
+			{/section}
 			<table border=0>
 				<tr>
 					<th>{$TEXT_41}</th>

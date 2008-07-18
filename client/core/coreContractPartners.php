@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreContractPartners.php,v 1.14 2007/07/27 06:42:26 olivleh1 Exp $
+# $Id: coreContractPartners.php,v 1.15 2008/07/18 07:50:01 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -144,7 +144,6 @@ class coreContractPartners extends core {
 							   AND mur_userid        = ".USERID."
 							 LIMIT 1" );
 		}
-		exit;
 	}
 
 
@@ -160,22 +159,35 @@ class coreContractPartners extends core {
 						 LIMIT 1" );
 	}
 
+	function get_contractpartner_by_name( $name ) {
+		return $this->select_col( "	SELECT contractpartnerid
+						  FROM contractpartners
+						 WHERE name       = '$name'
+						   AND mur_userid = ".USERID."
+						 LIMIT 1" );
+	}
+
 	function add_contractpartner( $name, $street, $postcode, $town, $country ) {
-		return $this->insert_row( "	INSERT INTO contractpartners
-						      (mur_userid
-						      ,name
-						      ,street
-						      ,postcode
-						      ,town
-						      ,country
-						      )
-						       VALUES
-						      (".USERID."
-						      ,'$name'
-						      ,'$street'
-						      ,'$postcode'
-						      ,'$town'
-						      ,'$country'
-						      )" );
+		if($this->get_contractpartner_by_name($name)) {
+			add_error( 203 );
+			return 0;
+		} else {
+			return $this->insert_row( "	INSERT INTO contractpartners
+							      (mur_userid
+							      ,name
+							      ,street
+							      ,postcode
+							      ,town
+							      ,country
+							      )
+							       VALUES
+							      (".USERID."
+							      ,'$name'
+							      ,'$street'
+							      ,'$postcode'
+							      ,'$town'
+							      ,'$country'
+							      )" );
+		}
 	}
 }

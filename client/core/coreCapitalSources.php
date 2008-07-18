@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.28 2007/09/14 20:04:59 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.29 2008/07/18 07:50:01 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -258,31 +258,44 @@ class coreCapitalSources extends core {
 		}
 	}
 
-	function add_capitalsource( $type, $state, $accountnumber, $bankcode, $comment, $validfrom, $validtil ) {
-		if( empty( $validtil ) )
-			$validtil='2999-12-31';
-		$validtil  = $this->make_date($validtil);
-		$validfrom = $this->make_date($validfrom);
+	function get_capitalsource_by_name( $comment ) {
+		return $this->select_col( "	SELECT capitalsourceid
+						  FROM capitalsources
+						 WHERE comment    = '$comment'
+						   AND mur_userid = ".USERID."
+						 LIMIT 1" );
+	}
 
-		return $this->insert_row( "	INSERT INTO capitalsources 
-						      (mur_userid
-						      ,type
-						      ,state
-						      ,accountnumber
-						      ,bankcode
-						      ,comment
-						      ,validfrom
-						      ,validtil
-						      )
-						       VALUES
-						      (".USERID."
-						      ,'$type'
-						      ,'$state'
-						      ,'$accountnumber'
-						      ,'$bankcode'
-						      ,'$comment'
-						      ,$validfrom
-						      ,$validtil
-						      )" );
+	function add_capitalsource( $type, $state, $accountnumber, $bankcode, $comment, $validfrom, $validtil ) {
+		if($this->get_capitalsource_by_name($comment)) {
+			add_error( 203 );
+			return 0;
+		} else {
+			if( empty( $validtil ) )
+				$validtil='2999-12-31';
+			$validtil  = $this->make_date($validtil);
+			$validfrom = $this->make_date($validfrom);
+
+			return $this->insert_row( "	INSERT INTO capitalsources 
+							      (mur_userid
+							      ,type
+							      ,state
+							      ,accountnumber
+							      ,bankcode
+							      ,comment
+							      ,validfrom
+							      ,validtil
+							      )
+							       VALUES
+							      (".USERID."
+							      ,'$type'
+							      ,'$state'
+							      ,'$accountnumber'
+							      ,'$bankcode'
+							      ,'$comment'
+							      ,$validfrom
+							      ,$validtil
+							      )" );
+		}
 	}
 }

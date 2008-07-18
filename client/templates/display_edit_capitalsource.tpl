@@ -4,14 +4,14 @@
 {$HEADER}
 
 		<td align="center">
-		{section name=ERROR loop=$ERRORS}
-			<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
-		{/section}
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action"           value="edit_capitalsource">
 			<input type="hidden" name="realaction"       value="save">
 			<input type="hidden" name="capitalsourceid"  value="{$CAPITALSOURCEID}">
 			<input type="hidden" name="REFERER"          value="{$ENV_REFERER}">
+			{section name=ERROR loop=$ERRORS}
+				<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
+			{/section}
 			<table border=0>
 				<tr>
 					<th>{$TEXT_21}</th>
