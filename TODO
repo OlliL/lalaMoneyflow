@@ -1,3 +1,6 @@
+- trend: make specific capitalsources select- and deselectable not just
+  "all" and one specific - either do this by having a multiple select
+  box, or by showing all of them and having check boxes...
 - capitalsources unique key might be wrong - there need to be a key with
   valid_from in it - right now ownly one comment is allowed - when it gets
   invalid by valid_til - no new capitalsource with the same name may be
