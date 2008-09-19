@@ -382,7 +382,7 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2008-09-19 14:15:11
+-- Dump completed on 2008-09-19 18:15:54
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -717,10 +717,8 @@ INSERT INTO text VALUES (165,1,'November','m');
 INSERT INTO text VALUES (165,2,'November','m');
 INSERT INTO text VALUES (166,1,'December','m');
 INSERT INTO text VALUES (166,2,'Dezember','m');
-INSERT INTO text VALUES (167,1,'amount trend of all capitalsources','g');
-INSERT INTO text VALUES (167,2,'Vermögenstrend aller Kapitalquellen','g');
-INSERT INTO text VALUES (168,1,'amount trend of capitalsource ','g');
-INSERT INTO text VALUES (168,2,'Vermögenstrend der Kapitalquelle ','g');
+INSERT INTO text VALUES (168,1,'amount trends of selected capitalsources','g');
+INSERT INTO text VALUES (168,2,'Vermögenstrend der ausgewählten Kapitalquellen','g');
 INSERT INTO text VALUES (169,1,'starting from ','g');
 INSERT INTO text VALUES (169,2,'von ','g');
 INSERT INTO text VALUES (170,1,' until ','g');
