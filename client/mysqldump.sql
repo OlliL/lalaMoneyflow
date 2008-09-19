@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	5.0.51
+-- Server version	5.0.67
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -44,7 +44,7 @@ SET character_set_client = utf8;
 CREATE TABLE settings (
   mur_userid int(10) unsigned NOT NULL,
   `name` varchar(50) NOT NULL default '',
-  `value` varchar(50) default NULL,
+  `value` varchar(256) default NULL,
   PRIMARY KEY  (`name`,mur_userid),
   KEY mse_mur_pk (mur_userid),
   CONSTRAINT mse_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
@@ -383,7 +383,7 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2008-01-08 16:50:39
+-- Dump completed on 2008-09-19 13:56:02
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -790,6 +790,8 @@ INSERT INTO text VALUES (201,1,'next month','t');
 INSERT INTO text VALUES (201,2,'nächster Monat','t');
 INSERT INTO text VALUES (202,1,'previous month','t');
 INSERT INTO text VALUES (202,2,'voriger Monat','t');
+INSERT INTO text VALUES (203,1,'This name already exists!','e');
+INSERT INTO text VALUES (203,2,'Der Name existiert bereits!','e');
 INSERT INTO templates VALUES ('display_add_language.tpl');
 INSERT INTO templates VALUES ('display_add_moneyflow.tpl');
 INSERT INTO templates VALUES ('display_analyze_cmp_data.tpl');
@@ -1215,5 +1217,5 @@ INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','/^Buchungstag	Wertstellung
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,1);
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('','',0,0,0);
 UPDATE users SET id=0 WHERE username='';
-INSERT INTO settings VALUES (0,'displayed_currency','1'),(0,'displayed_language','1'),(0,'max_rows','40'),(0,'date_format','YYYY-MM-DD'),(0,'compare_capitalsource','0'),(0,'compare_format','0');
+INSERT INTO settings VALUES (0,'displayed_currency','1'),(0,'displayed_language','1'),(0,'max_rows','40'),(0,'date_format','YYYY-MM-DD');
 INSERT INTO settings (SELECT (SELECT userid FROM users WHERE name='admin'),name,value FROM settings WHERE mur_userid=0);

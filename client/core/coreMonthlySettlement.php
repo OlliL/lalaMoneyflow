@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMonthlySettlement.php,v 1.21 2007/07/27 22:28:28 olivleh1 Exp $
+# $Id: coreMonthlySettlement.php,v 1.22 2008/09/19 14:01:30 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -69,7 +69,16 @@ class coreMonthlySettlement extends core {
 	}
 
 	function monthlysettlement_exists( $month, $year, $sourceid = 0 ) {
-		if( $sourceid == 0 )
+		if( is_array($sourceid) ) {
+			$result = $this->select_col( "	SELECT 1
+							  FROM monthlysettlements
+							 WHERE mcs_capitalsourceid IN (".implode($sourceid,',').")
+							   AND month      = $month
+							   AND year       = $year
+							   AND mur_userid = ".USERID."
+							 LIMIT 1" );
+			
+		} elseif( $sourceid == 0 )
 			$result = $this->select_col( "	SELECT 1
 							  FROM monthlysettlements
 							 WHERE month      = $month

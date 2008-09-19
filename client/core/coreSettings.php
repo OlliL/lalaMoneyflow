@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreSettings.php,v 1.10 2007/12/06 20:59:10 olivleh1 Exp $
+# $Id: coreSettings.php,v 1.11 2008/09/19 14:01:30 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -44,10 +44,17 @@ class coreSettings extends core {
 	}
 
 	function set_value( $userid, $name, $value ) {
-		return $this->insert_row( "	UPDATE settings
-						   SET value = '$value'
-						 WHERE name       = '$name'
-						   AND mur_userid = $userid" );
+		return $this->insert_row( "	INSERT INTO settings
+						           (mur_userid
+						           ,name
+						           ,value
+						           )
+						             VALUES
+							   ($userid
+							   ,'$name'
+							   ,'$value'
+							   )
+							   ON DUPLICATE KEY UPDATE value = VALUES(value)");
 	}
 
 	function init_settings( $userid ) {
@@ -82,6 +89,10 @@ class coreSettings extends core {
 
 	function get_compare_format( $userid ) {
 		return $this->get_value( $userid, 'compare_format' );
+	}
+
+	function get_trend_capitalsourceid( $userid ) {
+		return unserialize($this->get_value( $userid, 'trend_capitalsourceid' ));
 	}
 
 	function get_date_format( $userid ) {
@@ -131,6 +142,10 @@ class coreSettings extends core {
 
 	function set_compare_format( $userid, $format ) {
 		return $this->set_value( $userid, 'compare_format', $format );
+	}
+
+	function set_trend_capitalsourceid( $userid, $capitalsourceid ) {
+		return $this->set_value( $userid, 'trend_capitalsourceid', serialize($capitalsourceid) );
 	}
 
 	function set_date_format( $userid, $dateformat ) {

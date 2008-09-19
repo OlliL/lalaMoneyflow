@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.45 2008/03/26 19:56:22 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.46 2008/09/19 14:01:31 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -263,8 +263,15 @@ class moduleReports extends module {
 		$this->template->assign( 'ALL_YEARS',      $years  );
 
 		if( is_array( $all_data ) && isset( $all_data['mcs_capitalsourceid'] ) ) {
+			$this->coreSettings->set_trend_capitalsourceid( USERID, $all_data['mcs_capitalsourceid'] );
 			$this->template->assign( 'PLOT_GRAPH',       1  );
 		} else {
+
+			$all_data['mcs_capitalsourceid'] = $this->coreSettings->get_trend_capitalsourceid( USERID );
+			if( empty( $all_data[mcs_capitalsourceid]) )
+				foreach( $capitalsource_values as $capitalsource ) {
+					$all_data[mcs_capitalsourceid][$capitalsource['capitalsourceid']] = 1;
+				}
 			$all_data['endyear']  = $years[count( $years )-1];
 			$all_data['endmonth'] = 12;
 			$this->template->assign( 'PLOT_GRAPH',       0  );
@@ -278,8 +285,7 @@ class moduleReports extends module {
 
 	}
 
-	function plot_graph( $capitalsources_id, $startmonth, $startyear, $endmonth, $endyear ) {
-	
+	function plot_graph( $all_capitalsources_ids, $startmonth, $startyear, $endmonth, $endyear ) {
 		$coreText = new coreText();
 		$graph_comment_all = $coreText->get_graph( 167 );
 		$graph_comment     = $coreText->get_graph( 168 );
@@ -287,14 +293,6 @@ class moduleReports extends module {
 		$graph_until       = $coreText->get_graph( 170 );
 		$graph_xaxis       = $coreText->get_graph( 171 );
 		$graph_yaxis       = $coreText->get_graph( 172 );
-
-		if( $capitalsources_id == 0 ) {
-			$all_capitalsources_ids  = $this->coreCapitalSources->get_all_ids();
-			$graph_comment = $graph_comment_all;
-		} else {
-			$all_capitalsources_ids[] = $capitalsources_id;
-			$graph_comment = $graph_comment.$this->coreCapitalSources->get_comment( $capitalsources_id );
-		}
 
 		$startdate      = new DateTime($startyear."-".$startmonth."-01");
 		$enddate        = new DateTime($endyear."-".$endmonth."-01");
@@ -306,7 +304,7 @@ class moduleReports extends module {
 		while( $exists === false && $startdate->format( "U" ) <= $enddate->format( "U" ) ) {
 			$exists = $this->coreMonthlySettlement->monthlysettlement_exists( $startdate->format( "m" )
 				                                                        , $startdate->format( "Y" )
-			                                                                , $capitalsources_id );
+			                                                                , $all_capitalsources_ids );
 			if( $exists === false )
 				$startdate->modify("+1 month");
 		}
@@ -316,7 +314,7 @@ class moduleReports extends module {
 		while( $exists === false && $enddate->format( "U" ) >= $startdate->format( "U" ) ) {
 			$exists = $this->coreMonthlySettlement->monthlysettlement_exists( $enddate->format( "m" )
 				                                                        , $enddate->format( "Y" )
-			                                                                , $capitalsources_id );
+			                                                                , $all_capitalsources_ids );
 			if( $exists === false )
 				$enddate->modify("-1 month");
 
