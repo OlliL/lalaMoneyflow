@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCompare.php,v 1.8 2008/05/14 18:10:20 olivleh1 Exp $
+# $Id: moduleCompare.php,v 1.9 2008/09/19 18:31:49 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -145,7 +145,7 @@ class moduleCompare extends module {
 				$this->coreSettings->set_compare_format( USERID, $all_data['format'] );
 			}
 
-			# change given date to timespam for later "between" comparsion
+			# change given date to timespamp for later "between" comparsion
 			$startdate = convert_date_to_timestamp( $all_data['startdate'], $this->date_format );
 			$enddate   = convert_date_to_timestamp( $all_data['enddate'], $this->date_format );
 			
@@ -215,14 +215,15 @@ class moduleCompare extends module {
 									$hitlist[$moneyflowid] = 0;
 								
 									if( $result_count > 1 ) {
-										# more than one result the program has now trying to find the right one
-										# this is done by counting different aspects of a flow to generate a hitlist
+										# more than one result
+										# the program has to try now finding the right result
+										# this is done by counting different aspects of a flow and generate a hitlist
 										# the result with the highest hitcount is treated as the matching one.
 									
 										if( $moneyflow['bookingdate'] == $date_db )
 											$hitlist[$moneyflowid] += 10;
 										
-										if( $moneyflow['invoiceate'] == $date_db )
+										if( $moneyflow['invoicedate'] == $date_db )
 											$hitlist[$moneyflowid] += 5;
 
 										if( $moneyflow['mcs_capitalsourceid'] == $all_data['mcs_capitalsourceid'] )
