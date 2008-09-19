@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.29 2008/07/18 07:50:01 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.30 2008/09/19 14:27:04 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -258,23 +258,25 @@ class coreCapitalSources extends core {
 		}
 	}
 
-	function get_capitalsource_by_name( $comment ) {
+	function get_capitalsource_by_name( $comment, $date=''  ) {
+		$date = $this->make_date($date);
 		return $this->select_col( "	SELECT capitalsourceid
 						  FROM capitalsources
 						 WHERE comment    = '$comment'
 						   AND mur_userid = ".USERID."
+						   AND $date        BETWEEN validfrom AND validtil
 						 LIMIT 1" );
 	}
 
 	function add_capitalsource( $type, $state, $accountnumber, $bankcode, $comment, $validfrom, $validtil ) {
-		if($this->get_capitalsource_by_name($comment)) {
+		if( $this->get_capitalsource_by_name( $comment, $validfrom ) ) {
 			add_error( 203 );
 			return 0;
 		} else {
 			if( empty( $validtil ) )
 				$validtil='2999-12-31';
-			$validtil  = $this->make_date($validtil);
-			$validfrom = $this->make_date($validfrom);
+			$validtil  = $this->make_date( $validtil );
+			$validfrom = $this->make_date( $validfrom );
 
 			return $this->insert_row( "	INSERT INTO capitalsources 
 							      (mur_userid

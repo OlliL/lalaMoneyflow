@@ -1,6 +1,2 @@
-- capitalsources unique key might be wrong - there need to be a key with
-  valid_from in it - right now ownly one comment is allowed - when it gets
-  invalid by valid_til - no new capitalsource with the same name may be
-  created
 - put the available countries into the db and have them selectable when
   handling contractual partners instead of having it free editable

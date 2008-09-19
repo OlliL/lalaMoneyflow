@@ -69,7 +69,6 @@ CREATE TABLE capitalsources (
   validtil date NOT NULL default '2999-12-31',
   validfrom date NOT NULL default '1970-01-01',
   PRIMARY KEY  (capitalsourceid,mur_userid),
-  UNIQUE KEY mcs_i_02 (mur_userid,`comment`),
   KEY mcs_i_01 (mur_userid),
   CONSTRAINT mcs_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcs';
@@ -383,7 +382,7 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2008-09-19 13:56:02
+-- Dump completed on 2008-09-19 14:15:11
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
