@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCompare.php,v 1.9 2008/09/19 18:31:49 olivleh1 Exp $
+# $Id: moduleCompare.php,v 1.10 2008/09/25 04:52:03 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -227,7 +227,7 @@ class moduleCompare extends module {
 											$hitlist[$moneyflowid] += 5;
 
 										if( $moneyflow['mcs_capitalsourceid'] == $all_data['mcs_capitalsourceid'] )
-											$hitlist[$moneyflowid] += 5;
+											$hitlist[$moneyflowid] += 10;
 										
 										# does our input-file contain contractpartner information?
 										if( !empty( $partner ) ) {
