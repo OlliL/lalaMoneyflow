@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.47 2008/09/19 18:17:13 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.48 2008/12/05 10:51:24 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -257,7 +257,7 @@ class moduleReports extends module {
 		$years = $this->coreMonthlySettlement->get_all_years();
 		# add the actual year to the years if the year changed no monthlysettlement
 		# exists in that year during january - but you might want to see a prognose
-		if( $years[count( $years ) + 1] != date( 'Y' ) ) {
+		if( $years[count( $years ) - 1] != date( 'Y' ) ) {
 			$years[] = date( 'Y' );
 		}
 		$this->template->assign( 'ALL_YEARS',      $years  );
@@ -339,7 +339,7 @@ class moduleReports extends module {
 		}
 
 		# build the 12st graph containing all calculated monthly settlements based on the moneyflows happend after the last settlement
-		if( $startdate->format( "U" ) < $enddate_orig->format( "U" ) ) {
+		if( $startdate->format( "U" ) > $enddate->format( "U" ) && $startdate->format( "U" ) <= $enddate_orig->format( "U" ) ) {
 			$last_amount         = $monthly_data[$i-1];
 			$monthly2_data[$i-1] = $last_amount;
 			$max_moneyflow_date  = $this->coreMoneyFlows->get_max_year_month();
