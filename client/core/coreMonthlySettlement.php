@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMonthlySettlement.php,v 1.22 2008/09/19 14:01:30 olivleh1 Exp $
+# $Id: coreMonthlySettlement.php,v 1.23 2008/12/12 19:51:06 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -66,6 +66,17 @@ class coreMonthlySettlement extends core {
 	function get_sum_amount( $month, $year ) {
 		$result = $this->get_sum_data( $month, $year );
 		return $result['amount'];
+	}
+
+	function get_movement_calculated( $sourceid, $month, $year ) {
+		$date = $this->make_date( $year."-".$month."-01" );
+		return $this->select_row( "	SELECT movement_calculated
+						  FROM monthlysettlements
+						 WHERE mcs_capitalsourceid = $sourceid
+						   AND month               = $month
+						   AND year                = $year
+						   AND mur_userid          = ".USERID."
+						 LIMIT 1" );
 	}
 
 	function monthlysettlement_exists( $month, $year, $sourceid = 0 ) {

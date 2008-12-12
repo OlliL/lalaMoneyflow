@@ -1,3 +1,7 @@
+/*
+ * this view will show the text entries for all users
+ * in their maintained display language
+ */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_text (
    textid
   ,text
@@ -13,6 +17,11 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_text (
      WHERE mtx.mla_languageid = mse.value
        AND mse.name           = 'displayed_language';
 
+/*
+ * this view is used to generate all variables maintained
+ * for each ttemplate with the translated text strings
+ * from view vw_text
+ */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_template_text (
    mur_userid
   ,templatename
@@ -33,6 +42,10 @@ DELIMITER $$
 
 -- FUNCTIONS
 
+/*
+ * this function returns the meaning of a specific domain
+ * code (value)
+ */
 DROP FUNCTION IF EXISTS domain_meaning$$
 CREATE FUNCTION domain_meaning (pi_domain VARCHAR(30)
                                ,pi_value  VARCHAR(3)
@@ -56,6 +69,14 @@ BEGIN
   RETURN l_text;
 END;$$
 
+/*
+ * the amount is always stored in a db wide configured
+ * currency. The currency the user has choosen to display
+ * might be different. If thats the case, the currency
+ * to display has to be recalculated. Same applies to the
+ * other way round (if the entered amount in the GUI has
+ * to be saved in the DB
+ */
 DROP FUNCTION IF EXISTS calc_amount$$
 CREATE FUNCTION calc_amount (pi_amount FLOAT(8,2)
                             ,pi_type   VARCHAR(3)
@@ -84,6 +105,13 @@ BEGIN
   RETURN l_amount;
 END;$$
 
+/*
+ * this function checks if there still exists data
+ * which has to be done before dropping a user to avoid
+ * an foreign key constraint violation (and to alert the
+ * admin that he is about to drop a user who still owns
+ * data
+ */
 DROP FUNCTION IF EXISTS user_owns_data$$
 CREATE FUNCTION user_owns_data (pi_userid INT(10) UNSIGNED
                                ) RETURNS  INT(1)
@@ -162,6 +190,10 @@ BEGIN
   
 END;$$
 
+/*
+ * this function adds a new language by copying the
+ * text from a "source" language
+ */
 DROP FUNCTION IF EXISTS add_language$$
 CREATE FUNCTION add_language (pi_language VARCHAR(10)
                              ,pi_source   INT(10) UNSIGNED
@@ -195,6 +227,11 @@ BEGIN
   
 END;$$
 
+/*
+ * this function returns the calculated movment in
+ * a given month/year combination to store it for
+ * example into monthlysettlements.movement_calculated
+ */
 DROP FUNCTION IF EXISTS mms_calc_movement_calculated$$
 CREATE FUNCTION mms_calc_movement_calculated(pi_userid          INT(10)    UNSIGNED
                                             ,pi_month           TINYINT(4) UNSIGNED
@@ -233,6 +270,11 @@ $$
 
 -- PROCEDURES
 
+/*
+ * this procedure deletes a user by first deleting all the data
+ * the user might own and then finally deleting the user from
+ * the table users
+ */
 DROP PROCEDURE IF EXISTS user_delete$$
 CREATE PROCEDURE user_delete (IN  pi_userid INT(10) UNSIGNED
                              ,OUT po_ret    INT(1) UNSIGNED
@@ -272,6 +314,11 @@ BEGIN
 
 END;$$
 
+/*
+ * this procedure fills the column monthlysettlements.movement_calculated
+ * when the settlement gets created the first time or the user changes
+ * the displayed currency.
+ */
 DROP PROCEDURE IF EXISTS mms_init_movement_calculated$$
 CREATE PROCEDURE mms_init_movement_calculated(IN pi_userid INT(10) UNSIGNED)
 BEGIN
@@ -305,6 +352,11 @@ BEGIN
 END;
 $$
 
+/*
+ * this procedure is used to change the movement_calculated
+ * column in table monthlysettlements if a moneyflow got
+ * changed, inserted or deleted
+ */
 DROP PROCEDURE IF EXISTS mmf_trg_procedure$$
 CREATE PROCEDURE mmf_trg_procedure(IN pi_bookingdate     DATE
                                   ,IN pi_userid          INT(10) UNSIGNED
@@ -338,6 +390,12 @@ BEGIN
 END;
 $$
 
+/*
+ * import data which is stored in table imp_data
+ * and try to map the capitalsource and the contractpartner
+ * if possible to the internal IDs (External data comes as
+ * text instead of IDs)
+ */
 DROP PROCEDURE IF EXISTS imp_moneyflows$$
 CREATE PROCEDURE imp_moneyflows (IN pi_userid   INT(10) UNSIGNED
                                 ,IN pi_write    INT(1)  UNSIGNED
@@ -426,6 +484,7 @@ $$
 
 -- TRIGGERS
 
+/* journalling on predefmoneyflows */
 DROP TRIGGER IF EXISTS mpm_trg_01$$
 CREATE TRIGGER mpm_trg_01 BEFORE INSERT ON predefmoneyflows
   FOR EACH ROW BEGIN
@@ -433,6 +492,10 @@ CREATE TRIGGER mpm_trg_01 BEFORE INSERT ON predefmoneyflows
   END;
 $$
 
+/*
+ * when a new moneyflow got inserted, recalculate
+ * monthlysettlements.movement_calculated
+ */
 DROP TRIGGER IF EXISTS mmf_trg_01$$
 CREATE TRIGGER mmf_trg_01 AFTER INSERT ON moneyflows
   FOR EACH ROW BEGIN
@@ -443,6 +506,13 @@ CREATE TRIGGER mmf_trg_01 AFTER INSERT ON moneyflows
   END;
 $$
 
+/*
+ * when a moneyflow got changed, recalculate
+ * monthlysettlements.movement_calculated for the
+ * new month (can be the same) or for the new and old
+ * month if the date of  the moneyflow got changed or
+ * the capitalsource.
+ */
 DROP TRIGGER IF EXISTS mmf_trg_02$$
 CREATE TRIGGER mmf_trg_02 AFTER UPDATE ON moneyflows
   FOR EACH ROW BEGIN
@@ -475,6 +545,10 @@ CREATE TRIGGER mmf_trg_02 AFTER UPDATE ON moneyflows
   END;
 $$
 
+/*
+ * when a moneyflow gets deleted, recalculate
+ * monthlysettlements.movement_calculated
+ */
 DROP TRIGGER IF EXISTS mmf_trg_03$$
 CREATE TRIGGER mmf_trg_03 AFTER DELETE ON moneyflows
   FOR EACH ROW BEGIN
@@ -485,6 +559,10 @@ CREATE TRIGGER mmf_trg_03 AFTER DELETE ON moneyflows
   END;
 $$
 
+/*
+ * when a new settlement gets created, init
+ * monthlysettlements.movement_calculated
+ */
 DROP TRIGGER IF EXISTS mms_trg_01$$
 CREATE TRIGGER mms_trg_01 BEFORE INSERT ON monthlysettlements
   FOR EACH ROW BEGIN
@@ -496,6 +574,10 @@ CREATE TRIGGER mms_trg_01 BEFORE INSERT ON monthlysettlements
   END;
 $$
 
+/*
+ * when the displayed currency gets changed,
+ * recalculate monthlysettlements.movement_calculated
+ */
 DROP TRIGGER IF EXISTS mse_trg_01$$
 CREATE TRIGGER mse_trg_01 AFTER UPDATE ON settings
   FOR EACH ROW BEGIN

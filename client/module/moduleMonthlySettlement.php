@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.29 2007/10/01 13:49:47 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.30 2008/12/12 19:51:06 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -177,7 +177,7 @@ class moduleMonthlySettlement extends module {
 					foreach( $all_ids as $id ) {
 						if( $new === 1 ) {
 							$amount = $this->coreMonthlySettlement->get_amount( $id, date( 'm', mktime( 0, 0, 0, $month-1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1, $year ) ) );
-							$amount += round( $lastamount+$this->coreMoneyFlows->get_monthly_capitalsource_movement( $id, $month, $year ), 2 );
+							$amount += round( $this->coreMoneyFlows->get_monthly_capitalsource_movement( $id, $month, $year ), 2 );
 						} elseif( $realaction !== 'save' && $new != 2 ) {
 							$amount = $this->coreMonthlySettlement->get_amount( $id,$month, $year );
 						} elseif( !empty( $all_data[$id]['amount'] ) ) {

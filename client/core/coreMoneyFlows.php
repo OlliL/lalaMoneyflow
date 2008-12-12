@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.37 2008/01/08 16:51:36 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.38 2008/12/12 19:51:06 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -174,17 +174,11 @@ class coreMoneyFlows extends core {
 	}
 
 	function get_monthly_capitalsource_movement( $id, $month, $year ) {
-		$start = $this->make_date( $year."-".$month."-01" );
-		$end   = "LAST_DAY($start)";
-
-		$movement=$this->select_col( "	SELECT SUM(calc_amount(amount,'OUT',mur_userid,invoicedate)) amount
-						  FROM moneyflows
-						 WHERE mur_userid          = ".USERID."
-						   AND bookingdate           BETWEEN $start AND $end
-						   AND mcs_capitalsourceid = $id" );
-		if( empty( $movement ) )
-			$movement=0;
-		return $movement;
+		/* function needs to be there for calculating the movement for
+		 * the actual month because in monthlysettlements only previous
+		 * month are stored
+		 */
+		return $this->exec_function('mms_calc_movement_calculated('.USERID.','.$month.','.$year.','.$id.')');
 	}
 
 	function get_range_movement( $startmonth, $endmonth, $year ) {
