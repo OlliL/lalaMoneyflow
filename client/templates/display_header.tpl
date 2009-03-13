@@ -1,6 +1,6 @@
 	<style type="text/css">
 	{literal}
-	all,body,table,a,td,option,input,select { font-size:10px;font-family:arial,helvetica; }
+	all,body,table,a,td,option,input,select { font-size:10px;font-family:Bitstream Vera Sans,Arial, Helvetica,sans-serif; }
 	.contrastbgcolor { background-color: #B0C4DE; }
 	{/literal}
 	</style>				

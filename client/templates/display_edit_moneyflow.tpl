@@ -24,13 +24,13 @@
 				<tr>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[bookingdate]" value="{$ALL_DATA.bookingdate}"                 size=10 {if $ALL_DATA.bookingdate_error == 1}style="color:red"{/if}/></td>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[invoicedate]" value="{$ALL_DATA.invoicedate}"                 size=10 {if $ALL_DATA.invoicedate_error == 1}style="color:red"{/if}/></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[amount]"      value="{$ALL_DATA.amount}" size=8 align="right" /> {$CURRENCY}</td>
+					<td class="contrastbgcolor"><nobr><input class="contrastbgcolor" type="text" name="all_data[amount]"      value="{$ALL_DATA.amount}" size=8 align="right" /> {$CURRENCY}</nobr></td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcp_contractpartnerid]" size=1>
 					{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
 						<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"  {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $ALL_DATA.mcp_contractpartnerid}selected{/if}> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}
 					{/section}
 					</select></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]" value="{$ALL_DATA.comment}" size="50"/></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]" value="{$ALL_DATA.comment}" size="40"/></td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcs_capitalsourceid]" size=1>
 					{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
 						<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}" {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid == $ALL_DATA.mcs_capitalsourceid}selected{/if}> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}

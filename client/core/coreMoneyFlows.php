@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.38 2008/12/12 19:51:06 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.39 2009/03/13 07:16:17 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -320,7 +320,7 @@ class coreMoneyFlows extends core {
 				$group['gkeyword']  = ',';
 				$group['okeyword']  = ',';
 				$group['jkeyword']  = ',';
-				$group['wkeyword']  = 'AND';
+				$group['wkeyword']  = ' AND';
 			}
 			
 			return( $group );
@@ -352,17 +352,17 @@ class coreMoneyFlows extends core {
 					$LIKE   .=' BINARY';
 			}
 			$WHERE_CONDITION  = $WHERE_KEYWORD.' '.$SEARCHCOL.' '.$LIKE." '".$params["pattern"]."' ";
-			$WHERE_KEYWORD    = 'AND';
+			$WHERE_KEYWORD    = ' AND';
 		}
 		
 		if( $params['minus'] == 1 ) {
 			$WHERE_CONDITION .= $WHERE_KEYWORD.' a.amount < 0 ';
-			$WHERE_KEYWORD    = 'AND';
+			$WHERE_KEYWORD    = ' AND';
 		}
 
 		if( !empty( $params['mcp_contractpartnerid'] ) ) {
 			$WHERE_CONDITION .=  $WHERE_KEYWORD.' a.mcp_contractpartnerid = '.$params['mcp_contractpartnerid'];
-			$WHERE_KEYWORD    = 'AND';
+			$WHERE_KEYWORD    = ' AND';
 		}
 		
 		$group['gkeyword']  = '';

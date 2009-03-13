@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCompare.php,v 1.10 2008/09/25 04:52:03 olivleh1 Exp $
+# $Id: moduleCompare.php,v 1.11 2009/03/13 07:16:18 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -259,40 +259,44 @@ class moduleCompare extends module {
 									}
 								}
 							}
-							arsort($hitlist);
-							$moneyflowid = key($hitlist);
-							$moneyflow = $mon_data[$moneyflowid];
-							$moneyflow_used[$moneyflowid] = 1;
+							if(count($mon_data) > 0 ) {
+								arsort($hitlist);
+								$moneyflowid = key($hitlist);
+								$moneyflow = $mon_data[$moneyflowid];
+								$moneyflow_used[$moneyflowid] = 1;
 							
-							$matching_moneyflowids[] = $moneyflowid;
+								$matching_moneyflowids[] = $moneyflowid;
 
-							if( $moneyflow['mcs_capitalsourceid'] == $all_data['mcs_capitalsourceid'] ) {
-								$my_capitalsourcecomment = $capitalsourcecomment;
-								$diff_capitalsource      = false;
-							} else {
-								$my_capitalsourcecomment = $this->coreCapitalSources->get_comment( $moneyflow['mcs_capitalsourceid'] );
-								$diff_capitalsource      = true;
-							}
+								if( $moneyflow['mcs_capitalsourceid'] == $all_data['mcs_capitalsourceid'] ) {
+									$my_capitalsourcecomment = $capitalsourcecomment;
+									$diff_capitalsource      = false;
+								} else {
+									$my_capitalsourcecomment = $this->coreCapitalSources->get_comment( $moneyflow['mcs_capitalsourceid'] );
+									$diff_capitalsource      = true;
+								}
 							
-							$db_array = $this->fill_db_array( $db_array
-							                                , convert_date_to_gui( $moneyflow['bookingdate'], $this->date_format )
-											, convert_date_to_gui( $moneyflow['invoicedate'], $this->date_format )
-										        , $moneyflow['amount']
-										        , $my_capitalsourcecomment
-										        , $this->coreContractPartners->get_name( $moneyflow['mcp_contractpartnerid'] )
-										        , $moneyflow['comment']
-											, $moneyflowid
-										        );
-							$db_array_id = count($db_array);
+								$db_array = $this->fill_db_array( $db_array
+							        	                        , convert_date_to_gui( $moneyflow['bookingdate'], $this->date_format )
+												, convert_date_to_gui( $moneyflow['invoicedate'], $this->date_format )
+											        , $moneyflow['amount']
+										        	, $my_capitalsourcecomment
+											        , $this->coreContractPartners->get_name( $moneyflow['mcp_contractpartnerid'] )
+											        , $moneyflow['comment']
+												, $moneyflowid
+											        );
+								$db_array_id = count($db_array);
 
-							if( $diff_capitalsource === false ) {
-								$matching_ids[]     = array( 'file' => $file_array_id
-								                           , 'db'   => $db_array_id
-								                           );
+								if( $diff_capitalsource === false ) {
+									$matching_ids[]     = array( 'file' => $file_array_id
+									                           , 'db'   => $db_array_id
+									                           );
+								} else {
+									$diff_source_ids[]  = array( 'file' => $file_array_id
+									                           , 'db'   => $db_array_id
+									                           );
+								}
 							} else {
-								$diff_source_ids[]  = array( 'file' => $file_array_id
-								                           , 'db'   => $db_array_id
-								                           );
+								$only_in_file_ids[] = array( 'file'    => $file_array_id);
 							}
 						} else {
 							$only_in_file_ids[] = array( 'file'    => $file_array_id);
