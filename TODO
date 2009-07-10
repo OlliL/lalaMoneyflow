@@ -1,6 +1,3 @@
-- create an event trigger that when for example a month ended, the user gets
-  alarmed to do the monthly settlement
-
 - put the available countries into the db and have them selectable when
   handling contractual partners instead of having it free editable
 - FK between domainvalues and text is missing?

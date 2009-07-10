@@ -6,7 +6,7 @@
 	</style>				
 	</head>
 	<body name="main" bgcolor="#E6E6FA">
-		<table border=0 width="100%">
+		<table border=0 width="100%" height="100%">
 			<tr>
 {if $NO_NAVIGATION == 0}
 				<td valign="top" width="100"><nobr>

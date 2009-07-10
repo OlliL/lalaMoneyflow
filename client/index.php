@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.44 2007/10/25 12:58:07 olivleh1 Exp $
+# $Id: index.php,v 1.45 2009/07/10 09:06:25 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -34,6 +34,7 @@ require_once 'module/moduleContractPartners.php';
 require_once 'module/moduleCompare.php';
 require_once 'module/moduleCurrencies.php';
 require_once 'module/moduleCurrencyRates.php';
+require_once 'module/moduleEvents.php';
 require_once 'module/moduleFrontPage.php';
 require_once 'module/moduleLanguages.php';
 require_once 'module/moduleMoneyFlows.php';
@@ -56,6 +57,7 @@ function my_number_format($number) {
 	return number_format($number,2);
 }
 
+$moduleEvents   = new moduleEvents();
 $moduleUsers    = new moduleUsers();
 $moduleSettings = new moduleSettings();
 
@@ -98,15 +100,17 @@ if( $is_logged_in == 2 ) {
 	$stay_logged_in =	$_REQUEST['stay_logged_in'];
 	$display = $moduleUsers->display_login_user( $realaction, $name, $password, $stay_logged_in, $request_uri );
 
-	if( $_POST['request_uri'] && !is_array( $ERRORS ) )
-		header("Location: ".$_POST['request_uri']);
 
+        if( $_POST['request_uri'] && !is_array( $ERRORS ) )
+		header("Location: ".$_POST['request_uri']);
 }
 
 if( $money_debug === true )
 	error_reporting(E_ALL);
 
 if( $is_logged_in == 0 ) {
+
+	$display = $moduleEvents->check_events();
 
 	switch( $action ) {
 		case'list_capitalsources':
@@ -160,7 +164,7 @@ if( $is_logged_in == 0 ) {
 						break;
 	}
 
-	if( $moduleUsers->is_admin() ) {
+	if( empty( $display ) && $moduleUsers->is_admin() ) {
 		switch( $action ) {
 			case 'system_settings':		$realaction=		$_REQUEST['realaction'];
 							$all_data=		$_REQUEST['all_data'];
