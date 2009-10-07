@@ -51,6 +51,7 @@ CREATE FUNCTION domain_meaning (pi_domain VARCHAR(30)
                                ,pi_value  VARCHAR(3)
                                ,pi_userid INT(10) UNSIGNED
                                ) RETURNS  VARCHAR(255)
+READS SQL DATA
 BEGIN
   DECLARE l_text VARCHAR(255);
 
@@ -83,6 +84,7 @@ CREATE FUNCTION calc_amount (pi_amount FLOAT(8,2)
                             ,pi_userid INT(10) UNSIGNED
                             ,pi_date   DATE
                             ) RETURNS  FLOAT(8,2)
+READS SQL DATA
 BEGIN
   DECLARE l_amount FLOAT(7,2);
   DECLARE l_rate FLOAT;
@@ -115,6 +117,7 @@ END;$$
 DROP FUNCTION IF EXISTS user_owns_data$$
 CREATE FUNCTION user_owns_data (pi_userid INT(10) UNSIGNED
                                ) RETURNS  INT(1)
+READS SQL DATA
 BEGIN
   DECLARE l_num INT(1);
   
@@ -198,6 +201,7 @@ DROP FUNCTION IF EXISTS add_language$$
 CREATE FUNCTION add_language (pi_language VARCHAR(10)
                              ,pi_source   INT(10) UNSIGNED
                              ) RETURNS  INT(10)
+READS SQL DATA
 BEGIN
   DECLARE l_languageid INT(10);
   
@@ -238,6 +242,7 @@ CREATE FUNCTION mms_calc_movement_calculated(pi_userid          INT(10)    UNSIG
                                             ,pi_year            YEAR(4)
                                             ,pi_capitalsourceid INT(10)
                                             ) RETURNS  FLOAT(8,2)
+READS SQL DATA
 BEGIN
   DECLARE l_found      BOOLEAN DEFAULT TRUE;
   DECLARE l_date_begin DATE;
@@ -279,6 +284,7 @@ DROP PROCEDURE IF EXISTS user_delete$$
 CREATE PROCEDURE user_delete (IN  pi_userid INT(10) UNSIGNED
                              ,OUT po_ret    INT(1) UNSIGNED
                              )
+READS SQL DATA
 BEGIN
   DECLARE l_num INT(1);
   DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
@@ -321,6 +327,7 @@ END;$$
  */
 DROP PROCEDURE IF EXISTS mms_init_movement_calculated$$
 CREATE PROCEDURE mms_init_movement_calculated(IN pi_userid INT(10) UNSIGNED)
+READS SQL DATA
 BEGIN
   DECLARE l_found           BOOLEAN             DEFAULT TRUE;
   DECLARE l_month           TINYINT(4) UNSIGNED;
@@ -362,6 +369,7 @@ CREATE PROCEDURE mmf_trg_procedure(IN pi_bookingdate     DATE
                                   ,IN pi_userid          INT(10) UNSIGNED
                                   ,IN pi_capitalsourceid INT(10) UNSIGNED
                                   )
+READS SQL DATA
 BEGIN
   DECLARE l_found  BOOLEAN             DEFAULT TRUE;
   DECLARE l_dummy  INT(1)     UNSIGNED;
@@ -400,6 +408,7 @@ DROP PROCEDURE IF EXISTS imp_moneyflows$$
 CREATE PROCEDURE imp_moneyflows (IN pi_userid   INT(10) UNSIGNED
                                 ,IN pi_write    INT(1)  UNSIGNED
                                 )
+READS SQL DATA
 BEGIN
   DECLARE l_found             BOOLEAN             DEFAULT TRUE;
   DECLARE l_insert            BOOLEAN             DEFAULT TRUE;

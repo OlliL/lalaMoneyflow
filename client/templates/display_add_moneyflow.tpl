@@ -2,7 +2,7 @@
 	<head><title>lalaMoneyflow: {$TEXT_8}</title>
 {$HEADER}
 
-		<td align="center">
+		<td align="center" valign="top">
 		<h1>{$TEXT_8}</h1>
 		{section name=ERROR loop=$ERRORS}
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
