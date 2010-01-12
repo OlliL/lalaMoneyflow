@@ -1,8 +1,8 @@
--- MySQL dump 10.11
+-- MySQL dump 10.13  Distrib 5.1.42, for portbld-freebsd8.0 (i386)
 --
 -- Host: localhost    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	5.0.83-log
+-- Server version	5.1.42-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,13 +23,13 @@ DROP TABLE IF EXISTS users;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE users (
-  userid int(10) unsigned NOT NULL auto_increment,
+  userid int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
   `password` varchar(40) NOT NULL,
   att_new tinyint(1) unsigned NOT NULL,
   perm_login tinyint(1) unsigned NOT NULL,
   perm_admin tinyint(1) unsigned NOT NULL,
-  PRIMARY KEY  (userid),
+  PRIMARY KEY (userid),
   UNIQUE KEY mur_i_01 (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mur';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -43,11 +43,11 @@ DROP TABLE IF EXISTS settings;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE settings (
   mur_userid int(10) unsigned NOT NULL,
-  `name` varchar(50) NOT NULL default '',
-  `value` varchar(256) default NULL,
-  PRIMARY KEY  (`name`,mur_userid),
+  `name` varchar(50) NOT NULL DEFAULT '',
+  `value` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`name`,mur_userid),
   KEY mse_mur_pk (mur_userid),
-  CONSTRAINT mse_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
+  CONSTRAINT mse_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mse';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -60,17 +60,17 @@ DROP TABLE IF EXISTS capitalsources;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE capitalsources (
   mur_userid int(10) unsigned NOT NULL,
-  capitalsourceid int(10) unsigned NOT NULL auto_increment,
-  `type` enum('1','2') NOT NULL default '1',
-  state enum('1','2') NOT NULL default '1',
-  accountnumber bigint(20) default NULL,
-  bankcode bigint(20) default NULL,
-  `comment` varchar(255) default NULL,
-  validtil date NOT NULL default '2999-12-31',
-  validfrom date NOT NULL default '1970-01-01',
-  PRIMARY KEY  (capitalsourceid,mur_userid),
+  capitalsourceid int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `type` enum('1','2') NOT NULL DEFAULT '1',
+  state enum('1','2') NOT NULL DEFAULT '1',
+  accountnumber bigint(20) DEFAULT NULL,
+  bankcode bigint(20) DEFAULT NULL,
+  `comment` varchar(255) DEFAULT NULL,
+  validtil date NOT NULL DEFAULT '2999-12-31',
+  validfrom date NOT NULL DEFAULT '1970-01-01',
+  PRIMARY KEY (capitalsourceid,mur_userid),
   KEY mcs_i_01 (mur_userid),
-  CONSTRAINT mcs_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
+  CONSTRAINT mcs_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcs';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -83,15 +83,15 @@ DROP TABLE IF EXISTS contractpartners;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE contractpartners (
   mur_userid int(10) unsigned NOT NULL,
-  contractpartnerid int(10) unsigned NOT NULL auto_increment,
-  `name` varchar(100) NOT NULL default '',
-  street varchar(100) NOT NULL default '',
-  postcode int(12) NOT NULL default '0',
-  town varchar(100) NOT NULL default '',
-  country varchar(100) NOT NULL default '',
-  PRIMARY KEY  (contractpartnerid,mur_userid),
+  contractpartnerid int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL DEFAULT '',
+  street varchar(100) NOT NULL DEFAULT '',
+  postcode int(12) NOT NULL DEFAULT '0',
+  town varchar(100) NOT NULL DEFAULT '',
+  country varchar(100) NOT NULL DEFAULT '',
+  PRIMARY KEY (contractpartnerid,mur_userid),
   UNIQUE KEY mcp_i_01 (mur_userid,`name`),
-  CONSTRAINT mcp_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
+  CONSTRAINT mcp_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcp';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -103,10 +103,10 @@ DROP TABLE IF EXISTS currencies;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE currencies (
-  currencyid int(10) unsigned NOT NULL auto_increment,
+  currencyid int(10) unsigned NOT NULL AUTO_INCREMENT,
   currency varchar(20) NOT NULL,
-  att_default tinyint(1) unsigned NOT NULL default '0',
-  PRIMARY KEY  (currencyid),
+  att_default tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (currencyid),
   UNIQUE KEY mcu_i_01 (currency)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcu';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -123,7 +123,7 @@ CREATE TABLE currencyrates (
   rate float(11,5) NOT NULL,
   validfrom date NOT NULL,
   validtil date NOT NULL,
-  PRIMARY KEY  (mcu_currencyid,validfrom),
+  PRIMARY KEY (mcu_currencyid,validfrom),
   UNIQUE KEY mcr_i_01 (mcu_currencyid,validtil),
   KEY mcr_mcu_pk (mcu_currencyid),
   CONSTRAINT mcr_mcu_pk FOREIGN KEY (mcu_currencyid) REFERENCES currencies (currencyid) ON UPDATE CASCADE
@@ -139,20 +139,20 @@ DROP TABLE IF EXISTS moneyflows;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE moneyflows (
   mur_userid int(10) unsigned NOT NULL,
-  moneyflowid int(10) unsigned NOT NULL auto_increment,
-  bookingdate date NOT NULL default '0000-00-00',
-  invoicedate date NOT NULL default '0000-00-00',
-  amount float(8,2) NOT NULL default '0.00',
+  moneyflowid int(10) unsigned NOT NULL AUTO_INCREMENT,
+  bookingdate date NOT NULL DEFAULT '0000-00-00',
+  invoicedate date NOT NULL DEFAULT '0000-00-00',
+  amount float(8,2) NOT NULL DEFAULT '0.00',
   mcs_capitalsourceid int(10) unsigned NOT NULL,
   mcp_contractpartnerid int(10) unsigned NOT NULL,
-  `comment` varchar(100) NOT NULL default '',
-  PRIMARY KEY  (moneyflowid,mur_userid),
+  `comment` varchar(100) NOT NULL DEFAULT '',
+  PRIMARY KEY (moneyflowid,mur_userid),
   KEY mmf_mcp_pk (mcp_contractpartnerid,mur_userid),
   KEY mmf_i_01 (mur_userid,bookingdate),
   KEY mmf_mcs_pk (mcs_capitalsourceid,mur_userid),
   CONSTRAINT mmf_mcp_pk FOREIGN KEY (mcp_contractpartnerid, mur_userid) REFERENCES contractpartners (contractpartnerid, mur_userid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
-  CONSTRAINT mmf_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
+  CONSTRAINT mmf_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mmf';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -165,17 +165,17 @@ DROP TABLE IF EXISTS monthlysettlements;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE monthlysettlements (
   mur_userid int(10) unsigned NOT NULL,
-  monthlysettlementid int(10) unsigned NOT NULL auto_increment,
+  monthlysettlementid int(10) unsigned NOT NULL AUTO_INCREMENT,
   mcs_capitalsourceid int(10) unsigned NOT NULL,
-  `month` tinyint(4) unsigned NOT NULL default '0',
-  `year` year(4) NOT NULL default '0000',
-  amount float(8,2) NOT NULL default '0.00',
-  movement_calculated float(8,2) default NULL,
-  PRIMARY KEY  (monthlysettlementid,mur_userid),
+  `month` tinyint(4) unsigned NOT NULL DEFAULT '0',
+  `year` year(4) NOT NULL DEFAULT '0000',
+  amount float(8,2) NOT NULL DEFAULT '0.00',
+  movement_calculated float(8,2) DEFAULT NULL,
+  PRIMARY KEY (monthlysettlementid,mur_userid),
   UNIQUE KEY mms_i_01 (mur_userid,`month`,`year`,mcs_capitalsourceid),
   KEY mms_mcs_pk (mcs_capitalsourceid,mur_userid),
   CONSTRAINT mms_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
-  CONSTRAINT mms_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
+  CONSTRAINT mms_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mms';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -188,19 +188,21 @@ DROP TABLE IF EXISTS predefmoneyflows;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE predefmoneyflows (
   mur_userid int(10) unsigned NOT NULL,
-  predefmoneyflowid int(10) unsigned NOT NULL auto_increment,
-  amount float(8,2) NOT NULL default '0.00',
+  predefmoneyflowid int(10) unsigned NOT NULL AUTO_INCREMENT,
+  amount float(8,2) NOT NULL DEFAULT '0.00',
   mcs_capitalsourceid int(10) unsigned NOT NULL,
   mcp_contractpartnerid int(10) unsigned NOT NULL,
-  `comment` varchar(100) NOT NULL default '',
+  `comment` varchar(100) NOT NULL DEFAULT '',
   createdate date NOT NULL,
-  PRIMARY KEY  (predefmoneyflowid,mur_userid),
+  once_a_month tinyint(1) unsigned NOT NULL DEFAULT '0',
+  last_used date DEFAULT NULL,
+  PRIMARY KEY (predefmoneyflowid,mur_userid),
   KEY mpm_mur_pk (mur_userid),
   KEY mpm_mcp_pk (mcp_contractpartnerid,mur_userid),
   KEY mpm_mcs_pk (mcs_capitalsourceid,mur_userid),
   CONSTRAINT mpm_mcp_pk FOREIGN KEY (mcp_contractpartnerid, mur_userid) REFERENCES contractpartners (contractpartnerid, mur_userid) ON UPDATE CASCADE,
   CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
-  CONSTRAINT mpm_mur_pk FOREIGN KEY (mur_userid) REFERENCES users (userid) ON UPDATE CASCADE
+  CONSTRAINT mpm_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mpm';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -212,9 +214,9 @@ DROP TABLE IF EXISTS languages;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE languages (
-  languageid int(10) unsigned NOT NULL auto_increment,
+  languageid int(10) unsigned NOT NULL AUTO_INCREMENT,
   `language` varchar(10) NOT NULL,
-  PRIMARY KEY  (languageid),
+  PRIMARY KEY (languageid),
   UNIQUE KEY mla_i_01 (`language`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mla';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -228,7 +230,7 @@ DROP TABLE IF EXISTS templates;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE templates (
   templatename varchar(50) NOT NULL,
-  PRIMARY KEY  (templatename)
+  PRIMARY KEY (templatename)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mte';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -242,12 +244,12 @@ DROP TABLE IF EXISTS templatevalues;
 CREATE TABLE templatevalues (
   mte_templatename varchar(50) NOT NULL,
   mtx_textid int(10) unsigned NOT NULL,
-  PRIMARY KEY  (mte_templatename,mtx_textid),
-  KEY mtm_mtx_pk (mtx_textid),
+  PRIMARY KEY (mte_templatename,mtx_textid),
+  KEY mtv_mtx_pk (mtx_textid),
   KEY mtv_mte_pk (mte_templatename),
   CONSTRAINT mtv_mte_pk FOREIGN KEY (mte_templatename) REFERENCES templates (templatename) ON UPDATE CASCADE,
-  CONSTRAINT templatevalues_ibfk_1 FOREIGN KEY (mtx_textid) REFERENCES `text` (textid) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mtm';
+  CONSTRAINT mtv_mtx_pk FOREIGN KEY (mtx_textid) REFERENCES text (textid) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mtv';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -261,10 +263,10 @@ CREATE TABLE `text` (
   textid int(10) unsigned NOT NULL,
   mla_languageid int(10) unsigned NOT NULL,
   `text` varchar(255) NOT NULL,
-  `type` enum('e','t','m','g','d') NOT NULL default 't',
-  PRIMARY KEY  (textid,mla_languageid),
-  KEY mte_mla_pk (mla_languageid),
-  CONSTRAINT mte_mla_pk FOREIGN KEY (mla_languageid) REFERENCES languages (languageid) ON UPDATE CASCADE
+  `type` enum('e','t','m','g','d') NOT NULL DEFAULT 't',
+  PRIMARY KEY (textid,mla_languageid),
+  KEY mtx_mla_pk (mla_languageid),
+  CONSTRAINT mtx_mla_pk FOREIGN KEY (mla_languageid) REFERENCES `languages` (languageid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mtx';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -277,7 +279,7 @@ DROP TABLE IF EXISTS domains;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE domains (
   domain varchar(30) NOT NULL,
-  PRIMARY KEY  (domain)
+  PRIMARY KEY (domain)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mdm';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -292,10 +294,10 @@ CREATE TABLE domainvalues (
   mdm_domain varchar(30) NOT NULL,
   `value` varchar(3) NOT NULL,
   mtx_textid int(10) unsigned NOT NULL,
-  PRIMARY KEY  (mdm_domain,`value`),
-  KEY mtm_mtx_pk (mtx_textid),
-  KEY mdv_mdm_pk (mdm_domain),
-  CONSTRAINT mdm_mdv_pk FOREIGN KEY (mdm_domain) REFERENCES domains (domain) ON UPDATE CASCADE
+  PRIMARY KEY (mdm_domain,`value`),
+  KEY mdv_mtx_pk (mtx_textid),
+  CONSTRAINT mdv_mdm_pk FOREIGN KEY (mdm_domain) REFERENCES domains (domain) ON UPDATE CASCADE,
+  CONSTRAINT mdv_mtx_pk FOREIGN KEY (mtx_textid) REFERENCES text (textid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mdv';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -307,14 +309,14 @@ DROP TABLE IF EXISTS imp_data;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE imp_data (
-  dataid int(10) unsigned NOT NULL auto_increment,
+  dataid int(10) unsigned NOT NULL AUTO_INCREMENT,
   `date` varchar(10) NOT NULL,
   amount varchar(20) NOT NULL,
   `source` varchar(100) NOT NULL,
   partner varchar(100) NOT NULL,
   `comment` varchar(100) NOT NULL,
-  `status` tinyint(1) unsigned NOT NULL default '1',
-  PRIMARY KEY  (dataid)
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (dataid)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mid';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -354,21 +356,21 @@ DROP TABLE IF EXISTS cmp_data_formats;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE cmp_data_formats (
-  formatid int(11) NOT NULL auto_increment,
+  formatid int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   startline varchar(255) NOT NULL,
   delimiter varchar(1) NOT NULL,
   pos_date tinyint(2) NOT NULL,
-  pos_partner tinyint(2) default NULL,
+  pos_partner tinyint(2) DEFAULT NULL,
   pos_amount tinyint(2) NOT NULL,
-  pos_comment tinyint(2) default NULL,
+  pos_comment tinyint(2) DEFAULT NULL,
   fmt_date varchar(10) NOT NULL,
   fmt_amount_decimal varchar(1) NOT NULL,
-  fmt_amount_thousand varchar(1) default NULL,
-  pos_partner_alt tinyint(2) default NULL,
-  pos_partner_alt_pos_key tinyint(2) default NULL,
-  pos_partner_alt_keyword varchar(255) default NULL,
-  PRIMARY KEY  (formatid),
+  fmt_amount_thousand varchar(1) DEFAULT NULL,
+  pos_partner_alt tinyint(2) DEFAULT NULL,
+  pos_partner_alt_pos_key tinyint(2) DEFAULT NULL,
+  pos_partner_alt_keyword varchar(255) DEFAULT NULL,
+  PRIMARY KEY (formatid),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcf';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -382,7 +384,7 @@ CREATE TABLE cmp_data_formats (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2009-07-10 11:06:16
+-- Dump completed on 2010-01-12 19:42:39
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -793,6 +795,10 @@ INSERT INTO text VALUES (204,1,'Attention!','t');
 INSERT INTO text VALUES (204,2,'Achtung!','t');
 INSERT INTO text VALUES (205,1,'No monthly settlement for the previous month exists. Do you want to create it now?','t');
 INSERT INTO text VALUES (205,2,'Für den vergangenen Monat existiert kein Monatsabschluß. Wollen Sie ihn jetzt anlegen?','t');
+INSERT INTO text VALUES (206,1,'1x','t');
+INSERT INTO text VALUES (206,2,'1x','t');
+INSERT INTO text VALUES (207,1,'last usage','t');
+INSERT INTO text VALUES (207,2,'verwendet am','t');
 INSERT INTO templates VALUES ('display_add_language.tpl');
 INSERT INTO templates VALUES ('display_add_moneyflow.tpl');
 INSERT INTO templates VALUES ('display_analyze_cmp_data.tpl');
@@ -948,10 +954,12 @@ INSERT INTO templatevalues VALUES ('display_delete_monthlysettlement.tpl',25);
 INSERT INTO templatevalues VALUES ('display_delete_predefmoneyflow.tpl',25);
 INSERT INTO templatevalues VALUES ('display_delete_user.tpl',25);
 INSERT INTO templatevalues VALUES ('display_edit_currencies.tpl',25);
+INSERT INTO templatevalues VALUES ('display_edit_predefmoneyflow.tpl',25);
 INSERT INTO templatevalues VALUES ('display_edit_user.tpl',25);
 INSERT INTO templatevalues VALUES ('display_event_monthlysettlement.tpl',25);
 INSERT INTO templatevalues VALUES ('display_list_currencies.tpl',25);
 INSERT INTO templatevalues VALUES ('display_list_currencyrates.tpl',25);
+INSERT INTO templatevalues VALUES ('display_list_predefmoneyflows.tpl',25);
 INSERT INTO templatevalues VALUES ('display_list_users.tpl',25);
 INSERT INTO templatevalues VALUES ('display_delete_capitalsource.tpl',26);
 INSERT INTO templatevalues VALUES ('display_delete_contractpartner.tpl',26);
@@ -962,10 +970,12 @@ INSERT INTO templatevalues VALUES ('display_delete_monthlysettlement.tpl',26);
 INSERT INTO templatevalues VALUES ('display_delete_predefmoneyflow.tpl',26);
 INSERT INTO templatevalues VALUES ('display_delete_user.tpl',26);
 INSERT INTO templatevalues VALUES ('display_edit_currencies.tpl',26);
+INSERT INTO templatevalues VALUES ('display_edit_predefmoneyflow.tpl',26);
 INSERT INTO templatevalues VALUES ('display_edit_user.tpl',26);
 INSERT INTO templatevalues VALUES ('display_event_monthlysettlement.tpl',26);
 INSERT INTO templatevalues VALUES ('display_list_currencies.tpl',26);
 INSERT INTO templatevalues VALUES ('display_list_currencyrates.tpl',26);
+INSERT INTO templatevalues VALUES ('display_list_predefmoneyflows.tpl',26);
 INSERT INTO templatevalues VALUES ('display_list_users.tpl',26);
 INSERT INTO templatevalues VALUES ('display_delete_moneyflow.tpl',27);
 INSERT INTO templatevalues VALUES ('display_list_capitalsources.tpl',28);
@@ -1199,6 +1209,10 @@ INSERT INTO templatevalues VALUES ('display_generate_report.tpl',201);
 INSERT INTO templatevalues VALUES ('display_generate_report.tpl',202);
 INSERT INTO templatevalues VALUES ('display_event_monthlysettlement.tpl',204);
 INSERT INTO templatevalues VALUES ('display_event_monthlysettlement.tpl',205);
+INSERT INTO templatevalues VALUES ('display_edit_predefmoneyflow.tpl',206);
+INSERT INTO templatevalues VALUES ('display_list_predefmoneyflows.tpl',206);
+INSERT INTO templatevalues VALUES ('display_add_moneyflow.tpl',207);
+INSERT INTO templatevalues VALUES ('display_list_predefmoneyflows.tpl',207);
 INSERT INTO domains VALUES ('CAPITALSOURCE_STATE');
 INSERT INTO domains VALUES ('CAPITALSOURCE_TYPE');
 INSERT INTO domains VALUES ('MONTHS');

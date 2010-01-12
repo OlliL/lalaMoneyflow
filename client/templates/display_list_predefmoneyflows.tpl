@@ -11,12 +11,16 @@
 			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_predefmoneyflow&sr=1','_blank','width=840,height=80')">{$TEXT_29}</a> 
 			{if $COUNT_ALL_DATA > 0}
 				<br /><br />
-				<table border=0>
+				<table border=0 align="center" cellpadding=2>
 					<tr>
-						<th width="80" >{$TEXT_18}</th>
-						<th width="200">{$TEXT_2}</th>
-						<th width="200">{$TEXT_21}</th>
-						<th width="100">{$TEXT_19}</th>
+						<th width="85">{$TEXT_18}</th>
+						<th width="130">{$TEXT_2}</th>
+						<th width="240">{$TEXT_21}</th>
+						<th width="180">{$TEXT_19}</th>
+						<th width="20">{$TEXT_206}</th>
+						<th width="80">{$TEXT_207}</th>
+						<th width="20">&nbsp</th>
+						<th width="20">&nbsp</th>
 					</tr>
 					{section name=DATA loop=$ALL_DATA}
 						<tr>
@@ -24,6 +28,8 @@
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].contractpartner_name}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].comment}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].capitalsource_comment}</td>
+							<td class="contrastbgcolor">{if $ALL_DATA[DATA].once_a_month == 1}{$TEXT_25}{else}{$TEXT_26}{/if}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].last_used}</td>
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_predefmoneyflow&predefmoneyflowid={$ALL_DATA[DATA].predefmoneyflowid}&sr=1','_blank','width=800,height=80')">{$TEXT_36}</a></td>
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_predefmoneyflow&predefmoneyflowid={$ALL_DATA[DATA].predefmoneyflowid}&sr=1','_blank','width=800,height=80')">{$TEXT_37}</a></td>
 						</tr>

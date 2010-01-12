@@ -1,7 +1,5 @@
 - put the available countries into the db and have them selectable when
   handling contractual partners instead of having it free editable
-- FK between domainvalues and text is missing?
-- FK between templatevalues and text has to be renamed?
 - what has to happen to monthlysettlements.movement_calulated if a new
   currency rate gets valid for the currency the users has chosen to
   display but is different from the currency rate which is stored in

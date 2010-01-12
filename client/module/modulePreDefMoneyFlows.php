@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: modulePreDefMoneyFlows.php,v 1.24 2007/09/06 19:18:24 olivleh1 Exp $
+# $Id: modulePreDefMoneyFlows.php,v 1.25 2010/01/12 18:43:53 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -94,9 +94,9 @@ class modulePreDefMoneyFlows extends module {
 
 				if( $data_is_valid ) {
 					if( $id == 0 )
-						$ret = $this->corePreDefMoneyFlows->add_predefmoneyflow( $all_data['amount'], $all_data['mcs_capitalsourceid'], $all_data['mcp_contractpartnerid'], $all_data['comment'] );
+						$ret = $this->corePreDefMoneyFlows->add_predefmoneyflow( $all_data['amount'], $all_data['mcs_capitalsourceid'], $all_data['mcp_contractpartnerid'], $all_data['comment'], $all_data['once_a_month'] );
 					else
-						$ret = $this->corePreDefMoneyFlows->update_predefmoneyflow( $id, $all_data['amount'], $all_data['mcs_capitalsourceid'], $all_data['mcp_contractpartnerid'], $all_data['comment'] );
+						$ret = $this->corePreDefMoneyFlows->update_predefmoneyflow( $id, $all_data['amount'], $all_data['mcs_capitalsourceid'], $all_data['mcp_contractpartnerid'], $all_data['comment'], $all_data['once_a_month'] );
 	
 					if( $ret === true || $ret > 0 ) {
 						$this->template->assign( 'CLOSE', 1 );

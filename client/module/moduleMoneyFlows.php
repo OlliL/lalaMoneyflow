@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.41 2007/12/07 19:30:46 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.42 2010/01/12 18:43:52 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -202,27 +202,32 @@ class moduleMoneyFlows extends module {
 							if( empty( $value['invoicedate'] ) )
 								$value['invoicedate'] = $value['bookingdate'];
 							$ret = $this->coreMoneyFlows->add_moneyflow( $value['bookingdate'], $value['invoicedate'], $value['amount'], $value['mcs_capitalsourceid'], $value['mcp_contractpartnerid'], $value['comment'] );
+							if( $value['predefmoneyflowid'] >= 0 )
+								$this->corePreDefMoneyFlows->set_last_used( $value['predefmoneyflowid'], $value['bookingdate']);
 						}
 					}
 				} else {
 					break;
 				}
 			default:
-				$date = date( 'Y-m-d' );
+				$date = convert_date_to_db( date( 'Y-m-d' ), $this->date_format );
 				$all_data_pre = $this->corePreDefMoneyFlows->get_valid_data();
 
-				$all_data[0] = array( 'id'          =>  -1,
+				$all_data[0] = array( 'predefmoneyflowid'          =>  -1,
 				                    'bookingdate' => $date );
 
 				if( is_array( $all_data_pre ) ) {
 					$i = 1;				
 					foreach( $all_data_pre as $key => $value ) {
-						$all_data[$i] = $value;
-						$all_data[$i]['bookingdate'] = $date;
-						$all_data[$i]['amount'] = sprintf( '%.02f', $all_data_pre[$key]['amount'] );
-						$all_data[$i]['capitalsourcecomment'] = $this->coreCapitalSources->get_comment( $all_data_pre[$key]['mcs_capitalsourceid'] );
-						$all_data[$i]['contractpartnername']  = $this->coreContractPartners->get_name( $all_data_pre[$key]['mcp_contractpartnerid'] );
-						$i++;
+						$last_used = convert_date_to_timestamp( $value['last_used'], $this->date_format);
+						if( empty( $last_used ) || date( 'Y-m' ) != date( 'Y-m', $last_used ) ) {
+							$all_data[$i] = $value;
+							$all_data[$i]['bookingdate'] = $date;
+							$all_data[$i]['amount'] = sprintf( '%.02f', $all_data_pre[$key]['amount'] );
+							$all_data[$i]['capitalsourcecomment'] = $this->coreCapitalSources->get_comment( $all_data_pre[$key]['mcs_capitalsourceid'] );
+							$all_data[$i]['contractpartnername']  = $this->coreContractPartners->get_name( $all_data_pre[$key]['mcp_contractpartnerid'] );
+							$i++;
+						}
 					}
 				}
 
