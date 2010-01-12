@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.42 2010/01/12 18:43:52 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.43 2010/01/12 19:32:18 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -212,12 +212,15 @@ class moduleMoneyFlows extends module {
 			default:
 				$date = convert_date_to_db( date( 'Y-m-d' ), $this->date_format );
 				$all_data_pre = $this->corePreDefMoneyFlows->get_valid_data();
-
-				$all_data[0] = array( 'predefmoneyflowid'          =>  -1,
-				                    'bookingdate' => $date );
+				$numflows     = $this->coreSettings->get_num_free_moneyflows( USERID );
+				
+				for( $i = $numflows ; $i > 0 ; $i-- ) {
+					$all_data[$numflows-$i] = array( 'predefmoneyflowid' => ($numflows-$i+1)*-1,
+					                                 'bookingdate'       => $date );
+				}
 
 				if( is_array( $all_data_pre ) ) {
-					$i = 1;				
+					$i = $numflows;				
 					foreach( $all_data_pre as $key => $value ) {
 						$last_used = convert_date_to_timestamp( $value['last_used'], $this->date_format);
 						if( empty( $last_used ) || date( 'Y-m' ) != date( 'Y-m', $last_used ) ) {

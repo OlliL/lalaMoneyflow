@@ -60,7 +60,7 @@ cat << EOF >> ${PROGPATH}/mysqldump.sql
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,1);
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('','',0,0,0);
 UPDATE users SET id=0 WHERE username='';
-INSERT INTO settings VALUES (0,'displayed_currency','1'),(0,'displayed_language','1'),(0,'max_rows','40'),(0,'date_format','YYYY-MM-DD');
+INSERT INTO settings VALUES (0,'displayed_currency','1'),(0,'displayed_language','1'),(0,'max_rows','40'),(0,'date_format','YYYY-MM-DD'),(0,'num_free_moneyflows','1');
 INSERT INTO settings (SELECT (SELECT userid FROM users WHERE name='admin'),name,value FROM settings WHERE mur_userid=0);
 EOF
 

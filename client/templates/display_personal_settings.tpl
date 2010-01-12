@@ -68,6 +68,20 @@
 					<th>{$TEXT_92}</th>
 					<td width=300><input class="contrastbgcolor" type="password" name="all_data[password2]" size=10 value="" /></td>
 				</tr>
+				<tr>
+					<th>{$TEXT_208}</th>
+					<td><select class="contrastbgcolor" name="all_data[numflows]" size=1>
+						<option value="1"   {if $ALL_DATA.numflows	   ==	"1"}selected{/if}>1</option>
+						<option value="2"   {if $ALL_DATA.numflows	   ==	"2"}selected{/if}>2</option>
+						<option value="3"   {if $ALL_DATA.numflows	   ==	"3"}selected{/if}>3</option>
+						<option value="4"   {if $ALL_DATA.numflows	   ==	"4"}selected{/if}>4</option>
+						<option value="5"   {if $ALL_DATA.numflows	   ==	"5"}selected{/if}>5</option>
+						<option value="6"   {if $ALL_DATA.numflows	   ==	"6"}selected{/if}>6</option>
+						<option value="7"   {if $ALL_DATA.numflows	   ==	"7"}selected{/if}>7</option>
+						<option value="8"   {if $ALL_DATA.numflows	   ==	"8"}selected{/if}>8</option>
+						<option value="9"   {if $ALL_DATA.numflows	   ==	"9"}selected{/if}>9</option>
+					</select></td>
+				</tr>
 			</table>
 			<br />
 			<input type="submit" value="{$TEXT_22}">

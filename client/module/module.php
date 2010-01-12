@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: module.php,v 1.39 2009/03/13 07:16:18 olivleh1 Exp $
+# $Id: module.php,v 1.40 2010/01/12 19:32:17 olivleh1 Exp $
 #
 
 require_once 'Smarty.class.php';
@@ -99,7 +99,7 @@ class module {
 		$this->template->assign( 'REPORTS_YEAR',   date( 'Y' ) );
 		$this->template->assign( 'REPORTS_MONTH',  date( 'm' ) );
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
-		$this->template->assign( 'VERSION',        '0.10.6' );
+		$this->template->assign( 'VERSION',        '0.10.7' );
 		$this->template->assign( 'NO_NAVIGATION',  $nonavi );
 		$this->template->assign( 'IS_ADMIN',       $this->coreUsers->check_admin_permission( USERID ) );
 

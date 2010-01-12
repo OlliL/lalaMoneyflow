@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSettings.php,v 1.10 2007/07/30 12:46:34 olivleh1 Exp $
+# $Id: moduleSettings.php,v 1.11 2010/01/12 19:32:18 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -44,7 +44,6 @@ class moduleSettings extends module {
 	}
 
 	function general_settings( $data_is_valid, $userid, $realaction, $all_data ) {
-
 		switch( $realaction ) {
 			case 'save':
 				if( $data_is_valid === true ) {
@@ -57,6 +56,7 @@ class moduleSettings extends module {
 						$this->coreSettings->set_displayed_currency( $userid, $all_data['currency'] );
 						$this->coreSettings->set_displayed_language( $userid, $all_data['language'] );
 						$this->coreSettings->set_max_rows( $userid, $all_data['maxrows'] );
+						$this->coreSettings->set_num_free_moneyflows( $userid, $all_data['numflows'] );
 						$this->coreSettings->set_date_format( $userid, $all_data['date_data1'].
 						                                               $all_data['date_delimiter1'].
 						                                               $all_data['date_data2'].
@@ -73,6 +73,7 @@ class moduleSettings extends module {
 			$all_data['currency'] = $this->coreSettings->get_displayed_currency( $userid );
 			$all_data['language'] = $this->coreSettings->get_displayed_language( $userid );
 			$all_data['maxrows']  = $this->coreSettings->get_max_rows( $userid );
+			$all_data['numflows'] = $this->coreSettings->get_num_free_moneyflows( $userid );
 			$dateformat           = $this->coreSettings->get_date_format( $userid );
 			$all_data = array_merge( $all_data, $dateformat );
 		}
@@ -112,7 +113,7 @@ class moduleSettings extends module {
 
 	function display_system_settings( $realaction, $all_data ) {
 
-		$this->general_settings( true, 0, $realaction, $realaction, $all_data );
+		$this->general_settings( true, 0, $realaction, $all_data );
 
 		return $this->fetch_template( 'display_system_settings.tpl' );
 	}

@@ -384,7 +384,7 @@ CREATE TABLE cmp_data_formats (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-01-12 19:42:39
+-- Dump completed on 2010-01-12 20:30:31
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -799,6 +799,8 @@ INSERT INTO text VALUES (206,1,'1x','t');
 INSERT INTO text VALUES (206,2,'1x','t');
 INSERT INTO text VALUES (207,1,'last usage','t');
 INSERT INTO text VALUES (207,2,'verwendet am','t');
+INSERT INTO text VALUES (208,1,'Number of empty lines for adding a moneyflow','t');
+INSERT INTO text VALUES (208,2,'Anzahl freier Zeilen beim hinzufügen von Geldbewegungen','t');
 INSERT INTO templates VALUES ('display_add_language.tpl');
 INSERT INTO templates VALUES ('display_add_moneyflow.tpl');
 INSERT INTO templates VALUES ('display_analyze_cmp_data.tpl');
@@ -1213,6 +1215,8 @@ INSERT INTO templatevalues VALUES ('display_edit_predefmoneyflow.tpl',206);
 INSERT INTO templatevalues VALUES ('display_list_predefmoneyflows.tpl',206);
 INSERT INTO templatevalues VALUES ('display_add_moneyflow.tpl',207);
 INSERT INTO templatevalues VALUES ('display_list_predefmoneyflows.tpl',207);
+INSERT INTO templatevalues VALUES ('display_personal_settings.tpl',208);
+INSERT INTO templatevalues VALUES ('display_system_settings.tpl',208);
 INSERT INTO domains VALUES ('CAPITALSOURCE_STATE');
 INSERT INTO domains VALUES ('CAPITALSOURCE_TYPE');
 INSERT INTO domains VALUES ('MONTHS');
@@ -1237,5 +1241,5 @@ INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','/^Buchungstag	Wertstellung
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,1);
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('','',0,0,0);
 UPDATE users SET id=0 WHERE username='';
-INSERT INTO settings VALUES (0,'displayed_currency','1'),(0,'displayed_language','1'),(0,'max_rows','40'),(0,'date_format','YYYY-MM-DD');
+INSERT INTO settings VALUES (0,'displayed_currency','1'),(0,'displayed_language','1'),(0,'max_rows','40'),(0,'date_format','YYYY-MM-DD'),(0,'num_free_moneyflows','1');
 INSERT INTO settings (SELECT (SELECT userid FROM users WHERE name='admin'),name,value FROM settings WHERE mur_userid=0);

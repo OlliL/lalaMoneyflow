@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreSettings.php,v 1.11 2008/09/19 14:01:30 olivleh1 Exp $
+# $Id: coreSettings.php,v 1.12 2010/01/12 19:32:17 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -124,6 +124,10 @@ class coreSettings extends core {
 
 	}
 
+	function get_num_free_moneyflows( $userid ) {
+		return $this->get_value( $userid, 'num_free_moneyflows' );
+	}
+
 	function set_displayed_currency( $userid, $currency ) {
 		return $this->set_value( $userid, 'displayed_currency', $currency );
 	}
@@ -150,6 +154,10 @@ class coreSettings extends core {
 
 	function set_date_format( $userid, $dateformat ) {
 		return $this->set_value( $userid, 'date_format', $dateformat );
+	}
+
+	function set_num_free_moneyflows( $userid, $num ) {
+		return $this->set_value( $userid, 'num_free_moneyflows', $num );
 	}
 }
 
