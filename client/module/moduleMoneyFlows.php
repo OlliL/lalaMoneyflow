@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.44 2010/01/13 10:15:46 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.45 2010/01/13 18:39:14 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -223,7 +223,10 @@ class moduleMoneyFlows extends module {
 					$i = $numflows;				
 					foreach( $all_data_pre as $key => $value ) {
 						$last_used = convert_date_to_timestamp( $value['last_used'], $this->date_format);
-						if( empty( $last_used ) || date( 'Y-m' ) != date( 'Y-m', $last_used ) ) {
+						if(    empty( $last_used ) 
+						    || !$this->corePreDefMoneyFlows->is_once_a_month( $value['predefmoneyflowid'] )
+						    || date( 'Y-m' ) != date( 'Y-m', $last_used )
+						  ) {
 							$all_data[$i] = $value;
 							$all_data[$i]['bookingdate'] = $date;
 							$all_data[$i]['amount'] = sprintf( '%.02f', $all_data_pre[$key]['amount'] );

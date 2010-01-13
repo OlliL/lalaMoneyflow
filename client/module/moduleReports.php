@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.49 2010/01/13 10:15:46 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.50 2010/01/13 18:39:14 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -388,6 +388,8 @@ class moduleReports extends module {
 		$p1->SetWeight( 1 );
 		$p1->SetFillGradient( '#E6E6FA', '#B0C4DE' );
 		$p1->mark->SetType(MARK_STAR);
+#		$p1->value->Show();
+#		$p1->value->SetAngle(90);
 		$graph->Add( $p1 );
 
 		if( is_array( $monthly2_data) ) {
@@ -395,6 +397,8 @@ class moduleReports extends module {
 			$p2->SetWeight( 1 );
 			$p2->SetFillGradient( '#aeaefa', '#689bde' );
 			$p2->mark->SetType(MARK_STAR);
+#			$p2->value->Show();
+#			$p2->value->SetAngle(90);
 			$graph->Add( $p2 );
 		}
 
