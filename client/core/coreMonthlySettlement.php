@@ -1,6 +1,6 @@
 <?php
 #-
-# Copyright (c) 2005-2007 Oliver Lehmann <oliver@FreeBSD.org>
+# Copyright (c) 2005-2010 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMonthlySettlement.php,v 1.23 2008/12/12 19:51:06 olivleh1 Exp $
+# $Id: coreMonthlySettlement.php,v 1.24 2010/01/13 10:15:43 olivleh1 Exp $
 #
 
 require_once 'core/core.php';

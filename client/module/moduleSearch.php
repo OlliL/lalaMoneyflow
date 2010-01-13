@@ -1,6 +1,6 @@
 <?php
 #-
-# Copyright (c) 2006-2007 Oliver Lehmann <oliver@FreeBSD.org>
+# Copyright (c) 2006-2010 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSearch.php,v 1.15 2007/07/30 12:46:34 olivleh1 Exp $
+# $Id: moduleSearch.php,v 1.16 2010/01/13 10:15:46 olivleh1 Exp $
 #
 
 require_once 'module/module.php';

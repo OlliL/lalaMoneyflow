@@ -1,6 +1,6 @@
 <?php
 #-
-# Copyright (c) 2005-2007 Oliver Lehmann <oliver@FreeBSD.org>
+# Copyright (c) 2005-2010 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreContractPartners.php,v 1.15 2008/07/18 07:50:01 olivleh1 Exp $
+# $Id: coreContractPartners.php,v 1.16 2010/01/13 10:15:43 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
