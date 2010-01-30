@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.40 2010/01/13 10:15:43 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.41 2010/01/30 19:40:28 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -126,7 +126,7 @@ class coreMoneyFlows extends core {
 						      ,mmf.comment
 						      ,mcp.name    contractpartnername
 						      ,mcs.comment capitalsourcecomment
-						  FROM moneyflows       mmf
+						  FROM moneyflows       mmf USE INDEX (mmf_i_01)
 						      ,contractpartners mcp
 						      ,capitalsources   mcs
 						 WHERE mmf.mur_userid            = ".USERID."

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: corePreDefMoneyFlows.php,v 1.20 2010/01/13 18:39:14 olivleh1 Exp $
+# $Id: corePreDefMoneyFlows.php,v 1.21 2010/01/30 19:40:29 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -184,11 +184,12 @@ class corePreDefMoneyFlows extends core {
 	}
 
 	function is_once_a_month( $capitalsourceid ) {
-		$once_a_month = $this->update_row( "	SELECT once_a_month
+		$once_a_month = $this->select_col( "	SELECT once_a_month
 							  FROM predefmoneyflows
 							 WHERE predefmoneyflowid = $capitalsourceid
 							   AND mur_userid        = ".USERID );
-		if( $once_a_month === 1 ) {
+
+		if( $once_a_month === '1' ) {
 			return true;
 		} else {
 			return false;
