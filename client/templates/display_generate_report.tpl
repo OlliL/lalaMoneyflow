@@ -35,8 +35,8 @@
 						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].contractpartnername}</td>
 						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].comment}</td>
 						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].capitalsourcecomment}</td>
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&sr=1','_blank','width=1024,height=80')">{$TEXT_36}</a></td>
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&sr=1','_blank','width=1024,height=80')">{$TEXT_37}</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&sr=1','_blank','width=1024,height=120')">{$TEXT_36}</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&sr=1','_blank','width=1024,height=120')">{$TEXT_37}</a></td>
 					</tr>
 				{/section}
 				<tr>

@@ -50,7 +50,7 @@
 						{else}
 						<td class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][mcs_capitalsourceid]" value="{$ALL_DATA[DATA].mcs_capitalsourceid}" /><input type="hidden" name="all_data[{$smarty.section.DATA.index}][capitalsourcecomment]" value="{$ALL_DATA[DATA].capitalsourcecomment}" /><p {if $ALL_DATA[DATA].capitalsource_error == 1}style="color:red"{/if}>{$ALL_DATA[DATA].capitalsourcecomment}</p></td>
 						<td class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][last_used]" value="{$ALL_DATA[DATA].last_used}" />{$ALL_DATA[DATA].last_used}</td>
-						{assign var="elements" value="`$elements+10`"}
+						{assign var="elements" value="`$elements+11`"}
 						{/if}
 					</tr>
 				{/section}
