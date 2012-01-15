@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.50 2010/01/13 18:39:14 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.51 2012/01/15 12:27:23 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -119,6 +119,11 @@ class moduleReports extends module {
 			foreach( $all_moneyflow_data as $key => $value ) {
 				$all_moneyflow_data[$key]['bookingdate'] = convert_date_to_gui( $value['bookingdate'], $this->date_format );
 				$all_moneyflow_data[$key]['invoicedate'] = convert_date_to_gui( $value['invoicedate'], $this->date_format );
+				if ($all_moneyflow_data[$key]['mur_userid'] == USERID ) {
+					$all_moneyflow_data[$key]['owner'] = true;
+				} else {
+					$all_moneyflow_data[$key]['owner'] = false;
+				}
 			}
 			$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
@@ -135,14 +140,15 @@ class moduleReports extends module {
 			#      g) amount they should had at the end of the month
 			#      h) differnece between e and f (if mms_exists)
 
-			$all_capitalsources = $this->coreCapitalSources->get_valid_data( date( 'Y-m-d', mktime( 0, 0, 0, $month, 1, $year ) ), date( 'Y-m-d', mktime( 0, 0, 0, $month+1, 0, $year ) ) );
+			$all_capitalsources = $this->coreCapitalSources->get_valid_data( date( 'Y-m-d', mktime( 0, 0, 0, $month, 1, $year ) ), date( 'Y-m-d', mktime( 0, 0, 0, $month+1, 0, $year ) ), true );
 			foreach( $all_capitalsources as $capitalsource ) {
 				$capitalsourceid = $capitalsource['capitalsourceid'];
 				
 				$summary_data[$i]['comment']            = $capitalsource['comment'];
 				$summary_data[$i]['typecomment']        = $capitalsource['typecomment'];
 				$summary_data[$i]['statecomment']       = $capitalsource['statecomment'];
-				$summary_data[$i]['lastamount']         = $this->coreMonthlySettlement->get_amount( $capitalsourceid, date( 'm', mktime( 0, 0, 0, $month-1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1, $year ) ) );
+				$summary_data[$i]['lastamount']         = $this->coreMonthlySettlement->get_amount( $capitalsource['mur_userid'], $capitalsourceid, date( 'm', mktime( 0, 0, 0, $month-1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1, $year ) ) );
+				echo $capitalsource['mur_userid'].'.....';
 				if( $mms_exists === true ) {
 					$settlement_data = $this->coreMonthlySettlement->get_data( $capitalsourceid, $month,$year );
 
@@ -151,7 +157,7 @@ class moduleReports extends module {
 					$summary_data[$i]['calcamount'] = round( $summary_data[$i]['lastamount'] + $summary_data[$i]['movement'], 2 );
 					$summary_data[$i]['difference'] = round( $summary_data[$i]['fixamount'] - $summary_data[$i]['calcamount'], 2 );
 				} else {
-					$summary_data[$i]['movement']   = round( $this->coreMoneyFlows->get_monthly_capitalsource_movement( $capitalsourceid, $month, $year ), 2 );
+					$summary_data[$i]['movement']   = round( $this->coreMoneyFlows->get_monthly_capitalsource_movement( $capitalsource['mur_userid'], $capitalsourceid, $month, $year ), 2 );
 					$summary_data[$i]['calcamount'] = $summary_data[$i]['lastamount'] + $summary_data[$i]['movement'];
 				}
 				
@@ -327,7 +333,8 @@ class moduleReports extends module {
 		$i = 0;
 		while( $startdate->format( "U" ) <= $enddate->format( "U" ) ) {
 			foreach( $all_capitalsources_ids as $capitalsources_id ) {
-				$monthly_data[$i] += $this->coreMonthlySettlement->get_amount( $capitalsources_id
+				$monthly_data[$i] += $this->coreMonthlySettlement->get_amount( USERID
+				                                                             , $capitalsources_id
 				                                                             , $startdate->format( "m" )
 				                                                             , $startdate->format( "Y" )
 				                                                             );
@@ -349,7 +356,8 @@ class moduleReports extends module {
 			
 			while( $startdate->format( "U" ) <= $enddate->format( "U" ) ) {
 				foreach( $all_capitalsources_ids as $capitalsources_id ) {
-					$monthly2_data[$i] += $this->coreMoneyFlows->get_monthly_capitalsource_movement( $capitalsources_id
+					$monthly2_data[$i] += $this->coreMoneyFlows->get_monthly_capitalsource_movement( USERID
+					                                                                               , $capitalsources_id
 					                                                                               , $startdate->format( "m" )
 					                                                                               , $startdate->format( "Y" )
 					                                                                               );

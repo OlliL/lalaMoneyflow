@@ -14,6 +14,7 @@
 			{/section}
 			<table border=0>
 				<tr>
+					<th>{$TEXT_209}</th>
 					<th>{$TEXT_16}</th>
 					<th>{$TEXT_17}</th>
 					<th>{$TEXT_18}</th>
@@ -22,6 +23,7 @@
 					<th>{$TEXT_19}</th>
 				</tr>
 				<tr>
+				    <td class="contrastbgcolor"><input class="contrastbgcolor" type="checkbox" name="all_data[private]" value=1 {if $ALL_DATA.private == 1}checked{/if} /></td>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[bookingdate]" value="{$ALL_DATA.bookingdate}"                 size=10 {if $ALL_DATA.bookingdate_error == 1}style="color:red"{/if}/></td>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[invoicedate]" value="{$ALL_DATA.invoicedate}"                 size=10 {if $ALL_DATA.invoicedate_error == 1}style="color:red"{/if}/></td>
 					<td class="contrastbgcolor"><nobr><input class="contrastbgcolor" type="text" name="all_data[amount]"      value="{$ALL_DATA.amount}" size=8 align="right" /> {$CURRENCY}</nobr></td>
@@ -48,6 +50,6 @@
 		<body onLoad='parent.close()'>
 	{else}
 		<body onLoad='opener.location = "{$ENV_REFERER}" ;parent.close()'>
-	{/if}	
+	{/if}
 	</html>
 {/if}

@@ -1,3 +1,9 @@
+for group handling:
+- enable group for "Trends"
+- create group-mantainance screens (add group, delete group, modify group, add user to groups, remove user from groups)
+
+
+
 - put the available countries into the db and have them selectable when
   handling contractual partners instead of having it free editable
 - what has to happen to monthlysettlements.movement_calulated if a new

@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.42, for portbld-freebsd8.0 (i386)
+-- MySQL dump 10.13  Distrib 5.5.19, for FreeBSD9.0 (amd64)
 --
 -- Host: localhost    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	5.1.42-log
+-- Server version	5.5.19-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -146,6 +146,7 @@ CREATE TABLE moneyflows (
   mcs_capitalsourceid int(10) unsigned NOT NULL,
   mcp_contractpartnerid int(10) unsigned NOT NULL,
   `comment` varchar(100) NOT NULL DEFAULT '',
+  private tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (moneyflowid,mur_userid),
   KEY mmf_mcp_pk (mcp_contractpartnerid,mur_userid),
   KEY mmf_i_01 (mur_userid,bookingdate),
@@ -374,6 +375,38 @@ CREATE TABLE cmp_data_formats (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcf';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `groups`
+--
+
+DROP TABLE IF EXISTS groups;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE groups (
+  groupid int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  PRIMARY KEY (groupid),
+  UNIQUE KEY mgr_i_01 (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mgr';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `user_groups`
+--
+
+DROP TABLE IF EXISTS user_groups;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE user_groups (
+  mur_userid int(10) unsigned NOT NULL,
+  mgr_groupid int(10) unsigned NOT NULL,
+  PRIMARY KEY (mur_userid,mgr_groupid),
+  KEY mug_mgr_pk (mgr_groupid),
+  CONSTRAINT mug_mgr_pk FOREIGN KEY (mgr_groupid) REFERENCES `groups` (groupid) ON UPDATE CASCADE,
+  CONSTRAINT mug_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mug';
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -384,7 +417,7 @@ CREATE TABLE cmp_data_formats (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-01-12 20:30:31
+-- Dump completed on 2012-01-15 13:24:57
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -801,6 +834,8 @@ INSERT INTO text VALUES (207,1,'last usage','t');
 INSERT INTO text VALUES (207,2,'verwendet am','t');
 INSERT INTO text VALUES (208,1,'Number of empty lines for adding a moneyflow','t');
 INSERT INTO text VALUES (208,2,'Anzahl freier Zeilen beim hinzufügen von Geldbewegungen','t');
+INSERT INTO text VALUES (209,1,'pr','t');
+INSERT INTO text VALUES (209,2,'pr','t');
 INSERT INTO templates VALUES ('display_add_language.tpl');
 INSERT INTO templates VALUES ('display_add_moneyflow.tpl');
 INSERT INTO templates VALUES ('display_analyze_cmp_data.tpl');
@@ -1217,6 +1252,8 @@ INSERT INTO templatevalues VALUES ('display_add_moneyflow.tpl',207);
 INSERT INTO templatevalues VALUES ('display_list_predefmoneyflows.tpl',207);
 INSERT INTO templatevalues VALUES ('display_personal_settings.tpl',208);
 INSERT INTO templatevalues VALUES ('display_system_settings.tpl',208);
+INSERT INTO templatevalues VALUES ('display_add_moneyflow.tpl',209);
+INSERT INTO templatevalues VALUES ('display_edit_moneyflow.tpl',209);
 INSERT INTO domains VALUES ('CAPITALSOURCE_STATE');
 INSERT INTO domains VALUES ('CAPITALSOURCE_TYPE');
 INSERT INTO domains VALUES ('MONTHS');

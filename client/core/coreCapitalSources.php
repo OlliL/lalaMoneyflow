@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.31 2010/01/13 10:15:43 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.32 2012/01/15 12:27:21 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -39,13 +39,33 @@ class coreCapitalSources extends core {
 
 	function count_all_data() {
 		if ( $num = $this->select_col( 'SELECT count(*)
-						  FROM capitalsources' ) ) {
+						  FROM capitalsources
+						 WHERE mur_userid = '.USERID ) ) {
 			return $num;
 		} else {
 			return;
 		}
 	}
 	
+	function count_all_valid_data( $datefrom='', $datetil='' ) {
+		$datefrom = $this->make_date( $datefrom );
+
+		if( empty( $datetil ) )
+			$datetil = $datefrom;
+		else
+			$datetil = $this->make_date( $datetil );
+
+		if ( $num = $this->select_col( "SELECT count(*)
+						  FROM capitalsources
+						 WHERE validfrom <= $datetil
+						   AND validtil  >= $datefrom
+						   AND mur_userid = ".USERID ) ) {
+			return $num;
+		} else {
+			return;
+		}
+	}
+
 	function get_all_data() {
 		return $this->select_rows( "	SELECT capitalsourceid
 						      ,type
@@ -62,15 +82,30 @@ class coreCapitalSources extends core {
 						 ORDER BY capitalsourceid" );
 	}
 
-	function get_valid_data( $datefrom='', $datetil='' ) {
+	function get_valid_data( $datefrom='', $datetil='', $group=false ) {
 		$datefrom = $this->make_date( $datefrom );
 
 		if( empty( $datetil ) )
 			$datetil = $datefrom;
 		else
 			$datetil = $this->make_date( $datetil );
+		
+		if( $group )
+			$user="			   AND(mcs.mur_userid            = ".USERID."
+						       OR ( EXISTS (SELECT 1
+						                      FROM user_groups mug1
+						                          ,user_groups mug2
+						                     WHERE mug1.mgr_groupid = mug2.mgr_groupid
+						                       AND mug1.mur_userid  = ".USERID."
+						                       AND mug2.mur_userid  = mcs.mur_userid
+						                   )
+						          )
+						      )";
+		else
+			$user="			   AND mur_userid = ".USERID;
 
-		return $this->select_rows( "	SELECT capitalsourceid
+		return $this->select_rows( "	SELECT mur_userid
+		                                      ,capitalsourceid
 						      ,type
 						      ,domain_meaning('CAPITALSOURCE_TYPE',type,".USERID.") typecomment
 						      ,state
@@ -80,10 +115,10 @@ class coreCapitalSources extends core {
 						      ,comment
 						      ,validtil
 						      ,validfrom
-						  FROM capitalsources
+						  FROM capitalsources mcs
 						 WHERE validfrom <= $datetil
 						   AND validtil  >= $datefrom
-						   AND mur_userid = ".USERID."
+						   ".$user."
 						 ORDER BY capitalsourceid" );
 	}
 
@@ -164,7 +199,7 @@ class coreCapitalSources extends core {
 		$result=$this->select_rows( "	SELECT capitalsourceid
 						       ,comment
 						   FROM capitalsources
-						  WHERE $date        BETWEEN validfrom AND validtil
+						  WHERE $date	BETWEEN validfrom AND validtil
 						    AND mur_userid = ".USERID."
 						  ORDER BY capitalsourceid" );
 		if( is_array( $result ) ) {
@@ -216,7 +251,7 @@ class coreCapitalSources extends core {
 		return $this->select_col( "	SELECT 1
 						  FROM capitalsources
 						 WHERE capitalsourceid = $id
-						   AND $date             BETWEEN validfrom AND validtil
+						   AND $date	     BETWEEN validfrom AND validtil
 						   AND mur_userid      = ".USERID."
 						 LIMIT 1" );
 	}
@@ -245,8 +280,8 @@ class coreCapitalSources extends core {
 			$validtil  = $this->make_date($validtil);
 			$validfrom = $this->make_date($validfrom);
 			return $this->update_row("	UPDATE capitalsources
-							   SET type          = '$type'
-							      ,state         = '$state'
+							   SET type	  = '$type'
+							      ,state	 = '$state'
 							      ,accountnumber = '$accountnumber'
 							      ,bankcode      = '$bankcode'
 							      ,comment       = '$comment'
@@ -264,7 +299,7 @@ class coreCapitalSources extends core {
 						  FROM capitalsources
 						 WHERE comment    = '$comment'
 						   AND mur_userid = ".USERID."
-						   AND $date        BETWEEN validfrom AND validtil
+						   AND $date	BETWEEN validfrom AND validtil
 						 LIMIT 1" );
 	}
 

@@ -10,7 +10,8 @@ else
         PROGPATH=$(dirname $PROGPATH)
 fi
 
-mysqldump -u root --set-variable=triggers=FALSE --set-variable=quote-names=FALSE --default-character-set=latin1 --tables --add-drop-table --no-data moneyflow \
+#mysqldump -u root --set-variable=triggers=FALSE --set-variable=quote-names=FALSE --default-character-set=latin1 --tables --add-drop-table --no-data moneyflow \
+mysqldump -u root --skip-quote-names --skip-triggers --default-character-set=latin1 --tables --add-drop-table --no-data moneyflow \
 	users \
 	settings \
 	capitalsources \
@@ -30,6 +31,8 @@ mysqldump -u root --set-variable=triggers=FALSE --set-variable=quote-names=FALSE
 	imp_mapping_source \
 	imp_mapping_partner \
 	cmp_data_formats \
+	groups \
+	user_groups \
 		| awk '
 	{
 		if( $1 == ")" ) {
@@ -44,7 +47,8 @@ mysqldump -u root --set-variable=triggers=FALSE --set-variable=quote-names=FALSE
 		}
 	}' > ${PROGPATH}/mysqldump.sql
 
-mysqldump -u root --set-variable=quote-names=FALSE --set-variable=extended-insert=FALSE --default-character-set=latin1 --tables moneyflow \
+#mysqldump -u root --set-variable=quote-names=FALSE --set-variable=extended-insert=FALSE --default-character-set=latin1 --tables moneyflow \
+mysqldump -u root --skip-quote-names --skip-extended-insert --skip-triggers --default-character-set=latin1 --tables moneyflow \
 	currencies \
 	currencyrates \
 	languages \

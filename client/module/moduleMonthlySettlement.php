@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.31 2010/01/13 10:15:46 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.32 2012/01/15 12:27:23 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -51,6 +51,7 @@ class moduleMonthlySettlement extends module {
 
 		$years = $this->coreMonthlySettlement->get_all_years();
 		$temp_months = $this->coreMonthlySettlement->get_all_months( $year );
+		$num_source = $this->coreCapitalSources->count_all_valid_data( date('Y-m-d') );
 
 		if( is_array( $temp_months ) ) {
 			foreach( $temp_months as $key => $value ) {
@@ -63,11 +64,12 @@ class moduleMonthlySettlement extends module {
 
 		if( $month > 0 && $year > 0 ) {
 			$all_ids = $this->coreCapitalSources->get_valid_ids( date( 'Y-m-d', mktime( 0, 0, 0, $month, 1, $year ) ), date( 'Y-m-d', mktime( 0, 0, 0, $month+1, 0, $year ) ) );
+			$num_source = $this->coreCapitalSources->count_all_valid_data( date( 'Y-m-d', mktime( 0, 0, 0, $month, 1, $year ) ), date( 'Y-m-d', mktime( 0, 0, 0, $month+1, 0, $year ) ) );
 			foreach( $all_ids as $id ) {
 				$all_data[] = array(
 					'id'      => $id,
 					'comment' => $this->coreCapitalSources->get_comment( $id ),
-					'amount'  => $this->coreMonthlySettlement->get_amount( $id, $month, $year )
+					'amount'  => $this->coreMonthlySettlement->get_amount( USERID, $id, $month, $year )
 				);
 			}
 
@@ -89,6 +91,7 @@ class moduleMonthlySettlement extends module {
 		$this->template->assign( 'ALL_MONTHS',     $months );
 		$this->template->assign( 'SELECTED_MONTH', $month['nummeric']  );
 		$this->template->assign( 'SELECTED_YEAR',  $year   );
+		$this->template->assign( 'NUM_SOURCE',     $num_source );
 		$this->template->assign( 'CURRENCY',       $this->coreCurrencies->get_displayed_currency() );
 
 		$this->parse_header();
@@ -176,10 +179,10 @@ class moduleMonthlySettlement extends module {
 					$all_data_new = array();
 					foreach( $all_ids as $id ) {
 						if( $new === 1 ) {
-							$amount = $this->coreMonthlySettlement->get_amount( $id, date( 'm', mktime( 0, 0, 0, $month-1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1, $year ) ) );
-							$amount += round( $this->coreMoneyFlows->get_monthly_capitalsource_movement( $id, $month, $year ), 2 );
+							$amount = $this->coreMonthlySettlement->get_amount( USERID, $id, date( 'm', mktime( 0, 0, 0, $month-1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1, $year ) ) );
+							$amount += round( $this->coreMoneyFlows->get_monthly_capitalsource_movement( USERID, $id, $month, $year ), 2 );
 						} elseif( $realaction !== 'save' && $new != 2 ) {
-							$amount = $this->coreMonthlySettlement->get_amount( $id,$month, $year );
+							$amount = $this->coreMonthlySettlement->get_amount( USERID, $id,$month, $year );
 						} elseif( !empty( $all_data[$id]['amount'] ) ) {
 							$amount = $all_data[$id]['amount'];
 						} else {
@@ -228,7 +231,7 @@ class moduleMonthlySettlement extends module {
 					$all_data[] = array(
 						'id'      => $id,
 						'comment' => $this->coreCapitalSources->get_comment( $id ),
-						'amount'  => $this->coreMonthlySettlement->get_amount( $id, $month, $year )
+						'amount'  => $this->coreMonthlySettlement->get_amount( USERID, $id, $month, $year )
 					);
 				}
 				$sumamount = $this->coreMonthlySettlement->get_sum_amount( $month, $year );

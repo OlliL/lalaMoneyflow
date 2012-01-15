@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.46 2010/01/30 19:40:29 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.47 2012/01/15 12:27:23 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -81,7 +81,7 @@ class moduleMoneyFlows extends module {
 				}
 
 				if( $valid_data === true ) {
-					$ret = $this->coreMoneyFlows->update_moneyflow( $id, $all_data['bookingdate'], $all_data['invoicedate'], $all_data['amount'], $all_data['mcs_capitalsourceid'], $all_data['mcp_contractpartnerid'], $all_data['comment'] );
+					$ret = $this->coreMoneyFlows->update_moneyflow( $id, $all_data['bookingdate'], $all_data['invoicedate'], $all_data['amount'], $all_data['mcs_capitalsourceid'], $all_data['mcp_contractpartnerid'], $all_data['comment'], $all_data['private'] );
 					if( $ret === true ) {
 						$this->template->assign( 'CLOSE', 1 );
 						break;
@@ -201,7 +201,7 @@ class moduleMoneyFlows extends module {
 						if ( $value['checked'] == 1 ) {
 							if( empty( $value['invoicedate'] ) )
 								$value['invoicedate'] = $value['bookingdate'];
-							$ret = $this->coreMoneyFlows->add_moneyflow( $value['bookingdate'], $value['invoicedate'], $value['amount'], $value['mcs_capitalsourceid'], $value['mcp_contractpartnerid'], $value['comment'] );
+							$ret = $this->coreMoneyFlows->add_moneyflow( $value['bookingdate'], $value['invoicedate'], $value['amount'], $value['mcs_capitalsourceid'], $value['mcp_contractpartnerid'], $value['comment'], $value['private'] );
 							if( $value['predefmoneyflowid'] >= 0 )
 								$this->corePreDefMoneyFlows->set_last_used( $value['predefmoneyflowid'], $value['bookingdate']);
 						}
@@ -210,6 +210,8 @@ class moduleMoneyFlows extends module {
 					break;
 				}
 			default:
+				# clean the array before filling it.
+				$all_data = array();
 				$date = convert_date_to_db( date( 'Y-m-d' ), $this->date_format );
 				$all_data_pre = $this->corePreDefMoneyFlows->get_valid_data();
 				$numflows     = $this->coreSettings->get_num_free_moneyflows( USERID );

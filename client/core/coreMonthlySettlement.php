@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMonthlySettlement.php,v 1.24 2010/01/13 10:15:43 olivleh1 Exp $
+# $Id: coreMonthlySettlement.php,v 1.25 2012/01/15 12:27:21 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -58,9 +58,15 @@ class coreMonthlySettlement extends core {
 						 LIMIT 1" );
 	}
 
-	function get_amount( $sourceid, $month, $year ) {
-		$result = $this->get_data( $sourceid, $month, $year );
-		return $result['amount'];
+	function get_amount( $userid, $sourceid, $month, $year ) {
+		$date = $this->make_date( $year."-".$month."-01" );
+		return $this->select_col( "	SELECT calc_amount(amount,'OUT',mur_userid,LAST_DAY($date)) amount
+						  FROM monthlysettlements
+						 WHERE mcs_capitalsourceid = $sourceid
+						   AND month               = $month
+						   AND year                = $year
+						   AND mur_userid          = ".$userid."
+						 LIMIT 1" );
 	}
 
 	function get_sum_amount( $month, $year ) {
