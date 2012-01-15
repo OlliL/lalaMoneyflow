@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.51 2012/01/15 12:27:23 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.52 2012/01/15 19:00:19 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -148,9 +148,8 @@ class moduleReports extends module {
 				$summary_data[$i]['typecomment']        = $capitalsource['typecomment'];
 				$summary_data[$i]['statecomment']       = $capitalsource['statecomment'];
 				$summary_data[$i]['lastamount']         = $this->coreMonthlySettlement->get_amount( $capitalsource['mur_userid'], $capitalsourceid, date( 'm', mktime( 0, 0, 0, $month-1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month-1, 1, $year ) ) );
-				echo $capitalsource['mur_userid'].'.....';
 				if( $mms_exists === true ) {
-					$settlement_data = $this->coreMonthlySettlement->get_data( $capitalsourceid, $month,$year );
+					$settlement_data = $this->coreMonthlySettlement->get_data( $capitalsourceid, $month,$year, true );
 
 					$summary_data[$i]['fixamount']  = $settlement_data['amount'];
 					$summary_data[$i]['movement']   = round( $settlement_data['movement_calculated'], 2 );
@@ -177,7 +176,7 @@ class moduleReports extends module {
 				
 			# 4. retrieve the movement over the year until the selected month by using the values stored in mms
 
-			$movement_calculated_year_data  = $this->coreMonthlySettlement->get_year_movement( $month, $year );
+			$movement_calculated_year_data  = $this->coreMonthlySettlement->get_year_movement( $month, $year, true );
 			$movement_calculated_year       = $movement_calculated_year_data['movement_calculated'];
 			$movement_calculated_year_month = $movement_calculated_year_data['month'];
 
@@ -203,7 +202,7 @@ class moduleReports extends module {
 
 			# 5. select the final amount of the last year (to calculate the turnover/movement since the last year)
 
-			$firstamount = $this->coreMonthlySettlement->get_sum_amount( 12, $year-1 );
+			$firstamount = $this->coreMonthlySettlement->get_sum_amount( 12, $year-1, true );
 
 
 			if( $month == 1) {

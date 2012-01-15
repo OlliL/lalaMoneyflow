@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMonthlySettlement.php,v 1.25 2012/01/15 12:27:21 olivleh1 Exp $
+# $Id: coreMonthlySettlement.php,v 1.26 2012/01/15 19:00:19 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -35,15 +35,21 @@ class coreMonthlySettlement extends core {
 		$this->core();
 	}
 
-	function get_data( $sourceid, $month, $year ) {
+	function get_data( $sourceid, $month, $year, $group=false ) {
 		$date = $this->make_date( $year."-".$month."-01" );
-		return $this->select_row( "	SELECT calc_amount(amount,'OUT',mur_userid,LAST_DAY($date)) amount
+
+		if( $group )
+			$user="			   AND mug_mur_userid = ".USERID;
+		else
+			$user="			   AND mms_mur_userid = ".USERID;
+
+		return $this->select_row( "	SELECT calc_amount(amount,'OUT',mms_mur_userid,LAST_DAY($date)) amount
 						      ,movement_calculated
-						  FROM monthlysettlements
+						  FROM vw_monthlysettlements mms
 						 WHERE mcs_capitalsourceid = $sourceid
 						   AND month               = $month
 						   AND year                = $year
-						   AND mur_userid          = ".USERID."
+						   $user
 						 LIMIT 1" );
 	}
 
@@ -69,9 +75,20 @@ class coreMonthlySettlement extends core {
 						 LIMIT 1" );
 	}
 
-	function get_sum_amount( $month, $year ) {
-		$result = $this->get_sum_data( $month, $year );
-		return $result['amount'];
+	function get_sum_amount( $month, $year, $group=false ) {
+		$date = $this->make_date( $year."-".$month."-01" );
+
+		if( $group )
+			$user="			   AND mug_mur_userid = ".USERID;
+		else
+			$user="			   AND mms_mur_userid = ".USERID;
+
+		return $this->select_col( "	SELECT SUM(calc_amount(amount,'OUT',mms_mur_userid,LAST_DAY($date))) amount
+						  FROM vw_monthlysettlements mms
+						 WHERE month      = $month
+						   AND year       = $year
+						   $user
+						 LIMIT 1" );
 	}
 
 	function get_movement_calculated( $sourceid, $month, $year ) {
@@ -148,14 +165,19 @@ class coreMonthlySettlement extends core {
 	}
 
 
-	function get_year_movement( $month, $year ) {
+	function get_year_movement( $month, $year, $group=false ) {
+
+		if( $group )
+			$user="			   AND mug_mur_userid = ".USERID;
+		else
+			$user="			   AND mms_mur_userid = ".USERID;
 
 		$ret = $this->select_row( "	SELECT SUM(movement_calculated) movement_calculated
 						      ,MAX(month) month
-						  FROM monthlysettlements
-						 WHERE mur_userid = ".USERID."
-						   AND year   = $year
-						   AND month <= $month" );
+						  FROM vw_monthlysettlements mms
+						 WHERE year   = $year
+						   AND month <= $month
+						   $user" );
 		return $ret;
 	}
 

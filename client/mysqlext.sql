@@ -1,3 +1,46 @@
+/* 
+ * this view will show all possible permutations of user/groups
+ */
+CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_user_groups (
+   mug1_mur_userid
+  ,mug2_mur_userid
+  ) AS
+     SELECT DISTINCT
+            mug1.mur_userid mug1_mur_userid
+           ,mug2.mur_userid mug2_mur_userid
+       FROM user_groups mug1
+           ,user_groups mug2
+      WHERE mug1.mgr_groupid = mug2.mgr_groupid;
+               
+               
+/*
+ * this view will show all data from all users which are in the
+ * same group as mms_mur_userid. Use mug_mur_userid in the query
+ * mms_mur_userid is the real userid of the dataset
+ */
+CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
+   mms_mur_userid
+  ,mug_mur_userid
+  ,monthlysettlementid
+  ,mcs_capitalsourceid
+  ,month
+  ,year
+  ,amount
+  ,movement_calculated
+  ) AS
+      SELECT mms.mur_userid
+            ,mug.mug2_mur_userid
+            ,mms.monthlysettlementid
+            ,mms.mcs_capitalsourceid
+            ,mms.month
+            ,mms.year
+            ,mms.amount
+            ,mms.movement_calculated
+        FROM monthlysettlements mms
+            ,vw_user_groups     mug
+       WHERE mug.mug1_mur_userid = mms.mur_userid;
+
+
 /*
  * this view will show the text entries for all users
  * in their maintained display language
