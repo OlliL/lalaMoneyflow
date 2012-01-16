@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.42 2012/01/15 12:27:21 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.43 2012/01/16 08:58:35 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -505,17 +505,7 @@ class coreMoneyFlows extends core {
 						  FROM moneyflows mmf
 						 WHERE bookingdate BETWEEN DATE_SUB($date, INTERVAL $date_days_around DAY) AND DATE_ADD($date, INTERVAL $date_days_around DAY)
 						   AND amount     = $amount
-						   AND(mmf.mur_userid            = ".USERID."
-						       OR (mmf.private           = 0
-						           AND EXISTS (SELECT 1
-						                         FROM user_groups mug1
-						                             ,user_groups mug2
-						                        WHERE mug1.mgr_groupid = mug2.mgr_groupid
-						                          AND mug1.mur_userid  = ".USERID."
-						                          AND mug2.mur_userid  = mmf.mur_userid
-						                      )
-						          )
-						      )" );
+						   AND mmf.mur_userid            = ".USERID );
 	}
 	
 	function month_has_moneyflows( $month, $year ) {

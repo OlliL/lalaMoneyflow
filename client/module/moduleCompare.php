@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCompare.php,v 1.12 2010/01/13 10:15:46 olivleh1 Exp $
+# $Id: moduleCompare.php,v 1.13 2012/01/16 08:58:36 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -76,16 +76,16 @@ class moduleCompare extends module {
 		} else {
 			$i = count($data_array) + 1;
 		}
-		
+
 		$data_array[$i]['bookingdate']          = $bookingdate;
 		$data_array[$i]['amount']               = $amount;
 		$data_array[$i]['capitalsourcecomment'] = $capitalsourcecomment;
 		$data_array[$i]['contractpartnername']  = $contractpartnername;
 		$data_array[$i]['comment']              = $comment;
-		
+
 		return( $data_array );
 	}
-	
+
 	function fill_db_array( $data_array, $bookingdate, $invoicedate, $amount, $capitalsourcecomment, $contractpartnername, $comment, $moneyflowid ) {
 
 		if( !is_array( $data_array ) ) {
@@ -93,7 +93,7 @@ class moduleCompare extends module {
 		} else {
 			$i = count($data_array) + 1;
 		}
-		
+
 		$data_array[$i]['bookingdate']          = $bookingdate;
 		$data_array[$i]['invoicedate']          = $invoicedate;
 		$data_array[$i]['amount']               = $amount;
@@ -101,16 +101,16 @@ class moduleCompare extends module {
 		$data_array[$i]['contractpartnername']  = $contractpartnername;
 		$data_array[$i]['comment']              = $comment;
 		$data_array[$i]['moneyflowid']          = $moneyflowid;
-		
+
 		return( $data_array );
 	}
 
 	function display_analyze_form( $file, $all_data ) {
-	
+
 		$startdate  = $all_data['startdate'];
 		$enddate    = $all_data['enddate'];
 		$valid_data = true;
-		
+
 		if( !empty( $startdate ) ) {
 			$startdate             = convert_date_to_db( $startdate, $this->date_format );
 			if( $startdate === false ) {
@@ -137,7 +137,7 @@ class moduleCompare extends module {
 		if( $valid_data === false ) {
 			return $this->display_upload_form( $all_data );
 		} else {
-		
+
 			if( $all_data['mcs_capitalsourceid' ] != $this->coreSettings->get_compare_capitalsource( USERID ) ) {
 				$this->coreSettings->set_compare_capitalsource( USERID, $all_data['mcs_capitalsourceid'] );
 			}
@@ -148,7 +148,7 @@ class moduleCompare extends module {
 			# change given date to timespamp for later "between" comparsion
 			$startdate = convert_date_to_timestamp( $all_data['startdate'], $this->date_format );
 			$enddate   = convert_date_to_timestamp( $all_data['enddate'], $this->date_format );
-			
+
 			$format_data = $this->coreCompare->get_id_data( $all_data['format'] );
 
 			$capitalsourcecomment = $this->coreCapitalSources->get_comment( $all_data['mcs_capitalsourceid'] );
@@ -175,7 +175,7 @@ class moduleCompare extends module {
 					    $date_stamp <= $enddate ) {
 					    	$amount = str_replace( $format_data['fmt_amount_thousand'], '', $cmp_data[$format_data['pos_amount'] -1 ] );
 						$amount = str_replace( $format_data['fmt_amount_decimal'], '.', $amount );
-						
+
 						$partner = '';
 						if( $format_data['pos_partner'] ) {
 							$partner = $cmp_data[$format_data['pos_partner'] - 1];
@@ -186,13 +186,13 @@ class moduleCompare extends module {
 								$partner = $cmp_data[$format_data['pos_partner_alt'] - 1];
 							}
 						}
-						
+
 						if( !empty( $format_data['pos_comment'] ) ) {
 							$comment = $cmp_data[$format_data['pos_comment'] - 1];
 						} else {
 							$comment = '';
 						}
-						
+
 						$file_array = $this->fill_file_array( $file_array
 						                                    , convert_date_to_gui( $date_db, $this->date_format )
 									            , $amount
@@ -205,37 +205,37 @@ class moduleCompare extends module {
 						$results = $this->coreMoneyFlows->find_single_moneyflow( $date_db, 5, $amount );
 						if( is_array( $results ) ) {
 							$result_count = count( $results );
-							
+
 							foreach( $results as $moneyflowid ) {
 								if( $moneyflow_used[$moneyflowid] != 1 ) {
 									$moneyflow = $this->coreMoneyFlows->get_id_data( $moneyflowid );
-								
+								var_dump($moneyflow);
 									$mon_data[$moneyflowid] = $moneyflow;
-								
+
 									$hitlist[$moneyflowid] = 0;
-								
+
 									if( $result_count > 1 ) {
 										# more than one result
 										# the program has to try now finding the right result
 										# this is done by counting different aspects of a flow and generate a hitlist
 										# the result with the highest hitcount is treated as the matching one.
-									
+
 										if( $moneyflow['bookingdate'] == $date_db )
 											$hitlist[$moneyflowid] += 10;
-										
+
 										if( $moneyflow['invoicedate'] == $date_db )
 											$hitlist[$moneyflowid] += 5;
 
 										if( $moneyflow['mcs_capitalsourceid'] == $all_data['mcs_capitalsourceid'] )
 											$hitlist[$moneyflowid] += 10;
-										
+
 										# does our input-file contain contractpartner information?
 										if( !empty( $partner ) ) {
 											$cmp_partner = $partner;
 											$mon_partner = $this->coreContractPartners->get_name( $moneyflow['mcp_contractpartnerid'] );
-										
+
 											$split_pattern = '[\., -]';
-										
+
 											$matching_words = 0;
 											$words          = 0;
 											foreach( split( $split_pattern, $cmp_partner ) as $cmp_word ) {
@@ -250,7 +250,7 @@ class moduleCompare extends module {
 													}
 												}
 											}
-										
+
 											if( $matching_words == $words && $matching_words != 0 )
 												$hitlist[$moneyflowid] += 5;
 										}
@@ -264,7 +264,7 @@ class moduleCompare extends module {
 								$moneyflowid = key($hitlist);
 								$moneyflow = $mon_data[$moneyflowid];
 								$moneyflow_used[$moneyflowid] = 1;
-							
+
 								$matching_moneyflowids[] = $moneyflowid;
 
 								if( $moneyflow['mcs_capitalsourceid'] == $all_data['mcs_capitalsourceid'] ) {
@@ -274,7 +274,7 @@ class moduleCompare extends module {
 									$my_capitalsourcecomment = $this->coreCapitalSources->get_comment( $moneyflow['mcs_capitalsourceid'] );
 									$diff_capitalsource      = true;
 								}
-							
+
 								$db_array = $this->fill_db_array( $db_array
 							        	                        , convert_date_to_gui( $moneyflow['bookingdate'], $this->date_format )
 												, convert_date_to_gui( $moneyflow['invoicedate'], $this->date_format )
@@ -303,9 +303,9 @@ class moduleCompare extends module {
 						}
 					}
 				}
-				
+
 			}
-			
+
 			if( $match === 0 ) {
 				add_error( 199 );
 				return $this->display_upload_form( $all_data );
