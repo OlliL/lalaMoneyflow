@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCompare.php,v 1.13 2012/01/16 08:58:36 olivleh1 Exp $
+# $Id: moduleCompare.php,v 1.14 2012/01/16 08:59:18 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -209,7 +209,7 @@ class moduleCompare extends module {
 							foreach( $results as $moneyflowid ) {
 								if( $moneyflow_used[$moneyflowid] != 1 ) {
 									$moneyflow = $this->coreMoneyFlows->get_id_data( $moneyflowid );
-								var_dump($moneyflow);
+
 									$mon_data[$moneyflowid] = $moneyflow;
 
 									$hitlist[$moneyflowid] = 0;
