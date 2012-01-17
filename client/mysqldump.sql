@@ -153,8 +153,8 @@ CREATE TABLE moneyflows (
   KEY mmf_i_01 (mur_userid,bookingdate),
   KEY mmf_mcp_pk (mcp_contractpartnerid,mcp_mur_userid),
   KEY mmf_mcs_pk (mcs_capitalsourceid,mcs_mur_userid),
-  CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mcs_mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mcp_pk FOREIGN KEY (mcp_contractpartnerid, mcp_mur_userid) REFERENCES contractpartners (contractpartnerid, mur_userid) ON UPDATE CASCADE,
+  CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mcs_mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mmf';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -193,7 +193,9 @@ CREATE TABLE predefmoneyflows (
   mur_userid int(10) unsigned NOT NULL,
   predefmoneyflowid int(10) unsigned NOT NULL AUTO_INCREMENT,
   amount float(8,2) NOT NULL DEFAULT '0.00',
+  mcs_mur_userid int(10) unsigned NOT NULL,
   mcs_capitalsourceid int(10) unsigned NOT NULL,
+  mcp_mur_userid int(10) unsigned NOT NULL,
   mcp_contractpartnerid int(10) unsigned NOT NULL,
   `comment` varchar(100) NOT NULL DEFAULT '',
   createdate date NOT NULL,
@@ -201,10 +203,10 @@ CREATE TABLE predefmoneyflows (
   last_used date DEFAULT NULL,
   PRIMARY KEY (predefmoneyflowid,mur_userid),
   KEY mpm_mur_pk (mur_userid),
-  KEY mpm_mcp_pk (mcp_contractpartnerid,mur_userid),
-  KEY mpm_mcs_pk (mcs_capitalsourceid,mur_userid),
-  CONSTRAINT mpm_mcp_pk FOREIGN KEY (mcp_contractpartnerid, mur_userid) REFERENCES contractpartners (contractpartnerid, mur_userid) ON UPDATE CASCADE,
-  CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
+  KEY mpm_mcp_pk (mcp_contractpartnerid,mcp_mur_userid),
+  KEY mpm_mcs_pk (mcs_capitalsourceid,mcs_mur_userid),
+  CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mcs_mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
+  CONSTRAINT mpm_mcp_pk FOREIGN KEY (mcp_contractpartnerid, mcp_mur_userid) REFERENCES contractpartners (contractpartnerid, mur_userid) ON UPDATE CASCADE,
   CONSTRAINT mpm_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mpm';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -419,7 +421,7 @@ CREATE TABLE user_groups (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-01-16 14:22:28
+-- Dump completed on 2012-01-17 14:15:41
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');

@@ -1,3 +1,12 @@
+General idea for groups is:
+
+- see moneyflows for other users in the same group (but not add, change or delete)
+- use capitalsources from other users in the same group (but not add, change or delete)
+- contractpartners shall be currently not used from other users - but maybe in the future
+
+note:
+select* from vw_capitalsources where mug_mur_userid=4 order by case when mcs_mur_userid = '4' then 1 else 2 end;
+
 for group handling:
 - enable group for "Trends"
 - create group-mantainance screens (add group, delete group, modify group, add user to groups, remove user from groups)

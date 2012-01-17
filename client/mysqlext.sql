@@ -40,6 +40,37 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
             ,vw_user_groups     mug
        WHERE mug.mug1_mur_userid = mms.mur_userid;
 
+/*
+ * this view will show all data from all users which are in the
+ * same group as mms_mur_userid. Use mug_mur_userid in the query
+ * mms_mur_userid is the real userid of the dataset
+ */
+CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_capitalsources (
+   mcs_mur_userid
+  ,mug_mur_userid
+  ,capitalsourceid
+  ,type
+  ,state
+  ,accountnumber
+  ,bankcode
+  ,comment
+  ,validtil
+  ,validfrom
+  ) AS
+      SELECT mcs.mur_userid
+            ,mug.mug2_mur_userid
+            ,mcs.capitalsourceid
+            ,mcs.type
+            ,mcs.state
+            ,mcs.accountnumber
+            ,mcs.bankcode
+            ,mcs.comment
+            ,mcs.validtil
+            ,mcs.validfrom
+        FROM capitalsources     mcs
+            ,vw_user_groups     mug
+       WHERE mug.mug1_mur_userid = mcs.mur_userid;
+
 
 /*
  * this view will show the text entries for all users
