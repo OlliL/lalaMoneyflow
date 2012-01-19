@@ -1,6 +1,6 @@
 <?php
 #-
-# Copyright (c) 2005-2010 Oliver Lehmann <oliver@FreeBSD.org>
+# Copyright (c) 2005-2012 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: core.php,v 1.22 2010/01/13 10:15:43 olivleh1 Exp $
+# $Id: core.php,v 1.23 2012/01/19 21:25:07 olivleh1 Exp $
 #
 
 require_once 'DB.php';
