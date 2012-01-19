@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCapitalSources.php,v 1.20 2010/01/13 10:15:46 olivleh1 Exp $
+# $Id: moduleCapitalSources.php,v 1.21 2012/01/19 21:22:45 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -52,7 +52,7 @@ class moduleCapitalSources extends module {
 		}
 
 		if( $letter == 'all' ) {
-			$all_data = $this->coreCapitalSources->get_all_data();
+			$all_data = $this->coreCapitalSources->get_editable_data();
 		} elseif( !empty( $letter ) ) {
 			$all_data = $this->coreCapitalSources->get_all_matched_data( $letter );
 		} else {
@@ -62,7 +62,13 @@ class moduleCapitalSources extends module {
 		foreach( $all_data as $key => $value ) {
 			$all_data[$key]['validfrom'] = convert_date_to_gui( $all_data[$key]['validfrom'], $this->date_format );
 			$all_data[$key]['validtil']  = convert_date_to_gui( $all_data[$key]['validtil'],  $this->date_format );
+			if ($all_data[$key]['mur_userid'] == USERID ) {
+				$all_data[$key]['owner'] = true;
+			} else {
+				$all_data[$key]['owner'] = false;
+			}
 		}
+
 
 		$this->template->assign( 'ALL_DATA',          $all_data          );
 		$this->template->assign( 'COUNT_ALL_DATA',    count( $all_data ) );
@@ -98,9 +104,9 @@ class moduleCapitalSources extends module {
 
 				if( $valid_data === true ) {
 					if( $capitalsourceid == 0 )
-						$ret = $this->coreCapitalSources->add_capitalsource( $all_data['type'], $all_data['state'], $all_data['accountnumber'], $all_data['bankcode'], $all_data['comment'], $all_data['validfrom'], $all_data['validtil'] );
+						$ret = $this->coreCapitalSources->add_capitalsource( $all_data['type'], $all_data['state'], $all_data['accountnumber'], $all_data['bankcode'], $all_data['comment'], $all_data['validfrom'], $all_data['validtil'], $all_data['att_group_use'] );
 					else
-						$ret = $this->coreCapitalSources->update_capitalsource( $capitalsourceid, $all_data['type'], $all_data['state'], $all_data['accountnumber'], $all_data['bankcode'], $all_data['comment'], $all_data['validfrom'], $all_data['validtil'] );
+						$ret = $this->coreCapitalSources->update_capitalsource( $capitalsourceid, $all_data['type'], $all_data['state'], $all_data['accountnumber'], $all_data['bankcode'], $all_data['comment'], $all_data['validfrom'], $all_data['validtil'], $all_data['att_group_use'] );
 				}
 
 				if( $ret === true || $ret > 0 ) {

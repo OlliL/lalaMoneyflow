@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: corePreDefMoneyFlows.php,v 1.22 2012/01/17 13:17:11 olivleh1 Exp $
+# $Id: corePreDefMoneyFlows.php,v 1.23 2012/01/19 21:22:43 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -48,9 +48,7 @@ class corePreDefMoneyFlows extends core {
 	function get_all_data() {
 		return $this->select_rows( "	SELECT predefmoneyflowid
 						      ,calc_amount(amount,'OUT',mur_userid,createdate) amount
-						      ,mcs_mur_userid
 						      ,mcs_capitalsourceid
-						      ,mcp_mur_userid
 						      ,mcp_contractpartnerid
 						      ,comment
 						      ,once_a_month
@@ -64,9 +62,7 @@ class corePreDefMoneyFlows extends core {
 		$date = $this->make_date($date);
 		return $this->select_rows( "	SELECT mpm.predefmoneyflowid
 						      ,calc_amount(mpm.amount,'OUT',mpm.mur_userid,mpm.createdate) amount
-						      ,mpm.mcs_mur_userid
 						      ,mpm.mcs_capitalsourceid
-						      ,mpm.mcp_mur_userid
 						      ,mpm.mcp_contractpartnerid
 						      ,mpm.comment
 						      ,mpm.once_a_month
@@ -78,17 +74,13 @@ class corePreDefMoneyFlows extends core {
 						   AND $date                       BETWEEN mcs.validfrom AND mcs.validtil
 						   AND mpm.mcp_contractpartnerid = mcp.contractpartnerid 
 						   AND mpm.mur_userid            = ".USERID."
-						   AND mcs.mur_userid            = mpm.mcs_mur_userid
-						   AND mcp.mur_userid            = mpm.mcp_mur_userid
 						 ORDER BY predefmoneyflowid" );
 	}
 
 	function get_id_data( $id ) {
 		return $this->select_row( "	SELECT predefmoneyflowid
 						      ,calc_amount(amount,'OUT',mur_userid,createdate) amount
-						      ,mcs_mur_userid
 						      ,mcs_capitalsourceid
-						      ,mcp_mur_userid
 						      ,mcp_contractpartnerid
 						      ,comment
 						      ,once_a_month
@@ -120,9 +112,7 @@ class corePreDefMoneyFlows extends core {
 			$idstring=implode( $ids, ',' );
 			return $this->select_rows( "	SELECT predefmoneyflowid
 							      ,calc_amount(amount,'OUT',mur_userid,createdate) amount
-							      ,mcs_mur_userid
 							      ,mcs_capitalsourceid
-							      ,mcp_mur_userid
 							      ,mcp_contractpartnerid
 							      ,comment
 							      ,once_a_month
@@ -146,14 +136,10 @@ class corePreDefMoneyFlows extends core {
 
 
 	function update_predefmoneyflow( $id, $amount, $capitalsourceid, $contractpartnerid, $comment, $once_a_month ) {
-/* FIXME: correct accessing mcs_mur_userid! */
-/* FIXME: correct accessing mcp_mur_userid! */
 		if( fix_amount( $amount ) ) {
 			return $this->update_row( "	UPDATE predefmoneyflows
 							   SET amount                = calc_amount('$amount','IN',".USERID.",createdate)
-							      ,mcs_mur_userid        = ".USERID."
 							      ,mcs_capitalsourceid   = '$capitalsourceid'
-							      ,mcp_mur_userid        = ".USERID."
 							      ,mcp_contractpartnerid = '$contractpartnerid'
 							      ,comment               = '$comment'
 							      ,once_a_month          = '$once_a_month'
@@ -165,15 +151,11 @@ class corePreDefMoneyFlows extends core {
 	}
 
 	function add_predefmoneyflow( $amount, $capitalsourceid, $contractpartnerid, $comment, $once_a_month ) {
-/* FIXME: correct accessing mcs_mur_userid! */
-/* FIXME: correct accessing mcp_mur_userid! */
 		if( fix_amount( $amount ) ) {
 			return $this->insert_row( "	INSERT INTO predefmoneyflows 
 							      (mur_userid
 							      ,amount
-							      ,mcs_mur_userid
 							      ,mcs_capitalsourceid
-							      ,mcp_mur_userid
 							      ,mcp_contractpartnerid
 							      ,comment
 							      ,once_a_month
@@ -181,9 +163,7 @@ class corePreDefMoneyFlows extends core {
 							       VALUES
 							      (".USERID."
 							      ,calc_amount('$amount','IN',".USERID.",NOW())
-							      ,".USERID."
 							      ,'$capitalsourceid'
-							      ,".USERID."
 							      ,'$contractpartnerid'
 							      ,'$comment'
 							      ,'$once_a_month'

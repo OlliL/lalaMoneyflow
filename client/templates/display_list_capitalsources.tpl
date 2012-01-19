@@ -4,11 +4,11 @@
 
 		<td align="center" valign="top">
 			<h1>{$TEXT_1}</h1>
-			<a href="{$ENV_INDEX_PHP}?action=list_capitalsources&letter=all">{$TEXT_28}</a> 
+			<a href="{$ENV_INDEX_PHP}?action=list_capitalsources&letter=all">{$TEXT_28}</a>
 			{section name=LETTER loop=$ALL_INDEX_LETTERS}
-				<a href="{$ENV_INDEX_PHP}?action=list_capitalsources&letter={$ALL_INDEX_LETTERS[LETTER]}">{$ALL_INDEX_LETTERS[LETTER]}</a> 
+				<a href="{$ENV_INDEX_PHP}?action=list_capitalsources&letter={$ALL_INDEX_LETTERS[LETTER]}">{$ALL_INDEX_LETTERS[LETTER]}</a>
 			{/section}
-			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&sr=1','_blank','width=800,height=80')">{$TEXT_29}</a> 
+			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&sr=1','_blank','width=800,height=80')">{$TEXT_29}</a>
 			{if $COUNT_ALL_DATA > 0}
 				<br /><br />
 				<table border=0>
@@ -20,6 +20,7 @@
 						<th width="100">{$TEXT_33}</th>
 						<th width="60" >{$TEXT_34}</th>
 						<th width="60" >{$TEXT_35}</th>
+						<th width="60" >{$TEXT_210}</th>
 					</tr>
 					{section name=DATA loop=$ALL_DATA}
 						<tr>
@@ -30,8 +31,11 @@
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].bankcode}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].validfrom}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].validtil}</td>
+							<td class="contrastbgcolor"><b>{if $ALL_DATA[DATA].att_group_use == 1}<font color="green">{$TEXT_25}{else}<font color="red">{$TEXT_26}{/if}</font></b></td>
+							{if $ALL_DATA[DATA].owner == true }
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&capitalsourceid={$ALL_DATA[DATA].capitalsourceid}&sr=1','_blank','width=800,height=80')">{$TEXT_36}</a></td>
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_capitalsource&capitalsourceid={$ALL_DATA[DATA].capitalsourceid}&sr=1','_blank','width=800,height=80')">{$TEXT_37}</a></td>
+							{/if}
 						</tr>
 					{/section}
 				</table>

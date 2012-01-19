@@ -16,10 +16,10 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_user_groups (
 /*
  * this view will show all data from all users which are in the
  * same group as mms_mur_userid. Use mug_mur_userid in the query
- * mms_mur_userid is the real userid of the dataset
+ * mug_mur_userid is the real userid of the dataset
  */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
-   mms_mur_userid
+   mur_userid
   ,mug_mur_userid
   ,monthlysettlementid
   ,mcs_capitalsourceid
@@ -42,11 +42,11 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
 
 /*
  * this view will show all data from all users which are in the
- * same group as mms_mur_userid. Use mug_mur_userid in the query
- * mms_mur_userid is the real userid of the dataset
+ * same group as mur_userid. Use mug_mur_userid in the query
+ * mug_mur_userid is the real userid of the dataset
  */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_capitalsources (
-   mcs_mur_userid
+   mur_userid
   ,mug_mur_userid
   ,capitalsourceid
   ,type
@@ -56,6 +56,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_capitalsources (
   ,comment
   ,validtil
   ,validfrom
+  ,att_group_use
   ) AS
       SELECT mcs.mur_userid
             ,mug.mug2_mur_userid
@@ -67,6 +68,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_capitalsources (
             ,mcs.comment
             ,mcs.validtil
             ,mcs.validfrom
+            ,mcs.att_group_use
         FROM capitalsources     mcs
             ,vw_user_groups     mug
        WHERE mug.mug1_mur_userid = mcs.mur_userid;

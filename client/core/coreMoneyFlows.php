@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.44 2012/01/16 13:22:57 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.45 2012/01/19 21:22:43 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -41,9 +41,7 @@ class coreMoneyFlows extends core {
 						      ,bookingdate
 						      ,invoicedate
 						      ,calc_amount(amount,'OUT',mur_userid,invoicedate) amount
-						      ,mcs_mur_userid
 						      ,mcs_capitalsourceid
-						      ,mcp_mur_userid
 						      ,mcp_contractpartnerid
 						      ,comment
 						  FROM moneyflows mmf
@@ -67,9 +65,7 @@ class coreMoneyFlows extends core {
 						      ,bookingdate
 						      ,invoicedate
 						      ,calc_amount(amount,'OUT',mur_userid,invoicedate) amount
-						      ,mcs_mur_userid
 						      ,mcs_capitalsourceid
-						      ,mcp_mur_userid
 						      ,mcp_contractpartnerid
 						      ,comment
 						      ,private
@@ -84,9 +80,7 @@ class coreMoneyFlows extends core {
 						      ,bookingdate
 						      ,invoicedate
 						      ,calc_amount(amount,'OUT',mur_userid,invoicedate) amount
-						      ,mcs_mur_userid
 						      ,mcs_capitalsourceid
-						      ,mcp_mur_userid
 						      ,mcp_contractpartnerid
 						      ,comment
 						  FROM moneyflows mmf
@@ -109,20 +103,16 @@ class coreMoneyFlows extends core {
 	function get_all_date_source_data( $capitalsourceid, $startdate, $enddate ) {
 		$startdate = $this->make_date( $startdate );
 		$enddate   = $this->make_date( $enddate );
-/* FIXME: correct accessing mcs_mur_userid! */
 		return $this->select_rows( "	SELECT moneyflowid
 						      ,bookingdate
 						      ,invoicedate
 						      ,calc_amount(amount,'OUT',mur_userid,invoicedate) amount
-						      ,mcs_mur_userid
 						      ,mcs_capitalsourceid
-						      ,mcp_mur_userid
 						      ,mcp_contractpartnerid
 						      ,comment
 						  FROM moneyflows mmf
 						 WHERE bookingdate           BETWEEN $startdate AND $enddate
 						   AND mcs_capitalsourceid = $capitalsourceid
-						   AND mcs_mur_userid      = ".USERID."
 						   AND(mmf.mur_userid            = ".USERID."
 						       OR (mmf.private           = 0
 						           AND EXISTS (SELECT 1
@@ -169,9 +159,7 @@ class coreMoneyFlows extends core {
 						  FROM moneyflows       mmf USE INDEX (mmf_i_01)
 						      ,contractpartners mcp
 						      ,capitalsources   mcs
-						 WHERE mmf.mcp_mur_userid        = mcp.mur_userid
-						   AND mmf.mcs_mur_userid        = mcs.mur_userid
-						   AND mmf.mcp_contractpartnerid = mcp.contractpartnerid
+						 WHERE mmf.mcp_contractpartnerid = mcp.contractpartnerid
 						   AND mmf.mcs_capitalsourceid   = mcs.capitalsourceid
 						   AND mmf.bookingdate             BETWEEN $date AND LAST_DAY($date)
 						   AND(mmf.mur_userid            = ".USERID."
@@ -189,18 +177,15 @@ class coreMoneyFlows extends core {
 	}
 
 	function capitalsource_in_use( $id ) {
-/* FIXME: correct accessing mcs_mur_userid! */
 		if( $this->select_col( "SELECT COUNT(moneyflowid)
 					  FROM moneyflows
-					 WHERE mcs_capitalsourceid = $id
-					   AND mcs_mur_userid      = ".USERID ) > 0 )
+					 WHERE mcs_capitalsourceid = $id" ) > 0 )
 			return 1;
 		else
 			return 0;
 	}
 
 	function capitalsource_in_use_out_of_date( $id, $validfrom, $validtil ) {
-/* FIXME: correct accessing mcs_mur_userid! */
 		if( $this->select_col( "SELECT COUNT(moneyflowid)
 					  FROM moneyflows
 					 WHERE mcs_capitalsourceid = $id
@@ -208,19 +193,16 @@ class coreMoneyFlows extends core {
 						bookingdate < STR_TO_DATE('$validfrom',GET_FORMAT(DATE,'ISO'))
 					       OR
 						bookingdate > STR_TO_DATE('$validtil', GET_FORMAT(DATE,'ISO'))
-					      )
-					  AND mcs_mur_userid=".USERID ) > 0 )
+					      )" ) > 0 )
 			return 1;
 		else
 			return 0;
 	}
 
 	function contractpartner_in_use( $id ) {
-/* FIXME: correct accessing mcp_mur_userid! */
 		if( $this->select_col( "SELECT COUNT(moneyflowid)
 					  FROM moneyflows
-					 WHERE mcp_contractpartnerid = $id
-					   AND mcp_mur_userid        = ".USERID ) > 0 )
+					 WHERE mcp_contractpartnerid = $id" ) > 0 )
 			return 1;
 		else
 			return 0;
@@ -320,7 +302,6 @@ class coreMoneyFlows extends core {
 	}
 
 	function get_capitalsourceid( $id ) {
-/* FIXME: correct accessing mcs_mur_userid! */
 		return $this->select_col( "	SELECT mcs_capitalsourceid
 						  FROM moneyflows mmf
 						 WHERE moneyflowid = $id
@@ -335,8 +316,6 @@ class coreMoneyFlows extends core {
 	}
 
 	function update_moneyflow( $id, $bookingdate, $invoicedate, $amount, $capitalsourceid, $contractpartnerid, $comment, $private ) {
-/* FIXME: correct accessing mcs_mur_userid! */
-/* FIXME: correct accessing mcp_mur_userid! */
 		$coreCapitalSources = new coreCapitalSources();
 		if( $coreCapitalSources->id_is_valid( $capitalsourceid, $bookingdate ) ) {
 			$bookingdate = $this->make_date( $bookingdate );
@@ -346,9 +325,7 @@ class coreMoneyFlows extends core {
 								   SET bookingdate           = $bookingdate
 								      ,invoicedate           = $invoicedate
 								      ,amount                = calc_amount('$amount','IN',".USERID.",$invoicedate)
-								      ,mcs_mur_userid        = ".USERID."
 								      ,mcs_capitalsourceid   = '$capitalsourceid'
-								      ,mcp_mur_userid        = ".USERID."
 								      ,mcp_contractpartnerid = '$contractpartnerid'
 								      ,comment               = '$comment'
 								      ,private               = '$private'
@@ -372,9 +349,7 @@ class coreMoneyFlows extends core {
 							      ,bookingdate
 							      ,invoicedate
 							      ,amount
-							      ,mcs_mur_userid
 							      ,mcs_capitalsourceid
-							      ,mcp_mur_userid
 							      ,mcp_contractpartnerid
 							      ,comment
 							      ,private
@@ -384,9 +359,7 @@ class coreMoneyFlows extends core {
 							      ,$bookingdate
 							      ,$invoicedate
 							      ,calc_amount('$amount','IN',".USERID.",$invoicedate)
-							      ,".USERID."
 							      ,'$capitalsourceid'
-							      ,".USERID."
 							      ,'$contractpartnerid'
 							      ,'$comment'
 							      ,'$private'
@@ -397,7 +370,6 @@ class coreMoneyFlows extends core {
 	}
 
 	function search_moneyflows( $params ) {
-/* FIXME: correct accessing mcp_mur_userid! */
 		$SEARCHCOL      = 'a.comment';
 		$WHERE_KEYWORD  = '';
 

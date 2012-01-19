@@ -21,6 +21,7 @@
 					<th>{$TEXT_33}</th>
 					<th>{$TEXT_34}</th>
 					<th>{$TEXT_35}</th>
+					<th>{$TEXT_210}</th>
 				</tr>
 				<tr>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]"       value="{$ALL_DATA.comment}" /></td>
@@ -38,6 +39,12 @@
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[bankcode]"      value="{$ALL_DATA.bankcode}" /></td>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validfrom]"     value="{$ALL_DATA.validfrom}" size=8 {if $ALL_DATA.validfrom_error == 1}style="color:red"{/if} /></td>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validtil]"      value="{$ALL_DATA.validtil}"  size=8 {if $ALL_DATA.validtil_error  == 1}style="color:red"{/if} /></td>
+					<td class="contrastbgcolor">
+						<select class="contrastbgcolor" name="all_data[att_group_use]" size=1>
+							<option value=0 {if $ALL_DATA.att_group_use == 0}selected{/if} > {$TEXT_26}
+							<option value=1 {if $ALL_DATA.att_group_use == 1}selected{/if} > {$TEXT_25}
+						</select>
+					</td>
 				</tr>
 			</table>
 			<br />

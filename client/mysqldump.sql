@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.19, for FreeBSD9.0 (amd64)
+-- MySQL dump 10.13  Distrib 5.5.20, for FreeBSD9.0 (amd64)
 --
 -- Host: localhost    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	5.5.19-log
+-- Server version	5.5.20-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -68,7 +68,8 @@ CREATE TABLE capitalsources (
   `comment` varchar(255) DEFAULT NULL,
   validtil date NOT NULL DEFAULT '2999-12-31',
   validfrom date NOT NULL DEFAULT '1970-01-01',
-  PRIMARY KEY (capitalsourceid,mur_userid),
+  att_group_use tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (capitalsourceid),
   KEY mcs_i_01 (mur_userid),
   CONSTRAINT mcs_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcs';
@@ -89,7 +90,7 @@ CREATE TABLE contractpartners (
   postcode int(12) NOT NULL DEFAULT '0',
   town varchar(100) NOT NULL DEFAULT '',
   country varchar(100) NOT NULL DEFAULT '',
-  PRIMARY KEY (contractpartnerid,mur_userid),
+  PRIMARY KEY (contractpartnerid),
   UNIQUE KEY mcp_i_01 (mur_userid,`name`),
   CONSTRAINT mcp_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcp';
@@ -143,18 +144,14 @@ CREATE TABLE moneyflows (
   bookingdate date NOT NULL DEFAULT '0000-00-00',
   invoicedate date NOT NULL DEFAULT '0000-00-00',
   amount float(8,2) NOT NULL DEFAULT '0.00',
-  mcs_mur_userid int(10) unsigned NOT NULL,
   mcs_capitalsourceid int(10) unsigned NOT NULL,
-  mcp_mur_userid int(10) unsigned NOT NULL,
   mcp_contractpartnerid int(10) unsigned NOT NULL,
   `comment` varchar(100) NOT NULL DEFAULT '',
   private tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (moneyflowid,mur_userid),
   KEY mmf_i_01 (mur_userid,bookingdate),
-  KEY mmf_mcp_pk (mcp_contractpartnerid,mcp_mur_userid),
-  KEY mmf_mcs_pk (mcs_capitalsourceid,mcs_mur_userid),
-  CONSTRAINT mmf_mcp_pk FOREIGN KEY (mcp_contractpartnerid, mcp_mur_userid) REFERENCES contractpartners (contractpartnerid, mur_userid) ON UPDATE CASCADE,
-  CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mcs_mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
+  KEY mmf_mcs_pk (mcs_capitalsourceid),
+  CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mmf';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -176,8 +173,8 @@ CREATE TABLE monthlysettlements (
   movement_calculated float(8,2) DEFAULT NULL,
   PRIMARY KEY (monthlysettlementid,mur_userid),
   UNIQUE KEY mms_i_01 (mur_userid,`month`,`year`,mcs_capitalsourceid),
-  KEY mms_mcs_pk (mcs_capitalsourceid,mur_userid),
-  CONSTRAINT mms_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
+  KEY mms_mcs_pk (mcs_capitalsourceid),
+  CONSTRAINT mms_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid) ON UPDATE CASCADE,
   CONSTRAINT mms_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mms';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -193,9 +190,7 @@ CREATE TABLE predefmoneyflows (
   mur_userid int(10) unsigned NOT NULL,
   predefmoneyflowid int(10) unsigned NOT NULL AUTO_INCREMENT,
   amount float(8,2) NOT NULL DEFAULT '0.00',
-  mcs_mur_userid int(10) unsigned NOT NULL,
   mcs_capitalsourceid int(10) unsigned NOT NULL,
-  mcp_mur_userid int(10) unsigned NOT NULL,
   mcp_contractpartnerid int(10) unsigned NOT NULL,
   `comment` varchar(100) NOT NULL DEFAULT '',
   createdate date NOT NULL,
@@ -203,10 +198,8 @@ CREATE TABLE predefmoneyflows (
   last_used date DEFAULT NULL,
   PRIMARY KEY (predefmoneyflowid,mur_userid),
   KEY mpm_mur_pk (mur_userid),
-  KEY mpm_mcp_pk (mcp_contractpartnerid,mcp_mur_userid),
-  KEY mpm_mcs_pk (mcs_capitalsourceid,mcs_mur_userid),
-  CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid, mcs_mur_userid) REFERENCES capitalsources (capitalsourceid, mur_userid) ON UPDATE CASCADE,
-  CONSTRAINT mpm_mcp_pk FOREIGN KEY (mcp_contractpartnerid, mcp_mur_userid) REFERENCES contractpartners (contractpartnerid, mur_userid) ON UPDATE CASCADE,
+  KEY mpm_mcs_pk (mcs_capitalsourceid),
+  CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid) ON UPDATE CASCADE,
   CONSTRAINT mpm_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mpm';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -421,7 +414,7 @@ CREATE TABLE user_groups (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-01-17 14:15:41
+-- Dump completed on 2012-01-19 22:21:24
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -840,6 +833,8 @@ INSERT INTO text VALUES (208,1,'Number of empty lines for adding a moneyflow','t
 INSERT INTO text VALUES (208,2,'Anzahl freier Zeilen beim hinzufügen von Geldbewegungen','t');
 INSERT INTO text VALUES (209,1,'pr','t');
 INSERT INTO text VALUES (209,2,'pr','t');
+INSERT INTO text VALUES (210,1,'group','t');
+INSERT INTO text VALUES (210,2,'Gruppe','t');
 INSERT INTO templates VALUES ('display_add_language.tpl');
 INSERT INTO templates VALUES ('display_add_moneyflow.tpl');
 INSERT INTO templates VALUES ('display_analyze_cmp_data.tpl');
@@ -994,10 +989,12 @@ INSERT INTO templatevalues VALUES ('display_delete_moneyflow.tpl',25);
 INSERT INTO templatevalues VALUES ('display_delete_monthlysettlement.tpl',25);
 INSERT INTO templatevalues VALUES ('display_delete_predefmoneyflow.tpl',25);
 INSERT INTO templatevalues VALUES ('display_delete_user.tpl',25);
+INSERT INTO templatevalues VALUES ('display_edit_capitalsource.tpl',25);
 INSERT INTO templatevalues VALUES ('display_edit_currencies.tpl',25);
 INSERT INTO templatevalues VALUES ('display_edit_predefmoneyflow.tpl',25);
 INSERT INTO templatevalues VALUES ('display_edit_user.tpl',25);
 INSERT INTO templatevalues VALUES ('display_event_monthlysettlement.tpl',25);
+INSERT INTO templatevalues VALUES ('display_list_capitalsources.tpl',25);
 INSERT INTO templatevalues VALUES ('display_list_currencies.tpl',25);
 INSERT INTO templatevalues VALUES ('display_list_currencyrates.tpl',25);
 INSERT INTO templatevalues VALUES ('display_list_predefmoneyflows.tpl',25);
@@ -1010,10 +1007,12 @@ INSERT INTO templatevalues VALUES ('display_delete_moneyflow.tpl',26);
 INSERT INTO templatevalues VALUES ('display_delete_monthlysettlement.tpl',26);
 INSERT INTO templatevalues VALUES ('display_delete_predefmoneyflow.tpl',26);
 INSERT INTO templatevalues VALUES ('display_delete_user.tpl',26);
+INSERT INTO templatevalues VALUES ('display_edit_capitalsource.tpl',26);
 INSERT INTO templatevalues VALUES ('display_edit_currencies.tpl',26);
 INSERT INTO templatevalues VALUES ('display_edit_predefmoneyflow.tpl',26);
 INSERT INTO templatevalues VALUES ('display_edit_user.tpl',26);
 INSERT INTO templatevalues VALUES ('display_event_monthlysettlement.tpl',26);
+INSERT INTO templatevalues VALUES ('display_list_capitalsources.tpl',26);
 INSERT INTO templatevalues VALUES ('display_list_currencies.tpl',26);
 INSERT INTO templatevalues VALUES ('display_list_currencyrates.tpl',26);
 INSERT INTO templatevalues VALUES ('display_list_predefmoneyflows.tpl',26);
@@ -1258,6 +1257,8 @@ INSERT INTO templatevalues VALUES ('display_personal_settings.tpl',208);
 INSERT INTO templatevalues VALUES ('display_system_settings.tpl',208);
 INSERT INTO templatevalues VALUES ('display_add_moneyflow.tpl',209);
 INSERT INTO templatevalues VALUES ('display_edit_moneyflow.tpl',209);
+INSERT INTO templatevalues VALUES ('display_edit_capitalsource.tpl',210);
+INSERT INTO templatevalues VALUES ('display_list_capitalsources.tpl',210);
 INSERT INTO domains VALUES ('CAPITALSOURCE_STATE');
 INSERT INTO domains VALUES ('CAPITALSOURCE_TYPE');
 INSERT INTO domains VALUES ('MONTHS');

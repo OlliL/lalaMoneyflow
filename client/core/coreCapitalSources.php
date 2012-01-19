@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.32 2012/01/15 12:27:21 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.33 2012/01/19 21:22:43 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -39,8 +39,12 @@ class coreCapitalSources extends core {
 
 	function count_all_data() {
 		if ( $num = $this->select_col( 'SELECT count(*)
-						  FROM capitalsources
-						 WHERE mur_userid = '.USERID ) ) {
+						  FROM vw_capitalsources
+						 WHERE mug_mur_userid = '.USERID.'
+						   AND (mur_userid = '.USERID.'
+						        OR
+						        att_group_use = 1
+						       )' )) {
 			return $num;
 		} else {
 			return;
@@ -56,10 +60,10 @@ class coreCapitalSources extends core {
 			$datetil = $this->make_date( $datetil );
 
 		if ( $num = $this->select_col( "SELECT count(*)
-						  FROM capitalsources
+						  FROM vw_capitalsources
 						 WHERE validfrom <= $datetil
 						   AND validtil  >= $datefrom
-						   AND mur_userid = ".USERID ) ) {
+						   AND mug_mur_userid = ".USERID ) ) {
 			return $num;
 		} else {
 			return;
@@ -77,9 +81,32 @@ class coreCapitalSources extends core {
 						      ,comment
 						      ,validtil
 						      ,validfrom
-						  FROM capitalsources
-						 WHERE mur_userid = ".USERID."
-						 ORDER BY capitalsourceid" );
+						      ,att_group_use
+						  FROM vw_capitalsources
+						 WHERE mug_mur_userid = ".USERID."
+						 ORDER BY CASE WHEN mur_userid = ".USERID." THEN 1 ELSE 2 END, capitalsourceid" );
+	}
+
+	function get_editable_data() {
+		return $this->select_rows( "	SELECT mur_userid
+						      ,capitalsourceid
+						      ,type
+						      ,domain_meaning('CAPITALSOURCE_TYPE',type,".USERID.") typecomment
+						      ,state
+						      ,domain_meaning('CAPITALSOURCE_STATE',state,".USERID.") statecomment
+						      ,accountnumber
+						      ,bankcode
+						      ,comment
+						      ,validtil
+						      ,validfrom
+						      ,att_group_use
+						  FROM vw_capitalsources
+						 WHERE mug_mur_userid = ".USERID."
+						   AND (mur_userid = ".USERID."
+						        OR
+						        att_group_use = 1
+						       )
+						 ORDER BY CASE WHEN mur_userid = ".USERID." THEN 1 ELSE 2 END, capitalsourceid" );
 	}
 
 	function get_valid_data( $datefrom='', $datetil='', $group=false ) {
@@ -90,18 +117,6 @@ class coreCapitalSources extends core {
 		else
 			$datetil = $this->make_date( $datetil );
 		
-		if( $group )
-			$user="			   AND(mcs.mur_userid            = ".USERID."
-						       OR ( EXISTS (SELECT 1
-						                      FROM user_groups mug1
-						                          ,user_groups mug2
-						                     WHERE mug1.mgr_groupid = mug2.mgr_groupid
-						                       AND mug1.mur_userid  = ".USERID."
-						                       AND mug2.mur_userid  = mcs.mur_userid
-						                   )
-						          )
-						      )";
-		else
 			$user="			   AND mur_userid = ".USERID;
 
 		return $this->select_rows( "	SELECT mur_userid
@@ -115,11 +130,11 @@ class coreCapitalSources extends core {
 						      ,comment
 						      ,validtil
 						      ,validfrom
-						  FROM capitalsources mcs
+						  FROM vw_capitalsources
 						 WHERE validfrom <= $datetil
 						   AND validtil  >= $datefrom
-						   ".$user."
-						 ORDER BY capitalsourceid" );
+						   AND mug_mur_userid = ".USERID."
+						 ORDER BY CASE WHEN mur_userid = ".USERID." THEN 1 ELSE 2 END, capitalsourceid" );
 	}
 
 	function get_id_data( $id ) {
@@ -133,16 +148,22 @@ class coreCapitalSources extends core {
 						      ,comment
 						      ,validtil
 						      ,validfrom
-						  FROM capitalsources
+						      ,att_group_use
+						  FROM vw_capitalsources
 						 WHERE capitalsourceid = $id
-						   AND mur_userid      = ".USERID."
+						   AND mug_mur_userid      = ".USERID."
 						 LIMIT 1" );
 	}
 
 	function get_all_index_letters() {
 		return $this->select_cols( '	SELECT DISTINCT UPPER(SUBSTR(comment,1,1)) letters
-						  FROM capitalsources
-						 WHERE mur_userid = '.USERID.'
+						  FROM vw_capitalsources
+						 WHERE mug_mur_userid = '.USERID.'
+						   AND (mur_userid = '.USERID.'
+						        OR
+						        att_group_use = 1
+						       )
+
 						 ORDER BY letters' );
 	}
 
@@ -157,16 +178,21 @@ class coreCapitalSources extends core {
 						      ,comment
 						      ,validtil
 						      ,validfrom
-						  FROM capitalsources
+						      ,att_group_use
+						  FROM vw_capitalsources
 						 WHERE UPPER(comment) LIKE UPPER('$letter%')
-						   AND mur_userid = ".USERID."
+						   AND mug_mur_userid = ".USERID."
+						   AND (mur_userid = ".USERID."
+						        OR
+						        att_group_use = 1
+						       )
 						 ORDER BY comment" );
 	}
 
 	function get_all_ids() {
 		return $this->select_cols( '	SELECT capitalsourceid
-						  FROM capitalsources
-						 WHERE mur_userid = '.USERID.'
+						  FROM vw_capitalsources
+						 WHERE mug_mur_userid = '.USERID.'
 						 ORDER BY capitalsourceid' );
 	}
 
@@ -179,18 +205,18 @@ class coreCapitalSources extends core {
 			$datetil = $this->make_date( $datetil );
 
 		return $this->select_cols( "	SELECT capitalsourceid
-						  FROM capitalsources
+						  FROM vw_capitalsources
 						 WHERE validfrom <= $datetil
 						   AND validtil  >= $datefrom
-						   AND mur_userid = ".USERID."
+						   AND mug_mur_userid = ".USERID."
 						 ORDER BY capitalsourceid" );
 	}
 
 	function get_all_comments() {
 		return $this->select_rows( '	SELECT capitalsourceid
 						      ,comment
-						  FROM capitalsources
-						 WHERE mur_userid = '.USERID.'
+						  FROM vw_capitalsources
+						 WHERE mug_mur_userid = '.USERID.'
 						 ORDER BY capitalsourceid' );
 	}
 
@@ -198,10 +224,14 @@ class coreCapitalSources extends core {
 		$date = $this->make_date($date);
 		$result=$this->select_rows( "	SELECT capitalsourceid
 						       ,comment
-						   FROM capitalsources
+						   FROM vw_capitalsources
 						  WHERE $date	BETWEEN validfrom AND validtil
-						    AND mur_userid = ".USERID."
-						  ORDER BY capitalsourceid" );
+						    AND mug_mur_userid = ".USERID."
+						    AND (mur_userid = ".USERID."
+						         OR
+						         att_group_use = 1
+						        )
+						  ORDER BY CASE WHEN mur_userid = ".USERID." THEN 1 ELSE 2 END, capitalsourceid" );
 		if( is_array( $result ) ) {
 			return $result;
 		} else {
@@ -222,37 +252,37 @@ class coreCapitalSources extends core {
 
 	function get_comment( $id ) {
 		return $this->select_col( "	SELECT comment
-						  FROM capitalsources
+						  FROM vw_capitalsources
 						 WHERE capitalsourceid = $id
-						   AND mur_userid      = ".USERID."
+						   AND mug_mur_userid  = ".USERID."
 						 LIMIT 1" );
 	}
 
 	function get_type( $id ) {
 		return $this->select_row( "	SELECT type
 						      ,domain_meaning('CAPITALSOURCE_TYPE',type,".USERID.") typecomment
-						  FROM capitalsources
+						  FROM vw_capitalsources
 						 WHERE capitalsourceid = $id
-						   AND mur_userid      = ".USERID."
+						   AND mug_mur_userid  = ".USERID."
 						 LIMIT 1" );
 	}
 
 	function get_state( $id ) {
 		return $this->select_row( "	SELECT state
 						      ,domain_meaning('CAPITALSOURCE_STATE',state,".USERID.") statecomment
-						  FROM capitalsources
+						  FROM vw_capitalsources
 						 WHERE capitalsourceid = $id
-						   AND mur_userid      = ".USERID."
+						   AND mug_mur_userid  = ".USERID."
 						 LIMIT 1" );
 	}
 
 	function id_is_valid( $id, $date='' ) {
 		$date = $this->make_date($date);
 		return $this->select_col( "	SELECT 1
-						  FROM capitalsources
+						  FROM vw_capitalsources
 						 WHERE capitalsourceid = $id
-						   AND $date	     BETWEEN validfrom AND validtil
-						   AND mur_userid      = ".USERID."
+						   AND $date	       BETWEEN validfrom AND validtil
+						   AND mug_mur_userid  = ".USERID."
 						 LIMIT 1" );
 	}
 
@@ -271,7 +301,7 @@ class coreCapitalSources extends core {
 	}
 
 
-	function update_capitalsource( $id, $type, $state, $accountnumber, $bankcode, $comment, $validfrom, $validtil ) {
+	function update_capitalsource( $id, $type, $state, $accountnumber, $bankcode, $comment, $validfrom, $validtil, $att_group_use ) {
 		$coreMoneyFlows = new coreMoneyFlows();
 		if( $coreMoneyFlows->capitalsource_in_use_out_of_date( $id, $validfrom, $validtil ) ) {
 			add_error( 121 );
@@ -287,6 +317,7 @@ class coreCapitalSources extends core {
 							      ,comment       = '$comment'
 							      ,validfrom     = $validfrom
 							      ,validtil      = $validtil
+							      ,att_group_use = $att_group_use
 							 WHERE capitalsourceid = $id
 							   AND mur_userid      = ".USERID." 
 							 LIMIT 1" );
@@ -296,14 +327,14 @@ class coreCapitalSources extends core {
 	function get_capitalsource_by_name( $comment, $date=''  ) {
 		$date = $this->make_date($date);
 		return $this->select_col( "	SELECT capitalsourceid
-						  FROM capitalsources
-						 WHERE comment    = '$comment'
-						   AND mur_userid = ".USERID."
-						   AND $date	BETWEEN validfrom AND validtil
+						  FROM vw_capitalsources
+						 WHERE comment        = '$comment'
+						   AND mug_mur_userid = ".USERID."
+						   AND $date	      BETWEEN validfrom AND validtil
 						 LIMIT 1" );
 	}
 
-	function add_capitalsource( $type, $state, $accountnumber, $bankcode, $comment, $validfrom, $validtil ) {
+	function add_capitalsource( $type, $state, $accountnumber, $bankcode, $comment, $validfrom, $validtil, $att_group_use ) {
 		if( $this->get_capitalsource_by_name( $comment, $validfrom ) ) {
 			add_error( 203 );
 			return 0;
@@ -322,6 +353,7 @@ class coreCapitalSources extends core {
 							      ,comment
 							      ,validfrom
 							      ,validtil
+							      ,att_group_use
 							      )
 							       VALUES
 							      (".USERID."
@@ -332,6 +364,7 @@ class coreCapitalSources extends core {
 							      ,'$comment'
 							      ,$validfrom
 							      ,$validtil
+							      ,$att_group_use
 							      )" );
 		}
 	}
