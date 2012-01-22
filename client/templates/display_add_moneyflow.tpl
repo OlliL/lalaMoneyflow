@@ -58,7 +58,7 @@
 				{/section}
 {literal}
 <script language="JavaScript">
-  document.addmoney.elements[5].focus();
+  document.addmoney.elements[6].focus();
 </script>
 {/literal}
 			</table>

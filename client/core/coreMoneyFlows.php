@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.46 2012/01/19 21:25:07 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.47 2012/01/22 15:34:07 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -44,17 +44,12 @@ class coreMoneyFlows extends core {
 						      ,mcs_capitalsourceid
 						      ,mcp_contractpartnerid
 						      ,comment
-						  FROM moneyflows mmf
-						 WHERE mmf.mur_userid            = ".USERID."
-						       OR (mmf.private           = 0
-						           AND EXISTS (SELECT 1
-						                         FROM user_groups mug1
-						                             ,user_groups mug2
-						                        WHERE mug1.mgr_groupid = mug2.mgr_groupid
-						                          AND mug1.mur_userid  = ".USERID."
-						                          AND mug2.mur_userid  = mmf.mur_userid
-						                      )
-						          )
+						  FROM vw_moneyflows mmf
+						 WHERE mmf.mug_mur_userid  = ".USERID."
+						   AND (mmf.private        = 0
+						        OR
+						        mmf.mur_userid     = ".USERID."
+						       )
 						 ORDER BY moneyflowid" );
 
 
@@ -83,19 +78,13 @@ class coreMoneyFlows extends core {
 						      ,mcs_capitalsourceid
 						      ,mcp_contractpartnerid
 						      ,comment
-						  FROM moneyflows mmf
+						  FROM vw_moneyflows mmf
 						 WHERE bookingdate  BETWEEN $date AND LAST_DAY($date)
-						   AND(mmf.mur_userid            = ".USERID."
-						       OR (mmf.private           = 0
-						           AND EXISTS (SELECT 1
-						                         FROM user_groups mug1
-						                             ,user_groups mug2
-						                        WHERE mug1.mgr_groupid = mug2.mgr_groupid
-						                          AND mug1.mur_userid  = ".USERID."
-						                          AND mug2.mur_userid  = mmf.mur_userid
-						                      )
-						          )
-						      )
+						   AND mmf.mug_mur_userid  = ".USERID."
+						   AND (mmf.private        = 0
+						        OR
+						        mmf.mur_userid     = ".USERID."
+						       )
 						 ORDER BY bookingdate
 							 ,invoicedate" );
 	}
@@ -110,20 +99,14 @@ class coreMoneyFlows extends core {
 						      ,mcs_capitalsourceid
 						      ,mcp_contractpartnerid
 						      ,comment
-						  FROM moneyflows mmf
+						  FROM vw_moneyflows mmf
 						 WHERE bookingdate           BETWEEN $startdate AND $enddate
 						   AND mcs_capitalsourceid = $capitalsourceid
-						   AND(mmf.mur_userid            = ".USERID."
-						       OR (mmf.private           = 0
-						           AND EXISTS (SELECT 1
-						                         FROM user_groups mug1
-						                             ,user_groups mug2
-						                        WHERE mug1.mgr_groupid = mug2.mgr_groupid
-						                          AND mug1.mur_userid  = ".USERID."
-						                          AND mug2.mur_userid  = mmf.mur_userid
-						                      )
-						          )
-						      )
+						   AND mmf.mug_mur_userid  = ".USERID."
+						   AND (mmf.private        = 0
+						        OR
+						        mmf.mur_userid     = ".USERID."
+						       )
 						 ORDER BY bookingdate
 							 ,invoicedate" );
 	}
@@ -156,23 +139,17 @@ class coreMoneyFlows extends core {
 						      ,mcp.name    contractpartnername
 						      ,mcs.comment capitalsourcecomment
 						      ,mmf.mur_userid
-						  FROM moneyflows       mmf USE INDEX (mmf_i_01)
+						  FROM vw_moneyflows    mmf
 						      ,contractpartners mcp
 						      ,capitalsources   mcs
 						 WHERE mmf.mcp_contractpartnerid = mcp.contractpartnerid
 						   AND mmf.mcs_capitalsourceid   = mcs.capitalsourceid
 						   AND mmf.bookingdate             BETWEEN $date AND LAST_DAY($date)
-						   AND(mmf.mur_userid            = ".USERID."
-						       OR (mmf.private           = 0
-						           AND EXISTS (SELECT 1
-						                         FROM user_groups mug1
-						                             ,user_groups mug2
-						                        WHERE mug1.mgr_groupid = mug2.mgr_groupid
-						                          AND mug1.mur_userid  = ".USERID."
-						                          AND mug2.mur_userid  = mmf.mur_userid
-						                      )
-						          )
-						      )
+						   AND mmf.mug_mur_userid  = ".USERID."
+						   AND (mmf.private        = 0
+						        OR
+						        mmf.mur_userid     = ".USERID."
+						       )
 						 ORDER BY $sortby $sortbyadd" );
 	}
 
@@ -221,18 +198,13 @@ class coreMoneyFlows extends core {
 		$end   = 'LAST_DAY('.$this->make_date($year.'-'.$endmonth.'-01').')';
 
 		$movement = $this->select_col( "SELECT SUM(calc_amount(amount,'OUT',mur_userid,invoicedate)) amount
-						  FROM moneyflows
-						 WHERE mmf.mur_userid            = ".USERID."
-						       OR (mmf.private           = 0
-						           AND EXISTS (SELECT 1
-						                         FROM user_groups mug1
-						                             ,user_groups mug2
-						                        WHERE mug1.mgr_groupid = mug2.mgr_groupid
-						                          AND mug1.mur_userid  = ".USERID."
-						                          AND mug2.mur_userid  = mmf.mur_userid
-						                      )
-						          )
-						   AND bookingdate  BETWEEN $start AND $end" );
+						  FROM vw_moneyflows mmf
+						 WHERE mmf.mug_mur_userid  = ".USERID."
+						   AND (mmf.private        = 0
+						        OR
+						        mmf.mur_userid     = ".USERID."
+						       )
+						   AND bookingdate   BETWEEN $start AND $end" );
 		if( empty( $movement ) )
 			$movement=0;
 		return $movement;
@@ -240,56 +212,46 @@ class coreMoneyFlows extends core {
 
 	function get_all_years() {
 		return $this->select_cols( '	SELECT DISTINCT YEAR(bookingdate) year
-						  FROM moneyflows mmf
-						 WHERE mmf.mur_userid            = '.USERID.'
-						       OR (mmf.private           = 0
-						           AND EXISTS (SELECT 1
-						                         FROM user_groups mug1
-						                             ,user_groups mug2
-						                        WHERE mug1.mgr_groupid = mug2.mgr_groupid
-						                          AND mug1.mur_userid  = '.USERID.'
-						                          AND mug2.mur_userid  = mmf.mur_userid
-						                      )
-						          )
+						  FROM vw_moneyflows mmf
+						 WHERE mmf.mug_mur_userid  = '.USERID.'
+						   AND (mmf.private        = 0
+						        OR
+						        mmf.mur_userid     = '.USERID.'
+						       )
 						 ORDER BY year ASC' );
 	}
 
 	function get_all_months( $year ) {
+		$start = $this->make_date($year.'-'.'01-01');
+		$end   = $this->make_date($year.'-'.'12-31');
+
 		return $this->select_cols( "	SELECT DISTINCT MONTH(bookingdate) month
-						  FROM moneyflows mmf
-						 WHERE YEAR(bookingdate) = $year
-						   AND(mmf.mur_userid            = ".USERID."
-						       OR (mmf.private           = 0
-						           AND EXISTS (SELECT 1
-						                         FROM user_groups mug1
-						                             ,user_groups mug2
-						                        WHERE mug1.mgr_groupid = mug2.mgr_groupid
-						                          AND mug1.mur_userid  = ".USERID."
-						                          AND mug2.mur_userid  = mmf.mur_userid
-						                      )
-						          )
-						      )
+						  FROM vw_moneyflows mmf
+						 WHERE bookingdate   BETWEEN $start AND $end
+						   AND mmf.mug_mur_userid  = ".USERID."
+						   AND (mmf.private        = 0
+						        OR
+						        mmf.mur_userid     = ".USERID."
+						       )
 						 ORDER BY month ASC" );
 	}
 
 	function get_max_year_month() {
 		return $this->select_row( '	SELECT MONTH(bookingdate) month
 						      ,YEAR(bookingdate) year
-						  FROM moneyflows mmf
-						 WHERE(mmf.mur_userid            = '.USERID.'
-						       OR (mmf.private           = 0
-						           AND EXISTS (SELECT 1
-						                         FROM user_groups mug1
-						                             ,user_groups mug2
-						                        WHERE mug1.mgr_groupid = mug2.mgr_groupid
-						                          AND mug1.mur_userid  = '.USERID.'
-						                          AND mug2.mur_userid  = mmf.mur_userid
-						                      )
-						          )
-						      )
+						  FROM vw_moneyflows mmf
+						 WHERE mmf.mug_mur_userid  = '.USERID.'
+						   AND (mmf.private        = 0
+						        OR
+						        mmf.mur_userid     = '.USERID.'
+						       )
 						   AND bookingdate = (SELECT MAX(bookingdate)
 						                        FROM moneyflows
-						                       WHERE mur_userid = '.USERID.'
+						                       WHERE mmf.mug_mur_userid  = ".USERID."
+						                         AND (mmf.private        = 0
+						                              OR
+						                              mmf.mur_userid     = ".USERID."
+						                             )
 						                       LIMIT 1)
 						 LIMIT 1');
 	}
@@ -474,21 +436,15 @@ class coreMoneyFlows extends core {
 		return $this->select_rows( "	SELECT SUM(calc_amount(a.amount,'OUT',".USERID.",invoicedate))               amount
 						      ,GROUP_CONCAT( DISTINCT a.comment ORDER BY comment DESC SEPARATOR ',') comment
 						      $SELECT_CONDITION
-						  FROM moneyflows a 
+						  FROM vw_moneyflows a 
 						       $JOIN_CONDITION
 						 WHERE$WHERE_CONDITION 
 						   AND a.bookingdate BETWEEN ".$params['startdate']." AND ".$params['enddate']."
-						   AND(a.mur_userid            = ".USERID."
-						       OR (a.private           = 0
-						           AND EXISTS (SELECT 1
-						                         FROM user_groups mug1
-						                             ,user_groups mug2
-						                        WHERE mug1.mgr_groupid = mug2.mgr_groupid
-						                          AND mug1.mur_userid  = ".USERID."
-						                          AND mug2.mur_userid  = a.mur_userid
-						                      )
-						          )
-						      )
+						   AND a.mug_mur_userid  = ".USERID."
+						   AND (a.private        = 0
+						        OR
+						        a.mur_userid     = ".USERID."
+						       )
 						 GROUP BY$GROUP_CONDITION
 						 ORDER BY$ORDER_CONDITION" );
 	}
@@ -505,19 +461,13 @@ class coreMoneyFlows extends core {
 	function month_has_moneyflows( $month, $year ) {
 		$date = $this->make_date( $year."-".$month."-01" );
 		$value = $this->select_col( "	SELECT 1
-						  FROM moneyflows mmf
+						  FROM vw_moneyflows mmf
 						 WHERE bookingdate BETWEEN $date AND LAST_DAY($date)
-						   AND(mmf.mur_userid            = ".USERID."
-						       OR (mmf.private           = 0
-						           AND EXISTS (SELECT 1
-						                         FROM user_groups mug1
-						                             ,user_groups mug2
-						                        WHERE mug1.mgr_groupid = mug2.mgr_groupid
-						                          AND mug1.mur_userid  = ".USERID."
-						                          AND mug2.mur_userid  = mmf.mur_userid
-						                      )
-						          )
-						      )
+						   AND mmf.mug_mur_userid  = ".USERID."
+						   AND (mmf.private        = 0
+						        OR
+						        mmf.mur_userid     = ".USERID."
+						       )
 						LIMIT 1" );
 		if( $value != 1 ) {
 			$value = false;

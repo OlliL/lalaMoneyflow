@@ -150,7 +150,10 @@ CREATE TABLE moneyflows (
   private tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (moneyflowid,mur_userid),
   KEY mmf_i_01 (mur_userid,bookingdate),
+  KEY mmf_i_02 (bookingdate),
   KEY mmf_mcs_pk (mcs_capitalsourceid),
+  KEY mmf_mcp_pk (mcp_contractpartnerid),
+  CONSTRAINT mmf_mcp_pk FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners (contractpartnerid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mmf';
@@ -414,7 +417,7 @@ CREATE TABLE user_groups (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-01-19 22:21:24
+-- Dump completed on 2012-01-22 16:33:49
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');

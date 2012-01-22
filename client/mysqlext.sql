@@ -15,8 +15,39 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_user_groups (
                
 /*
  * this view will show all data from all users which are in the
- * same group as mms_mur_userid. Use mug_mur_userid in the query
- * mug_mur_userid is the real userid of the dataset
+ * same group as mur_userid. Use mug_mur_userid in the query,
+ * mur_userid is the real userid of the dataset
+ */
+CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_moneyflows (
+   mur_userid
+  ,mug_mur_userid
+  ,moneyflowid         
+  ,bookingdate
+  ,invoicedate          
+  ,amount               
+  ,mcs_capitalsourceid  
+  ,mcp_contractpartnerid
+  ,comment              
+  ,private              
+  ) AS
+      SELECT mmf.mur_userid
+            ,mug.mug2_mur_userid
+            ,mmf.moneyflowid
+            ,mmf.bookingdate
+            ,mmf.invoicedate
+            ,mmf.amount
+            ,mmf.mcs_capitalsourceid
+            ,mmf.mcp_contractpartnerid
+            ,mmf.comment
+            ,mmf.private
+        FROM moneyflows     mmf
+            ,vw_user_groups mug
+       WHERE mug.mug1_mur_userid = mmf.mur_userid;
+
+/*
+ * this view will show all data from all users which are in the
+ * same group as mur_userid. Use mug_mur_userid in the query,
+ * mur_userid is the real userid of the dataset
  */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
    mur_userid
@@ -42,8 +73,8 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
 
 /*
  * this view will show all data from all users which are in the
- * same group as mur_userid. Use mug_mur_userid in the query
- * mug_mur_userid is the real userid of the dataset
+ * same group as mur_userid. Use mug_mur_userid in the query,
+ * mur_userid is the real userid of the dataset
  */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_capitalsources (
    mur_userid
