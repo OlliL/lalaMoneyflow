@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: include.php,v 1.12 2012/01/19 21:25:06 olivleh1 Exp $
+# $Id: include.php,v 1.13 2012/01/25 19:39:48 olivleh1 Exp $
 #
 
 ##########
@@ -47,7 +47,7 @@ $confTimer   = 2;
 
 # debug mode (boolean)
 $money_debug = false;
-#$money_debug = true;
+$money_debug = true;
 
 # default year for "valid til" columns when creating a new dataset
 define( 'MAX_YEAR', '2999-12-31' );

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: explain.php,v 1.6 2012/01/19 21:25:06 olivleh1 Exp $
+# $Id: explain.php,v 1.7 2012/01/25 19:39:48 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -50,7 +50,7 @@ function print_query( $reslink ) {
 	
 		echo "<tr>";
 		foreach( $val as $key => $value ) {
-			echo "<td>".$value."</td>";
+			echo "<td>".$value."&nbsp</td>";
 		}
 		echo "</tr>";
 	}
@@ -64,7 +64,7 @@ if( DB::isError( $db ) )
 $query = stripslashes($_GET['query']);
 
 echo "<h1>Query</h1>";
-echo $query;
+echo "<pre>$query</pre>";
 
 $reslink = $db->query( "EXPLAIN $query" );
 if( DB::isError( $reslink ) )

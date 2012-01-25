@@ -401,6 +401,8 @@ DROP TABLE IF EXISTS user_groups;
 CREATE TABLE user_groups (
   mur_userid int(10) unsigned NOT NULL,
   mgr_groupid int(10) unsigned NOT NULL,
+  validfrom date NOT NULL,
+  validtil date NOT NULL,
   PRIMARY KEY (mur_userid,mgr_groupid),
   KEY mug_mgr_pk (mgr_groupid),
   CONSTRAINT mug_mgr_pk FOREIGN KEY (mgr_groupid) REFERENCES `groups` (groupid) ON UPDATE CASCADE,
@@ -417,7 +419,7 @@ CREATE TABLE user_groups (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-01-22 16:33:49
+-- Dump completed on 2012-01-25 20:39:37
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');

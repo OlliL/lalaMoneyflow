@@ -4,10 +4,14 @@
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_user_groups (
    mug1_mur_userid
   ,mug2_mur_userid
+  ,validfrom
+  ,validtil
   ) AS
      SELECT DISTINCT
             mug1.mur_userid mug1_mur_userid
            ,mug2.mur_userid mug2_mur_userid
+           ,mug1.validfrom
+           ,mug1.validtil
        FROM user_groups mug1
            ,user_groups mug2
       WHERE mug1.mgr_groupid = mug2.mgr_groupid;
@@ -42,7 +46,12 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_moneyflows (
             ,mmf.private
         FROM moneyflows     mmf
             ,vw_user_groups mug
-       WHERE mug.mug1_mur_userid = mmf.mur_userid;
+       WHERE (     mug.mug1_mur_userid = mmf.mur_userid
+               AND mmf.bookingdate BETWEEN mug.validfrom and mug.validtil
+             )
+          OR (     mug.mug1_mur_userid = mmf.mur_userid
+               AND mug.mug2_mur_userid = mmf.mur_userid
+             );
 
 /*
  * this view will show all data from all users which are in the
@@ -69,7 +78,12 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
             ,mms.movement_calculated
         FROM monthlysettlements mms
             ,vw_user_groups     mug
-       WHERE mug.mug1_mur_userid = mms.mur_userid;
+       WHERE (     mug.mug1_mur_userid = mms.mur_userid
+               AND STR_TO_DATE(year||'-'||month||'-01',GET_FORMAT(DATE,'ISO')) BETWEEN mug.validfrom and mug.validtil
+             )
+          OR (     mug.mug1_mur_userid = mms.mur_userid
+               AND mug.mug2_mur_userid = mms.mur_userid
+             );
 
 /*
  * this view will show all data from all users which are in the
@@ -97,12 +111,24 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_capitalsources (
             ,mcs.accountnumber
             ,mcs.bankcode
             ,mcs.comment
-            ,mcs.validtil
-            ,mcs.validfrom
+            ,(CASE
+                WHEN mug.mug2_mur_userid != mcs.mur_userid AND mcs.validtil  > mug.validtil THEN mug.validtil
+                ELSE mcs.validtil
+              END)
+            ,(CASE
+                WHEN mug.mug2_mur_userid != mcs.mur_userid AND mcs.validfrom < mug.validfrom THEN mug.validfrom
+                ELSE mcs.validfrom
+              END)
             ,mcs.att_group_use
         FROM capitalsources     mcs
             ,vw_user_groups     mug
-       WHERE mug.mug1_mur_userid = mcs.mur_userid;
+       WHERE (     mug.mug1_mur_userid = mcs.mur_userid
+               AND mcs.validfrom < mug.validtil
+               AND mcs.validtil  > mug.validfrom
+             )
+          OR (     mug.mug1_mur_userid = mcs.mur_userid
+               AND mug.mug2_mur_userid = mcs.mur_userid
+             );
 
 
 /*
