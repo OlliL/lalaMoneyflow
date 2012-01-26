@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.47 2012/01/22 15:34:07 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.48 2012/01/26 20:05:30 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -239,18 +239,18 @@ class coreMoneyFlows extends core {
 	function get_max_year_month() {
 		return $this->select_row( '	SELECT MONTH(bookingdate) month
 						      ,YEAR(bookingdate) year
-						  FROM vw_moneyflows mmf
-						 WHERE mmf.mug_mur_userid  = '.USERID.'
-						   AND (mmf.private        = 0
+						  FROM vw_moneyflows
+						 WHERE mug_mur_userid  = '.USERID.'
+						   AND (private        = 0
 						        OR
-						        mmf.mur_userid     = '.USERID.'
+						        mur_userid     = '.USERID.'
 						       )
 						   AND bookingdate = (SELECT MAX(bookingdate)
-						                        FROM moneyflows
-						                       WHERE mmf.mug_mur_userid  = ".USERID."
-						                         AND (mmf.private        = 0
+						                        FROM vw_moneyflows
+						                       WHERE mug_mur_userid  = '.USERID.'
+						                         AND (private        = 0
 						                              OR
-						                              mmf.mur_userid     = ".USERID."
+						                              mur_userid     = '.USERID.'
 						                             )
 						                       LIMIT 1)
 						 LIMIT 1');

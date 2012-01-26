@@ -79,7 +79,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
         FROM monthlysettlements mms
             ,vw_user_groups     mug
        WHERE (     mug.mug1_mur_userid = mms.mur_userid
-               AND STR_TO_DATE(year||'-'||month||'-01',GET_FORMAT(DATE,'ISO')) BETWEEN mug.validfrom and mug.validtil
+               AND STR_TO_DATE(CONCAT(year,'-',LPAD(month,2,'0'),'-01'),GET_FORMAT(DATE,'ISO')) BETWEEN mug.validfrom and mug.validtil
              )
           OR (     mug.mug1_mur_userid = mms.mur_userid
                AND mug.mug2_mur_userid = mms.mur_userid
@@ -387,9 +387,9 @@ BEGIN
                                  ,'OUT'
                                  ,pi_userid
                                  ,invoicedate)),0)
-      FROM moneyflows
+      FROM vw_moneyflows
      WHERE bookingdate   BETWEEN l_date_begin AND l_date_end
-       AND mur_userid          = pi_userid
+       AND mug_mur_userid      = pi_userid
        AND mcs_capitalsourceid = pi_capitalsourceid;
 
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET l_amount := 0;
