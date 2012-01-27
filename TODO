@@ -1,9 +1,4 @@
 - create group-mantainance screens 
-  - add group
-  - delete group
-  - rename group
-    -> a new menu item "Groups" where all groups are listed like users and can
-       be edited or deleted or added - same as users
 
   - add user to group(s)
   - remove user from group(s)

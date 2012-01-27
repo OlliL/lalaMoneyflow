@@ -3,7 +3,7 @@
 	all,body,table,a,td,option,input,select { font-size:10px;font-family:Bitstream Vera Sans,Arial, Helvetica,sans-serif; }
 	.contrastbgcolor { background-color: #B0C4DE; }
 	{/literal}
-	</style>				
+	</style>
 	</head>
 	<body name="main" bgcolor="#E6E6FA">
 		<table border=0 width="100%" height="100%">
@@ -36,6 +36,7 @@
 {if $IS_ADMIN }
 					<a href="{$ENV_INDEX_PHP}?action=system_settings">{$TEXT_93}</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_users">{$TEXT_94}</a><br />
+					<a href="{$ENV_INDEX_PHP}?action=list_groups">{$TEXT_212}</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_currencies">{$TEXT_106}</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_currencyrates">{$TEXT_110}</a><br />
 					<a href="{$ENV_INDEX_PHP}?action=list_languages">{$TEXT_182}</a><br />
@@ -45,7 +46,7 @@
 					<center>
 					<a href="{$ENV_INDEX_PHP}?action=logout"><b>{$TEXT_13}</b></a>
 					</center><br />
-					
+
 <br />
 <p style="font-size:11px;color:darkblue;font-weight:bold;text-align:center">&copy; by Oliver Lehmann</p>
 		</td>

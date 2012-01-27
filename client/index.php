@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.47 2012/01/19 21:25:06 olivleh1 Exp $
+# $Id: index.php,v 1.48 2012/01/27 20:03:52 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -44,6 +44,7 @@ require_once 'module/moduleReports.php';
 require_once 'module/moduleSearch.php';
 require_once 'module/moduleSettings.php';
 require_once 'module/moduleUsers.php';
+require_once 'module/moduleGroups.php';
 if( $money_debug === true ) {
 	require_once 'util/utilTimer.php';
 	$timer = new utilTimer();
@@ -157,6 +158,11 @@ if( $is_logged_in == 0 ) {
 		case'edit_user':
 		case'delete_user':		break;
 
+		case'list_groups':
+		case'edit_group':
+		case'delete_group':		$moduleGroups			= new moduleGroups();
+						break;
+
 		case 'upfrm_cmp_data':
 		case 'analyze_cmp_data':	$moduleCompare			= new moduleCompare();
 						break;
@@ -227,6 +233,22 @@ if( $is_logged_in == 0 ) {
 							$id=			$_REQUEST['userid'];
 							$force=			$_REQUEST['force'];
 							$display=$moduleUsers->display_delete_user( $realaction, $id, $force );
+							break;
+
+			/* groups */
+
+			case 'list_groups':		$letter=		$_REQUEST['letter'];
+							$display=$moduleGroups->display_list_groups( $letter );
+							break;
+			case 'edit_group':		$realaction=		$_REQUEST['realaction'];
+							$id=			$_REQUEST['groupid'];
+							$all_data=		$_REQUEST['all_data'];
+							$display=$moduleGroups->display_edit_group( $realaction, $id, $all_data );
+							break;
+			case 'delete_group':		$realaction=		$_REQUEST['realaction'];
+							$id=			$_REQUEST['groupid'];
+							$force=			$_REQUEST['force'];
+							$display=$moduleGroups->display_delete_group( $realaction, $id, $force );
 							break;
 		}
 	}
