@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMonthlySettlement.php,v 1.28 2012/01/19 21:25:07 olivleh1 Exp $
+# $Id: coreMonthlySettlement.php,v 1.29 2012/01/27 10:22:07 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -104,10 +104,10 @@ class coreMonthlySettlement extends core {
 			
 		} elseif( $sourceid == 0 )
 			$result = $this->select_col( "	SELECT 1
-							  FROM vw_monthlysettlements
+							  FROM monthlysettlements
 							 WHERE month          = $month
 							   AND year           = $year
-							   AND mug_mur_userid = ".USERID."
+							   AND mur_userid     = ".USERID."
 							 LIMIT 1" );
 		else
 			$result = $this->select_col( "	SELECT 1

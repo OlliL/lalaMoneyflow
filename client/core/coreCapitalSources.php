@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.34 2012/01/19 21:25:07 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.35 2012/01/27 10:22:07 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -205,10 +205,10 @@ class coreCapitalSources extends core {
 			$datetil = $this->make_date( $datetil );
 
 		return $this->select_cols( "	SELECT capitalsourceid
-						  FROM vw_capitalsources
+						  FROM capitalsources
 						 WHERE validfrom <= $datetil
 						   AND validtil  >= $datefrom
-						   AND mug_mur_userid = ".USERID."
+						   AND mur_userid = ".USERID."
 						 ORDER BY capitalsourceid" );
 	}
 
