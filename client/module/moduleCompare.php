@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCompare.php,v 1.15 2012/01/19 21:25:10 olivleh1 Exp $
+# $Id: moduleCompare.php,v 1.16 2012/03/29 11:29:08 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -86,7 +86,7 @@ class moduleCompare extends module {
 		return( $data_array );
 	}
 
-	function fill_db_array( $data_array, $bookingdate, $invoicedate, $amount, $capitalsourcecomment, $contractpartnername, $comment, $moneyflowid ) {
+	function fill_db_array( $data_array, $bookingdate, $invoicedate, $amount, $capitalsourcecomment, $contractpartnername, $comment, $moneyflowid, $owner ) {
 
 		if( !is_array( $data_array ) ) {
 			$i = 1;
@@ -101,6 +101,7 @@ class moduleCompare extends module {
 		$data_array[$i]['contractpartnername']  = $contractpartnername;
 		$data_array[$i]['comment']              = $comment;
 		$data_array[$i]['moneyflowid']          = $moneyflowid;
+		$data_array[$i]['owner']		= $owner;
 
 		return( $data_array );
 	}
@@ -203,6 +204,7 @@ class moduleCompare extends module {
 						$file_array_id = count($file_array);
 
 						$results = $this->coreMoneyFlows->find_single_moneyflow( $date_db, 5, $amount );
+
 						if( is_array( $results ) ) {
 							$result_count = count( $results );
 
@@ -275,6 +277,12 @@ class moduleCompare extends module {
 									$diff_capitalsource      = true;
 								}
 
+								if ($moneyflow['mur_userid'] == USERID ) {
+									$owner = true;
+								} else {
+									$owner = false;
+								}
+
 								$db_array = $this->fill_db_array( $db_array
 							        	                        , convert_date_to_gui( $moneyflow['bookingdate'], $this->date_format )
 												, convert_date_to_gui( $moneyflow['invoicedate'], $this->date_format )
@@ -283,6 +291,7 @@ class moduleCompare extends module {
 											        , $this->coreContractPartners->get_name( $moneyflow['mcp_contractpartnerid'] )
 											        , $moneyflow['comment']
 												, $moneyflowid
+												, $owner
 											        );
 								$db_array_id = count($db_array);
 
@@ -324,6 +333,12 @@ class moduleCompare extends module {
 							$my_capitalsourcecomment = $this->coreCapitalSources->get_comment( $moneyflow['mcs_capitalsourceid'] );
 						}
 
+						if ($moneyflow['mur_userid'] == USERID ) {
+							$owner = true;
+						} else {
+							$owner = false;
+						}
+
 						$db_array = $this->fill_db_array( $db_array
 									        , convert_date_to_gui( $moneyflow['bookingdate'], $this->date_format )
 									        , convert_date_to_gui( $moneyflow['invoicedate'], $this->date_format )
@@ -332,6 +347,7 @@ class moduleCompare extends module {
 									        , $this->coreContractPartners->get_name( $moneyflow['mcp_contractpartnerid'] )
 									        , $moneyflow['comment']
 								        	, $moneyflow['moneyflowid']
+										, $owner
 									        );
 						$db_array_id = count($db_array);
 

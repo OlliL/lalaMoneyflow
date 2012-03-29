@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.48 2012/01/26 20:05:30 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.49 2012/03/29 11:29:08 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -64,9 +64,14 @@ class coreMoneyFlows extends core {
 						      ,mcp_contractpartnerid
 						      ,comment
 						      ,private
-						  FROM moneyflows mmf
+						      ,mur_userid
+						  FROM vw_moneyflows mmf
 						 WHERE moneyflowid = $id
-						   AND mmf.mur_userid            = ".USERID );
+						   AND mmf.mug_mur_userid  = ".USERID."
+						   AND (mmf.private        = 0
+						        OR
+						        mmf.mur_userid     = ".USERID."
+						       )");
 	}
 
 	function get_all_monthly_data( $month, $year ) {
@@ -99,6 +104,7 @@ class coreMoneyFlows extends core {
 						      ,mcs_capitalsourceid
 						      ,mcp_contractpartnerid
 						      ,comment
+						      ,mur_userid
 						  FROM vw_moneyflows mmf
 						 WHERE bookingdate           BETWEEN $startdate AND $enddate
 						   AND mcs_capitalsourceid = $capitalsourceid
@@ -452,10 +458,14 @@ class coreMoneyFlows extends core {
 	function find_single_moneyflow( $date, $date_days_around, $amount ) {
 		$date = $this->make_date( $date );
 		return $this->select_cols( "	SELECT moneyflowid
-						  FROM moneyflows mmf
+						  FROM vw_moneyflows mmf
 						 WHERE bookingdate BETWEEN DATE_SUB($date, INTERVAL $date_days_around DAY) AND DATE_ADD($date, INTERVAL $date_days_around DAY)
 						   AND amount     = $amount
-						   AND mmf.mur_userid            = ".USERID );
+						   AND mmf.mug_mur_userid  = ".USERID."
+						   AND (mmf.private        = 0
+						        OR
+						        mmf.mur_userid     = ".USERID."
+						       )");
 	}
 	
 	function month_has_moneyflows( $month, $year ) {

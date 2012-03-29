@@ -79,7 +79,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
         FROM monthlysettlements mms
             ,vw_user_groups     mug
        WHERE (     mug.mug1_mur_userid = mms.mur_userid
-               AND STR_TO_DATE(CONCAT(year,'-',LPAD(month,2,'0'),'-01'),GET_FORMAT(DATE,'ISO')) BETWEEN mug.validfrom and mug.validtil
+               AND LAST_DAY(STR_TO_DATE(CONCAT(year,'-',LPAD(month,2,'0'),'-01'),GET_FORMAT(DATE,'ISO'))) BETWEEN mug.validfrom and mug.validtil
              )
           OR (     mug.mug1_mur_userid = mms.mur_userid
                AND mug.mug2_mur_userid = mms.mur_userid
@@ -504,29 +504,31 @@ CREATE PROCEDURE mmf_trg_procedure(IN pi_bookingdate     DATE
                                   )
 READS SQL DATA
 BEGIN
-  DECLARE l_found  BOOLEAN             DEFAULT TRUE;
-  DECLARE l_dummy  INT(1)     UNSIGNED;
-  DECLARE l_month  TINYINT(4) UNSIGNED DEFAULT MONTH(pi_bookingdate);
-  DECLARE l_year   YEAR(4)             DEFAULT YEAR(pi_bookingdate);
+  DECLARE l_found       BOOLEAN             DEFAULT TRUE;
+  DECLARE l_mur_userid  INT(1)     UNSIGNED;
+  DECLARE l_month       TINYINT(4) UNSIGNED DEFAULT MONTH(pi_bookingdate);
+  DECLARE l_year        YEAR(4)             DEFAULT YEAR(pi_bookingdate);
+
+  DECLARE CONTINUE HANDLER FOR NOT FOUND        SET l_mur_userid := 0;
 
   DECLARE c_mms CURSOR FOR
-    SELECT COUNT(*)
-      FROM monthlysettlements
-     WHERE mur_userid = pi_userid
-       AND month      = l_month
-       AND year       = l_year;
+    SELECT mur_userid
+      FROM vw_monthlysettlements
+     WHERE mug_mur_userid = pi_userid
+       AND month          = l_month
+       AND year           = l_year;
 
   OPEN  c_mms;
-  FETCH c_mms INTO l_dummy;
+  FETCH c_mms INTO l_mur_userid;
   CLOSE c_mms;
   
-  IF l_dummy > 0 THEN
+  IF l_mur_userid > 0 THEN
     UPDATE monthlysettlements
        SET movement_calculated = mms_calc_movement_calculated(pi_userid, l_month, l_year, pi_capitalsourceid)
      WHERE month               = l_month
        AND year                = l_year
        AND mcs_capitalsourceid = pi_capitalsourceid
-       AND mur_userid          = pi_userid;
+       AND mur_userid          = l_mur_userid;
   END IF;
 END;
 $$
