@@ -509,14 +509,14 @@ BEGIN
   DECLARE l_month       TINYINT(4) UNSIGNED DEFAULT MONTH(pi_bookingdate);
   DECLARE l_year        YEAR(4)             DEFAULT YEAR(pi_bookingdate);
 
-  DECLARE CONTINUE HANDLER FOR NOT FOUND        SET l_mur_userid := 0;
-
   DECLARE c_mms CURSOR FOR
     SELECT mur_userid
       FROM vw_monthlysettlements
      WHERE mug_mur_userid = pi_userid
        AND month          = l_month
        AND year           = l_year;
+
+  DECLARE CONTINUE HANDLER FOR NOT FOUND        SET l_mur_userid := 0;
 
   OPEN  c_mms;
   FETCH c_mms INTO l_mur_userid;
@@ -527,8 +527,7 @@ BEGIN
        SET movement_calculated = mms_calc_movement_calculated(pi_userid, l_month, l_year, pi_capitalsourceid)
      WHERE month               = l_month
        AND year                = l_year
-       AND mcs_capitalsourceid = pi_capitalsourceid
-       AND mur_userid          = l_mur_userid;
+       AND mcs_capitalsourceid = pi_capitalsourceid;
   END IF;
 END;
 $$

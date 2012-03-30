@@ -1,9 +1,3 @@
-
-- when adding flow for a capitalsource which belongs to another user,
-  monthlysettlements.movement_calculated does not get updated. 
-  mms_calc_movement_calculated itselfs takes the flow into account.
-  most probably, the procedure itself is not executed for some reason
-  when the flow is inserted.
   
 - create group-mantainance screens 
 
