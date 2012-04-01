@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCompare.php,v 1.16 2012/03/29 11:29:08 olivleh1 Exp $
+# $Id: moduleCompare.php,v 1.17 2012/04/01 08:09:54 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -225,8 +225,8 @@ class moduleCompare extends module {
 										if( $moneyflow['bookingdate'] == $date_db )
 											$hitlist[$moneyflowid] += 10;
 
-										if( $moneyflow['invoicedate'] == $date_db )
-											$hitlist[$moneyflowid] += 5;
+#										if( $moneyflow['invoicedate'] == $date_db )
+#											$hitlist[$moneyflowid] += 5;
 
 										if( $moneyflow['mcs_capitalsourceid'] == $all_data['mcs_capitalsourceid'] )
 											$hitlist[$moneyflowid] += 10;

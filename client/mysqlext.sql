@@ -90,6 +90,33 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
  * same group as mur_userid. Use mug_mur_userid in the query,
  * mur_userid is the real userid of the dataset
  */
+CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_contractpartners (
+   mur_userid
+  ,mug_mur_userid
+  ,contractpartnerid
+  ,name
+  ,street
+  ,postcode
+  ,town
+  ,country
+  ) AS
+      SELECT mcp.mur_userid
+            ,mug.mug2_mur_userid
+            ,mcp.contractpartnerid
+            ,mcp.name
+            ,mcp.street
+            ,mcp.postcode
+            ,mcp.town
+            ,mcp.country
+        FROM contractpartners mcp
+            ,vw_user_groups   mug
+       WHERE mug.mug1_mur_userid = mcp.mur_userid;
+
+/*
+ * this view will show all data from all users which are in the
+ * same group as mur_userid. Use mug_mur_userid in the query,
+ * mur_userid is the real userid of the dataset
+ */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_capitalsources (
    mur_userid
   ,mug_mur_userid

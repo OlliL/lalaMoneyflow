@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreContractPartners.php,v 1.17 2012/01/19 21:25:07 olivleh1 Exp $
+# $Id: coreContractPartners.php,v 1.18 2012/04/01 08:09:54 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -126,9 +126,9 @@ class coreContractPartners extends core {
 
 	function get_name( $id ) {
 		return $this->select_col( "	SELECT name
-						  FROM contractpartners
+						  FROM vw_contractpartners
 						 WHERE contractpartnerid = $id
-						   AND mur_userid        = ".USERID."
+						   AND mug_mur_userid = ".USERID."
 						 LIMIT 1" );
 	}
 
