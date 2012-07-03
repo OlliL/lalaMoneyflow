@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: module.php,v 1.51 2012/04/01 08:09:54 olivleh1 Exp $
+# $Id: module.php,v 1.52 2012/07/03 10:42:28 olivleh1 Exp $
 #
 
 require_once 'Smarty.class.php';
@@ -39,7 +39,7 @@ class module {
 		$this->coreUsers = new coreUsers;
 		$this->template  = new Smarty;
 		$this->index_php = 'index.php';
-		$this->template->register_modifier( 'number_format', 'my_number_format' );
+		$this->template->registerPlugin('modifier', 'number_format', 'my_number_format' );
 		$this->template->assign( 'ENV_INDEX_PHP', $this->index_php );
 		
 		if( !empty( $_SERVER['HTTP_REFERER'] ) ) {
@@ -83,13 +83,14 @@ class module {
 		$text = $this->coreTemplates->get_template_text( $name );
 		if( is_array( $text ) ) {
 			foreach( $text as $id => $value ) {
-				$this->template->assign( $value['variable'], htmlentities( $value['text'] ) );
+				$this->template->assign( $value['variable'], htmlentities( $value['text'], ENT_COMPAT | ENT_HTML401, "ISO-8859-1") );
 			}
 		}
+
 		$result = $this->template->fetch( './'.$name );
 		if( is_array( $text ) ) {
 			foreach( $text as $id => $value ) {
-				$this->template->clear_assign( $value['variable'] );
+				$this->template->clearAssign( $value['variable'] );
 			}
 		}
 		return $result;

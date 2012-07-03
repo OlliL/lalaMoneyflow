@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSearch.php,v 1.17 2012/01/19 21:25:10 olivleh1 Exp $
+# $Id: moduleSearch.php,v 1.18 2012/07/03 10:42:28 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -49,7 +49,7 @@ class moduleSearch extends module {
 	function display_search() {
 
 		$contractpartner_values = $this->coreContractPartners->get_all_names();
-		$searchparams = $this->template->get_template_vars( 'SEARCHPARAMS' );
+		$searchparams = $this->template->getTemplateVars( 'SEARCHPARAMS' );
 		if( empty( $searchparams ) ) {
 			$searchparams['grouping1'] = 'year';
 			$searchparams['grouping2'] = 'month';
