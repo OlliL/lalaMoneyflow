@@ -61,11 +61,15 @@
 					<tr>
 						<th>{$TEXT_19}</th>
 						<td class="contrastbgcolor">
+							<select name="all_data[mcs_capitalsourceid][]" size="5" multiple>
 							{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
-							{assign var="capitalsourceid" value=$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}
-							{assign var="checkedids" value=$ALL_DATA.mcs_capitalsourceid}
-							<input type="checkbox" name="all_data[mcs_capitalsourceid][{$capitalsourceid}]" value=1 {if $checkedids.$capitalsourceid == 1}checked{/if}>{$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment} <br>
+								<option value="{$capitalsourceid}"  
+								{foreach $ALL_DATA.mcs_capitalsourceid as $id}
+									{if $id == $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}selected{/if}
+								{/foreach}
+								>{$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}</option>
 							{/section}
+							</select>
 						</select></td>
 					</tr>
 					<tr>
@@ -81,7 +85,7 @@
 					<tr>
 						<td align="center">
 							<br />
-							<img border="0" src="{$ENV_INDEX_PHP}?action=plot_graph{assign var="checkedids" value=$ALL_DATA.mcs_capitalsourceid}{foreach from=$checkedids key=capitalsourceid item=foo}&id[]={$capitalsourceid}{/foreach}
+							<img border="0" src="{$ENV_INDEX_PHP}?action=plot_graph{assign var="checkedids" value=$ALL_DATA.mcs_capitalsourceid}{foreach $checkedids as $capitalsourceid}&id[]={$capitalsourceid}{/foreach}
 &startmonth={$ALL_DATA.startmonth}&startyear={$ALL_DATA.startyear}&endmonth={$ALL_DATA.endmonth}&endyear={$ALL_DATA.endyear}" />
 						</td>
 					</tr>
