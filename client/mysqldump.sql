@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.20, for FreeBSD9.0 (amd64)
+-- MySQL dump 10.13  Distrib 5.5.28, for FreeBSD9.1 (amd64)
 --
 -- Host: localhost    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	5.5.20-log
+-- Server version	5.5.28-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -86,10 +86,10 @@ CREATE TABLE contractpartners (
   mur_userid int(10) unsigned NOT NULL,
   contractpartnerid int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL DEFAULT '',
-  street varchar(100) NOT NULL DEFAULT '',
-  postcode int(12) NOT NULL DEFAULT '0',
-  town varchar(100) NOT NULL DEFAULT '',
-  country varchar(100) NOT NULL DEFAULT '',
+  street varchar(100) DEFAULT '',
+  postcode int(12) DEFAULT '0',
+  town varchar(100) DEFAULT '',
+  country varchar(100) DEFAULT '',
   PRIMARY KEY (contractpartnerid),
   UNIQUE KEY mcp_i_01 (mur_userid,`name`),
   CONSTRAINT mcp_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
@@ -419,7 +419,7 @@ CREATE TABLE user_groups (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-01-27 21:02:50
+-- Dump completed on 2012-12-13 22:22:39
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -780,8 +780,8 @@ INSERT INTO text VALUES (179,1,'day','t');
 INSERT INTO text VALUES (179,2,'Tag','t');
 INSERT INTO text VALUES (180,1,'The date format you have choosen is not valid!','e');
 INSERT INTO text VALUES (180,2,'Das von Ihnen gewählte Datumsformat ist nicht gültig','e');
-INSERT INTO text VALUES (181,1,'The contractual partner is not valid on the specified date','e');
-INSERT INTO text VALUES (181,2,'Der Vertragspartner ist nicht gültig am angegebnen Datum','e');
+INSERT INTO text VALUES (181,1,'The source of capital is not valid on the specified date','e');
+INSERT INTO text VALUES (181,2,'Der Kapitalquelle ist nicht gültig am angegebnen Datum','e');
 INSERT INTO text VALUES (182,1,'languages','t');
 INSERT INTO text VALUES (182,2,'Sprachen','t');
 INSERT INTO text VALUES (183,1,'language','t');
@@ -854,6 +854,18 @@ INSERT INTO text VALUES (216,1,'Do you really want to delete this group?','t');
 INSERT INTO text VALUES (216,2,'Wollen sie diese Benutzergruppe wirklich löschen? ','t');
 INSERT INTO text VALUES (217,1,'An error occured while deleting the group. The group was not deleted!','e');
 INSERT INTO text VALUES (217,2,'Während der Benutzergruppenlöschung trat ein Fehler auf. Die Benutzergruppe wurde nicht gelöscht!','e');
+INSERT INTO text VALUES (218,1,'The field ''name'' must not be empty!','e');
+INSERT INTO text VALUES (218,2,'Das Feld ''Name'' darf nicht leer sein!','e');
+INSERT INTO text VALUES (219,1,'The field ''street'' must not be empty!','e');
+INSERT INTO text VALUES (219,2,'Das Feld ''Straße'' darf nicht leer sein!','e');
+INSERT INTO text VALUES (220,1,'The field ''postcode'' must not be empty!','e');
+INSERT INTO text VALUES (220,2,'Das Feld ''Postleitzahl'' darf nicht leer sein!','e');
+INSERT INTO text VALUES (221,1,'The field ''town'' must not be empty!','e');
+INSERT INTO text VALUES (221,2,'Das Feld ''Stadt'' darf nicht leer sein!','e');
+INSERT INTO text VALUES (222,1,'The field ''country'' must not be empty!','e');
+INSERT INTO text VALUES (222,2,'Das Feld ''Land'' darf nicht leer sein!','e');
+INSERT INTO text VALUES (223,1,'The contract partner you''ve chosen is not valid anymore!!','e');
+INSERT INTO text VALUES (223,2,'Der ausgewählte Vertragspartner ist nicht mehr gültig!!','e');
 INSERT INTO templates VALUES ('display_add_language.tpl');
 INSERT INTO templates VALUES ('display_add_moneyflow.tpl');
 INSERT INTO templates VALUES ('display_analyze_cmp_data.tpl');

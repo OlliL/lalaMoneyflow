@@ -1,3 +1,25 @@
+/*
+ * all domain values for a user
+ */
+CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_domainvalues (
+   mur_userid
+  ,domain
+  ,value
+  ,text
+  ) AS
+      SELECT mur.userid
+            ,mdv.mdm_domain
+            ,mdv.value
+            ,mtx.text
+        FROM text         mtx
+            ,domainvalues mdv
+            ,settings     mse
+            ,users        mur
+       WHERE mtx.textid         = mdv.mtx_textid
+         AND mtx.mla_languageid = mse.value
+         AND mse.name           = 'displayed_language'
+         AND mse.mur_userid     = mur.userid;
+
 /* 
  * this view will show all possible permutations of user/groups
  */
