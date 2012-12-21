@@ -63,7 +63,7 @@
 						<td class="contrastbgcolor">
 							<select name="all_data[mcs_capitalsourceid][]" size="5" multiple>
 							{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
-								<option value="{$capitalsourceid}"  
+								<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}"
 								{foreach $ALL_DATA.mcs_capitalsourceid as $id}
 									{if $id == $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}selected{/if}
 								{/foreach}

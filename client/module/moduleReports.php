@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.53 2012/01/19 21:25:10 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.54 2012/12/21 11:31:41 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -283,7 +283,6 @@ class moduleReports extends module {
 		}
 
 		$this->template->assign( 'ALL_DATA',       $all_data  );
-
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_plot_trends.tpl' );
