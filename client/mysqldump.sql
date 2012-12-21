@@ -63,8 +63,8 @@ CREATE TABLE capitalsources (
   capitalsourceid int(10) unsigned NOT NULL AUTO_INCREMENT,
   `type` enum('1','2') NOT NULL DEFAULT '1',
   state enum('1','2') NOT NULL DEFAULT '1',
-  accountnumber bigint(20) DEFAULT NULL,
-  bankcode bigint(20) DEFAULT NULL,
+  accountnumber bigint(20) unsigned DEFAULT NULL,
+  bankcode bigint(20) unsigned DEFAULT NULL,
   `comment` varchar(255) DEFAULT NULL,
   validtil date NOT NULL DEFAULT '2999-12-31',
   validfrom date NOT NULL DEFAULT '1970-01-01',
@@ -419,7 +419,7 @@ CREATE TABLE user_groups (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-12-13 22:22:39
+-- Dump completed on 2012-12-21 13:03:18
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -864,8 +864,8 @@ INSERT INTO text VALUES (221,1,'The field ''town'' must not be empty!','e');
 INSERT INTO text VALUES (221,2,'Das Feld ''Stadt'' darf nicht leer sein!','e');
 INSERT INTO text VALUES (222,1,'The field ''country'' must not be empty!','e');
 INSERT INTO text VALUES (222,2,'Das Feld ''Land'' darf nicht leer sein!','e');
-INSERT INTO text VALUES (223,1,'The contract partner you''ve chosen is not valid anymore!!','e');
-INSERT INTO text VALUES (223,2,'Der ausgewählte Vertragspartner ist nicht mehr gültig!!','e');
+INSERT INTO text VALUES (223,1,'The contract partner you''ve chosen is not valid anymore!','e');
+INSERT INTO text VALUES (223,2,'Der ausgewählte Vertragspartner ist nicht mehr gültig!','e');
 INSERT INTO text VALUES (224,1,'The year you specified is in a format which is not readable by the system!','e');
 INSERT INTO text VALUES (224,2,'Das angegebene Jahr ist in einem vom System nicht lesbarem Format!','e');
 INSERT INTO text VALUES (225,1,'The Account number must be a number!','e');
