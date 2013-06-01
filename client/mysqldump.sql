@@ -419,7 +419,7 @@ CREATE TABLE user_groups (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-12-21 13:03:18
+-- Dump completed on 2012-12-21 13:11:42
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -876,6 +876,8 @@ INSERT INTO text VALUES (227,1,'The Account number must not be longer than 20 di
 INSERT INTO text VALUES (227,2,'Die Kontonummer darf nicht mehr als 20 Stellen haben!','e');
 INSERT INTO text VALUES (228,1,'The Bank code must not be longer than 20 digits!','e');
 INSERT INTO text VALUES (228,2,'Die Bankleitzahl darf nicht mehr als 20 Stellen haben!','e');
+INSERT INTO text VALUES (229,1,'The date specified in ''valid from'' must before the date specified ''valid til''!','e');
+INSERT INTO text VALUES (229,2,'Das Datum im Feld \"gültig von\" muss vor dem Datum des Feldes \"gültig bis\" liegen!','e');
 INSERT INTO templates VALUES ('display_add_language.tpl');
 INSERT INTO templates VALUES ('display_add_moneyflow.tpl');
 INSERT INTO templates VALUES ('display_analyze_cmp_data.tpl');

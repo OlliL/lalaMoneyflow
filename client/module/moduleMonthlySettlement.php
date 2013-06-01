@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.33 2012/01/19 21:25:10 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.34 2013/06/01 08:26:19 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -116,7 +116,7 @@ class moduleMonthlySettlement extends module {
 								$data_is_valid = false;
 							}
 						}
-						if( ! (    preg_match( '/^-{0,1}[0-9]*([\.][0-9][0-9][0-9]){0,}([,][0-9]{1,2}){0,1}$/', $value['amount'] ) 
+						if( ! (    preg_match( '/^-{0,1}[0-9]*([\.][0-9][0-9][0-9]){0,}([,][0-9]{1,2}){0,1}$/', $value['amount'] )
 						       ||  preg_match( '/^-{0,1}[0-9]*([,][0-9][0-9][0-9]){0,}([\.][0-9]{1,2}){0,1}$/', $value['amount'] )
 						      ) ) {
 							add_error( 132, array( $value['amount'] ) );
@@ -127,9 +127,10 @@ class moduleMonthlySettlement extends module {
 				}
 
 				if( $data_is_valid === true ) {
+				printf("1\n");
 					foreach( $all_data as $id => $value ) {
 					 	if( is_array( $value ) ) {
-							if( $value['new'] === "1" ) {
+							if( $value['new'] === "1" || !is_array($this->coreMonthlySettlement->get_data( $value['mcs_capitalsourceid'], $month, $year )) ) {
 								if( !$this->coreMonthlySettlement->insert_monthlysettlement( $value['mcs_capitalsourceid'], $month, $year, $value['amount'] ) )
 									$ret = false;
 							} else {
@@ -138,10 +139,9 @@ class moduleMonthlySettlement extends module {
 							}
 						}
 					}
-				}					
+				}
 
 				if( $data_is_valid === true && $ret === true ) {
-					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
 			default:
