@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: include.php,v 1.14 2012/01/25 19:46:42 olivleh1 Exp $
+# $Id: include.php,v 1.15 2013/07/24 20:12:15 olivleh1 Exp $
 #
 
 ##########
@@ -32,7 +32,7 @@
 ##########
 
 # MySQL config - syntax: mysql://user/password@server/database
-$dsn = "mysql://moneyflow:moneyflow@db/moneyflow"; 
+$dsn = "mysql://moneyflow:moneyflow@db/moneyflow";
 
 # jpgraph is used for plotting trends
 define( 'ENABLE_JPGRAPH', true );

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCompare.php,v 1.17 2012/04/01 08:09:54 olivleh1 Exp $
+# $Id: moduleCompare.php,v 1.18 2013/07/24 20:12:15 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -174,8 +174,9 @@ class moduleCompare extends module {
 
 					if( $date_stamp >= $startdate &&
 					    $date_stamp <= $enddate ) {
-					    	$amount = str_replace( $format_data['fmt_amount_thousand'], '', $cmp_data[$format_data['pos_amount'] -1 ] );
+					    $amount = str_replace( $format_data['fmt_amount_thousand'], '', $cmp_data[$format_data['pos_amount'] -1 ] );
 						$amount = str_replace( $format_data['fmt_amount_decimal'], '.', $amount );
+						$amount = preg_replace('/[^\.\-0-9]*/','',$amount);
 
 						$partner = '';
 						if( $format_data['pos_partner'] ) {
@@ -193,7 +194,15 @@ class moduleCompare extends module {
 						} else {
 							$comment = '';
 						}
-
+echo "<pre>";
+echo $amount."\n";
+echo $date."\n";
+echo $date_stamp."\n";
+echo $date_db."\n";
+echo $partner."\n";
+echo $comment."\n";
+echo $capitalsourcecomment."\n";
+echo "</pre>";
 						$file_array = $this->fill_file_array( $file_array
 						                                    , convert_date_to_gui( $date_db, $this->date_format )
 									            , $amount
