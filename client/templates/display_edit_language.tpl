@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head><title>lalaMoneyflow: {$TEXT_184}</title>
 {$HEADER}
@@ -9,7 +11,7 @@
 				<input type="hidden" name="realaction" value="save">
 				<input type="hidden" name="languageid" value="{$LANGUAGEID}">
 				{section name=ERROR loop=$ERRORS}
-					<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
+					<font color="#FF0000">{$ERRORS[ERROR]}</font><br>
 				{/section}
 				<table border=0 width=650>
 					<tr>
@@ -19,10 +21,10 @@
 					{section name=DATA loop=$ALL_DATA}
 						<tr>
 							<td class="contrastbgcolor">{$ALL_DATA_ENG[DATA].text}
-							<input type="hidden" name="all_data[{$ALL_DATA[DATA].textid}][orig_text]" value="{$ALL_DATA[DATA].text}" />
+							<input type="hidden" name="all_data[{$ALL_DATA[DATA].textid}][orig_text]" value="{$ALL_DATA[DATA].text}">
 							
 							</td>
-							<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$ALL_DATA[DATA].textid}][text]" value="{$ALL_DATA[DATA].text}" size=50 /></td>
+							<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$ALL_DATA[DATA].textid}][text]" value="{$ALL_DATA[DATA].text}" size=50></td>
 						</tr>
 					{/section}
 				</table>

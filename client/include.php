@@ -1,6 +1,6 @@
 <?php
 #-
-# Copyright (c) 2005-2012 Oliver Lehmann <oliver@FreeBSD.org>
+# Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: include.php,v 1.15 2013/07/24 20:12:15 olivleh1 Exp $
+# $Id: include.php,v 1.16 2013/07/27 23:06:48 olivleh1 Exp $
 #
 
 ##########
@@ -37,6 +37,7 @@ $dsn = "mysql://moneyflow:moneyflow@db/moneyflow";
 # jpgraph is used for plotting trends
 define( 'ENABLE_JPGRAPH', true );
 
+define( 'ENCODING' , 'ISO-8859-15');
 
 ##########
 # more or less system defined stuff following
@@ -51,5 +52,7 @@ $money_debug = false;
 
 # default year for "valid til" columns when creating a new dataset
 define( 'MAX_YEAR', '2999-12-31' );
+
+set_include_path(get_include_path().':sepa/');
 
 ?>

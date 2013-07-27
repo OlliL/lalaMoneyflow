@@ -1,6 +1,6 @@
 <?php
 #-
-# Copyright (c) 2005-2012 Oliver Lehmann <oliver@FreeBSD.org>
+# Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.49 2012/03/29 11:29:08 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.50 2013/07/27 23:06:48 olivleh1 Exp $
 #
 
 require_once 'core/core.php';

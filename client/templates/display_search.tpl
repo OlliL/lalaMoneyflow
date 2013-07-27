@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head><title>lalaMoneyflow: {$TEXT_7}</title>
 {$HEADER}
@@ -8,9 +10,9 @@
 			<input type="hidden" name="action" value="do_search">
 			<input type="hidden" name="realaction" value="search">
 			{section name=ERROR loop=$ERRORS}
-				<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
+				<font color="#FF0000">{$ERRORS[ERROR]}</font><br>
 			{/section}
-			<br />
+			<br>
 			<table border=0>
 				<tr>
 					<th align="right">{$TEXT_72}</th>
@@ -44,10 +46,10 @@
 				<tr>
 					<th align="right">{$TEXT_75}</th>
 					<td class="contrastbgcolor">
-						<input class="contrastbgcolor" type="checkbox" name="equal" {if $SEARCHPARAMS.equal == 1}checked{/if}> {$TEXT_76} <br />
-						<input class="contrastbgcolor" type="checkbox" name="casesensitive" {if $SEARCHPARAMS.casesensitive == 1}checked{/if}> {$TEXT_77} <br />
-						<input class="contrastbgcolor" type="checkbox" name="regexp" {if $SEARCHPARAMS.regexp == 1}checked{/if}> {$TEXT_78}<br />
-						<input class="contrastbgcolor" type="checkbox" name="minus" {if $SEARCHPARAMS.minus == 1}checked{/if}> {$TEXT_79}<br />
+						<input class="contrastbgcolor" type="checkbox" name="equal" {if $SEARCHPARAMS.equal == 1}checked{/if}> {$TEXT_76} <br>
+						<input class="contrastbgcolor" type="checkbox" name="casesensitive" {if $SEARCHPARAMS.casesensitive == 1}checked{/if}> {$TEXT_77} <br>
+						<input class="contrastbgcolor" type="checkbox" name="regexp" {if $SEARCHPARAMS.regexp == 1}checked{/if}> {$TEXT_78}<br>
+						<input class="contrastbgcolor" type="checkbox" name="minus" {if $SEARCHPARAMS.minus == 1}checked{/if}> {$TEXT_79}<br>
 					</td>
 				</tr>
 				<tr>
@@ -79,7 +81,7 @@
 				
 
 			</table>
-			<br />
+			<br>
 			<input type="submit" name="realaction" value="{$TEXT_83}">
 		</form>
 			{if $SEARCH_DONE == 1}
@@ -87,15 +89,15 @@
 				<tr>
 					{if $COLUMNS.year  == "1"}<th width="9%">{$TEXT_81}</th>{/if}
 					{if $COLUMNS.month == "1"}<th width="9%">{$TEXT_82}</th>{/if}
-					{if $COLUMNS.name  == "1"}<th width=16%>{$TEXT_2}</th>{/if}
+					{if $COLUMNS.name  == "1"}<th width="16%">{$TEXT_2}</th>{/if}
 					<th width="10%">{$TEXT_18}</th>
 					<th >{$TEXT_21}</th>
 				</tr>
 				{section name=DATA loop=$RESULTS}
 					<tr>
-						{if $COLUMNS.year  == "1"}<td class="contrastbgcolor"><p style="margin-left:8px;">{$RESULTS[DATA].year}</p></td>{/if}
-						{if $COLUMNS.month == "1"}<td class="contrastbgcolor"><p style="margin-left:8px;">{$RESULTS[DATA].month}</p></td>{/if}
-						{if $COLUMNS.name  == "1"}<td class="contrastbgcolor"><p style="margin-left:8px;">{$RESULTS[DATA].name}</p></td>{/if}
+						{if $COLUMNS.year  == "1"}<td class="contrastbgcolor" align="center">{$RESULTS[DATA].year}</td>{/if}
+						{if $COLUMNS.month == "1"}<td class="contrastbgcolor" align="center">{$RESULTS[DATA].month}</td>{/if}
+						{if $COLUMNS.name  == "1"}<td class="contrastbgcolor" align="center">{$RESULTS[DATA].name}</td>{/if}
 						<td align="right" class="contrastbgcolor"><font {if $RESULTS[DATA].amount < 0}color="red"{else}color="black"{/if}>{$RESULTS[DATA].amount|number_format} {$CURRENCY}</font></td>
 						<td class="contrastbgcolor">{$RESULTS[DATA].comment}</td>
 					</tr>

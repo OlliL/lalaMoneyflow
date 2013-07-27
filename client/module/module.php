@@ -1,6 +1,6 @@
 <?php
 #-
-# Copyright (c) 2005-2012 Oliver Lehmann <oliver@FreeBSD.org>
+# Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: module.php,v 1.52 2012/07/03 10:42:28 olivleh1 Exp $
+# $Id: module.php,v 1.53 2013/07/27 23:06:48 olivleh1 Exp $
 #
 
 require_once 'Smarty.class.php';
@@ -57,9 +57,9 @@ class module {
 		}
 
 		if ( ( !empty( $_POST['sr'] ) && $_POST['sr'] == 1 ) || ( !empty( $_GET['sr'] ) && $_GET['sr'] == 1 ) ) {
-			$this->template->assign( 'ENV_REFERER', $http_referer );
+			$this->template->assign( 'ENV_REFERER', htmlentities($http_referer) );
 		} else {
-			$this->template->assign( 'ENV_REFERER', $referer );
+			$this->template->assign( 'ENV_REFERER', htmlentities($referer) );
 		}
 	}
 	
@@ -100,7 +100,7 @@ class module {
 		$this->template->assign( 'REPORTS_YEAR',   date( 'Y' ) );
 		$this->template->assign( 'REPORTS_MONTH',  date( 'm' ) );
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
-		$this->template->assign( 'VERSION',        '0.11.8' );
+		$this->template->assign( 'VERSION',        '0.12.0' );
 		$this->template->assign( 'NO_NAVIGATION',  $nonavi );
 		$this->template->assign( 'IS_ADMIN',       $this->coreUsers->check_admin_permission( USERID ) );
 

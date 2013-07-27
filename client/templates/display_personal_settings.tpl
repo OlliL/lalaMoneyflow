@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head><title>lalaMoneyflow: {$TEXT_89}</title>
 {$HEADER}
@@ -5,9 +7,9 @@
 		<td align="center" valign="top">
 		<h1>{$TEXT_89}</h1>
 		{section name=ERROR loop=$ERRORS}
-			<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
+			<font color="#FF0000">{$ERRORS[ERROR]}</font><br>
 		{/section}
-		<br />
+		<br>
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action" value="personal_settings">
 			<input type="hidden" name="realaction" value="save">
@@ -58,15 +60,15 @@
 				</tr>
 				<tr>
 					<th>{$TEXT_177}</th>
-					<td width=300><input class="contrastbgcolor" type="text" name="all_data[maxrows]" size="10" value="{$ALL_DATA.maxrows}" /></td>
+					<td width=300><input class="contrastbgcolor" type="text" name="all_data[maxrows]" size="10" value="{$ALL_DATA.maxrows}"></td>
 				</tr>
 				<tr>
 					<th>{$TEXT_86}</th>
-					<td width=300><input class="contrastbgcolor" type="password" name="all_data[password1]" size=10 value="" /></td>
+					<td width=300><input class="contrastbgcolor" type="password" name="all_data[password1]" size=10 value=""></td>
 				</tr>
 				<tr>
 					<th>{$TEXT_92}</th>
-					<td width=300><input class="contrastbgcolor" type="password" name="all_data[password2]" size=10 value="" /></td>
+					<td width=300><input class="contrastbgcolor" type="password" name="all_data[password2]" size=10 value=""></td>
 				</tr>
 				<tr>
 					<th>{$TEXT_208}</th>
@@ -83,7 +85,7 @@
 					</select></td>
 				</tr>
 			</table>
-			<br />
+			<br>
 			<input type="submit" value="{$TEXT_22}">
 		</form>
 		</td>

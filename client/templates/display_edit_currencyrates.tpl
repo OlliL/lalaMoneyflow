@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 {if $CLOSE != 1}
 	<head><title>lalaMoneyflow: {if $ALL_DATA.id > 0}{$TEXT_111}{else}{$TEXT_112}{/if}</title>
@@ -11,7 +13,7 @@
 			<input type="hidden" name="validfrom"      value="{$VALIDFROM}">
 			<input type="hidden" name="REFERER"        value="{$ENV_REFERER}">
 			{section name=ERROR loop=$ERRORS}
-				<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
+				<font color="#FF0000">{$ERRORS[ERROR]}</font><br>
 			{/section}
 			<table border=0>
 				<tr>
@@ -32,9 +34,9 @@
 					{else}
 					<td class="contrastbgcolor">{$ALL_DATA.currency}</td>
 					{/if}
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[rate]"      value="{$ALL_DATA.rate}"      size=10 /></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[rate]"      value="{$ALL_DATA.rate}"      size=10></td>
 					{if $NEW == 1}
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validfrom]" value="{$ALL_DATA.validfrom}" size=10 {if $ALL_DATA.validfrom_error == 1}style="color:red"{/if} /></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validfrom]" value="{$ALL_DATA.validfrom}" size=10 {if $ALL_DATA.validfrom_error == 1}style="color:red"{/if}></td>
 					{else}
 					<td class="contrastbgcolor">{$ALL_DATA.validfrom}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.validtil}</td>

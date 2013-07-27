@@ -1,6 +1,6 @@
 <?php
 #-
-# Copyright (c) 2006-2012 Oliver Lehmann <oliver@FreeBSD.org>
+# Copyright (c) 2006-2013 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSearch.php,v 1.18 2012/07/03 10:42:28 olivleh1 Exp $
+# $Id: moduleSearch.php,v 1.19 2013/07/27 23:06:48 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -55,6 +55,9 @@ class moduleSearch extends module {
 			$searchparams['grouping2'] = 'month';
 			$searchparams['order']     = 'grouping';
 			$this->template->assign( 'SEARCHPARAMS', $searchparams );
+		}
+		foreach( $contractpartner_values as $key => $value ) {
+			$contractpartner_values[$key]['name'] = htmlentities($value['name'], ENT_COMPAT | ENT_HTML401, ENCODING);
 		}
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 		$this->template->assign( 'ERRORS',                 $this->get_errors() );
@@ -118,6 +121,11 @@ class moduleSearch extends module {
 				foreach( array_keys( $results[0] ) as $column ) {
 					$columns[$column] = 1;
 				}
+ 				if($searchparams['grouping1'] == "contractpartner" || $searchparams['grouping2'] == "contractpartner") {
+ 					foreach($results as $key => $result) {
+ 						$result[$key]['name'] = htmlentities($value['name'], ENT_COMPAT | ENT_HTML401, ENCODING);
+ 					}
+ 				}  
 			} else {
 				add_error( 143 );
 			}

@@ -1,16 +1,18 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head><title>lalaMoneyflow: {$TEXT_3}</title>
 {$HEADER}
 
 		<td align="center" valign="top">
 			<h1>{$TEXT_3}</h1>
-			<a href="{$ENV_INDEX_PHP}?action=list_predefmoneyflows&letter=all">{$TEXT_28}</a> 
+			<a href="{$ENV_INDEX_PHP}?action=list_predefmoneyflows&amp;letter=all">{$TEXT_28}</a> 
 			{section name=LETTER loop=$ALL_INDEX_LETTERS}
-				<a href="{$ENV_INDEX_PHP}?action=list_predefmoneyflows&letter={$ALL_INDEX_LETTERS[LETTER]}">{$ALL_INDEX_LETTERS[LETTER]}</a> 
+				<a href="{$ENV_INDEX_PHP}?action=list_predefmoneyflows&amp;letter={$ALL_INDEX_LETTERS[LETTER]}">{$ALL_INDEX_LETTERS[LETTER]}</a> 
 			{/section}
-			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_predefmoneyflow&sr=1','_blank','width=840,height=80')">{$TEXT_29}</a> 
+			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_predefmoneyflow&amp;sr=1','_blank','width=840,height=80')">{$TEXT_29}</a> 
 			{if $COUNT_ALL_DATA > 0}
-				<br /><br />
+				<br><br>
 				<table border=0 align="center" cellpadding=2>
 					<tr>
 						<th width="85">{$TEXT_18}</th>
@@ -30,8 +32,8 @@
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].capitalsource_comment}</td>
 							<td class="contrastbgcolor">{if $ALL_DATA[DATA].once_a_month == 1}{$TEXT_25}{else}{$TEXT_26}{/if}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].last_used}</td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_predefmoneyflow&predefmoneyflowid={$ALL_DATA[DATA].predefmoneyflowid}&sr=1','_blank','width=800,height=80')">{$TEXT_36}</a></td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_predefmoneyflow&predefmoneyflowid={$ALL_DATA[DATA].predefmoneyflowid}&sr=1','_blank','width=800,height=80')">{$TEXT_37}</a></td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_predefmoneyflow&amp;predefmoneyflowid={$ALL_DATA[DATA].predefmoneyflowid}&amp;sr=1','_blank','width=800,height=80')">{$TEXT_36}</a></td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_predefmoneyflow&amp;predefmoneyflowid={$ALL_DATA[DATA].predefmoneyflowid}&amp;sr=1','_blank','width=800,height=80')">{$TEXT_37}</a></td>
 						</tr>
 					{/section}
 				</table>

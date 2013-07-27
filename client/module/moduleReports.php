@@ -1,6 +1,6 @@
 <?php
 #-
-# Copyright (c) 2005-2012 Oliver Lehmann <oliver@FreeBSD.org>
+# Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleReports.php,v 1.54 2012/12/21 11:31:41 olivleh1 Exp $
+# $Id: moduleReports.php,v 1.55 2013/07/27 23:06:48 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -119,6 +119,8 @@ class moduleReports extends module {
 			foreach( $all_moneyflow_data as $key => $value ) {
 				$all_moneyflow_data[$key]['bookingdate'] = convert_date_to_gui( $value['bookingdate'], $this->date_format );
 				$all_moneyflow_data[$key]['invoicedate'] = convert_date_to_gui( $value['invoicedate'], $this->date_format );
+				$all_moneyflow_data[$key]['contractpartnername'] = htmlentities($value['contractpartnername'], ENT_COMPAT | ENT_HTML401, ENCODING);
+				$all_moneyflow_data[$key]['capitalsourcecomment'] = htmlentities($value['capitalsourcecomment'], ENT_COMPAT | ENT_HTML401, ENCODING);
 				if ($all_moneyflow_data[$key]['mur_userid'] == USERID ) {
 					$all_moneyflow_data[$key]['owner'] = true;
 				} else {

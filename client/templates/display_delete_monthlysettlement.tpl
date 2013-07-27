@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 {if $CLOSE != 1}
 	<head><title>lalaMoneyflow: {$TEXT_60}</title>
@@ -5,9 +7,9 @@
 
 		<td align="center">
 		{section name=ERROR loop=$ERRORS}
-			<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
+			<font color="#FF0000">{$ERRORS[ERROR]}</font><br>
 		{/section}
-		<u>{$TEXT_59}</u><br />
+		<u>{$TEXT_59}</u><br>
 		<h1>{$TEXT_53} {$MONTH.name} {$YEAR}</h1>
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action"  value="delete_monthlysettlement">
@@ -30,7 +32,7 @@
 					<td align="right">&sum;</td>
 					<td align="right" class="contrastbgcolor"><font {if $SUMAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$SUMAMOUNT|number_format} {$CURRENCY}</u></font></td>
 				</tr>
-			</table><br />
+			</table><br>
 			<input type="submit" value="{$TEXT_25}">
 			<input type="button" value="{$TEXT_26}" onclick="javascript:void self.close();">
 		</form>

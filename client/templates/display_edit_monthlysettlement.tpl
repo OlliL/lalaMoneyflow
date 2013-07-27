@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 {if $CLOSE != 1}
 	<head><title>lalaMoneyflow: {if $NEW != 1}{$TEXT_54}{else}{$TEXT_55}{/if}</title>
@@ -10,7 +12,7 @@ function Go(month,year)
    referer = "{$ENV_REFERER}"
 {literal}
 
-   location.href = "index.php?action=edit_monthlysettlement&monthlysettlements_month=" + month + "&monthlysettlements_year=" + year + "&REFERER=" + referer;
+   location.href = "index.php?action=edit_monthlysettlement&amp;monthlysettlements_month=" + month + "&monthlysettlements_year=" + year + "&REFERER=" + referer;
    document.monthlysettlements.reset();
    document.monthlysettlements.elements[0].blur();
 }
@@ -22,8 +24,8 @@ function Go(month,year)
 		<td align="center">
 		<h1>{if $NEW != 1}{$TEXT_54}{else}{$TEXT_55}{/if}</h1>
 		{section name=ERROR loop=$ERRORS}
-			<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
-		{/section}<br />
+			<font color="#FF0000">{$ERRORS[ERROR]}</font><br>
+		{/section}<br>
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action" value="edit_monthlysettlement">
 			<input type="hidden" name="realaction" value="">
@@ -43,7 +45,7 @@ function Go(month,year)
 				<option {if $MONTH.nummeric == "12"}selected{/if} value="12"> 12
 			</select>
 			{$TEXT_57}
-			<input class="contrastbgcolor" type="text" name="monthlysettlements_year" value="{$YEAR}" size=4" onchange="Go(this.form.monthlysettlements_month.options[this.form.monthlysettlements_month.options.selectedIndex].value,this.form.monthlysettlements_year.value)">
+			<input class="contrastbgcolor" type="text" name="monthlysettlements_year" value="{$YEAR}" size="4" onchange="Go(this.form.monthlysettlements_month.options[this.form.monthlysettlements_month.options.selectedIndex].value,this.form.monthlysettlements_year.value)">
 			<input type="hidden" name="REFERER" value="{$ENV_REFERER}">
 			<table border=0 width="350" cellpadding=2>
 				<tr>
@@ -54,11 +56,11 @@ function Go(month,year)
 					<tr>
 						{if $NEW == 1 }<input type="hidden" name="all_data[{$ALL_DATA[DATA].id}][new]" value="1">{/if}
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="hidden" name="all_data[{$ALL_DATA[DATA].id}][mcs_capitalsourceid]" value="{$ALL_DATA[DATA].id}">{$ALL_DATA[DATA].comment}</td>
-						<td class="contrastbgcolor" align="right"><input class="contrastbgcolor" type="text" name="all_data[{$ALL_DATA[DATA].id}][amount]" value="{$ALL_DATA[DATA].amount}" {if $ALL_DATA[DATA].amount_error == 1}style="color:red"{/if} size=8 align="right"/> {$CURRENCY}</font></td>
+						<td class="contrastbgcolor" align="right"><input class="contrastbgcolor" type="text" name="all_data[{$ALL_DATA[DATA].id}][amount]" value="{$ALL_DATA[DATA].amount}" {if $ALL_DATA[DATA].amount_error == 1}style="color:red"{/if} size=8 align="right"> {$CURRENCY}</td>
 					</tr>
 				{/section}
 			</table>
-			<br />
+			<br>
 			<input type="submit" value="{$TEXT_22}" onClick="this.form.realaction.value = 'save'">
 			<input type="button" value="{$TEXT_23}" onclick="javascript:void self.close();">
 		</form>

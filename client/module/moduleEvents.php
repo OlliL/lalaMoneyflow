@@ -1,6 +1,6 @@
 <?php
 #-
-# Copyright (c) 2009-2012 Oliver Lehmann <oliver@FreeBSD.org>
+# Copyright (c) 2009-2013 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleEvents.php,v 1.3 2012/01/19 21:25:10 olivleh1 Exp $
+# $Id: moduleEvents.php,v 1.4 2013/07/27 23:06:48 olivleh1 Exp $
 #
 
 require_once 'module/module.php';

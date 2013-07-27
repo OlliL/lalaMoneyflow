@@ -1,6 +1,6 @@
 <?php
 #-
-# Copyright (c) 2005-2012 Oliver Lehmann <oliver@FreeBSD.org>
+# Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.34 2013/06/01 08:26:19 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.35 2013/07/27 23:06:48 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -221,7 +221,7 @@ class moduleMonthlySettlement extends module {
 		switch( $realaction ) {
 			case 'yes':
 				if( $this->coreMonthlySettlement->delete_monthlysettlement( $month, $year ) ) {
-					$this->template->assign( 'ENV_REFERER', $this->index_php.'?action=list_monthlysettlements' );
+// 					$this->template->assign( 'ENV_REFERER', $this->index_php.'?action=list_monthlysettlements' );
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}

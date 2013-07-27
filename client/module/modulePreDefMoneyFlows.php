@@ -1,6 +1,6 @@
 <?php
 #-
-# Copyright (c) 2005-2012 Oliver Lehmann <oliver@FreeBSD.org>
+# Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: modulePreDefMoneyFlows.php,v 1.27 2012/01/19 21:25:10 olivleh1 Exp $
+# $Id: modulePreDefMoneyFlows.php,v 1.28 2013/07/27 23:06:48 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -62,8 +62,8 @@ class modulePreDefMoneyFlows extends module {
 
 		if( is_array( $all_data ) ) {
 			foreach( $all_data as $key => $value ) {
-				$all_data[$key]['capitalsource_comment'] = $this->coreCapitalSources->get_comment( $all_data[$key]['mcs_capitalsourceid'] );
-				$all_data[$key]['contractpartner_name']  = $this->coreContractPartners->get_name( $all_data[$key]['mcp_contractpartnerid'] );
+				$all_data[$key]['capitalsource_comment'] = htmlentities($this->coreCapitalSources->get_comment( $all_data[$key]['mcs_capitalsourceid'] ), ENT_COMPAT | ENT_HTML401, ENCODING);
+				$all_data[$key]['contractpartner_name']  = htmlentities($this->coreContractPartners->get_name( $all_data[$key]['mcp_contractpartnerid'] ), ENT_COMPAT | ENT_HTML401, ENCODING);
 			}
 		}
 
@@ -119,7 +119,13 @@ class modulePreDefMoneyFlows extends module {
 				}				
 
 				$contractpartner_values = $this->coreContractPartners->get_all_names();
-
+				foreach($contractpartner_values as $key => $data) {
+					$contractpartner_values[$key]['name'] = htmlentities($data['name'], ENT_COMPAT | ENT_HTML401, ENCODING);
+				}
+				foreach($capitalsource_values as $key => $data) {
+					$capitalsource_values[$key]['comment'] = htmlentities($data['comment'], ENT_COMPAT | ENT_HTML401, ENCODING);
+				}
+				
 				$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
 				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 				break;

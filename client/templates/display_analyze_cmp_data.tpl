@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head><title>lalaMoneyflow: {$TEXT_187}</title>
 {literal}	
@@ -36,7 +38,7 @@ function toggle(div_name) {
 		<br>
 		<ul style="margin-left:12px">
 		{if $ONLY_IN_FILE_IDS|@count gt 0 }
-			<br />
+			<br>
 			<li><a href="javascript:toggle('only_in_file_ids')"><p style="font-weight:bold;text-align:left;font-size:11px;">{$TEXT_197} <font color="red">{$ONLY_IN_FILE_IDS|@count}</font></p></a></li>
 			<div id="only_in_file_ids" style="display: none">
 			<table border=0 width=830 align="center" cellpadding=2>
@@ -96,8 +98,8 @@ function toggle(div_name) {
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment}</td>
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].capitalsourcecomment}</td>
 						{if $DB_ARRAY[$db_id].owner == true }
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_36}</a></td>
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_37}</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_36}</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_37}</a></td>
 						{/if}
 					</tr>
 				{/section}
@@ -145,8 +147,8 @@ function toggle(div_name) {
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment}</td>
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].capitalsourcecomment}</td>
 						{if $DB_ARRAY[$db_id].owner == true }
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_36}</a></td>
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_37}</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_36}</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_37}</a></td>
 						{/if}
 					</tr>
 					<tr><td colspan=6>&nbsp;</td></tr>
@@ -195,8 +197,8 @@ function toggle(div_name) {
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment}</td>
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].capitalsourcecomment}</td>
 						{if $DB_ARRAY[$db_id].owner == true }
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_36}</a></td>
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_37}</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_36}</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_37}</a></td>
 						{/if}
 					</tr>
 					<tr><td colspan=6>&nbsp;</td></tr>

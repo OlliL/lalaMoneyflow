@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head><title>lalaMoneyflow: {$TEXT_4}</title>
 {literal}
@@ -29,16 +31,16 @@ function Go(x)
 			<h1>{$TEXT_4}</h1>
 			<table border="0" cellpadding=5>
 				<tr>
-					<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_monthlysettlement&sr=1','_blank','width=500,height={$WIN_HEIGHT}')">{$TEXT_29}</a></td>
+					<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_monthlysettlement&amp;sr=1','_blank','width=500,height={$WIN_HEIGHT}')">{$TEXT_29}</a></td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="monthlysettlements_year" size=1 onchange="Go(this.form.monthlysettlements_year.options[this.form.monthlysettlements_year.options.selectedIndex].value)">
 					{section name=YEAR loop=$ALL_YEARS}
-						<option {if $ALL_YEARS[YEAR] == $SELECTED_YEAR}selected{/if} value="{$ENV_INDEX_PHP}?action=list_monthlysettlements&monthlysettlements_year={$ALL_YEARS[YEAR]}"> {$ALL_YEARS[YEAR]}
+						<option {if $ALL_YEARS[YEAR] == $SELECTED_YEAR}selected{/if} value="{$ENV_INDEX_PHP}?action=list_monthlysettlements&amp;monthlysettlements_year={$ALL_YEARS[YEAR]}"> {$ALL_YEARS[YEAR]}
 					{/section}
 					</select></td>
 					{section name=MONTH loop=$ALL_MONTHS}
 						<td class="contrastbgcolor">
 							{if $ALL_MONTHS[MONTH].nummeric ne $SELECTED_MONTH}
-							<a href="{$ENV_INDEX_PHP}?action=list_monthlysettlements&monthlysettlements_month={$ALL_MONTHS[MONTH].nummeric}&monthlysettlements_year={$SELECTED_YEAR}">{$ALL_MONTHS[MONTH].name}</a> 
+							<a href="{$ENV_INDEX_PHP}?action=list_monthlysettlements&amp;monthlysettlements_month={$ALL_MONTHS[MONTH].nummeric}&amp;monthlysettlements_year={$SELECTED_YEAR}">{$ALL_MONTHS[MONTH].name}</a> 
 							{else}
 							{$ALL_MONTHS[MONTH].name}
 							{/if}
@@ -48,7 +50,7 @@ function Go(x)
 			</table>
 			</form>
 			{if $COUNT_ALL_DATA > 0}
-				<br />
+				<br>
 				<h1>{$TEXT_53} {$MONTH.name} {$YEAR}</h1>
 				<table border=0 width="300" cellpadding=2>
 					<tr>
@@ -66,11 +68,11 @@ function Go(x)
 						<td align="right" class="contrastbgcolor"><font {if $SUMAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$SUMAMOUNT|number_format} {$CURRENCY}</u></font></td>
 					</tr>
 				</table>
-				<br />
+				<br>
 				<table border="0" cellpadding=2>
 					<tr>
-					<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_monthlysettlement&monthlysettlements_month={$MONTH.nummeric}&monthlysettlements_year={$YEAR}&sr=1','_blank','width=500,height={$WIN_HEIGHT}')">{$TEXT_36}</a></td>
-					<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_monthlysettlement&monthlysettlements_month={$MONTH.nummeric}&monthlysettlements_year={$YEAR}&sr=1','_blank','width=500,height={$WIN_HEIGHT}')">{$TEXT_37}</a></td>
+					<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_monthlysettlement&amp;monthlysettlements_month={$MONTH.nummeric}&amp;monthlysettlements_year={$YEAR}&amp;sr=1','_blank','width=500,height={$WIN_HEIGHT}')">{$TEXT_36}</a></td>
+					<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_monthlysettlement&amp;monthlysettlements_month={$MONTH.nummeric}&amp;monthlysettlements_year={$YEAR}&amp;sr=1','_blank','width=500,height={$WIN_HEIGHT}')">{$TEXT_37}</a></td>
 					</tr>
 				</table>
 			{/if}

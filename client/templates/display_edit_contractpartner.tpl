@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 {if $CLOSE != 1}
 	<head><title>lalaMoneyflow: {if $ALL_DATA.id > 0}{$TEXT_46}{else}{$TEXT_11}{/if}</title>
@@ -10,7 +12,7 @@
 			<input type="hidden" name="contractpartnerid" value="{$ALL_DATA.contractpartnerid}">
 			<input type="hidden" name="REFERER"           value="{$ENV_REFERER}">
 			{section name=ERROR loop=$ERRORS}
-				<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
+				<font color="#FF0000">{$ERRORS[ERROR]}</font><br>
 			{/section}
 			<table border=0>
 				<tr>
@@ -21,11 +23,11 @@
 					<th>{$TEXT_45}</th>
 				</tr>
 				<tr>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[name]"     value="{$ALL_DATA.name}"    /></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[street]"   value="{$ALL_DATA.street}"  /></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[postcode]" value="{$ALL_DATA.postcode}" size="5" /></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[town]"     value="{$ALL_DATA.town}"    /></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[country]"  value="{$ALL_DATA.country}" size="10" /></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[name]"     value="{$ALL_DATA.name}"   ></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[street]"   value="{$ALL_DATA.street}" ></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[postcode]" value="{$ALL_DATA.postcode}" size="5"></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[town]"     value="{$ALL_DATA.town}"   ></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[country]"  value="{$ALL_DATA.country}" size="10"></td>
 				</tr>
 			</table>
 			<input type="submit" value="{$TEXT_22}">

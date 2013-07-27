@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 {if $CLOSE != 1}
 	<head><title>lalaMoneyflow: {$TEXT_48}</title>
@@ -5,9 +7,9 @@
 
 		<td align="center">
 		{section name=ERROR loop=$ERRORS}
-			<font color="#FF0000">{$ERRORS[ERROR]}</font><br />
+			<font color="#FF0000">{$ERRORS[ERROR]}</font><br>
 		{/section}
-		<u>{$TEXT_47}</u><br /><br />
+		<u>{$TEXT_47}</u><br><br>
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action"            value="delete_contractpartner">
 			<input type="hidden" name="realaction"        value="yes">

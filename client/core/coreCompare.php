@@ -1,6 +1,6 @@
 <?php
 #-
-# Copyright (c) 2007-2012 Oliver Lehmann <oliver@FreeBSD.org>
+# Copyright (c) 2007-2013 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -24,10 +24,11 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCompare.php,v 1.3 2012/01/19 21:25:07 olivleh1 Exp $
+# $Id: coreCompare.php,v 1.4 2013/07/27 23:06:48 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
+require_once 'model/CompareDataFormats.php';
 
 class coreCompare extends core {
 
@@ -42,7 +43,7 @@ class coreCompare extends core {
 	}
 
 	function get_id_data( $id ) {
-		return $this->select_row( "	SELECT formatid
+		$db_array = $this->select_row( "	SELECT formatid
 						      ,name
 						      ,startline
 						      ,delimiter
@@ -59,5 +60,23 @@ class coreCompare extends core {
 						  FROM cmp_data_formats
 						 WHERE formatid = $id
 						 LIMIT 1" );
+		
+		$compareDataFormats = new CompareDataFormats();
+		$compareDataFormats->setFormatId($db_array['formatid']);
+		$compareDataFormats->setName($db_array['name']);
+		$compareDataFormats->setStartline($db_array['startline']);
+		$compareDataFormats->setDelimiter($db_array['delimiter']);
+		$compareDataFormats->setPositionDate($db_array['pos_date']);
+		$compareDataFormats->setPositionPartner($db_array['pos_partner']);
+		$compareDataFormats->setPositionAmount($db_array['pos_amount']);
+		$compareDataFormats->setPositionComment($db_array['pos_comment']);
+		$compareDataFormats->setFormatDate($db_array['fmt_date']);
+		$compareDataFormats->setFormatAmountThousand($db_array['fmt_amount_thousand']);
+		$compareDataFormats->setFormatAmountDecimal($db_array['fmt_amount_decimal']);
+		$compareDataFormats->setPositionPartnerAlternative($db_array['pos_partner_alt']);
+		$compareDataFormats->setPositionPartnerAlternativePositionKey($db_array['pos_partner_alt_pos_key']);
+		$compareDataFormats->setPositionPartnerAlternativeKeyword($db_array['pos_partner_alt_keyword']);
+		
+		return $compareDataFormats;
 	}
 }

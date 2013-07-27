@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head><title>lalaMoneyflow: {$TEXT_6}</title>
 {$HEADER}
@@ -70,11 +72,11 @@
 								>{$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}</option>
 							{/section}
 							</select>
-						</select></td>
+						</td>
 					</tr>
 					<tr>
 						<td colspan="2" align="center">
-							<br />
+							<br>
 							<input type="submit" value="{$TEXT_71}">
 						</td>
 					</tr>
@@ -84,9 +86,9 @@
 					{if $PLOT_GRAPH == 1}
 					<tr>
 						<td align="center">
-							<br />
-							<img border="0" src="{$ENV_INDEX_PHP}?action=plot_graph{assign var="checkedids" value=$ALL_DATA.mcs_capitalsourceid}{foreach $checkedids as $capitalsourceid}&id[]={$capitalsourceid}{/foreach}
-&startmonth={$ALL_DATA.startmonth}&startyear={$ALL_DATA.startyear}&endmonth={$ALL_DATA.endmonth}&endyear={$ALL_DATA.endyear}" />
+							<br>
+							<img border="0" alt="trend" src="{$ENV_INDEX_PHP}?action=plot_graph{assign var="checkedids" value=$ALL_DATA.mcs_capitalsourceid}{foreach $checkedids as $capitalsourceid}&amp;id[]={$capitalsourceid}{/foreach}
+&amp;startmonth={$ALL_DATA.startmonth}&amp;startyear={$ALL_DATA.startyear}&amp;endmonth={$ALL_DATA.endmonth}&amp;endyear={$ALL_DATA.endyear}">
 						</td>
 					</tr>
 					{/if}

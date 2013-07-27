@@ -1,6 +1,6 @@
 <?php
 #-
-# Copyright (c) 2005-2012 Oliver Lehmann <oliver@FreeBSD.org>
+# Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.48 2012/01/27 20:03:52 olivleh1 Exp $
+# $Id: index.php,v 1.49 2013/07/27 23:06:48 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -401,7 +401,7 @@ echo $display;
 if( $money_debug === true ) {
 	echo "SQL Queries: ";
 	$timer->mPrintTime( $sql_querytime );
-	echo "<br />";
+	echo "<br >";
 	echo "overall: ";
 	$timer->mPrintTime();
 }
