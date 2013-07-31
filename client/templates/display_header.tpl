@@ -2,6 +2,7 @@
 	<style type="text/css">
 	{literal}
 	all,body,table,a,td,option,input,select { font-size:10px;font-family:Bitstream Vera Sans,Arial, Helvetica,sans-serif; }
+	td { padding: 3px; }
 	.contrastbgcolor { background-color: #B0C4DE; }
 	.contrastbgcolornobr { background-color: #B0C4DE; white-space:nowrap; }
 	.nobr { white-space:nowrap; }

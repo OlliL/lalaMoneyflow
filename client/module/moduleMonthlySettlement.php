@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.35 2013/07/27 23:06:48 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.36 2013/07/31 18:47:58 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -65,11 +65,19 @@ class moduleMonthlySettlement extends module {
 		if( $month > 0 && $year > 0 ) {
 			$all_ids = $this->coreCapitalSources->get_valid_ids( date( 'Y-m-d', mktime( 0, 0, 0, $month, 1, $year ) ), date( 'Y-m-d', mktime( 0, 0, 0, $month+1, 0, $year ) ) );
 			$num_source = $this->coreCapitalSources->count_all_valid_data( date( 'Y-m-d', mktime( 0, 0, 0, $month, 1, $year ) ), date( 'Y-m-d', mktime( 0, 0, 0, $month+1, 0, $year ) ) );
+
+			$data_found = false;
 			foreach( $all_ids as $id ) {
+
+				$amount = $this->coreMonthlySettlement->get_amount( USERID, $id, $month, $year );
+				if($amount != NULL) {
+					$data_found = true;
+				}
+
 				$all_data[] = array(
 					'id'      => $id,
 					'comment' => $this->coreCapitalSources->get_comment( $id ),
-					'amount'  => $this->coreMonthlySettlement->get_amount( USERID, $id, $month, $year )
+					'amount'  => $amount
 				);
 			}
 
@@ -80,11 +88,13 @@ class moduleMonthlySettlement extends module {
 				'name'     => $this-> coreDomains->get_domain_meaning( 'MONTHS', ( int )$month )
 			);
 
-			$this->template->assign( 'SUMAMOUNT',      $sumamount         );
-			$this->template->assign( 'MONTH',          $month             );
-			$this->template->assign( 'YEAR' ,          $year              );
-			$this->template->assign( 'ALL_DATA',       $all_data          );
-			$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
+			if($data_found) {
+				$this->template->assign( 'SUMAMOUNT',      $sumamount         );
+				$this->template->assign( 'MONTH',          $month             );
+				$this->template->assign( 'YEAR' ,          $year              );
+				$this->template->assign( 'ALL_DATA',       $all_data          );
+				$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
+			}
 		}
 
 		$this->template->assign( 'ALL_YEARS',      $years  );
@@ -127,7 +137,6 @@ class moduleMonthlySettlement extends module {
 				}
 
 				if( $data_is_valid === true ) {
-				printf("1\n");
 					foreach( $all_data as $id => $value ) {
 					 	if( is_array( $value ) ) {
 							if( $value['new'] === "1" || !is_array($this->coreMonthlySettlement->get_data( $value['mcs_capitalsourceid'], $month, $year )) ) {
@@ -142,6 +151,7 @@ class moduleMonthlySettlement extends module {
 				}
 
 				if( $data_is_valid === true && $ret === true ) {
+					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
 			default:

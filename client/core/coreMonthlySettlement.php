@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMonthlySettlement.php,v 1.30 2013/07/27 23:06:48 olivleh1 Exp $
+# $Id: coreMonthlySettlement.php,v 1.31 2013/07/31 18:47:58 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -101,7 +101,7 @@ class coreMonthlySettlement extends core {
 							   AND year           = $year
 							   AND mug_mur_userid = ".USERID."
 							 LIMIT 1" );
-			
+
 		} elseif( $sourceid == 0 )
 			$result = $this->select_col( "	SELECT 1
 							  FROM monthlysettlements
@@ -145,13 +145,13 @@ class coreMonthlySettlement extends core {
 						  FROM vw_monthlysettlements
 						 WHERE year       = (SELECT MAX(year)
 						                       FROM vw_monthlysettlements
-						                      WHERE mug_mur_userid = '.USERID.')
-						   AND mug_mur_userid = '.USERID.'' );
+						                      WHERE mur_userid = '.USERID.')
+						   AND mur_userid = '.USERID.'' );
 		if( !empty( $result['month'] ) && !empty( $result['year'] ) ) {
 			return mktime( 0, 0, 0, $result['month']+1, 1, $result['year'] );
 		} else {
 			return false;
-		} 
+		}
 	}
 
 
@@ -167,10 +167,10 @@ class coreMonthlySettlement extends core {
 	}
 
 	function delete_monthlysettlement( $month, $year ) {
-		$this->delete_row( "     DELETE FROM vw_monthlysettlements
+		$this->delete_row( "     DELETE FROM monthlysettlements
 					  WHERE month          = $month
 					    AND year           = $year
-					    AND mug_mur_userid = ".USERID );
+					    AND mur_userid = ".USERID );
 		return true;
 	}
 
@@ -187,7 +187,7 @@ class coreMonthlySettlement extends core {
 			return false;
 		}
 	}
-	
+
 	function insert_monthlysettlement( $sourceid, $month, $year, $amount ) {
 		$date = $this->make_date( $year."-".$month."-01" );
 		if( fix_amount( $amount ) ) {

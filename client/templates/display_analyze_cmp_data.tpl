@@ -57,8 +57,8 @@ function toggle(div_name) {
 					{assign var='file_id'   value=$ONLY_IN_FILE_IDS[ID].file}
 					<tr>
 						<th align="right">{$TEXT_193}</tdh>
-						<td class="contrastbgcolor"><p style="margin-left:8px;">{$FILE_ARRAY[$file_id].bookingdate}</p></td>
-						<td class="contrastbgcolor"><p style="margin-left:8px;">{$FILE_ARRAY[$file_id].invoicedate}</p></td>
+						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].bookingdate}</td>
+						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $FILE_ARRAY[$file_id].amount < 0}color="red"{else}color="black"{/if}>{$FILE_ARRAY[$file_id].amount|number_format} {$CURRENCY}</font></td>
 						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].contractpartnername}</td>
 						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].comment}</td>
@@ -91,8 +91,8 @@ function toggle(div_name) {
 					{assign var='db_id'   value=$ONLY_IN_DB_IDS[ID].db}
 					<tr>
 						<th align="right">{$TEXT_194}</tdh>
-						<td class="contrastbgcolor"><p style="margin-left:8px;">{$DB_ARRAY[$db_id].bookingdate}</p></td>
-						<td class="contrastbgcolor"><p style="margin-left:8px;">{$DB_ARRAY[$db_id].invoicedate}</p></td>
+						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].bookingdate}</td>
+						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $DB_ARRAY[$db_id].amount < 0}color="red"{else}color="black"{/if}>{$DB_ARRAY[$db_id].amount|number_format} {$CURRENCY}</font></td>
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].contractpartnername}</td>
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment}</td>
@@ -128,8 +128,8 @@ function toggle(div_name) {
 					{assign var='db_id'   value=$DIFF_SOURCE_IDS[ID].db}
 					<tr>
 						<th align="right">{$TEXT_193}</tdh>
-						<td class="contrastbgcolor"><p style="margin-left:8px;">{$FILE_ARRAY[$file_id].bookingdate}</p></td>
-						<td class="contrastbgcolor"><p style="margin-left:8px;">{$FILE_ARRAY[$file_id].invoicedate}</p></td>
+						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].bookingdate}</td>
+						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $FILE_ARRAY[$file_id].amount < 0}color="red"{else}color="black"{/if}>{$FILE_ARRAY[$file_id].amount|number_format} {$CURRENCY}</font></td>
 						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].contractpartnername}</td>
 						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].comment}</td>
@@ -140,8 +140,8 @@ function toggle(div_name) {
 	
 					<tr>
 						<th align="right">{$TEXT_194}</th>
-						<td class="contrastbgcolor"><p style="margin-left:8px;">{$DB_ARRAY[$db_id].bookingdate}</p></td>
-						<td class="contrastbgcolor"><p style="margin-left:8px;">{$DB_ARRAY[$db_id].invoicedate}</p></td>
+						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].bookingdate}</td>
+						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $DB_ARRAY[$db_id].amount < 0}color="red"{else}color="black"{/if}>{$DB_ARRAY[$db_id].amount|number_format} {$CURRENCY}</font></td>
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].contractpartnername}</td>
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment}</td>
@@ -178,8 +178,8 @@ function toggle(div_name) {
 					{assign var='db_id'   value=$MATCHING_IDS[ID].db}
 					<tr>
 						<th align="right">{$TEXT_193}</tdh>
-						<td class="contrastbgcolor"><p style="margin-left:8px;">{$FILE_ARRAY[$file_id].bookingdate}</p></td>
-						<td class="contrastbgcolor"><p style="margin-left:8px;">{$FILE_ARRAY[$file_id].invoicedate}</p></td>
+						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].bookingdate}</td>
+						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $FILE_ARRAY[$file_id].amount < 0}color="red"{else}color="black"{/if}>{$FILE_ARRAY[$file_id].amount|number_format} {$CURRENCY}</font></td>
 						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].contractpartnername}</td>
 						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].comment}</td>
@@ -190,8 +190,8 @@ function toggle(div_name) {
 	
 					<tr>
 						<th align="right">{$TEXT_194}</th>
-						<td class="contrastbgcolor"><p style="margin-left:8px;">{$DB_ARRAY[$db_id].bookingdate}</p></td>
-						<td class="contrastbgcolor"><p style="margin-left:8px;">{$DB_ARRAY[$db_id].invoicedate}</p></td>
+						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].bookingdate}</td>
+						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $DB_ARRAY[$db_id].amount < 0}color="red"{else}color="black"{/if}>{$DB_ARRAY[$db_id].amount|number_format} {$CURRENCY}</font></td>
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].contractpartnername}</td>
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment}</td>

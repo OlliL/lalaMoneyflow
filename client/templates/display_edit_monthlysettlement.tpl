@@ -12,7 +12,7 @@ function Go(month,year)
    referer = "{$ENV_REFERER}"
 {literal}
 
-   location.href = "index.php?action=edit_monthlysettlement&amp;monthlysettlements_month=" + month + "&monthlysettlements_year=" + year + "&REFERER=" + referer;
+   location.href = "index.php?action=edit_monthlysettlement&monthlysettlements_month=" + month + "&monthlysettlements_year=" + year + "&REFERER=" + referer;
    document.monthlysettlements.reset();
    document.monthlysettlements.elements[0].blur();
 }
