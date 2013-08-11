@@ -10,7 +10,7 @@
 			{section name=LETTER loop=$ALL_INDEX_LETTERS}
 				<a href="{$ENV_INDEX_PHP}?action=list_languages&amp;letter={$ALL_INDEX_LETTERS[LETTER]}">{$ALL_INDEX_LETTERS[LETTER]}</a> 
 			{/section}
-			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=add_language&amp;sr=1','_blank','width=800,height=80')">{$TEXT_29}</a> 
+			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=add_language&amp;sr=1','_blank','width=800,height=120')">{$TEXT_29}</a> 
 			{if $COUNT_ALL_DATA > 0}
 				<br><br>
 				<table border=0>

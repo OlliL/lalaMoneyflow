@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreLanguages.php,v 1.11 2013/07/27 23:06:48 olivleh1 Exp $
+# $Id: coreLanguages.php,v 1.12 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -33,7 +33,7 @@ require_once 'core/coreSettings.php';
 class coreLanguages extends core {
 
 	function coreLanguages() {
-		$this->core();
+		parent::__construct();
 		$this->coreSettings = new coreSettings();
 	}
 

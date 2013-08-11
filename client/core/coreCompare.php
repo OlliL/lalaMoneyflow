@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCompare.php,v 1.4 2013/07/27 23:06:48 olivleh1 Exp $
+# $Id: coreCompare.php,v 1.5 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -33,7 +33,7 @@ require_once 'model/CompareDataFormats.php';
 class coreCompare extends core {
 
 	function coreCompare() {
-		$this->core();
+		parent::__construct();
 	}
 
 	function get_all_data() {

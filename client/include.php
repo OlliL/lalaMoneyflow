@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: include.php,v 1.17 2013/07/31 18:47:57 olivleh1 Exp $
+# $Id: include.php,v 1.18 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 ##########
@@ -33,11 +33,22 @@
 
 # MySQL config - syntax: mysql://user/password@server/database
 $dsn = "mysql://moneyflow:moneyflow@db/moneyflow";
+const DATASOURCE = 'mysql:host=db;dbname=moneyflow';
+const DB_USER = 'moneyflow';
+const DB_PASS = 'moneyflow';
 
 # jpgraph is used for plotting trends
 define( 'ENABLE_JPGRAPH', true );
 
 define( 'ENCODING' , 'ISO-8859-15');
+
+
+const ROOTDIR = '/mnt/files/www/sites/olli.homeip.net/htdocs/moneyflow/';
+const HTTPFULSUBDIR = 'contrib/httpful/src/';
+const SLIMSUBDIR = 'contrib/Slim/';
+const URLPREFIX = 'http://www/moneyflow/';
+const SERVERPREFIX = 'rest/server/';
+
 
 ##########
 # more or less system defined stuff following
@@ -54,5 +65,20 @@ $money_debug = false;
 define( 'MAX_YEAR', '2999-12-31' );
 
 set_include_path(get_include_path().':sepa/');
+
+function framework_autoload($className) {
+	$fname = str_replace( '\\', DIRECTORY_SEPARATOR, $className ) . '.php';
+	// if (@stream_resolve_include_path( $fname ))
+	// require_once ($fname);
+	// require_once(ROOTDIR . $fname);
+	if (is_file( ROOTDIR . $fname )) {
+		require (ROOTDIR . $fname);
+	} else if (is_file( ROOTDIR . HTTPFULSUBDIR . $fname )) {
+		require (ROOTDIR . HTTPFULSUBDIR . $fname);
+	} else if (is_file( ROOTDIR . SLIMSUBDIR . $fname )) {
+		require (ROOTDIR . SLIMSUBDIR . $fname);
+	}
+}
+spl_autoload_register( 'framework_autoload' );
 
 ?>

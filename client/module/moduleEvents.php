@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleEvents.php,v 1.4 2013/07/27 23:06:48 olivleh1 Exp $
+# $Id: moduleEvents.php,v 1.5 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -34,7 +34,7 @@ require_once 'core/coreSession.php';
 class moduleEvents extends module {
 
 	function moduleEvents() {
-		$this->module();
+		parent::__construct();
 		$this->coreMonthlySettlement = new coreMonthlySettlement();
 		$this->coreSession           = new coreSession();
 	}

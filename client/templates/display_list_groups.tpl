@@ -21,7 +21,7 @@
 						<tr>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].name}</td>
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_group&amp;groupid={$ALL_DATA[DATA].groupid}&amp;sr=1','_blank','width=230,height=200')">{$TEXT_36}</a></td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_group&amp;groupid={$ALL_DATA[DATA].groupid}&amp;sr=1','_blank','width=800,height=80')">{$TEXT_37}</a></td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_group&amp;groupid={$ALL_DATA[DATA].groupid}&amp;sr=1','_blank','width=800,height=120')">{$TEXT_37}</a></td>
 						</tr>
 					{/section}
 				</table>

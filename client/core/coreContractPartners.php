@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreContractPartners.php,v 1.19 2013/07/27 23:06:48 olivleh1 Exp $
+# $Id: coreContractPartners.php,v 1.20 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -33,7 +33,7 @@ require_once 'core/coreMoneyFlows.php';
 class coreContractPartners extends core {
 
 	function coreContractPartners() {
-		$this->core();
+		parent::__construct();
 	}
 
 	function count_all_data() {

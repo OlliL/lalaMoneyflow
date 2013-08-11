@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMonthlySettlement.php,v 1.31 2013/07/31 18:47:58 olivleh1 Exp $
+# $Id: coreMonthlySettlement.php,v 1.32 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -32,7 +32,7 @@ require_once 'core/core.php';
 class coreMonthlySettlement extends core {
 
 	function coreMonthlySettlement() {
-		$this->core();
+		parent::__construct();
 	}
 
 	function get_data( $sourceid, $month, $year ) {

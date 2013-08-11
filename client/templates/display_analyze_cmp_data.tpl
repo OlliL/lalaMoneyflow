@@ -98,8 +98,8 @@ function toggle(div_name) {
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment}</td>
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].capitalsourcecomment}</td>
 						{if $DB_ARRAY[$db_id].owner == true }
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_36}</a></td>
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_37}</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_36}</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_37}</a></td>
 						{/if}
 					</tr>
 				{/section}
@@ -147,8 +147,8 @@ function toggle(div_name) {
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment}</td>
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].capitalsourcecomment}</td>
 						{if $DB_ARRAY[$db_id].owner == true }
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_36}</a></td>
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_37}</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_36}</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_37}</a></td>
 						{/if}
 					</tr>
 					<tr><td colspan=6>&nbsp;</td></tr>
@@ -197,8 +197,8 @@ function toggle(div_name) {
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment}</td>
 						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].capitalsourcecomment}</td>
 						{if $DB_ARRAY[$db_id].owner == true }
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_36}</a></td>
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=80')">{$TEXT_37}</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_36}</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_37}</a></td>
 						{/if}
 					</tr>
 					<tr><td colspan=6>&nbsp;</td></tr>

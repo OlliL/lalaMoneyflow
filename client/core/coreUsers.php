@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreUsers.php,v 1.16 2013/07/27 23:06:48 olivleh1 Exp $
+# $Id: coreUsers.php,v 1.17 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -33,57 +33,17 @@ require_once 'core/coreSettings.php';
 class coreUsers extends core {
 
 	function coreUsers() {
-		$this->core();
+		parent::__construct();
 	}
 
-	function check_account( $name, $password ) {
-		if ( $id=$this->select_col( "	SELECT userid
-						  FROM users
-						 WHERE name     = '$name'
-						   AND password = '".sha1( $password )."'" ) ) {
-			return $id;
-		} else {
-			return;
-		}
-	}
-	
 	function set_password( $id, $password ) {
 		return $this->update_row( "	UPDATE users
 						   SET password = '".sha1( $password )."'
 						      ,att_new  = 0
 						 WHERE userid = $id" );
 	}
-	
 
-	function check_login_permission( $id ) {
-		if( $this->select_col( "	SELECT perm_login
-						  FROM users
-						 WHERE userid = $id" ) == 1 ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 
-	function check_admin_permission( $id ) {
-		if( $this->select_col( "	SELECT perm_admin
-						  FROM users
-						 WHERE userid = $id" ) == 1 ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	function check_new_attribute( $id ) {
-		if( $this->select_col( "	SELECT att_new
-						  FROM users
-						 WHERE userid = $id" ) == 1 ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 
 	function count_all_data() {
 		if ( $num=$this->select_col( 'SELECT count(*) FROM users' ) ) {
@@ -147,7 +107,7 @@ class coreUsers extends core {
 	}
 
 	function delete_user( $id ) {
-	
+
 		$ret = $this->exec_procedure( "user_delete( $id, @po_ret )" );
 
 		if( $ret['@po_ret'] == 1 ) {
@@ -158,7 +118,7 @@ class coreUsers extends core {
 	}
 
 	function add_user( $name, $password, $perm_login, $perm_admin, $att_new ) {
-		$userid = $this->insert_row( "	INSERT INTO users 
+		$userid = $this->insert_row( "	INSERT INTO users
 						      (name
 						      ,password
 						      ,perm_login

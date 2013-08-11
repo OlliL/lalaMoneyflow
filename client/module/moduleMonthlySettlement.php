@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMonthlySettlement.php,v 1.36 2013/07/31 18:47:58 olivleh1 Exp $
+# $Id: moduleMonthlySettlement.php,v 1.37 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -36,7 +36,7 @@ require_once 'core/coreDomains.php';
 class moduleMonthlySettlement extends module {
 
 	function moduleMonthlySettlement() {
-		$this->module();
+		parent::__construct();
 		$this->coreCapitalSources    = new coreCapitalSources();
 		$this->coreCurrencies        = new coreCurrencies();
 		$this->coreMoneyFlows        = new coreMoneyFlows();

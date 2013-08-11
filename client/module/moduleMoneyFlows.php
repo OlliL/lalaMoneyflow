@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleMoneyFlows.php,v 1.49 2013/07/27 23:06:48 olivleh1 Exp $
+# $Id: moduleMoneyFlows.php,v 1.50 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -38,7 +38,7 @@ require_once 'core/coreSettings.php';
 class moduleMoneyFlows extends module {
 
 	function moduleMoneyFlows() {
-		$this->module();
+		parent::__construct();
 		$this->coreCapitalSources   = new coreCapitalSources();
 		$this->coreContractPartners = new coreContractPartners();
 		$this->coreCurrencies       = new coreCurrencies();

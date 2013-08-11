@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCurrencyRates.php,v 1.9 2013/07/27 23:06:48 olivleh1 Exp $
+# $Id: coreCurrencyRates.php,v 1.10 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -33,7 +33,7 @@ require_once 'core/coreSettings.php';
 class coreCurrencyRates extends core {
 
 	function coreCurrencyRates() {
-		$this->core();
+		parent::__construct();
 	}
 
 	function count_all_data() {

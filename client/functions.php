@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: functions.php,v 1.15 2013/07/27 23:06:48 olivleh1 Exp $
+# $Id: functions.php,v 1.16 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 
@@ -67,7 +67,7 @@ function check_date( $year, $month, $day ) {
 	} else {
 		return true;
 	}
-}		
+}
 
 function convert_timestamp_to_db( $timestamp ) {
 
@@ -77,7 +77,7 @@ function convert_timestamp_to_db( $timestamp ) {
 	return date('Y-m-d',$timestamp);
 }
 
-function convert_date_to_db( $date, $dateformat ) {
+function convert_date_to_db( $date, $dateformat=GUI_DATE_FORMAT ) {
 
 	if( empty( $date ) )
 		return false;
@@ -85,11 +85,11 @@ function convert_date_to_db( $date, $dateformat ) {
 	$patterns[0] = '/YYYY/';
 	$patterns[1] = '/MM/';
 	$patterns[2] = '/DD/';
-	
+
 	$replacements[0] = '%Y';
 	$replacements[1] = '%m';
 	$replacements[2] = '%d';
-	
+
 	$strptime_format = preg_replace( $patterns, $replacements, $dateformat );
 
 	$date_array = strptime( $date, $strptime_format);
@@ -103,18 +103,18 @@ function convert_date_to_db( $date, $dateformat ) {
 	return $retval;
 }
 
-function convert_date_to_timestamp( $date, $dateformat ) {
+function convert_date_to_timestamp( $date, $dateformat=GUI_DATE_FORMAT ) {
 	if( empty( $date ) )
 		return false;
 
 	$patterns[0] = '/YYYY/';
 	$patterns[1] = '/MM/';
 	$patterns[2] = '/DD/';
-	
+
 	$replacements[0] = '%Y';
 	$replacements[1] = '%m';
 	$replacements[2] = '%d';
-	
+
 	$strptime_format = preg_replace( $patterns, $replacements, $dateformat );
 
 	$date_array = strptime( $date, $strptime_format);
@@ -128,7 +128,7 @@ function convert_date_to_timestamp( $date, $dateformat ) {
 	return $retval;
 }
 
-function convert_date_to_gui( $date, $dateformat ) {
+function convert_date_to_gui( $date, $dateformat=GUI_DATE_FORMAT ) {
 
 	if( empty( $date ) )
 		return false;
@@ -138,17 +138,17 @@ function convert_date_to_gui( $date, $dateformat ) {
 	$patterns[0] = '/YYYY/';
 	$patterns[1] = '/MM/';
 	$patterns[2] = '/DD/';
-	
+
 	$replacements[0] = ( $date_array['tm_year']+1900 );
 	$replacements[1] = sprintf( '%02d', ( $date_array['tm_mon'] + 1 ));
 	$replacements[2] = sprintf( '%02d', $date_array['tm_mday'] );
-	
+
 	return preg_replace( $patterns, $replacements, $dateformat );
 }
 
 function fix_amount( &$amount ) {
 	$return = true;
-	
+
 	if( preg_match( '/^-{0,1}[0-9]*([\.][0-9][0-9][0-9]){0,}([,][0-9]{1,2}){0,1}$/', $amount ) ) {
 		$amount = str_replace( '.', '',  $amount );
 		$amount = str_replace( ',', '.', $amount );

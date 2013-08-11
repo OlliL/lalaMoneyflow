@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleGroups.php,v 1.2 2013/07/27 23:06:48 olivleh1 Exp $
+# $Id: moduleGroups.php,v 1.3 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -34,7 +34,7 @@ require_once 'core/coreGroups.php';
 class moduleGroups extends module {
 
 	function moduleGroups() {
-		$this->module();
+		parent::__construct();
 		$this->coreSession = new coreSession();
 		$this->coreGroups = new coreGroups();
 	}

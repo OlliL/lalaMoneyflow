@@ -10,7 +10,7 @@
 			{section name=LETTER loop=$ALL_INDEX_LETTERS}
 				<a href="{$ENV_INDEX_PHP}?action=list_currencyrates&amp;letter={$ALL_INDEX_LETTERS[LETTER]}">{$ALL_INDEX_LETTERS[LETTER]}</a> 
 			{/section}
-			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_currencyrate&amp;sr=1','_blank','width=800,height=80')">{$TEXT_29}</a> 
+			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_currencyrate&amp;sr=1','_blank','width=800,height=120')">{$TEXT_29}</a> 
 			{if $COUNT_ALL_DATA > 0}
 				<br><br>
 				<table border=0>
@@ -26,7 +26,7 @@
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].rate}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].validfrom}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].validtil}</td>
-							{if $ALL_DATA[DATA].att_past == 0}<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_currencyrate&amp;mcu_currencyid={$ALL_DATA[DATA].mcu_currencyid}&amp;validfrom={$ALL_DATA[DATA].validfrom}&amp;sr=1','_blank','width=800,height=80')">{$TEXT_36}</a></td>{/if}
+							{if $ALL_DATA[DATA].att_past == 0}<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_currencyrate&amp;mcu_currencyid={$ALL_DATA[DATA].mcu_currencyid}&amp;validfrom={$ALL_DATA[DATA].validfrom}&amp;sr=1','_blank','width=800,height=120')">{$TEXT_36}</a></td>{/if}
 						</tr>
 					{/section}
 				</table>

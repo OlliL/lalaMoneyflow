@@ -1,3 +1,18 @@
+1. remove Core Classes
+   - implement REST/JSON Services + use them
+     - first complete Capitalsource and Contractpartner Handling so Caching can be enabled for them
+     - then complete Moneflow Handling so Caching can be enabled as well
+   - move calc_amount to the client (for the time being, the personal Currency handling is broken)
+   - store translateable text on the client not in the DB as this is client data
+
+some far time in the future:
+2. Redo the Webclient MVC like
+
+
+
+
+
+
   
 - create group-mantainance screens 
 

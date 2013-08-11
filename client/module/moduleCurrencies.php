@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCurrencies.php,v 1.10 2013/07/27 23:06:48 olivleh1 Exp $
+# $Id: moduleCurrencies.php,v 1.11 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -33,7 +33,7 @@ require_once 'core/coreCurrencies.php';
 class moduleCurrencies extends module {
 
 	function moduleCurrencies() {
-		$this->module();
+		parent::__construct();
 		$this->coreCurrencies = new coreCurrencies();
 	}
 

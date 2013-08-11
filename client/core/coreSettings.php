@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreSettings.php,v 1.15 2013/07/27 23:06:48 olivleh1 Exp $
+# $Id: coreSettings.php,v 1.16 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -32,7 +32,7 @@ require_once 'core/core.php';
 class coreSettings extends core {
 
 	function coreSettings() {
-		$this->core();
+		parent::__construct();
 	}
 
 	function get_value( $userid, $name ) {

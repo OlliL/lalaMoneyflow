@@ -1,4 +1,5 @@
 <?php
+use rest\client\CallServer;
 #-
 # Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
@@ -24,7 +25,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.49 2013/07/27 23:06:48 olivleh1 Exp $
+# $Id: index.php,v 1.50 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -45,11 +46,14 @@ require_once 'module/moduleSearch.php';
 require_once 'module/moduleSettings.php';
 require_once 'module/moduleUsers.php';
 require_once 'module/moduleGroups.php';
-if( $money_debug === true ) {
+
+require_once 'model/LoggedOnUser.php';
+
+#if( $money_debug === true ) {
 	require_once 'util/utilTimer.php';
 	$timer = new utilTimer();
 	$timer->mStart();
-}
+#}
 
 
 $action=$_POST['action']?$_POST['action']:$_GET['action'];
@@ -110,6 +114,24 @@ if( $money_debug === true )
 	error_reporting(E_ALL);
 
 if( $is_logged_in == 0 ) {
+	$coreSettings = new \coreSettings();
+
+	$date_format = $coreSettings->get_date_format( USERID );
+	define(GUI_DATE_FORMAT, $date_format ['dateformat']);
+	define(GUI_LANGUAGE, $coreSettings->get_displayed_language( USERID ));
+#	require('rest/client/locale/de1.php');
+	if(!apc_fetch('lalaMoneyflowText#'.GUI_LANGUAGE.'-loaded')) {
+		echo 'hugo';
+		switch($language) {
+			case 2: 	require 'rest/client/locale/de.php';
+					break;
+			default: 	require 'rest/client/locale/en.php';
+					break;
+		}
+	}
+	if(!apc_fetch('lalaMoneyflowDomains-loaded')) {
+		require 'rest/client/locale/domains.php';
+	}
 
 	$display = $moduleEvents->check_events();
 
@@ -384,11 +406,11 @@ if( $is_logged_in == 0 ) {
 							$all_data=		$_REQUEST['all_data'];
 							$display=$moduleSettings->display_personal_settings( $realaction, $all_data );
 							break;
-			
+
 			case 'upfrm_cmp_data':		$display=$moduleCompare->display_upload_form();
 							break;
 			case 'analyze_cmp_data':	$all_data=		$_REQUEST['all_data'];
-							$file=			$_FILES['file'];		
+							$file=			$_FILES['file'];
 							$display=$moduleCompare->display_analyze_form( $file, $all_data );
 							break;
 
@@ -398,11 +420,11 @@ if( $is_logged_in == 0 ) {
 	}
 }
 echo $display;
-if( $money_debug === true ) {
-	echo "SQL Queries: ";
-	$timer->mPrintTime( $sql_querytime );
-	echo "<br >";
+#if( $money_debug === true ) {
+#	echo "SQL Queries: ";
+#	$timer->mPrintTime( $sql_querytime );
+#	echo "<br >";
 	echo "overall: ";
 	$timer->mPrintTime();
-}
+#}
 ?>

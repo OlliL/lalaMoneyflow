@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSettings.php,v 1.14 2013/07/27 23:06:48 olivleh1 Exp $
+# $Id: moduleSettings.php,v 1.15 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -36,7 +36,7 @@ require_once 'core/coreUsers.php';
 class moduleSettings extends module {
 
 	function moduleSettings() {
-		$this->module();
+		parent::__construct();
 		$this->coreCurrencies = new coreCurrencies();
 		$this->coreLanguages  = new coreLanguages();
 		$this->coreSettings   = new coreSettings();
@@ -89,10 +89,11 @@ class moduleSettings extends module {
 	function display_personal_settings( $realaction, $all_data ) {
 
 		$data_is_valid = true;
-		
+
 		switch( $realaction ) {
 			case 'save':
-				if( $this->coreUsers->check_new_attribute( USERID ) == 1 && ( empty( $all_data['password1'] ) && empty( $all_data['password2'] ) ) ) {
+				$user = LoggedOnUser::getInstance();
+				if( in_array( UserAttributes::IS_NEW, $user->getAttributes() ) && ( empty( $all_data['password1'] ) && empty( $all_data['password2'] ) ) ) {
 					add_error( 152 );
 					$data_is_valid = false;
 				} elseif( $all_data['password1'] != $all_data['password2'] ) {

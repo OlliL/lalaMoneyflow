@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.50 2013/07/27 23:06:48 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.51 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -33,7 +33,7 @@ require_once 'core/coreCapitalSources.php';
 class coreMoneyFlows extends core {
 
 	function coreMoneyFlows() {
-		$this->core();
+		parent::__construct();
 	}
 
 	function get_all_data() {
@@ -117,48 +117,6 @@ class coreMoneyFlows extends core {
 							 ,invoicedate" );
 	}
 
-	function get_all_monthly_joined_data( $month, $year, $sortby, $order ) {
-		$date = $this->make_date( $year."-".$month."-01" );
-		$sortbyadd=' mmf.bookingdate,mmf.invoicedate,mmf.moneyflowid';
-		switch( $sortby ) {
-			case 'capitalsources_comment':	$sortby='capitalsourcecomment '.$order.',';
-							break;
-			case 'moneyflows_bookingdate':	$sortby='mmf.bookingdate '.$order.',';
-							$sortbyadd=' mmf.invoicedate';
-							break;
-			case 'moneyflows_invoicedate':	$sortby='mmf.invoicedate '.$order.',';
-							$sortbyadd=' mmf.bookingdate';
-							break;
-			case 'moneyflows_amount':	$sortby='4 '.$order.',';
-							break;
-			case 'moneyflows_comment':	$sortby='mmf.comment '.$order.',';
-							break;
-			case 'contractpartners_name':	$sortby='contractpartnername '.$order.',';
-							break;
-			default:			$sortby='';
-		}
-		return $this->select_rows( "	SELECT mmf.moneyflowid
-						      ,mmf.bookingdate
-						      ,mmf.invoicedate
-						      ,calc_amount(mmf.amount,'OUT',mmf.mur_userid,mmf.invoicedate) amount
-						      ,mmf.comment
-						      ,mcp.name    contractpartnername
-						      ,mcs.comment capitalsourcecomment
-						      ,mmf.mur_userid
-						  FROM vw_moneyflows    mmf
-						      ,contractpartners mcp
-						      ,capitalsources   mcs
-						 WHERE mmf.mcp_contractpartnerid = mcp.contractpartnerid
-						   AND mmf.mcs_capitalsourceid   = mcs.capitalsourceid
-						   AND mmf.bookingdate             BETWEEN $date AND LAST_DAY($date)
-						   AND mmf.mug_mur_userid  = ".USERID."
-						   AND (mmf.private        = 0
-						        OR
-						        mmf.mur_userid     = ".USERID."
-						       )
-						 ORDER BY $sortby $sortbyadd" );
-	}
-
 	function capitalsource_in_use( $id ) {
 		if( $this->select_col( "SELECT COUNT(moneyflowid)
 					  FROM moneyflows
@@ -214,32 +172,6 @@ class coreMoneyFlows extends core {
 		if( empty( $movement ) )
 			$movement=0;
 		return $movement;
-	}
-
-	function get_all_years() {
-		return $this->select_cols( '	SELECT DISTINCT YEAR(bookingdate) year
-						  FROM vw_moneyflows mmf
-						 WHERE mmf.mug_mur_userid  = '.USERID.'
-						   AND (mmf.private        = 0
-						        OR
-						        mmf.mur_userid     = '.USERID.'
-						       )
-						 ORDER BY year ASC' );
-	}
-
-	function get_all_months( $year ) {
-		$start = $this->make_date($year.'-'.'01-01');
-		$end   = $this->make_date($year.'-'.'12-31');
-
-		return $this->select_cols( "	SELECT DISTINCT MONTH(bookingdate) month
-						  FROM vw_moneyflows mmf
-						 WHERE bookingdate   BETWEEN $start AND $end
-						   AND mmf.mug_mur_userid  = ".USERID."
-						   AND (mmf.private        = 0
-						        OR
-						        mmf.mur_userid     = ".USERID."
-						       )
-						 ORDER BY month ASC" );
 	}
 
 	function get_max_year_month() {
@@ -344,7 +276,7 @@ class coreMoneyFlows extends core {
 		function create_group_by( $group ) {
 
 			if( !empty( $group['by'] ) ) {
-	
+
 				switch( $group['by'] ) {
 					case 'year':		$group['group']   .= $group['gkeyword'].' YEAR(a.bookingdate)';
 								$group['order']   .= $group['okeyword'].' year';
@@ -366,7 +298,7 @@ class coreMoneyFlows extends core {
 				$group['jkeyword']  = ',';
 				$group['wkeyword']  = ' AND';
 			}
-			
+
 			return( $group );
 		}
 
@@ -398,7 +330,7 @@ class coreMoneyFlows extends core {
 			$WHERE_CONDITION  = $WHERE_KEYWORD.' '.$SEARCHCOL.' '.$LIKE." '".$params["pattern"]."' ";
 			$WHERE_KEYWORD    = ' AND';
 		}
-		
+
 		if( $params['minus'] == 1 ) {
 			$WHERE_CONDITION .= $WHERE_KEYWORD.' a.amount < 0 ';
 			$WHERE_KEYWORD    = ' AND';
@@ -408,7 +340,7 @@ class coreMoneyFlows extends core {
 			$WHERE_CONDITION .=  $WHERE_KEYWORD.' a.mcp_contractpartnerid = '.$params['mcp_contractpartnerid'];
 			$WHERE_KEYWORD    = ' AND';
 		}
-		
+
 		$group['gkeyword']  = '';
 		$group['okeyword']  = '';
 		$group['jkeyword']  = 'JOIN';
@@ -442,9 +374,9 @@ class coreMoneyFlows extends core {
 		return $this->select_rows( "	SELECT SUM(calc_amount(a.amount,'OUT',".USERID.",invoicedate))               amount
 						      ,GROUP_CONCAT( DISTINCT a.comment ORDER BY comment DESC SEPARATOR ',') comment
 						      $SELECT_CONDITION
-						  FROM vw_moneyflows a 
+						  FROM vw_moneyflows a
 						       $JOIN_CONDITION
-						 WHERE$WHERE_CONDITION 
+						 WHERE$WHERE_CONDITION
 						   AND a.bookingdate BETWEEN ".$params['startdate']." AND ".$params['enddate']."
 						   AND a.mug_mur_userid  = ".USERID."
 						   AND (a.private        = 0
@@ -467,7 +399,7 @@ class coreMoneyFlows extends core {
 						        mmf.mur_userid     = ".USERID."
 						       )");
 	}
-	
+
 	function month_has_moneyflows( $month, $year ) {
 		$date = $this->make_date( $year."-".$month."-01" );
 		$value = $this->select_col( "	SELECT 1
@@ -487,5 +419,5 @@ class coreMoneyFlows extends core {
 
 		return $value;
 	}
-	
+
 }

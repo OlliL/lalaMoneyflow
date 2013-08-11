@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreGroups.php,v 1.1 2012/01/27 20:03:52 olivleh1 Exp $
+# $Id: coreGroups.php,v 1.2 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -33,7 +33,7 @@ require_once 'core/coreSettings.php';
 class coreGroups extends core {
 
 	function coreGroups() {
-		$this->core();
+		parent::__construct();
 	}
 
 	function count_all_data() {

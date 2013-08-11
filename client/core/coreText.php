@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreText.php,v 1.13 2013/07/27 23:06:48 olivleh1 Exp $
+# $Id: coreText.php,v 1.14 2013/08/11 17:04:55 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -32,18 +32,12 @@ require_once 'core/core.php';
 class coreText extends core {
 
 	function coreText() {
-		$this->core();
+		parent::__construct();
 	}
 
 	function get_text( $id, $type ) {
-		return $this->select_col( "	SELECT text
-						  FROM vw_text
-						 WHERE textid     = $id
-						   AND type       = '$type'
-						   AND mur_userid = ".USERID."
-					 	 LIMIT 1" );
+		return htmlentities( apc_fetch('lalaMoneyflowText#'.GUI_LANGUAGE.'-'.$id), ENT_COMPAT | ENT_HTML401, ENCODING );
 	}
-	
 	function get_lang_data( $id ) {
 		return $this->select_rows( "	SELECT textid
 						      ,text
