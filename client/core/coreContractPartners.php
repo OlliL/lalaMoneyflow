@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreContractPartners.php,v 1.20 2013/08/11 17:04:55 olivleh1 Exp $
+# $Id: coreContractPartners.php,v 1.21 2013/08/14 16:15:24 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -36,14 +36,6 @@ class coreContractPartners extends core {
 		parent::__construct();
 	}
 
-	function count_all_data() {
-		if ( $num = $this->select_col( 'SELECT count(*)
-						  FROM contractpartners' ) ) {
-			return $num;
-		} else {
-			return;
-		}
-	}
 	function get_all_data() {
 		return $this->select_rows( '	SELECT contractpartnerid
 						      ,name
@@ -132,62 +124,4 @@ class coreContractPartners extends core {
 						 LIMIT 1" );
 	}
 
-
-	function delete_contractpartner( $id ) {
-		$coreMoneyFlows = new coreMoneyFlows();
-		if( $coreMoneyFlows->contractpartner_in_use( $id ) ) {
-			add_error( 124 );
-			return 0;
-		} else {
-			return $this->delete_row( "	DELETE FROM contractpartners
-							 WHERE contractpartnerid = $id
-							   AND mur_userid        = ".USERID."
-							 LIMIT 1" );
-		}
-	}
-
-
-	function update_contractpartner( $id, $name, $street, $postcode, $town, $country ) {
-		return $this->update_row( "	UPDATE contractpartners
-						   SET name     = '$name'
-						      ,street   = '$street'
-						      ,postcode = '$postcode'
-						      ,town     = '$town'
-						      ,country  = '$country'
-						 WHERE contractpartnerid = $id
-						   AND mur_userid	= ".USERID."
-						 LIMIT 1" );
-	}
-
-	function get_contractpartner_by_name( $name ) {
-		return $this->select_col( "	SELECT contractpartnerid
-						  FROM contractpartners
-						 WHERE name       = '$name'
-						   AND mur_userid = ".USERID."
-						 LIMIT 1" );
-	}
-
-	function add_contractpartner( $name, $street, $postcode, $town, $country ) {
-		if($this->get_contractpartner_by_name($name)) {
-			add_error( 203 );
-			return 0;
-		} else {
-			return $this->insert_row( "	INSERT INTO contractpartners
-							      (mur_userid
-							      ,name
-							      ,street
-							      ,postcode
-							      ,town
-							      ,country
-							      )
-							       VALUES
-							      (".USERID."
-							      ,'$name'
-							      ,'$street'
-							      ,'$postcode'
-							      ,'$town'
-							      ,'$country'
-							      )" );
-		}
-	}
 }

@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.1 2013/08/11 17:03:20 olivleh1 Exp $
+// $Id: CallServer.php,v 1.2 2013/08/14 16:15:25 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -37,8 +37,10 @@ use rest\model\mapper\JsonToMoneyflowMapper;
 use rest\model\mapper\JsonAutoMapper;
 use rest\model\mapper\JsonToUserMapper;
 use rest\model\Capitalsource;
-use rest\AbstractJsonSender;
+use rest\base\AbstractJsonSender;
 use rest\model\mapper\JsonToCapitalsourceMapper;
+use rest\model\mapper\JsonToContractpartnerMapper;
+use rest\model\Contractpartner;
 
 class CallServer extends AbstractJsonSender {
 	private static $sessionId;
@@ -67,8 +69,12 @@ class CallServer extends AbstractJsonSender {
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
 		) ) );
-		$result = Request::get( $url )->withoutStrictSsl()->send()->body;
-		return self::handle_result( $result );
+		$response = Request::get( $url )->withoutStrictSsl()->send();
+		if ($response->code == 204) {
+			return false;
+		} else {
+			return self::handle_result( $response->body );
+		}
 		// $ch = curl_init();
 		// curl_setopt( $ch, CURLOPT_URL, $url );
 		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -95,7 +101,7 @@ class CallServer extends AbstractJsonSender {
 		}
 	}
 
-	private final function deleteJson($url, $json) {
+	private final function deleteJson($url) {
 		$response = Request::delete( $url )->withoutStrictSsl()->send();
 		if ($response->code == 204) {
 			return true;
@@ -110,7 +116,7 @@ class CallServer extends AbstractJsonSender {
 	public static final function doLogon($user, $password) {
 		$url = URLPREFIX . SERVERPREFIX . 'sessionService/logon/' . $user . '/' . $password;
 		$result = self::getJson( $url );
-		if ($result) {
+		if (is_array( $result )) {
 			$result = JsonAutoMapper::mapAToB( $result );
 			self::setSessionId( $result->getId() );
 		}
@@ -124,7 +130,7 @@ class CallServer extends AbstractJsonSender {
 	public static final function getUserById($id) {
 		$url = URLPREFIX . SERVERPREFIX . 'userService/getUserById/' . $id . '/' . self::$sessionId;
 		$result = self::getJson( $url );
-		if ($result) {
+		if (is_array( $result )) {
 			$jsonArray = reset( $result );
 			$result = JsonToUserMapper::mapAToB( $jsonArray );
 		}
@@ -137,7 +143,7 @@ class CallServer extends AbstractJsonSender {
 	public static final function getMoneyflowsByMonth($year, $month) {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getMoneyflowsByMonth/' . $year . '/' . $month . '/' . self::$sessionId;
 		$result = self::getJson( $url );
-		if ($result) {
+		if (is_array( $result )) {
 			$jsonArray = reset( $result );
 			$result = array ();
 			foreach ( $jsonArray as $json ) {
@@ -150,7 +156,7 @@ class CallServer extends AbstractJsonSender {
 	public static final function getAllMoneyflowYears() {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getAllYears/' . self::$sessionId;
 		$result = self::getJson( $url );
-		if ($result) {
+		if (is_array( $result )) {
 			$result = reset( $result );
 		}
 		return $result;
@@ -159,7 +165,7 @@ class CallServer extends AbstractJsonSender {
 	public static final function getAllMoneyflowMonth($year) {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getAllMonth/' . $year . '/' . self::$sessionId;
 		$result = self::getJson( $url );
-		if ($result) {
+		if (is_array( $result )) {
 			$result = reset( $result );
 		}
 		return $result;
@@ -171,7 +177,20 @@ class CallServer extends AbstractJsonSender {
 	public static final function getAllCapitalsources() {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getAllCapitalsources/' . self::$sessionId;
 		$result = self::getJson( $url );
-		if ($result) {
+		if (is_array( $result )) {
+			$jsonArray = reset( $result );
+			$result = array ();
+			foreach ( $jsonArray as $json ) {
+				$result [] = JsonToCapitalsourceMapper::mapAToB( $json );
+			}
+		}
+		return $result;
+	}
+
+	public static final function getAllCapitalsourcesByDateRange($validfrom, $validtil) {
+		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getAllCapitalsourcesByDateRange/' . $validfrom . '/' . $validtil . '/' . self::$sessionId;
+		$result = self::getJson( $url );
+		if (is_array( $result )) {
 			$jsonArray = reset( $result );
 			$result = array ();
 			foreach ( $jsonArray as $json ) {
@@ -184,7 +203,7 @@ class CallServer extends AbstractJsonSender {
 	public static final function getAllCapitalsourcesByInitial($initial) {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getAllCapitalsourcesByInitial/' . $initial . '/' . self::$sessionId;
 		$result = self::getJson( $url );
-		if ($result) {
+		if (is_array( $result )) {
 			$jsonArray = reset( $result );
 			$result = array ();
 			foreach ( $jsonArray as $json ) {
@@ -197,7 +216,7 @@ class CallServer extends AbstractJsonSender {
 	public static final function getCapitalsourceById($id) {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getCapitalsourceById/' . $id . '/' . self::$sessionId;
 		$result = self::getJson( $url );
-		if ($result) {
+		if (is_array( $result )) {
 			$jsonArray = reset( $result );
 			$result = JsonToCapitalsourceMapper::mapAToB( $jsonArray );
 		}
@@ -207,7 +226,7 @@ class CallServer extends AbstractJsonSender {
 	public static final function getAllCapitalsourceInitials() {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getAllInitials/' . self::$sessionId;
 		$result = self::getJson( $url );
-		if ($result) {
+		if (is_array( $result )) {
 			$result = reset( $result );
 		}
 		return $result;
@@ -216,7 +235,7 @@ class CallServer extends AbstractJsonSender {
 	public static final function getAllCapitalsourceCount() {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/countAllCapitalsources/' . self::$sessionId;
 		$result = self::getJson( $url );
-		if ($result) {
+		if (is_array( $result )) {
 			$result = reset( $result );
 		}
 		return $result;
@@ -234,7 +253,79 @@ class CallServer extends AbstractJsonSender {
 
 	public static final function deleteCapitalsource($id) {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/deleteCapitalsourceById/' . $id . '/' . self::$sessionId;
-		return self::deleteJson( $url, parent::json_encode( $capitalsource ) );
+		return self::deleteJson( $url );
+	}
+
+	/*
+	 * ContractpartnerService
+	 */
+	public static final function getAllContractpartner() {
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/getAllContractpartner/' . self::$sessionId;
+		$result = self::getJson( $url );
+		if (is_array( $result )) {
+			$jsonArray = reset( $result );
+			$result = array ();
+			foreach ( $jsonArray as $json ) {
+				$result [] = JsonToContractpartnerMapper::mapAToB( $json );
+			}
+		}
+		return $result;
+	}
+
+	public static final function getAllContractpartnerByInitial($initial) {
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/getAllContractpartnerByInitial/' . $initial . '/' . self::$sessionId;
+		$result = self::getJson( $url );
+		if (is_array( $result )) {
+			$jsonArray = reset( $result );
+			$result = array ();
+			foreach ( $jsonArray as $json ) {
+				$result [] = JsonToContractpartnerMapper::mapAToB( $json );
+			}
+		}
+		return $result;
+	}
+
+	public static final function getContractpartnerById($id) {
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/getContractpartnerById/' . $id . '/' . self::$sessionId;
+		$result = self::getJson( $url );
+		if (is_array( $result )) {
+			$jsonArray = reset( $result );
+			$result = JsonToContractpartnerMapper::mapAToB( $jsonArray );
+		}
+		return $result;
+	}
+
+	public static final function getAllContractpartnerInitials() {
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/getAllInitials/' . self::$sessionId;
+		$result = self::getJson( $url );
+		if (is_array( $result )) {
+			$result = reset( $result );
+		}
+		return $result;
+	}
+
+	public static final function getAllContractpartnerCount() {
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/countAllContractpartner/' . self::$sessionId;
+		$result = self::getJson( $url );
+		if ($result) {
+			$result = reset( $result );
+		}
+		return $result;
+	}
+
+	public static final function createContractpartner(Contractpartner $contractpartner) {
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/createContractpartner/' . self::$sessionId;
+		return self::postJson( $url, parent::json_encode( $contractpartner ) );
+	}
+
+	public static final function updateContractpartner(Contractpartner $contractpartner) {
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/updateContractpartner/' . self::$sessionId;
+		return self::putJson( $url, parent::json_encode( $contractpartner ) );
+	}
+
+	public static final function deleteContractpartner($id) {
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/deleteContractpartnerById/' . $id . '/' . self::$sessionId;
+		return self::deleteJson( $url );
 	}
 }
 

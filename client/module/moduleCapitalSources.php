@@ -1,5 +1,4 @@
 <?php
-use rest\model\Capitalsource;
 use rest\client\CallServer;
 //
 // Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
@@ -26,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.24 2013/08/11 17:04:55 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.25 2013/08/14 16:15:25 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -57,19 +56,21 @@ class moduleCapitalSources extends module {
 			$capitalsourceArray = array ();
 		}
 
-		$all_data = parent::mapArray( $capitalsourceArray );
+		if (is_array( $capitalsourceArray )) {
+			$all_data = parent::mapArray( $capitalsourceArray );
 
-		foreach ( $all_data as $key => $data ) {
-			$all_data [$key] ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $data ['state'] );
-			$all_data [$key] ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $data ['type'] );
-			if ($data ['mur_userid'] == USERID) {
-				$all_data [$key] ['owner'] = true;
-			} else {
-				$all_data [$key] ['owner'] = false;
+			foreach ( $all_data as $key => $data ) {
+				$all_data [$key] ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $data ['state'] );
+				$all_data [$key] ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $data ['type'] );
+				if ($data ['mur_userid'] == USERID) {
+					$all_data [$key] ['owner'] = true;
+				} else {
+					$all_data [$key] ['owner'] = false;
+				}
 			}
+			$this->template->assign( 'ALL_DATA', $all_data );
 		}
 
-		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 
@@ -159,12 +160,14 @@ class moduleCapitalSources extends module {
 					break;
 				}
 			default :
-				$capitalsource = CallServer::getCapitalsourceById( $capitalsourceid );
-				if ($capitalsource) {
-					$all_data = parent::map( $capitalsource );
-					$all_data ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $all_data ['state'] );
-					$all_data ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $all_data ['type'] );
-					$this->template->assign( 'ALL_DATA', $all_data );
+				if ($capitalsourceid > 0) {
+					$capitalsource = CallServer::getCapitalsourceById( $capitalsourceid );
+					if ($capitalsource) {
+						$all_data = parent::map( $capitalsource );
+						$all_data ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $all_data ['state'] );
+						$all_data ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $all_data ['type'] );
+						$this->template->assign( 'ALL_DATA', $all_data );
+					}
 				}
 				break;
 		}

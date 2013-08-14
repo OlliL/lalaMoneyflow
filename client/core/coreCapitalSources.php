@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.37 2013/08/11 17:04:55 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.38 2013/08/14 16:15:24 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -54,51 +54,6 @@ class coreCapitalSources extends core {
 		} else {
 			return;
 		}
-	}
-
-	function get_all_data() {
-		return $this->select_rows( "	SELECT capitalsourceid
-						      ,type
-						      ,domain_meaning('CAPITALSOURCE_TYPE',type,".USERID.") typecomment
-						      ,state
-						      ,domain_meaning('CAPITALSOURCE_STATE',state,".USERID.") statecomment
-						      ,accountnumber
-						      ,bankcode
-						      ,comment
-						      ,validtil
-						      ,validfrom
-						      ,att_group_use
-						  FROM vw_capitalsources
-						 WHERE mug_mur_userid = ".USERID."
-						 ORDER BY CASE WHEN mur_userid = ".USERID." THEN 1 ELSE 2 END, capitalsourceid" );
-	}
-
-	function get_valid_data( $datefrom='', $datetil='', $group=false ) {
-		$datefrom = $this->make_date( $datefrom );
-
-		if( empty( $datetil ) )
-			$datetil = $datefrom;
-		else
-			$datetil = $this->make_date( $datetil );
-
-			$user="			   AND mur_userid = ".USERID;
-
-		return $this->select_rows( "	SELECT mur_userid
-		                                      ,capitalsourceid
-						      ,type
-						      ,domain_meaning('CAPITALSOURCE_TYPE',type,".USERID.") typecomment
-						      ,state
-						      ,domain_meaning('CAPITALSOURCE_STATE',state,".USERID.") statecomment
-						      ,accountnumber
-						      ,bankcode
-						      ,comment
-						      ,validtil
-						      ,validfrom
-						  FROM vw_capitalsources
-						 WHERE validfrom <= $datetil
-						   AND validtil  >= $datefrom
-						   AND mug_mur_userid = ".USERID."
-						 ORDER BY CASE WHEN mur_userid = ".USERID." THEN 1 ELSE 2 END, capitalsourceid" );
 	}
 
 	function get_valid_ids( $datefrom='', $datetil='' ) {

@@ -26,7 +26,7 @@
 					<th>{$TEXT_210}</th>
 				</tr>
 				<tr>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]"       value="{$ALL_DATA.comment}"></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]"       value="{$ALL_DATA.comment|escape:htmlall}"></td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[type]"  size=1>
 					{section name=TYPE loop=$TYPE_VALUES}
 						<option {if $TYPE_VALUES[TYPE].value   == $ALL_DATA.type}selected{/if} value="{$TYPE_VALUES[TYPE].value}" > {$TYPE_VALUES[TYPE].text}

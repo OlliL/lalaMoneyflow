@@ -8,7 +8,7 @@
 			<h1>{$TEXT_2}</h1>
 			<a href="{$ENV_INDEX_PHP}?action=list_contractpartners&amp;letter=all">{$TEXT_28}</a> 
 			{section name=LETTER loop=$ALL_INDEX_LETTERS}
-				<a href="{$ENV_INDEX_PHP}?action=list_contractpartners&amp;letter={$ALL_INDEX_LETTERS[LETTER]}">{$ALL_INDEX_LETTERS[LETTER]}</a> 
+				<a href="{$ENV_INDEX_PHP}?action=list_contractpartners&amp;letter={$ALL_INDEX_LETTERS[LETTER]}">{$ALL_INDEX_LETTERS[LETTER]|escape:htmlall}</a> 
 			{/section}
 			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&amp;sr=1','_blank','width=800,height=120')">{$TEXT_29}</a> 
 			{if $COUNT_ALL_DATA > 0}
@@ -23,11 +23,11 @@
 					</tr>
 					{section name=DATA loop=$ALL_DATA}
 						<tr>
-							<td class="contrastbgcolor">{$ALL_DATA[DATA].name}</td>
-							<td class="contrastbgcolor">{$ALL_DATA[DATA].street}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].name|escape:htmlall}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].stree|escape:htmlallt}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].postcode}</td>
-							<td class="contrastbgcolor">{$ALL_DATA[DATA].town}</td>
-							<td class="contrastbgcolor">{$ALL_DATA[DATA].country}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].town|escape:htmlall}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].country|escape:htmlall}</td>
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&amp;contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&amp;sr=1','_blank','width=800,height=120')">{$TEXT_36}</a></td>
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_contractpartner&amp;contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&amp;sr=1','_blank','width=800,height=120')">{$TEXT_37}</a></td>
 						</tr>

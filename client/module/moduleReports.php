@@ -1,5 +1,6 @@
 <?php
 use rest\client\CallServer;
+use rest\model\Capitalsource;
 //
 // Copyright (c) 2005-2013 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -25,7 +26,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.56 2013/08/11 17:04:55 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.57 2013/08/14 16:15:25 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -44,23 +45,22 @@ if (ENABLE_JPGRAPH) {
 }
 
 class moduleReports extends module {
+	const CAPITALSOURCE_ARRAY_TYPE = 'CapitalsourceArray';
 
-	function moduleReports() {
+	public final function __construct() {
 		parent::__construct();
-		$this->coreCapitalSources = new coreCapitalSources();
-		$this->coreContractPartners = new coreContractPartners();
+		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', self::CAPITALSOURCE_ARRAY_TYPE );
+
+		// old shit
 		$this->coreCurrencies = new coreCurrencies();
 		$this->coreMoneyFlows = new coreMoneyFlows();
 		$this->coreMonthlySettlement = new coreMonthlySettlement();
 		$this->coreDomains = new coreDomains();
 		$this->coreSettings = new coreSettings();
-
-		$date_format = $this->coreSettings->get_date_format( USERID );
-		$this->date_format = $date_format ['dateformat'];
 	}
 
 	// uses REST Service
-	function display_list_reports($month, $year, $sortby, $order) {
+	public final function display_list_reports($month, $year, $sortby, $order) {
 		if (! $year)
 			$year = date( 'Y' );
 
@@ -120,57 +120,65 @@ class moduleReports extends module {
 		}
 
 		$moneyflow = CallServer::getMoneyflowsByMonth( $year, $month );
-		foreach ( $moneyflow as $key => $value ) {
-			$_all_moneyflow_data [$key] ['moneyflowid'] = $value->getId();
-			$_all_moneyflow_data [$key] ['bookingdate'] = $value->getBookingdate();
-			$_all_moneyflow_data [$key] ['invoicedate'] = $value->getInvoicedate();
-			$_all_moneyflow_data [$key] ['amount'] = $value->getAmount();
-			$_all_moneyflow_data [$key] ['contractpartnername'] = $value->getContractpartner()->getName();
-			$_all_moneyflow_data [$key] ['capitalsourcecomment'] = $value->getCapitalsource()->getComment();
-			$_all_moneyflow_data [$key] ['comment'] = $value->getComment();
-			$_all_moneyflow_data [$key] ['mur_userid'] = $value->getUser()->getId();
-		}
+		if ($moneyflow) {
 
-		switch( $sortby ) {
-			case 'capitalsources_comment':	$sortby='capitalsourcecomment';
-							$multisort_order = $multisort_order|SORT_STRING;
-							break;
-			case 'moneyflows_bookingdate':	$sortby='bookingdate';
-							break;
-			case 'moneyflows_invoicedate':	$sortby='invoicedate';
-							break;
-			case 'moneyflows_amount':	$sortby='amount';
-							break;
-			case 'moneyflows_comment':	$sortby='comment';
-							$multisort_order = $multisort_order|SORT_STRING;
-							break;
-			case 'contractpartners_name':	$sortby='contractpartnername';
-							$multisort_order = $multisort_order|SORT_STRING;
-							break;
-			default:			$sortby='';
-		}
+			//TODO: old shit
+			$displayed_currency = $this->coreCurrencies->get_displayed_currency();
 
-		if($sortby != '') {
-			foreach($_all_moneyflow_data as $key => $value) {
-				$sortKey1[$key] = strtolower($value[$sortby]);
-				$sortKey2[$key] = $value['bookingdate'];
-				$sortKey3[$key] = $value['invoicedate'];
-				$sortKey4[$key] = $value['moneyflowid'];
+
+			foreach ( $moneyflow as $key => $value ) {
+				$_all_moneyflow_data [$key] ['moneyflowid'] = $value->getId();
+				$_all_moneyflow_data [$key] ['bookingdate'] = $value->getBookingdate();
+				$_all_moneyflow_data [$key] ['invoicedate'] = $value->getInvoicedate();
+				$_all_moneyflow_data [$key] ['amount'] = $value->getAmount();
+				$_all_moneyflow_data [$key] ['contractpartnername'] = $value->getContractpartner()->getName();
+				$_all_moneyflow_data [$key] ['capitalsourcecomment'] = $value->getCapitalsource()->getComment();
+				$_all_moneyflow_data [$key] ['comment'] = $value->getComment();
+				$_all_moneyflow_data [$key] ['mur_userid'] = $value->getUser()->getId();
 			}
 
-			array_multisort($sortKey1, $multisort_order,
-			                $sortKey2, SORT_ASC,
-			                $sortKey3, SORT_ASC,
-			                $sortKey4, SORT_ASC,
-			                $_all_moneyflow_data);
-		}
+			switch ($sortby) {
+				case 'capitalsources_comment' :
+					$sortby = 'capitalsourcecomment';
+					$multisort_order = $multisort_order | SORT_STRING;
+					break;
+				case 'moneyflows_bookingdate' :
+					$sortby = 'bookingdate';
+					break;
+				case 'moneyflows_invoicedate' :
+					$sortby = 'invoicedate';
+					break;
+				case 'moneyflows_amount' :
+					$sortby = 'amount';
+					break;
+				case 'moneyflows_comment' :
+					$sortby = 'comment';
+					$multisort_order = $multisort_order | SORT_STRING;
+					break;
+				case 'contractpartners_name' :
+					$sortby = 'contractpartnername';
+					$multisort_order = $multisort_order | SORT_STRING;
+					break;
+				default :
+					$sortby = '';
+			}
 
-		$all_moneyflow_data = $_all_moneyflow_data ;
+			if ($sortby != '') {
+				foreach ( $_all_moneyflow_data as $key => $value ) {
+					$sortKey1 [$key] = strtolower( $value [$sortby] );
+					$sortKey2 [$key] = $value ['bookingdate'];
+					$sortKey3 [$key] = $value ['invoicedate'];
+					$sortKey4 [$key] = $value ['moneyflowid'];
+				}
 
-		if (is_array( $all_moneyflow_data )) {
+				array_multisort( $sortKey1, $multisort_order, $sortKey2, SORT_ASC, $sortKey3, SORT_ASC, $sortKey4, SORT_ASC, $_all_moneyflow_data );
+			}
+
+			$all_moneyflow_data = $_all_moneyflow_data;
+
 			foreach ( $all_moneyflow_data as $key => $value ) {
-				$all_moneyflow_data [$key] ['bookingdate'] = convert_date_to_gui( $value ['bookingdate'], $this->date_format );
-				$all_moneyflow_data [$key] ['invoicedate'] = convert_date_to_gui( $value ['invoicedate'], $this->date_format );
+				$all_moneyflow_data [$key] ['bookingdate'] = convert_date_to_gui( $value ['bookingdate'], GUI_DATE_FORMAT );
+				$all_moneyflow_data [$key] ['invoicedate'] = convert_date_to_gui( $value ['invoicedate'], GUI_DATE_FORMAT );
 				$all_moneyflow_data [$key] ['contractpartnername'] = htmlentities( $value ['contractpartnername'], ENT_COMPAT | ENT_HTML401 );
 				$all_moneyflow_data [$key] ['capitalsourcecomment'] = htmlentities( $value ['capitalsourcecomment'], ENT_COMPAT | ENT_HTML401 );
 				$all_moneyflow_data [$key] ['comment'] = htmlentities( $value ['comment'], ENT_COMPAT | ENT_HTML401 );
@@ -195,13 +203,17 @@ class moduleReports extends module {
 			// g) amount they should had at the end of the month
 			// h) differnece between e and f (if mms_exists)
 
-			$all_capitalsources = $this->coreCapitalSources->get_valid_data( date( 'Y-m-d', mktime( 0, 0, 0, $month, 1, $year ) ), date( 'Y-m-d', mktime( 0, 0, 0, $month + 1, 0, $year ) ), true );
+			$capitalsourceArray = CallServer::getAllCapitalsourcesByDateRange( date( 'Y-m-d', mktime( 0, 0, 0, $month, 1, $year ) ), date( 'Y-m-d', mktime( 0, 0, 0, $month + 1, 0, $year ) ) );
+			if (is_array( $capitalsourceArray )) {
+				$all_capitalsources = parent::mapArray( $capitalsourceArray );
+			}
+
 			foreach ( $all_capitalsources as $capitalsource ) {
 				$capitalsourceid = $capitalsource ['capitalsourceid'];
 
 				$summary_data [$i] ['comment'] = $capitalsource ['comment'];
-				$summary_data [$i] ['typecomment'] = $capitalsource ['typecomment'];
-				$summary_data [$i] ['statecomment'] = $capitalsource ['statecomment'];
+				$summary_data [$i] ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $capitalsource ['type'] );
+				$summary_data [$i] ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $capitalsource ['state'] );
 				$summary_data [$i] ['lastamount'] = $this->coreMonthlySettlement->get_amount( $capitalsource ['mur_userid'], $capitalsourceid, date( 'm', mktime( 0, 0, 0, $month - 1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month - 1, 1, $year ) ) );
 				if ($mms_exists === true) {
 					$settlement_data = $this->coreMonthlySettlement->get_data( $capitalsourceid, $month, $year, true );
@@ -300,15 +312,19 @@ class moduleReports extends module {
 			$this->template->assign( 'MON_CALCULATEDTURNOVER', $movement_calculated_month );
 			$this->template->assign( 'YEA_CALCULATEDTURNOVER', $movement_calculated_year );
 			$this->template->assign( 'MONTHLYSETTLEMENT_EXISTS', $mms_exists );
-			$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
+			$this->template->assign( 'CURRENCY', $displayed_currency );
 
 			return $this->fetch_template( 'display_generate_report.tpl' );
 		}
 	}
 
 	function display_plot_trends($all_data) {
-		$capitalsource_values = $this->coreCapitalSources->get_all_data();
+		$capitalsourceArray = CallServer::getAllCapitalsources();
+		if (is_array( $capitalsourceArray )) {
+			$capitalsource_values = parent::mapArray( $capitalsourceArray );
 		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
+		}
+
 
 		$years = $this->coreMonthlySettlement->get_all_years();
 		// add the actual year to the years if the year changed no monthlysettlement

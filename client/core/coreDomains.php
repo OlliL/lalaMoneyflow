@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreDomains.php,v 1.7 2013/08/11 17:04:55 olivleh1 Exp $
+// $Id: coreDomains.php,v 1.8 2013/08/14 16:15:24 olivleh1 Exp $
 //
 require_once 'core/core.php';
 
@@ -37,7 +37,7 @@ class coreDomains extends core {
 	}
 
 	private final function getDomain($domain) {
-		return apc_fetch( 'lalaMoneyflowDomains#' . $domain );
+		return \rest\base\config\CacheManager::getInstance()->get( 'lalaMoneyflowDomains#' . $domain );
 	}
 
 	public final function get_domain_data($domain) {

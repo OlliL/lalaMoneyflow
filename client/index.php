@@ -25,7 +25,7 @@ use rest\client\CallServer;
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.50 2013/08/11 17:04:55 olivleh1 Exp $
+# $Id: index.php,v 1.51 2013/08/14 16:15:24 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -49,12 +49,15 @@ require_once 'module/moduleGroups.php';
 
 require_once 'model/LoggedOnUser.php';
 
+require_once 'rest/base/config/CacheManager.php';
+
 #if( $money_debug === true ) {
 	require_once 'util/utilTimer.php';
 	$timer = new utilTimer();
 	$timer->mStart();
 #}
 
+$coreSettings = new \coreSettings();
 
 $action=$_POST['action']?$_POST['action']:$_GET['action'];
 
@@ -99,6 +102,16 @@ if( $is_logged_in == 2 ) {
 
 	/* user tries to login */
 
+	define(GUI_LANGUAGE, $coreSettings->get_displayed_language( 0 ));
+	if(!\rest\base\config\CacheManager::getInstance()->get('lalaMoneyflowText#'.GUI_LANGUAGE.'-loaded')) {
+		switch(GUI_LANGUAGE) {
+			case 2: 	require 'rest/client/locale/de.php';
+					break;
+			default: 	require 'rest/client/locale/en.php';
+					break;
+		}
+	}
+
 	$realaction =		$_REQUEST['realaction'];
 	$name =			$_REQUEST['name'];
 	$password =		$_REQUEST['password'];
@@ -114,22 +127,19 @@ if( $money_debug === true )
 	error_reporting(E_ALL);
 
 if( $is_logged_in == 0 ) {
-	$coreSettings = new \coreSettings();
 
 	$date_format = $coreSettings->get_date_format( USERID );
 	define(GUI_DATE_FORMAT, $date_format ['dateformat']);
 	define(GUI_LANGUAGE, $coreSettings->get_displayed_language( USERID ));
-#	require('rest/client/locale/de1.php');
-	if(!apc_fetch('lalaMoneyflowText#'.GUI_LANGUAGE.'-loaded')) {
-		echo 'hugo';
-		switch($language) {
+	if(!\rest\base\config\CacheManager::getInstance()->get('lalaMoneyflowText#'.GUI_LANGUAGE.'-loaded')) {
+		switch(GUI_LANGUAGE) {
 			case 2: 	require 'rest/client/locale/de.php';
 					break;
 			default: 	require 'rest/client/locale/en.php';
 					break;
 		}
 	}
-	if(!apc_fetch('lalaMoneyflowDomains-loaded')) {
+	if(!\rest\base\config\CacheManager::getInstance()->get('lalaMoneyflowDomains-loaded')) {
 		require 'rest/client/locale/domains.php';
 	}
 

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.51 2013/08/11 17:04:55 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.52 2013/08/14 16:15:24 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -115,38 +115,6 @@ class coreMoneyFlows extends core {
 						       )
 						 ORDER BY bookingdate
 							 ,invoicedate" );
-	}
-
-	function capitalsource_in_use( $id ) {
-		if( $this->select_col( "SELECT COUNT(moneyflowid)
-					  FROM moneyflows
-					 WHERE mcs_capitalsourceid = $id" ) > 0 )
-			return 1;
-		else
-			return 0;
-	}
-
-	function capitalsource_in_use_out_of_date( $id, $validfrom, $validtil ) {
-		if( $this->select_col( "SELECT COUNT(moneyflowid)
-					  FROM moneyflows
-					 WHERE mcs_capitalsourceid = $id
-					  AND (
-						bookingdate < STR_TO_DATE('$validfrom',GET_FORMAT(DATE,'ISO'))
-					       OR
-						bookingdate > STR_TO_DATE('$validtil', GET_FORMAT(DATE,'ISO'))
-					      )" ) > 0 )
-			return 1;
-		else
-			return 0;
-	}
-
-	function contractpartner_in_use( $id ) {
-		if( $this->select_col( "SELECT COUNT(moneyflowid)
-					  FROM moneyflows
-					 WHERE mcp_contractpartnerid = $id" ) > 0 )
-			return 1;
-		else
-			return 0;
 	}
 
 	function get_monthly_capitalsource_movement( $userid, $id, $month, $year ) {

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSearch.php,v 1.20 2013/08/11 17:04:55 olivleh1 Exp $
+# $Id: moduleSearch.php,v 1.21 2013/08/14 16:15:25 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -116,7 +116,7 @@ class moduleSearch extends module {
 			add_error( 142 );
 		} else {
 			$results = $this->coreMoneyFlows->search_moneyflows( $searchparams );
-			if( is_array( $results ) ) {
+			if( is_array( $results ) && count($results) > 0 ) {
 				$this->template->assign( 'SEARCH_DONE', 1 );
 				foreach( array_keys( $results[0] ) as $column ) {
 					$columns[$column] = 1;
@@ -125,12 +125,12 @@ class moduleSearch extends module {
  					foreach($results as $key => $result) {
  						$result[$key]['name'] = htmlentities($value['name'], ENT_COMPAT | ENT_HTML401, ENCODING);
  					}
- 				}  
+ 				}
 			} else {
 				add_error( 143 );
 			}
 		}
-	    
+
 		if( empty( $searchparams['startdate_error'] ) && !empty( $searchparams['startdate'] ) )
 			$searchparams['startdate'] = convert_date_to_gui( $searchparams['startdate'], $this->date_format );
 		if( empty( $searchparams['enddate_error'] ) && !empty( $searchparams['enddate'] ) )
