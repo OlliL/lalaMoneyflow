@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.51 2013/08/14 16:15:25 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.52 2013/08/14 18:30:00 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
@@ -38,11 +38,13 @@ require_once 'core/coreSettings.php';
 class moduleMoneyFlows extends module {
 	const CAPITALSOURCE_ARRAY_TYPE = 'CapitalsourceArray';
 	const CONTRACTPARTNER_ARRAY_TYPE = 'ContractpartnerArray';
+	const MONEYFLOW_ARRAY_TYPE = 'MoneyflowArray';
 
 	public final function __construct() {
 		parent::__construct();
 		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', self::CAPITALSOURCE_ARRAY_TYPE );
 		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerMapper', self::CONTRACTPARTNER_ARRAY_TYPE );
+		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowMapper', self::MONEYFLOW_ARRAY_TYPE );
 
 		// TODO: old shit
 		$this->coreCapitalSources = new coreCapitalSources();
@@ -75,7 +77,11 @@ class moduleMoneyFlows extends module {
 					$all_data ['bookingdate'] = $bookingdate_orig;
 					$all_data ['bookingdate_error'] = 1;
 					$valid_data = false;
-					$checkdate = $this->coreMoneyFlows->get_bookingdate( $id );
+					$moneyflow = CallServer::getMoneyflowById( $id );
+					if ($moneyflow) {
+						$temp_data = parent::map( $moneyflow );
+						$checkdate =  $temp_data ['bookingdate'];
+					}
 				}
 				if ($all_data ['invoicedate'] === false) {
 					add_error( 147, array (
@@ -95,18 +101,36 @@ class moduleMoneyFlows extends module {
 				}
 			default :
 				if (! is_array( $all_data )) {
-					$all_data = $this->coreMoneyFlows->get_id_data( $id );
+					$moneyflow = CallServer::getMoneyflowById( $id );
+					if ($moneyflow) {
+						$all_data = parent::map( $moneyflow );
+						$capitalsource_data = parent::map( $moneyflow->getCapitalsource() );
+					}
+					if (! $checkdate) {
+						$checkdate = $all_data ['bookingdate'];
+					}
 				}
 
-				$capitalsourceid = $this->coreMoneyFlows->get_capitalsourceid( $id );
+				if (! $capitalsource_data) {
+					$capitalsource = CallServer::getCapitalsourceById( $all_data ['mcs_capitalsourceid'] );
+					if ($capitalsource) {
+						$capitalsource_data = parent::map( $capitalsource );
+					}
+				}
 
-				if ($this->coreCapitalSources->id_is_valid( $capitalsourceid, date( 'Y-m-d' ) )) {
-					$capitalsource_values = $this->coreCapitalSources->get_valid_comments( $checkdate );
+				if ($capitalsource_data && strtotime( $checkdate ) >= strtotime( $capitalsource_data ['validfrom'] ) && strtotime( $checkdate ) <= strtotime( $capitalsource_data ['validtil'] )) {
+					$capitalsourceArray = CallServer::getAllCapitalsourcesByDateRange( $checkdate, $checkdate );
 				} else {
-					$capitalsource_values = $this->coreCapitalSources->get_all_comments();
+					$capitalsourceArray = CallServer::getAllCapitalsources();
 				}
 
-				$contractpartner_values = $this->coreContractPartners->get_all_names();
+				if (is_array( $capitalsourceArray )) {
+					$capitalsource_values = parent::mapArray( $capitalsourceArray );
+				}
+				$contractpartnerArray = CallServer::getAllContractpartner();
+				if (is_array( $contractpartnerArray )) {
+					$contractpartner_values = parent::mapArray( $contractpartnerArray );
+				}
 
 				$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
@@ -136,8 +160,6 @@ class moduleMoneyFlows extends module {
 		if (is_array( $contractpartnerArray )) {
 			$contractpartner_values = parent::mapArray( $contractpartnerArray );
 		}
-// 		$capitalsource_values = $this->coreCapitalSources->get_valid_comments();
-// 		$contractpartner_values = $this->coreContractPartners->get_all_names();
 
 		switch ($realaction) {
 			case 'save' :

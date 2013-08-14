@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.2 2013/08/14 16:15:25 olivleh1 Exp $
+// $Id: CallServer.php,v 1.3 2013/08/14 18:30:00 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -140,6 +140,16 @@ class CallServer extends AbstractJsonSender {
 	/*
 	 * MoneyflowService
 	 */
+	public static final function getMoneyflowById($id) {
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getMoneyflowsById/' . $id . '/' . self::$sessionId;
+		$result = self::getJson( $url );
+		if (is_array( $result )) {
+			$jsonArray = reset( $result );
+			$result = JsonToMoneyflowMapper::mapAToB( $jsonArray );
+		}
+		return $result;
+	}
+
 	public static final function getMoneyflowsByMonth($year, $month) {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getMoneyflowsByMonth/' . $year . '/' . $month . '/' . self::$sessionId;
 		$result = self::getJson( $url );

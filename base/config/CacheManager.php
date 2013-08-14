@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CacheManager.php,v 1.1 2013/08/14 16:05:35 olivleh1 Exp $
+// $Id: CacheManager.php,v 1.2 2013/08/14 18:30:00 olivleh1 Exp $
 //
 namespace rest\base\config;
 
@@ -39,10 +39,6 @@ class CacheManager {
 	public static function getInstance() {
 		if (! isset( self::$instance )) {
 			self::$instance = new \Yac();
-			// $memcache = new \Memcache();
-			// $memcache->connect('localhost', 11211) or die ("Could not connect");
-			// $memcache->connect('unix:///tmp/memcache.sock',0);
-			// self::$instance = $memcache;
 		}
 		return self::$instance;
 	}
