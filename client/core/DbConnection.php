@@ -30,7 +30,7 @@ class DbConnection {
 
 	public function setConnection() {
 		$this->connection = new \PDO( DATASOURCE , DB_USER, DB_PASS, array (
-				\PDO::ATTR_PERSISTENT => true
+//				\PDO::ATTR_PERSISTENT => true
 		) );
 		$this->connection->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_WARNING );
 	}

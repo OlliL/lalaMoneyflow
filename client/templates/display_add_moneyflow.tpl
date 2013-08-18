@@ -40,7 +40,7 @@
 						{/section}
 						</select></td>
 						{else}
-						<td class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][mcp_contractpartnerid]" value="{$ALL_DATA[DATA].mcp_contractpartnerid}"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][contractpartnername]" value="{$ALL_DATA[DATA].contractpartnername|escape:htmlall}">{$ALL_DATA[DATA].contractpartnername|escape:htmlall}</td>
+						<td class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][mcp_contractpartnerid]" value="{$ALL_DATA[DATA].mcp_contractpartnerid}"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][contractpartnername]" value="{$ALL_DATA[DATA].contractpartnername}">{$ALL_DATA[DATA].contractpartnername}</td>
 						{/if}
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][comment]" value="{$ALL_DATA[DATA].comment}" size="40" {if $ALL_DATA[DATA].comment_error == 1}style="color:red"{/if}></td>
 

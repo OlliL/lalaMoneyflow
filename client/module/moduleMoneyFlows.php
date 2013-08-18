@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.52 2013/08/14 18:30:00 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.53 2013/08/18 18:09:12 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
@@ -55,6 +55,18 @@ class moduleMoneyFlows extends module {
 		$this->coreSettings = new coreSettings();
 	}
 
+	// filter only the capitalsources which are owned by the user or allowed for group use.
+	private function filterCapitalsource($capitalsourceArray) {
+		if (is_array( $capitalsourceArray )) {
+			$temp_capitalsource_values = parent::mapArray( $capitalsourceArray );
+			foreach ( $temp_capitalsource_values as $capitalsource ) {
+				if ($capitalsource ['att_group_use'] == 1 || $capitalsource ['mur_userid'] == USERID)
+					$capitalsource_values [] = $capitalsource;
+			}
+		}
+		return $capitalsource_values;
+	}
+
 	function display_edit_moneyflow($realaction, $id, $all_data) {
 		if (empty( $id ))
 			return;
@@ -80,7 +92,7 @@ class moduleMoneyFlows extends module {
 					$moneyflow = CallServer::getMoneyflowById( $id );
 					if ($moneyflow) {
 						$temp_data = parent::map( $moneyflow );
-						$checkdate =  $temp_data ['bookingdate'];
+						$checkdate = $temp_data ['bookingdate'];
 					}
 				}
 				if ($all_data ['invoicedate'] === false) {
@@ -124,9 +136,8 @@ class moduleMoneyFlows extends module {
 					$capitalsourceArray = CallServer::getAllCapitalsources();
 				}
 
-				if (is_array( $capitalsourceArray )) {
-					$capitalsource_values = parent::mapArray( $capitalsourceArray );
-				}
+				$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
+
 				$contractpartnerArray = CallServer::getAllContractpartner();
 				if (is_array( $contractpartnerArray )) {
 					$contractpartner_values = parent::mapArray( $contractpartnerArray );
@@ -153,9 +164,8 @@ class moduleMoneyFlows extends module {
 
 	function display_add_moneyflow($realaction, $all_data) {
 		$capitalsourceArray = CallServer::getAllCapitalsourcesByDateRange( date( 'Y-m-d' ), date( 'Y-m-d' ) );
-		if (is_array( $capitalsourceArray )) {
-			$capitalsource_values = parent::mapArray( $capitalsourceArray );
-		}
+		$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
+
 		$contractpartnerArray = CallServer::getAllContractpartner();
 		if (is_array( $contractpartnerArray )) {
 			$contractpartner_values = parent::mapArray( $contractpartnerArray );
@@ -239,7 +249,8 @@ class moduleMoneyFlows extends module {
 						if ($value ['checked'] == 1) {
 							if (empty( $value ['invoicedate'] ))
 								$value ['invoicedate'] = $value ['bookingdate'];
-							$ret = $this->coreMoneyFlows->add_moneyflow( $value ['bookingdate'], $value ['invoicedate'], $value ['amount'], $value ['mcs_capitalsourceid'], $value ['mcp_contractpartnerid'], $value ['comment'], $value ['private'] );
+							$moneyflow = parent::map( $value, self::MONEYFLOW_ARRAY_TYPE );
+							CallServer::createMoneyflow( $moneyflow );
 							if ($value ['predefmoneyflowid'] >= 0)
 								$this->corePreDefMoneyFlows->set_last_used( $value ['predefmoneyflowid'], $value ['bookingdate'] );
 						}

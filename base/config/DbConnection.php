@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: DbConnection.php,v 1.1 2013/08/14 16:05:35 olivleh1 Exp $
+// $Id: DbConnection.php,v 1.2 2013/08/18 18:09:13 olivleh1 Exp $
 //
 namespace rest\base\config;
 
@@ -59,7 +59,7 @@ class DbConnection {
 
 	public function setConnection() {
 		$this->connection = new \PDO( DATASOURCE . ';charset=utf8', DB_USER, DB_PASS, array (
-				\PDO::ATTR_PERSISTENT => true
+//				\PDO::ATTR_PERSISTENT => true
 		) );
 		$this->connection->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_WARNING );
 	}

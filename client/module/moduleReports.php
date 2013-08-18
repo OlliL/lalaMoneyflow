@@ -26,7 +26,7 @@ use rest\model\Capitalsource;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.57 2013/08/14 16:15:25 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.58 2013/08/18 18:09:13 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -46,10 +46,12 @@ if (ENABLE_JPGRAPH) {
 
 class moduleReports extends module {
 	const CAPITALSOURCE_ARRAY_TYPE = 'CapitalsourceArray';
+	const MONEYFLOW_ARRAY_TYPE = 'MoneyflowArray';
 
 	public final function __construct() {
 		parent::__construct();
 		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', self::CAPITALSOURCE_ARRAY_TYPE );
+		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowMapper', self::MONEYFLOW_ARRAY_TYPE );
 
 		// old shit
 		$this->coreCurrencies = new coreCurrencies();
@@ -121,21 +123,11 @@ class moduleReports extends module {
 
 		$moneyflow = CallServer::getMoneyflowsByMonth( $year, $month );
 		if ($moneyflow) {
+			$_all_moneyflow_data = parent::mapArray($moneyflow);
 
 			//TODO: old shit
 			$displayed_currency = $this->coreCurrencies->get_displayed_currency();
 
-
-			foreach ( $moneyflow as $key => $value ) {
-				$_all_moneyflow_data [$key] ['moneyflowid'] = $value->getId();
-				$_all_moneyflow_data [$key] ['bookingdate'] = $value->getBookingdate();
-				$_all_moneyflow_data [$key] ['invoicedate'] = $value->getInvoicedate();
-				$_all_moneyflow_data [$key] ['amount'] = $value->getAmount();
-				$_all_moneyflow_data [$key] ['contractpartnername'] = $value->getContractpartner()->getName();
-				$_all_moneyflow_data [$key] ['capitalsourcecomment'] = $value->getCapitalsource()->getComment();
-				$_all_moneyflow_data [$key] ['comment'] = $value->getComment();
-				$_all_moneyflow_data [$key] ['mur_userid'] = $value->getUser()->getId();
-			}
 
 			switch ($sortby) {
 				case 'capitalsources_comment' :

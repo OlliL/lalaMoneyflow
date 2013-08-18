@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.3 2013/08/14 18:30:00 olivleh1 Exp $
+// $Id: CallServer.php,v 1.4 2013/08/18 18:09:13 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -41,6 +41,7 @@ use rest\base\AbstractJsonSender;
 use rest\model\mapper\JsonToCapitalsourceMapper;
 use rest\model\mapper\JsonToContractpartnerMapper;
 use rest\model\Contractpartner;
+use rest\model\Moneyflow;
 
 class CallServer extends AbstractJsonSender {
 	private static $sessionId;
@@ -179,6 +180,11 @@ class CallServer extends AbstractJsonSender {
 			$result = reset( $result );
 		}
 		return $result;
+	}
+
+	public static final function createMoneyflow(Moneyflow $moneyflow) {
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/createMoneyflow/' . self::$sessionId;
+		return self::postJson( $url, parent::json_encode( $moneyflow ) );
 	}
 
 	/*
