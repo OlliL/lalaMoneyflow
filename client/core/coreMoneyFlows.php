@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.52 2013/08/14 16:15:24 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.53 2013/08/18 18:10:33 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -204,35 +204,6 @@ class coreMoneyFlows extends core {
 			}
 		} else {
 			add_error( 122 );
-			return false;
-		}
-	}
-
-	function add_moneyflow( $bookingdate, $invoicedate, $amount, $capitalsourceid, $contractpartnerid, $comment, $private ) {
-		$bookingdate = $this->make_date( $bookingdate );
-		$invoicedate = $this->make_date( $invoicedate );
-		if (fix_amount( $amount )) {
-			return $this->insert_row( "	INSERT INTO moneyflows
-							      (mur_userid
-							      ,bookingdate
-							      ,invoicedate
-							      ,amount
-							      ,mcs_capitalsourceid
-							      ,mcp_contractpartnerid
-							      ,comment
-							      ,private
-							      )
-							       VALUES
-							      (".USERID."
-							      ,$bookingdate
-							      ,$invoicedate
-							      ,calc_amount('$amount','IN',".USERID.",$invoicedate)
-							      ,'$capitalsourceid'
-							      ,'$contractpartnerid'
-							      ,'$comment'
-							      ,'$private'
-							      )" );
-		} else {
 			return false;
 		}
 	}
