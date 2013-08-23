@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToMoneyflowMapper.php,v 1.1 2013/08/18 18:09:32 olivleh1 Exp $
+// $Id: ArrayToMoneyflowMapper.php,v 1.2 2013/08/23 17:56:09 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
@@ -42,9 +42,8 @@ class ArrayToMoneyflowMapper {
 		$b->setAmount( $a ['amount'] );
 		$b->setCapitalsource( new Capitalsource( $a ['mcs_capitalsourceid'] ) );
 		$b->setContractpartner( new Contractpartner( $a ['mcp_contractpartnerid'] ) );
-		$b->setComment( $a ['comment'] );
+		$b->setComment( utf8_encode($a ['comment']) );
 		$b->setPrivate( $a ['private'] );
-
 		return $b;
 	}
 

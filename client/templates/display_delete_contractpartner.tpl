@@ -24,11 +24,11 @@
 					<th width="100">{$TEXT_45}</th>
 				</tr>
 				<tr>
-					<td class="contrastbgcolor">{$ALL_DATA.name}</td>
-					<td class="contrastbgcolor" wrap>{$ALL_DATA.street}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.name|escape:htmlall}</td>
+					<td class="contrastbgcolor" wrap>{$ALL_DATA.street|escape:htmlall}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.postcode}</td>
-					<td class="contrastbgcolor">{$ALL_DATA.town}</td>
-					<td class="contrastbgcolor">{$ALL_DATA.country}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.town|escape:htmlall}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.country|escape:htmlall}</td>
 				</tr>
 			</table>
 			<input type="submit" value="{$TEXT_25}">

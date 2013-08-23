@@ -1,3 +1,9 @@
+
+- switch all dates in the model to DateTime
+- implement all "client" input validation on serverside
+- add a method to insert a list of moneyflows (with checking all of them first - all or nothing).
+- remove "client" input validation
+
 1. remove Core Classes
    - implement REST/JSON Services + use them
      - first complete Capitalsource and Contractpartner Handling so Caching can be enabled for them

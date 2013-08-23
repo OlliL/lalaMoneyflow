@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.4 2013/08/18 18:09:13 olivleh1 Exp $
+// $Id: CallServer.php,v 1.5 2013/08/23 17:56:08 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -142,7 +142,7 @@ class CallServer extends AbstractJsonSender {
 	 * MoneyflowService
 	 */
 	public static final function getMoneyflowById($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getMoneyflowsById/' . $id . '/' . self::$sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getMoneyflowById/' . $id . '/' . self::$sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
 			$jsonArray = reset( $result );
@@ -187,6 +187,15 @@ class CallServer extends AbstractJsonSender {
 		return self::postJson( $url, parent::json_encode( $moneyflow ) );
 	}
 
+	public static final function updateMoneyflow(Moneyflow $moneyflow) {
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/updateMoneyflow/' . self::$sessionId;
+		return self::putJson( $url, parent::json_encode( $moneyflow ) );
+	}
+
+	public static final function deleteMoneyflow($id) {
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/deleteMoneyflowById/' . $id . '/' . self::$sessionId;
+		return self::deleteJson( $url );
+	}
 	/*
 	 * CapitalsourceService
 	 */

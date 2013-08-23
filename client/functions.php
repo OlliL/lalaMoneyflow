@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: functions.php,v 1.16 2013/08/11 17:04:55 olivleh1 Exp $
+# $Id: functions.php,v 1.17 2013/08/23 17:56:08 olivleh1 Exp $
 #
 
 

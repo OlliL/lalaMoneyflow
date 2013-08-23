@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.53 2013/08/18 18:10:33 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.54 2013/08/23 17:56:08 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -34,25 +34,6 @@ class coreMoneyFlows extends core {
 
 	function coreMoneyFlows() {
 		parent::__construct();
-	}
-
-	function get_all_data() {
-		return $this->select_rows( "	SELECT moneyflowid
-						      ,bookingdate
-						      ,invoicedate
-						      ,calc_amount(amount,'OUT',mur_userid,invoicedate) amount
-						      ,mcs_capitalsourceid
-						      ,mcp_contractpartnerid
-						      ,comment
-						  FROM vw_moneyflows mmf
-						 WHERE mmf.mug_mur_userid  = ".USERID."
-						   AND (mmf.private        = 0
-						        OR
-						        mmf.mur_userid     = ".USERID."
-						       )
-						 ORDER BY moneyflowid" );
-
-
 	}
 
 	function get_id_data( $id ) {
@@ -72,26 +53,6 @@ class coreMoneyFlows extends core {
 						        OR
 						        mmf.mur_userid     = ".USERID."
 						       )");
-	}
-
-	function get_all_monthly_data( $month, $year ) {
-		$date = $this->make_date( $year."-".$month."-01" );
-		return $this->select_rows( "	SELECT moneyflowid
-						      ,bookingdate
-						      ,invoicedate
-						      ,calc_amount(amount,'OUT',mur_userid,invoicedate) amount
-						      ,mcs_capitalsourceid
-						      ,mcp_contractpartnerid
-						      ,comment
-						  FROM vw_moneyflows mmf
-						 WHERE bookingdate  BETWEEN $date AND LAST_DAY($date)
-						   AND mmf.mug_mur_userid  = ".USERID."
-						   AND (mmf.private        = 0
-						        OR
-						        mmf.mur_userid     = ".USERID."
-						       )
-						 ORDER BY bookingdate
-							 ,invoicedate" );
 	}
 
 	function get_all_date_source_data( $capitalsourceid, $startdate, $enddate ) {
@@ -167,20 +128,6 @@ class coreMoneyFlows extends core {
 						 WHERE moneyflowid = $id
 						   AND mur_userid            = ".USERID."
 						 LIMIT 1" );
-	}
-
-	function get_capitalsourceid( $id ) {
-		return $this->select_col( "	SELECT mcs_capitalsourceid
-						  FROM moneyflows mmf
-						 WHERE moneyflowid = $id
-						   AND mur_userid            = ".USERID );
-	}
-
-	function get_bookingdate( $id ) {
-		return $this->select_col( "	SELECT bookingdate
-						  FROM moneyflows mmf
-						 WHERE moneyflowid = $id
-						   AND mmf.mur_userid            = ".USERID );
 	}
 
 	function update_moneyflow( $id, $bookingdate, $invoicedate, $amount, $capitalsourceid, $contractpartnerid, $comment, $private ) {

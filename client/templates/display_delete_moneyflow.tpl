@@ -28,9 +28,9 @@
 					<td class="contrastbgcolor">{$ALL_DATA.bookingdate}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.invoicedate}</td>
 					<td class="contrastbgcolor" align="right"><font {if $ALL_DATA.amount < 0}color="red"{else}color="black"{/if}>{$ALL_DATA.amount|string_format:"%.2f"} {$CURRENCY}</td>
-					<td class="contrastbgcolor">{$ALL_DATA.contractpartner_name}</td>
-					<td class="contrastbgcolor">{$ALL_DATA.comment}</td>
-					<td class="contrastbgcolornobr">{$ALL_DATA.capitalsource_comment}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.contractpartnername|escape:htmlall}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.comment|escape:htmlall}</td>
+					<td class="contrastbgcolornobr">{$ALL_DATA.capitalsourcecomment|escape:htmlall}</td>
 				</tr>
 			</table>
 			<input type="submit" value="{$TEXT_25}">

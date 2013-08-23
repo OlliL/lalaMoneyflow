@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToContractpartnerMapper.php,v 1.1 2013/08/14 16:05:33 olivleh1 Exp $
+// $Id: ArrayToContractpartnerMapper.php,v 1.2 2013/08/23 17:56:08 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
@@ -35,11 +35,11 @@ class ArrayToContractpartnerMapper {
 
 	public static function mapAToB(array $a) {
 		$b = new Contractpartner( $a ['contractpartnerid'] );
-		$b->setCountry( $a ['country'] );
-		$b->setName( $a ['name'] );
+		$b->setCountry( utf8_encode($a ['country']) );
+		$b->setName( utf8_encode($a ['name']) );
 		$b->setPostcode( $a ['postcode'] );
-		$b->setStreet( $a ['street'] );
-		$b->setTown( $a ['town'] );
+		$b->setStreet( utf8_encode($a ['street']) );
+		$b->setTown( utf8_encode($a ['town']) );
 
 		return $b;
 	}

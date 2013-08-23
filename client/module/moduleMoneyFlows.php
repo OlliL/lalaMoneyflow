@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.53 2013/08/18 18:09:12 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.54 2013/08/23 17:56:08 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
@@ -105,7 +105,11 @@ class moduleMoneyFlows extends module {
 				}
 
 				if ($valid_data === true) {
-					$ret = $this->coreMoneyFlows->update_moneyflow( $id, $all_data ['bookingdate'], $all_data ['invoicedate'], $all_data ['amount'], $all_data ['mcs_capitalsourceid'], $all_data ['mcp_contractpartnerid'], $all_data ['comment'], $all_data ['private'] );
+					// $ret = $this->coreMoneyFlows->update_moneyflow( $id, $all_data ['bookingdate'], $all_data ['invoicedate'], $all_data ['amount'], $all_data ['mcs_capitalsourceid'], $all_data ['mcp_contractpartnerid'], $all_data ['comment'], $all_data ['private'] );
+					$all_data ['moneyflowid'] = $id;
+					$moneyflow = parent::map( $all_data, self::MONEYFLOW_ARRAY_TYPE );
+					var_dump( $moneyflow );
+					$ret = CallServer::updateMoneyflow( $moneyflow );
 					if ($ret === true) {
 						$this->template->assign( 'CLOSE', 1 );
 						break;
@@ -224,16 +228,13 @@ class moduleMoneyFlows extends module {
 							$data_is_valid = false;
 						}
 
-						if (! (preg_match( '/^-{0,1}[0-9]*([\.][0-9][0-9][0-9]){0,}([,][0-9]{1,2}){0,1}$/', $value ['amount'] ) || preg_match( '/^-{0,1}[0-9]*([,][0-9][0-9][0-9]){0,}([\.][0-9]{1,2}){0,1}$/', $value ['amount'] ))) {
-							add_error( 132, array (
-									$value ['amount']
-							) );
+						if (preg_match( '/^[-0\.,]{1,}$/', $value ['amount'] )) {
+							add_error( 200 );
 							$all_data [$id] ['amount_error'] = 1;
 							$data_is_valid = false;
 						}
 
-						if (preg_match( '/^[-0\.,]{1,}$/', $value ['amount'] )) {
-							add_error( 200 );
+						if (! fix_amount( $all_data [$id] ['amount'] )) {
 							$all_data [$id] ['amount_error'] = 1;
 							$data_is_valid = false;
 						}
@@ -311,18 +312,16 @@ class moduleMoneyFlows extends module {
 	function display_delete_moneyflow($realaction, $id) {
 		switch ($realaction) {
 			case 'yes' :
-				if ($this->coreMoneyFlows->delete_moneyflow( $id )) {
+				if (CallServer::deleteMoneyflow( $id )) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
-
 			default :
-				$all_data = $this->coreMoneyFlows->get_id_data( $id );
-				$all_data ['capitalsource_comment'] = $this->coreCapitalSources->get_comment( $all_data ['mcs_capitalsourceid'] );
-				$all_data ['contractpartner_name'] = $this->coreContractPartners->get_name( $all_data ['mcp_contractpartnerid'] );
-				$all_data ['bookingdate'] = convert_date_to_gui( $all_data ['bookingdate'], GUI_DATE_FORMAT );
-				$all_data ['invoicedate'] = convert_date_to_gui( $all_data ['invoicedate'], GUI_DATE_FORMAT );
-				$this->template->assign( 'ALL_DATA', $all_data );
+				$moneyflow = CallServer::getMoneyflowById( $id );
+				if ($moneyflow) {
+					$all_data = parent::map( $moneyflow, self::MONEYFLOW_ARRAY_TYPE );
+					$this->template->assign( 'ALL_DATA', $all_data );
+				}
 				break;
 		}
 

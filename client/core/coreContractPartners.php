@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreContractPartners.php,v 1.21 2013/08/14 16:15:24 olivleh1 Exp $
+# $Id: coreContractPartners.php,v 1.22 2013/08/23 17:56:08 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -34,38 +34,6 @@ class coreContractPartners extends core {
 
 	function coreContractPartners() {
 		parent::__construct();
-	}
-
-	function get_all_data() {
-		return $this->select_rows( '	SELECT contractpartnerid
-						      ,name
-						      ,street
-						      ,postcode
-						      ,town
-						      ,country
-						   FROM contractpartners
-						  WHERE mur_userid = '.USERID.'
-						  ORDER BY name' );
-	}
-
-	function get_id_data( $id ) {
-		return $this->select_row( "	SELECT contractpartnerid
-						      ,name
-						      ,street
-						      ,postcode
-						      ,town
-						      ,country
-						  FROM contractpartners
-						 WHERE contractpartnerid = $id
-						   AND mur_userid        = ".USERID."
-						 LIMIT 1" );
-	}
-
-	function get_all_index_letters() {
-		return $this->select_cols( '	SELECT DISTINCT UPPER(SUBSTR(name,1,1)) letters
-						  FROM contractpartners
-						 WHERE mur_userid='.USERID.'
-						 ORDER BY letters' );
 	}
 
 	function get_ids_index_letters( $ids ) {
@@ -79,19 +47,6 @@ class coreContractPartners extends core {
 		} else {
 			return;
 		}
-	}
-
-	function get_all_matched_data( $letter ) {
-		return $this->select_rows( "	SELECT contractpartnerid
-						      ,name
-						      ,street
-						      ,postcode
-						      ,town
-						      ,country
-						  FROM contractpartners
-						 WHERE UPPER(name) LIKE UPPER('$letter%')
-						   AND mur_userid  = ".USERID."
-						 ORDER BY name" );
 	}
 
 	function get_ids_matched_data( $letter ) {
