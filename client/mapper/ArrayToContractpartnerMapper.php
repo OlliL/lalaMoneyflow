@@ -25,13 +25,13 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToContractpartnerMapper.php,v 1.2 2013/08/23 17:56:08 olivleh1 Exp $
+// $Id: ArrayToContractpartnerMapper.php,v 1.3 2013/08/23 20:36:36 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
 use rest\model\Contractpartner;
 
-class ArrayToContractpartnerMapper {
+class ArrayToContractpartnerMapper extends AbstractArrayMapper {
 
 	public static function mapAToB(array $a) {
 		$b = new Contractpartner( $a ['contractpartnerid'] );

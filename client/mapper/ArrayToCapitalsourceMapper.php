@@ -25,13 +25,13 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToCapitalsourceMapper.php,v 1.2 2013/08/14 18:30:00 olivleh1 Exp $
+// $Id: ArrayToCapitalsourceMapper.php,v 1.3 2013/08/23 20:36:36 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
 use rest\model\Capitalsource;
 
-class ArrayToCapitalsourceMapper {
+class ArrayToCapitalsourceMapper extends AbstractArrayMapper {
 
 	public static function mapAToB(array $a) {
 		$b = new Capitalsource( $a ['capitalsourceid'] );
@@ -41,8 +41,8 @@ class ArrayToCapitalsourceMapper {
 		$b->setGroupUse( $a ['att_group_use'] );
 		$b->setState( $a ['state'] );
 		$b->setType( $a ['type'] );
-		$b->setValidFrom( convert_date_to_db( $a ['validfrom'] ) );
-		$b->setValidTil( convert_date_to_db( $a ['validtil'] ) );
+		$b->setValidFrom( parent::convertClientDateToModel( $a ['validfrom'] ) );
+		$b->setValidTil( parent::convertClientDateToModel( $a ['validtil'] ) );
 
 		return $b;
 	}
@@ -55,8 +55,8 @@ class ArrayToCapitalsourceMapper {
 		$a ['att_group_use'] = $b->getGroupUse();
 		$a ['state'] = $b->getState();
 		$a ['type'] = $b->getType();
-		$a ['validfrom'] = convert_date_to_gui( $b->getValidFrom() );
-		$a ['validtil'] = convert_date_to_gui( $b->getValidTil() );
+		$a ['validfrom'] = parent::convertModelDateToClient( $b->getValidFrom() );
+		$a ['validtil'] = parent::convertModelDateToClient( $b->getValidTil() );
 		$a ['mur_userid'] = $b->getUser()->getId();
 
 		return $a;

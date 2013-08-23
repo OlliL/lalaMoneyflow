@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToMoneyflowMapper.php,v 1.2 2013/08/23 17:56:09 olivleh1 Exp $
+// $Id: ArrayToMoneyflowMapper.php,v 1.3 2013/08/23 20:36:36 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
@@ -33,16 +33,16 @@ use rest\model\Moneyflow;
 use rest\model\Capitalsource;
 use rest\model\Contractpartner;
 
-class ArrayToMoneyflowMapper {
+class ArrayToMoneyflowMapper extends AbstractArrayMapper {
 
 	public static function mapAToB(array $a) {
 		$b = new Moneyflow( $a ['moneyflowid'] );
-		$b->setBookingDate( $a ['bookingdate'] );
-		$b->setInvoiceDate( $a ['invoicedate'] );
+		$b->setBookingDate( parent::convertClientDateToModel( $a ['bookingdate'] ) );
+		$b->setInvoiceDate( parent::convertClientDateToModel( $a ['invoicedate'] ) );
 		$b->setAmount( $a ['amount'] );
 		$b->setCapitalsource( new Capitalsource( $a ['mcs_capitalsourceid'] ) );
 		$b->setContractpartner( new Contractpartner( $a ['mcp_contractpartnerid'] ) );
-		$b->setComment( utf8_encode($a ['comment']) );
+		$b->setComment( utf8_encode( $a ['comment'] ) );
 		$b->setPrivate( $a ['private'] );
 		return $b;
 	}
@@ -50,8 +50,8 @@ class ArrayToMoneyflowMapper {
 	public static function mapBToA(Moneyflow $b) {
 		$a ['mur_userid'] = $b->getUser()->getId();
 		$a ['moneyflowid'] = $b->getId();
-		$a ['bookingdate'] = convert_date_to_gui( $b->getBookingDate() );
-		$a ['invoicedate'] = convert_date_to_gui( $b->getInvoiceDate() );
+		$a ['bookingdate'] = parent::convertModelDateToClient( $b->getBookingDate() );
+		$a ['invoicedate'] = parent::convertModelDateToClient( $b->getInvoiceDate() );
 		$a ['amount'] = $b->getAmount();
 		$a ['mcs_capitalsourceid'] = $b->getCapitalsource()->getId();
 		$a ['capitalsourcecomment'] = $b->getCapitalsource()->getComment();
