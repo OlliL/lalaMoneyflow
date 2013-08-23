@@ -25,13 +25,12 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.54 2013/08/23 17:56:08 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.55 2013/08/23 18:01:09 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
 require_once 'core/coreContractPartners.php';
 require_once 'core/coreCurrencies.php';
-require_once 'core/coreMoneyFlows.php';
 require_once 'core/corePreDefMoneyFlows.php';
 require_once 'core/coreSettings.php';
 
@@ -50,7 +49,6 @@ class moduleMoneyFlows extends module {
 		$this->coreCapitalSources = new coreCapitalSources();
 		$this->coreContractPartners = new coreContractPartners();
 		$this->coreCurrencies = new coreCurrencies();
-		$this->coreMoneyFlows = new coreMoneyFlows();
 		$this->corePreDefMoneyFlows = new corePreDefMoneyFlows();
 		$this->coreSettings = new coreSettings();
 	}
@@ -105,7 +103,6 @@ class moduleMoneyFlows extends module {
 				}
 
 				if ($valid_data === true) {
-					// $ret = $this->coreMoneyFlows->update_moneyflow( $id, $all_data ['bookingdate'], $all_data ['invoicedate'], $all_data ['amount'], $all_data ['mcs_capitalsourceid'], $all_data ['mcp_contractpartnerid'], $all_data ['comment'], $all_data ['private'] );
 					$all_data ['moneyflowid'] = $id;
 					$moneyflow = parent::map( $all_data, self::MONEYFLOW_ARRAY_TYPE );
 					var_dump( $moneyflow );
