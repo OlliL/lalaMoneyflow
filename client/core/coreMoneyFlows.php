@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.54 2013/08/23 17:56:08 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.55 2013/08/23 17:59:26 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -121,38 +121,6 @@ class coreMoneyFlows extends core {
 						                             )
 						                       LIMIT 1)
 						 LIMIT 1');
-	}
-
-	function delete_moneyflow( $id ) {
-		return $this->delete_row( "	DELETE FROM moneyflows
-						 WHERE moneyflowid = $id
-						   AND mur_userid            = ".USERID."
-						 LIMIT 1" );
-	}
-
-	function update_moneyflow( $id, $bookingdate, $invoicedate, $amount, $capitalsourceid, $contractpartnerid, $comment, $private ) {
-		$coreCapitalSources = new coreCapitalSources();
-		if( $coreCapitalSources->id_is_valid( $capitalsourceid, $bookingdate ) ) {
-			$bookingdate = $this->make_date( $bookingdate );
-			$invoicedate = $this->make_date( $invoicedate );
-			if( fix_amount( $amount ) ) {
-				return $this->update_row( "	UPDATE moneyflows mmf
-								   SET bookingdate           = $bookingdate
-								      ,invoicedate           = $invoicedate
-								      ,amount                = calc_amount('$amount','IN',".USERID.",$invoicedate)
-								      ,mcs_capitalsourceid   = '$capitalsourceid'
-								      ,mcp_contractpartnerid = '$contractpartnerid'
-								      ,comment               = '$comment'
-								      ,private               = '$private'
-								 WHERE moneyflowid = $id
-								   AND mmf.mur_userid        = ".USERID );
-			} else {
-				return false;
-			}
-		} else {
-			add_error( 122 );
-			return false;
-		}
 	}
 
 	function search_moneyflows( $params ) {
