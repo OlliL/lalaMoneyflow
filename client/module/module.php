@@ -1,6 +1,7 @@
 <?php
 use rest\model\enum\UserPermissions;
 use rest\client\CallServer;
+use rest\base\AbstractMapperSupport;
 //
 // Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -26,7 +27,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.55 2013/08/24 00:10:28 olivleh1 Exp $
+// $Id: module.php,v 1.56 2013/08/24 00:12:47 olivleh1 Exp $
 //
 
 require_once 'Smarty.class.php';
@@ -34,8 +35,7 @@ require_once 'core/coreTemplates.php';
 require_once 'core/coreText.php';
 require_once 'core/coreUsers.php';
 
-class module {
-	private $mapper;
+class module extends AbstractMapperSupport{
 
 	public function __construct() {
 		$this->mapper = array ();
@@ -70,59 +70,6 @@ class module {
 	}
 
 	function module() {
-	}
-
-	protected function map($obj, $arrayType = NULL) {
-		if ($obj) {
-			if (is_array( $obj )) {
-				$object = $this->mapper [$arrayType];
-			} else {
-				$object = $this->mapper [get_class( $obj )];
-			}
-
-			if ($object == NULL) {
-				throw new \Exception( 'Mapper for ' . get_class( $a ) . ' not defined in ' . get_class( $this ) . '!' );
-			}
-
-			$class = $object [0];
-			$method = $object [1];
-			$mapper = new $class();
-
-			if (! is_object( $mapper )) {
-				throw new \Exception( 'Mapper for ' . get_class( $a ) . ' cannot be instantiated!' );
-			}
-
-			return $mapper->$method( $obj );
-		}
-	}
-
-	protected function mapArray(array $aArray, $arrayType = NULL) {
-		$result = array ();
-		foreach ( $aArray as $a ) {
-			$result [] = self::map( $a );
-		}
-		return $result;
-	}
-
-	protected function addMapper($class, $arrayType) {
-		$a = new \ReflectionParameter( array (
-				$class,
-				'mapAToB'
-		), 0 );
-
-		$this->mapper [$arrayType] = array (
-				$class,
-				'mapAToB'
-		);
-
-		$b = new \ReflectionParameter( array (
-				$class,
-				'mapBToA'
-		), 0 );
-		$this->mapper [$b->getClass()->name] = array (
-				$class,
-				'mapBToA'
-		);
 	}
 
 	function get_errors() {
