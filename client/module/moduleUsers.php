@@ -27,7 +27,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.24 2013/08/11 17:04:55 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.25 2013/08/24 00:10:28 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -79,7 +79,7 @@ class moduleUsers extends module {
 					add_error( 140 );
 				}
 
-				$session = rest\client\CallServer::doLogon( $name, sha1( $password ) );
+				$session = rest\client\CallServer::getInstance()->doLogon( $name, sha1( $password ) );
 				if ($session) {
 					$this->coreSession->setAttribute( 'users_name', $name );
 					$this->coreSession->setAttribute( 'users_id', $session->getUser()->getId() );

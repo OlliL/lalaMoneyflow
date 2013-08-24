@@ -1,5 +1,4 @@
 
-- switch all dates in the model to DateTime
 - error 122: validate, that the capitalsource chosen is valid for the moneyflow (updateMoneyflow - bookingdate between validfrom/validtil of mcs)
 - implement all "client" input validation on serverside
 - add a method to insert a list of moneyflows (with checking all of them first - all or nothing).
@@ -11,6 +10,8 @@
      - then complete Moneflow Handling so Caching can be enabled as well
    - move calc_amount to the client (for the time being, the personal Currency handling is broken)
    - store translateable text on the client not in the DB as this is client data
+
+- evaluate http://jmsyst.com/libs/serializer for JSON (De-)Serializing
 
 some far time in the future:
 2. Redo the Webclient MVC like

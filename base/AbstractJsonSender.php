@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractJsonSender.php,v 1.2 2013/08/23 17:56:08 olivleh1 Exp $
+// $Id: AbstractJsonSender.php,v 1.3 2013/08/24 00:10:28 olivleh1 Exp $
 //
 namespace rest\base;
 
-class AbstractJsonSender {
+class AbstractJsonSender extends AbstractMapperSupport {
 
 	protected function json_encode($obj) {
 		if (is_array( $obj )) {
@@ -45,8 +45,10 @@ class AbstractJsonSender {
 		if (is_string( $class )) {
 			$classArray = explode( '\\', $class );
 
-			if ((is_array( $obj ) && count( $obj ) > 0) || $obj != NULL) {
-				return '{"' . array_pop( $classArray ) . '":' . json_encode( $obj ) . '}';
+			if ((is_array( $obj ) && count( $obj ) > 0)) {
+				return '{"' . array_pop( $classArray ) . '":' . json_encode( parent::mapArray( $obj ) ) . '}';
+			} else if ($obj != NULL) {
+				return '{"' . array_pop( $classArray ) . '":' . json_encode( parent::map( $obj ) ) . '}';
 			}
 		} else if (is_array( $obj )) {
 			return '{"List":' . json_encode( $obj ) . '}';

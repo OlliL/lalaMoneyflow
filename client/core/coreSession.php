@@ -26,7 +26,7 @@ use rest\client\CallServer;
 # SUCH DAMAGE.
 #
 # $MCom: portstools/tinderbox/webui/module/moduleSession.php,v 1.3 2005/07/21 11:28:29 oliver Exp $
-# $Id: coreSession.php,v 1.7 2013/08/11 17:04:55 olivleh1 Exp $
+# $Id: coreSession.php,v 1.8 2013/08/24 00:10:28 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -63,7 +63,7 @@ class coreSession extends core {
 	function start() {
 		if( !headers_sent() ) {
 			session_start();
-			CallServer::setSessionId($this->getAttribute('server_id'));
+			CallServer::getInstance()->setSessionId($this->getAttribute('server_id'));
 			return true;
 		}
 		return false;

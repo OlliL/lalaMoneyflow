@@ -24,7 +24,7 @@
 					{section name=DATA loop=$ALL_DATA}
 						<tr>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].name|escape:htmlall}</td>
-							<td class="contrastbgcolor">{$ALL_DATA[DATA].stree|escape:htmlallt}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].street|escape:htmlall}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].postcode}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].town|escape:htmlall}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].country|escape:htmlall}</td>

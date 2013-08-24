@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.25 2013/08/14 16:15:25 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.26 2013/08/24 00:10:28 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -39,19 +39,19 @@ class moduleCapitalSources extends module {
 	}
 
 	public final function display_list_capitalsources($letter) {
-		$all_index_letters = CallServer::getAllCapitalsourceInitials();
+		$all_index_letters = CallServer::getInstance()->getAllCapitalsourceInitials();
 
 		if (! $letter) {
-			$num_sources = CallServer::getAllCapitalsourceCount();
+			$num_sources = CallServer::getInstance()->getAllCapitalsourceCount();
 			if ($num_sources < $this->coreTemplates->get_max_rows()) {
 				$letter = 'all';
 			}
 		}
 
 		if ($letter == 'all') {
-			$capitalsourceArray = CallServer::getAllCapitalsources();
+			$capitalsourceArray = CallServer::getInstance()->getAllCapitalsources();
 		} elseif (! empty( $letter )) {
-			$capitalsourceArray = CallServer::getAllCapitalsourcesByInitial( $letter );
+			$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByInitial( $letter );
 		} else {
 			$capitalsourceArray = array ();
 		}
@@ -106,9 +106,9 @@ class moduleCapitalSources extends module {
 
 				if ($valid_data === true) {
 					if ($capitalsourceid == 0)
-						$ret = CallServer::createCapitalsource( $capitalsource );
+						$ret = CallServer::getInstance()->createCapitalsource( $capitalsource );
 					else
-						$ret = CallServer::updateCapitalsource( $capitalsource );
+						$ret = CallServer::getInstance()->updateCapitalsource( $capitalsource );
 				}
 
 				if ($ret === true) {
@@ -118,7 +118,7 @@ class moduleCapitalSources extends module {
 			default :
 				if (! is_array( $all_data )) {
 					if ($capitalsourceid > 0) {
-						$capitalsource = CallServer::getCapitalsourceById( $capitalsourceid );
+						$capitalsource = CallServer::getInstance()->getCapitalsourceById( $capitalsourceid );
 						if ($capitalsource) {
 							$all_data = parent::map( $capitalsource );
 						} else {
@@ -155,13 +155,13 @@ class moduleCapitalSources extends module {
 	public final function display_delete_capitalsource($realaction, $capitalsourceid) {
 		switch ($realaction) {
 			case 'yes' :
-				if (CallServer::deleteCapitalsource( $capitalsourceid )) {
+				if (CallServer::getInstance()->deleteCapitalsource( $capitalsourceid )) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
 			default :
 				if ($capitalsourceid > 0) {
-					$capitalsource = CallServer::getCapitalsourceById( $capitalsourceid );
+					$capitalsource = CallServer::getInstance()->getCapitalsourceById( $capitalsourceid );
 					if ($capitalsource) {
 						$all_data = parent::map( $capitalsource );
 						$all_data ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $all_data ['state'] );

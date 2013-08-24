@@ -5,16 +5,16 @@ namespace rest\base;
 abstract class AbstractMapperSupport {
 	private $mapper;
 
-	public function __construct() {
-		$this->mapper = array ();
-	}
-
-	protected function map($obj) {
+	protected function map($obj, $arrayType = NULL) {
 		if ($obj) {
-			$object = $this->mapper [get_class( $obj )];
+			if (is_array( $obj )) {
+				$object = $this->mapper [$arrayType];
+			} else {
+				$object = $this->mapper [get_class( $obj )];
+			}
 
 			if ($object == NULL) {
-				throw new BusinessException( 'Mapper for ' . get_class( $a ) . ' not defined in ' . get_class( $this ) . '!' );
+				throw new \Exception( 'Mapper for ' . get_class( $obj ) . ' not defined in ' . get_class( $this ) . '!' );
 			}
 
 			$class = $object [0];
@@ -22,14 +22,14 @@ abstract class AbstractMapperSupport {
 			$mapper = new $class();
 
 			if (! is_object( $mapper )) {
-				throw new BusinessException( 'Mapper for ' . get_class( $a ) . ' cannot be instantiated!' );
+				throw new \Exception( 'Mapper for ' . get_class( $obj ) . ' cannot be instantiated!' );
 			}
 
 			return $mapper->$method( $obj );
 		}
 	}
 
-	protected function mapArray(array $aArray) {
+	protected function mapArray(array $aArray, $arrayType = NULL) {
 		$result = array ();
 		foreach ( $aArray as $a ) {
 			$result [] = self::map( $a );
@@ -37,16 +37,25 @@ abstract class AbstractMapperSupport {
 		return $result;
 	}
 
-	protected function addMapper($class) {
-		$a = new \ReflectionParameter( array (
-				$class,
-				'mapAToB'
-		), 0 );
+	protected function addMapper($class, $arrayType = NULL) {
+		if ($arrayType) {
+			/* if the source is an array which has to be mapped to an object: */
+			$this->mapper [$arrayType] = array (
+					$class,
+					'mapAToB'
+			);
+		} else {
+			/* if the source is an object which has to be mapped to an object: */
+			$a = new \ReflectionParameter( array (
+					$class,
+					'mapAToB'
+			), 0 );
 
-		$this->mapper [$a->getClass()->name] = array (
-				$class,
-				'mapAToB'
-		);
+			$this->mapper [$a->getClass()->name] = array (
+					$class,
+					'mapAToB'
+			);
+		}
 
 		$b = new \ReflectionParameter( array (
 				$class,

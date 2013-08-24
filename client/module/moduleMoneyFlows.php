@@ -1,5 +1,6 @@
 <?php
 use rest\client\CallServer;
+use rest\client\mapper\ClientArrayMapperEnum;
 //
 // Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -25,7 +26,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.55 2013/08/23 18:01:09 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.56 2013/08/24 00:10:28 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
@@ -35,15 +36,12 @@ require_once 'core/corePreDefMoneyFlows.php';
 require_once 'core/coreSettings.php';
 
 class moduleMoneyFlows extends module {
-	const CAPITALSOURCE_ARRAY_TYPE = 'CapitalsourceArray';
-	const CONTRACTPARTNER_ARRAY_TYPE = 'ContractpartnerArray';
-	const MONEYFLOW_ARRAY_TYPE = 'MoneyflowArray';
 
 	public final function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', self::CAPITALSOURCE_ARRAY_TYPE );
-		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerMapper', self::CONTRACTPARTNER_ARRAY_TYPE );
-		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowMapper', self::MONEYFLOW_ARRAY_TYPE );
+		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', rest\client\mapper\ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
+		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerMapper', rest\client\mapper\ClientArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
+		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowMapper', rest\client\mapper\ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
 
 		// TODO: old shit
 		$this->coreCapitalSources = new coreCapitalSources();
@@ -87,7 +85,7 @@ class moduleMoneyFlows extends module {
 					$all_data ['bookingdate'] = $bookingdate_orig;
 					$all_data ['bookingdate_error'] = 1;
 					$valid_data = false;
-					$moneyflow = CallServer::getMoneyflowById( $id );
+					$moneyflow = CallServer::getInstance()->getMoneyflowById( $id );
 					if ($moneyflow) {
 						$temp_data = parent::map( $moneyflow );
 						$checkdate = $temp_data ['bookingdate'];
@@ -104,9 +102,8 @@ class moduleMoneyFlows extends module {
 
 				if ($valid_data === true) {
 					$all_data ['moneyflowid'] = $id;
-					$moneyflow = parent::map( $all_data, self::MONEYFLOW_ARRAY_TYPE );
-					var_dump( $moneyflow );
-					$ret = CallServer::updateMoneyflow( $moneyflow );
+					$moneyflow = parent::map( $all_data, rest\client\mapper\ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
+					$ret = CallServer::getInstance()->updateMoneyflow( $moneyflow );
 					if ($ret === true) {
 						$this->template->assign( 'CLOSE', 1 );
 						break;
@@ -114,7 +111,7 @@ class moduleMoneyFlows extends module {
 				}
 			default :
 				if (! is_array( $all_data )) {
-					$moneyflow = CallServer::getMoneyflowById( $id );
+					$moneyflow = CallServer::getInstance()->getMoneyflowById( $id );
 					if ($moneyflow) {
 						$all_data = parent::map( $moneyflow );
 						$capitalsource_data = parent::map( $moneyflow->getCapitalsource() );
@@ -125,21 +122,21 @@ class moduleMoneyFlows extends module {
 				}
 
 				if (! $capitalsource_data) {
-					$capitalsource = CallServer::getCapitalsourceById( $all_data ['mcs_capitalsourceid'] );
+					$capitalsource = CallServer::getInstance()->getCapitalsourceById( $all_data ['mcs_capitalsourceid'] );
 					if ($capitalsource) {
 						$capitalsource_data = parent::map( $capitalsource );
 					}
 				}
 
 				if ($capitalsource_data && strtotime( $checkdate ) >= strtotime( $capitalsource_data ['validfrom'] ) && strtotime( $checkdate ) <= strtotime( $capitalsource_data ['validtil'] )) {
-					$capitalsourceArray = CallServer::getAllCapitalsourcesByDateRange( $checkdate, $checkdate );
+					$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( $checkdate, $checkdate );
 				} else {
-					$capitalsourceArray = CallServer::getAllCapitalsources();
+					$capitalsourceArray = CallServer::getInstance()->getAllCapitalsources();
 				}
 
 				$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
 
-				$contractpartnerArray = CallServer::getAllContractpartner();
+				$contractpartnerArray = CallServer::getInstance()->getAllContractpartner();
 				if (is_array( $contractpartnerArray )) {
 					$contractpartner_values = parent::mapArray( $contractpartnerArray );
 				}
@@ -164,10 +161,10 @@ class moduleMoneyFlows extends module {
 	}
 
 	function display_add_moneyflow($realaction, $all_data) {
-		$capitalsourceArray = CallServer::getAllCapitalsourcesByDateRange( date( 'Y-m-d' ), date( 'Y-m-d' ) );
+		$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( date( 'Y-m-d' ), date( 'Y-m-d' ) );
 		$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
 
-		$contractpartnerArray = CallServer::getAllContractpartner();
+		$contractpartnerArray = CallServer::getInstance()->getAllContractpartner();
 		if (is_array( $contractpartnerArray )) {
 			$contractpartner_values = parent::mapArray( $contractpartnerArray );
 		}
@@ -247,8 +244,8 @@ class moduleMoneyFlows extends module {
 						if ($value ['checked'] == 1) {
 							if (empty( $value ['invoicedate'] ))
 								$value ['invoicedate'] = $value ['bookingdate'];
-							$moneyflow = parent::map( $value, self::MONEYFLOW_ARRAY_TYPE );
-							CallServer::createMoneyflow( $moneyflow );
+							$moneyflow = parent::map( $value, rest\client\mapper\ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
+							CallServer::getInstance()->createMoneyflow( $moneyflow );
 							if ($value ['predefmoneyflowid'] >= 0)
 								$this->corePreDefMoneyFlows->set_last_used( $value ['predefmoneyflowid'], $value ['bookingdate'] );
 						}
@@ -309,14 +306,14 @@ class moduleMoneyFlows extends module {
 	function display_delete_moneyflow($realaction, $id) {
 		switch ($realaction) {
 			case 'yes' :
-				if (CallServer::deleteMoneyflow( $id )) {
+				if (CallServer::getInstance()->deleteMoneyflow( $id )) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
 			default :
-				$moneyflow = CallServer::getMoneyflowById( $id );
+				$moneyflow = CallServer::getInstance()->getMoneyflowById( $id );
 				if ($moneyflow) {
-					$all_data = parent::map( $moneyflow, self::MONEYFLOW_ARRAY_TYPE );
+					$all_data = parent::map( $moneyflow, rest\client\mapper\ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
 					$this->template->assign( 'ALL_DATA', $all_data );
 				}
 				break;

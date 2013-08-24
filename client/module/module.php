@@ -26,7 +26,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.54 2013/08/11 17:04:55 olivleh1 Exp $
+// $Id: module.php,v 1.55 2013/08/24 00:10:28 olivleh1 Exp $
 //
 
 require_once 'Smarty.class.php';

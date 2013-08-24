@@ -25,7 +25,7 @@ use rest\client\CallServer;
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: index.php,v 1.51 2013/08/14 16:15:24 olivleh1 Exp $
+# $Id: index.php,v 1.52 2013/08/24 00:10:28 olivleh1 Exp $
 #
 
 require_once 'include.php';
@@ -50,6 +50,7 @@ require_once 'module/moduleGroups.php';
 require_once 'model/LoggedOnUser.php';
 
 require_once 'rest/base/config/CacheManager.php';
+require_once 'rest/client/mapper/ClientArrayMapperEnum.php';
 
 #if( $money_debug === true ) {
 	require_once 'util/utilTimer.php';

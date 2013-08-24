@@ -26,7 +26,7 @@ use rest\model\Capitalsource;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.58 2013/08/18 18:09:13 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.59 2013/08/24 00:10:28 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -45,13 +45,11 @@ if (ENABLE_JPGRAPH) {
 }
 
 class moduleReports extends module {
-	const CAPITALSOURCE_ARRAY_TYPE = 'CapitalsourceArray';
-	const MONEYFLOW_ARRAY_TYPE = 'MoneyflowArray';
 
 	public final function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', self::CAPITALSOURCE_ARRAY_TYPE );
-		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowMapper', self::MONEYFLOW_ARRAY_TYPE );
+		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', rest\client\mapper\ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
+		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowMapper', rest\client\mapper\ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
 
 		// old shit
 		$this->coreCurrencies = new coreCurrencies();
@@ -66,13 +64,13 @@ class moduleReports extends module {
 		if (! $year)
 			$year = date( 'Y' );
 
-		$years = rest\client\CallServer::getAllMoneyflowYears();
-		$temp_months = rest\client\CallServer::getAllMoneyflowMonth( $year );
+		$years = rest\client\CallServer::getInstance()->getAllMoneyflowYears();
+		$temp_months = rest\client\CallServer::getInstance()->getAllMoneyflowMonth( $year );
 
 		// there are no months for the selected year
 		if (! is_array( $temp_months )) {
 			$year = $years [count( $years ) - 1];
-			$temp_months = rest\client\CallServer::getAllMoneyflowMonth( $year );
+			$temp_months = rest\client\CallServer::getInstance()->getAllMoneyflowMonth( $year );
 			$month = NULL;
 		}
 
@@ -121,7 +119,7 @@ class moduleReports extends module {
 				$neworder = 'ASC';
 		}
 
-		$moneyflow = CallServer::getMoneyflowsByMonth( $year, $month );
+		$moneyflow = CallServer::getInstance()->getMoneyflowsByMonth( $year, $month );
 		if ($moneyflow) {
 			$_all_moneyflow_data = parent::mapArray($moneyflow);
 
@@ -195,7 +193,7 @@ class moduleReports extends module {
 			// g) amount they should had at the end of the month
 			// h) differnece between e and f (if mms_exists)
 
-			$capitalsourceArray = CallServer::getAllCapitalsourcesByDateRange( date( 'Y-m-d', mktime( 0, 0, 0, $month, 1, $year ) ), date( 'Y-m-d', mktime( 0, 0, 0, $month + 1, 0, $year ) ) );
+			$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( date( 'Y-m-d', mktime( 0, 0, 0, $month, 1, $year ) ), date( 'Y-m-d', mktime( 0, 0, 0, $month + 1, 0, $year ) ) );
 			if (is_array( $capitalsourceArray )) {
 				$all_capitalsources = parent::mapArray( $capitalsourceArray );
 			}
@@ -311,7 +309,7 @@ class moduleReports extends module {
 	}
 
 	function display_plot_trends($all_data) {
-		$capitalsourceArray = CallServer::getAllCapitalsources();
+		$capitalsourceArray = CallServer::getInstance()->getAllCapitalsources();
 		if (is_array( $capitalsourceArray )) {
 			$capitalsource_values = parent::mapArray( $capitalsourceArray );
 		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
