@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: functions.php,v 1.17 2013/08/23 17:56:08 olivleh1 Exp $
+# $Id: functions.php,v 1.18 2013/08/25 01:03:32 olivleh1 Exp $
 #
 
 
@@ -37,6 +37,18 @@ function add_error( $id, $args=NULL ) {
 	} else {
 		$ERRORS[] = array( 'id'        => $id );
 	}
+}
+
+function convert_array_to_utf8($arr) {
+	foreach ( $arr as $key => $value ) {
+		if(is_array($value)) {
+			$arr [$key] = convert_array_to_utf8($value);
+		} else if (! mb_check_encoding( $value, 'UTF-8' )) {
+			$arr [$key] = utf8_encode( $value );
+		}
+	}
+
+	return $arr;
 }
 
 function check_date( $year, $month, $day ) {

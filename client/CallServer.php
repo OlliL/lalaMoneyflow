@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.6 2013/08/24 00:10:28 olivleh1 Exp $
+// $Id: CallServer.php,v 1.7 2013/08/25 01:03:32 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -82,21 +82,28 @@ class CallServer extends AbstractJsonSender {
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
 		) ) );
-		$response = Request::get( $url )->withoutStrictSsl()->send();
+
+		$response = Request::get( $url )->withoutStrictSsl()->addOnCurlOption(CURLOPT_ENCODING,'compress, deflate, gzip')->send();
 		if ($response->code == 204) {
 			return false;
 		} else {
 			return self::handle_result( $response->body );
 		}
-		// $ch = curl_init();
-		// curl_setopt( $ch, CURLOPT_URL, $url );
-		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		// $result = curl_exec( $ch );
-		// $result = json_decode( $result, true );
-		// curl_close( $ch );
+
+// 		$ch = curl_init();
+// 		curl_setopt( $ch, CURLOPT_URL, $url );
+// 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+// 		curl_setopt($ch, CURLOPT_ENCODING, 'compress, deflate, gzip');
+// 		$result = curl_exec( $ch );
+// 		$ret = self::handle_result( json_decode( $result, true ));
+// 		curl_close( $ch );
+// 		return $ret;
+
 	}
 
+	//create
 	private final function postJson($url, $json) {
+		echo $json;
 		$response = Request::post( $url )->withoutStrictSsl()->sendsJson()->body( $json )->send();
 		if ($response->code == 204) {
 			return true;
@@ -105,6 +112,7 @@ class CallServer extends AbstractJsonSender {
 		}
 	}
 
+	//update
 	private final function putJson($url, $json) {
 		$response = Request::put( $url )->withoutStrictSsl()->sendsJson()->body( $json )->send();
 		if ($response->code == 204) {

@@ -3,19 +3,21 @@
 namespace rest\client\mapper;
 
 abstract class AbstractArrayMapper {
+	private static $clientDateFormat;
 
 	private final function getClientDateFormat() {
-		$patterns [0] = '/YYYY/';
-		$patterns [1] = '/MM/';
-		$patterns [2] = '/DD/';
+		if (! self::$clientDateFormat) {
+			$patterns [0] = 'YYYY';
+			$patterns [1] = 'MM';
+			$patterns [2] = 'DD';
 
-		$replacements [0] = 'Y';
-		$replacements [1] = 'm';
-		$replacements [2] = 'd';
+			$replacements [0] = 'Y';
+			$replacements [1] = 'm';
+			$replacements [2] = 'd';
 
-		$format = preg_replace( $patterns, $replacements, GUI_DATE_FORMAT );
-
-		return $format;
+			self::$clientDateFormat = str_replace( $patterns, $replacements, GUI_DATE_FORMAT );
+		}
+		return self::$clientDateFormat;
 	}
 
 	protected final function convertClientDateToModel($clientDate) {
@@ -29,6 +31,8 @@ abstract class AbstractArrayMapper {
 			return false;
 
 		$modelDate = \DateTime::createFromFormat( $format, $clientDate );
+		if ($modelDate)
+			$modelDate->setTime( 0, 0, 0 );
 
 		return $modelDate;
 	}

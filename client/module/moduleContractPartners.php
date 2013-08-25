@@ -1,5 +1,6 @@
 <?php
 use rest\client\CallServer;
+use rest\client\mapper\ClientArrayMapperEnum;
 //
 // Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -25,17 +26,16 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.19 2013/08/24 00:10:28 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.20 2013/08/25 01:03:32 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
 
 class moduleContractPartners extends module {
-	const ARRAY_TYPE = 'ContractpartnerArray';
 
 	public final function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerMapper', self::ARRAY_TYPE );
+		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerMapper', ClientArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
 	}
 
 	public final function display_list_contractpartners($letter) {
@@ -70,7 +70,7 @@ class moduleContractPartners extends module {
 		switch ($realaction) {
 			case 'save' :
 				$all_data ['contractpartnerid'] = $contractpartnerid;
-				$contractpartner = parent::map( $all_data, self::ARRAY_TYPE );
+				$contractpartner = parent::map( $all_data, ClientArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
 				if ($contractpartnerid == 0)
 					$ret = CallServer::getInstance()->createContractpartner( $contractpartner );
 				else

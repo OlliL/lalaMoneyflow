@@ -1,6 +1,7 @@
 <?php
 use rest\client\CallServer;
 use rest\model\Capitalsource;
+use rest\client\mapper\ClientArrayMapperEnum;
 //
 // Copyright (c) 2005-2013 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -26,7 +27,7 @@ use rest\model\Capitalsource;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.59 2013/08/24 00:10:28 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.60 2013/08/25 01:03:32 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -48,8 +49,8 @@ class moduleReports extends module {
 
 	public final function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', rest\client\mapper\ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
-		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowMapper', rest\client\mapper\ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
+		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
+		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowMapper', ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
 
 		// old shit
 		$this->coreCurrencies = new coreCurrencies();
@@ -167,8 +168,6 @@ class moduleReports extends module {
 			$all_moneyflow_data = $_all_moneyflow_data;
 
 			foreach ( $all_moneyflow_data as $key => $value ) {
-				$all_moneyflow_data [$key] ['bookingdate'] = convert_date_to_gui( $value ['bookingdate'], GUI_DATE_FORMAT );
-				$all_moneyflow_data [$key] ['invoicedate'] = convert_date_to_gui( $value ['invoicedate'], GUI_DATE_FORMAT );
 				$all_moneyflow_data [$key] ['contractpartnername'] = htmlentities( $value ['contractpartnername'], ENT_COMPAT | ENT_HTML401 );
 				$all_moneyflow_data [$key] ['capitalsourcecomment'] = htmlentities( $value ['capitalsourcecomment'], ENT_COMPAT | ENT_HTML401 );
 				$all_moneyflow_data [$key] ['comment'] = htmlentities( $value ['comment'], ENT_COMPAT | ENT_HTML401 );
@@ -193,7 +192,7 @@ class moduleReports extends module {
 			// g) amount they should had at the end of the month
 			// h) differnece between e and f (if mms_exists)
 
-			$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( date( 'Y-m-d', mktime( 0, 0, 0, $month, 1, $year ) ), date( 'Y-m-d', mktime( 0, 0, 0, $month + 1, 0, $year ) ) );
+			$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( mktime( 0, 0, 0, $month, 1, $year ), mktime( 0, 0, 0, $month + 1, 0, $year ) );
 			if (is_array( $capitalsourceArray )) {
 				$all_capitalsources = parent::mapArray( $capitalsourceArray );
 			}

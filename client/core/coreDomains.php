@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreDomains.php,v 1.8 2013/08/14 16:15:24 olivleh1 Exp $
+// $Id: coreDomains.php,v 1.9 2013/08/25 01:03:32 olivleh1 Exp $
 //
 require_once 'core/core.php';
 
@@ -43,11 +43,11 @@ class coreDomains extends core {
 	public final function get_domain_data($domain) {
 		$ids = self::getDomain( $domain );
 		if (is_array( $ids )) {
-			$i = 0;
 			foreach ( $ids as $key => $id ) {
-				$retval [$i] ['value'] = $key;
-				$retval [$i] ['text'] = $this->coreText->get_text( $id, 'd' );
-				$i ++;
+				$retval [] = array (
+						'value' => $key,
+						'text' => $this->coreText->get_text( $id, 'd' )
+				);
 			}
 		}
 		return $retval;

@@ -12,7 +12,7 @@
    - store translateable text on the client not in the DB as this is client data
 
 - evaluate http://jmsyst.com/libs/serializer for JSON (De-)Serializing
-
+- write unit tests at least for the services using PHPUnit, mocking the DAOs
 some far time in the future:
 2. Redo the Webclient MVC like
 

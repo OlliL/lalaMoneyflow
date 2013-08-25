@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToMoneyflowMapper.php,v 1.3 2013/08/23 20:36:36 olivleh1 Exp $
+// $Id: ArrayToMoneyflowMapper.php,v 1.4 2013/08/25 01:03:32 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
@@ -37,12 +37,19 @@ class ArrayToMoneyflowMapper extends AbstractArrayMapper {
 
 	public static function mapAToB(array $a) {
 		$b = new Moneyflow( $a ['moneyflowid'] );
-		$b->setBookingDate( parent::convertClientDateToModel( $a ['bookingdate'] ) );
-		$b->setInvoiceDate( parent::convertClientDateToModel( $a ['invoicedate'] ) );
+
+		$bookingdate = parent::convertClientDateToModel( $a ['bookingdate'] );
+		if ($bookingdate)
+			$b->setBookingDate( $bookingdate );
+
+		$invoicedate = parent::convertClientDateToModel( $a ['invoicedate'] );
+		if ($invoicedate)
+			$b->setInvoiceDate( $invoicedate );
+
 		$b->setAmount( $a ['amount'] );
 		$b->setCapitalsource( new Capitalsource( $a ['mcs_capitalsourceid'] ) );
 		$b->setContractpartner( new Contractpartner( $a ['mcp_contractpartnerid'] ) );
-		$b->setComment( utf8_encode( $a ['comment'] ) );
+		$b->setComment( $a ['comment'] );
 		$b->setPrivate( $a ['private'] );
 		return $b;
 	}

@@ -1,5 +1,6 @@
 <?php
 use rest\client\CallServer;
+use rest\client\mapper\ClientArrayMapperEnum;
 //
 // Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -25,17 +26,16 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.26 2013/08/24 00:10:28 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.27 2013/08/25 01:03:32 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
 
 class moduleCapitalSources extends module {
-	const ARRAY_TYPE = 'CapitalsourceArray';
 
 	public final function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', self::ARRAY_TYPE );
+		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
 	}
 
 	public final function display_list_capitalsources($letter) {
@@ -79,27 +79,23 @@ class moduleCapitalSources extends module {
 	}
 
 	public final function display_edit_capitalsource($realaction, $capitalsourceid, $all_data) {
-		$validfrom_orig = $all_data ['validfrom'];
-		$validtil_orig = $all_data ['validtil'];
 
 		switch ($realaction) {
 			case 'save' :
 				$valid_data = true;
 				$all_data ['capitalsourceid'] = $capitalsourceid;
-				$capitalsource = parent::map( $all_data, self::ARRAY_TYPE );
-				if ($capitalsource->getValidFrom() === false) {
+				$capitalsource = parent::map( $all_data, ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
+				if ($capitalsource->getValidFrom() === NULL) {
 					add_error( 147, array (
 							GUI_DATE_FORMAT
 					) );
-					$all_data ['validfrom'] = $validfrom_orig;
 					$all_data ['validfrom_error'] = 1;
 					$valid_data = false;
 				}
-				if ($capitalsource->getValidTil() === false) {
+				if ($capitalsource->getValidTil() === NULL) {
 					add_error( 147, array (
 							GUI_DATE_FORMAT
 					) );
-					$all_data ['validtil'] = $validtil_orig;
 					$all_data ['validtil_error'] = 1;
 					$valid_data = false;
 				}
@@ -109,11 +105,10 @@ class moduleCapitalSources extends module {
 						$ret = CallServer::getInstance()->createCapitalsource( $capitalsource );
 					else
 						$ret = CallServer::getInstance()->updateCapitalsource( $capitalsource );
-				}
-
-				if ($ret === true) {
-					$this->template->assign( 'CLOSE', 1 );
-					break;
+					if ($ret === true) {
+						$this->template->assign( 'CLOSE', 1 );
+						break;
+					}
 				}
 			default :
 				if (! is_array( $all_data )) {
@@ -127,8 +122,8 @@ class moduleCapitalSources extends module {
 					}
 
 					if (! isset( $capitalsourceid )) {
-						$all_data ['validfrom'] = date( 'Y-m-d' );
-						$all_data ['validtil'] = MAX_YEAR;
+						$all_data ['validfrom'] = convert_date_to_gui( date( 'Y-m-d' ) );
+						$all_data ['validtil'] = convert_date_to_gui( MAX_YEAR );
 					}
 				}
 				$type_values = $this->coreDomains->get_domain_data( 'CAPITALSOURCE_TYPE' );
@@ -138,11 +133,6 @@ class moduleCapitalSources extends module {
 				$this->template->assign( 'STATE_VALUES', $state_values );
 				break;
 		}
-
-		if (empty( $all_data ['validfrom_error'] ))
-			$all_data ['validfrom'] = convert_date_to_gui( $all_data ['validfrom'], GUI_DATE_FORMAT );
-		if (empty( $all_data ['validtil_error'] ))
-			$all_data ['validtil'] = convert_date_to_gui( $all_data ['validtil'], GUI_DATE_FORMAT );
 
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'CAPITALSOURCEID', $capitalsourceid );

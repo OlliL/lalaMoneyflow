@@ -27,7 +27,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.25 2013/08/24 00:10:28 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.26 2013/08/25 01:03:32 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -50,6 +50,12 @@ class moduleUsers extends module {
 		} else {
 			define( USERID, $this->coreSession->getAttribute( 'users_id' ) );
 			$user = LoggedOnUser::getInstance();
+
+			// Apache Restart or went cache empty -> sessionId not set;
+			if( $user->getPermissions() === NULL ) {
+				$this->coreSession->destroy();
+				return 1;
+			}
 
 			if (! in_array( UserPermissions::LOGIN, $user->getPermissions() )) {
 				$this->coreSession->destroy();

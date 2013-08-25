@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToCapitalsourceMapper.php,v 1.4 2013/08/24 00:10:29 olivleh1 Exp $
+// $Id: ArrayToCapitalsourceMapper.php,v 1.5 2013/08/25 01:03:32 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
@@ -41,8 +41,14 @@ class ArrayToCapitalsourceMapper extends AbstractArrayMapper {
 		$b->setGroupUse( $a ['att_group_use'] );
 		$b->setState( $a ['state'] );
 		$b->setType( $a ['type'] );
-		$b->setValidFrom( parent::convertClientDateToModel( $a ['validfrom'] ) );
-		$b->setValidTil( parent::convertClientDateToModel( $a ['validtil'] ) );
+
+		$validfrom = parent::convertClientDateToModel( $a ['validfrom'] );
+		if ($validfrom)
+			$b->setValidFrom( $validfrom );
+
+		$validtil = parent::convertClientDateToModel( $a ['validtil'] );
+		if ($validtil)
+			$b->setValidTil( $validtil );
 
 		return $b;
 	}
