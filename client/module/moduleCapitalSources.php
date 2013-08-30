@@ -1,6 +1,7 @@
 <?php
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
+use rest\model\enum\ErrorCode;
 //
 // Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -26,7 +27,7 @@ use rest\client\mapper\ClientArrayMapperEnum;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.27 2013/08/25 01:03:32 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.28 2013/08/30 16:33:26 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -79,7 +80,6 @@ class moduleCapitalSources extends module {
 	}
 
 	public final function display_edit_capitalsource($realaction, $capitalsourceid, $all_data) {
-
 		switch ($realaction) {
 			case 'save' :
 				$valid_data = true;
@@ -105,9 +105,22 @@ class moduleCapitalSources extends module {
 						$ret = CallServer::getInstance()->createCapitalsource( $capitalsource );
 					else
 						$ret = CallServer::getInstance()->updateCapitalsource( $capitalsource );
+
 					if ($ret === true) {
 						$this->template->assign( 'CLOSE', 1 );
 						break;
+					} else {
+						foreach ( $ret->getValidationResultItems() as $validationResult ) {
+							$error = $validationResult->getError();
+
+							switch ($error) {
+								case ErrorCode::VALIDFROM_AFTER_VALIDTIL :
+									$all_data ['validfrom_error'] = 1;
+									$all_data ['validtil_error'] = 1;
+								default :
+									add_error( $validationResult->getError() );
+							}
+						}
 					}
 				}
 			default :

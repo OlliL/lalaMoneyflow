@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.54 2013/08/25 01:03:32 olivleh1 Exp $
+// $Id: index.php,v 1.55 2013/08/30 16:33:25 olivleh1 Exp $
 //
 
 require_once 'include.php';
@@ -336,7 +336,7 @@ if ($is_logged_in == 0) {
 
 			case 'edit_capitalsource' :
 				$realaction = $_REQUEST ['realaction'];
-				$capitalsourceid = $_REQUEST ['capitalsourceid'];
+				$capitalsourceid = $_REQUEST ['capitalsourceid']?$_REQUEST ['capitalsourceid']:0;
 				$display = $moduleCapitalSources->display_edit_capitalsource( $realaction, $capitalsourceid, $all_data );
 				break;
 

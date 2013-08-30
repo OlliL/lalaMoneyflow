@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.7 2013/08/25 01:03:32 olivleh1 Exp $
+// $Id: CallServer.php,v 1.8 2013/08/30 16:33:26 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -49,6 +49,10 @@ class CallServer extends AbstractJsonSender {
 		parent::addMapper( 'rest\model\mapper\JsonToMoneyflowMapper', JsonArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
 		parent::addMapper( 'rest\model\mapper\JsonToUserMapper', JsonArrayMapperEnum::USER_ARRAY_TYPE );
 		parent::addMapper( 'rest\model\mapper\JsonToSessionMapper', JsonArrayMapperEnum::SESSION_ARRAY_TYPE );
+		parent::addMapper( 'rest\model\mapper\validation\JsonToValidationResultMapper', JsonArrayMapperEnum::VALIDATION_RESULT_ARRAY_TYPE );
+		Httpful::register( Mime::JSON, new JsonHandler( array (
+				'decode_as_array' => true
+		) ) );
 	}
 
 	public static function getInstance() {
@@ -67,6 +71,8 @@ class CallServer extends AbstractJsonSender {
 			echo '<font color="red"><u>Server Error occured</u><pre>' . $result . '</pre></font><br>';
 			add_error( 204 );
 			return false;
+		} else if (array_key_exists( 'ValidationResult', $result )) {
+			return parent::map( $result['ValidationResult'], JsonArrayMapperEnum::VALIDATION_RESULT_ARRAY_TYPE );
 		} else if (array_key_exists( 'error', $result )) {
 			if ($result ['error'] ['code'] < 0) {
 				echo '<font color="red"><u>Server Error occured</u><pre>' . $result ['error'] ['message'] . '</pre></font><br>';
@@ -79,31 +85,25 @@ class CallServer extends AbstractJsonSender {
 	}
 
 	private final function getJson($url) {
-		Httpful::register( Mime::JSON, new JsonHandler( array (
-				'decode_as_array' => true
-		) ) );
-
-		$response = Request::get( $url )->withoutStrictSsl()->addOnCurlOption(CURLOPT_ENCODING,'compress, deflate, gzip')->send();
+		$response = Request::get( $url )->withoutStrictSsl()->addOnCurlOption( CURLOPT_ENCODING, 'compress, deflate, gzip' )->send();
 		if ($response->code == 204) {
 			return false;
 		} else {
 			return self::handle_result( $response->body );
 		}
 
-// 		$ch = curl_init();
-// 		curl_setopt( $ch, CURLOPT_URL, $url );
-// 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-// 		curl_setopt($ch, CURLOPT_ENCODING, 'compress, deflate, gzip');
-// 		$result = curl_exec( $ch );
-// 		$ret = self::handle_result( json_decode( $result, true ));
-// 		curl_close( $ch );
-// 		return $ret;
-
+		// $ch = curl_init();
+		// curl_setopt( $ch, CURLOPT_URL, $url );
+		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		// curl_setopt($ch, CURLOPT_ENCODING, 'compress, deflate, gzip');
+		// $result = curl_exec( $ch );
+		// $ret = self::handle_result( json_decode( $result, true ));
+		// curl_close( $ch );
+		// return $ret;
 	}
 
-	//create
+	// create
 	private final function postJson($url, $json) {
-		echo $json;
 		$response = Request::post( $url )->withoutStrictSsl()->sendsJson()->body( $json )->send();
 		if ($response->code == 204) {
 			return true;
@@ -112,7 +112,7 @@ class CallServer extends AbstractJsonSender {
 		}
 	}
 
-	//update
+	// update
 	private final function putJson($url, $json) {
 		$response = Request::put( $url )->withoutStrictSsl()->sendsJson()->body( $json )->send();
 		if ($response->code == 204) {

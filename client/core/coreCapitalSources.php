@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.38 2013/08/14 16:15:24 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.39 2013/08/30 16:33:26 olivleh1 Exp $
 #
 
 require_once 'core/core.php';

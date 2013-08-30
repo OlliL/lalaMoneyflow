@@ -26,7 +26,7 @@ use rest\client\mapper\ClientArrayMapperEnum;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.57 2013/08/25 01:03:32 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.58 2013/08/30 16:33:26 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
@@ -194,7 +194,7 @@ class moduleMoneyFlows extends module {
 							$data_is_valid = false;
 						}
 
-						if (! isset( $all_data [$id] ['bookingdate_error'] ) && $this->coreCapitalSources->id_is_valid( $value ['mcs_capitalsourceid'], $all_data [$id] ['bookingdate'] )) {
+						if (! isset( $all_data [$id] ['bookingdate_error'] ) && ! $this->coreCapitalSources->id_is_valid( $value ['mcs_capitalsourceid'], convert_date_to_db($all_data [$id] ['bookingdate']) )) {
 							add_error( 181 );
 							$all_data [$id] ['capitalsource_error'] = 1;
 							$data_is_valid = false;
