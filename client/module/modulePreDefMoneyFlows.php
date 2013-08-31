@@ -1,31 +1,33 @@
 <?php
-#-
-# Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
-# All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions
-# are met:
-# 1. Redistributions of source code must retain the above copyright
-#	notice, this list of conditions and the following disclaimer
-# 2. Redistributions in binary form must reproduce the above copyright
-#	notice, this list of conditions and the following disclaimer in the
-#	documentation and/or other materials provided with the distribution.
-#
-# THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
-# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-# ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
-# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-# OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-# OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-# SUCH DAMAGE.
-#
-# $Id: modulePreDefMoneyFlows.php,v 1.29 2013/08/11 17:04:55 olivleh1 Exp $
-#
+//
+// Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions
+// are met:
+// 1. Redistributions of source code must retain the above copyright
+// notice, this list of conditions and the following disclaimer
+// 2. Redistributions in binary form must reproduce the above copyright
+// notice, this list of conditions and the following disclaimer in the
+// documentation and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+// FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+// DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+// OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+// HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+// LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+// OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
+//
+// $Id: modulePreDefMoneyFlows.php,v 1.30 2013/08/31 16:08:22 olivleh1 Exp $
+//
+use rest\client\CallServer;
+use rest\client\mapper\ClientArrayMapperEnum;
 
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
@@ -37,126 +39,142 @@ class modulePreDefMoneyFlows extends module {
 
 	function modulePreDefMoneyFlows() {
 		parent::__construct();
-		$this->coreCapitalSources   = new coreCapitalSources();
+		$this->coreCapitalSources = new coreCapitalSources();
 		$this->coreContractPartners = new coreContractPartners();
-		$this->coreCurrencies       = new coreCurrencies();
+		$this->coreCurrencies = new coreCurrencies();
 		$this->corePreDefMoneyFlows = new corePreDefMoneyFlows();
+		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerMapper', ClientArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
+		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
 	}
 
+	// TODO - duplicate code
+	// filter only the capitalsources which are owned by the user or allowed for group use.
+	private function filterCapitalsource($capitalsourceArray) {
+		if (is_array( $capitalsourceArray )) {
+			$temp_capitalsource_values = parent::mapArray( $capitalsourceArray );
+			foreach ( $temp_capitalsource_values as $capitalsource ) {
+				if ($capitalsource ['att_group_use'] == 1 || $capitalsource ['mur_userid'] == USERID)
+					$capitalsource_values [] = $capitalsource;
+			}
+		}
+		return $capitalsource_values;
+	}
 
-	function display_list_predefmoneyflows( $letter ) {
-
+	function display_list_predefmoneyflows($letter) {
 		$all_index_letters = $this->corePreDefMoneyFlows->get_all_index_letters();
 		$num_flows = $this->corePreDefMoneyFlows->count_all_data();
-		
-		if( empty( $letter ) && $num_clows < $this->coreTemplates->get_max_rows() ) {
+
+		if (empty( $letter ) && $num_clows < $this->coreTemplates->get_max_rows()) {
 			$letter = 'all';
 		}
 
-
-		if( $letter == 'all' ) {
+		if ($letter == 'all') {
 			$all_data = $this->corePreDefMoneyFlows->get_all_data();
-		} elseif( !empty( $letter ) ) {
+		} elseif (! empty( $letter )) {
 			$all_data = $this->corePreDefMoneyFlows->get_all_matched_data( $letter );
 		}
 
-		if( is_array( $all_data ) ) {
-			foreach( $all_data as $key => $value ) {
-				$all_data[$key]['capitalsource_comment'] = htmlentities($this->coreCapitalSources->get_comment( $all_data[$key]['mcs_capitalsourceid'] ), ENT_COMPAT | ENT_HTML401, ENCODING);
-				$all_data[$key]['contractpartner_name']  = htmlentities($this->coreContractPartners->get_name( $all_data[$key]['mcp_contractpartnerid'] ), ENT_COMPAT | ENT_HTML401, ENCODING);
+		if (is_array( $all_data )) {
+			foreach ( $all_data as $key => $value ) {
+				$all_data [$key] ['capitalsource_comment'] = htmlentities( $this->coreCapitalSources->get_comment( $all_data [$key] ['mcs_capitalsourceid'] ), ENT_COMPAT | ENT_HTML401, ENCODING );
+				$all_data [$key] ['contractpartner_name'] = htmlentities( $this->coreContractPartners->get_name( $all_data [$key] ['mcp_contractpartnerid'] ), ENT_COMPAT | ENT_HTML401, ENCODING );
 			}
 		}
 
-		$this->template->assign( 'ALL_DATA',          $all_data          );
-		$this->template->assign( 'COUNT_ALL_DATA',    count( $all_data ) );
+		$this->template->assign( 'ALL_DATA', $all_data );
+		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
-		$this->template->assign( 'CURRENCY',          $this->coreCurrencies->get_displayed_currency() );
+		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_predefmoneyflows.tpl' );
 	}
 
-	function display_edit_predefmoneyflow( $realaction, $id, $all_data ) {
-
-		switch( $realaction ) {
-			case 'save':
+	function display_edit_predefmoneyflow($realaction, $id, $all_data) {
+		switch ($realaction) {
+			case 'save' :
 				$data_is_valid = true;
-				
-				if( empty( $all_data['mcs_capitalsourceid'] ) ) {
+
+				if (empty( $all_data ['mcs_capitalsourceid'] )) {
 					add_error( 127 );
 					$data_is_valid = false;
-				};
-				
-				if( empty( $all_data['mcp_contractpartnerid'] ) ) {
+				}
+				;
+
+				if (empty( $all_data ['mcp_contractpartnerid'] )) {
 					add_error( 128 );
 					$data_is_valid = false;
-				};
+				}
+				;
 
-				if( $data_is_valid ) {
-					if( $id == 0 )
-						$ret = $this->corePreDefMoneyFlows->add_predefmoneyflow( $all_data['amount'], $all_data['mcs_capitalsourceid'], $all_data['mcp_contractpartnerid'], $all_data['comment'], $all_data['once_a_month'] );
+				if ($data_is_valid) {
+					if ($id == 0)
+						$ret = $this->corePreDefMoneyFlows->add_predefmoneyflow( $all_data ['amount'], $all_data ['mcs_capitalsourceid'], $all_data ['mcp_contractpartnerid'], $all_data ['comment'], $all_data ['once_a_month'] );
 					else
-						$ret = $this->corePreDefMoneyFlows->update_predefmoneyflow( $id, $all_data['amount'], $all_data['mcs_capitalsourceid'], $all_data['mcp_contractpartnerid'], $all_data['comment'], $all_data['once_a_month'] );
-	
-					if( $ret === true || $ret > 0 ) {
+						$ret = $this->corePreDefMoneyFlows->update_predefmoneyflow( $id, $all_data ['amount'], $all_data ['mcs_capitalsourceid'], $all_data ['mcp_contractpartnerid'], $all_data ['comment'], $all_data ['once_a_month'] );
+
+					if ($ret === true || $ret > 0) {
 						$this->template->assign( 'CLOSE', 1 );
 						break;
 					}
 				}
-			default:
-				if( $id > 0 ) {
+			default :
+				if ($id > 0) {
 					$all_data = $this->corePreDefMoneyFlows->get_id_data( $id );
 					$this->template->assign( 'ALL_DATA', $all_data );
 					$capitalsourceid = $this->corePreDefMoneyFlows->get_capitalsourceid( $id );
-					if ( $this->coreCapitalSources->id_is_valid( $capitalsourceid ) ) {
-						$capitalsource_values = $this->coreCapitalSources->get_valid_comments();
-					} else {
-						$capitalsource_values = $this->coreCapitalSources->get_all_comments();
-					}
-					$this->template->assign( 'PREDEFMONEYFLOWID',   $id   );
-				} else {
-					$capitalsource_values = $this->coreCapitalSources->get_valid_comments();
-				}				
 
-				$contractpartner_values = $this->coreContractPartners->get_all_names();
-				foreach($contractpartner_values as $key => $data) {
-					$contractpartner_values[$key]['name'] = htmlentities($data['name'], ENT_COMPAT | ENT_HTML401, ENCODING);
+					$capitalsource = CallServer::getInstance()->getCapitalsourceById( $capitalsourceid );
+					if ($capitalsource) {
+						$today = new \DateTime();
+						$today->setTime( 0, 0, 0 );
+						if ($today < $capitalsource->getValidFrom() || $today > $capitalsource->getValidTil()) {
+							$capitalsourceArray = CallServer::getInstance()->getAllCapitalsources();
+						} else {
+							$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
+						}
+					}
+					$this->template->assign( 'PREDEFMONEYFLOWID', $id );
+				} else {
+					$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
 				}
-				foreach($capitalsource_values as $key => $data) {
-					$capitalsource_values[$key]['comment'] = htmlentities($data['comment'], ENT_COMPAT | ENT_HTML401, ENCODING);
+
+				$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
+				$contractpartnerArray = CallServer::getInstance()->getAllContractpartner();
+				if (is_array( $contractpartnerArray )) {
+					$contractpartner_values = parent::mapArray( $contractpartnerArray );
 				}
-				
-				$this->template->assign( 'CAPITALSOURCE_VALUES',   $capitalsource_values   );
+
+				$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 				break;
 		}
 
 		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
-		$this->template->assign( 'ERRORS',   $this->get_errors() );
+		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_predefmoneyflow.tpl' );
 	}
 
-	function display_delete_predefmoneyflow( $realaction, $id ) {
-
-		switch( $realaction ) {
-			case 'yes':
-				if( $this->corePreDefMoneyFlows->delete_predefmoneyflow( $id ) ) {
+	function display_delete_predefmoneyflow($realaction, $id) {
+		switch ($realaction) {
+			case 'yes' :
+				if ($this->corePreDefMoneyFlows->delete_predefmoneyflow( $id )) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
 
-			default:
+			default :
 				$all_data = $this->corePreDefMoneyFlows->get_id_data( $id );
-				$all_data['capitalsource_comment'] = $this->coreCapitalSources->get_comment( $all_data['mcs_capitalsourceid'] );
-				$all_data['contractpartner_name']  = $this->coreContractPartners->get_name( $all_data['mcp_contractpartnerid'] );
+				$all_data ['capitalsource_comment'] = $this->coreCapitalSources->get_comment( $all_data ['mcs_capitalsourceid'] );
+				$all_data ['contractpartner_name'] = $this->coreContractPartners->get_name( $all_data ['mcp_contractpartnerid'] );
 				$this->template->assign( 'ALL_DATA', $all_data );
 				break;
 		}
 
 		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
-		$this->template->assign( 'ERRORS',   $this->get_errors() );
+		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_predefmoneyflow.tpl' );

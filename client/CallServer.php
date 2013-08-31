@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.8 2013/08/30 16:33:26 olivleh1 Exp $
+// $Id: CallServer.php,v 1.9 2013/08/31 16:08:22 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -72,7 +72,7 @@ class CallServer extends AbstractJsonSender {
 			add_error( 204 );
 			return false;
 		} else if (array_key_exists( 'ValidationResult', $result )) {
-			return parent::map( $result['ValidationResult'], JsonArrayMapperEnum::VALIDATION_RESULT_ARRAY_TYPE );
+			return parent::map( $result ['ValidationResult'], JsonArrayMapperEnum::VALIDATION_RESULT_ARRAY_TYPE );
 		} else if (array_key_exists( 'error', $result )) {
 			if ($result ['error'] ['code'] < 0) {
 				echo '<font color="red"><u>Server Error occured</u><pre>' . $result ['error'] ['message'] . '</pre></font><br>';
@@ -177,10 +177,7 @@ class CallServer extends AbstractJsonSender {
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
 			$jsonArray = reset( $result );
-			$result = array ();
-			foreach ( $jsonArray as $json ) {
-				$result [] = parent::map( $json, JsonArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
-			}
+			$result = parent::mapArray( $jsonArray, JsonArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
 		}
 		return $result;
 	}
@@ -208,6 +205,11 @@ class CallServer extends AbstractJsonSender {
 		return self::postJson( $url, parent::json_encode( $moneyflow ) );
 	}
 
+	public final function createMoneyflows(array $moneyflows) {
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/createMoneyflows/' . $this->sessionId;
+		return self::postJson( $url, parent::json_encode( $moneyflows ) );
+	}
+
 	public final function updateMoneyflow(Moneyflow $moneyflow) {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/updateMoneyflow/' . $this->sessionId;
 		return self::putJson( $url, parent::json_encode( $moneyflow ) );
@@ -225,10 +227,7 @@ class CallServer extends AbstractJsonSender {
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
 			$jsonArray = reset( $result );
-			$result = array ();
-			foreach ( $jsonArray as $json ) {
-				$result [] = parent::map( $json, JsonArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
-			}
+			$result = parent::mapArray( $jsonArray, JsonArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
 		}
 		return $result;
 	}
@@ -238,10 +237,7 @@ class CallServer extends AbstractJsonSender {
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
 			$jsonArray = reset( $result );
-			$result = array ();
-			foreach ( $jsonArray as $json ) {
-				$result [] = parent::map( $json, JsonArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
-			}
+			$result = parent::mapArray( $jsonArray, JsonArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
 		}
 		return $result;
 	}
@@ -251,10 +247,7 @@ class CallServer extends AbstractJsonSender {
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
 			$jsonArray = reset( $result );
-			$result = array ();
-			foreach ( $jsonArray as $json ) {
-				$result [] = parent::map( $json, JsonArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
-			}
+			$result = parent::mapArray( $jsonArray, JsonArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
 		}
 		return $result;
 	}
@@ -310,10 +303,7 @@ class CallServer extends AbstractJsonSender {
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
 			$jsonArray = reset( $result );
-			$result = array ();
-			foreach ( $jsonArray as $json ) {
-				$result [] = parent::map( $json, JsonArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
-			}
+			$result = parent::mapArray( $jsonArray, JsonArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
 		}
 		return $result;
 	}
@@ -323,10 +313,7 @@ class CallServer extends AbstractJsonSender {
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
 			$jsonArray = reset( $result );
-			$result = array ();
-			foreach ( $jsonArray as $json ) {
-				$result [] = parent::map( $json, JsonArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
-			}
+			$result = parent::mapArray( $jsonArray, JsonArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
 		}
 		return $result;
 	}

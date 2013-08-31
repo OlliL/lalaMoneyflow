@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreCapitalSources.php,v 1.39 2013/08/30 16:33:26 olivleh1 Exp $
+# $Id: coreCapitalSources.php,v 1.40 2013/08/31 16:08:22 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -37,83 +37,10 @@ class coreCapitalSources extends core {
 		parent::__construct();
 	}
 
-	function count_all_valid_data( $datefrom='', $datetil='' ) {
-		$datefrom = $this->make_date( $datefrom );
-
-		if( empty( $datetil ) )
-			$datetil = $datefrom;
-		else
-			$datetil = $this->make_date( $datetil );
-
-		if ( $num = $this->select_col( "SELECT count(*)
-						  FROM vw_capitalsources
-						 WHERE validfrom <= $datetil
-						   AND validtil  >= $datefrom
-						   AND mug_mur_userid = ".USERID ) ) {
-			return $num;
-		} else {
-			return;
-		}
-	}
-
-	function get_valid_ids( $datefrom='', $datetil='' ) {
-		$datefrom = $this->make_date( $datefrom );
-
-		if( empty( $datetil ) )
-			$datetil = $datefrom;
-		else
-			$datetil = $this->make_date( $datetil );
-
-		return $this->select_cols( "	SELECT capitalsourceid
-						  FROM capitalsources
-						 WHERE validfrom <= $datetil
-						   AND validtil  >= $datefrom
-						   AND mur_userid = ".USERID."
-						 ORDER BY capitalsourceid" );
-	}
-
-	function get_all_comments() {
-		return $this->select_rows( '	SELECT capitalsourceid
-						      ,comment
-						  FROM vw_capitalsources
-						 WHERE mug_mur_userid = '.USERID.'
-						 ORDER BY capitalsourceid' );
-	}
-
-	function get_valid_comments( $date='' ) {
-		$date = $this->make_date($date);
-		$result=$this->select_rows( "	SELECT capitalsourceid
-						       ,comment
-						   FROM vw_capitalsources
-						  WHERE $date	BETWEEN validfrom AND validtil
-						    AND mug_mur_userid = ".USERID."
-						    AND (mur_userid = ".USERID."
-						         OR
-						         att_group_use = 1
-						        )
-						  ORDER BY CASE WHEN mur_userid = ".USERID." THEN 1 ELSE 2 END, capitalsourceid" );
-		if( is_array( $result ) ) {
-			return $result;
-		} else {
-			add_error( 119 );
-			return;
-		}
-	}
-
 	function get_comment( $id ) {
 		return $this->select_col( "	SELECT comment
 						  FROM vw_capitalsources
 						 WHERE capitalsourceid = $id
-						   AND mug_mur_userid  = ".USERID."
-						 LIMIT 1" );
-	}
-
-	function id_is_valid( $id, $date='' ) {
-		$date = $this->make_date($date);
-		return $this->select_col( "	SELECT 1
-						  FROM vw_capitalsources
-						 WHERE capitalsourceid = $id
-						   AND $date	       BETWEEN validfrom AND validtil
 						   AND mug_mur_userid  = ".USERID."
 						 LIMIT 1" );
 	}

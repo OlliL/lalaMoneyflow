@@ -27,7 +27,7 @@ use rest\model\enum\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.59 2013/08/31 00:37:05 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.60 2013/08/31 16:08:22 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
@@ -52,6 +52,7 @@ class moduleMoneyFlows extends module {
 		$this->coreSettings = new coreSettings();
 	}
 
+	// TODO - duplicate code
 	// filter only the capitalsources which are owned by the user or allowed for group use.
 	private function filterCapitalsource($capitalsourceArray) {
 		if (is_array( $capitalsourceArray )) {
@@ -68,10 +69,18 @@ class moduleMoneyFlows extends module {
 		if (empty( $id ))
 			return;
 
+		$orig_amount = $all_data ['amount'];
+
 		switch ($realaction) {
 			case 'save' :
 				$valid_data = true;
 				$all_data ['moneyflowid'] = $id;
+
+				if (! fix_amount( $all_data ['amount'] )) {
+					$all_data [$id] ['amount_error'] = 1;
+					$data_is_valid = false;
+				}
+
 				$moneyflow = parent::map( $all_data, ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
 
 				if ($moneyflow->getBookingDate() === NULL) {
@@ -99,6 +108,46 @@ class moduleMoneyFlows extends module {
 					if ($ret === true) {
 						$this->template->assign( 'CLOSE', 1 );
 						break;
+					} else {
+						foreach ( $ret->getValidationResultItems() as $validationResult ) {
+							$error = $validationResult->getError();
+
+							switch ($error) {
+								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
+									add_error( $error, array (
+											$orig_amount
+									) );
+									break;
+								case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
+									add_error( $error, array (
+											GUI_DATE_FORMAT
+									) );
+									break;
+								default :
+									add_error( $error );
+							}
+
+							switch ($error) {
+								case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
+									$all_data ['bookingdate_error'] = 1;
+									break;
+								case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
+									$all_data ['bookingdate_error'] = 1;
+								case ErrorCode::CAPITALSOURCE_DOES_NOT_EXIST :
+								case ErrorCode::CAPITALSOURCE_IS_NOT_SET :
+								case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
+									$all_data ['capitalsource_error'] = 1;
+									break;
+								case ErrorCode::CONTRACTPARTNER_DOES_NOT_EXIST :
+								case ErrorCode::CONTRACTPARTNER_IS_NOT_SET :
+									$all_data ['contractpartner_error'] = 1;
+									break;
+								case ErrorCode::AMOUNT_IS_ZERO :
+								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
+									$all_data ['amount_error'] = 1;
+									break;
+							}
+						}
 					}
 				}
 			default :
@@ -164,10 +213,11 @@ class moduleMoneyFlows extends module {
 				foreach ( $all_data as $id => $value ) {
 					if ($value ['checked'] == 1) {
 
-						if (! fix_amount( $all_data [$id] ['amount'] )) {
+						if (! fix_amount( $value ['amount'] )) {
 							$all_data [$id] ['amount_error'] = 1;
 							$data_is_valid = false;
 						}
+						$value ['moneyflowid'] = $id;
 						$moneyflows [$id] = parent::map( $value, ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
 
 						$nothing_checked = false;
@@ -196,51 +246,54 @@ class moduleMoneyFlows extends module {
 				}
 
 				if ($data_is_valid) {
-					foreach ( $moneyflows as $key => $moneyflow ) {
-						$ret = CallServer::getInstance()->createMoneyflow( $moneyflow );
-						if ($ret === true) {
+
+					$ret = CallServer::getInstance()->createMoneyflows( $moneyflows );
+
+					if ($ret === true) {
+						foreach ( $moneyflows as $key => $moneyflow ) {
 							if ($all_data [$key] ['predefmoneyflowid'] >= 0)
 								$this->corePreDefMoneyFlows->set_last_used( $all_data [$key] ['predefmoneyflowid'], convert_date_to_db( $all_data [$key] ['bookingdate'] ) );
-						} else {
-							$data_is_valid = false;
-							foreach ( $ret->getValidationResultItems() as $validationResult ) {
-								$error = $validationResult->getError();
+						}
+					} else {
+						$data_is_valid = false;
+						foreach ( $ret->getValidationResultItems() as $validationResult ) {
+							$error = $validationResult->getError();
+							$key = $validationResult->getKey();
 
-								switch ($error) {
-									case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-										add_error( $error, array (
-												$all_data [$key] ['amount']
-										) );
-										break;
-									case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
-										add_error( $error, array (
-												GUI_DATE_FORMAT
-										) );
-										break;
-									default :
-										add_error( $error );
-								}
+							switch ($error) {
+								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
+									add_error( $error, array (
+											$all_data [$key] ['amount']
+									) );
+									break;
+								case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
+									add_error( $error, array (
+											GUI_DATE_FORMAT
+									) );
+									break;
+								default :
+									add_error( $error );
+							}
 
-								switch ($error) {
-									case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
-										$all_data [$key] ['bookingdate_error'] = 1;
-										break;
-									case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
-										$all_data [$key] ['bookingdate_error'] = 1;
-									case ErrorCode::CAPITALSOURCE_DOES_NOT_EXIST :
-									case ErrorCode::CAPITALSOURCE_IS_NOT_SET :
-									case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
-										$all_data [$key] ['capitalsource_error'] = 1;
-										break;
-									case ErrorCode::CONTRACTPARTNER_DOES_NOT_EXIST :
-									case ErrorCode::CONTRACTPARTNER_IS_NOT_SET :
-										$all_data [$key] ['contractpartner_error'] = 1;
-										break;
-									case ErrorCode::AMOUNT_IS_ZERO :
-									case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-										$all_data [$key] ['amount_error'] = 1;
-										break;
-								}
+							switch ($error) {
+								case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
+									$all_data [$key] ['bookingdate_error'] = 1;
+									break;
+								case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
+									$all_data [$key] ['bookingdate_error'] = 1;
+								case ErrorCode::CAPITALSOURCE_DOES_NOT_EXIST :
+								case ErrorCode::CAPITALSOURCE_IS_NOT_SET :
+								case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
+									$all_data [$key] ['capitalsource_error'] = 1;
+									break;
+								case ErrorCode::CONTRACTPARTNER_DOES_NOT_EXIST :
+								case ErrorCode::CONTRACTPARTNER_IS_NOT_SET :
+									$all_data [$key] ['contractpartner_error'] = 1;
+									break;
+								case ErrorCode::AMOUNT_IS_ZERO :
+								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
+									$all_data [$key] ['amount_error'] = 1;
+									break;
 							}
 						}
 					}
@@ -269,12 +322,12 @@ class moduleMoneyFlows extends module {
 						$last_used = convert_date_to_timestamp( convert_date_to_gui( $value ['last_used'] ) );
 
 						if (empty( $last_used ) || ! $this->corePreDefMoneyFlows->is_once_a_month( $value ['predefmoneyflowid'] ) || date( 'Y-m' ) != date( 'Y-m', $last_used )) {
-							$value['comment'] = utf8_encode($value['comment']);
+							$value ['comment'] = utf8_encode( $value ['comment'] );
 							$all_data [$i] = $value;
 							$all_data [$i] ['bookingdate'] = $date;
 							$all_data [$i] ['amount'] = sprintf( '%.02f', $all_data_pre [$key] ['amount'] );
-							$all_data [$i] ['capitalsourcecomment'] = utf8_encode($this->coreCapitalSources->get_comment( $all_data_pre [$key] ['mcs_capitalsourceid'] ));
-							$all_data [$i] ['contractpartnername'] = utf8_encode($this->coreContractPartners->get_name( $all_data_pre [$key] ['mcp_contractpartnerid'] ));
+							$all_data [$i] ['capitalsourcecomment'] = utf8_encode( $this->coreCapitalSources->get_comment( $all_data_pre [$key] ['mcs_capitalsourceid'] ) );
+							$all_data [$i] ['contractpartnername'] = utf8_encode( $this->coreContractPartners->get_name( $all_data_pre [$key] ['mcp_contractpartnerid'] ) );
 							$i ++;
 						}
 					}

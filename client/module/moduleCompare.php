@@ -1,4 +1,6 @@
 <?php
+use rest\client\mapper\ClientArrayMapperEnum;
+use rest\client\CallServer;
 //
 // Copyright (c) 2007-2013 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -24,7 +26,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.21 2013/08/14 18:30:00 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.22 2013/08/31 16:08:22 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCompare.php';
@@ -47,11 +49,27 @@ class moduleCompare extends module {
 
 		$date_format = $this->coreSettings->get_date_format( USERID );
 		$this->date_format = $date_format ['dateformat'];
+		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
+	}
+
+	// TODO - duplicate code
+	// filter only the capitalsources which are owned by the user or allowed for group use.
+	private function filterCapitalsource($capitalsourceArray) {
+		if (is_array( $capitalsourceArray )) {
+			$temp_capitalsource_values = parent::mapArray( $capitalsourceArray );
+			foreach ( $temp_capitalsource_values as $capitalsource ) {
+				if ($capitalsource ['att_group_use'] == 1 || $capitalsource ['mur_userid'] == USERID)
+					$capitalsource_values [] = $capitalsource;
+			}
+		}
+		return $capitalsource_values;
 	}
 
 	function display_upload_form($all_data = array()) {
 		$format_values = $this->coreCompare->get_all_data();
-		$capitalsource_values = $this->coreCapitalSources->get_valid_comments();
+
+		$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
+		$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
 
 		if (count( $all_data ) === 0) {
 			$all_data ['startdate'] = convert_date_to_gui( date( "Y-m-d", mktime( 0, 0, 0, date( 'm', time() ), 1, date( 'Y', time() ) ) ), $this->date_format );

@@ -32,7 +32,7 @@ abstract class AbstractMapperSupport {
 	protected function mapArray(array $aArray, $arrayType = NULL) {
 		$result = array ();
 		foreach ( $aArray as $a ) {
-			$result [] = self::map( $a );
+			$result [] = self::map( $a, $arrayType );
 		}
 		return $result;
 	}
