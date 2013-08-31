@@ -1,6 +1,7 @@
 <?php
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
+use rest\model\enum\ErrorCode;
 //
 // Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -26,7 +27,7 @@ use rest\client\mapper\ClientArrayMapperEnum;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.20 2013/08/25 01:03:32 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.21 2013/08/31 00:37:05 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -71,14 +72,26 @@ class moduleContractPartners extends module {
 			case 'save' :
 				$all_data ['contractpartnerid'] = $contractpartnerid;
 				$contractpartner = parent::map( $all_data, ClientArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
+
 				if ($contractpartnerid == 0)
 					$ret = CallServer::getInstance()->createContractpartner( $contractpartner );
 				else
 					$ret = CallServer::getInstance()->updateContractpartner( $contractpartner );
 
-				if ($ret) {
+				if ($ret === true) {
 					$this->template->assign( 'CLOSE', 1 );
 				} else {
+					foreach ( $ret->getValidationResultItems() as $validationResult ) {
+						$error = $validationResult->getError();
+
+						add_error( $error );
+
+						switch ($error) {
+							case ErrorCode::NAME_ALREADY_EXISTS :
+								$all_data ['name_error'] = 1;
+								break;
+						}
+					}
 					$this->template->assign( 'ALL_DATA', $all_data );
 				}
 				break;

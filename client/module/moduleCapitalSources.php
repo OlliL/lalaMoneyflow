@@ -27,7 +27,7 @@ use rest\model\enum\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.28 2013/08/30 16:33:26 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.29 2013/08/31 00:37:05 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -80,6 +80,9 @@ class moduleCapitalSources extends module {
 	}
 
 	public final function display_edit_capitalsource($realaction, $capitalsourceid, $all_data) {
+		if (! isset( $capitalsourceid ))
+			return;
+
 		switch ($realaction) {
 			case 'save' :
 				$valid_data = true;
@@ -113,12 +116,24 @@ class moduleCapitalSources extends module {
 						foreach ( $ret->getValidationResultItems() as $validationResult ) {
 							$error = $validationResult->getError();
 
+							add_error( $error );
+
 							switch ($error) {
 								case ErrorCode::VALIDFROM_AFTER_VALIDTIL :
 									$all_data ['validfrom_error'] = 1;
 									$all_data ['validtil_error'] = 1;
-								default :
-									add_error( $validationResult->getError() );
+									break;
+								case ErrorCode::NAME_ALREADY_EXISTS :
+									$all_data ['comment_error'] = 1;
+									break;
+								case ErrorCode::BANK_CODE_NOT_A_NUMBER :
+								case ErrorCode::BANK_CODE_TO_LONG :
+									$all_data ['bankcode_error'] = 1;
+									break;
+								case ErrorCode::ACCOUNT_NUMBER_NOT_A_NUMBER :
+								case ErrorCode::ACCOUNT_NUMBER_TO_LONG :
+									$all_data ['accountnumber_error'] = 1;
+									break;
 							}
 						}
 					}
@@ -134,7 +149,7 @@ class moduleCapitalSources extends module {
 						}
 					}
 
-					if (! isset( $capitalsourceid )) {
+					if ($capitalsourceid == 0) {
 						$all_data ['validfrom'] = convert_date_to_gui( date( 'Y-m-d' ) );
 						$all_data ['validtil'] = convert_date_to_gui( MAX_YEAR );
 					}

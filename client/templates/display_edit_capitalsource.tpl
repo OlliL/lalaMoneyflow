@@ -26,7 +26,7 @@
 					<th>{$TEXT_210}</th>
 				</tr>
 				<tr>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]"       value="{$ALL_DATA.comment|escape:htmlall}"></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]"       value="{$ALL_DATA.comment|escape:htmlall}" {if $ALL_DATA.comment_error == 1}style="color:red"{/if}></td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[type]"  size=1>
 					{section name=TYPE loop=$TYPE_VALUES}
 						<option {if $TYPE_VALUES[TYPE].value   == $ALL_DATA.type}selected{/if} value="{$TYPE_VALUES[TYPE].value}" > {$TYPE_VALUES[TYPE].text}
@@ -37,10 +37,10 @@
 						<option {if $STATE_VALUES[STATE].value == $ALL_DATA.state}selected{/if} value="{$STATE_VALUES[STATE].value}"> {$STATE_VALUES[STATE].text}
 					{/section}
 					</select></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[accountnumber]" value="{$ALL_DATA.accountnumber}"></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[bankcode]"      value="{$ALL_DATA.bankcode}"></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validfrom]"     value="{$ALL_DATA.validfrom}" size=8 {if $ALL_DATA.validfrom_error == 1}style="color:red"{/if}></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validtil]"      value="{$ALL_DATA.validtil}"  size=8 {if $ALL_DATA.validtil_error  == 1}style="color:red"{/if}></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[accountnumber]" value="{$ALL_DATA.accountnumber}"    {if $ALL_DATA.accountnumber_error == 1}style="color:red"{/if}></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[bankcode]"      value="{$ALL_DATA.bankcode}"         {if $ALL_DATA.bankcode_error      == 1}style="color:red"{/if}></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validfrom]"     value="{$ALL_DATA.validfrom}" size=8 {if $ALL_DATA.validfrom_error     == 1}style="color:red"{/if}></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validtil]"      value="{$ALL_DATA.validtil}"  size=8 {if $ALL_DATA.validtil_error      == 1}style="color:red"{/if}></td>
 					<td class="contrastbgcolor">
 						<select class="contrastbgcolor" name="all_data[att_group_use]" size=1>
 							<option value=0 {if $ALL_DATA.att_group_use == 0}selected{/if} > {$TEXT_26}

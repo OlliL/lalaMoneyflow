@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.55 2013/08/30 16:33:25 olivleh1 Exp $
+// $Id: index.php,v 1.56 2013/08/31 00:37:05 olivleh1 Exp $
 //
 
 require_once 'include.php';
@@ -355,8 +355,8 @@ if ($is_logged_in == 0) {
 
 			case 'edit_contractpartner' :
 				$realaction = $_REQUEST ['realaction'];
-				$id = $_REQUEST ['contractpartnerid'];
-				$display = $moduleContractPartners->display_edit_contractpartner( $realaction, $id, $all_data );
+				$contractpartnerid = $_REQUEST ['contractpartnerid']?$_REQUEST ['contractpartnerid']:0;
+				$display = $moduleContractPartners->display_edit_contractpartner( $realaction, $contractpartnerid, $all_data );
 				break;
 
 			case 'delete_contractpartner' :
