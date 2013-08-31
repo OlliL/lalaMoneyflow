@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreContractPartners.php,v 1.22 2013/08/23 17:56:08 olivleh1 Exp $
+# $Id: coreContractPartners.php,v 1.23 2013/08/31 23:16:08 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -55,20 +55,6 @@ class coreContractPartners extends core {
 						 WHERE UPPER(name) LIKE UPPER('$letter%')
 						   AND mur_userid  = ".USERID."
 						 ORDER BY name" );
-	}
-
-	function get_all_names() {
-		$result = $this->select_rows( '	SELECT contractpartnerid
-						      ,name
-						  FROM contractpartners
-						 WHERE mur_userid = '.USERID.'
-						 ORDER BY name' );
-		if( is_array( $result ) ) {
-			return $result;
-		} else {
-			add_error( 123 );
-			return;
-		}
 	}
 
 	function get_name( $id ) {

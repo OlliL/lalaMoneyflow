@@ -23,7 +23,7 @@
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="contractpartner" size=1>
 					<option value=""> </option>
 					{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
-						<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"  {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $SEARCHPARAMS.mcp_contractpartnerid}selected{/if}> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}
+						<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"  {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $SEARCHPARAMS.mcp_contractpartnerid}selected{/if}> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name|escape:htmlall}
 					{/section}
 					</select></td>
 				</tr>

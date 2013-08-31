@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.9 2013/08/31 16:08:22 olivleh1 Exp $
+// $Id: CallServer.php,v 1.10 2013/08/31 23:16:08 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -49,6 +49,7 @@ class CallServer extends AbstractJsonSender {
 		parent::addMapper( 'rest\model\mapper\JsonToMoneyflowMapper', JsonArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
 		parent::addMapper( 'rest\model\mapper\JsonToUserMapper', JsonArrayMapperEnum::USER_ARRAY_TYPE );
 		parent::addMapper( 'rest\model\mapper\JsonToSessionMapper', JsonArrayMapperEnum::SESSION_ARRAY_TYPE );
+		parent::addMapper( 'rest\model\mapper\JsonToPreDefMoneyflowMapper', JsonArrayMapperEnum::PREDEFMONEYFLOW_ARRAY_TYPE );
 		parent::addMapper( 'rest\model\mapper\validation\JsonToValidationResultMapper', JsonArrayMapperEnum::VALIDATION_RESULT_ARRAY_TYPE );
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
@@ -360,6 +361,37 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/deleteContractpartnerById/' . $id . '/' . $this->sessionId;
 		return self::deleteJson( $url );
 	}
+
+
+	/*
+	 * PreDefMoneyflowService
+	 */
+	public final function getAllPreDefMoneyflowInitials() {
+		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/getAllInitials/' . $this->sessionId;
+		$result = self::getJson( $url );
+		if (is_array( $result )) {
+			$result = reset( $result );
+		}
+		return $result;
+	}
+	public final function getAllPreDefMoneyflowCount() {
+		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/countAllPreDefMoneyflows/' . $this->sessionId;
+		$result = self::getJson( $url );
+		if ($result) {
+			$result = reset( $result );
+		}
+		return $result;
+	}
+	public final function getAllPreDefMoneyflows() {
+		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/getAllPreDefMoneyflows/' . $this->sessionId;
+		$result = self::getJson( $url );
+		if (is_array( $result )) {
+			$jsonArray = reset( $result );
+			$result = parent::mapArray( $jsonArray, JsonArrayMapperEnum::PREDEFMONEYFLOW_ARRAY_TYPE );
+		}
+		return $result;
+	}
+
 }
 
 ?>

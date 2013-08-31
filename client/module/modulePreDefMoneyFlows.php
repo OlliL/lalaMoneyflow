@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.30 2013/08/31 16:08:22 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.31 2013/08/31 23:16:08 olivleh1 Exp $
 //
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
@@ -45,6 +45,7 @@ class modulePreDefMoneyFlows extends module {
 		$this->corePreDefMoneyFlows = new corePreDefMoneyFlows();
 		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerMapper', ClientArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
 		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
+		parent::addMapper( 'rest\client\mapper\ArrayToPreDefMoneyflowMapper', ClientArrayMapperEnum::PREDEFMONEYFLOW_ARRAY_TYPE );
 	}
 
 	// TODO - duplicate code
@@ -61,23 +62,26 @@ class modulePreDefMoneyFlows extends module {
 	}
 
 	function display_list_predefmoneyflows($letter) {
-		$all_index_letters = $this->corePreDefMoneyFlows->get_all_index_letters();
-		$num_flows = $this->corePreDefMoneyFlows->count_all_data();
+		$all_index_letters = CallServer::getInstance()->getAllPreDefMoneyflowInitials();
 
-		if (empty( $letter ) && $num_clows < $this->coreTemplates->get_max_rows()) {
-			$letter = 'all';
+		if (! $letter) {
+			$num_flows = CallServer::getInstance()->getAllPreDefMoneyflowCount();
+			if ($num_flows < $this->coreTemplates->get_max_rows()) {
+				$letter = 'all';
+			}
 		}
 
 		if ($letter == 'all') {
-			$all_data = $this->corePreDefMoneyFlows->get_all_data();
+			$preDefMoneyflowsArray = CallServer::getInstance()->getAllPreDefMoneyflows();
+			if (is_array( $preDefMoneyflowsArray )) {
+				$all_data = parent::mapArray( $preDefMoneyflowsArray );
+			}
 		} elseif (! empty( $letter )) {
 			$all_data = $this->corePreDefMoneyFlows->get_all_matched_data( $letter );
-		}
-
-		if (is_array( $all_data )) {
 			foreach ( $all_data as $key => $value ) {
-				$all_data [$key] ['capitalsource_comment'] = htmlentities( $this->coreCapitalSources->get_comment( $all_data [$key] ['mcs_capitalsourceid'] ), ENT_COMPAT | ENT_HTML401, ENCODING );
-				$all_data [$key] ['contractpartner_name'] = htmlentities( $this->coreContractPartners->get_name( $all_data [$key] ['mcp_contractpartnerid'] ), ENT_COMPAT | ENT_HTML401, ENCODING );
+				$all_data [$key] ['capitalsource_comment'] = utf8_encode( $this->coreCapitalSources->get_comment( $all_data [$key] ['mcs_capitalsourceid'] ) );
+				$all_data [$key] ['contractpartner_name'] = utf8_encode( $this->coreContractPartners->get_name( $all_data [$key] ['mcp_contractpartnerid'] ) );
+				$all_data [$key] ['comment'] = utf8_encode( $value['comment'] );
 			}
 		}
 

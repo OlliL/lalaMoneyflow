@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: corePreDefMoneyFlows.php,v 1.26 2013/08/11 17:04:55 olivleh1 Exp $
+# $Id: corePreDefMoneyFlows.php,v 1.27 2013/08/31 23:16:08 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -45,19 +45,6 @@ class corePreDefMoneyFlows extends core {
 		}
 	}
 
-	function get_all_data() {
-		return $this->select_rows( "	SELECT predefmoneyflowid
-						      ,calc_amount(amount,'OUT',mur_userid,createdate) amount
-						      ,mcs_capitalsourceid
-						      ,mcp_contractpartnerid
-						      ,comment
-						      ,once_a_month
-						      ,last_used
-						  FROM predefmoneyflows
-						 WHERE mur_userid = ".USERID."
-						 ORDER BY predefmoneyflowid" );
-	}
-
 	function get_valid_data( $date='' ) {
 		$date = $this->make_date($date);
 		return $this->select_rows( "	SELECT mpm.predefmoneyflowid
@@ -72,7 +59,7 @@ class corePreDefMoneyFlows extends core {
 						      ,contractpartners mcp
 						 WHERE mpm.mcs_capitalsourceid   = mcs.capitalsourceid
 						   AND $date                       BETWEEN mcs.validfrom AND mcs.validtil
-						   AND mpm.mcp_contractpartnerid = mcp.contractpartnerid 
+						   AND mpm.mcp_contractpartnerid = mcp.contractpartnerid
 						   AND mpm.mur_userid            = ".USERID."
 						 ORDER BY predefmoneyflowid" );
 	}
@@ -95,14 +82,6 @@ class corePreDefMoneyFlows extends core {
 						  FROM predefmoneyflows
 						 WHERE predefmoneyflowid = $id
 						   AND mur_userid        = ".USERID );
-	}
-
-	function get_all_index_letters() {
-		$coreContractPartners=new coreContractPartners();
-		$temp=$this->select_cols( '	SELECT DISTINCT mcp_contractpartnerid
-						  FROM predefmoneyflows
-						 WHERE mur_userid = '.USERID );
-		return $coreContractPartners->get_ids_index_letters( $temp );
 	}
 
 	function get_all_matched_data( $letter ) {
@@ -152,7 +131,7 @@ class corePreDefMoneyFlows extends core {
 
 	function add_predefmoneyflow( $amount, $capitalsourceid, $contractpartnerid, $comment, $once_a_month ) {
 		if( fix_amount( $amount ) ) {
-			return $this->insert_row( "	INSERT INTO predefmoneyflows 
+			return $this->insert_row( "	INSERT INTO predefmoneyflows
 							      (mur_userid
 							      ,amount
 							      ,mcs_capitalsourceid
@@ -172,7 +151,7 @@ class corePreDefMoneyFlows extends core {
 			return false;
 		}
 	}
-	
+
 	function set_last_used( $capitalsourceid, $date ) {
 		$date = $this->make_date( $date );
 		return $this->update_row( "	UPDATE predefmoneyflows

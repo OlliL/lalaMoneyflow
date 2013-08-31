@@ -8,6 +8,7 @@
    - move calc_amount to the client (for the time being, the personal Currency handling is broken)
    - store translateable text on the client not in the DB as this is client data
    - maybe extra Validator Classes with insert/update/delete relevant validations and not in the Service
+   - centralize all cachenames
 
    - predefmoneyflows: edit moneyflow with out-of-daterange capitalsource - do not allow to save it!
 
