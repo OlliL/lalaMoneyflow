@@ -26,7 +26,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.22 2013/08/31 16:08:22 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.23 2013/09/02 18:10:03 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCompare.php';
@@ -316,7 +316,7 @@ class moduleCompare extends module {
 				}
 			}
 
-			$moneyflows = $this->coreMoneyFlows->get_all_date_source_data( $all_data ['mcs_capitalsourceid'], $all_data ['startdate'], $all_data ['enddate'] );
+			$moneyflows = $this->coreMoneyFlows->get_all_date_source_data( $all_data ['mcs_capitalsourceid'], convert_date_to_db($all_data ['startdate']), convert_date_to_db($all_data ['enddate']) );
 
 			$all_not_mon_data_cnt = 0;
 			if ($matching_moneyflowids) {

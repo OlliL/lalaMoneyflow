@@ -11,6 +11,13 @@
    - centralize all cachenames
 
    - predefmoneyflows: edit moneyflow with out-of-daterange capitalsource - do not allow to save it!
+   
+   - when a new month start and after the login the settlement question is raised - the new window should open in the
+     correct size (height = NUM_SOURCES * 35+something)
+     
+   - maybe do not handle business objects out of the service - think about request / response objects
+     -> bad example Moneyflow business object also containing PreDefMoneyflow - only added for being able
+        to update last_used during Moneyflow-creation.
 
 - evaluate:
   - Doctrine + Serializer

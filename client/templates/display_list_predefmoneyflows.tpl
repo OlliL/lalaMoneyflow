@@ -27,9 +27,9 @@
 					{section name=DATA loop=$ALL_DATA}
 						<tr>
 							<td class="contrastbgcolor" align="right"><font {if $ALL_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_DATA[DATA].amount|number_format} {$CURRENCY}</font></td>
-							<td class="contrastbgcolor">{$ALL_DATA[DATA].contractpartner_name|escape:htmlall}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].contractpartnername|escape:htmlall}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].comment|escape:htmlall}</td>
-							<td class="contrastbgcolor">{$ALL_DATA[DATA].capitalsource_comment|escape:htmlall}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].capitalsourcecomment|escape:htmlall}</td>
 							<td class="contrastbgcolor">{if $ALL_DATA[DATA].once_a_month == 1}{$TEXT_25}{else}{$TEXT_26}{/if}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].last_used}</td>
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_predefmoneyflow&amp;predefmoneyflowid={$ALL_DATA[DATA].predefmoneyflowid}&amp;sr=1','_blank','width=800,height=120')">{$TEXT_36}</a></td>

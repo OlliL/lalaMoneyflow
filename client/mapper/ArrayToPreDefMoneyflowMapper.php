@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToPreDefMoneyflowMapper.php,v 1.1 2013/08/31 23:16:08 olivleh1 Exp $
+// $Id: ArrayToPreDefMoneyflowMapper.php,v 1.2 2013/09/02 18:10:04 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
@@ -63,9 +63,9 @@ class ArrayToPreDefMoneyflowMapper extends AbstractArrayMapper {
 		}
 		$a ['amount'] = $b->getAmount();
 		$a ['mcs_capitalsourceid'] = $b->getCapitalsource()->getId();
-		$a ['capitalsource_comment'] = $b->getCapitalsource()->getComment();
+		$a ['capitalsourcecomment'] = $b->getCapitalsource()->getComment();
 		$a ['mcp_contractpartnerid'] = $b->getContractpartner()->getId();
-		$a ['contractpartner_name'] = $b->getContractpartner()->getName();
+		$a ['contractpartnername'] = $b->getContractpartner()->getName();
 		$a ['comment'] = $b->getComment();
 		$a ['once_a_month'] = $b->getOnceAMonth();
 

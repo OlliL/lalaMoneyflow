@@ -27,13 +27,10 @@ use rest\model\enum\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.60 2013/08/31 16:08:22 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.61 2013/09/02 18:10:04 olivleh1 Exp $
 //
 require_once 'module/module.php';
-require_once 'core/coreCapitalSources.php';
-require_once 'core/coreContractPartners.php';
 require_once 'core/coreCurrencies.php';
-require_once 'core/corePreDefMoneyFlows.php';
 require_once 'core/coreSettings.php';
 
 class moduleMoneyFlows extends module {
@@ -43,12 +40,10 @@ class moduleMoneyFlows extends module {
 		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
 		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerMapper', ClientArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
 		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowMapper', ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
+		parent::addMapper( 'rest\client\mapper\ArrayToPreDefMoneyflowMapper', ClientArrayMapperEnum::PREDEFMONEYFLOW_ARRAY_TYPE );
 
 		// TODO: old shit
-		$this->coreCapitalSources = new coreCapitalSources();
-		$this->coreContractPartners = new coreContractPartners();
 		$this->coreCurrencies = new coreCurrencies();
-		$this->corePreDefMoneyFlows = new corePreDefMoneyFlows();
 		$this->coreSettings = new coreSettings();
 	}
 
@@ -249,12 +244,7 @@ class moduleMoneyFlows extends module {
 
 					$ret = CallServer::getInstance()->createMoneyflows( $moneyflows );
 
-					if ($ret === true) {
-						foreach ( $moneyflows as $key => $moneyflow ) {
-							if ($all_data [$key] ['predefmoneyflowid'] >= 0)
-								$this->corePreDefMoneyFlows->set_last_used( $all_data [$key] ['predefmoneyflowid'], convert_date_to_db( $all_data [$key] ['bookingdate'] ) );
-						}
-					} else {
+					if ($ret != true) {
 						$data_is_valid = false;
 						foreach ( $ret->getValidationResultItems() as $validationResult ) {
 							$error = $validationResult->getError();
@@ -306,8 +296,12 @@ class moduleMoneyFlows extends module {
 				$all_data = array ();
 				$date = convert_date_to_gui( date( 'Y-m-d' ) );
 
-				$all_data_pre = $this->corePreDefMoneyFlows->get_valid_data();
 				$numflows = $this->coreSettings->get_num_free_moneyflows( USERID );
+
+				$preDefMoneyflowsArray = CallServer::getInstance()->getAllPreDefMoneyflows();
+				if (is_array( $preDefMoneyflowsArray )) {
+					$all_data_pre = parent::mapArray( $preDefMoneyflowsArray );
+				}
 
 				for($i = $numflows; $i > 0; $i --) {
 					$all_data [$numflows - $i] = array (
@@ -319,20 +313,18 @@ class moduleMoneyFlows extends module {
 				if (is_array( $all_data_pre )) {
 					$i = $numflows;
 					foreach ( $all_data_pre as $key => $value ) {
-						$last_used = convert_date_to_timestamp( convert_date_to_gui( $value ['last_used'] ) );
+						$last_used = NULL;
+						if (array_key_exists( 'last_used', $value ) && $value ['once_a_month'])
+							$last_used = convert_date_to_timestamp( $value ['last_used'] );
 
-						if (empty( $last_used ) || ! $this->corePreDefMoneyFlows->is_once_a_month( $value ['predefmoneyflowid'] ) || date( 'Y-m' ) != date( 'Y-m', $last_used )) {
-							$value ['comment'] = utf8_encode( $value ['comment'] );
+						if (empty( $last_used ) || date( 'Y-m' ) != date( 'Y-m', $last_used )) {
 							$all_data [$i] = $value;
 							$all_data [$i] ['bookingdate'] = $date;
 							$all_data [$i] ['amount'] = sprintf( '%.02f', $all_data_pre [$key] ['amount'] );
-							$all_data [$i] ['capitalsourcecomment'] = utf8_encode( $this->coreCapitalSources->get_comment( $all_data_pre [$key] ['mcs_capitalsourceid'] ) );
-							$all_data [$i] ['contractpartnername'] = utf8_encode( $this->coreContractPartners->get_name( $all_data_pre [$key] ['mcp_contractpartnerid'] ) );
 							$i ++;
 						}
 					}
 				}
-
 				break;
 		}
 

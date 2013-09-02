@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.31 2013/08/31 23:16:08 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.32 2013/09/02 18:10:04 olivleh1 Exp $
 //
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
@@ -61,7 +61,7 @@ class modulePreDefMoneyFlows extends module {
 		return $capitalsource_values;
 	}
 
-	function display_list_predefmoneyflows($letter) {
+	public final function display_list_predefmoneyflows($letter) {
 		$all_index_letters = CallServer::getInstance()->getAllPreDefMoneyflowInitials();
 
 		if (! $letter) {
@@ -73,19 +73,16 @@ class modulePreDefMoneyFlows extends module {
 
 		if ($letter == 'all') {
 			$preDefMoneyflowsArray = CallServer::getInstance()->getAllPreDefMoneyflows();
-			if (is_array( $preDefMoneyflowsArray )) {
-				$all_data = parent::mapArray( $preDefMoneyflowsArray );
-			}
 		} elseif (! empty( $letter )) {
-			$all_data = $this->corePreDefMoneyFlows->get_all_matched_data( $letter );
-			foreach ( $all_data as $key => $value ) {
-				$all_data [$key] ['capitalsource_comment'] = utf8_encode( $this->coreCapitalSources->get_comment( $all_data [$key] ['mcs_capitalsourceid'] ) );
-				$all_data [$key] ['contractpartner_name'] = utf8_encode( $this->coreContractPartners->get_name( $all_data [$key] ['mcp_contractpartnerid'] ) );
-				$all_data [$key] ['comment'] = utf8_encode( $value['comment'] );
-			}
+			$preDefMoneyflowsArray = CallServer::getInstance()->getAllPreDefMoneyflowsByInitial( $letter );
+		} else {
+			$preDefMoneyflowsArray = array ();
+		}
+		if (is_array( $preDefMoneyflowsArray )) {
+			$all_data = parent::mapArray( $preDefMoneyflowsArray );
+			$this->template->assign( 'ALL_DATA', $all_data );
 		}
 
-		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );

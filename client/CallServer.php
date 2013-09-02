@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.10 2013/08/31 23:16:08 olivleh1 Exp $
+// $Id: CallServer.php,v 1.11 2013/09/02 18:10:04 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -362,7 +362,6 @@ class CallServer extends AbstractJsonSender {
 		return self::deleteJson( $url );
 	}
 
-
 	/*
 	 * PreDefMoneyflowService
 	 */
@@ -374,6 +373,7 @@ class CallServer extends AbstractJsonSender {
 		}
 		return $result;
 	}
+
 	public final function getAllPreDefMoneyflowCount() {
 		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/countAllPreDefMoneyflows/' . $this->sessionId;
 		$result = self::getJson( $url );
@@ -382,6 +382,7 @@ class CallServer extends AbstractJsonSender {
 		}
 		return $result;
 	}
+
 	public final function getAllPreDefMoneyflows() {
 		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/getAllPreDefMoneyflows/' . $this->sessionId;
 		$result = self::getJson( $url );
@@ -392,6 +393,15 @@ class CallServer extends AbstractJsonSender {
 		return $result;
 	}
 
+	public final function getAllPreDefMoneyflowsByInitial($initial) {
+		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/getAllPreDefMoneyflowsByInitial/' . $initial . '/' . $this->sessionId;
+		$result = self::getJson( $url );
+		if (is_array( $result )) {
+			$jsonArray = reset( $result );
+			$result = parent::mapArray( $jsonArray, JsonArrayMapperEnum::PREDEFMONEYFLOW_ARRAY_TYPE );
+		}
+		return $result;
+	}
 }
 
 ?>

@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: corePreDefMoneyFlows.php,v 1.27 2013/08/31 23:16:08 olivleh1 Exp $
+# $Id: corePreDefMoneyFlows.php,v 1.28 2013/09/02 18:10:03 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -34,34 +34,6 @@ class corePreDefMoneyFlows extends core {
 
 	function corePreDefMoneyFlows() {
 		parent::__construct();
-	}
-
-	function count_all_data() {
-		if ( $num = $this->select_col( '	SELECT count(*)
-							  FROM predefmoneyflows' ) ) {
-			return $num;
-		} else {
-			return;
-		}
-	}
-
-	function get_valid_data( $date='' ) {
-		$date = $this->make_date($date);
-		return $this->select_rows( "	SELECT mpm.predefmoneyflowid
-						      ,calc_amount(mpm.amount,'OUT',mpm.mur_userid,mpm.createdate) amount
-						      ,mpm.mcs_capitalsourceid
-						      ,mpm.mcp_contractpartnerid
-						      ,mpm.comment
-						      ,mpm.once_a_month
-						      ,mpm.last_used
-						  FROM predefmoneyflows mpm
-						      ,capitalsources   mcs
-						      ,contractpartners mcp
-						 WHERE mpm.mcs_capitalsourceid   = mcs.capitalsourceid
-						   AND $date                       BETWEEN mcs.validfrom AND mcs.validtil
-						   AND mpm.mcp_contractpartnerid = mcp.contractpartnerid
-						   AND mpm.mur_userid            = ".USERID."
-						 ORDER BY predefmoneyflowid" );
 	}
 
 	function get_id_data( $id ) {
@@ -83,28 +55,6 @@ class corePreDefMoneyFlows extends core {
 						 WHERE predefmoneyflowid = $id
 						   AND mur_userid        = ".USERID );
 	}
-
-	function get_all_matched_data( $letter ) {
-		$coreContractPartners=new coreContractPartners();
-		$ids=$coreContractPartners->get_ids_matched_data( $letter );
-		if( is_array( $ids ) ) {
-			$idstring=implode( $ids, ',' );
-			return $this->select_rows( "	SELECT predefmoneyflowid
-							      ,calc_amount(amount,'OUT',mur_userid,createdate) amount
-							      ,mcs_capitalsourceid
-							      ,mcp_contractpartnerid
-							      ,comment
-							      ,once_a_month
-							      ,last_used
-							  FROM predefmoneyflows
-							 WHERE mcp_contractpartnerid IN ($idstring)
-							   AND mur_userid            = ".USERID."
-							 ORDER BY comment" );
-		} else {
-			return;
-		}
-	}
-
 
 	function delete_predefmoneyflow( $id ) {
 		return $this->delete_row( "	DELETE FROM predefmoneyflows
@@ -152,24 +102,4 @@ class corePreDefMoneyFlows extends core {
 		}
 	}
 
-	function set_last_used( $capitalsourceid, $date ) {
-		$date = $this->make_date( $date );
-		return $this->update_row( "	UPDATE predefmoneyflows
-						   SET last_used         = $date
-						 WHERE predefmoneyflowid = $capitalsourceid
-						   AND mur_userid        = ".USERID );
-	}
-
-	function is_once_a_month( $capitalsourceid ) {
-		$once_a_month = $this->select_col( "	SELECT once_a_month
-							  FROM predefmoneyflows
-							 WHERE predefmoneyflowid = $capitalsourceid
-							   AND mur_userid        = ".USERID );
-
-		if( $once_a_month === '1' ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 }
