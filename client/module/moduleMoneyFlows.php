@@ -27,7 +27,7 @@ use rest\model\enum\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.61 2013/09/02 18:10:04 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.62 2013/09/06 19:33:37 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -51,8 +51,7 @@ class moduleMoneyFlows extends module {
 	// filter only the capitalsources which are owned by the user or allowed for group use.
 	private function filterCapitalsource($capitalsourceArray) {
 		if (is_array( $capitalsourceArray )) {
-			$temp_capitalsource_values = parent::mapArray( $capitalsourceArray );
-			foreach ( $temp_capitalsource_values as $capitalsource ) {
+			foreach ( $capitalsourceArray as $capitalsource ) {
 				if ($capitalsource ['att_group_use'] == 1 || $capitalsource ['mur_userid'] == USERID)
 					$capitalsource_values [] = $capitalsource;
 			}
@@ -159,10 +158,7 @@ class moduleMoneyFlows extends module {
 				}
 
 				if (! $capitalsource_data) {
-					$capitalsource = CallServer::getInstance()->getCapitalsourceById( $all_data ['mcs_capitalsourceid'] );
-					if ($capitalsource) {
-						$capitalsource_data = parent::map( $capitalsource );
-					}
+					$capitalsource_data = CallServer::getInstance()->getCapitalsourceById( $all_data ['mcs_capitalsourceid'] );
 				}
 
 				if ($capitalsource_data && strtotime( $checkdate ) >= strtotime( $capitalsource_data ['validfrom'] ) && strtotime( $checkdate ) <= strtotime( $capitalsource_data ['validtil'] )) {

@@ -27,7 +27,7 @@ use rest\client\mapper\ClientArrayMapperEnum;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.60 2013/08/25 01:03:32 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.61 2013/09/06 19:33:37 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -122,11 +122,10 @@ class moduleReports extends module {
 
 		$moneyflow = CallServer::getInstance()->getMoneyflowsByMonth( $year, $month );
 		if ($moneyflow) {
-			$_all_moneyflow_data = parent::mapArray($moneyflow);
+			$_all_moneyflow_data = parent::mapArray( $moneyflow );
 
-			//TODO: old shit
+			// TODO: old shit
 			$displayed_currency = $this->coreCurrencies->get_displayed_currency();
-
 
 			switch ($sortby) {
 				case 'capitalsources_comment' :
@@ -192,10 +191,7 @@ class moduleReports extends module {
 			// g) amount they should had at the end of the month
 			// h) differnece between e and f (if mms_exists)
 
-			$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( mktime( 0, 0, 0, $month, 1, $year ), mktime( 0, 0, 0, $month + 1, 0, $year ) );
-			if (is_array( $capitalsourceArray )) {
-				$all_capitalsources = parent::mapArray( $capitalsourceArray );
-			}
+			$all_capitalsources = CallServer::getInstance()->getAllCapitalsourcesByDateRange( mktime( 0, 0, 0, $month, 1, $year ), mktime( 0, 0, 0, $month + 1, 0, $year ) );
 
 			foreach ( $all_capitalsources as $capitalsource ) {
 				$capitalsourceid = $capitalsource ['capitalsourceid'];
@@ -308,12 +304,10 @@ class moduleReports extends module {
 	}
 
 	function display_plot_trends($all_data) {
-		$capitalsourceArray = CallServer::getInstance()->getAllCapitalsources();
-		if (is_array( $capitalsourceArray )) {
-			$capitalsource_values = parent::mapArray( $capitalsourceArray );
-		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
+		$capitalsource_values = CallServer::getInstance()->getAllCapitalsources();
+		if (is_array( $capitalsource_values )) {
+			$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 		}
-
 
 		$years = $this->coreMonthlySettlement->get_all_years();
 		// add the actual year to the years if the year changed no monthlysettlement

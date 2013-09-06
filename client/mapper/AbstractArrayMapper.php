@@ -44,6 +44,30 @@ abstract class AbstractArrayMapper {
 
 		return $clientDate;
 	}
+
+	protected final function convertClientDateToJson($clientDate) {
+		if (empty( $clientDate ))
+			return null;
+
+		$format = self::getClientDateFormat();
+		$parsedDate = date_parse_from_format( $format, $clientDate );
+
+		if ($parsedDate ['warning_count'] > 0)
+			return null;
+
+		$modelDate = \DateTime::createFromFormat( $format, $clientDate );
+		if ($modelDate)
+			$modelDate->setTime( 0, 0, 0 );
+
+		return $modelDate->getTimestamp();
+	}
+
+	protected final function convertJsonDateToClient($jsonDate) {
+		$format = self::getClientDateFormat();
+		$clientDate = new \DateTime();
+		$clientDate->setTimestamp( $jsonDate );
+		return $clientDate->format( $format );
+	}
 }
 
 ?>

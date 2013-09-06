@@ -25,11 +25,17 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractJsonSender.php,v 1.3 2013/08/24 00:10:28 olivleh1 Exp $
+// $Id: AbstractJsonSender.php,v 1.4 2013/09/06 19:33:37 olivleh1 Exp $
 //
 namespace rest\base;
 
 class AbstractJsonSender extends AbstractMapperSupport {
+
+	protected function json_encode_response($response) {
+		$class = get_class( $response );
+		$classArray = explode( '\\', $class );
+		return '{"' . array_pop( $classArray ) . '":' . json_encode( get_object_vars($response ) ) . '}';
+	}
 
 	protected function json_encode($obj) {
 		if (is_array( $obj )) {

@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToCapitalsourceMapper.php,v 1.5 2013/08/25 01:03:32 olivleh1 Exp $
+// $Id: ArrayToCapitalsourceMapper.php,v 1.6 2013/09/06 19:33:37 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 

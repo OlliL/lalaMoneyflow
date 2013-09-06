@@ -27,7 +27,7 @@ use rest\model\enum\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.29 2013/08/31 00:37:05 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.30 2013/09/06 19:33:37 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -50,15 +50,14 @@ class moduleCapitalSources extends module {
 		}
 
 		if ($letter == 'all') {
-			$capitalsourceArray = CallServer::getInstance()->getAllCapitalsources();
+			$all_data = CallServer::getInstance()->getAllCapitalsources();
 		} elseif (! empty( $letter )) {
-			$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByInitial( $letter );
+			$all_data = CallServer::getInstance()->getAllCapitalsourcesByInitial( $letter );
 		} else {
-			$capitalsourceArray = array ();
+			$all_data = array ();
 		}
 
-		if (is_array( $capitalsourceArray )) {
-			$all_data = parent::mapArray( $capitalsourceArray );
+		if (is_array( $all_data )) {
 
 			foreach ( $all_data as $key => $data ) {
 				$all_data [$key] ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $data ['state'] );
@@ -87,15 +86,14 @@ class moduleCapitalSources extends module {
 			case 'save' :
 				$valid_data = true;
 				$all_data ['capitalsourceid'] = $capitalsourceid;
-				$capitalsource = parent::map( $all_data, ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
-				if ($capitalsource->getValidFrom() === NULL) {
+				if (! convert_date_to_db( $all_data ['validfrom'] )) {
 					add_error( 147, array (
 							GUI_DATE_FORMAT
 					) );
 					$all_data ['validfrom_error'] = 1;
 					$valid_data = false;
 				}
-				if ($capitalsource->getValidTil() === NULL) {
+				if (! convert_date_to_db( $all_data ['validtil'] )) {
 					add_error( 147, array (
 							GUI_DATE_FORMAT
 					) );
@@ -105,9 +103,9 @@ class moduleCapitalSources extends module {
 
 				if ($valid_data === true) {
 					if ($capitalsourceid == 0)
-						$ret = CallServer::getInstance()->createCapitalsource( $capitalsource );
+						$ret = CallServer::getInstance()->createCapitalsource( $all_data );
 					else
-						$ret = CallServer::getInstance()->updateCapitalsource( $capitalsource );
+						$ret = CallServer::getInstance()->updateCapitalsource( $all_data );
 
 					if ($ret === true) {
 						$this->template->assign( 'CLOSE', 1 );
@@ -141,10 +139,8 @@ class moduleCapitalSources extends module {
 			default :
 				if (! is_array( $all_data )) {
 					if ($capitalsourceid > 0) {
-						$capitalsource = CallServer::getInstance()->getCapitalsourceById( $capitalsourceid );
-						if ($capitalsource) {
-							$all_data = parent::map( $capitalsource );
-						} else {
+						$all_data = CallServer::getInstance()->getCapitalsourceById( $capitalsourceid );
+						if (! is_array( $all_data )) {
 							unset( $capitalsourceid );
 						}
 					}
@@ -179,9 +175,8 @@ class moduleCapitalSources extends module {
 				}
 			default :
 				if ($capitalsourceid > 0) {
-					$capitalsource = CallServer::getInstance()->getCapitalsourceById( $capitalsourceid );
-					if ($capitalsource) {
-						$all_data = parent::map( $capitalsource );
+					$all_data = CallServer::getInstance()->getCapitalsourceById( $capitalsourceid );
+					if (is_array( $all_data )) {
 						$all_data ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $all_data ['state'] );
 						$all_data ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $all_data ['type'] );
 						$this->template->assign( 'ALL_DATA', $all_data );

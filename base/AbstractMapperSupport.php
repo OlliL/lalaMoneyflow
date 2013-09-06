@@ -7,7 +7,7 @@ abstract class AbstractMapperSupport {
 
 	protected function map($obj, $arrayType = NULL) {
 		if ($obj) {
-			if (is_array( $obj )) {
+			if ($arrayType) {
 				$object = $this->mapper [$arrayType];
 			} else {
 				$object = $this->mapper [get_class( $obj )];
@@ -37,15 +37,15 @@ abstract class AbstractMapperSupport {
 		return $result;
 	}
 
-	protected function addMapper($class, $arrayType = NULL) {
-		if ($arrayType) {
-			/* if the source is an array which has to be mapped to an object: */
-			$this->mapper [$arrayType] = array (
+	protected function addMapper($class, $arrayTypeA = NULL, $arrayTypeB = NULL) {
+		if ($arrayTypeA) {
+			/* if the source is an array which has to be mapped */
+			$this->mapper [$arrayTypeA] = array (
 					$class,
 					'mapAToB'
 			);
 		} else {
-			/* if the source is an object which has to be mapped to an object: */
+			/* if the source is an object */
 			$a = new \ReflectionParameter( array (
 					$class,
 					'mapAToB'
@@ -57,14 +57,23 @@ abstract class AbstractMapperSupport {
 			);
 		}
 
-		$b = new \ReflectionParameter( array (
-				$class,
-				'mapBToA'
-		), 0 );
-		$this->mapper [$b->getClass()->name] = array (
-				$class,
-				'mapBToA'
-		);
+		if ($arrayTypeB) {
+			/* if the target is an array which has to be mapped */
+			$this->mapper [$arrayTypeB] = array (
+					$class,
+					'mapBToA'
+			);
+		} else {
+			/* if the target is an object */
+			$b = new \ReflectionParameter( array (
+					$class,
+					'mapBToA'
+			), 0 );
+			$this->mapper [$b->getClass()->name] = array (
+					$class,
+					'mapBToA'
+			);
+		}
 	}
 }
 

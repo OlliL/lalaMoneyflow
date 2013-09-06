@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.32 2013/09/02 18:10:04 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.33 2013/09/06 19:33:37 olivleh1 Exp $
 //
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
@@ -52,8 +52,7 @@ class modulePreDefMoneyFlows extends module {
 	// filter only the capitalsources which are owned by the user or allowed for group use.
 	private function filterCapitalsource($capitalsourceArray) {
 		if (is_array( $capitalsourceArray )) {
-			$temp_capitalsource_values = parent::mapArray( $capitalsourceArray );
-			foreach ( $temp_capitalsource_values as $capitalsource ) {
+			foreach ( $capitalsourceArray as $capitalsource ) {
 				if ($capitalsource ['att_group_use'] == 1 || $capitalsource ['mur_userid'] == USERID)
 					$capitalsource_values [] = $capitalsource;
 			}
@@ -129,7 +128,14 @@ class modulePreDefMoneyFlows extends module {
 					if ($capitalsource) {
 						$today = new \DateTime();
 						$today->setTime( 0, 0, 0 );
-						if ($today < $capitalsource->getValidFrom() || $today > $capitalsource->getValidTil()) {
+
+						$validFrom = new \DateTime();
+						$validFrom->setTimestamp( convert_date_to_timestamp( $capitalsource ['validfrom'] ) );
+
+						$validTil = new \DateTime();
+						$validTil->setTimestamp( convert_date_to_timestamp( $capitalsource ['validtil'] ) );
+
+						if ($today < $validFrom || $today > $validTil) {
 							$capitalsourceArray = CallServer::getInstance()->getAllCapitalsources();
 						} else {
 							$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );

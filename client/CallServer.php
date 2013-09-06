@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.11 2013/09/02 18:10:04 olivleh1 Exp $
+// $Id: CallServer.php,v 1.12 2013/09/06 19:33:37 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -38,6 +38,10 @@ use rest\model\Capitalsource;
 use rest\model\Contractpartner;
 use rest\model\Moneyflow;
 use rest\model\mapper\JsonArrayMapperEnum;
+use rest\client\mapper\ClientArrayMapperEnum;
+use rest\model\mapper\JsonAutoMapper;
+use rest\api\model\capitalsource\createCapitalsourceRequest;
+use rest\api\model\capitalsource\updateCapitalsourceRequest;
 
 class CallServer extends AbstractJsonSender {
 	private $sessionId;
@@ -51,6 +55,14 @@ class CallServer extends AbstractJsonSender {
 		parent::addMapper( 'rest\model\mapper\JsonToSessionMapper', JsonArrayMapperEnum::SESSION_ARRAY_TYPE );
 		parent::addMapper( 'rest\model\mapper\JsonToPreDefMoneyflowMapper', JsonArrayMapperEnum::PREDEFMONEYFLOW_ARRAY_TYPE );
 		parent::addMapper( 'rest\model\mapper\validation\JsonToValidationResultMapper', JsonArrayMapperEnum::VALIDATION_RESULT_ARRAY_TYPE );
+
+		parent::addMapper( 'rest\api\model\capitalsource\transport\mapper\CapitalsourceTransportToCapitalsourceMapper', NULL, JsonArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
+		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerMapper', ClientArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
+		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowMapper', ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
+		parent::addMapper( 'rest\client\mapper\ArrayToPreDefMoneyflowMapper', ClientArrayMapperEnum::PREDEFMONEYFLOW_ARRAY_TYPE );
+
+		// parent::addMapper( 'rest\client\mapper\JsonCapitalsourceTransportToArrayMapper', JsonArrayMapperEnum::CAPITALSOURCE_TRANSPORT, ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
 		) ) );
@@ -227,8 +239,9 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getAllCapitalsources/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$jsonArray = reset( $result );
-			$result = parent::mapArray( $jsonArray, JsonArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
+			$getAllCapitalsourcesResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
+			$result = parent::mapArray( $getAllCapitalsourcesResponse->getCapitalsourceTransport() );
+			$result = parent::mapArray( $result );
 		}
 		return $result;
 	}
@@ -237,8 +250,9 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getAllCapitalsourcesByDateRange/' . $validfrom . '/' . $validtil . '/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$jsonArray = reset( $result );
-			$result = parent::mapArray( $jsonArray, JsonArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
+			$getAllCapitalsourcesByDateRangeResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
+			$result = parent::mapArray( $getAllCapitalsourcesByDateRangeResponse->getCapitalsourceTransport() );
+			$result = parent::mapArray( $result );
 		}
 		return $result;
 	}
@@ -247,8 +261,9 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getAllCapitalsourcesByInitial/' . $initial . '/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$jsonArray = reset( $result );
-			$result = parent::mapArray( $jsonArray, JsonArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
+			$getAllCapitalsourcesByInitialResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
+			$result = parent::mapArray( $getAllCapitalsourcesByInitialResponse->getCapitalsourceTransport() );
+			$result = parent::mapArray( $result );
 		}
 		return $result;
 	}
@@ -257,9 +272,10 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getCapitalsourceById/' . $id . '/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$jsonArray = reset( $result );
-			$result = parent::map( $jsonArray, JsonArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
-		}
+			$getCapitalsourceByIdResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
+			$result = parent::map( $getCapitalsourceByIdResponse->getCapitalsourceTransport() );
+			$result = parent::map( $result );
+					}
 		return $result;
 	}
 
@@ -281,15 +297,25 @@ class CallServer extends AbstractJsonSender {
 		return $result;
 	}
 
-	public final function createCapitalsource(Capitalsource $capitalsource) {
+	public final function createCapitalsource(array $capitalsource) {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/createCapitalsource/' . $this->sessionId;
-		return self::postJson( $url, parent::json_encode( $capitalsource ) );
+		$capitalsource = parent::map( $capitalsource, ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
+		$capitalsourceTransport = parent::map( $capitalsource,  JsonArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
+
+		$request = new createCapitalsourceRequest();
+		$request->setCapitalsourceTransport( $capitalsourceTransport );
+		return self::postJson( $url,parent::json_encode_response( $request ) );
 	}
 
-	public final function updateCapitalsource(Capitalsource $capitalsource) {
+	public final function updateCapitalsource(array $capitalsource) {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/updateCapitalsource/' . $this->sessionId;
-		return self::putJson( $url, parent::json_encode( $capitalsource ) );
-	}
+		$capitalsource = parent::map( $capitalsource, ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
+		$capitalsourceTransport = parent::map( $capitalsource,  JsonArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
+
+		$request = new updateCapitalsourceRequest();
+		$request->setCapitalsourceTransport( $capitalsourceTransport );
+		return self::putJson( $url,parent::json_encode_response( $request ) );
+			}
 
 	public final function deleteCapitalsource($id) {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/deleteCapitalsourceById/' . $id . '/' . $this->sessionId;

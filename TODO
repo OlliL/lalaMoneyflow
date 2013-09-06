@@ -1,23 +1,28 @@
 
-- add a method to insert a list of moneyflows (with checking all of them first - all or nothing).
+1. further implement Request/Response Objects instead of handing out and receiving moswl objects
 
-1. remove Core Classes
+2. after this is done directly convert client arrays to transport objects / request/response objects
+   and vice versa in CallServer.php and not array <-> Model <-> Transport - one mapping to much.
+
+3. after this is done, move the "model" directory into the "server" directory
+
+4. continue removing Core Classes
    - implement REST/JSON Services + use them
-     - first complete Capitalsource and Contractpartner Handling so Caching can be enabled for them
-     - then complete Moneflow Handling so Caching can be enabled as well
    - move calc_amount to the client (for the time being, the personal Currency handling is broken)
-   - store translateable text on the client not in the DB as this is client data
+   - think about language handling - it is no longer DB backed but cache backed in files
    - maybe extra Validator Classes with insert/update/delete relevant validations and not in the Service
    - centralize all cachenames
 
+###########################################################################################################################
+
+Bugs detected so far:
    - predefmoneyflows: edit moneyflow with out-of-daterange capitalsource - do not allow to save it!
-   
    - when a new month start and after the login the settlement question is raised - the new window should open in the
      correct size (height = NUM_SOURCES * 35+something)
+   - when deleting a Capitalsource it is not checked if it is still in use in "predefmoneyflows"
+   - moneyflows for capitalsources which are not allowed for the user must not be possible (verify this with RESTClient,
+     the Client does not allow it already)
      
-   - maybe do not handle business objects out of the service - think about request / response objects
-     -> bad example Moneyflow business object also containing PreDefMoneyflow - only added for being able
-        to update last_used during Moneyflow-creation.
 
 - evaluate:
   - Doctrine + Serializer
@@ -26,14 +31,16 @@
     -> Xdebug needed (drops performance heavily)
     ---> not sure if OK
 
+
+
 some far time in the future:
-2. Redo the Webclient MVC like
-
-- moneyflows for capitalsources which are not allowed for the user must not be possible
+666. Redo the Webclient MVC like
 
 
+###########################################################################################################################
 
 
+old (but still valid) TODOs:
 
   
 - create group-mantainance screens 
