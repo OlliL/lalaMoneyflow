@@ -45,7 +45,7 @@ abstract class AbstractArrayMapper {
 		return $clientDate;
 	}
 
-	protected final function convertClientDateToJson($clientDate) {
+	protected final function convertClientDateToTransport($clientDate) {
 		if (empty( $clientDate ))
 			return null;
 
@@ -62,10 +62,10 @@ abstract class AbstractArrayMapper {
 		return $modelDate->getTimestamp();
 	}
 
-	protected final function convertJsonDateToClient($jsonDate) {
+	protected final function convertTransportDateToClient($transportDate) {
 		$format = self::getClientDateFormat();
 		$clientDate = new \DateTime();
-		$clientDate->setTimestamp( $jsonDate );
+		$clientDate->setTimestamp( $transportDate );
 		return $clientDate->format( $format );
 	}
 }

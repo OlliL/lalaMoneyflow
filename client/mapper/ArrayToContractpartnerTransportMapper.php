@@ -25,45 +25,34 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToCapitalsourceMapper.php,v 1.6 2013/09/06 19:33:37 olivleh1 Exp $
+// $Id: ArrayToContractpartnerTransportMapper.php,v 1.1 2013/09/07 22:46:31 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
-use rest\model\Capitalsource;
+use rest\api\model\contractpartner\transport\ContractpartnerTransport;
 
-class ArrayToCapitalsourceMapper extends AbstractArrayMapper {
+class ArrayToContractpartnerTransportMapper extends AbstractArrayMapper {
 
 	public static function mapAToB(array $a) {
-		$b = new Capitalsource( $a ['capitalsourceid'] );
-		$b->setAccountNumber( $a ['accountnumber'] );
-		$b->setBankCode( $a ['bankcode'] );
-		$b->setComment( $a ['comment'] );
-		$b->setGroupUse( $a ['att_group_use'] );
-		$b->setState( $a ['state'] );
-		$b->setType( $a ['type'] );
-
-		$validfrom = parent::convertClientDateToModel( $a ['validfrom'] );
-		if ($validfrom)
-			$b->setValidFrom( $validfrom );
-
-		$validtil = parent::convertClientDateToModel( $a ['validtil'] );
-		if ($validtil)
-			$b->setValidTil( $validtil );
+		$b = new ContractpartnerTransport();
+		$b->setId( $a ['contractpartnerid'] );
+		$b->setCountry( $a ['country'] );
+		$b->setName( $a ['name'] );
+		$b->setPostcode( $a ['postcode'] );
+		$b->setStreet( $a ['street'] );
+		$b->setTown( $a ['town'] );
 
 		return $b;
 	}
 
-	public static function mapBToA(Capitalsource $b) {
-		$a ['capitalsourceid'] = $b->getId();
-		$a ['accountnumber'] = $b->getAccountNumber();
-		$a ['bankcode'] = $b->getBankCode();
-		$a ['comment'] = $b->getComment();
-		$a ['att_group_use'] = $b->getGroupUse();
-		$a ['state'] = $b->getState();
-		$a ['type'] = $b->getType();
-		$a ['validfrom'] = parent::convertModelDateToClient( $b->getValidFrom() );
-		$a ['validtil'] = parent::convertModelDateToClient( $b->getValidTil() );
-		$a ['mur_userid'] = $b->getUser()->getId();
+	public static function mapBToA(ContractpartnerTransport $b) {
+		$a ['contractpartnerid'] = $b->getId();
+		$a ['country'] = $b->getCountry();
+		$a ['name'] = $b->getName();
+		$a ['postcode'] = $b->getPostcode();
+		$a ['street'] = $b->getStreet();
+		$a ['town'] = $b->getTown();
+		$a ['mur_userid'] = $b->getUserid();
 
 		return $a;
 	}

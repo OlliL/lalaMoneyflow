@@ -9,8 +9,11 @@ class ClientArrayMapperEnum {
 	const PREDEFMONEYFLOW_ARRAY_TYPE = 'PreDefMoneyflowClientArray';
 	const USER_ARRAY_TYPE = 'UserClientArray';
 	const SESSION_ARRAY_TYPE = 'SessionClientArray';
-
+	//
 	const CAPITALSOURCE_TRANSPORT = 'ClientCapitalsourceTransport';
+	const CONTRACTPARTNER_TRANSPORT = 'ClientContractpartnerTransport';
+	const MONEYFLOW_TRANSPORT = 'ClientMoneyflowTransport';
+	const PREDEFMONEYFLOW_TRANSPORT = 'ClientPreDefMoneyflowTransport';
 }
 
 ?>

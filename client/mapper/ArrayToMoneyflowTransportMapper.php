@@ -25,49 +25,46 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToPreDefMoneyflowMapper.php,v 1.2 2013/09/02 18:10:04 olivleh1 Exp $
+// $Id: ArrayToMoneyflowTransportMapper.php,v 1.1 2013/09/07 22:46:31 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
-use rest\model\Capitalsource;
-use rest\model\Contractpartner;
-use rest\model\PreDefMoneyflow;
+use rest\api\model\moneyflow\transport\MoneyflowTransport;
 
-class ArrayToPreDefMoneyflowMapper extends AbstractArrayMapper {
+class ArrayToMoneyflowTransportMapper extends AbstractArrayMapper {
 
 	public static function mapAToB(array $a) {
-		$b = new PreDefMoneyflow( $a ['predefmoneyflowid'] );
+		$b = new MoneyflowTransport();
+		$b->setId( $a ['moneyflowid'] );
 
-		$createdate = parent::convertClientDateToModel( $a ['createdate'] );
-		if ($createdate)
-			$b->setCreationDate( $createdate );
+		$bookingdate = parent::convertClientDateToTransport( $a ['bookingdate'] );
+		if ($bookingdate)
+			$b->setBookingDate( $bookingdate );
 
-		$lastUsed = parent::convertClientDateToModel( $a ['last_used'] );
-		if ($lastUsed)
-			$b->setLastUsed( $lastUsed );
+		$invoicedate = parent::convertClientDateToTransport( $a ['invoicedate'] );
+		if ($invoicedate)
+			$b->setInvoiceDate( $invoicedate );
 
 		$b->setAmount( $a ['amount'] );
-		$b->setCapitalsource( new Capitalsource( $a ['mcs_capitalsourceid'] ) );
-		$b->setContractpartner( new Contractpartner( $a ['mcp_contractpartnerid'] ) );
+		$b->setCapitalsourceid( $a ['mcs_capitalsourceid'] );
+		$b->setContractpartnerid( $a ['mcp_contractpartnerid'] );
 		$b->setComment( $a ['comment'] );
-		$b->setOnceAMonth( $a ['once_a_month'] );
+		$b->setPrivate( $a ['private'] );
 		return $b;
 	}
 
-	public static function mapBToA(PreDefMoneyflow $b) {
-		$a ['mur_userid'] = $b->getUser()->getId();
-		$a ['predefmoneyflowid'] = $b->getId();
-		$a ['createdate'] = parent::convertModelDateToClient( $b->getCreationDate() );
-		if ($b->getLastUsed()) {
-			$a ['last_used'] = parent::convertModelDateToClient( $b->getLastUsed() );
-		}
+	public static function mapBToA(MoneyflowTransport $b) {
+		$a ['mur_userid'] = $b->getUserid();
+		$a ['moneyflowid'] = $b->getId();
+		$a ['bookingdate'] = parent::convertTransportDateToClient( $b->getBookingDate() );
+		$a ['invoicedate'] = parent::convertTransportDateToClient( $b->getInvoiceDate() );
 		$a ['amount'] = $b->getAmount();
-		$a ['mcs_capitalsourceid'] = $b->getCapitalsource()->getId();
-		$a ['capitalsourcecomment'] = $b->getCapitalsource()->getComment();
-		$a ['mcp_contractpartnerid'] = $b->getContractpartner()->getId();
-		$a ['contractpartnername'] = $b->getContractpartner()->getName();
+		$a ['mcs_capitalsourceid'] = $b->getCapitalsourceid();
+		$a ['capitalsourcecomment'] = $b->getCapitalsourcecomment();
+		$a ['mcp_contractpartnerid'] = $b->getContractpartnerid();
+		$a ['contractpartnername'] = $b->getContractpartnername();
 		$a ['comment'] = $b->getComment();
-		$a ['once_a_month'] = $b->getOnceAMonth();
+		$a ['private'] = $b->getPrivate();
 
 		return $a;
 	}
