@@ -27,7 +27,7 @@ use rest\model\enum\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.31 2013/09/07 16:42:36 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.32 2013/09/07 22:10:18 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -36,7 +36,6 @@ class moduleCapitalSources extends module {
 
 	public final function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
 	}
 
 	public final function display_list_capitalsources($letter) {

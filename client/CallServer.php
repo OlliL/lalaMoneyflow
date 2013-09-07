@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.13 2013/09/07 16:42:36 olivleh1 Exp $
+// $Id: CallServer.php,v 1.14 2013/09/07 22:10:18 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -44,6 +44,7 @@ use rest\api\model\capitalsource\createCapitalsourceRequest;
 use rest\api\model\capitalsource\updateCapitalsourceRequest;
 use rest\api\model\contractpartner\createContractpartnerRequest;
 use rest\api\model\contractpartner\updateContractpartnerRequest;
+use rest\api\model\moneyflow\updateMoneyflowRequest;
 
 class CallServer extends AbstractJsonSender {
 	private $sessionId;
@@ -58,8 +59,10 @@ class CallServer extends AbstractJsonSender {
 		parent::addMapper( 'rest\model\mapper\JsonToPreDefMoneyflowMapper', JsonArrayMapperEnum::PREDEFMONEYFLOW_ARRAY_TYPE );
 		parent::addMapper( 'rest\model\mapper\validation\JsonToValidationResultMapper', JsonArrayMapperEnum::VALIDATION_RESULT_ARRAY_TYPE );
 
-		parent::addMapper( 'rest\api\model\capitalsource\transport\mapper\CapitalsourceTransportToCapitalsourceMapper', NULL, JsonArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
-		parent::addMapper( 'rest\api\model\contractpartner\transport\mapper\ContractpartnerTransportToContractpartnerMapper', NULL, JsonArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
+		parent::addMapper( 'rest\server\controller\mapper\CapitalsourceTransportToCapitalsourceMapper', NULL, JsonArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
+		parent::addMapper( 'rest\server\controller\mapper\ContractpartnerTransportToContractpartnerMapper', NULL, JsonArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
+		parent::addMapper( 'rest\server\controller\mapper\MoneyflowTransportToMoneyflowMapper', NULL, JsonArrayMapperEnum::MONEYFLOW_TRANSPORT );
+		parent::addMapper( 'rest\server\controller\mapper\PreDefMoneyflowTransportToPreDefMoneyflowMapper', NULL, JsonArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
 
 		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE, 'Capitalsource' );
 		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerMapper', ClientArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE, 'Contractpartner' );
@@ -184,8 +187,9 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getMoneyflowById/' . $id . '/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$jsonArray = reset( $result );
-			$result = parent::map( $jsonArray, JsonArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
+			$getMoneyflowByIdResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\moneyflow' );
+			$result = parent::map( $getMoneyflowByIdResponse->getMoneyflowTransport() );
+			$result = parent::map( $result, 'Moneyflow' );
 		}
 		return $result;
 	}
@@ -194,8 +198,13 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getMoneyflowsByMonth/' . $year . '/' . $month . '/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$jsonArray = reset( $result );
-			$result = parent::mapArray( $jsonArray, JsonArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
+			$getMoneyflowsByMonthResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\moneyflow' );
+			if (is_array( $getMoneyflowsByMonthResponse->getMoneyflowTransport() )) {
+				$result = parent::mapArray( $getMoneyflowsByMonthResponse->getMoneyflowTransport() );
+				$result = parent::mapArray( $result, 'Moneyflow' );
+			} else {
+				$result = '';
+			}
 		}
 		return $result;
 	}
@@ -204,7 +213,8 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getAllYears/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$result = reset( $result );
+			$getAllYearsResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\moneyflow' );
+			$result = $getAllYearsResponse->getYears();
 		}
 		return $result;
 	}
@@ -213,24 +223,40 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getAllMonth/' . $year . '/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$result = reset( $result );
+			$getAllMonthResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\moneyflow' );
+			$result = $getAllMonthResponse->getMonth();
 		}
 		return $result;
 	}
 
-	public final function createMoneyflow(Moneyflow $moneyflow) {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/createMoneyflow/' . $this->sessionId;
-		return self::postJson( $url, parent::json_encode( $moneyflow ) );
-	}
-
 	public final function createMoneyflows(array $moneyflows) {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/createMoneyflows/' . $this->sessionId;
-		return self::postJson( $url, parent::json_encode( $moneyflows ) );
+
+		$preDefMoneyflowIds = array ();
+
+		foreach ( $moneyflows as $moneyflow ) {
+			if ($moneyflow ['predefmoneyflowid'] > 0) {
+				$preDefMoneyflowIds [] = $moneyflow ['predefmoneyflowid'];
+			}
+		}
+		$moneyflows = parent::mapArray( $moneyflows, ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
+		$moneyflowTransport = parent::mapArray( $moneyflows, JsonArrayMapperEnum::MONEYFLOW_TRANSPORT );
+
+		$request = new createMoneyflowsRequest();
+		$request->setMoneyflowTransport( $moneyflowTransport );
+		$request->setUsedPreDefMoneyflowIds( $preDefMoneyflowIds );
+
+		return self::postJson( $url, parent::json_encode_response( $request ) );
 	}
 
-	public final function updateMoneyflow(Moneyflow $moneyflow) {
+	public final function updateMoneyflow(array $moneyflow) {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/updateMoneyflow/' . $this->sessionId;
-		return self::putJson( $url, parent::json_encode( $moneyflow ) );
+		$moneyflow = parent::map( $moneyflow, ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
+		$moneyflowTransport = parent::map( $moneyflow, JsonArrayMapperEnum::MONEYFLOW_TRANSPORT );
+
+		$request = new updateMoneyflowRequest();
+		$request->setMoneyflowTransport( $moneyflowTransport );
+		return self::putJson( $url, parent::json_encode_response( $request ) );
 	}
 
 	public final function deleteMoneyflow($id) {
@@ -438,7 +464,8 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/getAllInitials/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$result = reset( $result );
+			$getAllPreDefMoneyflowInitialsResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\predefmoneyflow' );
+			$result = $getAllPreDefMoneyflowInitialsResponse->getInitials();
 		}
 		return $result;
 	}
@@ -447,7 +474,8 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/countAllPreDefMoneyflows/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if ($result) {
-			$result = reset( $result );
+			$countAllPreDefMoneyflowsResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\predefmoneyflow' );
+			$result = $countAllPreDefMoneyflowsResponse->getCount();
 		}
 		return $result;
 	}
@@ -456,8 +484,13 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/getAllPreDefMoneyflows/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$jsonArray = reset( $result );
-			$result = parent::mapArray( $jsonArray, JsonArrayMapperEnum::PREDEFMONEYFLOW_ARRAY_TYPE );
+			$getAllPreDefMoneyflowsResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\predefmoneyflow' );
+			if (is_array( $getAllPreDefMoneyflowsResponse->getPreDefMoneyflowTransport() )) {
+				$result = parent::mapArray( $getAllPreDefMoneyflowsResponse->getPreDefMoneyflowTransport() );
+				$result = parent::mapArray( $result, 'PreDefMoneyflow' );
+			} else {
+				$result = '';
+			}
 		}
 		return $result;
 	}
@@ -466,8 +499,13 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/getAllPreDefMoneyflowsByInitial/' . $initial . '/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$jsonArray = reset( $result );
-			$result = parent::mapArray( $jsonArray, JsonArrayMapperEnum::PREDEFMONEYFLOW_ARRAY_TYPE );
+			$getAllPreDefMoneyflowsByInitialResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\predefmoneyflow' );
+			if (is_array( $getAllPreDefMoneyflowsByInitialResponse->getPreDefMoneyflowTransport() )) {
+				$result = parent::mapArray( $getAllPreDefMoneyflowsByInitialResponse->getPreDefMoneyflowTransport() );
+				$result = parent::mapArray( $result, 'PreDefMoneyflow' );
+			} else {
+				$result = '';
+			}
 		}
 		return $result;
 	}

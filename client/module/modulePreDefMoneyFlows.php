@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.34 2013/09/07 16:42:36 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.35 2013/09/07 22:10:18 olivleh1 Exp $
 //
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
@@ -43,9 +43,6 @@ class modulePreDefMoneyFlows extends module {
 		$this->coreContractPartners = new coreContractPartners();
 		$this->coreCurrencies = new coreCurrencies();
 		$this->corePreDefMoneyFlows = new corePreDefMoneyFlows();
-		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerMapper', ClientArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
-		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
-		parent::addMapper( 'rest\client\mapper\ArrayToPreDefMoneyflowMapper', ClientArrayMapperEnum::PREDEFMONEYFLOW_ARRAY_TYPE );
 	}
 
 	// TODO - duplicate code
@@ -71,14 +68,13 @@ class modulePreDefMoneyFlows extends module {
 		}
 
 		if ($letter == 'all') {
-			$preDefMoneyflowsArray = CallServer::getInstance()->getAllPreDefMoneyflows();
+			$all_data = CallServer::getInstance()->getAllPreDefMoneyflows();
 		} elseif (! empty( $letter )) {
-			$preDefMoneyflowsArray = CallServer::getInstance()->getAllPreDefMoneyflowsByInitial( $letter );
+			$all_data = CallServer::getInstance()->getAllPreDefMoneyflowsByInitial( $letter );
 		} else {
-			$preDefMoneyflowsArray = array ();
+			$all_data = array ();
 		}
-		if (is_array( $preDefMoneyflowsArray )) {
-			$all_data = parent::mapArray( $preDefMoneyflowsArray );
+		if (is_array( $all_data )) {
 			$this->template->assign( 'ALL_DATA', $all_data );
 		}
 

@@ -2,8 +2,6 @@
 
 namespace rest\api\model\capitalsource;
 
-use rest\api\model\capitalsource\transport\CapitalsourceTransport;
-
 class getAllCapitalsourcesByInitialResponse {
 	public $capitalsourceTransport;
 

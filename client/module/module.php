@@ -27,7 +27,7 @@ use rest\base\AbstractMapperSupport;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.56 2013/08/24 00:12:47 olivleh1 Exp $
+// $Id: module.php,v 1.57 2013/09/07 22:10:18 olivleh1 Exp $
 //
 
 require_once 'Smarty.class.php';
@@ -35,7 +35,7 @@ require_once 'core/coreTemplates.php';
 require_once 'core/coreText.php';
 require_once 'core/coreUsers.php';
 
-class module extends AbstractMapperSupport{
+class module {
 
 	public function __construct() {
 		$this->mapper = array ();

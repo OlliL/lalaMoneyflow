@@ -27,7 +27,7 @@ use rest\client\mapper\ClientArrayMapperEnum;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.61 2013/09/06 19:33:37 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.62 2013/09/07 22:10:18 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -49,8 +49,6 @@ class moduleReports extends module {
 
 	public final function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
-		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowMapper', ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
 
 		// old shit
 		$this->coreCurrencies = new coreCurrencies();
@@ -120,9 +118,8 @@ class moduleReports extends module {
 				$neworder = 'ASC';
 		}
 
-		$moneyflow = CallServer::getInstance()->getMoneyflowsByMonth( $year, $month );
-		if ($moneyflow) {
-			$_all_moneyflow_data = parent::mapArray( $moneyflow );
+		$_all_moneyflow_data = CallServer::getInstance()->getMoneyflowsByMonth( $year, $month );
+		if ($_all_moneyflow_data) {
 
 			// TODO: old shit
 			$displayed_currency = $this->coreCurrencies->get_displayed_currency();

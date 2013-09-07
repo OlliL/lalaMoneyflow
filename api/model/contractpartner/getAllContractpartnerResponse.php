@@ -2,8 +2,6 @@
 
 namespace rest\api\model\contractpartner;
 
-use rest\api\model\contractpartner\transport\ContractpartnerTransport;
-
 class getAllContractpartnerResponse {
 	public $contractpartnerTransport;
 

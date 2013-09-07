@@ -26,7 +26,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.39 2013/09/06 19:33:37 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.40 2013/09/07 22:10:18 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -42,7 +42,6 @@ class moduleMonthlySettlement extends module {
 		$this->coreMoneyFlows = new coreMoneyFlows();
 		$this->coreMonthlySettlement = new coreMonthlySettlement();
 		$this->coreDomains = new coreDomains();
-		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
 	}
 
 	// TODO - duplicate code

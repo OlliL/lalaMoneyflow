@@ -27,7 +27,7 @@ use rest\model\enum\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.63 2013/09/07 16:42:36 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.64 2013/09/07 22:10:18 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -37,10 +37,6 @@ class moduleMoneyFlows extends module {
 
 	public final function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
-		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerMapper', ClientArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
-		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowMapper', ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
-		parent::addMapper( 'rest\client\mapper\ArrayToPreDefMoneyflowMapper', ClientArrayMapperEnum::PREDEFMONEYFLOW_ARRAY_TYPE );
 
 		// TODO: old shit
 		$this->coreCurrencies = new coreCurrencies();
@@ -75,21 +71,18 @@ class moduleMoneyFlows extends module {
 					$data_is_valid = false;
 				}
 
-				$moneyflow = parent::map( $all_data, ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
-
-				if ($moneyflow->getBookingDate() === NULL) {
+				if (! convert_date_to_db( $all_data ['bookingdate'] )) {
 					add_error( 130, array (
 							GUI_DATE_FORMAT
 					) );
 					$all_data ['bookingdate_error'] = 1;
 					$valid_data = false;
-					$origMoneyflow = CallServer::getInstance()->getMoneyflowById( $id );
-					if ($origMoneyflow) {
-						$temp_data = parent::map( $origMoneyflow );
-						$checkdate = $temp_data ['bookingdate'];
+					$temp_data = CallServer::getInstance()->getMoneyflowById( $id );
+					if ($temp_data) {
+						$checkdate = $all_data ['bookingdate'];
 					}
 				}
-				if ($moneyflow->getInvoiceDate() === NULL) {
+				if (! convert_date_to_db( $all_data ['invoicedate'] )) {
 					add_error( 129, array (
 							GUI_DATE_FORMAT
 					) );
@@ -98,7 +91,7 @@ class moduleMoneyFlows extends module {
 				}
 
 				if ($valid_data === true) {
-					$ret = CallServer::getInstance()->updateMoneyflow( $moneyflow );
+					$ret = CallServer::getInstance()->updateMoneyflow( $all_data );
 					if ($ret === true) {
 						$this->template->assign( 'CLOSE', 1 );
 						break;
@@ -146,11 +139,7 @@ class moduleMoneyFlows extends module {
 				}
 			default :
 				if (! is_array( $all_data )) {
-					$moneyflow = CallServer::getInstance()->getMoneyflowById( $id );
-					if ($moneyflow) {
-						$all_data = parent::map( $moneyflow );
-						$capitalsource_data = parent::map( $moneyflow->getCapitalsource() );
-					}
+					$all_data = CallServer::getInstance()->getMoneyflowById( $id );
 				}
 
 				if (! $checkdate) {
@@ -195,17 +184,17 @@ class moduleMoneyFlows extends module {
 				$nothing_checked = true;
 				foreach ( $all_data as $id => $value ) {
 					if ($value ['checked'] == 1) {
+						$add_data [] = array_merge( $value, array (
+								'moneyflowid' => $id
+						) );
 
 						if (! fix_amount( $value ['amount'] )) {
 							$all_data [$id] ['amount_error'] = 1;
 							$data_is_valid = false;
 						}
-						$value ['moneyflowid'] = $id;
-						$moneyflows [$id] = parent::map( $value, ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
-
 						$nothing_checked = false;
 						if (! empty( $value ['invoicedate'] )) {
-							if ($moneyflows [$id]->getInvoiceDate() === NULL) {
+							if (! convert_date_to_db( $value ['invoicedate'] )) {
 								add_error( 129, array (
 										GUI_DATE_FORMAT
 								) );
@@ -213,7 +202,7 @@ class moduleMoneyFlows extends module {
 							}
 						}
 
-						if ($moneyflows [$id]->getBookingDate() === NULL) {
+						if (! convert_date_to_db( $value ['bookingdate'] )) {
 							add_error( 130, array (
 									GUI_DATE_FORMAT
 							) );
@@ -230,7 +219,7 @@ class moduleMoneyFlows extends module {
 
 				if ($data_is_valid) {
 
-					$ret = CallServer::getInstance()->createMoneyflows( $moneyflows );
+					$ret = CallServer::getInstance()->createMoneyflows( $add_data );
 
 					if ($ret != true) {
 						$data_is_valid = false;
@@ -286,10 +275,7 @@ class moduleMoneyFlows extends module {
 
 				$numflows = $this->coreSettings->get_num_free_moneyflows( USERID );
 
-				$preDefMoneyflowsArray = CallServer::getInstance()->getAllPreDefMoneyflows();
-				if (is_array( $preDefMoneyflowsArray )) {
-					$all_data_pre = parent::mapArray( $preDefMoneyflowsArray );
-				}
+				$all_data_pre = CallServer::getInstance()->getAllPreDefMoneyflows();
 
 				for($i = $numflows; $i > 0; $i --) {
 					$all_data [$numflows - $i] = array (
@@ -334,9 +320,8 @@ class moduleMoneyFlows extends module {
 					break;
 				}
 			default :
-				$moneyflow = CallServer::getInstance()->getMoneyflowById( $id );
-				if ($moneyflow) {
-					$all_data = parent::map( $moneyflow, ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
+				$all_data = CallServer::getInstance()->getMoneyflowById( $id );
+				if ($all_data) {
 					$this->template->assign( 'ALL_DATA', $all_data );
 				}
 				break;

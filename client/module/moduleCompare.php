@@ -26,7 +26,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.24 2013/09/06 19:33:37 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.25 2013/09/07 22:10:18 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCompare.php';
@@ -49,7 +49,6 @@ class moduleCompare extends module {
 
 		$date_format = $this->coreSettings->get_date_format( USERID );
 		$this->date_format = $date_format ['dateformat'];
-		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
 	}
 
 	// TODO - duplicate code
