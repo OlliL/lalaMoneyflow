@@ -27,7 +27,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.26 2013/08/25 01:03:32 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.27 2013/09/07 23:44:04 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -49,20 +49,20 @@ class moduleUsers extends module {
 			return 3;
 		} else {
 			define( USERID, $this->coreSession->getAttribute( 'users_id' ) );
-			$user = LoggedOnUser::getInstance();
+			$user = LoggedOnUser::getInstance()->getUser();
 
 			// Apache Restart or went cache empty -> sessionId not set;
-			if( $user->getPermissions() === NULL ) {
+			if (! $user ['name']) {
 				$this->coreSession->destroy();
 				return 1;
 			}
 
-			if (! in_array( UserPermissions::LOGIN, $user->getPermissions() )) {
+			if (! $user ['perm_login']) {
 				$this->coreSession->destroy();
 				add_error( 138 );
 				return 1;
 			}
-			if (in_array( UserAttributes::IS_NEW, $user->getAttributes() )) {
+			if ($user ['att_new']) {
 				return 2;
 			} else {
 				return 0;
@@ -87,9 +87,9 @@ class moduleUsers extends module {
 
 				$session = rest\client\CallServer::getInstance()->doLogon( $name, sha1( $password ) );
 				if ($session) {
-					$this->coreSession->setAttribute( 'users_name', $name );
-					$this->coreSession->setAttribute( 'users_id', $session->getUser()->getId() );
-					$this->coreSession->setAttribute( 'server_id', $session->getId() );
+					$this->coreSession->setAttribute( 'users_name', $session ['username'] );
+					$this->coreSession->setAttribute( 'users_id', $session ['mur_userid'] );
+					$this->coreSession->setAttribute( 'server_id', $session ['sessionid'] );
 					$loginok = 1;
 				}
 				break;
@@ -116,7 +116,8 @@ class moduleUsers extends module {
 	}
 
 	function is_admin() {
-		return in_array( UserPermissions::ADMIN, LoggedOnUser::getInstance()->getPermissions() );
+		$user = LoggedOnUser::getInstance()->getUser();
+		return $user ['perm_admin'] == "1" ? true : false;
 	}
 
 	function display_list_users($letter) {

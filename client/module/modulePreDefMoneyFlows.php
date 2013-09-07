@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.35 2013/09/07 22:10:18 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.36 2013/09/07 23:44:04 olivleh1 Exp $
 //
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
@@ -117,27 +117,29 @@ class modulePreDefMoneyFlows extends module {
 			default :
 				if ($id > 0) {
 					$all_data = $this->corePreDefMoneyFlows->get_id_data( $id );
-					$this->template->assign( 'ALL_DATA', $all_data );
-					$capitalsourceid = $this->corePreDefMoneyFlows->get_capitalsourceid( $id );
+					if (is_array( $all_data )) {
+						$this->template->assign( 'ALL_DATA', $all_data );
+						$capitalsourceid = $this->corePreDefMoneyFlows->get_capitalsourceid( $id );
 
-					$capitalsource = CallServer::getInstance()->getCapitalsourceById( $capitalsourceid );
-					if ($capitalsource) {
-						$today = new \DateTime();
-						$today->setTime( 0, 0, 0 );
+						$capitalsource = CallServer::getInstance()->getCapitalsourceById( $capitalsourceid );
+						if ($capitalsource) {
+							$today = new \DateTime();
+							$today->setTime( 0, 0, 0 );
 
-						$validFrom = new \DateTime();
-						$validFrom->setTimestamp( convert_date_to_timestamp( $capitalsource ['validfrom'] ) );
+							$validFrom = new \DateTime();
+							$validFrom->setTimestamp( convert_date_to_timestamp( $capitalsource ['validfrom'] ) );
 
-						$validTil = new \DateTime();
-						$validTil->setTimestamp( convert_date_to_timestamp( $capitalsource ['validtil'] ) );
+							$validTil = new \DateTime();
+							$validTil->setTimestamp( convert_date_to_timestamp( $capitalsource ['validtil'] ) );
 
-						if ($today < $validFrom || $today > $validTil) {
-							$capitalsourceArray = CallServer::getInstance()->getAllCapitalsources();
-						} else {
-							$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
+							if ($today < $validFrom || $today > $validTil) {
+								$capitalsourceArray = CallServer::getInstance()->getAllCapitalsources();
+							} else {
+								$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
+							}
 						}
+						$this->template->assign( 'PREDEFMONEYFLOWID', $id );
 					}
-					$this->template->assign( 'PREDEFMONEYFLOWID', $id );
 				} else {
 					$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
 				}

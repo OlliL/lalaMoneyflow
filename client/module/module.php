@@ -27,7 +27,7 @@ use rest\base\AbstractMapperSupport;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.57 2013/09/07 22:10:18 olivleh1 Exp $
+// $Id: module.php,v 1.58 2013/09/07 23:44:04 olivleh1 Exp $
 //
 
 require_once 'Smarty.class.php';
@@ -111,9 +111,9 @@ class module {
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
 		$this->template->assign( 'VERSION', '0.12.0' );
 		$this->template->assign( 'NO_NAVIGATION', $nonavi );
-		$user = LoggedOnUser::getInstance();
-		if (is_array( LoggedOnUser::getInstance()->getPermissions() )) {
-			$this->template->assign( 'IS_ADMIN', in_array( UserPermissions::ADMIN, LoggedOnUser::getInstance()->getPermissions() ) );
+		$user = LoggedOnUser::getInstance()->getUser();
+		if ($user['perm_admin'] == "1" ) {
+			$this->template->assign( 'IS_ADMIN', true );
 		} else {
 			$this->template->assign( 'IS_ADMIN', false );
 		}

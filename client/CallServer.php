@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.15 2013/09/07 22:46:31 olivleh1 Exp $
+// $Id: CallServer.php,v 1.16 2013/09/07 23:44:04 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -52,14 +52,13 @@ class CallServer extends AbstractJsonSender {
 	private static $instance;
 
 	private function __construct() {
-		parent::addMapper( 'rest\model\mapper\JsonToUserMapper', JsonArrayMapperEnum::USER_ARRAY_TYPE );
-		parent::addMapper( 'rest\model\mapper\JsonToSessionMapper', JsonArrayMapperEnum::SESSION_ARRAY_TYPE );
 		parent::addMapper( 'rest\model\mapper\validation\JsonToValidationResultMapper', JsonArrayMapperEnum::VALIDATION_RESULT_ARRAY_TYPE );
 		//
 		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerTransportMapper', ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToPreDefMoneyflowTransportMapper', ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToUserTransportMapper', ClientArrayMapperEnum::USER_TRANSPORT );
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
 		) ) );
@@ -149,12 +148,14 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'sessionService/logon/' . $user . '/' . $password;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$jsonArray = reset( $result );
-			$result = parent::map( $jsonArray, JsonArrayMapperEnum::SESSION_ARRAY_TYPE );
-			self::setSessionId( $result->getId() );
+			$doLogonResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\session' );
+			$result = array (
+					'mur_userid' => $doLogonResponse->getUserid(),
+					'username' => $doLogonResponse->getUserName(),
+					'sessionid' => $doLogonResponse->getSessionId()
+			);
 		}
 		return $result;
-		// return reset( $session );
 	}
 
 	/*
@@ -164,8 +165,8 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'userService/getUserById/' . $id . '/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$jsonArray = reset( $result );
-			$result = parent::map( $jsonArray, JsonArrayMapperEnum::USER_ARRAY_TYPE );
+			$getUserByIdResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\user' );
+			$result = parent::map( $getUserByIdResponse->getUserTransport() );
 		}
 		return $result;
 	}

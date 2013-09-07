@@ -36,7 +36,8 @@ rest/
 	- remove JsonTo....Model-Mapper
 	- remove ArrayTo....Model-Mapper
 	- move api/model/*/mapper into server/controller/
-     
+
+n. - implement Logout Call to destroy the session on the server.
 
 4. continue removing Core Classes
    - implement REST/JSON Services + use them

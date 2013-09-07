@@ -25,7 +25,7 @@ use rest\model\enum\UserAttributes;
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSettings.php,v 1.16 2013/08/25 01:03:32 olivleh1 Exp $
+# $Id: moduleSettings.php,v 1.17 2013/09/07 23:44:04 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -93,8 +93,8 @@ class moduleSettings extends module {
 
 		switch( $realaction ) {
 			case 'save':
-				$user = LoggedOnUser::getInstance();
-				if( in_array( UserAttributes::IS_NEW, $user->getAttributes() ) && ( empty( $all_data['password1'] ) && empty( $all_data['password2'] ) ) ) {
+				$user = LoggedOnUser::getInstance()->getUser();
+				if( $user['att_new'] && ( empty( $all_data['password1'] ) && empty( $all_data['password2'] ) ) ) {
 					add_error( 152 );
 					$data_is_valid = false;
 				} elseif( $all_data['password1'] != $all_data['password2'] ) {
