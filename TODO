@@ -6,6 +6,38 @@
 
 3. after this is done, move the "model" directory into the "server" directory
 
+new directory structure
+
+rest/
+	api/
+		model/
+			capitalsource/
+					*.php
+			contractpartner/
+					*.php
+			validation?!?!
+	base/
+	client/
+		model/
+			mapper/
+				ArrayTo....TransportMapper.php
+	server/
+		model/
+			enum/
+			validation/
+				*.php
+		controller/
+			mapper/
+				ModelTo....TransportMapper.php
+		*.*
+			
+	- move model into server/
+	- make new ArrayTo...TransportMapper
+	- remove JsonTo....Model-Mapper
+	- remove ArrayTo....Model-Mapper
+	- move api/model/*/mapper into server/controller/
+     
+
 4. continue removing Core Classes
    - implement REST/JSON Services + use them
    - move calc_amount to the client (for the time being, the personal Currency handling is broken)
@@ -22,6 +54,7 @@ Bugs detected so far:
    - when deleting a Capitalsource it is not checked if it is still in use in "predefmoneyflows"
    - moneyflows for capitalsources which are not allowed for the user must not be possible (verify this with RESTClient,
      the Client does not allow it already)
+   - capitalsources without comment must not be created.
      
 
 - evaluate:

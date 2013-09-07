@@ -27,7 +27,7 @@ use rest\model\enum\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.30 2013/09/06 19:33:37 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.31 2013/09/07 16:42:36 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -53,6 +53,10 @@ class moduleCapitalSources extends module {
 			$all_data = CallServer::getInstance()->getAllCapitalsources();
 		} elseif (! empty( $letter )) {
 			$all_data = CallServer::getInstance()->getAllCapitalsourcesByInitial( $letter );
+			if (! is_array( all_data )) {
+				$all_data = CallServer::getInstance()->getAllCapitalsources();
+				$letter = 'all';
+			}
 		} else {
 			$all_data = array ();
 		}

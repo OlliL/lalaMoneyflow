@@ -26,7 +26,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSearch.php,v 1.22 2013/08/31 23:16:08 olivleh1 Exp $
+// $Id: moduleSearch.php,v 1.23 2013/09/07 16:42:36 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -48,10 +48,7 @@ class moduleSearch extends module {
 	}
 
 	function display_search() {
-		$contractpartnerArray = CallServer::getInstance()->getAllContractpartner();
-		if (is_array( $contractpartnerArray )) {
-			$contractpartner_values = parent::mapArray( $contractpartnerArray );
-		}
+		$contractpartner_values = CallServer::getInstance()->getAllContractpartner();
 		$searchparams = $this->template->getTemplateVars( 'SEARCHPARAMS' );
 		if (empty( $searchparams )) {
 			$searchparams ['grouping1'] = 'year';

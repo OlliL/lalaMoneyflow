@@ -27,7 +27,7 @@ use rest\model\enum\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.21 2013/08/31 00:37:05 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.22 2013/09/07 16:42:36 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -50,14 +50,13 @@ class moduleContractPartners extends module {
 		}
 
 		if ($letter == 'all') {
-			$contractpartnerArray = CallServer::getInstance()->getAllContractpartner();
+			$all_data = CallServer::getInstance()->getAllContractpartner();
 		} elseif (! empty( $letter )) {
-			$contractpartnerArray = CallServer::getInstance()->getAllContractpartnerByInitial( $letter );
+			$all_data = CallServer::getInstance()->getAllContractpartnerByInitial( $letter );
 		} else {
-			$contractpartnerArray = array ();
+			$all_data = array ();
 		}
-		if (is_array( $contractpartnerArray )) {
-			$all_data = parent::mapArray( $contractpartnerArray );
+		if (is_array( $all_data )) {
 			$this->template->assign( 'ALL_DATA', $all_data );
 		}
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
@@ -71,12 +70,11 @@ class moduleContractPartners extends module {
 		switch ($realaction) {
 			case 'save' :
 				$all_data ['contractpartnerid'] = $contractpartnerid;
-				$contractpartner = parent::map( $all_data, ClientArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
 
 				if ($contractpartnerid == 0)
-					$ret = CallServer::getInstance()->createContractpartner( $contractpartner );
+					$ret = CallServer::getInstance()->createContractpartner( $all_data );
 				else
-					$ret = CallServer::getInstance()->updateContractpartner( $contractpartner );
+					$ret = CallServer::getInstance()->updateContractpartner( $all_data );
 
 				if ($ret === true) {
 					$this->template->assign( 'CLOSE', 1 );
@@ -97,9 +95,8 @@ class moduleContractPartners extends module {
 				break;
 			default :
 				if ($contractpartnerid > 0) {
-					$contractpartner = CallServer::getInstance()->getContractpartnerById( $contractpartnerid );
-					if ($contractpartner) {
-						$all_data = parent::map( $contractpartner );
+					$all_data = CallServer::getInstance()->getContractpartnerById( $contractpartnerid );
+					if ($all_data) {
 						$this->template->assign( 'ALL_DATA', $all_data );
 					}
 				}
@@ -121,9 +118,8 @@ class moduleContractPartners extends module {
 				}
 			default :
 				if ($contractpartnerid > 0) {
-					$contractpartner = CallServer::getInstance()->getContractpartnerById( $contractpartnerid );
-					if ($contractpartner) {
-						$all_data = parent::map( $contractpartner );
+					$all_data = CallServer::getInstance()->getContractpartnerById( $contractpartnerid );
+					if ($all_data) {
 						$this->template->assign( 'ALL_DATA', $all_data );
 					}
 				}

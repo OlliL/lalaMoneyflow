@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.12 2013/09/06 19:33:37 olivleh1 Exp $
+// $Id: CallServer.php,v 1.13 2013/09/07 16:42:36 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -42,6 +42,8 @@ use rest\client\mapper\ClientArrayMapperEnum;
 use rest\model\mapper\JsonAutoMapper;
 use rest\api\model\capitalsource\createCapitalsourceRequest;
 use rest\api\model\capitalsource\updateCapitalsourceRequest;
+use rest\api\model\contractpartner\createContractpartnerRequest;
+use rest\api\model\contractpartner\updateContractpartnerRequest;
 
 class CallServer extends AbstractJsonSender {
 	private $sessionId;
@@ -57,10 +59,12 @@ class CallServer extends AbstractJsonSender {
 		parent::addMapper( 'rest\model\mapper\validation\JsonToValidationResultMapper', JsonArrayMapperEnum::VALIDATION_RESULT_ARRAY_TYPE );
 
 		parent::addMapper( 'rest\api\model\capitalsource\transport\mapper\CapitalsourceTransportToCapitalsourceMapper', NULL, JsonArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
-		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerMapper', ClientArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
-		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowMapper', ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE );
-		parent::addMapper( 'rest\client\mapper\ArrayToPreDefMoneyflowMapper', ClientArrayMapperEnum::PREDEFMONEYFLOW_ARRAY_TYPE );
+		parent::addMapper( 'rest\api\model\contractpartner\transport\mapper\ContractpartnerTransportToContractpartnerMapper', NULL, JsonArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
+
+		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceMapper', ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE, 'Capitalsource' );
+		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerMapper', ClientArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE, 'Contractpartner' );
+		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowMapper', ClientArrayMapperEnum::MONEYFLOW_ARRAY_TYPE, 'Moneyflow' );
+		parent::addMapper( 'rest\client\mapper\ArrayToPreDefMoneyflowMapper', ClientArrayMapperEnum::PREDEFMONEYFLOW_ARRAY_TYPE, 'PreDefMoneyflow' );
 
 		// parent::addMapper( 'rest\client\mapper\JsonCapitalsourceTransportToArrayMapper', JsonArrayMapperEnum::CAPITALSOURCE_TRANSPORT, ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
 		Httpful::register( Mime::JSON, new JsonHandler( array (
@@ -121,6 +125,7 @@ class CallServer extends AbstractJsonSender {
 		if ($response->code == 204) {
 			return true;
 		} else {
+			var_dump( $response->body );
 			return self::handle_result( $response->body );
 		}
 	}
@@ -240,9 +245,14 @@ class CallServer extends AbstractJsonSender {
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
 			$getAllCapitalsourcesResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
-			$result = parent::mapArray( $getAllCapitalsourcesResponse->getCapitalsourceTransport() );
-			$result = parent::mapArray( $result );
+			if (is_array( $getAllCapitalsourcesResponse->getCapitalsourceTransport() )) {
+				$result = parent::mapArray( $getAllCapitalsourcesResponse->getCapitalsourceTransport() );
+				$result = parent::mapArray( $result, 'Capitalsource' );
+			} else {
+				$result = '';
+			}
 		}
+
 		return $result;
 	}
 
@@ -251,8 +261,12 @@ class CallServer extends AbstractJsonSender {
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
 			$getAllCapitalsourcesByDateRangeResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
-			$result = parent::mapArray( $getAllCapitalsourcesByDateRangeResponse->getCapitalsourceTransport() );
-			$result = parent::mapArray( $result );
+			if (is_array( $getAllCapitalsourcesByDateRangeResponse->getCapitalsourceTransport() )) {
+				$result = parent::mapArray( $getAllCapitalsourcesByDateRangeResponse->getCapitalsourceTransport() );
+				$result = parent::mapArray( $result, 'Capitalsource' );
+			} else {
+				$result = '';
+			}
 		}
 		return $result;
 	}
@@ -262,8 +276,12 @@ class CallServer extends AbstractJsonSender {
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
 			$getAllCapitalsourcesByInitialResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
-			$result = parent::mapArray( $getAllCapitalsourcesByInitialResponse->getCapitalsourceTransport() );
-			$result = parent::mapArray( $result );
+			if (is_array( $getAllCapitalsourcesByInitialResponse->getCapitalsourceTransport() )) {
+				$result = parent::mapArray( $getAllCapitalsourcesByInitialResponse->getCapitalsourceTransport() );
+				$result = parent::mapArray( $result, 'Capitalsource' );
+			} else {
+				$result = '';
+			}
 		}
 		return $result;
 	}
@@ -274,8 +292,8 @@ class CallServer extends AbstractJsonSender {
 		if (is_array( $result )) {
 			$getCapitalsourceByIdResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
 			$result = parent::map( $getCapitalsourceByIdResponse->getCapitalsourceTransport() );
-			$result = parent::map( $result );
-					}
+			$result = parent::map( $result, 'Capitalsource' );
+		}
 		return $result;
 	}
 
@@ -283,7 +301,8 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getAllInitials/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$result = reset( $result );
+			$getAllCapitalsourceInitialsResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
+			$result = $getAllCapitalsourceInitialsResponse->getInitials();
 		}
 		return $result;
 	}
@@ -292,7 +311,8 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/countAllCapitalsources/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$result = reset( $result );
+			$countAllCapitalsourcesResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
+			$result = $countAllCapitalsourcesResponse->getCount();
 		}
 		return $result;
 	}
@@ -300,22 +320,22 @@ class CallServer extends AbstractJsonSender {
 	public final function createCapitalsource(array $capitalsource) {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/createCapitalsource/' . $this->sessionId;
 		$capitalsource = parent::map( $capitalsource, ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
-		$capitalsourceTransport = parent::map( $capitalsource,  JsonArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
+		$capitalsourceTransport = parent::map( $capitalsource, JsonArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
 
 		$request = new createCapitalsourceRequest();
 		$request->setCapitalsourceTransport( $capitalsourceTransport );
-		return self::postJson( $url,parent::json_encode_response( $request ) );
+		return self::postJson( $url, parent::json_encode_response( $request ) );
 	}
 
 	public final function updateCapitalsource(array $capitalsource) {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/updateCapitalsource/' . $this->sessionId;
 		$capitalsource = parent::map( $capitalsource, ClientArrayMapperEnum::CAPITALSOURCE_ARRAY_TYPE );
-		$capitalsourceTransport = parent::map( $capitalsource,  JsonArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
+		$capitalsourceTransport = parent::map( $capitalsource, JsonArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
 
 		$request = new updateCapitalsourceRequest();
 		$request->setCapitalsourceTransport( $capitalsourceTransport );
-		return self::putJson( $url,parent::json_encode_response( $request ) );
-			}
+		return self::putJson( $url, parent::json_encode_response( $request ) );
+	}
 
 	public final function deleteCapitalsource($id) {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/deleteCapitalsourceById/' . $id . '/' . $this->sessionId;
@@ -329,8 +349,13 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/getAllContractpartner/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$jsonArray = reset( $result );
-			$result = parent::mapArray( $jsonArray, JsonArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
+			$getAllContractpartnerResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\contractpartner' );
+			if (is_array( $getAllContractpartnerResponse->getContractpartnerTransport() )) {
+				$result = parent::mapArray( $getAllContractpartnerResponse->getContractpartnerTransport() );
+				$result = parent::mapArray( $result, 'Contractpartner' );
+			} else {
+				$result = '';
+			}
 		}
 		return $result;
 	}
@@ -339,8 +364,13 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/getAllContractpartnerByInitial/' . $initial . '/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$jsonArray = reset( $result );
-			$result = parent::mapArray( $jsonArray, JsonArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
+			$getAllContractpartnerByInitialResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\contractpartner' );
+			if (is_array( $getAllContractpartnerByInitialResponse->getContractpartnerTransport() )) {
+				$result = parent::mapArray( $getAllContractpartnerByInitialResponse->getContractpartnerTransport() );
+				$result = parent::mapArray( $result, 'Contractpartner' );
+			} else {
+				$result = '';
+			}
 		}
 		return $result;
 	}
@@ -349,8 +379,9 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/getContractpartnerById/' . $id . '/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$jsonArray = reset( $result );
-			$result = parent::map( $jsonArray, JsonArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
+			$getContractpartnerByIdResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\contractpartner' );
+			$result = parent::map( $getContractpartnerByIdResponse->getContractpartnerTransport() );
+			$result = parent::map( $result, 'Contractpartner' );
 		}
 		return $result;
 	}
@@ -359,7 +390,8 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/getAllInitials/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
-			$result = reset( $result );
+			$getAllContractpartnerInitialsResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\contractpartner' );
+			$result = $getAllContractpartnerInitialsResponse->getInitials();
 		}
 		return $result;
 	}
@@ -367,20 +399,31 @@ class CallServer extends AbstractJsonSender {
 	public final function getAllContractpartnerCount() {
 		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/countAllContractpartner/' . $this->sessionId;
 		$result = self::getJson( $url );
-		if ($result) {
-			$result = reset( $result );
+		if (is_array( $result )) {
+			$countAllContractpartnerResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\contractpartner' );
+			$result = $countAllContractpartnerResponse->getCount();
 		}
 		return $result;
 	}
 
-	public final function createContractpartner(Contractpartner $contractpartner) {
+	public final function createContractpartner(array $contractpartner) {
 		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/createContractpartner/' . $this->sessionId;
-		return self::postJson( $url, parent::json_encode( $contractpartner ) );
+		$contractpartner = parent::map( $contractpartner, ClientArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
+		$contractpartnerTransport = parent::map( $contractpartner, JsonArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
+
+		$request = new createContractpartnerRequest();
+		$request->setContractpartnerTransport( $contractpartnerTransport );
+		return self::postJson( $url, parent::json_encode_response( $request ) );
 	}
 
-	public final function updateContractpartner(Contractpartner $contractpartner) {
+	public final function updateContractpartner(array $contractpartner) {
 		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/updateContractpartner/' . $this->sessionId;
-		return self::putJson( $url, parent::json_encode( $contractpartner ) );
+		$contractpartner = parent::map( $contractpartner, ClientArrayMapperEnum::CONTRACTPARTNER_ARRAY_TYPE );
+		$contractpartnerTransport = parent::map( $contractpartner, JsonArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
+
+		$request = new updateContractpartnerRequest();
+		$request->setContractpartnerTransport( $contractpartnerTransport );
+		return self::putJson( $url, parent::json_encode_response( $request ) );
 	}
 
 	public final function deleteContractpartner($id) {

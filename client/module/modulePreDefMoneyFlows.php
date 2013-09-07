@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.33 2013/09/06 19:33:37 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.34 2013/09/07 16:42:36 olivleh1 Exp $
 //
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
@@ -147,10 +147,7 @@ class modulePreDefMoneyFlows extends module {
 				}
 
 				$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
-				$contractpartnerArray = CallServer::getInstance()->getAllContractpartner();
-				if (is_array( $contractpartnerArray )) {
-					$contractpartner_values = parent::mapArray( $contractpartnerArray );
-				}
+				$contractpartner_values = CallServer::getInstance()->getAllContractpartner();
 
 				$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );

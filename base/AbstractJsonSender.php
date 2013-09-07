@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractJsonSender.php,v 1.4 2013/09/06 19:33:37 olivleh1 Exp $
+// $Id: AbstractJsonSender.php,v 1.5 2013/09/07 16:42:36 olivleh1 Exp $
 //
 namespace rest\base;
 

@@ -1,0 +1,19 @@
+<?php
+
+namespace rest\api\model\contractpartner;
+
+use rest\api\model\contractpartner\transport\ContractpartnerTransport;
+
+class getContractpartnerByIdResponse {
+	public $contractpartnerTransport;
+
+	public final function getContractpartnerTransport() {
+		return $this->contractpartnerTransport;
+	}
+
+	public final function setContractpartnerTransport(ContractpartnerTransport $contractpartnerTransport) {
+		$this->contractpartnerTransport = $contractpartnerTransport;
+	}
+}
+
+?>

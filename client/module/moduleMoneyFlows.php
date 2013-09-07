@@ -27,7 +27,7 @@ use rest\model\enum\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.62 2013/09/06 19:33:37 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.63 2013/09/07 16:42:36 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -168,12 +168,7 @@ class moduleMoneyFlows extends module {
 				}
 
 				$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
-
-				$contractpartnerArray = CallServer::getInstance()->getAllContractpartner();
-				if (is_array( $contractpartnerArray )) {
-					$contractpartner_values = parent::mapArray( $contractpartnerArray );
-				}
-
+				$contractpartner_values = CallServer::getInstance()->getAllContractpartner();
 				$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 				break;
@@ -192,10 +187,7 @@ class moduleMoneyFlows extends module {
 		$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
 		$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
 
-		$contractpartnerArray = CallServer::getInstance()->getAllContractpartner();
-		if (is_array( $contractpartnerArray )) {
-			$contractpartner_values = parent::mapArray( $contractpartnerArray );
-		}
+		$contractpartner_values = CallServer::getInstance()->getAllContractpartner();
 
 		switch ($realaction) {
 			case 'save' :
