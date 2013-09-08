@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.17 2013/09/08 00:27:38 olivleh1 Exp $
+// $Id: CallServer.php,v 1.18 2013/09/08 00:37:35 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -37,9 +37,8 @@ use rest\base\AbstractJsonSender;
 use rest\model\Capitalsource;
 use rest\model\Contractpartner;
 use rest\model\Moneyflow;
-use rest\model\mapper\JsonArrayMapperEnum;
 use rest\client\mapper\ClientArrayMapperEnum;
-use rest\model\mapper\JsonAutoMapper;
+use rest\base\JsonAutoMapper;
 use rest\api\model\capitalsource\createCapitalsourceRequest;
 use rest\api\model\capitalsource\updateCapitalsourceRequest;
 use rest\api\model\contractpartner\createContractpartnerRequest;
