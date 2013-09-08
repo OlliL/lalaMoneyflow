@@ -8,6 +8,7 @@ class ClientArrayMapperEnum {
 	const MONEYFLOW_TRANSPORT = 'ClientMoneyflowTransport';
 	const PREDEFMONEYFLOW_TRANSPORT = 'ClientPreDefMoneyflowTransport';
 	const USER_TRANSPORT = 'ClientUserTransport';
+	const VALIDATIONITEM_TRANSPORT = 'ClientValidationItemTransport';
 }
 
 ?>

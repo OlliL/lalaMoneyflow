@@ -1,7 +1,7 @@
 <?php
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
-use rest\model\enum\ErrorCode;
+use rest\base\ErrorCode;
 //
 // Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -27,7 +27,7 @@ use rest\model\enum\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.64 2013/09/07 22:10:18 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.65 2013/09/08 00:27:37 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -96,8 +96,8 @@ class moduleMoneyFlows extends module {
 						$this->template->assign( 'CLOSE', 1 );
 						break;
 					} else {
-						foreach ( $ret->getValidationResultItems() as $validationResult ) {
-							$error = $validationResult->getError();
+						foreach ( $ret ['errors'] as $validationResult ) {
+							$error = $validationResult ['error'];
 
 							switch ($error) {
 								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
@@ -221,11 +221,12 @@ class moduleMoneyFlows extends module {
 
 					$ret = CallServer::getInstance()->createMoneyflows( $add_data );
 
-					if ($ret != true) {
+					if ($ret !== true) {
+						echo "foo";
 						$data_is_valid = false;
-						foreach ( $ret->getValidationResultItems() as $validationResult ) {
-							$error = $validationResult->getError();
-							$key = $validationResult->getKey();
+						foreach ( $ret ['errors'] as $validationResult ) {
+							$error = $validationResult ['error'];
+							$key = $validationResult ['key'];
 
 							switch ($error) {
 								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :

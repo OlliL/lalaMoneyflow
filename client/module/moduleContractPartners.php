@@ -1,7 +1,7 @@
 <?php
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
-use rest\model\enum\ErrorCode;
+use rest\base\ErrorCode;
 //
 // Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -27,7 +27,7 @@ use rest\model\enum\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.23 2013/09/07 22:10:18 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.24 2013/09/08 00:27:37 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -78,8 +78,8 @@ class moduleContractPartners extends module {
 				if ($ret === true) {
 					$this->template->assign( 'CLOSE', 1 );
 				} else {
-					foreach ( $ret->getValidationResultItems() as $validationResult ) {
-						$error = $validationResult->getError();
+					foreach ( $ret ['errors'] as $validationResult ) {
+						$error = $validationResult ['error'];
 
 						add_error( $error );
 

@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.16 2013/09/07 23:44:04 olivleh1 Exp $
+// $Id: CallServer.php,v 1.17 2013/09/08 00:27:38 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -52,13 +52,12 @@ class CallServer extends AbstractJsonSender {
 	private static $instance;
 
 	private function __construct() {
-		parent::addMapper( 'rest\model\mapper\validation\JsonToValidationResultMapper', JsonArrayMapperEnum::VALIDATION_RESULT_ARRAY_TYPE );
-		//
 		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerTransportMapper', ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToPreDefMoneyflowTransportMapper', ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToUserTransportMapper', ClientArrayMapperEnum::USER_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
 		) ) );
@@ -80,8 +79,11 @@ class CallServer extends AbstractJsonSender {
 			echo '<font color="red"><u>Server Error occured</u><pre>' . $result . '</pre></font><br>';
 			add_error( 204 );
 			return false;
-		} else if (array_key_exists( 'ValidationResult', $result )) {
-			return parent::map( $result ['ValidationResult'], JsonArrayMapperEnum::VALIDATION_RESULT_ARRAY_TYPE );
+		} else if (array_key_exists( 'validationResponse', $result )) {
+			$validationResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\validation' );
+			$validation['is_valid'] = $validationResponse->getResult();
+			$validation['errors'] = parent::mapArray($validationResponse->getValidationItemTransport(), ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
+			return($validation);
 		} else if (array_key_exists( 'error', $result )) {
 			if ($result ['error'] ['code'] < 0) {
 				echo '<font color="red"><u>Server Error occured</u><pre>' . $result ['error'] ['message'] . '</pre></font><br>';
@@ -117,7 +119,6 @@ class CallServer extends AbstractJsonSender {
 		if ($response->code == 204) {
 			return true;
 		} else {
-			var_dump( $response->body );
 			return self::handle_result( $response->body );
 		}
 	}
