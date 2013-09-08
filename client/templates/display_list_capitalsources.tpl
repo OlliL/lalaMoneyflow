@@ -8,7 +8,7 @@
 			<h1>{$TEXT_1}</h1>
 			<a href="{$ENV_INDEX_PHP}?action=list_capitalsources&amp;letter=all">{$TEXT_28}</a>
 			{section name=LETTER loop=$ALL_INDEX_LETTERS}
-				<a href="{$ENV_INDEX_PHP}?action=list_capitalsources&amp;letter={$ALL_INDEX_LETTERS[LETTER]}">{$ALL_INDEX_LETTERS[LETTER]}</a>
+				<a href="{$ENV_INDEX_PHP}?action=list_capitalsources&amp;letter={$ALL_INDEX_LETTERS[LETTER]|escape:htmlall}">{$ALL_INDEX_LETTERS[LETTER]|escape:htmlall}</a>
 			{/section}
 			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&amp;sr=1','_blank','width=800,height=120')">{$TEXT_29}</a>
 			{if $COUNT_ALL_DATA > 0}

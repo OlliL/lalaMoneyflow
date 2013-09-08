@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.19 2013/09/08 00:48:55 olivleh1 Exp $
+// $Id: CallServer.php,v 1.20 2013/09/08 16:08:43 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -42,6 +42,8 @@ use rest\api\model\contractpartner\createContractpartnerRequest;
 use rest\api\model\contractpartner\updateContractpartnerRequest;
 use rest\api\model\moneyflow\updateMoneyflowRequest;
 use rest\api\model\moneyflow\createMoneyflowsRequest;
+use rest\api\model\predefmoneyflow\createPreDefMoneyflowRequest;
+use rest\api\model\predefmoneyflow\updatePreDefMoneyflowRequest;
 
 class CallServer extends AbstractJsonSender {
 	private $sessionId;
@@ -77,9 +79,9 @@ class CallServer extends AbstractJsonSender {
 			return false;
 		} else if (array_key_exists( 'validationResponse', $result )) {
 			$validationResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\validation' );
-			$validation['is_valid'] = $validationResponse->getResult();
-			$validation['errors'] = parent::mapArray($validationResponse->getValidationItemTransport(), ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
-			return($validation);
+			$validation ['is_valid'] = $validationResponse->getResult();
+			$validation ['errors'] = parent::mapArray( $validationResponse->getValidationItemTransport(), ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
+			return ($validation);
 		} else if (array_key_exists( 'error', $result )) {
 			if ($result ['error'] ['code'] < 0) {
 				echo '<font color="red"><u>Server Error occured</u><pre>' . $result ['error'] ['message'] . '</pre></font><br>';
@@ -433,6 +435,16 @@ class CallServer extends AbstractJsonSender {
 	/*
 	 * PreDefMoneyflowService
 	 */
+	public final function getPreDefMoneyflowById($id) {
+		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/getPreDefMoneyflowById/' . $id . '/' . $this->sessionId;
+		$result = self::getJson( $url );
+		if (is_array( $result )) {
+			$getPreDefMoneyflowByIdResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\predefmoneyflow' );
+			$result = parent::map( $getPreDefMoneyflowByIdResponse->getPreDefMoneyflowTransport() );
+		}
+		return $result;
+	}
+
 	public final function getAllPreDefMoneyflowInitials() {
 		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/getAllInitials/' . $this->sessionId;
 		$result = self::getJson( $url );
@@ -479,6 +491,29 @@ class CallServer extends AbstractJsonSender {
 			}
 		}
 		return $result;
+	}
+
+	public final function createPreDefMoneyflow(array $preDefMoneyflow) {
+		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/createPreDefMoneyflow/' . $this->sessionId;
+		$preDefMoneyflowTransport = parent::map( $preDefMoneyflow, ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
+
+		$request = new createPreDefMoneyflowRequest();
+		$request->setPreDefMoneyflowTransport( $preDefMoneyflowTransport );
+		return self::postJson( $url, parent::json_encode_response( $request ) );
+	}
+
+	public final function updatePreDefMoneyflow(array $preDefMoneyflow) {
+		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/updatePreDefMoneyflow/' . $this->sessionId;
+		$preDefMoneyflowTransport = parent::map( $preDefMoneyflow, ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
+
+		$request = new updatePreDefMoneyflowRequest();
+		$request->setPreDefMoneyflowTransport( $preDefMoneyflowTransport );
+		return self::putJson( $url, parent::json_encode_response( $request ) );
+	}
+
+	public final function deletePreDefMoneyflow($id) {
+		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/deletePreDefMoneyflowById/' . $id . '/' . $this->sessionId;
+		return self::deleteJson( $url );
 	}
 }
 

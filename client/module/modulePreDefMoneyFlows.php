@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.36 2013/09/07 23:44:04 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.37 2013/09/08 16:08:43 olivleh1 Exp $
 //
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
@@ -33,7 +33,6 @@ require_once 'module/module.php';
 require_once 'core/coreCapitalSources.php';
 require_once 'core/coreContractPartners.php';
 require_once 'core/coreCurrencies.php';
-require_once 'core/corePreDefMoneyFlows.php';
 
 class modulePreDefMoneyFlows extends module {
 
@@ -42,7 +41,6 @@ class modulePreDefMoneyFlows extends module {
 		$this->coreCapitalSources = new coreCapitalSources();
 		$this->coreContractPartners = new coreContractPartners();
 		$this->coreCurrencies = new coreCurrencies();
-		$this->corePreDefMoneyFlows = new corePreDefMoneyFlows();
 	}
 
 	// TODO - duplicate code
@@ -86,10 +84,11 @@ class modulePreDefMoneyFlows extends module {
 		return $this->fetch_template( 'display_list_predefmoneyflows.tpl' );
 	}
 
-	function display_edit_predefmoneyflow($realaction, $id, $all_data) {
+	function display_edit_predefmoneyflow($realaction, $predefmoneyflowid, $all_data) {
 		switch ($realaction) {
 			case 'save' :
 				$data_is_valid = true;
+				$all_data ['predefmoneyflowid'] = $predefmoneyflowid;
 
 				if (empty( $all_data ['mcs_capitalsourceid'] )) {
 					add_error( 127 );
@@ -104,24 +103,45 @@ class modulePreDefMoneyFlows extends module {
 				;
 
 				if ($data_is_valid) {
-					if ($id == 0)
-						$ret = $this->corePreDefMoneyFlows->add_predefmoneyflow( $all_data ['amount'], $all_data ['mcs_capitalsourceid'], $all_data ['mcp_contractpartnerid'], $all_data ['comment'], $all_data ['once_a_month'] );
-					else
-						$ret = $this->corePreDefMoneyFlows->update_predefmoneyflow( $id, $all_data ['amount'], $all_data ['mcs_capitalsourceid'], $all_data ['mcp_contractpartnerid'], $all_data ['comment'], $all_data ['once_a_month'] );
 
-					if ($ret === true || $ret > 0) {
+					if ($predefmoneyflowid == 0)
+						$ret = CallServer::getInstance()->createPreDefMoneyflow( $all_data );
+					else
+						$ret = CallServer::getInstance()->updatePreDefMoneyflow( $all_data );
+
+					if ($ret === true) {
 						$this->template->assign( 'CLOSE', 1 );
 						break;
+					} else {
+						foreach ( $ret ['errors'] as $validationResult ) {
+							$error = $validationResult ['error'];
+
+							add_error( $error );
+
+							switch ($error) {
+								case ErrorCode::CAPITALSOURCE_DOES_NOT_EXIST :
+								case ErrorCode::CAPITALSOURCE_IS_NOT_SET :
+								case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
+									$all_data ['capitalsource_error'] = 1;
+									break;
+								case ErrorCode::CONTRACTPARTNER_DOES_NOT_EXIST :
+								case ErrorCode::CONTRACTPARTNER_IS_NOT_SET :
+									$all_data ['contractpartner_error'] = 1;
+									break;
+								case ErrorCode::AMOUNT_IS_ZERO :
+								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
+									$all_data ['amount_error'] = 1;
+									break;
+							}
+						}
 					}
 				}
 			default :
-				if ($id > 0) {
-					$all_data = $this->corePreDefMoneyFlows->get_id_data( $id );
+				if ($predefmoneyflowid > 0) {
+					$all_data = CallServer::getInstance()->getPreDefMoneyflowById( $predefmoneyflowid );
 					if (is_array( $all_data )) {
-						$this->template->assign( 'ALL_DATA', $all_data );
-						$capitalsourceid = $this->corePreDefMoneyFlows->get_capitalsourceid( $id );
 
-						$capitalsource = CallServer::getInstance()->getCapitalsourceById( $capitalsourceid );
+						$capitalsource = CallServer::getInstance()->getCapitalsourceById( $all_data ['mcs_capitalsourceid'] );
 						if ($capitalsource) {
 							$today = new \DateTime();
 							$today->setTime( 0, 0, 0 );
@@ -138,7 +158,7 @@ class modulePreDefMoneyFlows extends module {
 								$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
 							}
 						}
-						$this->template->assign( 'PREDEFMONEYFLOWID', $id );
+						$this->template->assign( 'PREDEFMONEYFLOWID', $predefmoneyflowid );
 					}
 				} else {
 					$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
@@ -147,6 +167,7 @@ class modulePreDefMoneyFlows extends module {
 				$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
 				$contractpartner_values = CallServer::getInstance()->getAllContractpartner();
 
+				$this->template->assign( 'ALL_DATA', $all_data );
 				$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 				break;
@@ -159,18 +180,15 @@ class modulePreDefMoneyFlows extends module {
 		return $this->fetch_template( 'display_edit_predefmoneyflow.tpl' );
 	}
 
-	function display_delete_predefmoneyflow($realaction, $id) {
+	function display_delete_predefmoneyflow($realaction, $predefmoneyflowid) {
 		switch ($realaction) {
 			case 'yes' :
-				if ($this->corePreDefMoneyFlows->delete_predefmoneyflow( $id )) {
+				if (CallServer::getInstance()->deletePreDefMoneyflow( $predefmoneyflowid )) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
-
 			default :
-				$all_data = $this->corePreDefMoneyFlows->get_id_data( $id );
-				$all_data ['capitalsource_comment'] = $this->coreCapitalSources->get_comment( $all_data ['mcs_capitalsourceid'] );
-				$all_data ['contractpartner_name'] = $this->coreContractPartners->get_name( $all_data ['mcp_contractpartnerid'] );
+				$all_data = CallServer::getInstance()->getPreDefMoneyflowById( $predefmoneyflowid );
 				$this->template->assign( 'ALL_DATA', $all_data );
 				break;
 		}

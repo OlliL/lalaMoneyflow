@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.56 2013/08/31 00:37:05 olivleh1 Exp $
+// $Id: index.php,v 1.57 2013/09/08 16:08:43 olivleh1 Exp $
 //
 
 require_once 'include.php';
@@ -374,7 +374,7 @@ if ($is_logged_in == 0) {
 
 			case 'edit_predefmoneyflow' :
 				$realaction = $_REQUEST ['realaction'];
-				$id = $_REQUEST ['predefmoneyflowid'];
+				$id = $_REQUEST ['predefmoneyflowid']?$_REQUEST ['predefmoneyflowid']:0;
 				$all_data = $_REQUEST ['all_data'];
 				$display = $modulePreDefMoneyFlows->display_edit_predefmoneyflow( $realaction, $id, $all_data );
 				break;
