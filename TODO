@@ -1,45 +1,7 @@
 
-1. further implement Request/Response Objects instead of handing out and receiving moswl objects
+1. - implement Logout Call to destroy the session on the server.
 
-2. after this is done directly convert client arrays to transport objects / request/response objects
-   and vice versa in CallServer.php and not array <-> Model <-> Transport - one mapping to much.
-
-3. after this is done, move the "model" directory into the "server" directory
-
-new directory structure
-
-rest/
-	api/
-		model/
-			capitalsource/
-					*.php
-			contractpartner/
-					*.php
-			validation?!?!
-	base/
-	client/
-		model/
-			mapper/
-				ArrayTo....TransportMapper.php
-	server/
-		model/
-			enum/
-			validation/
-				*.php
-		controller/
-			mapper/
-				ModelTo....TransportMapper.php
-		*.*
-			
-	- move model into server/
-	- make new ArrayTo...TransportMapper
-	- remove JsonTo....Model-Mapper
-	- remove ArrayTo....Model-Mapper
-	- move api/model/*/mapper into server/controller/
-
-n. - implement Logout Call to destroy the session on the server.
-
-4. continue removing Core Classes
+2. continue removing Core Classes
    - implement REST/JSON Services + use them
    - move calc_amount to the client (for the time being, the personal Currency handling is broken)
    - think about language handling - it is no longer DB backed but cache backed in files
