@@ -24,22 +24,18 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.37 2013/09/08 16:08:43 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.38 2013/09/08 18:08:03 olivleh1 Exp $
 //
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
 
 require_once 'module/module.php';
-require_once 'core/coreCapitalSources.php';
-require_once 'core/coreContractPartners.php';
 require_once 'core/coreCurrencies.php';
 
 class modulePreDefMoneyFlows extends module {
 
 	function modulePreDefMoneyFlows() {
 		parent::__construct();
-		$this->coreCapitalSources = new coreCapitalSources();
-		$this->coreContractPartners = new coreContractPartners();
 		$this->coreCurrencies = new coreCurrencies();
 	}
 

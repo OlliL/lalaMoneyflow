@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.20 2013/09/08 16:08:43 olivleh1 Exp $
+// $Id: CallServer.php,v 1.21 2013/09/08 18:08:03 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -179,6 +179,20 @@ class CallServer extends AbstractJsonSender {
 		if (is_array( $result )) {
 			$getMoneyflowByIdResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\moneyflow' );
 			$result = parent::map( $getMoneyflowByIdResponse->getMoneyflowTransport() );
+		}
+		return $result;
+	}
+
+	public final function getAllMoneyflowsByDateRangeCapitalsourceId($validfrom, $validtil, $capitalsourceId) {
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getAllMoneyflowsByDateRangeCapitalsourceId/' . $validfrom . '/' . $validtil . '/' . $capitalsourceId . '/' . $this->sessionId;
+		$result = self::getJson( $url );
+		if (is_array( $result )) {
+			$getAllMoneyflowsByDateRangeCapitalsourceIdResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\moneyflow' );
+			if (is_array( $getAllMoneyflowsByDateRangeCapitalsourceIdResponse->getMoneyflowTransport() )) {
+				$result = parent::mapArray( $getAllMoneyflowsByDateRangeCapitalsourceIdResponse->getMoneyflowTransport() );
+			} else {
+				$result = '';
+			}
 		}
 		return $result;
 	}

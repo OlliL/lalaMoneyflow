@@ -60,9 +60,9 @@ function toggle(div_name) {
 						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $FILE_ARRAY[$file_id].amount < 0}color="red"{else}color="black"{/if}>{$FILE_ARRAY[$file_id].amount|number_format} {$CURRENCY}</font></td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].contractpartnername}</td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].comment}</td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].capitalsourcecomment}</td>
+						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].contractpartnername|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].comment|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].capitalsourcecomment|escape:htmlall}</td>
 						<td>&nbsp</td>
 						<td>&nbsp</td>
 					</tr>
@@ -94,9 +94,9 @@ function toggle(div_name) {
 						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $DB_ARRAY[$db_id].amount < 0}color="red"{else}color="black"{/if}>{$DB_ARRAY[$db_id].amount|number_format} {$CURRENCY}</font></td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].contractpartnername}</td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment}</td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].capitalsourcecomment}</td>
+						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].contractpartnername|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].capitalsourcecomment|escape:htmlall}</td>
 						{if $DB_ARRAY[$db_id].owner == true }
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_36}</a></td>
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_37}</a></td>
@@ -131,9 +131,9 @@ function toggle(div_name) {
 						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $FILE_ARRAY[$file_id].amount < 0}color="red"{else}color="black"{/if}>{$FILE_ARRAY[$file_id].amount|number_format} {$CURRENCY}</font></td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].contractpartnername}</td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].comment}</td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].capitalsourcecomment}</td>
+						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].contractpartnername|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].comment|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].capitalsourcecomment|escape:htmlall}</td>
 						<td>&nbsp</td>
 						<td>&nbsp</td>
 					</tr>
@@ -143,9 +143,9 @@ function toggle(div_name) {
 						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $DB_ARRAY[$db_id].amount < 0}color="red"{else}color="black"{/if}>{$DB_ARRAY[$db_id].amount|number_format} {$CURRENCY}</font></td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].contractpartnername}</td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment}</td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].capitalsourcecomment}</td>
+						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].contractpartnername|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].capitalsourcecomment|escape:htmlall}</td>
 						{if $DB_ARRAY[$db_id].owner == true }
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_36}</a></td>
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_37}</a></td>
@@ -181,9 +181,9 @@ function toggle(div_name) {
 						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $FILE_ARRAY[$file_id].amount < 0}color="red"{else}color="black"{/if}>{$FILE_ARRAY[$file_id].amount|number_format} {$CURRENCY}</font></td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].contractpartnername}</td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].comment}</td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].capitalsourcecomment}</td>
+						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].contractpartnername|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].comment|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].capitalsourcecomment|escape:htmlall}</td>
 						<td>&nbsp</td>
 						<td>&nbsp</td>
 					</tr>
@@ -193,9 +193,9 @@ function toggle(div_name) {
 						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $DB_ARRAY[$db_id].amount < 0}color="red"{else}color="black"{/if}>{$DB_ARRAY[$db_id].amount|number_format} {$CURRENCY}</font></td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].contractpartnername}</td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment}</td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].capitalsourcecomment}</td>
+						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].contractpartnername|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].capitalsourcecomment|escape:htmlall}</td>
 						{if $DB_ARRAY[$db_id].owner == true }
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_36}</a></td>
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_37}</a></td>

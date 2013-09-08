@@ -26,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.66 2013/09/08 00:48:54 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.67 2013/09/08 18:08:03 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -145,17 +145,25 @@ class moduleMoneyFlows extends module {
 					$checkdate = $all_data ['bookingdate'];
 				}
 
-				if (! $capitalsource_data) {
-					$capitalsource_data = CallServer::getInstance()->getCapitalsourceById( $all_data ['mcs_capitalsourceid'] );
+				$capitalsource = CallServer::getInstance()->getCapitalsourceById( $all_data ['mcs_capitalsourceid'] );
+				if ($capitalsource) {
+					$today = new \DateTime();
+					$today->setTime( 0, 0, 0 );
+
+					$validFrom = new \DateTime();
+					$validFrom->setTimestamp( convert_date_to_timestamp( $capitalsource ['validfrom'] ) );
+
+					$validTil = new \DateTime();
+					$validTil->setTimestamp( convert_date_to_timestamp( $capitalsource ['validtil'] ) );
+
+					if ($today < $validFrom || $today > $validTil) {
+						$capitalsourceArray = CallServer::getInstance()->getAllCapitalsources();
+					} else {
+						$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
+					}
+					$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
 				}
 
-				if ($capitalsource_data && strtotime( $checkdate ) >= strtotime( $capitalsource_data ['validfrom'] ) && strtotime( $checkdate ) <= strtotime( $capitalsource_data ['validtil'] )) {
-					$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( convert_date_to_timestamp( $checkdate ), convert_date_to_timestamp( $checkdate ) );
-				} else {
-					$capitalsourceArray = CallServer::getInstance()->getAllCapitalsources();
-				}
-
-				$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
 				$contractpartner_values = CallServer::getInstance()->getAllContractpartner();
 				$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );

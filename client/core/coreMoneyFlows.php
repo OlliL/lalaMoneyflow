@@ -24,58 +24,15 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.55 2013/08/23 17:59:26 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.56 2013/09/08 18:08:03 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
-require_once 'core/coreCapitalSources.php';
 
 class coreMoneyFlows extends core {
 
 	function coreMoneyFlows() {
 		parent::__construct();
-	}
-
-	function get_id_data( $id ) {
-		return $this->select_row( "	SELECT moneyflowid
-						      ,bookingdate
-						      ,invoicedate
-						      ,calc_amount(amount,'OUT',mur_userid,invoicedate) amount
-						      ,mcs_capitalsourceid
-						      ,mcp_contractpartnerid
-						      ,comment
-						      ,private
-						      ,mur_userid
-						  FROM vw_moneyflows mmf
-						 WHERE moneyflowid = $id
-						   AND mmf.mug_mur_userid  = ".USERID."
-						   AND (mmf.private        = 0
-						        OR
-						        mmf.mur_userid     = ".USERID."
-						       )");
-	}
-
-	function get_all_date_source_data( $capitalsourceid, $startdate, $enddate ) {
-		$startdate = $this->make_date( $startdate );
-		$enddate   = $this->make_date( $enddate );
-		return $this->select_rows( "	SELECT moneyflowid
-						      ,bookingdate
-						      ,invoicedate
-						      ,calc_amount(amount,'OUT',mur_userid,invoicedate) amount
-						      ,mcs_capitalsourceid
-						      ,mcp_contractpartnerid
-						      ,comment
-						      ,mur_userid
-						  FROM vw_moneyflows mmf
-						 WHERE bookingdate           BETWEEN $startdate AND $enddate
-						   AND mcs_capitalsourceid = $capitalsourceid
-						   AND mmf.mug_mur_userid  = ".USERID."
-						   AND (mmf.private        = 0
-						        OR
-						        mmf.mur_userid     = ".USERID."
-						       )
-						 ORDER BY bookingdate
-							 ,invoicedate" );
 	}
 
 	function get_monthly_capitalsource_movement( $userid, $id, $month, $year ) {

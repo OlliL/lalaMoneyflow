@@ -25,16 +25,13 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.63 2013/09/08 00:48:54 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.64 2013/09/08 18:08:03 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
-require_once 'core/coreCapitalSources.php';
-require_once 'core/coreContractPartners.php';
 require_once 'core/coreCurrencies.php';
 require_once 'core/coreMoneyFlows.php';
 require_once 'core/coreMonthlySettlement.php';
-require_once 'core/coreText.php';
 require_once 'core/coreDomains.php';
 require_once 'core/coreSettings.php';
 

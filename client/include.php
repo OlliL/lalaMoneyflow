@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.19 2013/08/25 01:03:32 olivleh1 Exp $
+// $Id: include.php,v 1.20 2013/09/08 18:08:02 olivleh1 Exp $
 //
 
 // ########
@@ -77,5 +77,8 @@ function framework_autoload($className) {
 	}
 }
 spl_autoload_register( 'framework_autoload' );
+
+// Do never change this! It is needed to generate GMT-UNIX Timestamps needed to communicate with the server!
+date_default_timezone_set('UTC');
 
 ?>
