@@ -1,7 +1,5 @@
 <?php
-use rest\model\enum\UserPermissions;
 use rest\client\CallServer;
-use rest\base\AbstractMapperSupport;
 //
 // Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -27,7 +25,7 @@ use rest\base\AbstractMapperSupport;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.58 2013/09/07 23:44:04 olivleh1 Exp $
+// $Id: module.php,v 1.59 2013/09/08 00:48:54 olivleh1 Exp $
 //
 
 require_once 'Smarty.class.php';

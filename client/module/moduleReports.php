@@ -1,7 +1,5 @@
 <?php
 use rest\client\CallServer;
-use rest\model\Capitalsource;
-use rest\client\mapper\ClientArrayMapperEnum;
 //
 // Copyright (c) 2005-2013 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -27,7 +25,7 @@ use rest\client\mapper\ClientArrayMapperEnum;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.62 2013/09/07 22:10:18 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.63 2013/09/08 00:48:54 olivleh1 Exp $
 //
 
 require_once 'module/module.php';

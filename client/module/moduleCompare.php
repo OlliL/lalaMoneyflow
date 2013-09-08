@@ -1,5 +1,4 @@
 <?php
-use rest\client\mapper\ClientArrayMapperEnum;
 use rest\client\CallServer;
 //
 // Copyright (c) 2007-2013 Oliver Lehmann <oliver@FreeBSD.org>
@@ -26,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.25 2013/09/07 22:10:18 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.26 2013/09/08 00:48:54 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCompare.php';

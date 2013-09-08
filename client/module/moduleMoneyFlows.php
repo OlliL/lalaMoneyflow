@@ -1,6 +1,5 @@
 <?php
 use rest\client\CallServer;
-use rest\client\mapper\ClientArrayMapperEnum;
 use rest\base\ErrorCode;
 //
 // Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
@@ -27,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.65 2013/09/08 00:27:37 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.66 2013/09/08 00:48:54 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -222,7 +221,6 @@ class moduleMoneyFlows extends module {
 					$ret = CallServer::getInstance()->createMoneyflows( $add_data );
 
 					if ($ret !== true) {
-						echo "foo";
 						$data_is_valid = false;
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];

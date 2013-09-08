@@ -1,6 +1,5 @@
 <?php
 use rest\client\CallServer;
-use rest\client\mapper\ClientArrayMapperEnum;
 use rest\base\ErrorCode;
 //
 // Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
@@ -27,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.24 2013/09/08 00:27:37 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.25 2013/09/08 00:48:54 olivleh1 Exp $
 //
 
 require_once 'module/module.php';

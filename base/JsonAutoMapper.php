@@ -25,9 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: JsonAutoMapper.php,v 1.1 2013/09/08 00:37:34 olivleh1 Exp $
+// $Id: JsonAutoMapper.php,v 1.2 2013/09/08 00:48:55 olivleh1 Exp $
 //
-namespace rest\model\mapper;
+namespace rest\base;
 
 class JsonAutoMapper {
 

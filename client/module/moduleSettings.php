@@ -1,5 +1,4 @@
 <?php
-use rest\model\enum\UserAttributes;
 #-
 # Copyright (c) 2006-2013 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
@@ -25,7 +24,7 @@ use rest\model\enum\UserAttributes;
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleSettings.php,v 1.17 2013/09/07 23:44:04 olivleh1 Exp $
+# $Id: moduleSettings.php,v 1.18 2013/09/08 00:48:55 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
