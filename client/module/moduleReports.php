@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.64 2013/09/08 18:08:03 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.65 2014/01/05 19:08:17 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -121,33 +121,37 @@ class moduleReports extends module {
 
 			switch ($sortby) {
 				case 'capitalsources_comment' :
-					$sortby = 'capitalsourcecomment';
+					$sortby_int = 'capitalsourcecomment';
 					$multisort_order = $multisort_order | SORT_STRING;
 					break;
 				case 'moneyflows_bookingdate' :
-					$sortby = 'bookingdate';
+					$sortby_int = 'bookingdate';
 					break;
 				case 'moneyflows_invoicedate' :
-					$sortby = 'invoicedate';
+					$sortby_int = 'invoicedate';
 					break;
 				case 'moneyflows_amount' :
-					$sortby = 'amount';
+					$sortby_int = 'amount';
 					break;
 				case 'moneyflows_comment' :
-					$sortby = 'comment';
+					$sortby_int = 'comment';
 					$multisort_order = $multisort_order | SORT_STRING;
 					break;
 				case 'contractpartners_name' :
-					$sortby = 'contractpartnername';
+					$sortby_int = 'contractpartnername';
+					$multisort_order = $multisort_order | SORT_STRING;
+					break;
+				case 'postingaccount_name' :
+					$sortby_int = 'postingaccountname';
 					$multisort_order = $multisort_order | SORT_STRING;
 					break;
 				default :
-					$sortby = '';
+					$sortby_int = '';
 			}
 
-			if ($sortby != '') {
+			if ($sortby_int != '') {
 				foreach ( $_all_moneyflow_data as $key => $value ) {
-					$sortKey1 [$key] = strtolower( $value [$sortby] );
+					$sortKey1 [$key] = strtolower( $value [$sortby_int] );
 					$sortKey2 [$key] = $value ['bookingdate'];
 					$sortKey3 [$key] = $value ['invoicedate'];
 					$sortKey4 [$key] = $value ['moneyflowid'];
@@ -161,6 +165,7 @@ class moduleReports extends module {
 			foreach ( $all_moneyflow_data as $key => $value ) {
 				$all_moneyflow_data [$key] ['contractpartnername'] = htmlentities( $value ['contractpartnername'], ENT_COMPAT | ENT_HTML401 );
 				$all_moneyflow_data [$key] ['capitalsourcecomment'] = htmlentities( $value ['capitalsourcecomment'], ENT_COMPAT | ENT_HTML401 );
+				$all_moneyflow_data [$key] ['postingaccountname'] = htmlentities( $value ['postingaccountname'], ENT_COMPAT | ENT_HTML401 );
 				$all_moneyflow_data [$key] ['comment'] = htmlentities( $value ['comment'], ENT_COMPAT | ENT_HTML401 );
 				if ($all_moneyflow_data [$key] ['mur_userid'] == USERID) {
 					$all_moneyflow_data [$key] ['owner'] = true;
@@ -280,7 +285,8 @@ class moduleReports extends module {
 			$this->template->assign( 'MONTH', $month );
 			$this->template->assign( 'YEAR', $year );
 			$this->template->assign( 'SORTBY', $sortby );
-			$this->template->assign( 'ORDER', $neworder );
+			$this->template->assign( 'NEWORDER', $neworder );
+			$this->template->assign( 'ORDER', $order );
 			$this->template->assign( 'SUMMARY_DATA', $summary_data );
 			$this->template->assign( 'LASTAMOUNT', $lastamount );
 			$this->template->assign( 'FIRSTAMOUNT', $firstamount );

@@ -3,29 +3,32 @@
 				<tr>
 					<td width="20%" align="left" >
 						{if $PREV_LINK == true }
-							<a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$PREV_MONTH}&amp;reports_year={$PREV_YEAR}">&lt;&lt; {$TEXT_202}</a></td>
+							<a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$PREV_MONTH}&amp;reports_year={$PREV_YEAR}{if $SORTBY != ''}&amp;reports_sortby={$SORTBY}&amp;reports_order={$ORDER}{/if}">&lt;&lt; {$TEXT_202}</a>
 						{else}
 							&nbsp;
 						{/if}
+					</td>
 					<td width="60%" align="center"><h1>{$TEXT_61} {$MONTH.name} {$YEAR}</h1></td>
 					<td width="20%" align="right">
 						{if $NEXT_LINK == true }
-							<a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$NEXT_MONTH}&amp;reports_year={$NEXT_YEAR}">{$TEXT_201} &gt;&gt;</a></td>
+							<a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$NEXT_MONTH}&amp;reports_year={$NEXT_YEAR}{if $SORTBY != ''}&amp;reports_sortby={$SORTBY}&amp;reports_order={$ORDER}{/if}">{$TEXT_201} &gt;&gt;</a>
 						{else}
 							&nbsp;
 						{/if}
+					</td>
 				</tr>
 			</table>
-			<table border=0 width=830 align="center" cellpadding=2>
+			<table border=0 align="center" cellpadding=2>
 				<tr>
-					<th width="9%"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=moneyflows_bookingdate&amp;reports_order={$ORDER}" >{$TEXT_16}</a></th>
-					<th width="9%"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=moneyflows_invoicedate&amp;reports_order={$ORDER}" >{$TEXT_17}</a></th>
-					<th width="10%"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=moneyflows_amount&amp;reports_order={$ORDER}"     >{$TEXT_18}</a></th>
-					<th width="16%"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=contractpartners_name&amp;reports_order={$ORDER}" >{$TEXT_2}</a></th>
-					<th ><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=moneyflows_comment&amp;reports_order={$ORDER}"               >{$TEXT_21}</a></th>
-					<th width="22%"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=capitalsources_comment&amp;reports_order={$ORDER}">{$TEXT_19}</a></th>
-					<th width="2%">&nbsp</th>
-					<th width="3%">&nbsp</th>
+					<th width="90"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=moneyflows_bookingdate&amp;reports_order={$NEWORDER}" >{$TEXT_16}</a></th>
+					<th width="90"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=moneyflows_invoicedate&amp;reports_order={$NEWORDER}" >{$TEXT_17}</a></th>
+					<th width="100"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=moneyflows_amount&amp;reports_order={$NEWORDER}"     >{$TEXT_18}</a></th>
+					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=contractpartners_name&amp;reports_order={$NEWORDER}" >{$TEXT_2}</a></th>
+					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=moneyflows_comment&amp;reports_order={$NEWORDER}"    >{$TEXT_21}</a></th>
+					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=postingaccount_name&amp;reports_order={$NEWORDER}">{$TEXT_232}</a></th>
+					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=capitalsources_comment&amp;reports_order={$NEWORDER}">{$TEXT_19}</a></th>
+					<th>&nbsp</th>
+					<th>&nbsp</th>
 				</tr>
 				{section name=DATA loop=$ALL_MONEYFLOW_DATA}
 					<tr>
@@ -34,6 +37,7 @@
 						<td align="right" class="contrastbgcolor"><font {if $ALL_MONEYFLOW_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_MONEYFLOW_DATA[DATA].amount|number_format} {$CURRENCY}</font></td>
 						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].contractpartnername}</td>
 						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].comment}</td>
+						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].postingaccountname}</td>
 						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].capitalsourcecomment}</td>
 						{if $ALL_MONEYFLOW_DATA[DATA].owner == true }
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1024,height=120')">{$TEXT_36}</a></td>
@@ -48,18 +52,20 @@
 			</table>
 			<table width="830" border=0>
 				<tr>
-					<td width="50%" align="left" >
+					<td width="20%" align="left" >
 						{if $PREV_LINK == true }
-							<a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$PREV_MONTH}&amp;reports_year={$PREV_YEAR}">&lt;&lt; {$TEXT_202}</a></td>
+							<a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$PREV_MONTH}&amp;reports_year={$PREV_YEAR}{if $SORTBY != ''}&amp;reports_sortby={$SORTBY}&amp;reports_order={$ORDER}{/if}">&lt;&lt; {$TEXT_202}</a>
 						{else}
 							&nbsp;
 						{/if}
-					<td width="50%" align="right">
+					</td>
+					<td width="20%" align="right">
 						{if $NEXT_LINK == true }
-							<a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$NEXT_MONTH}&amp;reports_year={$NEXT_YEAR}">{$TEXT_201} &gt;&gt;</a></td>
+							<a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$NEXT_MONTH}&amp;reports_year={$NEXT_YEAR}{if $SORTBY != ''}&amp;reports_sortby={$SORTBY}&amp;reports_order={$ORDER}{/if}">{$TEXT_201} &gt;&gt;</a>
 						{else}
 							&nbsp;
 						{/if}
+					</td>
 				</tr>
 			</table>
 			<br>

@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.32, for FreeBSD9.1 (amd64)
+-- MySQL dump 10.13  Distrib 5.5.34, for FreeBSD9.2 (amd64)
 --
 -- Host: localhost    Database: moneyflow
 -- ------------------------------------------------------
--- Server version	5.5.32-log
+-- Server version	5.5.34-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -147,12 +147,15 @@ CREATE TABLE moneyflows (
   mcs_capitalsourceid int(10) unsigned NOT NULL,
   mcp_contractpartnerid int(10) unsigned NOT NULL,
   `comment` varchar(100) NOT NULL DEFAULT '',
+  mpa_postingaccountid int(10) unsigned NOT NULL,
   private tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (moneyflowid,mur_userid),
   KEY mmf_i_01 (mur_userid,bookingdate),
   KEY mmf_i_02 (bookingdate),
   KEY mmf_mcs_pk (mcs_capitalsourceid),
   KEY mmf_mcp_pk (mcp_contractpartnerid),
+  KEY mmf_mpa_pk (mpa_postingaccountid),
+  CONSTRAINT mmf_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mcp_pk FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners (contractpartnerid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
@@ -180,6 +183,24 @@ CREATE TABLE monthlysettlements (
   CONSTRAINT mms_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid) ON UPDATE CASCADE,
   CONSTRAINT mms_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mms';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `postingaccounts`
+--
+
+DROP TABLE IF EXISTS postingaccounts;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE postingaccounts (
+  mur_userid int(10) unsigned NOT NULL,
+  postingaccountid int(10) unsigned NOT NULL AUTO_INCREMENT,
+  postingaccountname varchar(20) NOT NULL,
+  PRIMARY KEY (postingaccountid),
+  UNIQUE KEY mpa_i_01 (postingaccountname),
+  KEY mpa_mur_pk (mur_userid),
+  CONSTRAINT mpa_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mpa';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -419,7 +440,7 @@ CREATE TABLE user_groups (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-07-28  1:07:31
+-- Dump completed on 2014-01-05 20:07:59
 INSERT INTO currencies VALUES (1,'EUR',1);
 INSERT INTO currencies VALUES (2,'DM',0);
 INSERT INTO currencyrates VALUES (1,1.00000,'1970-01-01','2999-12-31');
@@ -882,6 +903,8 @@ INSERT INTO text VALUES (230,1,'No monthly settlements where created in the syst
 INSERT INTO text VALUES (230,2,'Es wurden bisher im System keine Monatsabschlüsse angelegt!','e');
 INSERT INTO text VALUES (231,1,'Access Denied! You are not logged on!','e');
 INSERT INTO text VALUES (231,2,'Zugriff verweigert! Sie sind nicht angemeldet!','e');
+INSERT INTO text VALUES (232,1,'Posting Account','t');
+INSERT INTO text VALUES (232,2,'Buchungskonto','t');
 INSERT INTO templates VALUES ('display_add_language.tpl');
 INSERT INTO templates VALUES ('display_add_moneyflow.tpl');
 INSERT INTO templates VALUES ('display_analyze_cmp_data.tpl');
@@ -1325,6 +1348,10 @@ INSERT INTO templatevalues VALUES ('display_edit_group.tpl',213);
 INSERT INTO templatevalues VALUES ('display_edit_group.tpl',214);
 INSERT INTO templatevalues VALUES ('display_delete_group.tpl',215);
 INSERT INTO templatevalues VALUES ('display_delete_group.tpl',216);
+INSERT INTO templatevalues VALUES ('display_add_moneyflow.tpl',232);
+INSERT INTO templatevalues VALUES ('display_delete_moneyflow.tpl',232);
+INSERT INTO templatevalues VALUES ('display_edit_moneyflow.tpl',232);
+INSERT INTO templatevalues VALUES ('display_generate_report.tpl',232);
 INSERT INTO domains VALUES ('CAPITALSOURCE_STATE');
 INSERT INTO domains VALUES ('CAPITALSOURCE_TYPE');
 INSERT INTO domains VALUES ('MONTHS');

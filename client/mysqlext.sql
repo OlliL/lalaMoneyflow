@@ -54,6 +54,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_moneyflows (
   ,mcs_capitalsourceid  
   ,mcp_contractpartnerid
   ,comment              
+  ,mpa_postingaccountid
   ,private              
   ) AS
       SELECT mmf.mur_userid
@@ -65,6 +66,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_moneyflows (
             ,mmf.mcs_capitalsourceid
             ,mmf.mcp_contractpartnerid
             ,mmf.comment
+            ,mmf.mpa_postingaccountid
             ,mmf.private
         FROM moneyflows     mmf
             ,vw_user_groups mug
@@ -106,6 +108,25 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
           OR (     mug.mug1_mur_userid = mms.mur_userid
                AND mug.mug2_mur_userid = mms.mur_userid
              );
+
+/*
+ * this view will show all data from all users which are in the
+ * same group as mur_userid. Use mug_mur_userid in the query,
+ * mur_userid is the real userid of the dataset
+ */
+CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_postingaccounts (
+   mur_userid
+  ,mug_mur_userid
+  ,postingaccountid
+  ,postingaccountname
+  ) AS
+      SELECT mpa.mur_userid
+            ,mug.mug2_mur_userid
+            ,mpa.postingaccountid
+            ,mpa.postingaccountname
+        FROM postingaccounts  mpa
+            ,vw_user_groups   mug
+       WHERE mug.mug1_mur_userid = mpa.mur_userid;
 
 /*
  * this view will show all data from all users which are in the

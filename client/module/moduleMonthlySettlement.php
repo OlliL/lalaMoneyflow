@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.41 2013/09/08 00:48:54 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.42 2014/01/05 19:08:17 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -48,7 +48,7 @@ class moduleMonthlySettlement extends module {
 	private function filterCapitalsource($capitalsourceArray) {
 		if (is_array( $capitalsourceArray )) {
 			foreach ( $capitalsourceArray as $capitalsource ) {
-				if ($capitalsource ['att_group_use'] == 1 || $capitalsource ['mur_userid'] == USERID)
+				if ( $capitalsource ['mur_userid'] == USERID)
 					$capitalsource_values [] = $capitalsource;
 			}
 		}

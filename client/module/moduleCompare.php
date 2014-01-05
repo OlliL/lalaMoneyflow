@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.27 2013/09/08 18:08:03 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.28 2014/01/05 19:08:17 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCompare.php';
@@ -214,7 +214,8 @@ class moduleCompare extends module {
 					if (is_array( $results )) {
 						$result_count = count( $results );
 
-						foreach ( $results as $moneyflowid ) {
+						foreach ( $results as $result ) {
+							$moneyflowid = $result['moneyflowid'];
 							if ($moneyflow_used [$moneyflowid] != 1) {
 								$moneyflow = CallServer::getInstance()->getMoneyflowById( $moneyflowid );
 

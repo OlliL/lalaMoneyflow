@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.21 2013/09/08 18:08:03 olivleh1 Exp $
+// $Id: CallServer.php,v 1.22 2014/01/05 19:08:17 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -56,6 +56,7 @@ class CallServer extends AbstractJsonSender {
 		parent::addMapper( 'rest\client\mapper\ArrayToPreDefMoneyflowTransportMapper', ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToUserTransportMapper', ClientArrayMapperEnum::USER_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToPostingAccountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
 		) ) );
@@ -529,6 +530,25 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/deletePreDefMoneyflowById/' . $id . '/' . $this->sessionId;
 		return self::deleteJson( $url );
 	}
+
+
+	/*
+	 * PostingAccountService
+	 */
+	public final function getAllPostingAccounts() {
+		$url = URLPREFIX . SERVERPREFIX . 'postingAccountService/getAllPostingAccounts/' . $this->sessionId;
+		$result = self::getJson( $url );
+		if (is_array( $result )) {
+			$getAllPostingAccountResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\postingaccount' );
+			if (is_array( $getAllPostingAccountResponse->getPostingAccountTransport() )) {
+				$result = parent::mapArray( $getAllPostingAccountResponse->getPostingAccountTransport() );
+			} else {
+				$result = '';
+			}
+		}
+		return $result;
+	}
+
 }
 
 ?>

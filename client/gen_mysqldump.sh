@@ -20,6 +20,7 @@ mysqldump -u root --skip-quote-names --skip-triggers --default-character-set=lat
 	currencyrates \
 	moneyflows \
 	monthlysettlements \
+	postingaccounts \
 	predefmoneyflows \
 	languages \
 	templates \

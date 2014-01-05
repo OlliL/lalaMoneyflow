@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.56 2013/09/08 18:08:03 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.57 2014/01/05 19:08:17 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -200,7 +200,8 @@ class coreMoneyFlows extends core {
 
 	function find_single_moneyflow( $date, $date_days_around, $amount ) {
 		$date = $this->make_date( $date );
-		return $this->select_cols( "	SELECT moneyflowid
+		return $this->select_rows( "	SELECT moneyflowid
+						      ,private
 						  FROM vw_moneyflows mmf
 						 WHERE bookingdate BETWEEN DATE_SUB($date, INTERVAL $date_days_around DAY) AND DATE_ADD($date, INTERVAL $date_days_around DAY)
 						   AND amount     = $amount

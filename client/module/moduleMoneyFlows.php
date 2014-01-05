@@ -26,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.67 2013/09/08 18:08:03 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.68 2014/01/05 19:08:17 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -165,8 +165,11 @@ class moduleMoneyFlows extends module {
 				}
 
 				$contractpartner_values = CallServer::getInstance()->getAllContractpartner();
+				$postingaccount_values = CallServer::getInstance()->getAllPostingAccounts();
+
 				$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
+				$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 				break;
 		}
 
@@ -184,6 +187,7 @@ class moduleMoneyFlows extends module {
 		$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
 
 		$contractpartner_values = CallServer::getInstance()->getAllContractpartner();
+		$postingaccount_values = CallServer::getInstance()->getAllPostingAccounts();
 
 		switch ($realaction) {
 			case 'save' :
@@ -191,9 +195,6 @@ class moduleMoneyFlows extends module {
 				$nothing_checked = true;
 				foreach ( $all_data as $id => $value ) {
 					if ($value ['checked'] == 1) {
-						$add_data [] = array_merge( $value, array (
-								'moneyflowid' => $id
-						) );
 
 						if (! fix_amount( $value ['amount'] )) {
 							$all_data [$id] ['amount_error'] = 1;
@@ -216,6 +217,9 @@ class moduleMoneyFlows extends module {
 							$all_data [$id] ['bookingdate_error'] = 1;
 							$data_is_valid = false;
 						}
+						$add_data [] = array_merge( $value, array (
+								'moneyflowid' => $id
+						) );
 					}
 				}
 
@@ -311,6 +315,7 @@ class moduleMoneyFlows extends module {
 
 		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
+		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
 		$this->template->assign( 'ERRORS', $this->get_errors() );

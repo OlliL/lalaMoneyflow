@@ -14,6 +14,8 @@ class MoneyflowTransport {
 	public $contractpartnername;
 	public $comment;
 	public $private;
+	public $postingaccountid;
+	public $postingaccountname;
 
 	public final function setId($id) {
 		$this->id = $id;
@@ -101,6 +103,22 @@ class MoneyflowTransport {
 
 	public final function getPrivate() {
 		return $this->private;
+	}
+
+	public function setPostingaccountid($postingaccountid) {
+		$this->postingaccountid = $postingaccountid;
+	}
+
+	public function setPostingaccountname($postingaccountname) {
+		$this->postingaccountname = $postingaccountname;
+	}
+
+	public function getPostingaccountid() {
+		return $this->postingaccountid;
+	}
+
+	public function getPostingaccountname() {
+		return $this->postingaccountname;
 	}
 }
 

@@ -22,6 +22,7 @@
 				 	 <th width="80">{$TEXT_18}</th>
 				 	 <th width="200">{$TEXT_2}</th>
 				 	 <th width="200">{$TEXT_21}</th>
+				 	 <th>{$TEXT_232}</th>
 				 	 <th width="100">{$TEXT_19}</th>
 				</tr>
 				<tr>
@@ -30,6 +31,7 @@
 					<td class="contrastbgcolor" align="right"><font {if $ALL_DATA.amount < 0}color="red"{else}color="black"{/if}>{$ALL_DATA.amount|string_format:"%.2f"} {$CURRENCY}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.contractpartnername|escape:htmlall}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.comment|escape:htmlall}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.postingaccountname|escape:htmlall}</td>
 					<td class="contrastbgcolornobr">{$ALL_DATA.capitalsourcecomment|escape:htmlall}</td>
 				</tr>
 			</table>

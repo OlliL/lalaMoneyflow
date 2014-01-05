@@ -21,9 +21,16 @@ Bugs detected so far:
    - moneyflows for capitalsources which are not allowed for the user must not be possible (verify this with RESTClient,
      the Client does not allow it already)
    - capitalsources without comment must not be created.
+   - when comparing data (bank account vs. moneyflow) entries marked as private from an other user are not detected by
+   	coreMoneyFlows::find_single_moneyflow
+     even if this is fixed, MoneyflowService::getMoneyflowById() later on will not find them.
      
 
 - evaluate:
+  - switch from data being bound to user-ids to data being bound to accounts and users being allowed to work with accounts
+    so for example having one acount "Family Doe" with 2 Users "John" and "Marry" able to work with the "Family Doe" account.
+    Contract Partner, Capital Sources, Money Flows, and so on are then linked to "Family Doe" instead of single users. Beside
+    that, they can also be defined privatly. Some sort of hirarchical concepts. "Group", and "User" data.  
   - Doctrine + Serializer
   - PHPUnit
     -> PHP_CodeCoverage needed
