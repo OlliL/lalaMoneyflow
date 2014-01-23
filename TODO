@@ -1,4 +1,7 @@
-0. validatuib for PreDefMoneyflows on serverside (reduce client side afterwards)
+-1. move all the "service" Controller forward methods to client based / view based controller methods to reduce
+    multiple HTTP calls and to live the "Controller way" which is a client depending interface
+    
+0. validation for PreDefMoneyflows on serverside (reduce client side afterwards)
 
 1. implement the remaining coreMoneyflows on Serverside.
 

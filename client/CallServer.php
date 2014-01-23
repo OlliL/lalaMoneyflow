@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.23 2014/01/23 20:20:23 olivleh1 Exp $
+// $Id: CallServer.php,v 1.24 2014/01/23 20:35:21 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -95,7 +95,7 @@ class CallServer extends AbstractJsonSender {
 	}
 
 	private final function getJson($url) {
-		// $response = Request::get( $url )->withoutStrictSsl()->addOnCurlOption( CURLOPT_ENCODING, 'compress, deflate, gzip' )->send();
+		#$response = Request::get( $url )->withoutStrictSsl()->addOnCurlOption( CURLOPT_ENCODING, 'compress, deflate, gzip' )->send();
 		$response = Request::get( $url )->withoutStrictSsl()->send();
 		if ($response->code == 204) {
 			return false;
@@ -326,26 +326,6 @@ class CallServer extends AbstractJsonSender {
 		if (is_array( $result )) {
 			$getCapitalsourceByIdResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
 			$result = parent::map( $getCapitalsourceByIdResponse->getCapitalsourceTransport() );
-		}
-		return $result;
-	}
-
-	public final function getAllCapitalsourceInitials() {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getAllInitials/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$getAllCapitalsourceInitialsResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
-			$result = $getAllCapitalsourceInitialsResponse->getInitials();
-		}
-		return $result;
-	}
-
-	public final function getAllCapitalsourceCount() {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/countAllCapitalsources/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$countAllCapitalsourcesResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
-			$result = $countAllCapitalsourcesResponse->getCount();
 		}
 		return $result;
 	}
