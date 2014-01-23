@@ -2,7 +2,7 @@
 
 namespace rest\api\model\moneyflow;
 
-use rest\api\model\moneyflow\transport\MoneyflowTransport;
+use rest\api\model\transport\MoneyflowTransport;
 
 class getMoneyflowByIdResponse {
 	public $moneyflowTransport;

@@ -1,6 +1,6 @@
 <?php
 
-namespace rest\api\model\postingaccount\transport;
+namespace rest\api\model\transport;
 
 class PostingAccountTransport {
 	public $id;

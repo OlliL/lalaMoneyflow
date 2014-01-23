@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.65 2014/01/05 19:08:17 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.66 2014/01/23 20:20:22 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -58,18 +58,26 @@ class moduleReports extends module {
 		if (! $year)
 			$year = date( 'Y' );
 
-		$years = rest\client\CallServer::getInstance()->getAllMoneyflowYears();
-		$temp_months = rest\client\CallServer::getInstance()->getAllMoneyflowMonth( $year );
+// 		$years = CallServer::getInstance()->getAllMoneyflowYears();
+// 		$temp_months = CallServer::getInstance()->getAllMoneyflowMonth( $year );
+
+		$listReports = CallServer::getInstance()->listReports($year, $month);
+		$years = $listReports['allYears'];
+		$allMonth = $listReports['allMonth'];
+		$year = $listReports['year'];
+		$month = $listReports['month'];
+		$_all_moneyflow_data = $listReports['moneyflows'];
+		$all_capitalsources = $listReports['capitalsources'];
 
 		// there are no months for the selected year
-		if (! is_array( $temp_months )) {
-			$year = $years [count( $years ) - 1];
-			$temp_months = rest\client\CallServer::getInstance()->getAllMoneyflowMonth( $year );
-			$month = NULL;
-		}
+// 		if (! is_array( $temp_months )) {
+// 			$year = $years [count( $years ) - 1];
+// 			$temp_months = CallServer::getInstance()->getAllMoneyflowMonth( $year );
+// 			$month = NULL;
+// 		}
 
-		if (is_array( $temp_months )) {
-			foreach ( $temp_months as $key => $value ) {
+		if (is_array( $allMonth )) {
+			foreach ( $allMonth as $key => $value ) {
 				$months [] = array (
 						'nummeric' => sprintf( '%02d', $value ),
 						'name' => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int ) $value )
@@ -78,8 +86,212 @@ class moduleReports extends module {
 		}
 
 		if ($month > 0 && $year > 0) {
-			$report = $this->generate_report( $month, $year, $sortby, $order );
-			$this->template->assign( 'REPORT', $report );
+			$lastamount = 0;
+			$fixamount = 0;
+			$movement_calculated_month = 0;
+			$calcamount = 0;
+			$i = 0;
+
+			switch ($order) {
+				case 'DESC' :
+					$neworder = 'ASC';
+					$multisort_order = SORT_DESC;
+					break;
+				case 'ASC' :
+					$neworder = 'DESC';
+					$multisort_order = SORT_ASC;
+					break;
+				default :
+					$order = '';
+					$multisort_order = SORT_DESC;
+					$neworder = 'ASC';
+			}
+
+// 			$_all_moneyflow_data = CallServer::getInstance()->getMoneyflowsByMonth( $year, $month );
+			if ($_all_moneyflow_data) {
+
+				// TODO: old shit
+				$displayed_currency = $this->coreCurrencies->get_displayed_currency();
+
+				switch ($sortby) {
+					case 'capitalsources_comment' :
+						$sortby_int = 'capitalsourcecomment';
+						$multisort_order = $multisort_order | SORT_STRING;
+						break;
+					case 'moneyflows_bookingdate' :
+						$sortby_int = 'bookingdate';
+						break;
+					case 'moneyflows_invoicedate' :
+						$sortby_int = 'invoicedate';
+						break;
+					case 'moneyflows_amount' :
+						$sortby_int = 'amount';
+						break;
+					case 'moneyflows_comment' :
+						$sortby_int = 'comment';
+						$multisort_order = $multisort_order | SORT_STRING;
+						break;
+					case 'contractpartners_name' :
+						$sortby_int = 'contractpartnername';
+						$multisort_order = $multisort_order | SORT_STRING;
+						break;
+					case 'postingaccount_name' :
+						$sortby_int = 'postingaccountname';
+						$multisort_order = $multisort_order | SORT_STRING;
+						break;
+					default :
+						$sortby_int = '';
+				}
+
+				if ($sortby_int != '') {
+					foreach ( $_all_moneyflow_data as $key => $value ) {
+						$sortKey1 [$key] = strtolower( $value [$sortby_int] );
+						$sortKey2 [$key] = $value ['bookingdate'];
+						$sortKey3 [$key] = $value ['invoicedate'];
+						$sortKey4 [$key] = $value ['moneyflowid'];
+					}
+
+					array_multisort( $sortKey1, $multisort_order, $sortKey2, SORT_ASC, $sortKey3, SORT_ASC, $sortKey4, SORT_ASC, $_all_moneyflow_data );
+				}
+
+				$all_moneyflow_data = $_all_moneyflow_data;
+
+				foreach ( $all_moneyflow_data as $key => $value ) {
+					$all_moneyflow_data [$key] ['contractpartnername'] = htmlentities( $value ['contractpartnername'], ENT_COMPAT | ENT_HTML401 );
+					$all_moneyflow_data [$key] ['capitalsourcecomment'] = htmlentities( $value ['capitalsourcecomment'], ENT_COMPAT | ENT_HTML401 );
+					$all_moneyflow_data [$key] ['postingaccountname'] = htmlentities( $value ['postingaccountname'], ENT_COMPAT | ENT_HTML401 );
+					$all_moneyflow_data [$key] ['comment'] = htmlentities( $value ['comment'], ENT_COMPAT | ENT_HTML401 );
+					if ($all_moneyflow_data [$key] ['mur_userid'] == USERID) {
+						$all_moneyflow_data [$key] ['owner'] = true;
+					} else {
+						$all_moneyflow_data [$key] ['owner'] = false;
+					}
+				}
+				$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
+
+				// 1. check if there is already a monthly settlement entered in mms
+				$mms_exists = $this->coreMonthlySettlement->monthlysettlement_exists( $month, $year );
+
+				// 2. go through all capitalsources and determine there
+				// a) comment
+				// b) type comment
+				// c) state comment
+				// d) amount they had at the end of the previous month
+				// e) amount they had at the end of the month (if mms_exists)
+				// f) movement during the month
+				// g) amount they should had at the end of the month
+				// h) differnece between e and f (if mms_exists)
+
+// 				$all_capitalsources = CallServer::getInstance()->getAllCapitalsourcesByDateRange( mktime( 0, 0, 0, $month, 1, $year ), mktime( 0, 0, 0, $month + 1, 0, $year ) );
+
+				foreach ( $all_capitalsources as $capitalsource ) {
+					$capitalsourceid = $capitalsource ['capitalsourceid'];
+
+					$summary_data [$i] ['comment'] = $capitalsource ['comment'];
+					$summary_data [$i] ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $capitalsource ['type'] );
+					$summary_data [$i] ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $capitalsource ['state'] );
+					$summary_data [$i] ['lastamount'] = $this->coreMonthlySettlement->get_amount( $capitalsource ['mur_userid'], $capitalsourceid, date( 'm', mktime( 0, 0, 0, $month - 1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month - 1, 1, $year ) ) );
+					if ($mms_exists === true) {
+						$settlement_data = $this->coreMonthlySettlement->get_data( $capitalsourceid, $month, $year, true );
+
+						$summary_data [$i] ['fixamount'] = $settlement_data ['amount'];
+						$summary_data [$i] ['movement'] = round( $settlement_data ['movement_calculated'], 2 );
+						$summary_data [$i] ['calcamount'] = round( $summary_data [$i] ['lastamount'] + $summary_data [$i] ['movement'], 2 );
+						$summary_data [$i] ['difference'] = round( $summary_data [$i] ['fixamount'] - $summary_data [$i] ['calcamount'], 2 );
+					} else {
+						$summary_data [$i] ['movement'] = round( $this->coreMoneyFlows->get_monthly_capitalsource_movement( $capitalsource ['mur_userid'], $capitalsourceid, $month, $year ), 2 );
+						$summary_data [$i] ['calcamount'] = $summary_data [$i] ['lastamount'] + $summary_data [$i] ['movement'];
+					}
+
+					// 3. sum fields up for various sum statistics
+					// a) sum the amount of all capitalsources of the last month up
+					// b) sum the amount of all capitalsources of the month up (if mms_exists)
+					// c) sum the calculated amount of all capitalsources of the month up
+
+					$lastamount += $summary_data [$i] ['lastamount'];
+					if ($mms_exists === true)
+						$fixamount += $summary_data [$i] ['fixamount'];
+					$movement_calculated_month += $summary_data [$i] ['movement'];
+					$calcamount += $summary_data [$i] ['calcamount'];
+
+					$i ++;
+				}
+
+				// 4. retrieve the movement over the year until the selected month by using the values stored in mms
+
+				$movement_calculated_year_data = $this->coreMonthlySettlement->get_year_movement( $month, $year, true );
+				$movement_calculated_year = $movement_calculated_year_data ['movement_calculated'];
+				$movement_calculated_year_month = $movement_calculated_year_data ['month'];
+
+				// 4a.if mms doesn't contain all data up to the selected month, retrieve the missing data by using
+				// the value calculated for the selected month (if the diference is just this month), or if the
+				// difference is higher then calculate the missing range vby using mmf
+
+				if ($movement_calculated_year_month != $month) {
+					$startmonth = date( 'm', mktime( 0, 0, 0, $movement_calculated_year_month + 1, 1, $year ) );
+					if ($startmonth == $month) {
+						$movement_calculated_year += $movement_calculated_month;
+					} else {
+						$movement_calculated_year += $this->coreMoneyFlows->get_range_movement( $startmonth, $month, $year );
+					}
+				}
+
+				// 4b.finally round it
+
+				$movement_calculated_year = round( $movement_calculated_year, 2 );
+
+				// 5. select the final amount of the last year (to calculate the turnover/movement since the last year)
+
+				$firstamount = $this->coreMonthlySettlement->get_sum_amount( 12, $year - 1, true );
+
+				if ($month == 1) {
+					$prev_month = 12;
+					$prev_year = $year - 1;
+					$next_month = $month + 1;
+					$next_year = $year;
+				} elseif ($month == 12) {
+					$prev_month = $month - 1;
+					$prev_year = $year;
+					$next_month = 1;
+					$next_year = $year + 1;
+				} else {
+					$prev_month = $month - 1;
+					$prev_year = $year;
+					$next_month = $month + 1;
+					$next_year = $year;
+				}
+
+				$prev_link = $this->coreMoneyFlows->month_has_moneyflows( $prev_month, $prev_year );
+				$next_link = $this->coreMoneyFlows->month_has_moneyflows( $next_month, $next_year );
+
+				$month = array (
+						'nummeric' => sprintf( '%02d', $month ),
+						'name' => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int ) $month )
+				);
+
+				$this->template->assign( 'PREV_MONTH', $prev_month );
+				$this->template->assign( 'PREV_YEAR', $prev_year );
+				$this->template->assign( 'PREV_LINK', $prev_link );
+				$this->template->assign( 'NEXT_MONTH', $next_month );
+				$this->template->assign( 'NEXT_YEAR', $next_year );
+				$this->template->assign( 'NEXT_LINK', $next_link );
+
+				$this->template->assign( 'MONTH', $month );
+				$this->template->assign( 'YEAR', $year );
+				$this->template->assign( 'SORTBY', $sortby );
+				$this->template->assign( 'NEWORDER', $neworder );
+				$this->template->assign( 'ORDER', $order );
+				$this->template->assign( 'SUMMARY_DATA', $summary_data );
+				$this->template->assign( 'LASTAMOUNT', $lastamount );
+				$this->template->assign( 'FIRSTAMOUNT', $firstamount );
+				$this->template->assign( 'FIXAMOUNT', $fixamount );
+				$this->template->assign( 'MON_CALCAMOUNT', $calcamount );
+				$this->template->assign( 'MON_CALCULATEDTURNOVER', $movement_calculated_month );
+				$this->template->assign( 'YEA_CALCULATEDTURNOVER', $movement_calculated_year );
+				$this->template->assign( 'MONTHLYSETTLEMENT_EXISTS', $mms_exists );
+				$this->template->assign( 'CURRENCY', $displayed_currency );
+				$this->template->assign( 'REPORT', 1 );
+			}
 		}
 
 		$this->template->assign( 'ALL_YEARS', $years );
@@ -89,216 +301,6 @@ class moduleReports extends module {
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_reports.tpl' );
-	}
-
-	function generate_report($month, $year, $sortby, $order) {
-		$lastamount = 0;
-		$fixamount = 0;
-		$movement_calculated_month = 0;
-		$calcamount = 0;
-		$i = 0;
-
-		switch ($order) {
-			case 'DESC' :
-				$neworder = 'ASC';
-				$multisort_order = SORT_DESC;
-				break;
-			case 'ASC' :
-				$neworder = 'DESC';
-				$multisort_order = SORT_ASC;
-				break;
-			default :
-				$order = '';
-				$multisort_order = SORT_DESC;
-				$neworder = 'ASC';
-		}
-
-		$_all_moneyflow_data = CallServer::getInstance()->getMoneyflowsByMonth( $year, $month );
-		if ($_all_moneyflow_data) {
-
-			// TODO: old shit
-			$displayed_currency = $this->coreCurrencies->get_displayed_currency();
-
-			switch ($sortby) {
-				case 'capitalsources_comment' :
-					$sortby_int = 'capitalsourcecomment';
-					$multisort_order = $multisort_order | SORT_STRING;
-					break;
-				case 'moneyflows_bookingdate' :
-					$sortby_int = 'bookingdate';
-					break;
-				case 'moneyflows_invoicedate' :
-					$sortby_int = 'invoicedate';
-					break;
-				case 'moneyflows_amount' :
-					$sortby_int = 'amount';
-					break;
-				case 'moneyflows_comment' :
-					$sortby_int = 'comment';
-					$multisort_order = $multisort_order | SORT_STRING;
-					break;
-				case 'contractpartners_name' :
-					$sortby_int = 'contractpartnername';
-					$multisort_order = $multisort_order | SORT_STRING;
-					break;
-				case 'postingaccount_name' :
-					$sortby_int = 'postingaccountname';
-					$multisort_order = $multisort_order | SORT_STRING;
-					break;
-				default :
-					$sortby_int = '';
-			}
-
-			if ($sortby_int != '') {
-				foreach ( $_all_moneyflow_data as $key => $value ) {
-					$sortKey1 [$key] = strtolower( $value [$sortby_int] );
-					$sortKey2 [$key] = $value ['bookingdate'];
-					$sortKey3 [$key] = $value ['invoicedate'];
-					$sortKey4 [$key] = $value ['moneyflowid'];
-				}
-
-				array_multisort( $sortKey1, $multisort_order, $sortKey2, SORT_ASC, $sortKey3, SORT_ASC, $sortKey4, SORT_ASC, $_all_moneyflow_data );
-			}
-
-			$all_moneyflow_data = $_all_moneyflow_data;
-
-			foreach ( $all_moneyflow_data as $key => $value ) {
-				$all_moneyflow_data [$key] ['contractpartnername'] = htmlentities( $value ['contractpartnername'], ENT_COMPAT | ENT_HTML401 );
-				$all_moneyflow_data [$key] ['capitalsourcecomment'] = htmlentities( $value ['capitalsourcecomment'], ENT_COMPAT | ENT_HTML401 );
-				$all_moneyflow_data [$key] ['postingaccountname'] = htmlentities( $value ['postingaccountname'], ENT_COMPAT | ENT_HTML401 );
-				$all_moneyflow_data [$key] ['comment'] = htmlentities( $value ['comment'], ENT_COMPAT | ENT_HTML401 );
-				if ($all_moneyflow_data [$key] ['mur_userid'] == USERID) {
-					$all_moneyflow_data [$key] ['owner'] = true;
-				} else {
-					$all_moneyflow_data [$key] ['owner'] = false;
-				}
-			}
-			$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
-
-			// 1. check if there is already a monthly settlement entered in mms
-			$mms_exists = $this->coreMonthlySettlement->monthlysettlement_exists( $month, $year );
-
-			// 2. go through all capitalsources and determine there
-			// a) comment
-			// b) type comment
-			// c) state comment
-			// d) amount they had at the end of the previous month
-			// e) amount they had at the end of the month (if mms_exists)
-			// f) movement during the month
-			// g) amount they should had at the end of the month
-			// h) differnece between e and f (if mms_exists)
-
-			$all_capitalsources = CallServer::getInstance()->getAllCapitalsourcesByDateRange( mktime( 0, 0, 0, $month, 1, $year ), mktime( 0, 0, 0, $month + 1, 0, $year ) );
-
-			foreach ( $all_capitalsources as $capitalsource ) {
-				$capitalsourceid = $capitalsource ['capitalsourceid'];
-
-				$summary_data [$i] ['comment'] = $capitalsource ['comment'];
-				$summary_data [$i] ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $capitalsource ['type'] );
-				$summary_data [$i] ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $capitalsource ['state'] );
-				$summary_data [$i] ['lastamount'] = $this->coreMonthlySettlement->get_amount( $capitalsource ['mur_userid'], $capitalsourceid, date( 'm', mktime( 0, 0, 0, $month - 1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month - 1, 1, $year ) ) );
-				if ($mms_exists === true) {
-					$settlement_data = $this->coreMonthlySettlement->get_data( $capitalsourceid, $month, $year, true );
-
-					$summary_data [$i] ['fixamount'] = $settlement_data ['amount'];
-					$summary_data [$i] ['movement'] = round( $settlement_data ['movement_calculated'], 2 );
-					$summary_data [$i] ['calcamount'] = round( $summary_data [$i] ['lastamount'] + $summary_data [$i] ['movement'], 2 );
-					$summary_data [$i] ['difference'] = round( $summary_data [$i] ['fixamount'] - $summary_data [$i] ['calcamount'], 2 );
-				} else {
-					$summary_data [$i] ['movement'] = round( $this->coreMoneyFlows->get_monthly_capitalsource_movement( $capitalsource ['mur_userid'], $capitalsourceid, $month, $year ), 2 );
-					$summary_data [$i] ['calcamount'] = $summary_data [$i] ['lastamount'] + $summary_data [$i] ['movement'];
-				}
-
-				// 3. sum fields up for various sum statistics
-				// a) sum the amount of all capitalsources of the last month up
-				// b) sum the amount of all capitalsources of the month up (if mms_exists)
-				// c) sum the calculated amount of all capitalsources of the month up
-
-				$lastamount += $summary_data [$i] ['lastamount'];
-				if ($mms_exists === true)
-					$fixamount += $summary_data [$i] ['fixamount'];
-				$movement_calculated_month += $summary_data [$i] ['movement'];
-				$calcamount += $summary_data [$i] ['calcamount'];
-
-				$i ++;
-			}
-
-			// 4. retrieve the movement over the year until the selected month by using the values stored in mms
-
-			$movement_calculated_year_data = $this->coreMonthlySettlement->get_year_movement( $month, $year, true );
-			$movement_calculated_year = $movement_calculated_year_data ['movement_calculated'];
-			$movement_calculated_year_month = $movement_calculated_year_data ['month'];
-
-			// 4a.if mms doesn't contain all data up to the selected month, retrieve the missing data by using
-			// the value calculated for the selected month (if the diference is just this month), or if the
-			// difference is higher then calculate the missing range vby using mmf
-
-			if ($movement_calculated_year_month != $month) {
-				$startmonth = date( 'm', mktime( 0, 0, 0, $movement_calculated_year_month + 1, 1, $year ) );
-				if ($startmonth == $month) {
-					$movement_calculated_year += $movement_calculated_month;
-				} else {
-					$movement_calculated_year += $this->coreMoneyFlows->get_range_movement( $startmonth, $month, $year );
-				}
-			}
-
-			// 4b.finally round it
-
-			$movement_calculated_year = round( $movement_calculated_year, 2 );
-
-			// 5. select the final amount of the last year (to calculate the turnover/movement since the last year)
-
-			$firstamount = $this->coreMonthlySettlement->get_sum_amount( 12, $year - 1, true );
-
-			if ($month == 1) {
-				$prev_month = 12;
-				$prev_year = $year - 1;
-				$next_month = $month + 1;
-				$next_year = $year;
-			} elseif ($month == 12) {
-				$prev_month = $month - 1;
-				$prev_year = $year;
-				$next_month = 1;
-				$next_year = $year + 1;
-			} else {
-				$prev_month = $month - 1;
-				$prev_year = $year;
-				$next_month = $month + 1;
-				$next_year = $year;
-			}
-
-			$prev_link = $this->coreMoneyFlows->month_has_moneyflows( $prev_month, $prev_year );
-			$next_link = $this->coreMoneyFlows->month_has_moneyflows( $next_month, $next_year );
-
-			$month = array (
-					'nummeric' => sprintf( '%02d', $month ),
-					'name' => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int ) $month )
-			);
-
-			$this->template->assign( 'PREV_MONTH', $prev_month );
-			$this->template->assign( 'PREV_YEAR', $prev_year );
-			$this->template->assign( 'PREV_LINK', $prev_link );
-			$this->template->assign( 'NEXT_MONTH', $next_month );
-			$this->template->assign( 'NEXT_YEAR', $next_year );
-			$this->template->assign( 'NEXT_LINK', $next_link );
-
-			$this->template->assign( 'MONTH', $month );
-			$this->template->assign( 'YEAR', $year );
-			$this->template->assign( 'SORTBY', $sortby );
-			$this->template->assign( 'NEWORDER', $neworder );
-			$this->template->assign( 'ORDER', $order );
-			$this->template->assign( 'SUMMARY_DATA', $summary_data );
-			$this->template->assign( 'LASTAMOUNT', $lastamount );
-			$this->template->assign( 'FIRSTAMOUNT', $firstamount );
-			$this->template->assign( 'FIXAMOUNT', $fixamount );
-			$this->template->assign( 'MON_CALCAMOUNT', $calcamount );
-			$this->template->assign( 'MON_CALCULATEDTURNOVER', $movement_calculated_month );
-			$this->template->assign( 'YEA_CALCULATEDTURNOVER', $movement_calculated_year );
-			$this->template->assign( 'MONTHLYSETTLEMENT_EXISTS', $mms_exists );
-			$this->template->assign( 'CURRENCY', $displayed_currency );
-
-			return $this->fetch_template( 'display_generate_report.tpl' );
-		}
 	}
 
 	function display_plot_trends($all_data) {

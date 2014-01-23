@@ -1,6 +1,6 @@
 <?php
 
-namespace rest\api\model\capitalsource\transport;
+namespace rest\api\model\transport;
 
 class CapitalsourceTransport {
 	public $id;

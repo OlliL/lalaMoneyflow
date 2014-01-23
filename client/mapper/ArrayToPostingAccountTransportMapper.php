@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToPostingAccountTransportMapper.php,v 1.1 2014/01/05 19:08:17 olivleh1 Exp $
+// $Id: ArrayToPostingAccountTransportMapper.php,v 1.2 2014/01/23 20:20:23 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
-use rest\api\model\postingaccount\transport\PostingAccountTransport;
+use rest\api\model\transport\PostingAccountTransport;
 
 class ArrayToPostingAccountTransportMapper extends AbstractArrayMapper {
 

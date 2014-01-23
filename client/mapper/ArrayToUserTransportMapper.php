@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToUserTransportMapper.php,v 1.1 2013/09/07 23:44:33 olivleh1 Exp $
+// $Id: ArrayToUserTransportMapper.php,v 1.2 2014/01/23 20:20:23 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
-use rest\api\model\user\transport\UserTransport;
+use rest\api\model\transport\UserTransport;
 
 class ArrayToUserTransportMapper extends AbstractArrayMapper {
 

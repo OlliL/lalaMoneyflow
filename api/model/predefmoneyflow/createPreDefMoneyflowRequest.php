@@ -2,7 +2,7 @@
 
 namespace rest\api\model\predefmoneyflow;
 
-use rest\api\model\predefmoneyflow\transport\PreDefMoneyflowTransport;
+use rest\api\model\transport\PreDefMoneyflowTransport;
 
 class createPreDefMoneyflowRequest {
 	public $preDefMoneyflowTransport;

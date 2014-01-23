@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToCapitalsourceTransportMapper.php,v 1.1 2013/09/07 22:46:31 olivleh1 Exp $
+// $Id: ArrayToCapitalsourceTransportMapper.php,v 1.2 2014/01/23 20:20:23 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
-use rest\api\model\capitalsource\transport\CapitalsourceTransport;
+use rest\api\model\transport\CapitalsourceTransport;
 
 class ArrayToCapitalsourceTransportMapper extends AbstractArrayMapper {
 

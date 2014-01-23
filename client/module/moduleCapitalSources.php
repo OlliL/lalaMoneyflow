@@ -26,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.34 2013/09/08 00:48:54 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.35 2014/01/23 20:20:22 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -38,40 +38,22 @@ class moduleCapitalSources extends module {
 	}
 
 	public final function display_list_capitalsources($letter) {
-		$all_index_letters = CallServer::getInstance()->getAllCapitalsourceInitials();
+		$maxRows = $this->coreTemplates->get_max_rows();
+		$listCapitalsources = CallServer::getInstance()->listCapitalsources( $maxRows, $letter );
 
-		if (! $letter) {
-			$num_sources = CallServer::getInstance()->getAllCapitalsourceCount();
-			if ($num_sources < $this->coreTemplates->get_max_rows()) {
-				$letter = 'all';
+		$all_index_letters = $listCapitalsources ['initials'];
+		$all_data = $listCapitalsources ['capitalsources'];
+
+		foreach ( $all_data as $key => $data ) {
+			$all_data [$key] ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $data ['state'] );
+			$all_data [$key] ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $data ['type'] );
+			if ($data ['mur_userid'] == USERID) {
+				$all_data [$key] ['owner'] = true;
+			} else {
+				$all_data [$key] ['owner'] = false;
 			}
 		}
-
-		if ($letter == 'all') {
-			$all_data = CallServer::getInstance()->getAllCapitalsources();
-		} elseif (! empty( $letter )) {
-			$all_data = CallServer::getInstance()->getAllCapitalsourcesByInitial( $letter );
-			if (! is_array( all_data )) {
-				$all_data = CallServer::getInstance()->getAllCapitalsources();
-				$letter = 'all';
-			}
-		} else {
-			$all_data = array ();
-		}
-
-		if (is_array( $all_data )) {
-
-			foreach ( $all_data as $key => $data ) {
-				$all_data [$key] ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $data ['state'] );
-				$all_data [$key] ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $data ['type'] );
-				if ($data ['mur_userid'] == USERID) {
-					$all_data [$key] ['owner'] = true;
-				} else {
-					$all_data [$key] ['owner'] = false;
-				}
-			}
-			$this->template->assign( 'ALL_DATA', $all_data );
-		}
+		$this->template->assign( 'ALL_DATA', $all_data );
 
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
@@ -113,8 +95,8 @@ class moduleCapitalSources extends module {
 						$this->template->assign( 'CLOSE', 1 );
 						break;
 					} else {
-						foreach ( $ret['errors'] as $validationResult ) {
-							$error = $validationResult['error'];
+						foreach ( $ret ['errors'] as $validationResult ) {
+							$error = $validationResult ['error'];
 
 							add_error( $error );
 

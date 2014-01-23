@@ -2,7 +2,7 @@
 
 namespace rest\api\model\contractpartner;
 
-use rest\api\model\contractpartner\transport\ContractpartnerTransport;
+use rest\api\model\transport\ContractpartnerTransport;
 
 class updateContractpartnerRequest {
 	public $contractpartnerTransport;

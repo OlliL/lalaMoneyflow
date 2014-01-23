@@ -1,6 +1,6 @@
 <?php
 
-namespace rest\api\model\contractpartner\transport;
+namespace rest\api\model\transport;
 
 class ContractpartnerTransport {
 	public $id;

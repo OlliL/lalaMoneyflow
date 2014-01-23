@@ -2,7 +2,7 @@
 
 namespace rest\api\model\user;
 
-use rest\api\model\user\transport\UserTransport;
+use rest\api\model\transport\UserTransport;
 
 class getUserByIdResponse {
 	public $userTransport;

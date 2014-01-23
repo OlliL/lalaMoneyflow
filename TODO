@@ -24,6 +24,7 @@ Bugs detected so far:
    - when comparing data (bank account vs. moneyflow) entries marked as private from an other user are not detected by
    	coreMoneyFlows::find_single_moneyflow
      even if this is fixed, MoneyflowService::getMoneyflowById() later on will not find them.
+   - Month > 12 should not be accepted for list_reports
      
 
 - evaluate:

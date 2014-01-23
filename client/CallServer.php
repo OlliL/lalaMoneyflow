@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.22 2014/01/05 19:08:17 olivleh1 Exp $
+// $Id: CallServer.php,v 1.23 2014/01/23 20:20:23 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -95,7 +95,8 @@ class CallServer extends AbstractJsonSender {
 	}
 
 	private final function getJson($url) {
-		$response = Request::get( $url )->withoutStrictSsl()->addOnCurlOption( CURLOPT_ENCODING, 'compress, deflate, gzip' )->send();
+		// $response = Request::get( $url )->withoutStrictSsl()->addOnCurlOption( CURLOPT_ENCODING, 'compress, deflate, gzip' )->send();
+		$response = Request::get( $url )->withoutStrictSsl()->send();
 		if ($response->code == 204) {
 			return false;
 		} else {
@@ -172,6 +173,33 @@ class CallServer extends AbstractJsonSender {
 	}
 
 	/*
+	 * Report
+	 */
+	public final function listReports($year, $month) {
+		$url = URLPREFIX . SERVERPREFIX . 'report/listReports/' . $year . '/' . $month . '/' . $this->sessionId;
+		$result = self::getJson( $url );
+		if (is_array( $result )) {
+			$listReports = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\report' );
+			if (is_array( $listReports->getMoneyflowTransport() )) {
+				$result ['moneyflows'] = parent::mapArray( $listReports->getMoneyflowTransport() );
+			} else {
+				$result ['moneyflows'] = '';
+			}
+			if (is_array( $listReports->getCapitalsourceTransport() )) {
+				$result ['capitalsources'] = parent::mapArray( $listReports->getCapitalsourceTransport() );
+			} else {
+				$result ['capitalsources'] = '';
+			}
+			$result ['allYears'] = $listReports->getAllYears();
+			$result ['allMonth'] = $listReports->getAllMonth();
+			$result ['year'] = $listReports->getYear();
+			$result ['month'] = $listReports->getMonth();
+		}
+
+		return $result;
+	}
+
+	/*
 	 * MoneyflowService
 	 */
 	public final function getMoneyflowById($id) {
@@ -212,26 +240,6 @@ class CallServer extends AbstractJsonSender {
 		return $result;
 	}
 
-	public final function getAllMoneyflowYears() {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getAllYears/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$getAllYearsResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\moneyflow' );
-			$result = $getAllYearsResponse->getYears();
-		}
-		return $result;
-	}
-
-	public final function getAllMoneyflowMonth($year) {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getAllMonth/' . $year . '/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$getAllMonthResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\moneyflow' );
-			$result = $getAllMonthResponse->getMonth();
-		}
-		return $result;
-	}
-
 	public final function createMoneyflows(array $moneyflows) {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/createMoneyflows/' . $this->sessionId;
 
@@ -267,6 +275,22 @@ class CallServer extends AbstractJsonSender {
 	/*
 	 * CapitalsourceService
 	 */
+	public final function listCapitalsources($maxRows, $restriction) {
+		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/listCapitalsources/' . $maxRows . '/' . $restriction . '/' . $this->sessionId;
+		$result = self::getJson( $url );
+		if (is_array( $result )) {
+			$listCapitalsources = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
+			if (is_array( $listCapitalsources->getCapitalsourceTransport() )) {
+				$result ['capitalsources'] = parent::mapArray( $listCapitalsources->getCapitalsourceTransport() );
+			} else {
+				$result ['capitalsources'] = array ();
+			}
+			$result ['initials'] = $listCapitalsources->getInitials();
+		}
+
+		return $result;
+	}
+
 	public final function getAllCapitalsources() {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getAllCapitalsources/' . $this->sessionId;
 		$result = self::getJson( $url );
@@ -289,20 +313,6 @@ class CallServer extends AbstractJsonSender {
 			$getAllCapitalsourcesByDateRangeResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
 			if (is_array( $getAllCapitalsourcesByDateRangeResponse->getCapitalsourceTransport() )) {
 				$result = parent::mapArray( $getAllCapitalsourcesByDateRangeResponse->getCapitalsourceTransport() );
-			} else {
-				$result = '';
-			}
-		}
-		return $result;
-	}
-
-	public final function getAllCapitalsourcesByInitial($initial) {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getAllCapitalsourcesByInitial/' . $initial . '/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$getAllCapitalsourcesByInitialResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
-			if (is_array( $getAllCapitalsourcesByInitialResponse->getCapitalsourceTransport() )) {
-				$result = parent::mapArray( $getAllCapitalsourcesByInitialResponse->getCapitalsourceTransport() );
 			} else {
 				$result = '';
 			}
@@ -531,7 +541,6 @@ class CallServer extends AbstractJsonSender {
 		return self::deleteJson( $url );
 	}
 
-
 	/*
 	 * PostingAccountService
 	 */
@@ -548,7 +557,6 @@ class CallServer extends AbstractJsonSender {
 		}
 		return $result;
 	}
-
 }
 
 ?>

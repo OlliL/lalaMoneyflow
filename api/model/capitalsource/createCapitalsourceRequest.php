@@ -2,7 +2,7 @@
 
 namespace rest\api\model\capitalsource;
 
-use rest\api\model\capitalsource\transport\CapitalsourceTransport;
+use rest\api\model\transport\CapitalsourceTransport;
 
 class createCapitalsourceRequest {
 	public $capitalsourceTransport;

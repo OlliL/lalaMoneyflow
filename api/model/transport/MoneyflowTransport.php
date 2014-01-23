@@ -1,19 +1,21 @@
 <?php
 
-namespace rest\api\model\predefmoneyflow\transport;
+namespace rest\api\model\transport;
 
-class PreDefMoneyflowTransport {
+class MoneyflowTransport {
 	public $id;
 	public $userid;
+	public $bookingdate;
+	public $invoicedate;
 	public $amount;
 	public $capitalsourceid;
 	public $capitalsourcecomment;
 	public $contractpartnerid;
 	public $contractpartnername;
 	public $comment;
-	public $createdate;
-	public $onceAMonth;
-	public $lastUsed;
+	public $private;
+	public $postingaccountid;
+	public $postingaccountname;
 
 	public final function setId($id) {
 		$this->id = $id;
@@ -21,6 +23,14 @@ class PreDefMoneyflowTransport {
 
 	public final function setUserid($userid) {
 		$this->userid = $userid;
+	}
+
+	public final function setBookingdate($bookingdate) {
+		$this->bookingdate = $bookingdate;
+	}
+
+	public final function setInvoicedate($invoicedate) {
+		$this->invoicedate = $invoicedate;
 	}
 
 	public final function setAmount($amount) {
@@ -47,16 +57,8 @@ class PreDefMoneyflowTransport {
 		$this->comment = $comment;
 	}
 
-	public final function setCreatedate($createdate) {
-		$this->createdate = $createdate;
-	}
-
-	public final function setOnceAMonth($onceAMonth) {
-		$this->onceAMonth = $onceAMonth;
-	}
-
-	public final function setLastUsed($lastUsed) {
-		$this->lastUsed = $lastUsed;
+	public final function setPrivate($private) {
+		$this->private = $private;
 	}
 
 	public final function getId() {
@@ -65,6 +67,14 @@ class PreDefMoneyflowTransport {
 
 	public final function getUserid() {
 		return $this->userid;
+	}
+
+	public final function getBookingdate() {
+		return $this->bookingdate;
+	}
+
+	public final function getInvoicedate() {
+		return $this->invoicedate;
 	}
 
 	public final function getAmount() {
@@ -91,16 +101,24 @@ class PreDefMoneyflowTransport {
 		return $this->comment;
 	}
 
-	public final function getCreatedate() {
-		return $this->createdate;
+	public final function getPrivate() {
+		return $this->private;
 	}
 
-	public final function getOnceAMonth() {
-		return $this->onceAMonth;
+	public function setPostingaccountid($postingaccountid) {
+		$this->postingaccountid = $postingaccountid;
 	}
 
-	public final function getLastUsed() {
-		return $this->lastUsed;
+	public function setPostingaccountname($postingaccountname) {
+		$this->postingaccountname = $postingaccountname;
+	}
+
+	public function getPostingaccountid() {
+		return $this->postingaccountid;
+	}
+
+	public function getPostingaccountname() {
+		return $this->postingaccountname;
 	}
 }
 

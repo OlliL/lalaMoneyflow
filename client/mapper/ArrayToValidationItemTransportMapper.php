@@ -2,7 +2,7 @@
 
 namespace rest\client\mapper;
 
-use rest\api\model\validation\transport\ValidationItemTransport;
+use rest\api\model\transport\ValidationItemTransport;
 
 class ArrayToValidationItemTransportMapper extends AbstractArrayMapper {
 

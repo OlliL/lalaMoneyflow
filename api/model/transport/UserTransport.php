@@ -1,6 +1,6 @@
 <?php
 
-namespace rest\api\model\user\transport;
+namespace rest\api\model\transport;
 
 class UserTransport {
 	public $id;
