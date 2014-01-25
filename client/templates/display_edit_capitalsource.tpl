@@ -2,7 +2,7 @@
        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 {if $CLOSE != 1}
-	<head><title>lalaMoneyflow: {if $ALL_DATA.id > 0}{$TEXT_38}{else}{$TEXT_10}{/if}</title>
+	<head><title>lalaMoneyflow: {if {$CAPITALSOURCEID} > 0}{$TEXT_38}{else}{$TEXT_10}{/if}</title>
 {$HEADER}
 
 		<td align="center">
