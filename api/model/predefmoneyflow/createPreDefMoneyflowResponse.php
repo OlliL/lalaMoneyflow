@@ -1,20 +1,14 @@
 <?php
 
-namespace rest\api\model\moneyflow;
+namespace rest\api\model\predefmoneyflow;
 
-class showAddMoneyflowsResponse {
-	public $preDefMoneyflowTransport;
+use rest\api\model\transport\PreDefMoneyflowTransport;
+use rest\api\model\validation\validationResponse;
+
+class createPreDefMoneyflowResponse extends validationResponse {
 	public $capitalsourceTransport;
 	public $contractpartnerTransport;
 	public $postingAccountTransport;
-
-	public final function getPreDefMoneyflowTransport() {
-		return $this->preDefMoneyflowTransport;
-	}
-
-	public final function setPreDefMoneyflowTransport(array $preDefMoneyflowTransport) {
-		$this->preDefMoneyflowTransport = $preDefMoneyflowTransport;
-	}
 
 	public final function getCapitalsourceTransport() {
 		return $this->capitalsourceTransport;

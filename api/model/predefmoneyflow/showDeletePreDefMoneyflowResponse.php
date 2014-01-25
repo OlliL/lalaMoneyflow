@@ -4,7 +4,7 @@ namespace rest\api\model\predefmoneyflow;
 
 use rest\api\model\transport\PreDefMoneyflowTransport;
 
-class getPreDefMoneyflowByIdResponse {
+class showDeletePreDefMoneyflowResponse {
 	public $preDefMoneyflowTransport;
 
 	public final function getPreDefMoneyflowTransport() {

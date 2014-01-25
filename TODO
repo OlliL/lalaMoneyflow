@@ -29,6 +29,8 @@ Bugs detected so far:
      even if this is fixed, MoneyflowService::getMoneyflowById() later on will not find them.
    - Month > 12 should not be accepted for list_reports
    - validate that a postcode of a contractpartner must be a number
+   - check if the deletion of a PreDefMoneyflow was successfull and if not post an error message and send a propper response object.
+   - same goes for Capitalsources and Contractpartner
      
 
 - evaluate:

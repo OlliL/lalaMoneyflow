@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.41 2014/01/25 17:10:02 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.42 2014/01/25 18:45:31 olivleh1 Exp $
 //
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
@@ -78,13 +78,11 @@ class modulePreDefMoneyFlows extends module {
 					add_error( ErrorCode::CAPITALSOURCE_IS_NOT_SET );
 					$data_is_valid = false;
 				}
-				;
 
 				if (empty( $all_data ['mcp_contractpartnerid'] )) {
 					add_error( ErrorCode::CONTRACTPARTNER_IS_NOT_SET );
 					$data_is_valid = false;
 				}
-				;
 
 				if ($data_is_valid) {
 
@@ -100,7 +98,15 @@ class modulePreDefMoneyFlows extends module {
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
 
-							add_error( $error );
+							switch ($error) {
+								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
+									add_error( $error, array (
+											$all_data ['amount']
+									) );
+									break;
+								default :
+									add_error( $error );
+							}
 
 							switch ($error) {
 								case ErrorCode::CAPITALSOURCE_DOES_NOT_EXIST :
@@ -119,44 +125,29 @@ class modulePreDefMoneyFlows extends module {
 							}
 						}
 					}
+					$capitalsourceArray = $ret ['capitalsources'];
+					$contractpartner_values = $ret ['contractpartner'];
 				}
+				break;
 			default :
 				if ($predefmoneyflowid > 0) {
-					$all_data = CallServer::getInstance()->getPreDefMoneyflowById( $predefmoneyflowid );
-					if (is_array( $all_data )) {
-
-						$capitalsource = CallServer::getInstance()->getCapitalsourceById( $all_data ['mcs_capitalsourceid'] );
-						if ($capitalsource) {
-							$today = new \DateTime();
-							$today->setTime( 0, 0, 0 );
-
-							$validFrom = new \DateTime();
-							$validFrom->setTimestamp( convert_date_to_timestamp( $capitalsource ['validfrom'] ) );
-
-							$validTil = new \DateTime();
-							$validTil->setTimestamp( convert_date_to_timestamp( $capitalsource ['validtil'] ) );
-
-							if ($today < $validFrom || $today > $validTil) {
-								$capitalsourceArray = CallServer::getInstance()->getAllCapitalsources();
-							} else {
-								$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
-							}
-						}
-						$this->template->assign( 'PREDEFMONEYFLOWID', $predefmoneyflowid );
-					}
+					$showEditPreDefMoneyflow = CallServer::getInstance()->showEditPreDefMoneyflow( $predefmoneyflowid );
+					$all_data = $showEditPreDefMoneyflow ['predefmoneyflow'];
+					$capitalsourceArray = $showEditPreDefMoneyflow ['capitalsources'];
+					$contractpartner_values = $showEditPreDefMoneyflow ['contractpartner'];
 				} else {
-					$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
+					$showCreatePreDefMoneyflow = CallServer::getInstance()->showCreatePreDefMoneyflow();
+					$capitalsourceArray = $showCreatePreDefMoneyflow ['capitalsources'];
+					$contractpartner_values = $showCreatePreDefMoneyflow ['contractpartner'];
 				}
-
-				$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
-				$contractpartner_values = CallServer::getInstance()->getAllContractpartner();
-
-				$this->template->assign( 'ALL_DATA', $all_data );
-				$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 				break;
 		}
 
+		$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
+
+		$this->template->assign( 'ALL_DATA', $all_data );
+		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
+		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
@@ -172,7 +163,7 @@ class modulePreDefMoneyFlows extends module {
 					break;
 				}
 			default :
-				$all_data = CallServer::getInstance()->getPreDefMoneyflowById( $predefmoneyflowid );
+				$all_data = CallServer::getInstance()->showDeletePreDefMoneyflow( $predefmoneyflowid );
 				$this->template->assign( 'ALL_DATA', $all_data );
 				break;
 		}

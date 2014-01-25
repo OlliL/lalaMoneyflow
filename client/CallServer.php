@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.26 2014/01/25 17:10:02 olivleh1 Exp $
+// $Id: CallServer.php,v 1.27 2014/01/25 18:45:32 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -204,9 +204,9 @@ class CallServer extends AbstractJsonSender {
 	 */
 	public final function showAddMoneyflows() {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/showAddMoneyflows/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$addMoneyflow = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\moneyflow' );
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$addMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
 			if (is_array( $addMoneyflow->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $addMoneyflow->getCapitalsourceTransport() );
 			} else {
@@ -234,9 +234,9 @@ class CallServer extends AbstractJsonSender {
 
 	public final function getMoneyflowById($id) {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getMoneyflowById/' . $id . '/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$getMoneyflowByIdResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\moneyflow' );
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$getMoneyflowByIdResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
 			$result = parent::map( $getMoneyflowByIdResponse->getMoneyflowTransport() );
 		}
 		return $result;
@@ -244,25 +244,11 @@ class CallServer extends AbstractJsonSender {
 
 	public final function getAllMoneyflowsByDateRangeCapitalsourceId($validfrom, $validtil, $capitalsourceId) {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getAllMoneyflowsByDateRangeCapitalsourceId/' . $validfrom . '/' . $validtil . '/' . $capitalsourceId . '/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$getAllMoneyflowsByDateRangeCapitalsourceIdResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\moneyflow' );
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$getAllMoneyflowsByDateRangeCapitalsourceIdResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
 			if (is_array( $getAllMoneyflowsByDateRangeCapitalsourceIdResponse->getMoneyflowTransport() )) {
 				$result = parent::mapArray( $getAllMoneyflowsByDateRangeCapitalsourceIdResponse->getMoneyflowTransport() );
-			} else {
-				$result = '';
-			}
-		}
-		return $result;
-	}
-
-	public final function getMoneyflowsByMonth($year, $month) {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getMoneyflowsByMonth/' . $year . '/' . $month . '/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$getMoneyflowsByMonthResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\moneyflow' );
-			if (is_array( $getMoneyflowsByMonthResponse->getMoneyflowTransport() )) {
-				$result = parent::mapArray( $getMoneyflowsByMonthResponse->getMoneyflowTransport() );
 			} else {
 				$result = '';
 			}
@@ -286,13 +272,12 @@ class CallServer extends AbstractJsonSender {
 		$request->setMoneyflowTransport( $moneyflowTransport );
 		$request->setUsedPreDefMoneyflowIds( $preDefMoneyflowIds );
 
-		$result = self::postJson( $url, parent::json_encode_response( $request ) );
+		$response = self::postJson( $url, parent::json_encode_response( $request ) );
 
-		if ($result === true)
-			return true;
-
-		if (is_array( $result )) {
-			$createMoneyflow = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\moneyflow' );
+		if ($response === true) {
+			$result = true;
+		} else if (is_array( $response )) {
+			$createMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
 			if (is_array( $createMoneyflow->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $createMoneyflow->getCapitalsourceTransport() );
 			} else {
@@ -314,7 +299,7 @@ class CallServer extends AbstractJsonSender {
 				$result ['postingaccounts'] = array ();
 			}
 			if (is_array( $createMoneyflow->getValidationItemTransport() )) {
-				$result ['errors'] = $result ['createMoneyflowsResponse'] ['validationItemTransport'];
+				$result ['errors'] = $response ['createMoneyflowsResponse'] ['validationItemTransport'];
 			} else {
 				$result ['errors'] = array ();
 			}
@@ -342,9 +327,9 @@ class CallServer extends AbstractJsonSender {
 	 */
 	public final function showCapitalsourceList($maxRows, $restriction) {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/showCapitalsourceList/' . $maxRows . '/' . $restriction . '/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$listCapitalsources = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$listCapitalsources = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
 			if (is_array( $listCapitalsources->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $listCapitalsources->getCapitalsourceTransport() );
 			} else {
@@ -358,9 +343,9 @@ class CallServer extends AbstractJsonSender {
 
 	public final function getAllCapitalsources() {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getAllCapitalsources/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$getAllCapitalsourcesResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$getAllCapitalsourcesResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
 			if (is_array( $getAllCapitalsourcesResponse->getCapitalsourceTransport() )) {
 				$result = parent::mapArray( $getAllCapitalsourcesResponse->getCapitalsourceTransport() );
 			} else {
@@ -373,9 +358,9 @@ class CallServer extends AbstractJsonSender {
 
 	public final function getAllCapitalsourcesByDateRange($validfrom, $validtil) {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getAllCapitalsourcesByDateRange/' . $validfrom . '/' . $validtil . '/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$getAllCapitalsourcesByDateRangeResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$getAllCapitalsourcesByDateRangeResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
 			if (is_array( $getAllCapitalsourcesByDateRangeResponse->getCapitalsourceTransport() )) {
 				$result = parent::mapArray( $getAllCapitalsourcesByDateRangeResponse->getCapitalsourceTransport() );
 			} else {
@@ -387,9 +372,9 @@ class CallServer extends AbstractJsonSender {
 
 	public final function getCapitalsourceById($id) {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getCapitalsourceById/' . $id . '/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$getCapitalsourceByIdResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$getCapitalsourceByIdResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
 			$result = parent::map( $getCapitalsourceByIdResponse->getCapitalsourceTransport() );
 		}
 		return $result;
@@ -423,9 +408,9 @@ class CallServer extends AbstractJsonSender {
 	 */
 	public final function showContractpartnerList($maxRows, $restriction) {
 		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/showContractpartnerList/' . $maxRows . '/' . $restriction . '/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$listContractpartner = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\contractpartner' );
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$listContractpartner = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\contractpartner' );
 			if (is_array( $listContractpartner->getContractpartnerTransport() )) {
 				$result ['contractpartner'] = parent::mapArray( $listContractpartner->getContractpartnerTransport() );
 			} else {
@@ -439,9 +424,9 @@ class CallServer extends AbstractJsonSender {
 
 	public final function getAllContractpartner() {
 		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/getAllContractpartner/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$getAllContractpartnerResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\contractpartner' );
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$getAllContractpartnerResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\contractpartner' );
 			if (is_array( $getAllContractpartnerResponse->getContractpartnerTransport() )) {
 				$result = parent::mapArray( $getAllContractpartnerResponse->getContractpartnerTransport() );
 			} else {
@@ -453,9 +438,9 @@ class CallServer extends AbstractJsonSender {
 
 	public final function getContractpartnerById($id) {
 		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/getContractpartnerById/' . $id . '/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$getContractpartnerByIdResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\contractpartner' );
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$getContractpartnerByIdResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\contractpartner' );
 			$result = parent::map( $getContractpartnerByIdResponse->getContractpartnerTransport() );
 		}
 		return $result;
@@ -489,9 +474,9 @@ class CallServer extends AbstractJsonSender {
 	 */
 	public final function showPreDefMoneyflowList($maxRows, $restriction) {
 		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/showPreDefMoneyflowList/' . $maxRows . '/' . $restriction . '/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$listPreDefMoneyflows = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\predefmoneyflow' );
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$listPreDefMoneyflows = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\predefmoneyflow' );
 			if (is_array( $listPreDefMoneyflows->getPreDefMoneyflowTransport() )) {
 				$result ['predefmoneyflows'] = parent::mapArray( $listPreDefMoneyflows->getPreDefMoneyflowTransport() );
 			} else {
@@ -503,36 +488,147 @@ class CallServer extends AbstractJsonSender {
 		return $result;
 	}
 
-	public final function getPreDefMoneyflowById($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/getPreDefMoneyflowById/' . $id . '/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$getPreDefMoneyflowByIdResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\predefmoneyflow' );
-			$result = parent::map( $getPreDefMoneyflowByIdResponse->getPreDefMoneyflowTransport() );
+	public final function showEditPreDefMoneyflow($id) {
+		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/showEditPreDefMoneyflow/' . $id . '/' . $this->sessionId;
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$showEditPreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\predefmoneyflow' );
+			if (is_array( $showEditPreDefMoneyflow->getCapitalsourceTransport() )) {
+				$result ['capitalsources'] = parent::mapArray( $showEditPreDefMoneyflow->getCapitalsourceTransport() );
+			} else {
+				$result ['capitalsources'] = array ();
+			}
+			if (is_array( $showEditPreDefMoneyflow->getContractpartnerTransport() )) {
+				$result ['contractpartner'] = parent::mapArray( $showEditPreDefMoneyflow->getContractpartnerTransport() );
+			} else {
+				$result ['contractpartner'] = array ();
+			}
+			if ($showEditPreDefMoneyflow->getPreDefMoneyflowTransport()) {
+				$result ['predefmoneyflow'] = parent::map( $showEditPreDefMoneyflow->getPreDefMoneyflowTransport() );
+			} else {
+				$result ['predefmoneyflow'] = array ();
+			}
+			if (is_array( $showEditPreDefMoneyflow->getPostingAccountTransport() )) {
+				$result ['postingaccounts'] = parent::mapArray( $showEditPreDefMoneyflow->getPostingAccountTransport() );
+			} else {
+				$result ['postingaccounts'] = array ();
+			}
+		}
+
+		return $result;
+	}
+
+	public final function showCreatePreDefMoneyflow() {
+		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/showCreatePreDefMoneyflow/' . $this->sessionId;
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$showCreatePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\predefmoneyflow' );
+			if (is_array( $showCreatePreDefMoneyflow->getCapitalsourceTransport() )) {
+				$result ['capitalsources'] = parent::mapArray( $showCreatePreDefMoneyflow->getCapitalsourceTransport() );
+			} else {
+				$result ['capitalsources'] = array ();
+			}
+			if (is_array( $showCreatePreDefMoneyflow->getContractpartnerTransport() )) {
+				$result ['contractpartner'] = parent::mapArray( $showCreatePreDefMoneyflow->getContractpartnerTransport() );
+			} else {
+				$result ['contractpartner'] = array ();
+			}
+			if (is_array( $showCreatePreDefMoneyflow->getPostingAccountTransport() )) {
+				$result ['postingaccounts'] = parent::mapArray( $showCreatePreDefMoneyflow->getPostingAccountTransport() );
+			} else {
+				$result ['postingaccounts'] = array ();
+			}
+		}
+
+		return $result;
+	}
+
+	public final function showDeletePreDefMoneyflow($id) {
+		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/showDeletePreDefMoneyflow/' . $id . '/' . $this->sessionId;
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$showDeletePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\predefmoneyflow' );
+			$result = parent::map( $showDeletePreDefMoneyflow->getPreDefMoneyflowTransport() );
 		}
 		return $result;
 	}
 
 	public final function createPreDefMoneyflow(array $preDefMoneyflow) {
-		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/createPreDefMoneyflow/' . $this->sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/createPreDefMoneyflow/' . $this->sessionId;
 		$preDefMoneyflowTransport = parent::map( $preDefMoneyflow, ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
 
 		$request = new createPreDefMoneyflowRequest();
 		$request->setPreDefMoneyflowTransport( $preDefMoneyflowTransport );
-		return self::postJson( $url, parent::json_encode_response( $request ) );
+		$response = self::postJson( $url, parent::json_encode_response( $request ) );
+
+		if ($response === true) {
+			$result = true;
+		} else if (is_array( $response )) {
+			$reatePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\predefmoneyflow' );
+			if (is_array( $reatePreDefMoneyflow->getCapitalsourceTransport() )) {
+				$result ['capitalsources'] = parent::mapArray( $reatePreDefMoneyflow->getCapitalsourceTransport() );
+			} else {
+				$result ['capitalsources'] = array ();
+			}
+			if (is_array( $reatePreDefMoneyflow->getContractpartnerTransport() )) {
+				$result ['contractpartner'] = parent::mapArray( $reatePreDefMoneyflow->getContractpartnerTransport() );
+			} else {
+				$result ['contractpartner'] = array ();
+			}
+			if (is_array( $reatePreDefMoneyflow->getPostingAccountTransport() )) {
+				$result ['postingaccounts'] = parent::mapArray( $reatePreDefMoneyflow->getPostingAccountTransport() );
+			} else {
+				$result ['postingaccounts'] = array ();
+			}
+			if (is_array( $reatePreDefMoneyflow->getValidationItemTransport() )) {
+				$result ['errors'] = $response ['createPreDefMoneyflowResponse'] ['validationItemTransport'];
+			} else {
+				$result ['errors'] = array ();
+			}
+			$result ['result'] == $reatePreDefMoneyflow->getResult();
+		}
+		return $result;
 	}
 
 	public final function updatePreDefMoneyflow(array $preDefMoneyflow) {
-		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/updatePreDefMoneyflow/' . $this->sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/updatePreDefMoneyflow/' . $this->sessionId;
 		$preDefMoneyflowTransport = parent::map( $preDefMoneyflow, ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
 
 		$request = new updatePreDefMoneyflowRequest();
 		$request->setPreDefMoneyflowTransport( $preDefMoneyflowTransport );
-		return self::putJson( $url, parent::json_encode_response( $request ) );
+		$response = self::putJson( $url, parent::json_encode_response( $request ) );
+
+		if ($response === true) {
+			$result = true;
+		} else if (is_array( $response )) {
+			$updatePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\predefmoneyflow' );
+			if (is_array( $updatePreDefMoneyflow->getCapitalsourceTransport() )) {
+				$result ['capitalsources'] = parent::mapArray( $updatePreDefMoneyflow->getCapitalsourceTransport() );
+			} else {
+				$result ['capitalsources'] = array ();
+			}
+			if (is_array( $updatePreDefMoneyflow->getContractpartnerTransport() )) {
+				$result ['contractpartner'] = parent::mapArray( $updatePreDefMoneyflow->getContractpartnerTransport() );
+			} else {
+				$result ['contractpartner'] = array ();
+			}
+			if (is_array( $updatePreDefMoneyflow->getPostingAccountTransport() )) {
+				$result ['postingaccounts'] = parent::mapArray( $updatePreDefMoneyflow->getPostingAccountTransport() );
+			} else {
+				$result ['postingaccounts'] = array ();
+			}
+			if (is_array( $updatePreDefMoneyflow->getValidationItemTransport() )) {
+				$result ['errors'] = $response ['updatePreDefMoneyflowResponse'] ['validationItemTransport'];
+			} else {
+				$result ['errors'] = array ();
+			}
+			$result ['result'] == $updatePreDefMoneyflow->getResult();
+		}
+		return $result;
 	}
 
 	public final function deletePreDefMoneyflow($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'preDefMoneyflowService/deletePreDefMoneyflowById/' . $id . '/' . $this->sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/deletePreDefMoneyflow/' . $id . '/' . $this->sessionId;
 		return self::deleteJson( $url );
 	}
 
@@ -541,9 +637,9 @@ class CallServer extends AbstractJsonSender {
 	 */
 	public final function getAllPostingAccounts() {
 		$url = URLPREFIX . SERVERPREFIX . 'postingAccountService/getAllPostingAccounts/' . $this->sessionId;
-		$result = self::getJson( $url );
-		if (is_array( $result )) {
-			$getAllPostingAccountResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\postingaccount' );
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$getAllPostingAccountResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\postingaccount' );
 			if (is_array( $getAllPostingAccountResponse->getPostingAccountTransport() )) {
 				$result = parent::mapArray( $getAllPostingAccountResponse->getPostingAccountTransport() );
 			} else {

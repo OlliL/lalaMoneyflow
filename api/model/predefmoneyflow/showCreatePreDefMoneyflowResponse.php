@@ -1,20 +1,11 @@
 <?php
 
-namespace rest\api\model\moneyflow;
+namespace rest\api\model\predefmoneyflow;
 
-class showAddMoneyflowsResponse {
-	public $preDefMoneyflowTransport;
+class showCreatePreDefMoneyflowResponse {
 	public $capitalsourceTransport;
 	public $contractpartnerTransport;
 	public $postingAccountTransport;
-
-	public final function getPreDefMoneyflowTransport() {
-		return $this->preDefMoneyflowTransport;
-	}
-
-	public final function setPreDefMoneyflowTransport(array $preDefMoneyflowTransport) {
-		$this->preDefMoneyflowTransport = $preDefMoneyflowTransport;
-	}
 
 	public final function getCapitalsourceTransport() {
 		return $this->capitalsourceTransport;
@@ -23,7 +14,6 @@ class showAddMoneyflowsResponse {
 	public final function setCapitalsourceTransport(array $capitalsourceTransport) {
 		$this->capitalsourceTransport = $capitalsourceTransport;
 	}
-
 	public final function getContractpartnerTransport() {
 		return $this->contractpartnerTransport;
 	}
