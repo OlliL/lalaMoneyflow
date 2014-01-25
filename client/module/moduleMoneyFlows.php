@@ -26,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.69 2014/01/25 01:47:03 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.70 2014/01/25 17:10:02 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -284,7 +284,7 @@ class moduleMoneyFlows extends module {
 				}
 			default :
 				if ($realaction != 'save') {
-					$addMoneyflow = CallServer::getInstance()->addMoneyflow();
+					$addMoneyflow = CallServer::getInstance()->showAddMoneyflows();
 					$capitalsourceArray = $addMoneyflow ['capitalsources'];
 					$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
 

@@ -24,10 +24,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.40 2014/01/25 01:55:57 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.41 2014/01/25 17:10:02 olivleh1 Exp $
 //
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
+use rest\base\ErrorCode;
 
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -53,7 +54,7 @@ class modulePreDefMoneyFlows extends module {
 
 	public final function display_list_predefmoneyflows($letter) {
 		$maxRows = $this->coreTemplates->get_max_rows();
-		$listPreDefMoneyflows = CallServer::getInstance()->listPreDefMoneyflows( $maxRows, $letter );
+		$listPreDefMoneyflows = CallServer::getInstance()->showPreDefMoneyflowList( $maxRows, $letter );
 
 		$all_index_letters = $listPreDefMoneyflows ['initials'];
 		$all_data = $listPreDefMoneyflows ['predefmoneyflows'];
@@ -74,13 +75,13 @@ class modulePreDefMoneyFlows extends module {
 				$all_data ['predefmoneyflowid'] = $predefmoneyflowid;
 
 				if (empty( $all_data ['mcs_capitalsourceid'] )) {
-					add_error( 127 );
+					add_error( ErrorCode::CAPITALSOURCE_IS_NOT_SET );
 					$data_is_valid = false;
 				}
 				;
 
 				if (empty( $all_data ['mcp_contractpartnerid'] )) {
-					add_error( 128 );
+					add_error( ErrorCode::CONTRACTPARTNER_IS_NOT_SET );
 					$data_is_valid = false;
 				}
 				;

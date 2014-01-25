@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.25 2014/01/25 01:47:04 olivleh1 Exp $
+// $Id: CallServer.php,v 1.26 2014/01/25 17:10:02 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -202,8 +202,8 @@ class CallServer extends AbstractJsonSender {
 	/*
 	 * MoneyflowService
 	 */
-	public final function addMoneyflow() {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/addMoneyflow/' . $this->sessionId;
+	public final function showAddMoneyflows() {
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/showAddMoneyflows/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
 			$addMoneyflow = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\moneyflow' );
@@ -340,8 +340,8 @@ class CallServer extends AbstractJsonSender {
 	/*
 	 * CapitalsourceService
 	 */
-	public final function listCapitalsources($maxRows, $restriction) {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/listCapitalsources/' . $maxRows . '/' . $restriction . '/' . $this->sessionId;
+	public final function showCapitalsourceList($maxRows, $restriction) {
+		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/showCapitalsourceList/' . $maxRows . '/' . $restriction . '/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
 			$listCapitalsources = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\capitalsource' );
@@ -421,8 +421,8 @@ class CallServer extends AbstractJsonSender {
 	/*
 	 * ContractpartnerService
 	 */
-	public final function listContractpartner($maxRows, $restriction) {
-		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/listContractpartner/' . $maxRows . '/' . $restriction . '/' . $this->sessionId;
+	public final function showContractpartnerList($maxRows, $restriction) {
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/showContractpartnerList/' . $maxRows . '/' . $restriction . '/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
 			$listContractpartner = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\contractpartner' );
@@ -487,8 +487,8 @@ class CallServer extends AbstractJsonSender {
 	/*
 	 * PreDefMoneyflowService
 	 */
-	public final function listPreDefMoneyflows($maxRows, $restriction) {
-		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/listPreDefMoneyflows/' . $maxRows . '/' . $restriction . '/' . $this->sessionId;
+	public final function showPreDefMoneyflowList($maxRows, $restriction) {
+		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/showPreDefMoneyflowList/' . $maxRows . '/' . $restriction . '/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
 			$listPreDefMoneyflows = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\predefmoneyflow' );

@@ -2,7 +2,7 @@
 
 namespace rest\api\model\contractpartner;
 
-class listContractpartnerResponse {
+class showContractpartnerListResponse {
 	public $contractpartnerTransport;
 	public $initials;
 

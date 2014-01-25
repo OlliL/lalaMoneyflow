@@ -2,7 +2,7 @@
 
 namespace rest\api\model\capitalsource;
 
-class listCapitalsourcesResponse {
+class showCapitalsourceListResponse {
 	public $capitalsourceTransport;
 	public $initials;
 

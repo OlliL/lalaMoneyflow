@@ -2,7 +2,7 @@
 
 namespace rest\api\model\predefmoneyflow;
 
-class listPreDefMoneyflowResponse {
+class showPreDefMoneyflowListResponse {
 	public $preDefMoneyflowTransport;
 	public $initials;
 

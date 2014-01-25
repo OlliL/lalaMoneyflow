@@ -26,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.26 2014/01/25 01:47:03 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.27 2014/01/25 17:10:02 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -39,7 +39,7 @@ class moduleContractPartners extends module {
 
 	public final function display_list_contractpartners($letter) {
 		$maxRows = $this->coreTemplates->get_max_rows();
-		$listContractpartner = CallServer::getInstance()->listContractpartner( $maxRows, $letter );
+		$listContractpartner = CallServer::getInstance()->showContractpartnerList( $maxRows, $letter );
 
 		$all_index_letters = $listContractpartner ['initials'];
 		$all_data = $listContractpartner ['contractpartner'];

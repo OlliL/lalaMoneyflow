@@ -2,7 +2,7 @@
 
 namespace rest\api\model\moneyflow;
 
-class addMoneyflowResponse {
+class showAddMoneyflowsResponse {
 	public $preDefMoneyflowTransport;
 	public $capitalsourceTransport;
 	public $contractpartnerTransport;

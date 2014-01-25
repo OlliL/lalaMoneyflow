@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.36 2014/01/25 01:47:03 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.37 2014/01/25 17:10:02 olivleh1 Exp $
 //
 
 use rest\client\CallServer;
@@ -39,7 +39,7 @@ class moduleCapitalSources extends module {
 
 	public final function display_list_capitalsources($letter) {
 		$maxRows = $this->coreTemplates->get_max_rows();
-		$listCapitalsources = CallServer::getInstance()->listCapitalsources( $maxRows, $letter );
+		$listCapitalsources = CallServer::getInstance()->showCapitalsourceList( $maxRows, $letter );
 
 		$all_index_letters = $listCapitalsources ['initials'];
 		$all_data = $listCapitalsources ['capitalsources'];
