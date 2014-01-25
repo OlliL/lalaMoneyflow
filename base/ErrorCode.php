@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ErrorCode.php,v 1.1 2013/09/08 00:27:38 olivleh1 Exp $
+// $Id: ErrorCode.php,v 1.2 2014/01/25 01:47:04 olivleh1 Exp $
 //
 namespace rest\base;
 
@@ -37,8 +37,10 @@ class ErrorCode extends \SplEnum {
 	const CAPITALSOURCE_IS_NOT_SET = 127;
 	const COMMENT_IS_NOT_SET = 131;
 	const CONTRACTPARTNER_IS_NOT_SET = 128;
+	const INVOICEDATE_IN_WRONG_FORMAT = 129;
 	const BOOKINGDATE_IN_WRONG_FORMAT = 130;
 	const AMOUNT_IN_WRONG_FORMAT = 132;
+	const DATE_FORMAT_NOT_CORRECT = 147;
 	const AMOUNT_IS_ZERO = 200;
 	const NAME_ALREADY_EXISTS = 203;
 	const ACCOUNT_NUMBER_NOT_A_NUMBER = 225;

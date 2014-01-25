@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.38 2013/09/08 18:08:03 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.39 2014/01/25 01:47:04 olivleh1 Exp $
 //
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
@@ -52,26 +52,13 @@ class modulePreDefMoneyFlows extends module {
 	}
 
 	public final function display_list_predefmoneyflows($letter) {
-		$all_index_letters = CallServer::getInstance()->getAllPreDefMoneyflowInitials();
+		$maxRows = $this->coreTemplates->get_max_rows();
+		$listPreDefMoneyflows = CallServer::getInstance()->listPreDefMoneyflows( $maxRows, $letter );
 
-		if (! $letter) {
-			$num_flows = CallServer::getInstance()->getAllPreDefMoneyflowCount();
-			if ($num_flows < $this->coreTemplates->get_max_rows()) {
-				$letter = 'all';
-			}
-		}
+		$all_index_letters = $listPreDefMoneyflows ['initials'];
+		$all_data = $listPreDefMoneyflows ['predefmoneyflows'];
 
-		if ($letter == 'all') {
-			$all_data = CallServer::getInstance()->getAllPreDefMoneyflows();
-		} elseif (! empty( $letter )) {
-			$all_data = CallServer::getInstance()->getAllPreDefMoneyflowsByInitial( $letter );
-		} else {
-			$all_data = array ();
-		}
-		if (is_array( $all_data )) {
-			$this->template->assign( 'ALL_DATA', $all_data );
-		}
-
+		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );

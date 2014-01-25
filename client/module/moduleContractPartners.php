@@ -26,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.25 2013/09/08 00:48:54 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.26 2014/01/25 01:47:03 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -38,25 +38,13 @@ class moduleContractPartners extends module {
 	}
 
 	public final function display_list_contractpartners($letter) {
-		$all_index_letters = CallServer::getInstance()->getAllContractpartnerInitials();
+		$maxRows = $this->coreTemplates->get_max_rows();
+		$listContractpartner = CallServer::getInstance()->listContractpartner( $maxRows, $letter );
 
-		if (! $letter) {
-			$num_sources = CallServer::getInstance()->getAllContractpartnerCount();
-			if ($num_sources < $this->coreTemplates->get_max_rows()) {
-				$letter = 'all';
-			}
-		}
+		$all_index_letters = $listContractpartner ['initials'];
+		$all_data = $listContractpartner ['contractpartner'];
 
-		if ($letter == 'all') {
-			$all_data = CallServer::getInstance()->getAllContractpartner();
-		} elseif (! empty( $letter )) {
-			$all_data = CallServer::getInstance()->getAllContractpartnerByInitial( $letter );
-		} else {
-			$all_data = array ();
-		}
-		if (is_array( $all_data )) {
-			$this->template->assign( 'ALL_DATA', $all_data );
-		}
+		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 
@@ -90,17 +78,18 @@ class moduleContractPartners extends module {
 					}
 					$this->template->assign( 'ALL_DATA', $all_data );
 				}
-				break;
 			default :
-				if ($contractpartnerid > 0) {
-					$all_data = CallServer::getInstance()->getContractpartnerById( $contractpartnerid );
-					if ($all_data) {
-						$this->template->assign( 'ALL_DATA', $all_data );
+				if (! is_array( $all_data )) {
+					if ($contractpartnerid > 0) {
+						$all_data = CallServer::getInstance()->getContractpartnerById( $contractpartnerid );
+						if ($all_data) {
+						}
 					}
 				}
 				break;
 		}
 
+		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );

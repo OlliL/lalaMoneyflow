@@ -2,8 +2,9 @@
 
 namespace rest\api\model\predefmoneyflow;
 
-class getAllPreDefMoneyflowsByInitialResponse {
+class listPreDefMoneyflowResponse {
 	public $preDefMoneyflowTransport;
+	public $initials;
 
 	public final function getPreDefMoneyflowTransport() {
 		return $this->preDefMoneyflowTransport;
@@ -11,6 +12,14 @@ class getAllPreDefMoneyflowsByInitialResponse {
 
 	public final function setPreDefMoneyflowTransport(array $preDefMoneyflowTransport) {
 		$this->preDefMoneyflowTransport = $preDefMoneyflowTransport;
+	}
+
+	public final function getInitials() {
+		return $this->initials;
+	}
+
+	public final function setInitials(array $initials) {
+		$this->initials = $initials;
 	}
 }
 

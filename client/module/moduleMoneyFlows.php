@@ -26,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.68 2014/01/05 19:08:17 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.69 2014/01/25 01:47:03 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -71,7 +71,7 @@ class moduleMoneyFlows extends module {
 				}
 
 				if (! convert_date_to_db( $all_data ['bookingdate'] )) {
-					add_error( 130, array (
+					add_error( ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT, array (
 							GUI_DATE_FORMAT
 					) );
 					$all_data ['bookingdate_error'] = 1;
@@ -82,7 +82,7 @@ class moduleMoneyFlows extends module {
 					}
 				}
 				if (! convert_date_to_db( $all_data ['invoicedate'] )) {
-					add_error( 129, array (
+					add_error( ErrorCode::INVOICEDATE_IN_WRONG_FORMAT, array (
 							GUI_DATE_FORMAT
 					) );
 					$all_data ['invoicedate_error'] = 1;
@@ -183,12 +183,6 @@ class moduleMoneyFlows extends module {
 	}
 
 	function display_add_moneyflow($realaction, $all_data) {
-		$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
-		$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
-
-		$contractpartner_values = CallServer::getInstance()->getAllContractpartner();
-		$postingaccount_values = CallServer::getInstance()->getAllPostingAccounts();
-
 		switch ($realaction) {
 			case 'save' :
 				$data_is_valid = true;
@@ -203,7 +197,7 @@ class moduleMoneyFlows extends module {
 						$nothing_checked = false;
 						if (! empty( $value ['invoicedate'] )) {
 							if (! convert_date_to_db( $value ['invoicedate'] )) {
-								add_error( 129, array (
+								add_error( ErrorCode::INVOICEDATE_IN_WRONG_FORMAT, array (
 										GUI_DATE_FORMAT
 								) );
 								$all_data [$id] ['invoicedate_error'] = 1;
@@ -211,7 +205,7 @@ class moduleMoneyFlows extends module {
 						}
 
 						if (! convert_date_to_db( $value ['bookingdate'] )) {
-							add_error( 130, array (
+							add_error( ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT, array (
 									GUI_DATE_FORMAT
 							) );
 							$all_data [$id] ['bookingdate_error'] = 1;
@@ -230,11 +224,19 @@ class moduleMoneyFlows extends module {
 
 				if ($data_is_valid) {
 
-					$ret = CallServer::getInstance()->createMoneyflows( $add_data );
+					$createMoneyflows = CallServer::getInstance()->createMoneyflows( $add_data );
+					$capitalsourceArray = $createMoneyflows ['capitalsources'];
+					$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
 
-					if ($ret !== true) {
+					$contractpartner_values = $createMoneyflows ['contractpartner'];
+					$postingaccount_values = $createMoneyflows ['postingaccounts'];
+
+					$result = $createMoneyflows ['result'];
+					if ($result === true) {
+						$all_data_pre = $addMoneyflow ['predefmoneyflows'];
+					} else {
 						$data_is_valid = false;
-						foreach ( $ret ['errors'] as $validationResult ) {
+						foreach ( $createMoneyflows ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
 							$key = $validationResult ['key'];
 
@@ -277,16 +279,24 @@ class moduleMoneyFlows extends module {
 					}
 				}
 
-				if (! $data_is_valid)
+				if (! $data_is_valid) {
 					break;
+				}
 			default :
+				if ($realaction != 'save') {
+					$addMoneyflow = CallServer::getInstance()->addMoneyflow();
+					$capitalsourceArray = $addMoneyflow ['capitalsources'];
+					$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
+
+					$contractpartner_values = $addMoneyflow ['contractpartner'];
+					$postingaccount_values = $addMoneyflow ['postingaccounts'];
+					$all_data_pre = $addMoneyflow ['predefmoneyflows'];
+				}
 				// clean the array before filling it.
 				$all_data = array ();
 				$date = convert_date_to_gui( date( 'Y-m-d' ) );
 
 				$numflows = $this->coreSettings->get_num_free_moneyflows( USERID );
-
-				$all_data_pre = CallServer::getInstance()->getAllPreDefMoneyflows();
 
 				for($i = $numflows; $i > 0; $i --) {
 					$all_data [$numflows - $i] = array (

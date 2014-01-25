@@ -1,8 +1,6 @@
 <?php
-use rest\client\CallServer;
-use rest\base\ErrorCode;
 //
-// Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2005-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,9 +24,11 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.35 2014/01/23 20:20:22 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.36 2014/01/25 01:47:03 olivleh1 Exp $
 //
 
+use rest\client\CallServer;
+use rest\base\ErrorCode;
 require_once 'module/module.php';
 
 class moduleCapitalSources extends module {
@@ -54,7 +54,6 @@ class moduleCapitalSources extends module {
 			}
 		}
 		$this->template->assign( 'ALL_DATA', $all_data );
-
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 
@@ -71,14 +70,14 @@ class moduleCapitalSources extends module {
 				$valid_data = true;
 				$all_data ['capitalsourceid'] = $capitalsourceid;
 				if (! convert_date_to_db( $all_data ['validfrom'] )) {
-					add_error( 147, array (
+					add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
 							GUI_DATE_FORMAT
 					) );
 					$all_data ['validfrom_error'] = 1;
 					$valid_data = false;
 				}
 				if (! convert_date_to_db( $all_data ['validtil'] )) {
-					add_error( 147, array (
+					add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
 							GUI_DATE_FORMAT
 					) );
 					$all_data ['validtil_error'] = 1;

@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.66 2014/01/23 20:20:22 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.67 2014/01/25 01:47:04 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -53,13 +53,9 @@ class moduleReports extends module {
 		$this->coreSettings = new coreSettings();
 	}
 
-	// uses REST Service
 	public final function display_list_reports($month, $year, $sortby, $order) {
 		if (! $year)
 			$year = date( 'Y' );
-
-// 		$years = CallServer::getInstance()->getAllMoneyflowYears();
-// 		$temp_months = CallServer::getInstance()->getAllMoneyflowMonth( $year );
 
 		$listReports = CallServer::getInstance()->listReports($year, $month);
 		$years = $listReports['allYears'];
@@ -68,13 +64,6 @@ class moduleReports extends module {
 		$month = $listReports['month'];
 		$_all_moneyflow_data = $listReports['moneyflows'];
 		$all_capitalsources = $listReports['capitalsources'];
-
-		// there are no months for the selected year
-// 		if (! is_array( $temp_months )) {
-// 			$year = $years [count( $years ) - 1];
-// 			$temp_months = CallServer::getInstance()->getAllMoneyflowMonth( $year );
-// 			$month = NULL;
-// 		}
 
 		if (is_array( $allMonth )) {
 			foreach ( $allMonth as $key => $value ) {
@@ -107,7 +96,6 @@ class moduleReports extends module {
 					$neworder = 'ASC';
 			}
 
-// 			$_all_moneyflow_data = CallServer::getInstance()->getMoneyflowsByMonth( $year, $month );
 			if ($_all_moneyflow_data) {
 
 				// TODO: old shit
@@ -181,8 +169,6 @@ class moduleReports extends module {
 				// f) movement during the month
 				// g) amount they should had at the end of the month
 				// h) differnece between e and f (if mms_exists)
-
-// 				$all_capitalsources = CallServer::getInstance()->getAllCapitalsourcesByDateRange( mktime( 0, 0, 0, $month, 1, $year ), mktime( 0, 0, 0, $month + 1, 0, $year ) );
 
 				foreach ( $all_capitalsources as $capitalsource ) {
 					$capitalsourceid = $capitalsource ['capitalsourceid'];
@@ -310,8 +296,9 @@ class moduleReports extends module {
 		}
 
 		$years = $this->coreMonthlySettlement->get_all_years();
-		// add the actual year to the years if the year changed no monthlysettlement
-		// exists in that year during january - but you might want to see a prognose
+		// add the current year to the list off displayable years in case last year found
+		// is not the current year so you can see a trend in january if the last reccorded
+		// monthly settlement is from december of the last year
 		if ($years [count( $years ) - 1] != date( 'Y' )) {
 			$years [] = date( 'Y' );
 		}
