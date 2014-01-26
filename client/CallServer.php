@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.29 2014/01/26 12:12:02 olivleh1 Exp $
+// $Id: CallServer.php,v 1.30 2014/01/26 14:23:45 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -57,6 +57,7 @@ class CallServer extends AbstractJsonSender {
 		parent::addMapper( 'rest\client\mapper\ArrayToUserTransportMapper', ClientArrayMapperEnum::USER_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToPostingAccountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToCompareDataFormatTransportMapper', ClientArrayMapperEnum::COMPAREDATAFORMAT_TRANSPORT );
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
 		) ) );
@@ -766,6 +767,30 @@ class CallServer extends AbstractJsonSender {
 				$result = '';
 			}
 		}
+		return $result;
+	}
+
+	/*
+	 * CompareDataController
+	 */
+	public final function showCompareDataForm() {
+		$url = URLPREFIX . SERVERPREFIX . 'comparedata/showCompareDataForm/' . $this->sessionId;
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$showCompareDataForm = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\comparedata' );
+
+			if (is_array( $showCompareDataForm->getCapitalsourceTransport() )) {
+				$result ['capitalsources'] = parent::mapArray( $showCompareDataForm->getCapitalsourceTransport() );
+			} else {
+				$result ['capitalsources'] = array ();
+			}
+			if (is_array( $showCompareDataForm->getCompareDataFormatTransport() )) {
+				$result ['comparedataformats'] = parent::mapArray( $showCompareDataForm->getCompareDataFormatTransport() );
+			} else {
+				$result ['comparedataformats'] = array ();
+			}
+		}
+
 		return $result;
 	}
 }

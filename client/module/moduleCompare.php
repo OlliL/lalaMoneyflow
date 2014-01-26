@@ -1,7 +1,7 @@
 <?php
 use rest\client\CallServer;
 //
-// Copyright (c) 2007-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2007-2013 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.29 2014/01/26 12:24:48 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.30 2014/01/26 14:23:45 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCompare.php';
@@ -56,20 +56,19 @@ class moduleCompare extends module {
 	}
 
 	private final function getCapitalsourceComment($capitalsourceId) {
-		$all_data = CallServer::getInstance()->getCapitalsourceById($capitalsourceId);
-		return $all_data['comment'];
+		$all_data = CallServer::getInstance()->getCapitalsourceById( $capitalsourceId );
+		return $all_data ['comment'];
 	}
 
 	private final function getContractpartnerName($contractpartnerId) {
-		$all_data = CallServer::getInstance()->getContractpartnerById($contractpartnerId);
-		return $all_data['name'];
+		$all_data = CallServer::getInstance()->getContractpartnerById( $contractpartnerId );
+		return $all_data ['name'];
 	}
 
 	function display_upload_form($all_data = array()) {
-		$format_values = $this->coreCompare->get_all_data();
-
-		$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
-		$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
+		$showCompareDataForm = CallServer::getInstance()->showCompareDataForm();
+		$format_values = $showCompareDataForm ['comparedataformats'];
+		$capitalsource_values = $showCompareDataForm ['capitalsources'];
 
 		if (count( $all_data ) === 0) {
 			$all_data ['startdate'] = convert_date_to_gui( date( "Y-m-d", mktime( 0, 0, 0, date( 'm', time() ), 1, date( 'Y', time() ) ) ) );
@@ -215,7 +214,7 @@ class moduleCompare extends module {
 						$result_count = count( $results );
 
 						foreach ( $results as $result ) {
-							$moneyflowid = $result['moneyflowid'];
+							$moneyflowid = $result ['moneyflowid'];
 							if ($moneyflow_used [$moneyflowid] != 1) {
 								$moneyflow = CallServer::getInstance()->getMoneyflowById( $moneyflowid );
 
@@ -317,7 +316,7 @@ class moduleCompare extends module {
 				}
 			}
 
-			$moneyflows = CallServer::getInstance()->getAllMoneyflowsByDateRangeCapitalsourceId($startdate, $enddate, $all_data ['mcs_capitalsourceid']);
+			$moneyflows = CallServer::getInstance()->getAllMoneyflowsByDateRangeCapitalsourceId( $startdate, $enddate, $all_data ['mcs_capitalsourceid'] );
 
 			$all_not_mon_data_cnt = 0;
 			if ($matching_moneyflowids) {
@@ -336,7 +335,7 @@ class moduleCompare extends module {
 							$owner = false;
 						}
 
-						$db_array = $this->fill_db_array( $db_array, $moneyflow ['bookingdate'] ,  $moneyflow ['invoicedate'], $moneyflow ['amount'], $my_capitalsourcecomment, $this->getContractpartnerName( $moneyflow ['mcp_contractpartnerid'] ), $moneyflow ['comment'], $moneyflow ['moneyflowid'], $owner );
+						$db_array = $this->fill_db_array( $db_array, $moneyflow ['bookingdate'], $moneyflow ['invoicedate'], $moneyflow ['amount'], $my_capitalsourcecomment, $this->getContractpartnerName( $moneyflow ['mcp_contractpartnerid'] ), $moneyflow ['comment'], $moneyflow ['moneyflowid'], $owner );
 						$db_array_id = count( $db_array );
 
 						$only_in_db_ids [] = array (

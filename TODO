@@ -1,16 +1,12 @@
--1. move all the "service" Controller forward methods to client based / view based controller methods to reduce
-    multiple HTTP calls and to live the "Controller way" which is a client depending interface
-    
--  implement a second getAllCapitalsourcesByDateRange which only returns the allowed Capitalsources to be used in the
-   new REST calls so no addition filter is needed
-
--  move Compare stuff to server
+0.  move Compare stuff to server
 
 1. implement the remaining coreMoneyflows on Serverside.
 
 2. implement Logout Call to destroy the session on the server.
 
 3. continue removing Core Classes
+   - move all the remaining "service" Controller forward methods to client based / view based controller methods to reduce
+     multiple HTTP calls and to live the "Controller way" which is a client depending interface
    - implement REST/JSON Services + use them
    - move calc_amount to the client (for the time being, the personal Currency handling is broken)
    - think about language handling - it is no longer DB backed but cache backed in files

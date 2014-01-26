@@ -1,7 +1,6 @@
 <?php
-
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2013-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,19 +24,30 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ClientArrayMapperEnum.php,v 1.9 2014/01/26 14:23:45 olivleh1 Exp $
+// $Id: CompareDataFormatTransport.php,v 1.1 2014/01/26 14:23:45 olivleh1 Exp $
 //
-namespace rest\client\mapper;
+namespace rest\api\model\transport;
 
-class ClientArrayMapperEnum {
-	const CAPITALSOURCE_TRANSPORT = 'ClientCapitalsourceTransport';
-	const CONTRACTPARTNER_TRANSPORT = 'ClientContractpartnerTransport';
-	const MONEYFLOW_TRANSPORT = 'ClientMoneyflowTransport';
-	const PREDEFMONEYFLOW_TRANSPORT = 'ClientPreDefMoneyflowTransport';
-	const USER_TRANSPORT = 'ClientUserTransport';
-	const POSTINGACCOUNT_TRANSPORT = 'PostingAccountTransport';
-	const VALIDATIONITEM_TRANSPORT = 'ClientValidationItemTransport';
-	const COMPAREDATAFORMAT_TRANSPORT = 'CompareDataFormatTransport';
+class CompareDataFormatTransport {
+	public static $serialVersionUID = 1;
+	public $formatId;
+	public $name;
+
+	public final function setFormatId($formatId) {
+		$this->formatId = $formatId;
+	}
+
+	public final function setName($name) {
+		$this->name = $name;
+	}
+
+	public final function getFormatId() {
+		return $this->formatId;
+	}
+
+	public final function getName() {
+		return $this->name;
+	}
 }
 
 ?>
