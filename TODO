@@ -1,7 +1,10 @@
 -1. move all the "service" Controller forward methods to client based / view based controller methods to reduce
     multiple HTTP calls and to live the "Controller way" which is a client depending interface
     
-0. validation for PreDefMoneyflows on serverside (reduce client side afterwards)
+-  implement a second getAllCapitalsourcesByDateRange which only returns the allowed Capitalsources to be used in the
+   new REST calls so no addition filter is needed
+
+-  move Compare stuff to server
 
 1. implement the remaining coreMoneyflows on Serverside.
 
@@ -31,6 +34,7 @@ Bugs detected so far:
    - validate that a postcode of a contractpartner must be a number
    - check if the deletion of a PreDefMoneyflow was successfull and if not post an error message and send a propper response object.
    - same goes for Capitalsources and Contractpartner
+
      
 
 - evaluate:

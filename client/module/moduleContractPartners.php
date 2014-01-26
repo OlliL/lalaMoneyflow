@@ -26,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.27 2014/01/25 17:10:02 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.28 2014/01/26 00:34:08 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -78,12 +78,11 @@ class moduleContractPartners extends module {
 					}
 					$this->template->assign( 'ALL_DATA', $all_data );
 				}
+				break;
 			default :
-				if (! is_array( $all_data )) {
-					if ($contractpartnerid > 0) {
-						$all_data = CallServer::getInstance()->getContractpartnerById( $contractpartnerid );
-						if ($all_data) {
-						}
+				if ($contractpartnerid > 0) {
+					$all_data = CallServer::getInstance()->showEditContractpartner( $contractpartnerid );
+					if ($all_data) {
 					}
 				}
 				break;
@@ -105,7 +104,7 @@ class moduleContractPartners extends module {
 				}
 			default :
 				if ($contractpartnerid > 0) {
-					$all_data = CallServer::getInstance()->getContractpartnerById( $contractpartnerid );
+					$all_data = CallServer::getInstance()->showDeleteContractpartner( $contractpartnerid );
 					if ($all_data) {
 						$this->template->assign( 'ALL_DATA', $all_data );
 					}

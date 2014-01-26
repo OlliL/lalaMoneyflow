@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.42 2014/01/25 18:45:31 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.43 2014/01/26 00:34:08 olivleh1 Exp $
 //
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
@@ -73,16 +73,6 @@ class modulePreDefMoneyFlows extends module {
 			case 'save' :
 				$data_is_valid = true;
 				$all_data ['predefmoneyflowid'] = $predefmoneyflowid;
-
-				if (empty( $all_data ['mcs_capitalsourceid'] )) {
-					add_error( ErrorCode::CAPITALSOURCE_IS_NOT_SET );
-					$data_is_valid = false;
-				}
-
-				if (empty( $all_data ['mcp_contractpartnerid'] )) {
-					add_error( ErrorCode::CONTRACTPARTNER_IS_NOT_SET );
-					$data_is_valid = false;
-				}
 
 				if ($data_is_valid) {
 

@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.27 2014/01/25 18:45:32 olivleh1 Exp $
+// $Id: CallServer.php,v 1.28 2014/01/26 00:34:08 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -232,6 +232,10 @@ class CallServer extends AbstractJsonSender {
 		return $result;
 	}
 
+	/**
+	 *
+	 * @deprecated to be replaced by a new specific REST-Call
+	 */
 	public final function getMoneyflowById($id) {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getMoneyflowById/' . $id . '/' . $this->sessionId;
 		$response = self::getJson( $url );
@@ -242,6 +246,10 @@ class CallServer extends AbstractJsonSender {
 		return $result;
 	}
 
+	/**
+	 *
+	 * @deprecated to be replaced by a new specific REST-Call
+	 */
 	public final function getAllMoneyflowsByDateRangeCapitalsourceId($validfrom, $validtil, $capitalsourceId) {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getAllMoneyflowsByDateRangeCapitalsourceId/' . $validfrom . '/' . $validtil . '/' . $capitalsourceId . '/' . $this->sessionId;
 		$response = self::getJson( $url );
@@ -309,6 +317,10 @@ class CallServer extends AbstractJsonSender {
 		return $result;
 	}
 
+	/**
+	 *
+	 * @deprecated to be replaced by a new specific REST-Call
+	 */
 	public final function updateMoneyflow(array $moneyflow) {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/updateMoneyflow/' . $this->sessionId;
 		$moneyflowTransport = parent::map( $moneyflow, ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
@@ -341,6 +353,10 @@ class CallServer extends AbstractJsonSender {
 		return $result;
 	}
 
+	/**
+	 *
+	 * @deprecated to be replaced by a new specific REST-Call
+	 */
 	public final function getAllCapitalsources() {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getAllCapitalsources/' . $this->sessionId;
 		$response = self::getJson( $url );
@@ -356,6 +372,10 @@ class CallServer extends AbstractJsonSender {
 		return $result;
 	}
 
+	/**
+	 *
+	 * @deprecated to be replaced by a new specific REST-Call
+	 */
 	public final function getAllCapitalsourcesByDateRange($validfrom, $validtil) {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getAllCapitalsourcesByDateRange/' . $validfrom . '/' . $validtil . '/' . $this->sessionId;
 		$response = self::getJson( $url );
@@ -370,6 +390,10 @@ class CallServer extends AbstractJsonSender {
 		return $result;
 	}
 
+	/**
+	 *
+	 * @deprecated to be replaced by a new specific REST-Call
+	 */
 	public final function getCapitalsourceById($id) {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getCapitalsourceById/' . $id . '/' . $this->sessionId;
 		$response = self::getJson( $url );
@@ -422,6 +446,30 @@ class CallServer extends AbstractJsonSender {
 		return $result;
 	}
 
+	public final function showEditContractpartner($id) {
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/showEditContractpartner/' . $id . '/' . $this->sessionId;
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$showEditContractpartner = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\contractpartner' );
+			$result = parent::map( $showEditContractpartner->getContractpartnerTransport() );
+		}
+		return $result;
+	}
+
+	public final function showDeleteContractpartner($id) {
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/showDeleteContractpartner/' . $id . '/' . $this->sessionId;
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$showDeleteContractpartner = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\contractpartner' );
+			$result = parent::map( $showDeleteContractpartner->getContractpartnerTransport() );
+		}
+		return $result;
+	}
+
+	/**
+	 *
+	 * @deprecated to be replaced by a new specific REST-Call
+	 */
 	public final function getAllContractpartner() {
 		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/getAllContractpartner/' . $this->sessionId;
 		$response = self::getJson( $url );
@@ -436,6 +484,10 @@ class CallServer extends AbstractJsonSender {
 		return $result;
 	}
 
+	/**
+	 *
+	 * @deprecated to be replaced by a new specific REST-Call
+	 */
 	public final function getContractpartnerById($id) {
 		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/getContractpartnerById/' . $id . '/' . $this->sessionId;
 		$response = self::getJson( $url );
@@ -634,6 +686,10 @@ class CallServer extends AbstractJsonSender {
 
 	/*
 	 * PostingAccountService
+	 */
+	/**
+	 *
+	 * @deprecated to be replaced by a new specific REST-Call
 	 */
 	public final function getAllPostingAccounts() {
 		$url = URLPREFIX . SERVERPREFIX . 'postingAccountService/getAllPostingAccounts/' . $this->sessionId;
