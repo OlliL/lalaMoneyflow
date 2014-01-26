@@ -1,7 +1,7 @@
 <?php
 use rest\client\CallServer;
 //
-// Copyright (c) 2005-2013 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.67 2014/01/25 01:47:04 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.68 2014/01/26 12:24:48 olivleh1 Exp $
 //
 
 require_once 'module/module.php';

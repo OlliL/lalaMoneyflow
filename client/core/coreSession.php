@@ -1,7 +1,7 @@
 <?php
 use rest\client\CallServer;
 #-
-# Copyright (c) 2006-2013 Oliver Lehmann <oliver@FreeBSD.org>
+# Copyright (c) 2006-2014 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@ use rest\client\CallServer;
 # SUCH DAMAGE.
 #
 # $MCom: portstools/tinderbox/webui/module/moduleSession.php,v 1.3 2005/07/21 11:28:29 oliver Exp $
-# $Id: coreSession.php,v 1.8 2013/08/24 00:10:28 olivleh1 Exp $
+# $Id: coreSession.php,v 1.9 2014/01/26 12:24:47 olivleh1 Exp $
 #
 
 require_once 'core/core.php';

@@ -2,7 +2,7 @@
 use rest\client\CallServer;
 use rest\base\ErrorCode;
 //
-// Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2005-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.28 2014/01/26 00:34:08 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.29 2014/01/26 12:24:48 olivleh1 Exp $
 //
 
 require_once 'module/module.php';

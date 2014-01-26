@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2006-2013 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2006-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreTemplates.php,v 1.9 2013/08/11 17:04:55 olivleh1 Exp $
+// $Id: coreTemplates.php,v 1.10 2014/01/26 12:24:47 olivleh1 Exp $
 //
 require_once 'core/core.php';
 require_once 'core/coreSettings.php';

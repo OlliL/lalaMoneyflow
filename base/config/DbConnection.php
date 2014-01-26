@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: DbConnection.php,v 1.2 2013/08/18 18:09:13 olivleh1 Exp $
+// $Id: DbConnection.php,v 1.3 2014/01/26 12:24:49 olivleh1 Exp $
 //
 namespace rest\base\config;
 
