@@ -2,7 +2,7 @@
 use rest\client\CallServer;
 use rest\base\ErrorCode;
 //
-// Copyright (c) 2005-2013 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2005-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.70 2014/01/25 17:10:02 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.71 2014/01/26 12:12:02 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -42,18 +42,6 @@ class moduleMoneyFlows extends module {
 		$this->coreSettings = new coreSettings();
 	}
 
-	// TODO - duplicate code
-	// filter only the capitalsources which are owned by the user or allowed for group use.
-	private function filterCapitalsource($capitalsourceArray) {
-		if (is_array( $capitalsourceArray )) {
-			foreach ( $capitalsourceArray as $capitalsource ) {
-				if ($capitalsource ['att_group_use'] == 1 || $capitalsource ['mur_userid'] == USERID)
-					$capitalsource_values [] = $capitalsource;
-			}
-		}
-		return $capitalsource_values;
-	}
-
 	function display_edit_moneyflow($realaction, $id, $all_data) {
 		if (empty( $id ))
 			return;
@@ -66,22 +54,18 @@ class moduleMoneyFlows extends module {
 				$all_data ['moneyflowid'] = $id;
 
 				if (! fix_amount( $all_data ['amount'] )) {
-					$all_data [$id] ['amount_error'] = 1;
-					$data_is_valid = false;
+					$all_data ['amount_error'] = 1;
+					$valid_data = false;
 				}
 
-				if (! convert_date_to_db( $all_data ['bookingdate'] )) {
+				if (! dateIsValid( $all_data ['bookingdate'] )) {
 					add_error( ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT, array (
 							GUI_DATE_FORMAT
 					) );
 					$all_data ['bookingdate_error'] = 1;
 					$valid_data = false;
-					$temp_data = CallServer::getInstance()->getMoneyflowById( $id );
-					if ($temp_data) {
-						$checkdate = $all_data ['bookingdate'];
-					}
 				}
-				if (! convert_date_to_db( $all_data ['invoicedate'] )) {
+				if (! dateIsValid( $all_data ['invoicedate'] )) {
 					add_error( ErrorCode::INVOICEDATE_IN_WRONG_FORMAT, array (
 							GUI_DATE_FORMAT
 					) );
@@ -93,8 +77,10 @@ class moduleMoneyFlows extends module {
 					$ret = CallServer::getInstance()->updateMoneyflow( $all_data );
 					if ($ret === true) {
 						$this->template->assign( 'CLOSE', 1 );
-						break;
 					} else {
+						$capitalsource_values = $ret ['capitalsources'];
+						$contractpartner_values = $ret ['contractpartner'];
+						$postingaccount_values = $ret ['postingaccounts'];
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
 
@@ -135,44 +121,24 @@ class moduleMoneyFlows extends module {
 							}
 						}
 					}
+					break;
 				}
 			default :
-				if (! is_array( $all_data )) {
-					$all_data = CallServer::getInstance()->getMoneyflowById( $id );
+				$showEditMoneyflow = CallServer::getInstance()->showEditMoneyflow( $id );
+				$all_data_pre = $showEditMoneyflow ['moneyflow'];
+				$capitalsource_values = $showEditMoneyflow ['capitalsources'];
+				$contractpartner_values = $showEditMoneyflow ['contractpartner'];
+				$postingaccount_values = $showEditMoneyflow ['postingaccounts'];
+				if ($realaction != "save") {
+					$all_data = $all_data_pre;
 				}
 
-				if (! $checkdate) {
-					$checkdate = $all_data ['bookingdate'];
-				}
-
-				$capitalsource = CallServer::getInstance()->getCapitalsourceById( $all_data ['mcs_capitalsourceid'] );
-				if ($capitalsource) {
-					$today = new \DateTime();
-					$today->setTime( 0, 0, 0 );
-
-					$validFrom = new \DateTime();
-					$validFrom->setTimestamp( convert_date_to_timestamp( $capitalsource ['validfrom'] ) );
-
-					$validTil = new \DateTime();
-					$validTil->setTimestamp( convert_date_to_timestamp( $capitalsource ['validtil'] ) );
-
-					if ($today < $validFrom || $today > $validTil) {
-						$capitalsourceArray = CallServer::getInstance()->getAllCapitalsources();
-					} else {
-						$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
-					}
-					$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
-				}
-
-				$contractpartner_values = CallServer::getInstance()->getAllContractpartner();
-				$postingaccount_values = CallServer::getInstance()->getAllPostingAccounts();
-
-				$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-				$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
-				$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 				break;
 		}
 
+		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
+		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
+		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'MONEYFLOWID', $id );
 		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
@@ -196,7 +162,7 @@ class moduleMoneyFlows extends module {
 						}
 						$nothing_checked = false;
 						if (! empty( $value ['invoicedate'] )) {
-							if (! convert_date_to_db( $value ['invoicedate'] )) {
+							if (! dateIsValid( $value ['invoicedate'] )) {
 								add_error( ErrorCode::INVOICEDATE_IN_WRONG_FORMAT, array (
 										GUI_DATE_FORMAT
 								) );
@@ -204,7 +170,7 @@ class moduleMoneyFlows extends module {
 							}
 						}
 
-						if (! convert_date_to_db( $value ['bookingdate'] )) {
+						if (! dateIsValid( $value ['bookingdate'] )) {
 							add_error( ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT, array (
 									GUI_DATE_FORMAT
 							) );
@@ -218,15 +184,14 @@ class moduleMoneyFlows extends module {
 				}
 
 				if ($nothing_checked) {
-					add_error( 133 );
+					add_error( ErrorCode::NOTHING_MARKED_TO_ADD );
 					$data_is_valid = false;
 				}
 
 				if ($data_is_valid) {
 
 					$createMoneyflows = CallServer::getInstance()->createMoneyflows( $add_data );
-					$capitalsourceArray = $createMoneyflows ['capitalsources'];
-					$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
+					$capitalsource_values = $createMoneyflows ['capitalsources'];
 
 					$contractpartner_values = $createMoneyflows ['contractpartner'];
 					$postingaccount_values = $createMoneyflows ['postingaccounts'];
@@ -277,46 +242,43 @@ class moduleMoneyFlows extends module {
 							}
 						}
 					}
-				}
-
-				if (! $data_is_valid) {
 					break;
 				}
 			default :
+				$addMoneyflow = CallServer::getInstance()->showAddMoneyflows();
+				$capitalsource_values = $addMoneyflow ['capitalsources'];
+
+				$contractpartner_values = $addMoneyflow ['contractpartner'];
+				$postingaccount_values = $addMoneyflow ['postingaccounts'];
+				$all_data_pre = $addMoneyflow ['predefmoneyflows'];
+
 				if ($realaction != 'save') {
-					$addMoneyflow = CallServer::getInstance()->showAddMoneyflows();
-					$capitalsourceArray = $addMoneyflow ['capitalsources'];
-					$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
+					// clean the array before filling it.
+					$all_data = array ();
+					$date = convert_date_to_gui( date( 'Y-m-d' ) );
 
-					$contractpartner_values = $addMoneyflow ['contractpartner'];
-					$postingaccount_values = $addMoneyflow ['postingaccounts'];
-					$all_data_pre = $addMoneyflow ['predefmoneyflows'];
-				}
-				// clean the array before filling it.
-				$all_data = array ();
-				$date = convert_date_to_gui( date( 'Y-m-d' ) );
+					$numflows = $this->coreSettings->get_num_free_moneyflows( USERID );
 
-				$numflows = $this->coreSettings->get_num_free_moneyflows( USERID );
+					for($i = $numflows; $i > 0; $i --) {
+						$all_data [$numflows - $i] = array (
+								'predefmoneyflowid' => ($numflows - $i + 1) * - 1,
+								'bookingdate' => $date
+						);
+					}
 
-				for($i = $numflows; $i > 0; $i --) {
-					$all_data [$numflows - $i] = array (
-							'predefmoneyflowid' => ($numflows - $i + 1) * - 1,
-							'bookingdate' => $date
-					);
-				}
+					if (is_array( $all_data_pre )) {
+						$i = $numflows;
+						foreach ( $all_data_pre as $key => $value ) {
+							$last_used = NULL;
+							if (array_key_exists( 'last_used', $value ) && $value ['once_a_month'])
+								$last_used = convert_date_to_timestamp( $value ['last_used'] );
 
-				if (is_array( $all_data_pre )) {
-					$i = $numflows;
-					foreach ( $all_data_pre as $key => $value ) {
-						$last_used = NULL;
-						if (array_key_exists( 'last_used', $value ) && $value ['once_a_month'])
-							$last_used = convert_date_to_timestamp( $value ['last_used'] );
-
-						if (empty( $last_used ) || date( 'Y-m' ) != date( 'Y-m', $last_used )) {
-							$all_data [$i] = $value;
-							$all_data [$i] ['bookingdate'] = $date;
-							$all_data [$i] ['amount'] = sprintf( '%.02f', $all_data_pre [$key] ['amount'] );
-							$i ++;
+							if (empty( $last_used ) || date( 'Y-m' ) != date( 'Y-m', $last_used )) {
+								$all_data [$i] = $value;
+								$all_data [$i] ['bookingdate'] = $date;
+								$all_data [$i] ['amount'] = sprintf( '%.02f', $all_data_pre [$key] ['amount'] );
+								$i ++;
+							}
 						}
 					}
 				}
@@ -342,7 +304,7 @@ class moduleMoneyFlows extends module {
 					break;
 				}
 			default :
-				$all_data = CallServer::getInstance()->getMoneyflowById( $id );
+				$all_data = CallServer::getInstance()->showDeleteMoneyflow( $id );
 				if ($all_data) {
 					$this->template->assign( 'ALL_DATA', $all_data );
 				}

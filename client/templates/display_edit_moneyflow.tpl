@@ -29,7 +29,7 @@
 				    <td class="contrastbgcolor"><input class="contrastbgcolor" type="checkbox" name="all_data[private]" value=1 {if $ALL_DATA.private == 1}checked{/if} ></td>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[bookingdate]" value="{$ALL_DATA.bookingdate}"                 size=10 {if $ALL_DATA.bookingdate_error == 1}style="color:red"{/if}></td>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[invoicedate]" value="{$ALL_DATA.invoicedate}"                 size=10 {if $ALL_DATA.invoicedate_error == 1}style="color:red"{/if}></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolornobr" type="text" name="all_data[amount]"      value="{$ALL_DATA.amount}" size=8 align="right"> {$CURRENCY}</td>
+					<td class="contrastbgcolor"><input class="contrastbgcolornobr" type="text" name="all_data[amount]"      value="{$ALL_DATA.amount}"                  size=8  style="{if $ALL_DATA.amount_error == 1}color:red;{/if}text-align:right"> {$CURRENCY}</td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcp_contractpartnerid]" size=1 style="width:130px">
 					{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
 						<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"  {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $ALL_DATA.mcp_contractpartnerid}selected{/if}> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name|escape:htmlall}

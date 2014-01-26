@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.37 2014/01/25 17:10:02 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.38 2014/01/26 12:12:02 olivleh1 Exp $
 //
 
 use rest\client\CallServer;
@@ -69,14 +69,14 @@ class moduleCapitalSources extends module {
 			case 'save' :
 				$valid_data = true;
 				$all_data ['capitalsourceid'] = $capitalsourceid;
-				if (! convert_date_to_db( $all_data ['validfrom'] )) {
+				if (! dateIsValid( $all_data ['validfrom'] )) {
 					add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
 							GUI_DATE_FORMAT
 					) );
 					$all_data ['validfrom_error'] = 1;
 					$valid_data = false;
 				}
-				if (! convert_date_to_db( $all_data ['validtil'] )) {
+				if (! dateIsValid( $all_data ['validtil'] )) {
 					add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
 							GUI_DATE_FORMAT
 					) );

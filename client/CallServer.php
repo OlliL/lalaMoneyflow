@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.28 2014/01/26 00:34:08 olivleh1 Exp $
+// $Id: CallServer.php,v 1.29 2014/01/26 12:12:02 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -232,6 +232,46 @@ class CallServer extends AbstractJsonSender {
 		return $result;
 	}
 
+	public final function showEditMoneyflow($id) {
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/showEditMoneyflow/' . $id . '/' . $this->sessionId;
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$showEditMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
+			if (is_array( $showEditMoneyflow->getCapitalsourceTransport() )) {
+				$result ['capitalsources'] = parent::mapArray( $showEditMoneyflow->getCapitalsourceTransport() );
+			} else {
+				$result ['capitalsources'] = array ();
+			}
+			if (is_array( $showEditMoneyflow->getContractpartnerTransport() )) {
+				$result ['contractpartner'] = parent::mapArray( $showEditMoneyflow->getContractpartnerTransport() );
+			} else {
+				$result ['contractpartner'] = array ();
+			}
+			if ($showEditMoneyflow->getMoneyflowTransport()) {
+				$result ['moneyflow'] = parent::map( $showEditMoneyflow->getMoneyflowTransport() );
+			} else {
+				$result ['moneyflow'] = array ();
+			}
+			if (is_array( $showEditMoneyflow->getPostingAccountTransport() )) {
+				$result ['postingaccounts'] = parent::mapArray( $showEditMoneyflow->getPostingAccountTransport() );
+			} else {
+				$result ['postingaccounts'] = array ();
+			}
+		}
+
+		return $result;
+	}
+
+	public final function showDeleteMoneyflow($id) {
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/showDeleteMoneyflow/' . $id . '/' . $this->sessionId;
+		$response = self::getJson( $url );
+		if (is_array( $response )) {
+			$getMoneyflowByIdResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
+			$result = parent::map( $getMoneyflowByIdResponse->getMoneyflowTransport() );
+		}
+		return $result;
+	}
+
 	/**
 	 *
 	 * @deprecated to be replaced by a new specific REST-Call
@@ -317,17 +357,41 @@ class CallServer extends AbstractJsonSender {
 		return $result;
 	}
 
-	/**
-	 *
-	 * @deprecated to be replaced by a new specific REST-Call
-	 */
 	public final function updateMoneyflow(array $moneyflow) {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/updateMoneyflow/' . $this->sessionId;
 		$moneyflowTransport = parent::map( $moneyflow, ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
 
 		$request = new updateMoneyflowRequest();
 		$request->setMoneyflowTransport( $moneyflowTransport );
-		return self::putJson( $url, parent::json_encode_response( $request ) );
+		$response = self::putJson( $url, parent::json_encode_response( $request ) );
+
+		if ($response === true) {
+			$result = true;
+		} else if (is_array( $response )) {
+			$updateMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
+			if (is_array( $updateMoneyflow->getCapitalsourceTransport() )) {
+				$result ['capitalsources'] = parent::mapArray( $updateMoneyflow->getCapitalsourceTransport() );
+			} else {
+				$result ['capitalsources'] = array ();
+			}
+			if (is_array( $updateMoneyflow->getContractpartnerTransport() )) {
+				$result ['contractpartner'] = parent::mapArray( $updateMoneyflow->getContractpartnerTransport() );
+			} else {
+				$result ['contractpartner'] = array ();
+			}
+			if (is_array( $updateMoneyflow->getPostingAccountTransport() )) {
+				$result ['postingaccounts'] = parent::mapArray( $updateMoneyflow->getPostingAccountTransport() );
+			} else {
+				$result ['postingaccounts'] = array ();
+			}
+			if (is_array( $updateMoneyflow->getValidationItemTransport() )) {
+				$result ['errors'] = $response ['updateMoneyflowResponse'] ['validationItemTransport'];
+			} else {
+				$result ['errors'] = array ();
+			}
+			$result ['result'] == $updateMoneyflow->getResult();
+		}
+		return $result;
 	}
 
 	public final function deleteMoneyflow($id) {

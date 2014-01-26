@@ -1,11 +1,22 @@
 <?php
 
-namespace rest\api\model\predefmoneyflow;
+namespace rest\api\model\moneyflow;
 
-class updatePreDefMoneyflowResponse extends validationResponse {
+use rest\api\model\transport\MoneyflowTransport;
+
+class showEditMoneyflowResponse {
+	public $moneyflowTransport;
 	public $capitalsourceTransport;
 	public $contractpartnerTransport;
 	public $postingAccountTransport;
+
+	public final function getMoneyflowTransport() {
+		return $this->moneyflowTransport;
+	}
+
+	public final function setMoneyflowTransport(MoneyflowTransport $moneyflowTransport) {
+		$this->moneyflowTransport = $moneyflowTransport;
+	}
 
 	public final function getCapitalsourceTransport() {
 		return $this->capitalsourceTransport;

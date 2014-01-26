@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.43 2014/01/26 00:34:08 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.44 2014/01/26 12:12:02 olivleh1 Exp $
 //
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
@@ -38,18 +38,6 @@ class modulePreDefMoneyFlows extends module {
 	function modulePreDefMoneyFlows() {
 		parent::__construct();
 		$this->coreCurrencies = new coreCurrencies();
-	}
-
-	// TODO - duplicate code
-	// filter only the capitalsources which are owned by the user or allowed for group use.
-	private function filterCapitalsource($capitalsourceArray) {
-		if (is_array( $capitalsourceArray )) {
-			foreach ( $capitalsourceArray as $capitalsource ) {
-				if ($capitalsource ['att_group_use'] == 1 || $capitalsource ['mur_userid'] == USERID)
-					$capitalsource_values [] = $capitalsource;
-			}
-		}
-		return $capitalsource_values;
 	}
 
 	public final function display_list_predefmoneyflows($letter) {
@@ -85,6 +73,8 @@ class modulePreDefMoneyFlows extends module {
 						$this->template->assign( 'CLOSE', 1 );
 						break;
 					} else {
+						$capitalsource_values = $ret ['capitalsources'];
+						$contractpartner_values = $ret ['contractpartner'];
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
 
@@ -115,26 +105,21 @@ class modulePreDefMoneyFlows extends module {
 							}
 						}
 					}
-					$capitalsourceArray = $ret ['capitalsources'];
-					$contractpartner_values = $ret ['contractpartner'];
 				}
 				break;
 			default :
 				if ($predefmoneyflowid > 0) {
 					$showEditPreDefMoneyflow = CallServer::getInstance()->showEditPreDefMoneyflow( $predefmoneyflowid );
 					$all_data = $showEditPreDefMoneyflow ['predefmoneyflow'];
-					$capitalsourceArray = $showEditPreDefMoneyflow ['capitalsources'];
+					$capitalsource_values = $showEditPreDefMoneyflow ['capitalsources'];
 					$contractpartner_values = $showEditPreDefMoneyflow ['contractpartner'];
 				} else {
 					$showCreatePreDefMoneyflow = CallServer::getInstance()->showCreatePreDefMoneyflow();
-					$capitalsourceArray = $showCreatePreDefMoneyflow ['capitalsources'];
+					$capitalsource_values = $showCreatePreDefMoneyflow ['capitalsources'];
 					$contractpartner_values = $showCreatePreDefMoneyflow ['contractpartner'];
 				}
 				break;
 		}
-
-		$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
-
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );

@@ -1,8 +1,10 @@
 <?php
 
-namespace rest\api\model\predefmoneyflow;
+namespace rest\api\model\moneyflow;
 
-class updatePreDefMoneyflowResponse extends validationResponse {
+use rest\api\model\validation\validationResponse;
+
+class updateMoneyflowResponse extends validationResponse {
 	public $capitalsourceTransport;
 	public $contractpartnerTransport;
 	public $postingAccountTransport;
