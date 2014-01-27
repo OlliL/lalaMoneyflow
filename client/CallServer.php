@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.30 2014/01/26 14:23:45 olivleh1 Exp $
+// $Id: CallServer.php,v 1.31 2014/01/27 16:52:35 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -327,6 +327,7 @@ class CallServer extends AbstractJsonSender {
 			$result = true;
 		} else if (is_array( $response )) {
 			$createMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
+			var_dump($createMoneyflow);
 			if (is_array( $createMoneyflow->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $createMoneyflow->getCapitalsourceTransport() );
 			} else {
@@ -352,7 +353,7 @@ class CallServer extends AbstractJsonSender {
 			} else {
 				$result ['errors'] = array ();
 			}
-			$result ['result'] == $createMoneyflow->getResult();
+			$result ['result'] = $createMoneyflow->getResult();
 		}
 
 		return $result;

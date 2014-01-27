@@ -26,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.71 2014/01/26 12:12:02 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.72 2014/01/27 16:52:35 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -191,14 +191,16 @@ class moduleMoneyFlows extends module {
 				if ($data_is_valid) {
 
 					$createMoneyflows = CallServer::getInstance()->createMoneyflows( $add_data );
+					var_dump($createMoneyflows);
 					$capitalsource_values = $createMoneyflows ['capitalsources'];
 
 					$contractpartner_values = $createMoneyflows ['contractpartner'];
 					$postingaccount_values = $createMoneyflows ['postingaccounts'];
 
 					$result = $createMoneyflows ['result'];
+					var_dump($result);
 					if ($result === true) {
-						$all_data_pre = $addMoneyflow ['predefmoneyflows'];
+						$all_data_pre = $createMoneyflows ['predefmoneyflows'];
 					} else {
 						$data_is_valid = false;
 						foreach ( $createMoneyflows ['errors'] as $validationResult ) {
@@ -242,17 +244,20 @@ class moduleMoneyFlows extends module {
 							}
 						}
 					}
-					break;
 				}
 			default :
-				$addMoneyflow = CallServer::getInstance()->showAddMoneyflows();
-				$capitalsource_values = $addMoneyflow ['capitalsources'];
+				var_dump($realaction, $data_is_valid);
+				if ($realaction === 'save' && $data_is_valid == true || $realaction != 'save') {
 
-				$contractpartner_values = $addMoneyflow ['contractpartner'];
-				$postingaccount_values = $addMoneyflow ['postingaccounts'];
-				$all_data_pre = $addMoneyflow ['predefmoneyflows'];
+					if ($realaction !== 'save') {
+						$addMoneyflow = CallServer::getInstance()->showAddMoneyflows();
+						$capitalsource_values = $addMoneyflow ['capitalsources'];
 
-				if ($realaction != 'save') {
+						$contractpartner_values = $addMoneyflow ['contractpartner'];
+						$postingaccount_values = $addMoneyflow ['postingaccounts'];
+						$all_data_pre = $addMoneyflow ['predefmoneyflows'];
+					}
+
 					// clean the array before filling it.
 					$all_data = array ();
 					$date = convert_date_to_gui( date( 'Y-m-d' ) );
