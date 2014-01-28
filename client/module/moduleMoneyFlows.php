@@ -26,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.72 2014/01/27 16:52:35 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.73 2014/01/28 21:14:33 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -191,14 +191,12 @@ class moduleMoneyFlows extends module {
 				if ($data_is_valid) {
 
 					$createMoneyflows = CallServer::getInstance()->createMoneyflows( $add_data );
-					var_dump($createMoneyflows);
 					$capitalsource_values = $createMoneyflows ['capitalsources'];
 
 					$contractpartner_values = $createMoneyflows ['contractpartner'];
 					$postingaccount_values = $createMoneyflows ['postingaccounts'];
 
 					$result = $createMoneyflows ['result'];
-					var_dump($result);
 					if ($result === true) {
 						$all_data_pre = $createMoneyflows ['predefmoneyflows'];
 					} else {
@@ -246,7 +244,6 @@ class moduleMoneyFlows extends module {
 					}
 				}
 			default :
-				var_dump($realaction, $data_is_valid);
 				if ($realaction === 'save' && $data_is_valid == true || $realaction != 'save') {
 
 					if ($realaction !== 'save') {

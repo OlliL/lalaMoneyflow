@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ErrorCode.php,v 1.6 2014/01/26 12:24:49 olivleh1 Exp $
+// $Id: ErrorCode.php,v 1.7 2014/01/28 21:14:34 olivleh1 Exp $
 //
 namespace rest\base;
 
@@ -43,8 +43,10 @@ class ErrorCode extends \SplEnum {
 	const AMOUNT_IN_WRONG_FORMAT = 132;
 	const NOTHING_MARKED_TO_ADD = 133;
 	const DATE_FORMAT_NOT_CORRECT = 147;
+	const FILEUPLOAD_FAILED = 191;
 	const AMOUNT_IS_ZERO = 200;
 	const NAME_ALREADY_EXISTS = 203;
+	const ATTENTION = 204;
 	const NAME_MUST_NOT_BE_EMPTY = 218;
 	const ACCOUNT_NUMBER_NOT_A_NUMBER = 225;
 	const BANK_CODE_NOT_A_NUMBER = 226;

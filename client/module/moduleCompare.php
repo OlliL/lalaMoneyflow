@@ -1,5 +1,6 @@
 <?php
 use rest\client\CallServer;
+use rest\base\ErrorCode;
 //
 // Copyright (c) 2007-2013 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -25,7 +26,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.30 2014/01/26 14:23:45 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.31 2014/01/28 21:14:33 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCompare.php';
@@ -123,6 +124,61 @@ class moduleCompare extends module {
 	}
 
 	function display_analyze_form($file, $all_data) {
+		return $this->display_analyze_form_alt($file, $all_data);
+//  		return $this->display_analyze_form_neu( $file, $all_data );
+	}
+
+	function display_analyze_form_neu($file, $all_data) {
+		$fileName = $file ['tmp_name'];
+		$startDate = $all_data ['startdate'];
+		$endDate = $all_data ['enddate'];
+		$formatId = $all_data ['format'];
+		$capitalSourceId = $all_data ['mcs_capitalsourceid'];
+
+		$valid_data = true;
+
+		if (! dateIsValid( $startDate )) {
+			add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
+					GUI_DATE_FORMAT
+			) );
+			$all_data ['startdate_error'] = 1;
+			$valid_data = false;
+		}
+
+		if (! dateIsValid( $endDate )) {
+			add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
+					GUI_DATE_FORMAT
+			) );
+			$all_data ['enddate_error'] = 1;
+			$valid_data = false;
+		}
+
+		if (! $fileName) {
+			add_error( ErrorCode::FILEUPLOAD_FAILED );
+			$valid_data = false;
+		}
+
+		if ($valid_data === false) {
+			return $this->display_upload_form( $all_data );
+		} else {
+			// update the chosen capitalsource and format in the usersettings to remember/reuse the selection next time
+			if ($all_data ['mcs_capitalsourceid'] != $this->coreSettings->get_compare_capitalsource( USERID )) {
+				$this->coreSettings->set_compare_capitalsource( USERID, $all_data ['mcs_capitalsourceid'] );
+			}
+			if ($all_data ['format'] != $this->coreSettings->get_compare_format( USERID )) {
+				$this->coreSettings->set_compare_format( USERID, $all_data ['format'] );
+			}
+
+			$all_data['filecontents'] = file_get_contents( $fileName );
+
+			$result = CallServer::getInstance()->compareData($all_data);
+// 			echo base64_decode($result['compareDataRequest']['compareDataTransport']['fileContents']);
+print_r($result);
+			exit();
+		}
+	}
+
+	function display_analyze_form_alt($file, $all_data) {
 		$startdate = $all_data ['startdate'];
 		$enddate = $all_data ['enddate'];
 		$valid_data = true;

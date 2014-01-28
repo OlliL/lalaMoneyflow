@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,20 +25,39 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ClientArrayMapperEnum.php,v 1.10 2014/01/28 21:14:34 olivleh1 Exp $
+// $Id: ArrayToCompareDataTransportMapper.php,v 1.1 2014/01/28 21:15:04 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
-class ClientArrayMapperEnum {
-	const CAPITALSOURCE_TRANSPORT = 'ClientCapitalsourceTransport';
-	const CONTRACTPARTNER_TRANSPORT = 'ClientContractpartnerTransport';
-	const MONEYFLOW_TRANSPORT = 'ClientMoneyflowTransport';
-	const PREDEFMONEYFLOW_TRANSPORT = 'ClientPreDefMoneyflowTransport';
-	const USER_TRANSPORT = 'ClientUserTransport';
-	const POSTINGACCOUNT_TRANSPORT = 'PostingAccountTransport';
-	const VALIDATIONITEM_TRANSPORT = 'ClientValidationItemTransport';
-	const COMPAREDATAFORMAT_TRANSPORT = 'CompareDataFormatTransport';
-	const COMPAREDATA_TRANSPORT = 'CompareDataTransport';
+use rest\api\model\transport\CompareDataTransport;
+
+class ArrayToCompareDataTransportMapper extends AbstractArrayMapper {
+
+	public static function mapAToB(array $a) {
+		$b = new CompareDataTransport();
+		$b->setCapitalSourceId( $a ['mcs_capitalsourceid'] );
+		$b->setFileContents( base64_encode( $a ['filecontents'] ) );
+		$b->setFormatId( $a ['format'] );
+
+		$enddate = parent::convertClientDateToTransport( $a ['enddate'] );
+		if ($enddate)
+			$b->setEndDate( $enddate );
+
+		$startdate = parent::convertClientDateToTransport( $a ['startdate'] );
+		if ($startdate)
+			$b->setStartDate( $startdate );
+
+		return $b;
+	}
+
+	public static function mapBToA(CompareDataTransport $b) {
+		$a ['format'] = $b->getFormatId();
+		$a ['enddate'] = parent::convertTransportDateToClient( $b->getEndDate() );
+		$a ['startdate'] = parent::convertTransportDateToClient( $b->getStartDate() );
+		$a ['filecontents'] = base64_decode( $b->getFileContents() );
+		$a ['mcs_capitalsourceid'] = $b->getCapitalSourceId();
+		return $a;
+	}
 }
 
 ?>

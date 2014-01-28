@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.31 2014/01/27 16:52:35 olivleh1 Exp $
+// $Id: CallServer.php,v 1.32 2014/01/28 21:14:34 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -44,6 +44,8 @@ use rest\api\model\moneyflow\updateMoneyflowRequest;
 use rest\api\model\moneyflow\createMoneyflowsRequest;
 use rest\api\model\predefmoneyflow\createPreDefMoneyflowRequest;
 use rest\api\model\predefmoneyflow\updatePreDefMoneyflowRequest;
+use rest\api\model\comparedata\compareDataRequest;
+use rest\base\ErrorCode;
 
 class CallServer extends AbstractJsonSender {
 	private $sessionId;
@@ -58,6 +60,7 @@ class CallServer extends AbstractJsonSender {
 		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToPostingAccountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToCompareDataFormatTransportMapper', ClientArrayMapperEnum::COMPAREDATAFORMAT_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToCompareDataTransportMapper', ClientArrayMapperEnum::COMPAREDATA_TRANSPORT );
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
 		) ) );
@@ -77,7 +80,7 @@ class CallServer extends AbstractJsonSender {
 	private final function handle_result($result) {
 		if (! is_array( $result )) {
 			echo '<font color="red"><u>Server Error occured</u><pre>' . $result . '</pre></font><br>';
-			add_error( 204 );
+			add_error( ErrorCode::ATTENTION );
 			return false;
 		} else if (array_key_exists( 'validationResponse', $result )) {
 			$validationResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\validation' );
@@ -87,7 +90,7 @@ class CallServer extends AbstractJsonSender {
 		} else if (array_key_exists( 'error', $result )) {
 			if ($result ['error'] ['code'] < 0) {
 				echo '<font color="red"><u>Server Error occured</u><pre>' . $result ['error'] ['message'] . '</pre></font><br>';
-				add_error( 204 );
+				add_error( ErrorCode::ATTENTION );
 			}
 			add_error( $result ['error'] ['code'] );
 			return false;
@@ -327,7 +330,7 @@ class CallServer extends AbstractJsonSender {
 			$result = true;
 		} else if (is_array( $response )) {
 			$createMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
-			var_dump($createMoneyflow);
+
 			if (is_array( $createMoneyflow->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $createMoneyflow->getCapitalsourceTransport() );
 			} else {
@@ -793,6 +796,20 @@ class CallServer extends AbstractJsonSender {
 		}
 
 		return $result;
+	}
+
+	public final function compareData(array $compareData) {
+		$url = URLPREFIX . SERVERPREFIX . 'comparedata/compareData/' . $this->sessionId;
+
+		$compareDataTransport = parent::map( $compareData, ClientArrayMapperEnum::COMPAREDATA_TRANSPORT );
+
+		$request = new compareDataRequest();
+		$request->setCompareDataTransport( $compareDataTransport );
+
+		$response = self::putJson( $url, parent::json_encode_response( $request ) );
+		#$compareDataTransport = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\comparedata' );
+return $response;
+#		return $compareDataTransport;
 	}
 }
 
