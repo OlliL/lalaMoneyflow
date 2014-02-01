@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToCapitalsourceTransportMapper.php,v 1.3 2014/01/26 12:24:49 olivleh1 Exp $
+// $Id: ArrayToCapitalsourceTransportMapper.php,v 1.4 2014/02/01 22:24:23 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
@@ -47,7 +47,7 @@ class ArrayToCapitalsourceTransportMapper extends AbstractArrayMapper {
 		if ($validfrom)
 			$b->setValidFrom( $validfrom );
 
-		$validtil = parent::convertTransportDateToModel( $a ['validtil'] );
+		$validtil = parent::convertClientDateToTransport( $a ['validtil'] );
 		if ($validtil)
 			$b->setValidTil( $validtil );
 

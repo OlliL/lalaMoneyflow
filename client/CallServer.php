@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.34 2014/02/01 21:03:25 olivleh1 Exp $
+// $Id: CallServer.php,v 1.35 2014/02/01 22:24:23 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -131,7 +131,6 @@ class CallServer extends AbstractJsonSender {
 
 	// update
 	private final function putJson($url, $json) {
-		// echo $json;
 		$response = Request::put( $url )->withoutStrictSsl()->sendsJson()->body( $json )->send();
 		if ($response->code == 204) {
 			return true;
@@ -153,7 +152,7 @@ class CallServer extends AbstractJsonSender {
 	 * SessionService
 	 */
 	public final function doLogon($user, $password) {
-		$url = URLPREFIX . SERVERPREFIX . 'sessionService/logon/' . $user . '/' . $password;
+		$url = URLPREFIX . SERVERPREFIX . 'session/logon/' . $user . '/' . $password;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
 			$doLogonResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\session' );
@@ -170,7 +169,7 @@ class CallServer extends AbstractJsonSender {
 	 * UserService
 	 */
 	public final function getUserById($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'userService/getUserById/' . $id . '/' . $this->sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'user/getUserById/' . $id . '/' . $this->sessionId;
 		$result = self::getJson( $url );
 		if (is_array( $result )) {
 			$getUserByIdResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\user' );
@@ -207,7 +206,7 @@ class CallServer extends AbstractJsonSender {
 	}
 
 	/*
-	 * MoneyflowService
+	 * MoneyflowController
 	 */
 	public final function showAddMoneyflows() {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/showAddMoneyflows/' . $this->sessionId;
@@ -273,46 +272,14 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/showDeleteMoneyflow/' . $id . '/' . $this->sessionId;
 		$response = self::getJson( $url );
 		if (is_array( $response )) {
-			$getMoneyflowByIdResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
-			$result = parent::map( $getMoneyflowByIdResponse->getMoneyflowTransport() );
-		}
-		return $result;
-	}
-
-	/**
-	 *
-	 * @deprecated to be replaced by a new specific REST-Call
-	 */
-	public final function getMoneyflowById($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getMoneyflowById/' . $id . '/' . $this->sessionId;
-		$response = self::getJson( $url );
-		if (is_array( $response )) {
-			$getMoneyflowByIdResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
-			$result = parent::map( $getMoneyflowByIdResponse->getMoneyflowTransport() );
-		}
-		return $result;
-	}
-
-	/**
-	 *
-	 * @deprecated to be replaced by a new specific REST-Call
-	 */
-	public final function getAllMoneyflowsByDateRangeCapitalsourceId($validfrom, $validtil, $capitalsourceId) {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/getAllMoneyflowsByDateRangeCapitalsourceId/' . $validfrom . '/' . $validtil . '/' . $capitalsourceId . '/' . $this->sessionId;
-		$response = self::getJson( $url );
-		if (is_array( $response )) {
-			$getAllMoneyflowsByDateRangeCapitalsourceIdResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
-			if (is_array( $getAllMoneyflowsByDateRangeCapitalsourceIdResponse->getMoneyflowTransport() )) {
-				$result = parent::mapArray( $getAllMoneyflowsByDateRangeCapitalsourceIdResponse->getMoneyflowTransport() );
-			} else {
-				$result = '';
-			}
+			$showDeleteMoneyflowResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
+			$result = parent::map( $showDeleteMoneyflowResponse->getMoneyflowTransport() );
 		}
 		return $result;
 	}
 
 	public final function createMoneyflows(array $moneyflows) {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/createMoneyflows/' . $this->sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/createMoneyflows/' . $this->sessionId;
 
 		$preDefMoneyflowIds = array ();
 
@@ -366,7 +333,7 @@ class CallServer extends AbstractJsonSender {
 	}
 
 	public final function updateMoneyflow(array $moneyflow) {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/updateMoneyflow/' . $this->sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/updateMoneyflow/' . $this->sessionId;
 		$moneyflowTransport = parent::map( $moneyflow, ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
 
 		$request = new updateMoneyflowRequest();
@@ -403,11 +370,11 @@ class CallServer extends AbstractJsonSender {
 	}
 
 	public final function deleteMoneyflow($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflowService/deleteMoneyflowById/' . $id . '/' . $this->sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/deleteMoneyflowById/' . $id . '/' . $this->sessionId;
 		return self::deleteJson( $url );
 	}
 	/*
-	 * CapitalsourceService
+	 * CapitalsourceController
 	 */
 	public final function showCapitalsourceList($maxRows, $restriction) {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/showCapitalsourceList/' . $maxRows . '/' . $restriction . '/' . $this->sessionId;
@@ -430,7 +397,7 @@ class CallServer extends AbstractJsonSender {
 	 * @deprecated to be replaced by a new specific REST-Call
 	 */
 	public final function getAllCapitalsources() {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getAllCapitalsources/' . $this->sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/getAllCapitalsources/' . $this->sessionId;
 		$response = self::getJson( $url );
 		if (is_array( $response )) {
 			$getAllCapitalsourcesResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
@@ -449,7 +416,7 @@ class CallServer extends AbstractJsonSender {
 	 * @deprecated to be replaced by a new specific REST-Call
 	 */
 	public final function getAllCapitalsourcesByDateRange($validfrom, $validtil) {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getAllCapitalsourcesByDateRange/' . $validfrom . '/' . $validtil . '/' . $this->sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/getAllCapitalsourcesByDateRange/' . $validfrom . '/' . $validtil . '/' . $this->sessionId;
 		$response = self::getJson( $url );
 		if (is_array( $response )) {
 			$getAllCapitalsourcesByDateRangeResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
@@ -467,7 +434,7 @@ class CallServer extends AbstractJsonSender {
 	 * @deprecated to be replaced by a new specific REST-Call
 	 */
 	public final function getCapitalsourceById($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/getCapitalsourceById/' . $id . '/' . $this->sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/getCapitalsourceById/' . $id . '/' . $this->sessionId;
 		$response = self::getJson( $url );
 		if (is_array( $response )) {
 			$getCapitalsourceByIdResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
@@ -477,7 +444,7 @@ class CallServer extends AbstractJsonSender {
 	}
 
 	public final function createCapitalsource(array $capitalsource) {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/createCapitalsource/' . $this->sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/createCapitalsource/' . $this->sessionId;
 		$capitalsourceTransport = parent::map( $capitalsource, ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
 
 		$request = new createCapitalsourceRequest();
@@ -486,7 +453,7 @@ class CallServer extends AbstractJsonSender {
 	}
 
 	public final function updateCapitalsource(array $capitalsource) {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/updateCapitalsource/' . $this->sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/updateCapitalsource/' . $this->sessionId;
 		$capitalsourceTransport = parent::map( $capitalsource, ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
 
 		$request = new updateCapitalsourceRequest();
@@ -495,12 +462,12 @@ class CallServer extends AbstractJsonSender {
 	}
 
 	public final function deleteCapitalsource($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsourceService/deleteCapitalsourceById/' . $id . '/' . $this->sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/deleteCapitalsourceById/' . $id . '/' . $this->sessionId;
 		return self::deleteJson( $url );
 	}
 
 	/*
-	 * ContractpartnerService
+	 * ContractpartnerController
 	 */
 	public final function showContractpartnerList($maxRows, $restriction) {
 		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/showContractpartnerList/' . $maxRows . '/' . $restriction . '/' . $this->sessionId;
@@ -543,7 +510,7 @@ class CallServer extends AbstractJsonSender {
 	 * @deprecated to be replaced by a new specific REST-Call
 	 */
 	public final function getAllContractpartner() {
-		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/getAllContractpartner/' . $this->sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/getAllContractpartner/' . $this->sessionId;
 		$response = self::getJson( $url );
 		if (is_array( $response )) {
 			$getAllContractpartnerResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\contractpartner' );
@@ -556,22 +523,8 @@ class CallServer extends AbstractJsonSender {
 		return $result;
 	}
 
-	/**
-	 *
-	 * @deprecated to be replaced by a new specific REST-Call
-	 */
-	public final function getContractpartnerById($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/getContractpartnerById/' . $id . '/' . $this->sessionId;
-		$response = self::getJson( $url );
-		if (is_array( $response )) {
-			$getContractpartnerByIdResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\contractpartner' );
-			$result = parent::map( $getContractpartnerByIdResponse->getContractpartnerTransport() );
-		}
-		return $result;
-	}
-
 	public final function createContractpartner(array $contractpartner) {
-		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/createContractpartner/' . $this->sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/createContractpartner/' . $this->sessionId;
 		$contractpartnerTransport = parent::map( $contractpartner, ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
 
 		$request = new createContractpartnerRequest();
@@ -580,7 +533,7 @@ class CallServer extends AbstractJsonSender {
 	}
 
 	public final function updateContractpartner(array $contractpartner) {
-		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/updateContractpartner/' . $this->sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/updateContractpartner/' . $this->sessionId;
 		$contractpartnerTransport = parent::map( $contractpartner, ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
 
 		$request = new updateContractpartnerRequest();
@@ -589,12 +542,12 @@ class CallServer extends AbstractJsonSender {
 	}
 
 	public final function deleteContractpartner($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'contractpartnerService/deleteContractpartnerById/' . $id . '/' . $this->sessionId;
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/deleteContractpartnerById/' . $id . '/' . $this->sessionId;
 		return self::deleteJson( $url );
 	}
 
 	/*
-	 * PreDefMoneyflowService
+	 * PreDefMoneyflowController
 	 */
 	public final function showPreDefMoneyflowList($maxRows, $restriction) {
 		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/showPreDefMoneyflowList/' . $maxRows . '/' . $restriction . '/' . $this->sessionId;
@@ -757,25 +710,8 @@ class CallServer extends AbstractJsonSender {
 	}
 
 	/*
-	 * PostingAccountService
+	 * PostingAccountController
 	 */
-	/**
-	 *
-	 * @deprecated to be replaced by a new specific REST-Call
-	 */
-	public final function getAllPostingAccounts() {
-		$url = URLPREFIX . SERVERPREFIX . 'postingAccountService/getAllPostingAccounts/' . $this->sessionId;
-		$response = self::getJson( $url );
-		if (is_array( $response )) {
-			$getAllPostingAccountResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\postingaccount' );
-			if (is_array( $getAllPostingAccountResponse->getPostingAccountTransport() )) {
-				$result = parent::mapArray( $getAllPostingAccountResponse->getPostingAccountTransport() );
-			} else {
-				$result = '';
-			}
-		}
-		return $result;
-	}
 
 	/*
 	 * CompareDataController
