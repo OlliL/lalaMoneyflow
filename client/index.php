@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.58 2014/01/26 12:24:47 olivleh1 Exp $
+// $Id: index.php,v 1.59 2014/02/01 22:07:46 olivleh1 Exp $
 //
 
 require_once 'include.php';
@@ -47,11 +47,10 @@ require_once 'module/moduleSettings.php';
 require_once 'module/moduleUsers.php';
 require_once 'module/moduleGroups.php';
 
-require_once 'model/LoggedOnUser.php';
-
 require_once 'rest/base/AbstractMapperSupport.php';
 require_once 'rest/base/config/CacheManager.php';
 require_once 'rest/client/mapper/ClientArrayMapperEnum.php';
+require_once 'rest/client/model/LoggedOnUser.php';
 
 // f( $money_debug === true ) {
 require_once 'util/utilTimer.php';
@@ -323,7 +322,7 @@ if ($is_logged_in == 0) {
 
 		if (is_array( $_REQUEST ['all_data'] )) {
 			$all_data = $_REQUEST ['all_data'];
-			$all_data = convert_array_to_utf8($all_data);
+			$all_data = convert_array_to_utf8( $all_data );
 		}
 
 		switch ($action) {
@@ -336,7 +335,7 @@ if ($is_logged_in == 0) {
 
 			case 'edit_capitalsource' :
 				$realaction = $_REQUEST ['realaction'];
-				$capitalsourceid = $_REQUEST ['capitalsourceid']?$_REQUEST ['capitalsourceid']:0;
+				$capitalsourceid = $_REQUEST ['capitalsourceid'] ? $_REQUEST ['capitalsourceid'] : 0;
 				$display = $moduleCapitalSources->display_edit_capitalsource( $realaction, $capitalsourceid, $all_data );
 				break;
 
@@ -355,7 +354,7 @@ if ($is_logged_in == 0) {
 
 			case 'edit_contractpartner' :
 				$realaction = $_REQUEST ['realaction'];
-				$contractpartnerid = $_REQUEST ['contractpartnerid']?$_REQUEST ['contractpartnerid']:0;
+				$contractpartnerid = $_REQUEST ['contractpartnerid'] ? $_REQUEST ['contractpartnerid'] : 0;
 				$display = $moduleContractPartners->display_edit_contractpartner( $realaction, $contractpartnerid, $all_data );
 				break;
 
@@ -374,7 +373,7 @@ if ($is_logged_in == 0) {
 
 			case 'edit_predefmoneyflow' :
 				$realaction = $_REQUEST ['realaction'];
-				$id = $_REQUEST ['predefmoneyflowid']?$_REQUEST ['predefmoneyflowid']:0;
+				$id = $_REQUEST ['predefmoneyflowid'] ? $_REQUEST ['predefmoneyflowid'] : 0;
 				$all_data = $_REQUEST ['all_data'];
 				$display = $modulePreDefMoneyFlows->display_edit_predefmoneyflow( $realaction, $id, $all_data );
 				break;
