@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2009-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,39 +25,56 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleEvents.php,v 1.7 2014/02/01 10:46:43 olivleh1 Exp $
+// $Id: CompareDataDatasetTransport.php,v 1.1 2014/02/01 10:46:44 olivleh1 Exp $
 //
-require_once 'module/module.php';
-require_once 'core/coreMonthlySettlement.php';
-require_once 'core/coreSession.php';
+namespace rest\api\model\transport;
 
-class moduleEvents extends module {
+class CompareDataDatasetTransport {
+	public $bookingDate;
+	public $invoiceDate;
+	public $amount;
+	public $partner;
+	public $comment;
 
-	function moduleEvents() {
-		parent::__construct();
-		$this->coreMonthlySettlement = new coreMonthlySettlement();
-		$this->coreSession = new coreSession();
+	public final function setBookingDate($bookingDate) {
+		$this->bookingDate = $bookingDate;
 	}
 
-	function check_events() {
-		if ($this->coreSession->getAttribute( 'events_shown' ) === false) {
-			$this->coreSession->setAttribute( 'events_shown', true );
+	public final function setInvoiceDate($invoiceDate) {
+		$this->invoiceDate = $invoiceDate;
+	}
 
-			// check if for the previous month, a monthly settlement was done
-			// if not, remind the user to do so
+	public final function setAmount($amount) {
+		$this->amount = $amount;
+	}
 
-			$previous_month = mktime( 0, 0, 0, date( 'm' ) - 1, 1, date( 'Y' ) );
-			$month = date( 'm', $previous_month );
-			$year = date( 'Y', $previous_month );
+	public final function setPartner($partner) {
+		$this->partner = $partner;
+	}
 
-			if ($this->coreMonthlySettlement->monthlysettlement_exists( $month, $year ) === false) {
-				$this->template->assign( 'MONTH', $month );
-				$this->template->assign( 'YEAR', $year );
+	public final function setComment($comment) {
+		$this->comment = $comment;
+	}
 
-				$this->parse_header( 1 );
-				return $this->fetch_template( 'display_event_monthlysettlement.tpl' );
-			}
-		}
+	public final function getBookingDate() {
+		return $this->bookingDate;
+	}
+
+	public final function getInvoiceDate() {
+		return $this->invoiceDate;
+	}
+
+	public final function getAmount() {
+		return $this->amount;
+	}
+
+	public final function getPartner() {
+		return $this->partner;
+	}
+
+	public final function getComment() {
+		return $this->comment;
 	}
 }
 
+?>

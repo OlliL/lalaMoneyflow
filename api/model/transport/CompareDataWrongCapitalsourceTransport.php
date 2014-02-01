@@ -25,38 +25,28 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToCompareDataTransportMapper.php,v 1.1 2014/01/28 21:15:04 olivleh1 Exp $
+// $Id: CompareDataWrongCapitalsourceTransport.php,v 1.1 2014/02/01 10:46:44 olivleh1 Exp $
 //
-namespace rest\client\mapper;
+namespace rest\api\model\transport;
 
-use rest\api\model\transport\CompareDataTransport;
+class CompareDataWrongCapitalsourceTransport {
+	public $moneyflowTransport;
+	public $compareDataDatasetTransport;
 
-class ArrayToCompareDataTransportMapper extends AbstractArrayMapper {
-
-	public static function mapAToB(array $a) {
-		$b = new CompareDataTransport();
-		$b->setCapitalSourceId( $a ['mcs_capitalsourceid'] );
-		$b->setFileContents( base64_encode( $a ['filecontents'] ) );
-		$b->setFormatId( $a ['format'] );
-
-		$enddate = parent::convertClientDateToTransport( $a ['enddate'] );
-		if ($enddate)
-			$b->setEndDate( $enddate );
-
-		$startdate = parent::convertClientDateToTransport( $a ['startdate'] );
-		if ($startdate)
-			$b->setStartDate( $startdate );
-
-		return $b;
+	public final function setMoneyflowTransport(MoneyflowTransport $moneyflowTransport) {
+		$this->moneyflowTransport = $moneyflowTransport;
 	}
 
-	public static function mapBToA(CompareDataTransport $b) {
-		$a ['format'] = $b->getFormatId();
-		$a ['enddate'] = parent::convertTransportDateToClient( $b->getEndDate() );
-		$a ['startdate'] = parent::convertTransportDateToClient( $b->getStartDate() );
-		$a ['filecontents'] = base64_decode( $b->getFileContents() );
-		$a ['mcs_capitalsourceid'] = $b->getCapitalSourceId();
-		return $a;
+	public final function setCompareDataDatasetTransport(CompareDataDatasetTransport $compareDataDatasetTransport) {
+		$this->compareDataDatasetTransport = $compareDataDatasetTransport;
+	}
+
+	public final function getMoneyflowTransport() {
+		return $this->moneyflowTransport;
+	}
+
+	public final function getCompareDataDatasetTransport() {
+		return $this->compareDataDatasetTransport;
 	}
 }
 

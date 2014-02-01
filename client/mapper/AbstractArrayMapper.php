@@ -25,75 +25,43 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractArrayMapper.php,v 1.5 2014/01/26 12:24:49 olivleh1 Exp $
+// $Id: AbstractArrayMapper.php,v 1.6 2014/02/01 10:46:44 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
+use rest\client\util\DateUtil;
 abstract class AbstractArrayMapper {
-	private static $clientDateFormat;
+// 	protected final function convertClientDateToModel($clientDate) {
+// 		if (empty( $clientDate ))
+// 			return false;
 
-	private final function getClientDateFormat() {
-		if (! self::$clientDateFormat) {
-			$patterns [0] = 'YYYY';
-			$patterns [1] = 'MM';
-			$patterns [2] = 'DD';
+// 		$format = self::getClientDateFormat();
+// 		$parsedDate = date_parse_from_format( $format, $clientDate );
 
-			$replacements [0] = 'Y';
-			$replacements [1] = 'm';
-			$replacements [2] = 'd';
+// 		if ($parsedDate ['warning_count'] > 0)
+// 			return false;
 
-			self::$clientDateFormat = str_replace( $patterns, $replacements, GUI_DATE_FORMAT );
-		}
-		return self::$clientDateFormat;
-	}
+// 		$modelDate = \DateTime::createFromFormat( $format, $clientDate );
+// 		if ($modelDate)
+// 			$modelDate->setTime( 0, 0, 0 );
 
-	protected final function convertClientDateToModel($clientDate) {
-		if (empty( $clientDate ))
-			return false;
+// 		return $modelDate;
+// 	}
 
-		$format = self::getClientDateFormat();
-		$parsedDate = date_parse_from_format( $format, $clientDate );
+// 	protected final function convertModelDateToClient($modelDate) {
+// 		$format = self::getClientDateFormat();
 
-		if ($parsedDate ['warning_count'] > 0)
-			return false;
+// 		$clientDate = $modelDate->format( $format );
 
-		$modelDate = \DateTime::createFromFormat( $format, $clientDate );
-		if ($modelDate)
-			$modelDate->setTime( 0, 0, 0 );
-
-		return $modelDate;
-	}
-
-	protected final function convertModelDateToClient($modelDate) {
-		$format = self::getClientDateFormat();
-
-		$clientDate = $modelDate->format( $format );
-
-		return $clientDate;
-	}
+// 		return $clientDate;
+// 	}
 
 	protected final function convertClientDateToTransport($clientDate) {
-		if (empty( $clientDate ))
-			return null;
-
-		$format = self::getClientDateFormat();
-		$parsedDate = date_parse_from_format( $format, $clientDate );
-
-		if ($parsedDate ['warning_count'] > 0)
-			return null;
-
-		$modelDate = \DateTime::createFromFormat( $format, $clientDate );
-		if ($modelDate)
-			$modelDate->setTime( 0, 0, 0 );
-
-		return $modelDate->getTimestamp();
+		return DateUtil::convertClientDateToTransport($clientDate);
 	}
 
 	protected final function convertTransportDateToClient($transportDate) {
-		$format = self::getClientDateFormat();
-		$clientDate = new \DateTime();
-		$clientDate->setTimestamp( $transportDate );
-		return $clientDate->format( $format );
+		return DateUtil::convertTransportDateToClient($transportDate);
 	}
 }
 

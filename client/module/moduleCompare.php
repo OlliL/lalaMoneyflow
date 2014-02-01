@@ -26,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.31 2014/01/28 21:14:33 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.32 2014/02/01 10:46:43 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCompare.php';
@@ -124,8 +124,8 @@ class moduleCompare extends module {
 	}
 
 	function display_analyze_form($file, $all_data) {
-		return $this->display_analyze_form_alt($file, $all_data);
-//  		return $this->display_analyze_form_neu( $file, $all_data );
+#		return $this->display_analyze_form_alt($file, $all_data);
+  		return $this->display_analyze_form_neu( $file, $all_data );
 	}
 
 	function display_analyze_form_neu($file, $all_data) {
@@ -173,7 +173,7 @@ class moduleCompare extends module {
 
 			$result = CallServer::getInstance()->compareData($all_data);
 // 			echo base64_decode($result['compareDataRequest']['compareDataTransport']['fileContents']);
-print_r($result);
+var_dump($result);
 			exit();
 		}
 	}

@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2013-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -24,12 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataFormatTransport.php,v 1.1 2014/01/26 14:23:45 olivleh1 Exp $
+// $Id: CompareDataFormatTransport.php,v 1.2 2014/02/01 10:46:44 olivleh1 Exp $
 //
 namespace rest\api\model\transport;
 
 class CompareDataFormatTransport {
-	public static $serialVersionUID = 1;
 	public $formatId;
 	public $name;
 

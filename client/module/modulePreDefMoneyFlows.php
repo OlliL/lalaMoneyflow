@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.45 2014/01/26 12:24:48 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.46 2014/02/01 10:46:43 olivleh1 Exp $
 //
 use rest\client\CallServer;
 use rest\client\mapper\ClientArrayMapperEnum;
@@ -61,6 +61,15 @@ class modulePreDefMoneyFlows extends module {
 			case 'save' :
 				$data_is_valid = true;
 				$all_data ['predefmoneyflowid'] = $predefmoneyflowid;
+
+				if (! fix_amount( $all_data ['amount'] )) {
+					add_error( ErrorCode::AMOUNT_IN_WRONG_FORMAT, array (
+							$all_data ['amount']
+					) );
+					break;
+					$all_data ['amount_error'] = 1;
+					$valid_data = false;
+				}
 
 				if ($data_is_valid) {
 

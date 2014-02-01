@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2009-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,39 +25,20 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleEvents.php,v 1.7 2014/02/01 10:46:43 olivleh1 Exp $
+// $Id: CompareDataNotInFileTransport.php,v 1.1 2014/02/01 10:46:44 olivleh1 Exp $
 //
-require_once 'module/module.php';
-require_once 'core/coreMonthlySettlement.php';
-require_once 'core/coreSession.php';
+namespace rest\api\model\transport;
 
-class moduleEvents extends module {
+class CompareDataNotInFileTransport {
+	public $moneyflowTransport;
 
-	function moduleEvents() {
-		parent::__construct();
-		$this->coreMonthlySettlement = new coreMonthlySettlement();
-		$this->coreSession = new coreSession();
+	public final function setMoneyflowTransport(MoneyflowTransport $moneyflowTransport) {
+		$this->moneyflowTransport = $moneyflowTransport;
 	}
 
-	function check_events() {
-		if ($this->coreSession->getAttribute( 'events_shown' ) === false) {
-			$this->coreSession->setAttribute( 'events_shown', true );
-
-			// check if for the previous month, a monthly settlement was done
-			// if not, remind the user to do so
-
-			$previous_month = mktime( 0, 0, 0, date( 'm' ) - 1, 1, date( 'Y' ) );
-			$month = date( 'm', $previous_month );
-			$year = date( 'Y', $previous_month );
-
-			if ($this->coreMonthlySettlement->monthlysettlement_exists( $month, $year ) === false) {
-				$this->template->assign( 'MONTH', $month );
-				$this->template->assign( 'YEAR', $year );
-
-				$this->parse_header( 1 );
-				return $this->fetch_template( 'display_event_monthlysettlement.tpl' );
-			}
-		}
+	public final function getMoneyflowTransport() {
+		return $this->moneyflowTransport;
 	}
 }
 
+?>

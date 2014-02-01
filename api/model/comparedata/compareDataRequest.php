@@ -25,22 +25,57 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: compareDataRequest.php,v 1.1 2014/01/28 21:15:04 olivleh1 Exp $
+// $Id: compareDataRequest.php,v 1.2 2014/02/01 10:46:44 olivleh1 Exp $
 //
 namespace rest\api\model\comparedata;
 
 use rest\api\model\transport\CompareDataTransport;
 
 class compareDataRequest {
-	public $compareDataTransport;
+	public $formatId;
+	public $capitalSourceId;
+	public $startDate;
+	public $endDate;
+	public $fileContents;
 
-	public final function getCompareDataTransport() {
-		return $this->compareDataTransport;
+	public final function setFormatId($formatId) {
+		$this->formatId = $formatId;
 	}
 
-	public final function setCompareDataTransport(CompareDataTransport $compareDataTransport) {
-		$this->compareDataTransport = $compareDataTransport;
+	public final function setCapitalSourceId($capitalSourceId) {
+		$this->capitalSourceId = $capitalSourceId;
 	}
-}
+
+	public final function setStartDate($startDate) {
+		$this->startDate = $startDate;
+	}
+
+	public final function setEndDate($endDate) {
+		$this->endDate = $endDate;
+	}
+
+	public final function setFileContents($fileContents) {
+		$this->fileContents = $fileContents;
+	}
+
+	public final function getFormatId() {
+		return $this->formatId;
+	}
+
+	public final function getCapitalSourceId() {
+		return $this->capitalSourceId;
+	}
+
+	public final function getStartDate() {
+		return $this->startDate;
+	}
+
+	public final function getEndDate() {
+		return $this->endDate;
+	}
+
+	public final function getFileContents() {
+		return $this->fileContents;
+	}}
 
 ?>

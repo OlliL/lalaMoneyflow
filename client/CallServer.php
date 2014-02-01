@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.32 2014/01/28 21:14:34 olivleh1 Exp $
+// $Id: CallServer.php,v 1.33 2014/02/01 10:46:44 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -46,6 +46,7 @@ use rest\api\model\predefmoneyflow\createPreDefMoneyflowRequest;
 use rest\api\model\predefmoneyflow\updatePreDefMoneyflowRequest;
 use rest\api\model\comparedata\compareDataRequest;
 use rest\base\ErrorCode;
+use rest\client\util\DateUtil;
 
 class CallServer extends AbstractJsonSender {
 	private $sessionId;
@@ -60,7 +61,6 @@ class CallServer extends AbstractJsonSender {
 		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToPostingAccountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToCompareDataFormatTransportMapper', ClientArrayMapperEnum::COMPAREDATAFORMAT_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToCompareDataTransportMapper', ClientArrayMapperEnum::COMPAREDATA_TRANSPORT );
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
 		) ) );
@@ -801,15 +801,17 @@ class CallServer extends AbstractJsonSender {
 	public final function compareData(array $compareData) {
 		$url = URLPREFIX . SERVERPREFIX . 'comparedata/compareData/' . $this->sessionId;
 
-		$compareDataTransport = parent::map( $compareData, ClientArrayMapperEnum::COMPAREDATA_TRANSPORT );
-
 		$request = new compareDataRequest();
-		$request->setCompareDataTransport( $compareDataTransport );
+		$request->setCapitalSourceId($compareData['mcs_capitalsourceid']);
+		$request->setEndDate(DateUtil::convertClientDateToTransport($compareData['enddate']));
+		$request->setFileContents(base64_encode($compareData['filecontents']));
+		$request->setFormatId($compareData['format']);
+		$request->setStartDate(DateUtil::convertClientDateToTransport($compareData['startdate']));
 
 		$response = self::putJson( $url, parent::json_encode_response( $request ) );
-		#$compareDataTransport = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\comparedata' );
-return $response;
-#		return $compareDataTransport;
+		$compareDataResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\comparedata' );
+
+		return $compareDataResponse;
 	}
 }
 
