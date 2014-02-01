@@ -26,7 +26,7 @@ use rest\client\handler\ContractpartnerControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.30 2014/02/01 23:26:24 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.31 2014/02/01 23:38:48 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -83,12 +83,12 @@ class moduleContractPartners extends module {
 				if ($contractpartnerid > 0) {
 					$all_data = ContractpartnerControllerHandler::getInstance()->showEditContractpartner( $contractpartnerid );
 					if ($all_data) {
+						$this->template->assign( 'ALL_DATA', $all_data );
 					}
 				}
 				break;
 		}
 
-		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CapitalsourceControllerHandler.php,v 1.1 2014/02/01 23:26:24 olivleh1 Exp $
+// $Id: CapitalsourceControllerHandler.php,v 1.2 2014/02/01 23:38:48 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -104,16 +104,22 @@ class CapitalsourceControllerHandler extends AbstractJsonSender {
 		return $result;
 	}
 
-	/**
-	 *
-	 * @deprecated to be replaced by a new specific REST-Call
-	 */
-	public final function getCapitalsourceById($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/getCapitalsourceById/' . $id . '/' . self::$callServer->getSessionId();
+	public final function showEditCapitalsource($id) {
+		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/showEditCapitalsource/' . $id . '/' . self::$callServer->getSessionId();
 		$response = self::$callServer->getJson( $url );
 		if (is_array( $response )) {
-			$getCapitalsourceByIdResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
-			$result = parent::map( $getCapitalsourceByIdResponse->getCapitalsourceTransport() );
+			$showEditCapitalsourceResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
+			$result = parent::map( $showEditCapitalsourceResponse->getCapitalsourceTransport() );
+		}
+		return $result;
+	}
+
+	public final function showDeleteCapitalsource($id) {
+		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/showDeleteCapitalsource/' . $id . '/' . self::$callServer->getSessionId();
+		$response = self::$callServer->getJson( $url );
+		if (is_array( $response )) {
+			$showDeleteCapitalsourceResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
+			$result = parent::map( $showDeleteCapitalsourceResponse->getCapitalsourceTransport() );
 		}
 		return $result;
 	}
@@ -140,7 +146,6 @@ class CapitalsourceControllerHandler extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/deleteCapitalsourceById/' . $id . '/' . self::$callServer->getSessionId();
 		return self::$callServer->deleteJson( $url );
 	}
-
 }
 
 ?>

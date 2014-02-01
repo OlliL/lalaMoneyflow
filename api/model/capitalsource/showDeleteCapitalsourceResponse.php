@@ -25,13 +25,13 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: getCapitalsourceByIdResponse.php,v 1.3 2014/01/26 12:24:48 olivleh1 Exp $
+// $Id: showDeleteCapitalsourceResponse.php,v 1.1 2014/02/01 23:38:48 olivleh1 Exp $
 //
 namespace rest\api\model\capitalsource;
 
 use rest\api\model\transport\CapitalsourceTransport;
 
-class getCapitalsourceByIdResponse {
+class showDeleteCapitalsourceResponse {
 	public $capitalsourceTransport;
 
 	public final function getCapitalsourceTransport() {

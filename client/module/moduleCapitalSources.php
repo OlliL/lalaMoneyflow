@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.39 2014/02/01 23:26:23 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.40 2014/02/01 23:38:48 olivleh1 Exp $
 //
 
 use rest\base\ErrorCode;
@@ -122,7 +122,7 @@ class moduleCapitalSources extends module {
 			default :
 				if (! is_array( $all_data )) {
 					if ($capitalsourceid > 0) {
-						$all_data = CapitalsourceControllerHandler::getInstance()->getCapitalsourceById( $capitalsourceid );
+						$all_data = CapitalsourceControllerHandler::getInstance()->showEditCapitalsource( $capitalsourceid );
 						if (! is_array( $all_data )) {
 							unset( $capitalsourceid );
 						}
@@ -158,7 +158,7 @@ class moduleCapitalSources extends module {
 				}
 			default :
 				if ($capitalsourceid > 0) {
-					$all_data = CapitalsourceControllerHandler::getInstance()->getCapitalsourceById( $capitalsourceid );
+					$all_data = CapitalsourceControllerHandler::getInstance()->showDeleteCapitalsource( $capitalsourceid );
 					if (is_array( $all_data )) {
 						$all_data ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $all_data ['state'] );
 						$all_data ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $all_data ['type'] );
