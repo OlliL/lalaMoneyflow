@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToCompareDataDatasetTransportMapper.php,v 1.1 2014/02/01 21:03:25 olivleh1 Exp $
+// $Id: ArrayToCompareDataDatasetTransportMapper.php,v 1.2 2014/02/01 22:03:33 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
@@ -49,7 +49,8 @@ class ArrayToCompareDataDatasetTransportMapper extends AbstractArrayMapper {
 
 	public static function mapBToA(CompareDataDatasetTransport $b) {
 		$a ['bookingdate'] = parent::convertTransportDateToClient( $b->getBookingDate() );
-		$a ['invoicedate'] = parent::convertTransportDateToClient( $b->getInvoiceDate() );
+		if ($b->getInvoiceDate())
+			$a ['invoicedate'] = parent::convertTransportDateToClient( $b->getInvoiceDate() );
 		$a ['amount'] = $b->getAmount();
 		$a ['contractpartnername'] = $b->getPartner();
 		$a ['comment'] = $b->getComment();

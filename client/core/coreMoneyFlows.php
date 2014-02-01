@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.58 2014/01/26 12:24:47 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.59 2014/02/01 22:03:33 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -196,20 +196,6 @@ class coreMoneyFlows extends core {
 						       )
 						 GROUP BY$GROUP_CONDITION
 						 ORDER BY$ORDER_CONDITION" );
-	}
-
-	function find_single_moneyflow( $date, $date_days_around, $amount ) {
-		$date = $this->make_date( $date );
-		return $this->select_rows( "	SELECT moneyflowid
-						      ,private
-						  FROM vw_moneyflows mmf
-						 WHERE bookingdate BETWEEN DATE_SUB($date, INTERVAL $date_days_around DAY) AND DATE_ADD($date, INTERVAL $date_days_around DAY)
-						   AND amount     = $amount
-						   AND mmf.mug_mur_userid  = ".USERID."
-						   AND (mmf.private        = 0
-						        OR
-						        mmf.mur_userid     = ".USERID."
-						       )");
 	}
 
 	function month_has_moneyflows( $month, $year ) {
