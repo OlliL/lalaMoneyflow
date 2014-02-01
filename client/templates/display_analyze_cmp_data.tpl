@@ -37,9 +37,9 @@ function toggle(div_name) {
 		<h1>{$TEXT_187}</h1>
 		<br>
 		<ul style="margin-left:12px">
-		{if $ONLY_IN_FILE_IDS|@count gt 0 }
+		{if $NOT_IN_DB|@count gt 0 }
 			<br>
-			<li><a href="javascript:toggle('only_in_file_ids')"><p style="font-weight:bold;text-align:left;font-size:11px;">{$TEXT_197} <font color="red">{$ONLY_IN_FILE_IDS|@count}</font></p></a></li>
+			<li><a href="javascript:toggle('only_in_file_ids')"><p style="font-weight:bold;text-align:left;font-size:11px;">{$TEXT_197} <font color="red">{$NOT_IN_DB|@count}</font></p></a></li>
 			<div id="only_in_file_ids" style="display: none">
 			<table border=0 width=830 align="center" cellpadding=2>
 				<tr>
@@ -53,16 +53,16 @@ function toggle(div_name) {
 					<th width="2%">&nbsp</th>
 					<th width="3%">&nbsp</th>
 				</tr>
-				{section name=ID loop=$ONLY_IN_FILE_IDS}
-					{assign var='file_id'   value=$ONLY_IN_FILE_IDS[ID].file}
+				{section name=ID loop=$NOT_IN_DB}
+					{assign var='file'   value=$NOT_IN_DB[ID].file}
 					<tr>
 						<th align="right">{$TEXT_193}</tdh>
-						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].bookingdate}</td>
-						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].invoicedate}</td>
-						<td align="right" class="contrastbgcolor"><font {if $FILE_ARRAY[$file_id].amount < 0}color="red"{else}color="black"{/if}>{$FILE_ARRAY[$file_id].amount|number_format} {$CURRENCY}</font></td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].contractpartnername|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].comment|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].capitalsourcecomment|escape:htmlall}</td>
+						<td class="contrastbgcolor" align="center">{$file.bookingdate}</td>
+						<td class="contrastbgcolor" align="center">{$file.invoicedate}</td>
+						<td align="right" class="contrastbgcolor"><font {if $file.amount < 0}color="red"{else}color="black"{/if}>{$file.amount|number_format} {$CURRENCY}</font></td>
+						<td class="contrastbgcolor">{$file.contractpartnername|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$file.comment|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$CAPITALSOURCECOMMENT|escape:htmlall}</td>
 						<td>&nbsp</td>
 						<td>&nbsp</td>
 					</tr>
@@ -72,8 +72,8 @@ function toggle(div_name) {
 		{else}
 			<li><p style="font-weight:bold;text-align:left;font-size:11px;">{$TEXT_197} <font color="limegreen">0</font></p></li>
 		{/if}
-		{if $ONLY_IN_DB_IDS|@count gt 0 }
-			<li><a href="javascript:toggle('only_in_db_ids')"><p style="font-weight:bold;text-align:left;font-size:11px;">{$TEXT_198} <font color="red">{$ONLY_IN_DB_IDS|@count}</font></p></a></li>
+		{if $NOT_IN_FILE|@count gt 0 }
+			<li><a href="javascript:toggle('only_in_db_ids')"><p style="font-weight:bold;text-align:left;font-size:11px;">{$TEXT_198} <font color="red">{$NOT_IN_FILE|@count}</font></p></a></li>
 			<div id="only_in_db_ids" style="display: none">
 			<table border=0 width=830 align="center" cellpadding=2>
 				<tr>
@@ -87,19 +87,19 @@ function toggle(div_name) {
 					<th width="2%">&nbsp</th>
 					<th width="3%">&nbsp</th>
 				</tr>
-				{section name=ID loop=$ONLY_IN_DB_IDS}
-					{assign var='db_id'   value=$ONLY_IN_DB_IDS[ID].db}
+				{section name=ID loop=$NOT_IN_FILE}
+					{assign var='moneyflow'   value=$NOT_IN_FILE[ID].moneyflow}
 					<tr>
 						<th align="right">{$TEXT_194}</tdh>
-						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].bookingdate}</td>
-						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].invoicedate}</td>
-						<td align="right" class="contrastbgcolor"><font {if $DB_ARRAY[$db_id].amount < 0}color="red"{else}color="black"{/if}>{$DB_ARRAY[$db_id].amount|number_format} {$CURRENCY}</font></td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].contractpartnername|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].capitalsourcecomment|escape:htmlall}</td>
-						{if $DB_ARRAY[$db_id].owner == true }
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_36}</a></td>
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_37}</a></td>
+						<td class="contrastbgcolor" align="center">{$moneyflow.bookingdate}</td>
+						<td class="contrastbgcolor" align="center">{$moneyflow.invoicedate}</td>
+						<td align="right" class="contrastbgcolor"><font {if $moneyflow.amount < 0}color="red"{else}color="black"{/if}>{$moneyflow.amount|number_format} {$CURRENCY}</font></td>
+						<td class="contrastbgcolor">{$moneyflow.contractpartnername|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$moneyflow.comment|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$moneyflow.capitalsourcecomment|escape:htmlall}</td>
+						{if $moneyflow.owner == true }
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$moneyflow.moneyflowid}','_blank','width=1024,height=120')">{$TEXT_36}</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$moneyflow.moneyflowid}','_blank','width=1024,height=120')">{$TEXT_37}</a></td>
 						{/if}
 					</tr>
 				{/section}
@@ -108,8 +108,8 @@ function toggle(div_name) {
 		{else}
 			<li><p style="font-weight:bold;text-align:left;font-size:11px;">{$TEXT_198} <font color="limegreen">0</font></p></li>
 		{/if}
-		{if $DIFF_SOURCE_IDS|@count gt 0 }
-			<li><a href="javascript:toggle('diff_source_ids')"><p style="font-weight:bold;text-align:left;font-size:11px;">{$TEXT_196} <font color="red">{$DIFF_SOURCE_IDS|@count}</font></p></a></li>
+		{if $WRONG_SOURCE|@count gt 0 }
+			<li><a href="javascript:toggle('diff_source_ids')"><p style="font-weight:bold;text-align:left;font-size:11px;">{$TEXT_196} <font color="red">{$WRONG_SOURCE|@count}</font></p></a></li>
 			<div id="diff_source_ids" style="display: none">
 			<table border=0 width=830 align="center" cellpadding=2>
 				<tr>
@@ -123,32 +123,32 @@ function toggle(div_name) {
 					<th width="2%">&nbsp</th>
 					<th width="3%">&nbsp</th>
 				</tr>
-				{section name=ID loop=$DIFF_SOURCE_IDS}
-					{assign var='file_id' value=$DIFF_SOURCE_IDS[ID].file}
-					{assign var='db_id'   value=$DIFF_SOURCE_IDS[ID].db}
+				{section name=ID loop=$WRONG_SOURCE}
+					{assign var='file'        value=$WRONG_SOURCE[ID].file}
+					{assign var='moneyflow'   value=$WRONG_SOURCE[ID].moneyflow}
 					<tr>
 						<th align="right">{$TEXT_193}</tdh>
-						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].bookingdate}</td>
-						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].invoicedate}</td>
-						<td align="right" class="contrastbgcolor"><font {if $FILE_ARRAY[$file_id].amount < 0}color="red"{else}color="black"{/if}>{$FILE_ARRAY[$file_id].amount|number_format} {$CURRENCY}</font></td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].contractpartnername|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].comment|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].capitalsourcecomment|escape:htmlall}</td>
+						<td class="contrastbgcolor" align="center">{$file.bookingdate}</td>
+						<td class="contrastbgcolor" align="center">{$file.invoicedate}</td>
+						<td align="right" class="contrastbgcolor"><font {if $file.amount < 0}color="red"{else}color="black"{/if}>{$file.amount|number_format} {$CURRENCY}</font></td>
+						<td class="contrastbgcolor">{$file.contractpartnername|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$file.comment|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$CAPITALSOURCECOMMENT|escape:htmlall}</td>
 						<td>&nbsp</td>
 						<td>&nbsp</td>
 					</tr>
 	
 					<tr>
 						<th align="right">{$TEXT_194}</th>
-						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].bookingdate}</td>
-						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].invoicedate}</td>
-						<td align="right" class="contrastbgcolor"><font {if $DB_ARRAY[$db_id].amount < 0}color="red"{else}color="black"{/if}>{$DB_ARRAY[$db_id].amount|number_format} {$CURRENCY}</font></td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].contractpartnername|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].capitalsourcecomment|escape:htmlall}</td>
-						{if $DB_ARRAY[$db_id].owner == true }
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_36}</a></td>
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_37}</a></td>
+						<td class="contrastbgcolor" align="center">{$moneyflow.bookingdate}</td>
+						<td class="contrastbgcolor" align="center">{$moneyflow.invoicedate}</td>
+						<td align="right" class="contrastbgcolor"><font {if $moneyflow.amount < 0}color="red"{else}color="black"{/if}>{$moneyflow.amount|number_format} {$CURRENCY}</font></td>
+						<td class="contrastbgcolor">{$moneyflow.contractpartnername|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$moneyflow.comment|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$moneyflow.capitalsourcecomment|escape:htmlall}</td>
+						{if $moneyflow.owner == true }
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$moneyflow.moneyflowid}','_blank','width=1024,height=120')">{$TEXT_36}</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$moneyflow.moneyflowid}','_blank','width=1024,height=120')">{$TEXT_37}</a></td>
 						{/if}
 					</tr>
 					<tr><td colspan=6>&nbsp;</td></tr>
@@ -158,8 +158,8 @@ function toggle(div_name) {
 		{else}
 			<li><p style="font-weight:bold;text-align:left;font-size:11px;">{$TEXT_196} <font color="limegreen">0</font></p></li>
 		{/if}
-		{if $MATCHING_IDS|@count gt 0 }
-			<li><a href="javascript:toggle('matching_ids')"><p style="font-weight:bold;text-align:left;font-size:11px;">{$TEXT_195} <font color="limegreen">{$MATCHING_IDS|@count}</font></p></a></li>
+		{if $MATCHING|@count gt 0 }
+			<li><a href="javascript:toggle('matching_ids')"><p style="font-weight:bold;text-align:left;font-size:11px;">{$TEXT_195} <font color="limegreen">{$MATCHING|@count}</font></p></a></li>
 			<div id="matching_ids" style="display: none">
 			<table border=0 width=830 align="center" cellpadding=2>
 				<tr>
@@ -173,32 +173,32 @@ function toggle(div_name) {
 					<th width="2%">&nbsp</th>
 					<th width="3%">&nbsp</th>
 				</tr>
-				{section name=ID loop=$MATCHING_IDS}
-					{assign var='file_id' value=$MATCHING_IDS[ID].file}
-					{assign var='db_id'   value=$MATCHING_IDS[ID].db}
+				{section name=ID loop=$MATCHING}
+					{assign var='file'        value=$MATCHING[ID].file}
+					{assign var='moneyflow'   value=$MATCHING[ID].moneyflow}
 					<tr>
 						<th align="right">{$TEXT_193}</tdh>
-						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].bookingdate}</td>
-						<td class="contrastbgcolor" align="center">{$FILE_ARRAY[$file_id].invoicedate}</td>
-						<td align="right" class="contrastbgcolor"><font {if $FILE_ARRAY[$file_id].amount < 0}color="red"{else}color="black"{/if}>{$FILE_ARRAY[$file_id].amount|number_format} {$CURRENCY}</font></td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].contractpartnername|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].comment|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$FILE_ARRAY[$file_id].capitalsourcecomment|escape:htmlall}</td>
+						<td class="contrastbgcolor" align="center">{$file.bookingdate}</td>
+						<td class="contrastbgcolor" align="center">{$file.invoicedate}</td>
+						<td align="right" class="contrastbgcolor"><font {if $file.amount < 0}color="red"{else}color="black"{/if}>{$file.amount|number_format} {$CURRENCY}</font></td>
+						<td class="contrastbgcolor">{$file.contractpartnername|escape:htmlall}</td>	
+						<td class="contrastbgcolor">{$file.comment|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$CAPITALSOURCECOMMENT|escape:htmlall}</td>
 						<td>&nbsp</td>
 						<td>&nbsp</td>
 					</tr>
 	
 					<tr>
 						<th align="right">{$TEXT_194}</th>
-						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].bookingdate}</td>
-						<td class="contrastbgcolor" align="center">{$DB_ARRAY[$db_id].invoicedate}</td>
-						<td align="right" class="contrastbgcolor"><font {if $DB_ARRAY[$db_id].amount < 0}color="red"{else}color="black"{/if}>{$DB_ARRAY[$db_id].amount|number_format} {$CURRENCY}</font></td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].contractpartnername|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].comment|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$DB_ARRAY[$db_id].capitalsourcecomment|escape:htmlall}</td>
-						{if $DB_ARRAY[$db_id].owner == true }
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_36}</a></td>
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$DB_ARRAY[$db_id].moneyflowid}','_blank','width=1024,height=120')">{$TEXT_37}</a></td>
+						<td class="contrastbgcolor" align="center">{$moneyflow.bookingdate}</td>
+						<td class="contrastbgcolor" align="center">{$moneyflow.invoicedate}</td>
+						<td align="right" class="contrastbgcolor"><font {if $moneyflow.amount < 0}color="red"{else}color="black"{/if}>{$moneyflow.amount|number_format} {$CURRENCY}</font></td>
+						<td class="contrastbgcolor">{$moneyflow.contractpartnername|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$moneyflow.comment|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$moneyflow.capitalsourcecomment|escape:htmlall}</td>
+						{if $moneyflow.owner == true }
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$moneyflow.moneyflowid}','_blank','width=1024,height=120')">{$TEXT_36}</a></td>
+						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$moneyflow.moneyflowid}','_blank','width=1024,height=120')">{$TEXT_37}</a></td>
 						{/if}
 					</tr>
 					<tr><td colspan=6>&nbsp;</td></tr>

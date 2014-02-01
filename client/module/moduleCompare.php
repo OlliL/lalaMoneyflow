@@ -26,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.32 2014/02/01 10:46:43 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.33 2014/02/01 21:03:25 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCompare.php';
@@ -39,6 +39,7 @@ class moduleCompare extends module {
 
 	function moduleCompare() {
 		parent::__construct();
+		$this->coreCurrencies = new coreCurrencies();
 		$this->coreCompare = new coreCompare();
 		$this->coreMoneyFlows = new coreMoneyFlows();
 		$this->coreSettings = new coreSettings();
@@ -124,8 +125,8 @@ class moduleCompare extends module {
 	}
 
 	function display_analyze_form($file, $all_data) {
-#		return $this->display_analyze_form_alt($file, $all_data);
-  		return $this->display_analyze_form_neu( $file, $all_data );
+// 		return $this->display_analyze_form_alt($file, $all_data);
+		return $this->display_analyze_form_neu( $file, $all_data );
 	}
 
 	function display_analyze_form_neu($file, $all_data) {
@@ -160,22 +161,47 @@ class moduleCompare extends module {
 
 		if ($valid_data === false) {
 			return $this->display_upload_form( $all_data );
-		} else {
-			// update the chosen capitalsource and format in the usersettings to remember/reuse the selection next time
-			if ($all_data ['mcs_capitalsourceid'] != $this->coreSettings->get_compare_capitalsource( USERID )) {
-				$this->coreSettings->set_compare_capitalsource( USERID, $all_data ['mcs_capitalsourceid'] );
-			}
-			if ($all_data ['format'] != $this->coreSettings->get_compare_format( USERID )) {
-				$this->coreSettings->set_compare_format( USERID, $all_data ['format'] );
-			}
-
-			$all_data['filecontents'] = file_get_contents( $fileName );
-
-			$result = CallServer::getInstance()->compareData($all_data);
-// 			echo base64_decode($result['compareDataRequest']['compareDataTransport']['fileContents']);
-var_dump($result);
-			exit();
 		}
+
+		// update the chosen capitalsource and format in the usersettings to remember/reuse the selection next time
+		if ($all_data ['mcs_capitalsourceid'] != $this->coreSettings->get_compare_capitalsource( USERID )) {
+			$this->coreSettings->set_compare_capitalsource( USERID, $all_data ['mcs_capitalsourceid'] );
+		}
+		if ($all_data ['format'] != $this->coreSettings->get_compare_format( USERID )) {
+			$this->coreSettings->set_compare_format( USERID, $all_data ['format'] );
+		}
+
+		$all_data ['filecontents'] = file_get_contents( $fileName );
+
+		$result = CallServer::getInstance()->compareData( $all_data );
+
+		foreach ( $result ['matching'] as $key => $matching ) {
+			if ($matching ['moneyflow'] ['mur_userid'] == USERID)
+				$result ['matching'] [$key] ['moneyflow'] ['owner'] = true;
+		}
+
+		foreach ( $result ['not_in_file'] as $key => $not_in_file ) {
+			if ($not_in_file ['moneyflow'] ['mur_userid'] == USERID)
+				$result ['not_in_file'] [$key] ['moneyflow'] ['owner'] = true;
+		}
+
+		foreach ( $result ['wrong_source'] as $key => $wrong_source ) {
+			if ($wrong_source ['moneyflow'] ['mur_userid'] == USERID)
+				$result ['wrong_source'] [$key] ['moneyflow'] ['owner'] = true;
+		}
+
+		// TODO: old shit
+		$displayed_currency = $this->coreCurrencies->get_displayed_currency();
+		$this->template->assign( 'CURRENCY', $displayed_currency );
+
+		$this->template->assign( 'MATCHING', $result ['matching'] );
+		$this->template->assign( 'NOT_IN_DB', $result ['not_in_db'] );
+		$this->template->assign( 'NOT_IN_FILE', $result ['not_in_file'] );
+		$this->template->assign( 'WRONG_SOURCE', $result ['wrong_source'] );
+		$this->template->assign( 'CAPITALSOURCECOMMENT', $result ['capitalsource'] ['comment'] );
+
+		$this->parse_header();
+		return $this->fetch_template( 'display_analyze_cmp_data.tpl' );
 	}
 
 	function display_analyze_form_alt($file, $all_data) {

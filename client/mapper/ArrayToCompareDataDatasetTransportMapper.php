@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToCompareDateDatasetTransportMapper.php,v 1.1 2014/02/01 10:46:44 olivleh1 Exp $
+// $Id: ArrayToCompareDataDatasetTransportMapper.php,v 1.1 2014/02/01 21:03:25 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
@@ -43,7 +43,7 @@ class ArrayToCompareDataDatasetTransportMapper extends AbstractArrayMapper {
 		$invoicedate = parent::convertClientDateToTransport( $a ['invoicedate'] );
 		if ($invoicedate)
 			$b->setInvoiceDate( $invoicedate );
-		$b->setPartner( $a ['partner'] );
+		$b->setPartner( $a ['contractpartnername'] );
 		return $b;
 	}
 
@@ -51,7 +51,7 @@ class ArrayToCompareDataDatasetTransportMapper extends AbstractArrayMapper {
 		$a ['bookingdate'] = parent::convertTransportDateToClient( $b->getBookingDate() );
 		$a ['invoicedate'] = parent::convertTransportDateToClient( $b->getInvoiceDate() );
 		$a ['amount'] = $b->getAmount();
-		$a ['partner'] = $b->getPartner();
+		$a ['contractpartnername'] = $b->getPartner();
 		$a ['comment'] = $b->getComment();
 		return $a;
 	}

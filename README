@@ -1,1 +1,12 @@
-.
+Requirements:
+- PHP 5.5.x
+	- Extension: curl
+	- Extension: json
+	- Extension: libxml
+	- Extension: pdo_mysql
+	- Extension: session
+	- Extension: ? I guess I forgot some.....
+- MySQL 5.x
+- Yac (https://github.com/laruence/yac/)
+- Smarty (http://www.smarty.net/)
+- JpGraph (http://jpgraph.net/)

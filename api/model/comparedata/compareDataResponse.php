@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: compareDataResponse.php,v 1.1 2014/02/01 10:46:44 olivleh1 Exp $
+// $Id: compareDataResponse.php,v 1.2 2014/02/01 21:03:25 olivleh1 Exp $
 //
 namespace rest\api\model\comparedata;
 
@@ -34,12 +34,14 @@ use rest\api\model\transport\CompareDataMatchingTransport;
 use rest\api\model\transport\CompareDataWrongCapitalsourceTransport;
 use rest\api\model\transport\CompareDataNotInFileTransport;
 use rest\api\model\transport\CompareDataNotInDatabaseTransport;
+use rest\api\model\transport\CapitalsourceTransport;
 
 class compareDataResponse {
 	public $compareDataMatchingTransport;
 	public $compareDataWrongCapitalsourceTransport;
 	public $compareDataNotInFileTransport;
 	public $compareDataNotInDatabaseTransport;
+	public $capitalsourceTransport;
 
 	public final function setCompareDataMatchingTransport(array $compareDataMatchingTransport) {
 		$this->compareDataMatchingTransport = $compareDataMatchingTransport;
@@ -54,7 +56,11 @@ class compareDataResponse {
 	}
 
 	public final function setCompareDataNotInDatabaseTransport(array $compareDataNotInDatabaseTransport) {
-		$this->compareDataNotInDatabasTransporte = $compareDataNotInDatabaseTransport;
+		$this->compareDataNotInDatabaseTransport = $compareDataNotInDatabaseTransport;
+	}
+
+	public final function setCapitalsourceTransport(CapitalsourceTransport $capitalsourceTransport) {
+		$this->capitalsourceTransport = $capitalsourceTransport;
 	}
 
 	public final function addCompareDataMatchingTransport(CompareDataMatchingTransport $compareDataMatchingTransport) {
@@ -70,23 +76,27 @@ class compareDataResponse {
 	}
 
 	public final function addCompareDataNotInDatabaseTransport(CompareDataNotInDatabaseTransport $compareDataNotInDatabaseTransport) {
-		$this->compareDataNotInDatabasTransporte [] = $compareDataNotInDatabaseTransport;
+		$this->compareDataNotInDatabaseTransport [] = $compareDataNotInDatabaseTransport;
 	}
 
 	public final function getCompareDataMatchingTransport() {
 		return $this->compareDataMatchingTransport;
 	}
 
-	public final function getCompareDataWrongCapitalsource() {
-		return $this->compareDataWrongCapitalsource;
+	public final function getCompareDataWrongCapitalsourceTransport() {
+		return $this->compareDataWrongCapitalsourceTransport;
 	}
 
-	public final function getCompareDataNotInFile() {
-		return $this->compareDataNotInFile;
+	public final function getCompareDataNotInFileTransport() {
+		return $this->compareDataNotInFileTransport;
 	}
 
-	public final function getCompareDataNotInDatabase() {
-		return $this->compareDataNotInDatabase;
+	public final function getCompareDataNotInDatabaseTransport() {
+		return $this->compareDataNotInDatabaseTransport;
+	}
+
+	public final function getCapitalsourceTransport() {
+		return $this->capitalsourceTransport;
 	}
 }
 ?>

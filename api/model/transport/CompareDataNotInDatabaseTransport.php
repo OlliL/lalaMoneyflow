@@ -25,14 +25,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataNotInDatabaseTransport.php,v 1.1 2014/02/01 10:46:44 olivleh1 Exp $
+// $Id: CompareDataNotInDatabaseTransport.php,v 1.2 2014/02/01 21:03:25 olivleh1 Exp $
 //
 namespace rest\api\model\transport;
 
 class CompareDataNotInDatabaseTransport {
 	public $compareDataDatasetTransport;
 
-	public final function setCompareDataDataset(CompareDataDatasetTransport $compareDataDatasetTransport) {
+	public final function setCompareDataDatasetTransport(CompareDataDatasetTransport $compareDataDatasetTransport) {
 		$this->compareDataDatasetTransport = $compareDataDatasetTransport;
 	}
 

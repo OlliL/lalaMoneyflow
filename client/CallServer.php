@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServer.php,v 1.33 2014/02/01 10:46:44 olivleh1 Exp $
+// $Id: CallServer.php,v 1.34 2014/02/01 21:03:25 olivleh1 Exp $
 //
 namespace rest\client;
 
@@ -47,6 +47,7 @@ use rest\api\model\predefmoneyflow\updatePreDefMoneyflowRequest;
 use rest\api\model\comparedata\compareDataRequest;
 use rest\base\ErrorCode;
 use rest\client\util\DateUtil;
+use rest\api\model\transport\CapitalsourceTransport;
 
 class CallServer extends AbstractJsonSender {
 	private $sessionId;
@@ -61,6 +62,7 @@ class CallServer extends AbstractJsonSender {
 		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToPostingAccountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToCompareDataFormatTransportMapper', ClientArrayMapperEnum::COMPAREDATAFORMAT_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToCompareDataDatasetTransportMapper', ClientArrayMapperEnum::COMPAREDATADATASET_TRANSPORT );
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
 		) ) );
@@ -129,6 +131,7 @@ class CallServer extends AbstractJsonSender {
 
 	// update
 	private final function putJson($url, $json) {
+		// echo $json;
 		$response = Request::put( $url )->withoutStrictSsl()->sendsJson()->body( $json )->send();
 		if ($response->code == 204) {
 			return true;
@@ -802,16 +805,53 @@ class CallServer extends AbstractJsonSender {
 		$url = URLPREFIX . SERVERPREFIX . 'comparedata/compareData/' . $this->sessionId;
 
 		$request = new compareDataRequest();
-		$request->setCapitalSourceId($compareData['mcs_capitalsourceid']);
-		$request->setEndDate(DateUtil::convertClientDateToTransport($compareData['enddate']));
-		$request->setFileContents(base64_encode($compareData['filecontents']));
-		$request->setFormatId($compareData['format']);
-		$request->setStartDate(DateUtil::convertClientDateToTransport($compareData['startdate']));
+		$request->setCapitalSourceId( $compareData ['mcs_capitalsourceid'] );
+		$request->setEndDate( DateUtil::convertClientDateToTransport( $compareData ['enddate'] ) );
+		$request->setFileContents( base64_encode( $compareData ['filecontents'] ) );
+		$request->setFormatId( $compareData ['format'] );
+		$request->setStartDate( DateUtil::convertClientDateToTransport( $compareData ['startdate'] ) );
 
 		$response = self::putJson( $url, parent::json_encode_response( $request ) );
-		$compareDataResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\comparedata' );
+		if (is_array( $response )) {
+			$compareDataResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\comparedata' );
+			if (is_array( $compareDataResponse->getCompareDataMatchingTransport() )) {
+				foreach ( $compareDataResponse->getCompareDataMatchingTransport() as $key => $compareDataMatchingTransport ) {
+					$result ['matching'] [$key] ['moneyflow'] = parent::map( $compareDataMatchingTransport->getMoneyflowTransport() );
+					$result ['matching'] [$key] ['file'] = parent::map( $compareDataMatchingTransport->getCompareDataDatasetTransport() );
+				}
+			} else {
+				$result ['matching'] = array ();
+			}
+			if (is_array( $compareDataResponse->getCompareDataNotInDatabaseTransport() )) {
+				foreach ( $compareDataResponse->getCompareDataNotInDatabaseTransport() as $key => $compareDataNotInDatabaseTransport ) {
+					$result ['not_in_db'] [$key] ['file'] = parent::map( $compareDataNotInDatabaseTransport->getCompareDataDatasetTransport() );
+				}
+			} else {
+				$result ['not_in_db'] = array ();
+			}
+			if (is_array( $compareDataResponse->getCompareDataNotInFileTransport() )) {
+				foreach ( $compareDataResponse->getCompareDataNotInFileTransport() as $key => $compareDataNotInFileTransport ) {
+					$result ['not_in_file'] [$key] ['moneyflow'] = parent::map( $compareDataNotInFileTransport->getMoneyflowTransport() );
+				}
+			} else {
+				$result ['not_in_file'] = array ();
+			}
+			if (is_array( $compareDataResponse->getCompareDataWrongCapitalsourceTransport() )) {
+				foreach ( $compareDataResponse->getCompareDataWrongCapitalsourceTransport() as $key => $compareDataWrongCapitalsourceTransport ) {
+					$result ['wrong_source'] [$key] ['moneyflow'] = parent::map( $compareDataWrongCapitalsourceTransport->getMoneyflowTransport() );
+					$result ['wrong_source'] [$key] ['file'] = parent::map( $compareDataWrongCapitalsourceTransport->getCompareDataDatasetTransport() );
+				}
+			} else {
+				$result ['wrong_source'] = array ();
+			}
+			if ($compareDataResponse->getCapitalsourceTransport() instanceof CapitalsourceTransport) {
+				$result ['capitalsource'] = parent::map( $compareDataResponse->getCapitalsourceTransport() );
+			} else {
+				$result ['capitalsource'] = array ();
+			}
+		}
 
-		return $compareDataResponse;
+		return $result;
 	}
 }
 
