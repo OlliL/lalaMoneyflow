@@ -1,5 +1,5 @@
 <?php
-use rest\client\CallServer;
+use rest\client\handler\ContractpartnerControllerHandler;
 //
 // Copyright (c) 2006-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSearch.php,v 1.26 2014/01/26 12:24:48 olivleh1 Exp $
+// $Id: moduleSearch.php,v 1.27 2014/02/01 23:26:24 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -46,7 +46,7 @@ class moduleSearch extends module {
 	}
 
 	function display_search() {
-		$contractpartner_values = CallServer::getInstance()->getAllContractpartner();
+		$contractpartner_values = ContractpartnerControllerHandler::getInstance()->getAllContractpartner();
 		$searchparams = $this->template->getTemplateVars( 'SEARCHPARAMS' );
 		if (empty( $searchparams )) {
 			$searchparams ['grouping1'] = 'year';

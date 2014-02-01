@@ -1,5 +1,5 @@
 <?php
-use rest\client\CallServer;
+use rest\client\handler\SessionControllerHandler;
 //
 // Copyright (c) 2006-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.29 2014/01/26 12:24:48 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.30 2014/02/01 23:26:24 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -83,7 +83,7 @@ class moduleUsers extends module {
 					add_error( 140 );
 				}
 
-				$session = rest\client\CallServer::getInstance()->doLogon( $name, sha1( $password ) );
+				$session = SessionControllerHandler::getInstance()->doLogon( $name, sha1( $password ) );
 				if ($session) {
 					$this->coreSession->setAttribute( 'users_name', $session ['username'] );
 					$this->coreSession->setAttribute( 'users_id', $session ['mur_userid'] );

@@ -1,6 +1,6 @@
 <?php
-use rest\client\CallServer;
 use rest\base\ErrorCode;
+use rest\client\handler\ContractpartnerControllerHandler;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -26,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.29 2014/01/26 12:24:48 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.30 2014/02/01 23:26:24 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -39,7 +39,7 @@ class moduleContractPartners extends module {
 
 	public final function display_list_contractpartners($letter) {
 		$maxRows = $this->coreTemplates->get_max_rows();
-		$listContractpartner = CallServer::getInstance()->showContractpartnerList( $maxRows, $letter );
+		$listContractpartner = ContractpartnerControllerHandler::getInstance()->showContractpartnerList( $maxRows, $letter );
 
 		$all_index_letters = $listContractpartner ['initials'];
 		$all_data = $listContractpartner ['contractpartner'];
@@ -58,9 +58,9 @@ class moduleContractPartners extends module {
 				$all_data ['contractpartnerid'] = $contractpartnerid;
 
 				if ($contractpartnerid == 0)
-					$ret = CallServer::getInstance()->createContractpartner( $all_data );
+					$ret = ContractpartnerControllerHandler::getInstance()->createContractpartner( $all_data );
 				else
-					$ret = CallServer::getInstance()->updateContractpartner( $all_data );
+					$ret = ContractpartnerControllerHandler::getInstance()->updateContractpartner( $all_data );
 
 				if ($ret === true) {
 					$this->template->assign( 'CLOSE', 1 );
@@ -81,7 +81,7 @@ class moduleContractPartners extends module {
 				break;
 			default :
 				if ($contractpartnerid > 0) {
-					$all_data = CallServer::getInstance()->showEditContractpartner( $contractpartnerid );
+					$all_data = ContractpartnerControllerHandler::getInstance()->showEditContractpartner( $contractpartnerid );
 					if ($all_data) {
 					}
 				}
@@ -98,13 +98,13 @@ class moduleContractPartners extends module {
 	public final function display_delete_contractpartner($realaction, $contractpartnerid) {
 		switch ($realaction) {
 			case 'yes' :
-				if (CallServer::getInstance()->deleteContractpartner( $contractpartnerid )) {
+				if (ContractpartnerControllerHandler::getInstance()->deleteContractpartner( $contractpartnerid )) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
 			default :
 				if ($contractpartnerid > 0) {
-					$all_data = CallServer::getInstance()->showDeleteContractpartner( $contractpartnerid );
+					$all_data = ContractpartnerControllerHandler::getInstance()->showDeleteContractpartner( $contractpartnerid );
 					if ($all_data) {
 						$this->template->assign( 'ALL_DATA', $all_data );
 					}

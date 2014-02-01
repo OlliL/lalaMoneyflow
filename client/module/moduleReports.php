@@ -1,5 +1,6 @@
 <?php
-use rest\client\CallServer;
+use rest\client\handler\ReportControllerHandler;
+use rest\client\handler\CapitalsourceControllerHandler;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -25,7 +26,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.68 2014/01/26 12:24:48 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.69 2014/02/01 23:26:24 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -57,7 +58,7 @@ class moduleReports extends module {
 		if (! $year)
 			$year = date( 'Y' );
 
-		$listReports = CallServer::getInstance()->listReports($year, $month);
+		$listReports = ReportControllerHandler::getInstance()->listReports($year, $month);
 		$years = $listReports['allYears'];
 		$allMonth = $listReports['allMonth'];
 		$year = $listReports['year'];
@@ -290,7 +291,7 @@ class moduleReports extends module {
 	}
 
 	function display_plot_trends($all_data) {
-		$capitalsource_values = CallServer::getInstance()->getAllCapitalsources();
+		$capitalsource_values = CapitalsourceControllerHandler::getInstance()->getAllCapitalsources();
 		if (is_array( $capitalsource_values )) {
 			$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 		}

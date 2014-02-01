@@ -1,5 +1,5 @@
 <?php
-use rest\client\CallServer;
+use rest\client\util\CallServerUtil;
 #-
 # Copyright (c) 2006-2014 Oliver Lehmann <oliver@FreeBSD.org>
 # All rights reserved.
@@ -26,7 +26,7 @@ use rest\client\CallServer;
 # SUCH DAMAGE.
 #
 # $MCom: portstools/tinderbox/webui/module/moduleSession.php,v 1.3 2005/07/21 11:28:29 oliver Exp $
-# $Id: coreSession.php,v 1.9 2014/01/26 12:24:47 olivleh1 Exp $
+# $Id: coreSession.php,v 1.10 2014/02/01 23:26:23 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -63,7 +63,7 @@ class coreSession extends core {
 	function start() {
 		if( !headers_sent() ) {
 			session_start();
-			CallServer::getInstance()->setSessionId($this->getAttribute('server_id'));
+			CallServerUtil::getInstance()->setSessionId($this->getAttribute('server_id'));
 			return true;
 		}
 		return false;

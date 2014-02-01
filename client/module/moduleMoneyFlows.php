@@ -1,6 +1,6 @@
 <?php
-use rest\client\CallServer;
 use rest\base\ErrorCode;
+use rest\client\handler\MoneyflowControllerHandler;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -26,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.73 2014/01/28 21:14:33 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.74 2014/02/01 23:26:24 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -74,7 +74,7 @@ class moduleMoneyFlows extends module {
 				}
 
 				if ($valid_data === true) {
-					$ret = CallServer::getInstance()->updateMoneyflow( $all_data );
+					$ret = MoneyflowControllerHandler::getInstance()->updateMoneyflow( $all_data );
 					if ($ret === true) {
 						$this->template->assign( 'CLOSE', 1 );
 					} else {
@@ -124,7 +124,7 @@ class moduleMoneyFlows extends module {
 					break;
 				}
 			default :
-				$showEditMoneyflow = CallServer::getInstance()->showEditMoneyflow( $id );
+				$showEditMoneyflow = MoneyflowControllerHandler::getInstance()->showEditMoneyflow( $id );
 				$all_data_pre = $showEditMoneyflow ['moneyflow'];
 				$capitalsource_values = $showEditMoneyflow ['capitalsources'];
 				$contractpartner_values = $showEditMoneyflow ['contractpartner'];
@@ -190,7 +190,7 @@ class moduleMoneyFlows extends module {
 
 				if ($data_is_valid) {
 
-					$createMoneyflows = CallServer::getInstance()->createMoneyflows( $add_data );
+					$createMoneyflows = MoneyflowControllerHandler::getInstance()->createMoneyflows( $add_data );
 					$capitalsource_values = $createMoneyflows ['capitalsources'];
 
 					$contractpartner_values = $createMoneyflows ['contractpartner'];
@@ -247,7 +247,7 @@ class moduleMoneyFlows extends module {
 				if ($realaction === 'save' && $data_is_valid == true || $realaction != 'save') {
 
 					if ($realaction !== 'save') {
-						$addMoneyflow = CallServer::getInstance()->showAddMoneyflows();
+						$addMoneyflow = MoneyflowControllerHandler::getInstance()->showAddMoneyflows();
 						$capitalsource_values = $addMoneyflow ['capitalsources'];
 
 						$contractpartner_values = $addMoneyflow ['contractpartner'];
@@ -301,12 +301,12 @@ class moduleMoneyFlows extends module {
 	function display_delete_moneyflow($realaction, $id) {
 		switch ($realaction) {
 			case 'yes' :
-				if (CallServer::getInstance()->deleteMoneyflow( $id )) {
+				if (MoneyflowControllerHandler::getInstance()->deleteMoneyflow( $id )) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
 			default :
-				$all_data = CallServer::getInstance()->showDeleteMoneyflow( $id );
+				$all_data = MoneyflowControllerHandler::getInstance()->showDeleteMoneyflow( $id );
 				if ($all_data) {
 					$this->template->assign( 'ALL_DATA', $all_data );
 				}

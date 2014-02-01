@@ -1,5 +1,5 @@
 <?php
-use rest\client\CallServer;
+use rest\client\handler\CapitalsourceControllerHandler;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -25,7 +25,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.43 2014/01/26 12:24:48 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.44 2014/02/01 23:26:24 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -62,7 +62,7 @@ class moduleMonthlySettlement extends module {
 		$years = $this->coreMonthlySettlement->get_all_years();
 		$temp_months = $this->coreMonthlySettlement->get_all_months( $year );
 
-		$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
+		$capitalsourceArray = CapitalsourceControllerHandler::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
 		$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
 
 		if (is_array( $temp_months )) {
@@ -75,7 +75,7 @@ class moduleMonthlySettlement extends module {
 		}
 
 		if ($month > 0 && $year > 0) {
-			$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( mktime( 0, 0, 0, $month, 1, $year ), mktime( 0, 0, 0, $month + 1, 0, $year ) );
+			$capitalsourceArray = CapitalsourceControllerHandler::getInstance()->getAllCapitalsourcesByDateRange( mktime( 0, 0, 0, $month, 1, $year ), mktime( 0, 0, 0, $month + 1, 0, $year ) );
 			$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
 
 			$data_found = false;
@@ -197,7 +197,7 @@ class moduleMonthlySettlement extends module {
 
 				if ($month > 0 && $year > 0) {
 
-					$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( mktime( 0, 0, 0, $month, 1, $year ), mktime( 0, 0, 0, $month + 1, 0, $year ) );
+					$capitalsourceArray = CapitalsourceControllerHandler::getInstance()->getAllCapitalsourcesByDateRange( mktime( 0, 0, 0, $month, 1, $year ), mktime( 0, 0, 0, $month + 1, 0, $year ) );
 					$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
 
 					$all_data_new = array ();
@@ -249,7 +249,7 @@ class moduleMonthlySettlement extends module {
 					break;
 				}
 			default :
-				$capitalsourceArray = CallServer::getInstance()->getAllCapitalsourcesByDateRange( mktime( 0, 0, 0, $month, 1, $year ), mktime( 0, 0, 0, $month + 1, 0, $year ) );
+				$capitalsourceArray = CapitalsourceControllerHandler::getInstance()->getAllCapitalsourcesByDateRange( mktime( 0, 0, 0, $month, 1, $year ), mktime( 0, 0, 0, $month + 1, 0, $year ) );
 				$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
 				foreach ( $capitalsource_values as $capitalsource ) {
 					$all_data [] = array (

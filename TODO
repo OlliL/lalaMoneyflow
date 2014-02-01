@@ -15,6 +15,8 @@
 ###########################################################################################################################
 
 Bugs detected so far:
+   - contractpartner starting with umlauts can not be shown in the "show contractpartner" screen when clicking on the
+     umlaut letter in the header -> check encoding client -> server -> DB   AND UPPER(name) LIKE UPPER('..crap..')
    - predefmoneyflows: edit moneyflow with out-of-daterange capitalsource - do not allow to save it!
    - when a new month start and after the login the settlement question is raised - the new window should open in the
      correct size (height = NUM_SOURCES * 35+something)

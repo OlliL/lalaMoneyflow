@@ -24,11 +24,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.38 2014/01/26 12:12:02 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.39 2014/02/01 23:26:23 olivleh1 Exp $
 //
 
-use rest\client\CallServer;
 use rest\base\ErrorCode;
+use rest\client\handler\CapitalsourceControllerHandler;
 require_once 'module/module.php';
 
 class moduleCapitalSources extends module {
@@ -39,7 +39,7 @@ class moduleCapitalSources extends module {
 
 	public final function display_list_capitalsources($letter) {
 		$maxRows = $this->coreTemplates->get_max_rows();
-		$listCapitalsources = CallServer::getInstance()->showCapitalsourceList( $maxRows, $letter );
+		$listCapitalsources = CapitalsourceControllerHandler::getInstance()->showCapitalsourceList( $maxRows, $letter );
 
 		$all_index_letters = $listCapitalsources ['initials'];
 		$all_data = $listCapitalsources ['capitalsources'];
@@ -86,9 +86,9 @@ class moduleCapitalSources extends module {
 
 				if ($valid_data === true) {
 					if ($capitalsourceid == 0)
-						$ret = CallServer::getInstance()->createCapitalsource( $all_data );
+						$ret = CapitalsourceControllerHandler::getInstance()->createCapitalsource( $all_data );
 					else
-						$ret = CallServer::getInstance()->updateCapitalsource( $all_data );
+						$ret = CapitalsourceControllerHandler::getInstance()->updateCapitalsource( $all_data );
 
 					if ($ret === true) {
 						$this->template->assign( 'CLOSE', 1 );
@@ -122,7 +122,7 @@ class moduleCapitalSources extends module {
 			default :
 				if (! is_array( $all_data )) {
 					if ($capitalsourceid > 0) {
-						$all_data = CallServer::getInstance()->getCapitalsourceById( $capitalsourceid );
+						$all_data = CapitalsourceControllerHandler::getInstance()->getCapitalsourceById( $capitalsourceid );
 						if (! is_array( $all_data )) {
 							unset( $capitalsourceid );
 						}
@@ -152,13 +152,13 @@ class moduleCapitalSources extends module {
 	public final function display_delete_capitalsource($realaction, $capitalsourceid) {
 		switch ($realaction) {
 			case 'yes' :
-				if (CallServer::getInstance()->deleteCapitalsource( $capitalsourceid )) {
+				if (CapitalsourceControllerHandler::getInstance()->deleteCapitalsource( $capitalsourceid )) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
 			default :
 				if ($capitalsourceid > 0) {
-					$all_data = CallServer::getInstance()->getCapitalsourceById( $capitalsourceid );
+					$all_data = CapitalsourceControllerHandler::getInstance()->getCapitalsourceById( $capitalsourceid );
 					if (is_array( $all_data )) {
 						$all_data ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $all_data ['state'] );
 						$all_data ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $all_data ['type'] );

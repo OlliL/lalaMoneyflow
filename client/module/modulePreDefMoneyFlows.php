@@ -24,11 +24,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.46 2014/02/01 10:46:43 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.47 2014/02/01 23:26:24 olivleh1 Exp $
 //
-use rest\client\CallServer;
-use rest\client\mapper\ClientArrayMapperEnum;
 use rest\base\ErrorCode;
+use rest\client\handler\PreDefMoneyflowControllerHandler;
 
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -42,7 +41,7 @@ class modulePreDefMoneyFlows extends module {
 
 	public final function display_list_predefmoneyflows($letter) {
 		$maxRows = $this->coreTemplates->get_max_rows();
-		$listPreDefMoneyflows = CallServer::getInstance()->showPreDefMoneyflowList( $maxRows, $letter );
+		$listPreDefMoneyflows = PreDefMoneyflowControllerHandler::getInstance()->showPreDefMoneyflowList( $maxRows, $letter );
 
 		$all_index_letters = $listPreDefMoneyflows ['initials'];
 		$all_data = $listPreDefMoneyflows ['predefmoneyflows'];
@@ -74,9 +73,9 @@ class modulePreDefMoneyFlows extends module {
 				if ($data_is_valid) {
 
 					if ($predefmoneyflowid == 0)
-						$ret = CallServer::getInstance()->createPreDefMoneyflow( $all_data );
+						$ret = PreDefMoneyflowControllerHandler::getInstance()->createPreDefMoneyflow( $all_data );
 					else
-						$ret = CallServer::getInstance()->updatePreDefMoneyflow( $all_data );
+						$ret = PreDefMoneyflowControllerHandler::getInstance()->updatePreDefMoneyflow( $all_data );
 
 					if ($ret === true) {
 						$this->template->assign( 'CLOSE', 1 );
@@ -118,12 +117,12 @@ class modulePreDefMoneyFlows extends module {
 				break;
 			default :
 				if ($predefmoneyflowid > 0) {
-					$showEditPreDefMoneyflow = CallServer::getInstance()->showEditPreDefMoneyflow( $predefmoneyflowid );
+					$showEditPreDefMoneyflow = PreDefMoneyflowControllerHandler::getInstance()->showEditPreDefMoneyflow( $predefmoneyflowid );
 					$all_data = $showEditPreDefMoneyflow ['predefmoneyflow'];
 					$capitalsource_values = $showEditPreDefMoneyflow ['capitalsources'];
 					$contractpartner_values = $showEditPreDefMoneyflow ['contractpartner'];
 				} else {
-					$showCreatePreDefMoneyflow = CallServer::getInstance()->showCreatePreDefMoneyflow();
+					$showCreatePreDefMoneyflow = PreDefMoneyflowControllerHandler::getInstance()->showCreatePreDefMoneyflow();
 					$capitalsource_values = $showCreatePreDefMoneyflow ['capitalsources'];
 					$contractpartner_values = $showCreatePreDefMoneyflow ['contractpartner'];
 				}
@@ -142,12 +141,12 @@ class modulePreDefMoneyFlows extends module {
 	function display_delete_predefmoneyflow($realaction, $predefmoneyflowid) {
 		switch ($realaction) {
 			case 'yes' :
-				if (CallServer::getInstance()->deletePreDefMoneyflow( $predefmoneyflowid )) {
+				if (PreDefMoneyflowControllerHandler::getInstance()->deletePreDefMoneyflow( $predefmoneyflowid )) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
 			default :
-				$all_data = CallServer::getInstance()->showDeletePreDefMoneyflow( $predefmoneyflowid );
+				$all_data = PreDefMoneyflowControllerHandler::getInstance()->showDeletePreDefMoneyflow( $predefmoneyflowid );
 				$this->template->assign( 'ALL_DATA', $all_data );
 				break;
 		}

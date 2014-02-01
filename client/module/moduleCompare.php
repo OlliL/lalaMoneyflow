@@ -1,6 +1,6 @@
 <?php
-use rest\client\CallServer;
 use rest\base\ErrorCode;
+use rest\client\handler\CompareDataControllerHandler;
 //
 // Copyright (c) 2007-2013 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -26,7 +26,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.34 2014/02/01 22:03:33 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.35 2014/02/01 23:26:23 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -41,7 +41,7 @@ class moduleCompare extends module {
 	}
 
 	function display_upload_form($all_data = array()) {
-		$showCompareDataForm = CallServer::getInstance()->showCompareDataForm();
+		$showCompareDataForm = CompareDataControllerHandler::getInstance()->showCompareDataForm();
 		$format_values = $showCompareDataForm ['comparedataformats'];
 		$capitalsource_values = $showCompareDataForm ['capitalsources'];
 
@@ -105,7 +105,7 @@ class moduleCompare extends module {
 
 		$all_data ['filecontents'] = file_get_contents( $fileName );
 
-		$result = CallServer::getInstance()->compareData( $all_data );
+		$result = CompareDataControllerHandler::getInstance()->compareData( $all_data );
 
 		// set "owner"
 		foreach ( $result ['matching'] as $key => $matching ) {

@@ -1,5 +1,4 @@
 <?php
-use rest\client\CallServer;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -25,7 +24,7 @@ use rest\client\CallServer;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.59 2014/02/01 22:07:46 olivleh1 Exp $
+// $Id: index.php,v 1.60 2014/02/01 23:26:23 olivleh1 Exp $
 //
 
 require_once 'include.php';
