@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.21 2014/01/26 12:24:47 olivleh1 Exp $
+// $Id: include.php,v 1.22 2014/02/02 01:55:14 olivleh1 Exp $
 //
 
 // ########
@@ -61,7 +61,7 @@ $money_debug = false;
 // default year for "valid til" columns when creating a new dataset
 define( 'MAX_YEAR', '2999-12-31' );
 
-set_include_path( get_include_path() . ':sepa/' );
+#set_include_path( get_include_path() );
 
 function framework_autoload($className) {
 	$fname = str_replace( '\\', DIRECTORY_SEPARATOR, $className ) . '.php';

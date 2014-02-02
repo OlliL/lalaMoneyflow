@@ -24,13 +24,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.61 2014/02/01 23:26:23 olivleh1 Exp $
+// $Id: module.php,v 1.62 2014/02/02 01:55:14 olivleh1 Exp $
 //
 
 require_once 'Smarty.class.php';
 require_once 'core/coreTemplates.php';
 require_once 'core/coreText.php';
 require_once 'core/coreUsers.php';
+require_once 'core/coreDomains.php';
 
 class module {
 

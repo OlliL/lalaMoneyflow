@@ -1,4 +1,5 @@
 <?php
+use rest\base\config\CacheManager;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -24,31 +25,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.60 2014/02/01 23:26:23 olivleh1 Exp $
+// $Id: index.php,v 1.61 2014/02/02 01:55:14 olivleh1 Exp $
 //
-
 require_once 'include.php';
 require_once 'functions.php';
-require_once 'module/moduleCapitalSources.php';
-require_once 'module/moduleContractPartners.php';
-require_once 'module/moduleCompare.php';
-require_once 'module/moduleCurrencies.php';
-require_once 'module/moduleCurrencyRates.php';
 require_once 'module/moduleEvents.php';
-require_once 'module/moduleFrontPage.php';
-require_once 'module/moduleLanguages.php';
-require_once 'module/moduleMoneyFlows.php';
-require_once 'module/moduleMonthlySettlement.php';
-require_once 'module/modulePreDefMoneyFlows.php';
-require_once 'module/moduleReports.php';
-require_once 'module/moduleSearch.php';
 require_once 'module/moduleSettings.php';
 require_once 'module/moduleUsers.php';
-require_once 'module/moduleGroups.php';
 
-require_once 'rest/base/AbstractMapperSupport.php';
-require_once 'rest/base/config/CacheManager.php';
-require_once 'rest/client/mapper/ClientArrayMapperEnum.php';
 require_once 'rest/client/model/LoggedOnUser.php';
 
 // f( $money_debug === true ) {
@@ -102,7 +86,7 @@ if ($is_logged_in == 2) {
 	/* user tries to login */
 
 	define( GUI_LANGUAGE, $coreSettings->get_displayed_language( 0 ) );
-	if (! \rest\base\config\CacheManager::getInstance()->get( 'lalaMoneyflowText#' . GUI_LANGUAGE . '-loaded' )) {
+	if (! CacheManager::getInstance()->get( 'lalaMoneyflowText#' . GUI_LANGUAGE . '-loaded' )) {
 		switch (GUI_LANGUAGE) {
 			case 2 :
 				require 'rest/client/locale/de.php';
@@ -131,7 +115,7 @@ if ($is_logged_in == 0) {
 	$date_format = $coreSettings->get_date_format( USERID );
 	define( GUI_DATE_FORMAT, $date_format ['dateformat'] );
 	define( GUI_LANGUAGE, $coreSettings->get_displayed_language( USERID ) );
-	if (! \rest\base\config\CacheManager::getInstance()->get( 'lalaMoneyflowText#' . GUI_LANGUAGE . '-loaded' )) {
+	if (! CacheManager::getInstance()->get( 'lalaMoneyflowText#' . GUI_LANGUAGE . '-loaded' )) {
 		switch (GUI_LANGUAGE) {
 			case 2 :
 				require 'rest/client/locale/de.php';
@@ -141,7 +125,7 @@ if ($is_logged_in == 0) {
 				break;
 		}
 	}
-	if (! \rest\base\config\CacheManager::getInstance()->get( 'lalaMoneyflowDomains-loaded' )) {
+	if (! CacheManager::getInstance()->get( 'lalaMoneyflowDomains-loaded' )) {
 		require 'rest/client/locale/domains.php';
 	}
 
@@ -151,35 +135,42 @@ if ($is_logged_in == 0) {
 		case 'list_capitalsources' :
 		case 'edit_capitalsource' :
 		case 'delete_capitalsource' :
+			require_once 'module/moduleCapitalSources.php';
 			$moduleCapitalSources = new moduleCapitalSources();
 			break;
 		case 'list_contractpartners' :
 		case 'edit_contractpartner' :
 		case 'delete_contractpartner' :
+			require_once 'module/moduleContractPartners.php';
 			$moduleContractPartners = new moduleContractPartners();
 			break;
 		case 'list_predefmoneyflows' :
 		case 'edit_predefmoneyflow' :
 		case 'delete_predefmoneyflow' :
+			require_once 'module/modulePreDefMoneyFlows.php';
 			$modulePreDefMoneyFlows = new modulePreDefMoneyFlows();
 			break;
 		case 'add_moneyflow' :
 		case 'edit_moneyflow' :
 		case 'delete_moneyflow' :
+			require_once 'module/moduleMoneyFlows.php';
 			$moduleMoneyFlows = new moduleMoneyFlows();
 			break;
 		case 'list_monthlysettlements' :
 		case 'edit_monthlysettlement' :
 		case 'delete_monthlysettlement' :
+			require_once 'module/moduleMonthlySettlement.php';
 			$moduleMonthlySettlement = new moduleMonthlySettlement();
 			break;
 		case 'list_reports' :
 		case 'plot_trends' :
 		case 'plot_graph' :
+			require_once 'module/moduleReports.php';
 			$moduleReports = new moduleReports();
 			break;
 		case 'search' :
 		case 'do_search' :
+			require_once 'module/moduleSearch.php';
 			$moduleSearch = new moduleSearch();
 			break;
 		case 'personal_settings' :
@@ -188,15 +179,18 @@ if ($is_logged_in == 0) {
 		case 'list_currencies' :
 		case 'edit_currency' :
 		case 'delete_currency' :
+			require_once 'module/moduleCurrencies.php';
 			$moduleCurrencies = new moduleCurrencies();
 			break;
 		case 'list_currencyrates' :
 		case 'edit_currencyrate' :
+			require_once 'module/moduleCurrencyRates.php';
 			$moduleCurrencyRates = new moduleCurrencyRates();
 			break;
 		case 'list_languages' :
 		case 'edit_language' :
 		case 'add_language' :
+			require_once 'module/moduleLanguages.php';
 			$moduleLanguages = new moduleLanguages();
 			break;
 		case 'list_users' :
@@ -207,14 +201,17 @@ if ($is_logged_in == 0) {
 		case 'list_groups' :
 		case 'edit_group' :
 		case 'delete_group' :
+			require_once 'module/moduleGroups.php';
 			$moduleGroups = new moduleGroups();
 			break;
 
 		case 'upfrm_cmp_data' :
 		case 'analyze_cmp_data' :
+			require_once 'module/moduleCompare.php';
 			$moduleCompare = new moduleCompare();
 			break;
 		default :
+			require_once 'module/moduleFrontPage.php';
 			$moduleFrontPage = new moduleFrontPage();
 			break;
 	}
