@@ -25,24 +25,21 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowTransport.php,v 1.3 2014/02/02 19:09:59 olivleh1 Exp $
+// $Id: MonthlySettlementTransport.php,v 1.1 2014/02/02 19:09:59 olivleh1 Exp $
 //
 namespace rest\api\model\transport;
 
-class MoneyflowTransport {
+class MonthlySettlementTransport {
 	public $id;
 	public $userid;
-	public $bookingdate;
-	public $invoicedate;
+	public $year;
+	public $month;
 	public $amount;
 	public $capitalsourceid;
 	public $capitalsourcecomment;
-	public $contractpartnerid;
-	public $contractpartnername;
-	public $comment;
-	public $private;
-	public $postingaccountid;
-	public $postingaccountname;
+	public $capitalsourcetype;
+	public $capitalsourcestate;
+	public $movementCalculated;
 
 	public final function setId($id) {
 		$this->id = $id;
@@ -52,12 +49,12 @@ class MoneyflowTransport {
 		$this->userid = $userid;
 	}
 
-	public final function setBookingdate($bookingdate) {
-		$this->bookingdate = $bookingdate;
+	public final function setYear($year) {
+		$this->year = $year;
 	}
 
-	public final function setInvoicedate($invoicedate) {
-		$this->invoicedate = $invoicedate;
+	public final function setMonth($month) {
+		$this->month = $month;
 	}
 
 	public final function setAmount($amount) {
@@ -72,20 +69,8 @@ class MoneyflowTransport {
 		$this->capitalsourcecomment = $capitalsourcecomment;
 	}
 
-	public final function setContractpartnerid($contractpartnerid) {
-		$this->contractpartnerid = $contractpartnerid;
-	}
-
-	public final function setContractpartnername($contractpartnername) {
-		$this->contractpartnername = $contractpartnername;
-	}
-
-	public final function setComment($comment) {
-		$this->comment = $comment;
-	}
-
-	public final function setPrivate($private) {
-		$this->private = $private;
+	public final function setMovementCalculated($movementCalculated) {
+		$this->movementCalculated = $movementCalculated;
 	}
 
 	public final function getId() {
@@ -96,12 +81,12 @@ class MoneyflowTransport {
 		return $this->userid;
 	}
 
-	public final function getBookingdate() {
-		return $this->bookingdate;
+	public final function getYear() {
+		return $this->year;
 	}
 
-	public final function getInvoicedate() {
-		return $this->invoicedate;
+	public final function getMonth() {
+		return $this->month;
 	}
 
 	public final function getAmount() {
@@ -116,36 +101,24 @@ class MoneyflowTransport {
 		return $this->capitalsourcecomment;
 	}
 
-	public final function getContractpartnerid() {
-		return $this->contractpartnerid;
+	public final function getMovementCalculated() {
+		return $this->movementCalculated;
 	}
 
-	public final function getContractpartnername() {
-		return $this->contractpartnername;
+	public final function setCapitalsourcetype($capitalsourcetype) {
+		$this->capitalsourcetype = $capitalsourcetype;
 	}
 
-	public final function getComment() {
-		return $this->comment;
+	public final function setCapitalsourcestate($capitalsourcestate) {
+		$this->capitalsourcestate = $capitalsourcestate;
 	}
 
-	public final function getPrivate() {
-		return $this->private;
+	public final function getCapitalsourcetype() {
+		return $this->capitalsourcetype;
 	}
 
-	public final function setPostingaccountid($postingaccountid) {
-		$this->postingaccountid = $postingaccountid;
-	}
-
-	public final function setPostingaccountname($postingaccountname) {
-		$this->postingaccountname = $postingaccountname;
-	}
-
-	public final function getPostingaccountid() {
-		return $this->postingaccountid;
-	}
-
-	public final function getPostingaccountname() {
-		return $this->postingaccountname;
+	public final function getCapitalsourcestate() {
+		return $this->capitalsourcestate;
 	}
 }
 

@@ -25,13 +25,14 @@ use rest\client\handler\CapitalsourceControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.44 2014/02/01 23:26:24 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.45 2014/02/02 19:09:59 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
 require_once 'core/coreMonthlySettlement.php';
 require_once 'core/coreDomains.php';
+require_once 'core/coreMoneyFlows.php';
 
 class moduleMonthlySettlement extends module {
 

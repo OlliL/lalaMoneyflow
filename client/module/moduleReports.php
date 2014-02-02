@@ -26,7 +26,7 @@ use rest\client\handler\CapitalsourceControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.69 2014/02/01 23:26:24 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.70 2014/02/02 19:09:59 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -58,13 +58,13 @@ class moduleReports extends module {
 		if (! $year)
 			$year = date( 'Y' );
 
-		$listReports = ReportControllerHandler::getInstance()->listReports($year, $month);
-		$years = $listReports['allYears'];
-		$allMonth = $listReports['allMonth'];
-		$year = $listReports['year'];
-		$month = $listReports['month'];
-		$_all_moneyflow_data = $listReports['moneyflows'];
-		$all_capitalsources = $listReports['capitalsources'];
+		$listReports = ReportControllerHandler::getInstance()->listReports( $year, $month );
+		$years = $listReports ['allYears'];
+		$allMonth = $listReports ['allMonth'];
+		$year = $listReports ['year'];
+		$month = $listReports ['month'];
+		$_all_moneyflow_data = $listReports ['moneyflows'];
+		$settlements = $listReports ['settlements'];
 
 		if (is_array( $allMonth )) {
 			foreach ( $allMonth as $key => $value ) {
@@ -158,55 +158,90 @@ class moduleReports extends module {
 				}
 				$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
-				// 1. check if there is already a monthly settlement entered in mms
-				$mms_exists = $this->coreMonthlySettlement->monthlysettlement_exists( $month, $year );
-
-				// 2. go through all capitalsources and determine there
-				// a) comment
-				// b) type comment
-				// c) state comment
-				// d) amount they had at the end of the previous month
-				// e) amount they had at the end of the month (if mms_exists)
-				// f) movement during the month
-				// g) amount they should had at the end of the month
-				// h) differnece between e and f (if mms_exists)
-
-				foreach ( $all_capitalsources as $capitalsource ) {
-					$capitalsourceid = $capitalsource ['capitalsourceid'];
-
-					$summary_data [$i] ['comment'] = $capitalsource ['comment'];
-					$summary_data [$i] ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $capitalsource ['type'] );
-					$summary_data [$i] ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $capitalsource ['state'] );
-					$summary_data [$i] ['lastamount'] = $this->coreMonthlySettlement->get_amount( $capitalsource ['mur_userid'], $capitalsourceid, date( 'm', mktime( 0, 0, 0, $month - 1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month - 1, 1, $year ) ) );
-					if ($mms_exists === true) {
-						$settlement_data = $this->coreMonthlySettlement->get_data( $capitalsourceid, $month, $year, true );
-
-						$summary_data [$i] ['fixamount'] = $settlement_data ['amount'];
-						$summary_data [$i] ['movement'] = round( $settlement_data ['movement_calculated'], 2 );
-						$summary_data [$i] ['calcamount'] = round( $summary_data [$i] ['lastamount'] + $summary_data [$i] ['movement'], 2 );
-						$summary_data [$i] ['difference'] = round( $summary_data [$i] ['fixamount'] - $summary_data [$i] ['calcamount'], 2 );
-					} else {
-						$summary_data [$i] ['movement'] = round( $this->coreMoneyFlows->get_monthly_capitalsource_movement( $capitalsource ['mur_userid'], $capitalsourceid, $month, $year ), 2 );
-						$summary_data [$i] ['calcamount'] = $summary_data [$i] ['lastamount'] + $summary_data [$i] ['movement'];
+				// $settlements contains the monthly settlements from the current month (if available, otherwise calculated) and the settlements
+				// from the previous month. Here we merge both settlements into one $summary_data array
+				$next_summary_data_key = 0;
+				$summary_data_key_array = array ();
+				foreach ( $settlements as $settlement ) {
+					$summary_data_key = $summary_data_key_array [$settlement ['mcs_capitalsourceid']];
+					if ($summary_data_key === null) {
+						$summary_data_key = $next_summary_data_key;
+						$summary_data_key_array [$settlement ['mcs_capitalsourceid']] = $summary_data_key;
+						$next_summary_data_key ++;
 					}
 
-					// 3. sum fields up for various sum statistics
-					// a) sum the amount of all capitalsources of the last month up
-					// b) sum the amount of all capitalsources of the month up (if mms_exists)
-					// c) sum the calculated amount of all capitalsources of the month up
+					$summary_data [$summary_data_key] ['comment'] = $settlement ['capitalsourcecomment'];
+					$summary_data [$summary_data_key] ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $settlement ['capitalsourcetype'] );
+					$summary_data [$summary_data_key] ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $settlement ['capitalsourcestate'] );
 
-					$lastamount += $summary_data [$i] ['lastamount'];
-					if ($mms_exists === true)
-						$fixamount += $summary_data [$i] ['fixamount'];
-					$movement_calculated_month += $summary_data [$i] ['movement'];
-					$calcamount += $summary_data [$i] ['calcamount'];
-
-					$i ++;
+					if ($settlement ['month'] == $month && $settlement ['year'] == $year) {
+						if($settlement ['amount'] !== null) {
+							$mms_exists = true;
+							$summary_data [$summary_data_key] ['fixamount'] = $settlement ['amount'];
+							$fixamount += $settlement ['amount'];
+						}
+						$summary_data [$summary_data_key] ['movement'] = $settlement ['movement_calculated'];
+						$movement_calculated_month += $settlement ['movement_calculated'];
+					} else {
+						$summary_data [$summary_data_key] ['lastamount'] = $settlement ['amount'];
+						$lastamount += $settlement ['amount'];
+					}
 				}
+
+				foreach ( $summary_data as $i => $summary ) {
+					$summary_data [$i] ['calcamount'] = round( $summary ['lastamount'] + $summary ['movement'], 2 );
+					$summary_data [$i] ['difference'] = round( $summary ['fixamount'] - $summary_data [$i] ['calcamount'], 2 );
+					$calcamount += $summary_data [$i] ['calcamount'];
+				}
+				// // 1. check if there is already a monthly settlement entered in mms
+				// $mms_exists = $this->coreMonthlySettlement->monthlysettlement_exists( $month, $year );
+
+				// // 2. go through all capitalsources and determine there
+				// // a) comment
+				// // b) type comment
+				// // c) state comment
+				// // d) amount they had at the end of the previous month
+				// // e) amount they had at the end of the month (if mms_exists)
+				// // f) movement during the month
+				// // g) amount they should had at the end of the month
+				// // h) differnece between e and f (if mms_exists)
+
+				// foreach ( $all_capitalsources as $capitalsource ) {
+				// $capitalsourceid = $capitalsource ['capitalsourceid'];
+
+				// $summary_data [$i] ['comment'] = $capitalsource ['comment'];
+				// $summary_data [$i] ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $capitalsource ['type'] );
+				// $summary_data [$i] ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $capitalsource ['state'] );
+				// $summary_data [$i] ['lastamount'] = $this->coreMonthlySettlement->get_amount( $capitalsource ['mur_userid'], $capitalsourceid, date( 'm', mktime( 0, 0, 0, $month - 1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month - 1, 1, $year ) ) );
+				// if ($mms_exists === true) {
+				// $settlement_data = $this->coreMonthlySettlement->get_data( $capitalsourceid, $month, $year, true );
+
+				// $summary_data [$i] ['fixamount'] = $settlement_data ['amount'];
+				// $summary_data [$i] ['movement'] = round( $settlement_data ['movement_calculated'], 2 );
+				// $summary_data [$i] ['calcamount'] = round( $summary_data [$i] ['lastamount'] + $summary_data [$i] ['movement'], 2 );
+				// $summary_data [$i] ['difference'] = round( $summary_data [$i] ['fixamount'] - $summary_data [$i] ['calcamount'], 2 );
+				// } else {
+				// $summary_data [$i] ['movement'] = round( $this->coreMoneyFlows->get_monthly_capitalsource_movement( $capitalsource ['mur_userid'], $capitalsourceid, $month, $year ), 2 );
+				// $summary_data [$i] ['calcamount'] = $summary_data [$i] ['lastamount'] + $summary_data [$i] ['movement'];
+				// }
+
+				// // 3. sum fields up for various sum statistics
+				// // a) sum the amount of all capitalsources of the last month up
+				// // b) sum the amount of all capitalsources of the month up (if mms_exists)
+				// // c) sum the calculated amount of all capitalsources of the month up
+
+				// $lastamount += $summary_data [$i] ['lastamount'];
+				// if ($mms_exists === true)
+				// $fixamount += $summary_data [$i] ['fixamount'];
+				// $movement_calculated_month += $summary_data [$i] ['movement'];
+				// $calcamount += $summary_data [$i] ['calcamount'];
+
+				// $i ++;
+				// }
 
 				// 4. retrieve the movement over the year until the selected month by using the values stored in mms
 
-				$movement_calculated_year_data = $this->coreMonthlySettlement->get_year_movement( $month, $year, true );
+				$movement_calculated_year_data = $this->coreMonthlySettlement->get_year_movement( $month, $year );
 				$movement_calculated_year = $movement_calculated_year_data ['movement_calculated'];
 				$movement_calculated_year_month = $movement_calculated_year_data ['month'];
 

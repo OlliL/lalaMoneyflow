@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportControllerHandler.php,v 1.1 2014/02/01 23:26:24 olivleh1 Exp $
+// $Id: ReportControllerHandler.php,v 1.2 2014/02/02 19:09:59 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -39,8 +39,8 @@ class ReportControllerHandler extends AbstractJsonSender {
 
 	protected function __construct() {
 		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToMonthlySettlementTransportMapper', ClientArrayMapperEnum::MONTHLYSETTLEMENT_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -61,10 +61,10 @@ class ReportControllerHandler extends AbstractJsonSender {
 			} else {
 				$result ['moneyflows'] = '';
 			}
-			if (is_array( $listReports->getCapitalsourceTransport() )) {
-				$result ['capitalsources'] = parent::mapArray( $listReports->getCapitalsourceTransport() );
+			if (is_array( $listReports->getMonthlySettlementTransport() )) {
+				$result ['settlements'] = parent::mapArray( $listReports->getMonthlySettlementTransport());
 			} else {
-				$result ['capitalsources'] = '';
+				$result ['settlements'] = '';
 			}
 			$result ['allYears'] = $listReports->getAllYears();
 			$result ['allMonth'] = $listReports->getAllMonth();
