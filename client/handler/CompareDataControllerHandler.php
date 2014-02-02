@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataControllerHandler.php,v 1.1 2014/02/01 23:26:24 olivleh1 Exp $
+// $Id: CompareDataControllerHandler.php,v 1.2 2014/02/02 00:28:19 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -33,12 +33,17 @@ use rest\base\AbstractJsonSender;
 use rest\client\mapper\ClientArrayMapperEnum;
 use rest\base\JsonAutoMapper;
 use rest\client\util\DateUtil;
+use rest\api\model\comparedata\compareDataRequest;
 
 class CompareDataControllerHandler extends AbstractJsonSender {
 	private static $instance;
 	private static $callServer;
 
 	protected function __construct() {
+		parent::addMapper( 'rest\client\mapper\ArrayToCompareDataFormatTransportMapper', ClientArrayMapperEnum::COMPAREDATAFORMAT_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToCompareDataDatasetTransportMapper', ClientArrayMapperEnum::COMPAREDATADATASET_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
 	}
 
 	public static function getInstance() {

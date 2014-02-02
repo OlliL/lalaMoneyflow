@@ -25,13 +25,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ErrorCode.php,v 1.7 2014/01/28 21:14:34 olivleh1 Exp $
+// $Id: ErrorCode.php,v 1.8 2014/02/02 00:28:19 olivleh1 Exp $
 //
 namespace rest\base;
 
 class ErrorCode extends \SplEnum {
 	const __default = self::UNKNOWN;
 	const UNKNOWN = 0;
+	const CAPITALSOURCE_STILL_REFERENCED = 120;
 	const CAPITALSOURCE_IN_USE_PERIOD = 121;
 	const CAPITALSOURCE_USE_OUT_OF_VALIDITY = 122;
 	const CONTRACTPARTNER_IN_USE = 124;
@@ -53,6 +54,7 @@ class ErrorCode extends \SplEnum {
 	const ACCOUNT_NUMBER_TO_LONG = 227;
 	const BANK_CODE_TO_LONG = 228;
 	const VALIDFROM_AFTER_VALIDTIL = 229;
+	const POSTCODE_MUST_BE_A_NUMBER = 233;
 	const CAPITALSOURCE_DOES_NOT_EXIST = 19; // TODO
 	const CONTRACTPARTNER_DOES_NOT_EXIST = 2; // TODO
 }

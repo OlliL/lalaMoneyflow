@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerControllerHandler.php,v 1.1 2014/02/01 23:26:24 olivleh1 Exp $
+// $Id: ContractpartnerControllerHandler.php,v 1.2 2014/02/02 00:28:19 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -51,7 +51,7 @@ class ContractpartnerControllerHandler extends AbstractJsonSender {
 		return self::$instance;
 	}
 	public final function showContractpartnerList($maxRows, $restriction) {
-		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/showContractpartnerList/' . $maxRows . '/' . $restriction . '/' . self::$callServer->getSessionId();
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/showContractpartnerList/' . $maxRows . '/' . utf8_encode($restriction) . '/' . self::$callServer->getSessionId();
 		$response = self::$callServer->getJson( $url );
 		if (is_array( $response )) {
 			$listContractpartner = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\contractpartner' );

@@ -1,9 +1,11 @@
 
-1. implement the remaining coreMoneyflows on Serverside.
+1. implement moduleMonthlySettlements
+2. implement moduleSearch
+3. implement remaining moduleMoneyFlows (trend-graph)
 
-2. implement Logout Call to destroy the session on the server.
+4. implement Logout Call to destroy the session on the server.
 
-3. continue removing Core Classes
+5. continue removing Core Classes
    - move all the remaining "service" Controller forward methods to client based / view based controller methods to reduce
      multiple HTTP calls and to live the "Controller way" which is a client depending interface
    - implement REST/JSON Services + use them
@@ -15,21 +17,12 @@
 ###########################################################################################################################
 
 Bugs detected so far:
-   - contractpartner starting with umlauts can not be shown in the "show contractpartner" screen when clicking on the
-     umlaut letter in the header -> check encoding client -> server -> DB   AND UPPER(name) LIKE UPPER('..crap..')
    - predefmoneyflows: edit moneyflow with out-of-daterange capitalsource - do not allow to save it!
    - when a new month start and after the login the settlement question is raised - the new window should open in the
      correct size (height = NUM_SOURCES * 35+something)
-   - when deleting a Capitalsource it is not checked if it is still in use in "predefmoneyflows"
    - moneyflows for capitalsources which are not allowed for the user must not be possible (verify this with RESTClient,
      the Client does not allow it already)
-   - capitalsources without comment must not be created.
-   - when comparing data (bank account vs. moneyflow) entries marked as private from an other user are not detected by
-   	MoneyflowDao->searchlMoneyflowsByAmountDate()
-     even if this is fixed, MoneyflowService::getMoneyflowById() later on will not find them.
-   - Month > 12 should not be accepted for list_reports
-   - validate that a postcode of a contractpartner must be a number
-   - check if the deletion of a PreDefMoneyflow was successfull and if not post an error message and send a propper response object.
+   - check if the deletion of a PreDefMoneyflow was successful and if not post an error message and send a propper response object.
    - same goes for Capitalsources and Contractpartner
 
      

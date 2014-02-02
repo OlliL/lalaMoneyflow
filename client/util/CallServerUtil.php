@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServerUtil.php,v 1.1 2014/02/01 23:26:24 olivleh1 Exp $
+// $Id: CallServerUtil.php,v 1.2 2014/02/02 00:28:19 olivleh1 Exp $
 //
 namespace rest\client\util;
 
@@ -43,6 +43,7 @@ class CallServerUtil extends AbstractJsonSender {
 	private static $instance;
 
 	protected function __construct() {
+		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
 		) ) );

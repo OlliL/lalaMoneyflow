@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: de.php,v 1.3 2014/01/26 12:24:49 olivleh1 Exp $
+// $Id: de.php,v 1.4 2014/02/02 00:28:19 olivleh1 Exp $
 //
 
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#2-loaded',true);
@@ -145,7 +145,7 @@
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#2-117', 'Währung löschen');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#2-118', 'Wollen Sie wirklich diese Währung löschen?');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#2-119', 'Es wurden keine Kapitalquellen im System angelegt!');
-\rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#2-120', 'Es dürfen keine Kapitalquellen gelöscht werden, welche noch von einer Geldbewegung referenziert sind!');
+\rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#2-120', 'Die Kapitalquelle kann nicht gelöscht werden, da sie noch von einer Geldbewegung oder vordefinierten Geldbewegung referenziert wird!');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#2-121', 'Es existieren Geldbewegungen für diese Kapitalquelle ausserhalb des gwählten Gültigkeitszeitraums');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#2-122', 'Das Buchungsdatum liegt nicht im Gültigkeitszeitraum der gewählten Kapitalquelle!');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#2-123', 'Es wurden keine Vertragspartner im System angelegt!');
@@ -257,4 +257,5 @@
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#2-230', 'Es wurden bisher im System keine Monatsabschlüsse angelegt!');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#2-231', 'Zugriff verweigert! Sie sind nicht angemeldet!');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#2-232', 'Buchungskonto');
+\rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#2-233', 'Die Postleitzahl darf nur aus Ziffern bestehen!');
 ?>

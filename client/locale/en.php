@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: en.php,v 1.3 2014/01/26 12:24:49 olivleh1 Exp $
+// $Id: en.php,v 1.4 2014/02/02 00:28:19 olivleh1 Exp $
 //
 
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-loaded',true);
@@ -145,7 +145,7 @@
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-117', 'delete currency');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-118', 'Do you really want to delete this Currency?');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-119', 'No sources of capital where created in the system!');
-\rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-120', 'You may not delete a source of capital while it is referenced by a flow of money!');
+\rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-120', 'The source of capital cannot be deleted because it is still referenced by a flow of money or a predefined flow of money!');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-121', 'There are flows of money for this source of capital outside the period of validitiy you\'ve choosen!');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-122', 'The source of capital you\'ve choosen is not valid on the booking date you\'ve specified!');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-123', 'No contractual partners where created in the system!');
@@ -257,4 +257,5 @@
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-230', 'No monthly settlements where created in the system!');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-231', 'Access Denied! You are not logged on!');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-232', 'Posting Account');
+\rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#2-233', 'The postcode must only contain numbers!');
 ?>

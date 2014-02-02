@@ -26,7 +26,7 @@ use rest\client\handler\CompareDataControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.35 2014/02/01 23:26:23 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.36 2014/02/02 00:28:19 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -107,21 +107,10 @@ class moduleCompare extends module {
 
 		$result = CompareDataControllerHandler::getInstance()->compareData( $all_data );
 
-		// set "owner"
-		foreach ( $result ['matching'] as $key => $matching ) {
-			if ($matching ['moneyflow'] ['mur_userid'] == USERID)
-				$result ['matching'] [$key] ['moneyflow'] ['owner'] = true;
-		}
-
-		foreach ( $result ['not_in_file'] as $key => $not_in_file ) {
-			if ($not_in_file ['moneyflow'] ['mur_userid'] == USERID)
-				$result ['not_in_file'] [$key] ['moneyflow'] ['owner'] = true;
-		}
-
-		foreach ( $result ['wrong_source'] as $key => $wrong_source ) {
-			if ($wrong_source ['moneyflow'] ['mur_userid'] == USERID)
-				$result ['wrong_source'] [$key] ['moneyflow'] ['owner'] = true;
-		}
+		// set "owner" + remove private entries
+		$result ['matching'] = $this->setOwnerAndFilterPrivate( $result ['matching'] );
+		$result ['not_in_file'] = $this->setOwnerAndFilterPrivate( $result ['not_in_file'] );
+		$result ['wrong_source'] = $this->setOwnerAndFilterPrivate( $result ['wrong_source'] );
 
 		// TODO: old shit
 		$displayed_currency = $this->coreCurrencies->get_displayed_currency();
@@ -135,6 +124,24 @@ class moduleCompare extends module {
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_analyze_cmp_data.tpl' );
+	}
+
+	/**
+	 * This function removes all elements where the moneyflow is set to private and does not belong to the user.
+	 * Moneyflows which belong to the user also receive an additional flag indicating this.
+	 *
+	 * @param unknown $compareArray
+	 * @return array
+	 */
+	private final function setOwnerAndFilterPrivate($compareArray) {
+		foreach ( $compareArray as $key => $matching ) {
+			if ($matching ['moneyflow'] ['mur_userid'] == USERID || $matching ['moneyflow'] ['private'] == 0) {
+				if ($matching ['moneyflow'] ['mur_userid'] == USERID)
+					$compareArray [$key] ['moneyflow'] ['owner'] = true;
+				$newArray [] = $compareArray [$key];
+			}
+		}
+		return $newArray;
 	}
 }
 ?>
