@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowTransport.php,v 1.3 2014/02/02 19:09:59 olivleh1 Exp $
+// $Id: MoneyflowTransport.php,v 1.4 2014/02/03 19:18:27 olivleh1 Exp $
 //
 namespace rest\api\model\transport;
 

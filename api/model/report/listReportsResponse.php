@@ -25,9 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: listReportsResponse.php,v 1.3 2014/02/02 19:09:59 olivleh1 Exp $
+// $Id: listReportsResponse.php,v 1.4 2014/02/03 19:18:27 olivleh1 Exp $
 //
 namespace rest\api\model\report;
+
+use rest\api\model\transport\ReportTurnoverCapitalsourceTransport;
 
 class listReportsResponse {
 	public $moneyflowTransport;
@@ -35,7 +37,7 @@ class listReportsResponse {
 	public $month;
 	public $allYears;
 	public $allMonth;
-	public $monthlySettlementTransport;
+	public $reportTurnoverCapitalsourceTransport;
 
 	public final function getMoneyflowTransport() {
 		return $this->moneyflowTransport;
@@ -77,12 +79,12 @@ class listReportsResponse {
 		$this->month = $month;
 	}
 
-	public final function setMonthlySettlementTransport(array $monthlySettlementTransport) {
-		$this->monthlySettlementTransport = $monthlySettlementTransport;
+	public final function setReportTurnoverCapitalsourceTransport(array $reportTurnoverCapitalsourceTransport) {
+		$this->reportTurnoverCapitalsourceTransport = $reportTurnoverCapitalsourceTransport;
 	}
 
-	public final function getMonthlySettlementTransport() {
-		return $this->monthlySettlementTransport;
+	public final function getReportTurnoverCapitalsourceTransport() {
+		return $this->reportTurnoverCapitalsourceTransport;
 	}
 }
 

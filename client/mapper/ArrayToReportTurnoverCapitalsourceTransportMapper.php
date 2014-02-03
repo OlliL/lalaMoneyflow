@@ -25,43 +25,27 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractJsonSender.php,v 1.7 2014/02/03 19:18:27 olivleh1 Exp $
+// $Id: ArrayToReportTurnoverCapitalsourceTransportMapper.php,v 1.1 2014/02/03 19:18:27 olivleh1 Exp $
 //
-namespace rest\base;
+namespace rest\client\mapper;
 
-class AbstractJsonSender extends AbstractMapperSupport {
+use rest\api\model\transport\ReportTurnoverCapitalsourceTransport;
 
-	protected function json_encode_response($response) {
-		$class = get_class( $response );
-		$classArray = explode( '\\', $class );
-		return '{"' . array_pop( $classArray ) . '":' . json_encode( get_object_vars($response ), JSON_NUMERIC_CHECK ) . '}';
+class ArrayToReportTurnoverCapitalsourceTransportMapper extends AbstractArrayMapper {
+
+	public static function mapAToB(array $a) {
 	}
 
-	protected function json_encode($obj) {
-		if (is_array( $obj )) {
-			$element = reset( $obj );
-			if (is_object( $element )) {
-				$class = get_class( reset( $obj ) );
-			}
-		} else {
-			if (is_object( $obj )) {
-				$class = get_class( $obj );
-			}
-		}
-		if (is_string( $class )) {
-			$classArray = explode( '\\', $class );
+	public static function mapBToA(ReportTurnoverCapitalsourceTransport $b) {
+		$a ['comment'] = $b->getCapitalsourceComment();
+		$a ['type'] = $b->getCapitalsourceType();
+		$a ['state'] = $b->getCapitalsourceState();
+		if ($b->getAmountEndOfMonthFixed() !== NULL)
+			$a ['fixamount'] = $b->getAmountEndOfMonthFixed();
+		$a ['lastamount'] = $b->getAmountBeginOfMonthFixed();
+		$a ['calcamount'] = $b->getAmountEndOfMonthCalculated();
 
-			if ((is_array( $obj ) && count( $obj ) > 0)) {
-				return '{"' . array_pop( $classArray ) . '":' . json_encode( parent::mapArray( $obj ) ) . '}';
-			} else if ($obj != NULL) {
-				return '{"' . array_pop( $classArray ) . '":' . json_encode( parent::map( $obj ) ) . '}';
-			}
-		} else if (is_array( $obj )) {
-			return '{"List":' . json_encode( $obj ) . '}';
-		} else {
-			return '{"Scalar":' . json_encode( $obj ) . '}';
-		}
+		return $a;
 	}
 }
-
 ?>

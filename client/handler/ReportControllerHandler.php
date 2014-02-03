@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportControllerHandler.php,v 1.2 2014/02/02 19:09:59 olivleh1 Exp $
+// $Id: ReportControllerHandler.php,v 1.3 2014/02/03 19:18:27 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -40,7 +40,7 @@ class ReportControllerHandler extends AbstractJsonSender {
 	protected function __construct() {
 		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToMonthlySettlementTransportMapper', ClientArrayMapperEnum::MONTHLYSETTLEMENT_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToReportTurnoverCapitalsourceTransportMapper', ClientArrayMapperEnum::REPORTTURNOVERCAPITALSOURCE_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -61,10 +61,10 @@ class ReportControllerHandler extends AbstractJsonSender {
 			} else {
 				$result ['moneyflows'] = '';
 			}
-			if (is_array( $listReports->getMonthlySettlementTransport() )) {
-				$result ['settlements'] = parent::mapArray( $listReports->getMonthlySettlementTransport());
+			if (is_array( $listReports->getReportTurnoverCapitalsourceTransport() )) {
+				$result ['turnover_capitalsources'] = parent::mapArray( $listReports->getReportTurnoverCapitalsourceTransport());
 			} else {
-				$result ['settlements'] = '';
+				$result ['turnover_capitalsources'] = '';
 			}
 			$result ['allYears'] = $listReports->getAllYears();
 			$result ['allMonth'] = $listReports->getAllMonth();

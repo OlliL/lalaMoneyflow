@@ -26,7 +26,7 @@ use rest\client\handler\CapitalsourceControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.71 2014/02/02 20:39:54 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.72 2014/02/03 19:18:27 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -64,7 +64,7 @@ class moduleReports extends module {
 		$year = $listReports ['year'];
 		$month = $listReports ['month'];
 		$_all_moneyflow_data = $listReports ['moneyflows'];
-		$settlements = $listReports ['settlements'];
+		$turnover_capitalsources = $listReports ['turnover_capitalsources'];
 
 		if (is_array( $allMonth )) {
 			foreach ( $allMonth as $key => $value ) {
@@ -158,48 +158,15 @@ class moduleReports extends module {
 				}
 				$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
-				// $settlements contains the monthly settlements from the current month (if available, otherwise calculated) and the settlements
-				// from the previous month. Here we merge both settlements into one $summary_data array
-				$next_summary_data_key = 0;
-				$summary_data_key_array = array ();
-				foreach ( $settlements as $settlement ) {
-					$summary_data_key = $summary_data_key_array [$settlement ['mcs_capitalsourceid']];
-					if ($summary_data_key === null) {
-						$summary_data_key = $next_summary_data_key;
-						$summary_data_key_array [$settlement ['mcs_capitalsourceid']] = $summary_data_key;
-						$next_summary_data_key ++;
-					}
-
-					$summary_data [$summary_data_key] ['comment'] = $settlement ['capitalsourcecomment'];
-					$summary_data [$summary_data_key] ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $settlement ['capitalsourcetype'] );
-					$summary_data [$summary_data_key] ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $settlement ['capitalsourcestate'] );
-
-					// previous month or current month
-					if ($settlement ['month'] == $month && $settlement ['year'] == $year) {
-						// if it is null, it is a calculated settlement (only the movement is defined, no fixated end of month amount)
-						if ($settlement ['amount'] !== null) {
-							$mms_exists = true;
-							// fixated end of month amount
-							$summary_data [$summary_data_key] ['fixamount'] = $settlement ['amount'];
-							$fixamount += $settlement ['amount'];
-						}
-						// movement amount based on the recorded moneyflows of the current month
-						$summary_data [$summary_data_key] ['movement'] = $settlement ['movement_calculated'];
-						$movement_calculated_month += $settlement ['movement_calculated'];
-					} else {
-						// fixated end of previous month amount
-						$summary_data [$summary_data_key] ['lastamount'] = $settlement ['amount'];
-						$lastamount += $settlement ['amount'];
-					}
-				}
-
-				foreach ( $summary_data as $i => $summary ) {
-					// calculated end of month amount
-					$summary_data [$i] ['calcamount'] = round( $summary ['lastamount'] + $summary ['movement'], 2 );
-					if ($summary ['fixamount']) {
-						// difference between calculated end of month amount and fixated end of month amount
-						$summary_data [$i] ['difference'] = round( $summary ['fixamount'] - $summary_data [$i] ['calcamount'], 2 );
-						$calcamount += $summary_data [$i] ['calcamount'];
+				foreach ( $turnover_capitalsources as $key => $turnover_capitalsource ) {
+					$turnover_capitalsources [$key] ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $turnover_capitalsource ['type'] );
+					$turnover_capitalsources [$key] ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $turnover_capitalsource ['state'] );
+					$movement_calculated_month += $turnover_capitalsource ['calcamount'] - $turnover_capitalsource ['lastamount'];
+					$calcamount += $turnover_capitalsource ['calcamount'];
+					$lastamount += $turnover_capitalsource ['lastamount'];
+					if (array_key_exists( 'fixamount', $turnover_capitalsource )) {
+						$fixamount += $turnover_capitalsource ['fixamount'];
+						$mms_exists = true;
 					}
 				}
 
@@ -250,7 +217,7 @@ class moduleReports extends module {
 				$prev_link = $this->coreMoneyFlows->month_has_moneyflows( $prev_month, $prev_year );
 				$next_link = $this->coreMoneyFlows->month_has_moneyflows( $next_month, $next_year );
 
-				$month = array (
+				$month_array = array (
 						'nummeric' => sprintf( '%02d', $month ),
 						'name' => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int ) $month )
 				);
@@ -262,12 +229,11 @@ class moduleReports extends module {
 				$this->template->assign( 'NEXT_YEAR', $next_year );
 				$this->template->assign( 'NEXT_LINK', $next_link );
 
-				$this->template->assign( 'MONTH', $month );
-				$this->template->assign( 'YEAR', $year );
+				$this->template->assign( 'MONTH', $month_array );
 				$this->template->assign( 'SORTBY', $sortby );
 				$this->template->assign( 'NEWORDER', $neworder );
 				$this->template->assign( 'ORDER', $order );
-				$this->template->assign( 'SUMMARY_DATA', $summary_data );
+				$this->template->assign( 'SUMMARY_DATA', $turnover_capitalsources );
 				$this->template->assign( 'LASTAMOUNT', $lastamount );
 				$this->template->assign( 'FIRSTAMOUNT', $firstamount );
 				$this->template->assign( 'FIXAMOUNT', $fixamount );
@@ -451,4 +417,5 @@ class moduleReports extends module {
 		$graph->Stroke();
 	}
 }
+
 ?>

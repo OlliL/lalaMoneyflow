@@ -59,7 +59,7 @@ function Go(x)
 							&nbsp;
 						{/if}
 					</td>
-					<td width="60%" align="center"><h1>{$TEXT_61} {$MONTH.name} {$YEAR}</h1></td>
+					<td width="60%" align="center"><h1>{$TEXT_61} {$MONTH.name} {$SELECTED_YEAR}</h1></td>
 					<td width="20%" align="right">
 						{if $NEXT_LINK == true }
 							<a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$NEXT_MONTH}&amp;reports_year={$NEXT_YEAR}{if $SORTBY != ''}&amp;reports_sortby={$SORTBY}&amp;reports_order={$ORDER}{/if}">{$TEXT_201} &gt;&gt;</a>
@@ -71,13 +71,13 @@ function Go(x)
 			</table>
 			<table border=0 align="center" cellpadding=2>
 				<tr>
-					<th width="90"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=moneyflows_bookingdate&amp;reports_order={$NEWORDER}" >{$TEXT_16}</a></th>
-					<th width="90"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=moneyflows_invoicedate&amp;reports_order={$NEWORDER}" >{$TEXT_17}</a></th>
-					<th width="100"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=moneyflows_amount&amp;reports_order={$NEWORDER}"     >{$TEXT_18}</a></th>
-					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=contractpartners_name&amp;reports_order={$NEWORDER}" >{$TEXT_2}</a></th>
-					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=moneyflows_comment&amp;reports_order={$NEWORDER}"    >{$TEXT_21}</a></th>
-					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=postingaccount_name&amp;reports_order={$NEWORDER}">{$TEXT_232}</a></th>
-					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$YEAR}&amp;reports_sortby=capitalsources_comment&amp;reports_order={$NEWORDER}">{$TEXT_19}</a></th>
+					<th width="90"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_bookingdate&amp;reports_order={$NEWORDER}" >{$TEXT_16}</a></th>
+					<th width="90"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_invoicedate&amp;reports_order={$NEWORDER}" >{$TEXT_17}</a></th>
+					<th width="100"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_amount&amp;reports_order={$NEWORDER}"     >{$TEXT_18}</a></th>
+					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=contractpartners_name&amp;reports_order={$NEWORDER}" >{$TEXT_2}</a></th>
+					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_comment&amp;reports_order={$NEWORDER}"    >{$TEXT_21}</a></th>
+					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=postingaccount_name&amp;reports_order={$NEWORDER}">{$TEXT_232}</a></th>
+					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=capitalsources_comment&amp;reports_order={$NEWORDER}">{$TEXT_19}</a></th>
 					<th>&nbsp</th>
 					<th>&nbsp</th>
 				</tr>
@@ -147,7 +147,9 @@ function Go(x)
 						{/if}
 						<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].calcamount < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].calcamount|number_format} {$CURRENCY}</font></td>
 						{if $MONTHLYSETTLEMENT_EXISTS == true}
-						<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].difference < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].difference|number_format} {$CURRENCY}</font></td>
+						{math equation="x - y" x=$SUMMARY_DATA[DATA].fixamount y=$SUMMARY_DATA[DATA].calcamount assign=CAPITALSOURCE_DIFFERENCE}
+						
+						<td align="right" class="contrastbgcolor"><font {if $CAPITALSOURCE_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$CAPITALSOURCE_DIFFERENCE|number_format} {$CURRENCY}</font></td>
 						{/if}
 					</tr>
 				{/section}
