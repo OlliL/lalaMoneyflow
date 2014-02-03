@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportControllerHandler.php,v 1.3 2014/02/03 19:18:27 olivleh1 Exp $
+// $Id: ReportControllerHandler.php,v 1.4 2014/02/03 21:05:53 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -70,6 +70,10 @@ class ReportControllerHandler extends AbstractJsonSender {
 			$result ['allMonth'] = $listReports->getAllMonth();
 			$result ['year'] = $listReports->getYear();
 			$result ['month'] = $listReports->getMonth();
+			$result ['firstamount'] = $listReports->getAmountBeginOfYear();
+			$result ['calculated_yearly_turnover'] = $listReports->getTurnoverEndOfYearCalculated();
+			$result ['prev_link'] = $listReports->getPreviousMonthHasMoneyflows();
+			$result ['next_link'] = $listReports->getNextMonthHasMoneyflows();
 		}
 
 		return $result;

@@ -120,6 +120,7 @@ function Go(x)
 				</tr>
 			</table>
 			<br>
+			{if $SUMMARY_DATA != ''}
 			<hr align="center" width="830">
 			<h1>{$TEXT_68}</h1>
 			<table border=0 cellpadding=2>
@@ -199,6 +200,7 @@ function Go(x)
 				</tr>
 				{/if}
 			</table>
+			{/if}
 {/if}
 		</td>
 {$FOOTER}

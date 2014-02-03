@@ -26,7 +26,7 @@ use rest\client\handler\CapitalsourceControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.72 2014/02/03 19:18:27 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.73 2014/02/03 21:05:52 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -65,6 +65,10 @@ class moduleReports extends module {
 		$month = $listReports ['month'];
 		$_all_moneyflow_data = $listReports ['moneyflows'];
 		$turnover_capitalsources = $listReports ['turnover_capitalsources'];
+		$firstamount = $listReports ['firstamount'];
+		$movement_calculated_year = $listReports ['calculated_yearly_turnover'];
+		$prev_link = $listReports['prev_link'];
+		$next_link = $listReports['next_link'];
 
 		if (is_array( $allMonth )) {
 			foreach ( $allMonth as $key => $value ) {
@@ -158,44 +162,19 @@ class moduleReports extends module {
 				}
 				$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
-				foreach ( $turnover_capitalsources as $key => $turnover_capitalsource ) {
-					$turnover_capitalsources [$key] ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $turnover_capitalsource ['type'] );
-					$turnover_capitalsources [$key] ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $turnover_capitalsource ['state'] );
-					$movement_calculated_month += $turnover_capitalsource ['calcamount'] - $turnover_capitalsource ['lastamount'];
-					$calcamount += $turnover_capitalsource ['calcamount'];
-					$lastamount += $turnover_capitalsource ['lastamount'];
-					if (array_key_exists( 'fixamount', $turnover_capitalsource )) {
-						$fixamount += $turnover_capitalsource ['fixamount'];
-						$mms_exists = true;
+				if (is_array( $turnover_capitalsources )) {
+					foreach ( $turnover_capitalsources as $key => $turnover_capitalsource ) {
+						$turnover_capitalsources [$key] ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $turnover_capitalsource ['type'] );
+						$turnover_capitalsources [$key] ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $turnover_capitalsource ['state'] );
+						$movement_calculated_month += $turnover_capitalsource ['calcamount'] - $turnover_capitalsource ['lastamount'];
+						$calcamount += $turnover_capitalsource ['calcamount'];
+						$lastamount += $turnover_capitalsource ['lastamount'];
+						if (array_key_exists( 'fixamount', $turnover_capitalsource )) {
+							$fixamount += $turnover_capitalsource ['fixamount'];
+							$mms_exists = true;
+						}
 					}
 				}
-
-				// 4. retrieve the movement over the year until the selected month by using the values stored in mms
-
-				$movement_calculated_year_data = $this->coreMonthlySettlement->get_year_movement( $month, $year );
-				$movement_calculated_year = $movement_calculated_year_data ['movement_calculated'];
-				$movement_calculated_year_month = $movement_calculated_year_data ['month'];
-
-				// 4a.if mms doesn't contain all data up to the selected month, retrieve the missing data by using
-				// the value calculated for the selected month (if the diference is just this month), or if the
-				// difference is higher then calculate the missing range vby using mmf
-
-				if ($movement_calculated_year_month != $month) {
-					$startmonth = date( 'm', mktime( 0, 0, 0, $movement_calculated_year_month + 1, 1, $year ) );
-					if ($startmonth == $month) {
-						$movement_calculated_year += $movement_calculated_month;
-					} else {
-						$movement_calculated_year += $this->coreMoneyFlows->get_range_movement( $startmonth, $month, $year );
-					}
-				}
-
-				// 4b.finally round it
-
-				$movement_calculated_year = round( $movement_calculated_year, 2 );
-
-				// 5. select the final amount of the last year (to calculate the turnover/movement since the last year)
-
-				$firstamount = $this->coreMonthlySettlement->get_sum_amount( 12, $year - 1, true );
 
 				if ($month == 1) {
 					$prev_month = 12;
@@ -213,9 +192,6 @@ class moduleReports extends module {
 					$next_month = $month + 1;
 					$next_year = $year;
 				}
-
-				$prev_link = $this->coreMoneyFlows->month_has_moneyflows( $prev_month, $prev_year );
-				$next_link = $this->coreMoneyFlows->month_has_moneyflows( $next_month, $next_year );
 
 				$month_array = array (
 						'nummeric' => sprintf( '%02d', $month ),

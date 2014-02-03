@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: listReportsResponse.php,v 1.4 2014/02/03 19:18:27 olivleh1 Exp $
+// $Id: listReportsResponse.php,v 1.5 2014/02/03 21:05:53 olivleh1 Exp $
 //
 namespace rest\api\model\report;
 
@@ -38,6 +38,10 @@ class listReportsResponse {
 	public $allYears;
 	public $allMonth;
 	public $reportTurnoverCapitalsourceTransport;
+	public $turnoverEndOfYearCalculated;
+	public $amountBeginOfYear;
+	public $nextMonthHasMoneyflows;
+	public $previousMonthHasMoneyflows;
 
 	public final function getMoneyflowTransport() {
 		return $this->moneyflowTransport;
@@ -85,6 +89,38 @@ class listReportsResponse {
 
 	public final function getReportTurnoverCapitalsourceTransport() {
 		return $this->reportTurnoverCapitalsourceTransport;
+	}
+
+	public final function setTurnoverEndOfYearCalculated($turnoverEndOfYearCalculated) {
+		$this->turnoverEndOfYearCalculated = $turnoverEndOfYearCalculated;
+	}
+
+	public final function setAmountBeginOfYear($amountBeginOfYear) {
+		$this->amountBeginOfYear = $amountBeginOfYear;
+	}
+
+	public final function getTurnoverEndOfYearCalculated() {
+		return $this->turnoverEndOfYearCalculated;
+	}
+
+	public final function getAmountBeginOfYear() {
+		return $this->amountBeginOfYear;
+	}
+
+	public final function setNextMonthHasMoneyflows($nextMonthHasMoneyflows) {
+		$this->nextMonthHasMoneyflows = $nextMonthHasMoneyflows;
+	}
+
+	public final function setPreviousMonthHasMoneyflows($previousMonthHasMoneyflows) {
+		$this->previousMonthHasMoneyflows = $previousMonthHasMoneyflows;
+	}
+
+	public final function getNextMonthHasMoneyflows() {
+		return $this->nextMonthHasMoneyflows;
+	}
+
+	public final function getPreviousMonthHasMoneyflows() {
+		return $this->previousMonthHasMoneyflows;
 	}
 }
 

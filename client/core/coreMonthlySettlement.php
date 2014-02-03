@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreMonthlySettlement.php,v 1.34 2014/02/02 19:09:58 olivleh1 Exp $
+// $Id: coreMonthlySettlement.php,v 1.35 2014/02/03 21:05:52 olivleh1 Exp $
 //
 require_once 'core/core.php';
 
@@ -132,16 +132,6 @@ class coreMonthlySettlement extends core {
 		} else {
 			return false;
 		}
-	}
-
-	function get_year_movement($month, $year) {
-		$ret = $this->select_row( "	SELECT SUM(movement_calculated) movement_calculated
-						      ,MAX(month) month
-						  FROM vw_monthlysettlements
-						 WHERE year   = $year
-						   AND month <= $month
-						   AND mug_mur_userid = " . USERID );
-		return $ret;
 	}
 
 	function delete_monthlysettlement($month, $year) {

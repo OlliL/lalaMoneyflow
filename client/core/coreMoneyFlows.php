@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.59 2014/02/01 22:03:33 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.60 2014/02/03 21:05:52 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -41,23 +41,6 @@ class coreMoneyFlows extends core {
 		 * month are stored
 		 */
 		return $this->exec_function('mms_calc_movement_calculated('.$userid.','.$month.','.$year.','.$id.')');
-	}
-
-	function get_range_movement( $startmonth, $endmonth, $year ) {
-		$start = $this->make_date($year.'-'.$startmonth.'-01');
-		$end   = 'LAST_DAY('.$this->make_date($year.'-'.$endmonth.'-01').')';
-
-		$movement = $this->select_col( "SELECT SUM(calc_amount(amount,'OUT',mur_userid,invoicedate)) amount
-						  FROM vw_moneyflows mmf
-						 WHERE mmf.mug_mur_userid  = ".USERID."
-						   AND (mmf.private        = 0
-						        OR
-						        mmf.mur_userid     = ".USERID."
-						       )
-						   AND bookingdate   BETWEEN $start AND $end" );
-		if( empty( $movement ) )
-			$movement=0;
-		return $movement;
 	}
 
 	function get_max_year_month() {
