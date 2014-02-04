@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: en.php,v 1.4 2014/02/02 00:28:19 olivleh1 Exp $
+// $Id: en.php,v 1.5 2014/02/04 20:43:58 olivleh1 Exp $
 //
 
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-loaded',true);
@@ -179,7 +179,7 @@
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-151', 'There belongs data to this user! Deleting the user will also delete all his data. Are you sure to delete the user?');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-152', 'You have to change your password!');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-153', 'An error occured while deleting the user. The user got not deleted!');
-\rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-154', 'There exists already a moneyflow for this month!');
+\rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-154', 'There exists already a monthly settlement for this month!');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-155', 'January');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-156', 'February');
 \rest\base\config\CacheManager::getInstance()->set('lalaMoneyflowText#1-157', 'March');

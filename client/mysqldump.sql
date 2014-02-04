@@ -749,7 +749,7 @@ INSERT INTO text VALUES (152,1,'You have to change your password!','e');
 INSERT INTO text VALUES (152,2,'Sie müssen Ihr Passwort ändern!','e');
 INSERT INTO text VALUES (153,1,'An error occured while deleting the user. The user got not deleted!','e');
 INSERT INTO text VALUES (153,2,'Während der Benutzerlöschung trat ein Fehler auf. Der Benutzer wurde nicht gelöscht!','e');
-INSERT INTO text VALUES (154,1,'There exists already a moneyflow for this month!','e');
+INSERT INTO text VALUES (154,1,'There exists already a monthly settlement for this month!','e');
 INSERT INTO text VALUES (154,2,'Für diesen Monat existiert bereits ein Monatsabschluss','e');
 INSERT INTO text VALUES (155,1,'January','m');
 INSERT INTO text VALUES (155,2,'Januar','m');

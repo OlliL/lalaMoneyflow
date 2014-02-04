@@ -1,4 +1,5 @@
 <?php
+use rest\base\ErrorCode;
 //
 // Copyright (c) 2006-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -24,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: functions.php,v 1.21 2014/01/26 12:24:47 olivleh1 Exp $
+// $Id: functions.php,v 1.22 2014/02/04 20:43:58 olivleh1 Exp $
 //
 function add_error($id, $args = NULL) {
 	global $ERRORS;
@@ -178,7 +179,7 @@ function fix_amount(&$amount) {
 	} elseif (preg_match( '/^-{0,1}[0-9]*([,][0-9][0-9][0-9]){0,}([\.][0-9]{1,2}){0,1}$/', $amount )) {
 		$amount = str_replace( ',', '', $amount );
 	} else {
-		add_error( 132, array (
+		add_error( ErrorCode::AMOUNT_IN_WRONG_FORMAT, array (
 				$amount
 		) );
 		$return = false;

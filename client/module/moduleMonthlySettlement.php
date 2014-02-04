@@ -1,5 +1,7 @@
 <?php
 use rest\client\handler\CapitalsourceControllerHandler;
+use rest\client\handler\MonthlySettlementControllerHandler;
+use rest\base\ErrorCode;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -25,7 +27,7 @@ use rest\client\handler\CapitalsourceControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.45 2014/02/02 19:09:59 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.46 2014/02/04 20:43:58 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -49,7 +51,7 @@ class moduleMonthlySettlement extends module {
 	private function filterCapitalsource($capitalsourceArray) {
 		if (is_array( $capitalsourceArray )) {
 			foreach ( $capitalsourceArray as $capitalsource ) {
-				if ( $capitalsource ['mur_userid'] == USERID)
+				if ($capitalsource ['mur_userid'] == USERID)
 					$capitalsource_values [] = $capitalsource;
 			}
 		}
@@ -60,62 +62,52 @@ class moduleMonthlySettlement extends module {
 		if (! $year)
 			$year = date( 'Y' );
 
-		$years = $this->coreMonthlySettlement->get_all_years();
-		$temp_months = $this->coreMonthlySettlement->get_all_months( $year );
+		$showMonthlySettlementList = MonthlySettlementControllerHandler::getInstance()->showMonthlySettlementList( $year, $month );
+		$allYears = $showMonthlySettlementList ['allYears'];
+		$allMonth = $showMonthlySettlementList ['allMonth'];
+		$year = $showMonthlySettlementList ['year'];
+		$month = $showMonthlySettlementList ['month'];
+		$monthlySettlements = $showMonthlySettlementList ['monthly_settlements'];
+		$numberOfEditableSettlements = $showMonthlySettlementList ['numberOfEditableSettlements'];
+		$numberOfAddableSettlements = $showMonthlySettlementList ['numberOfAddableSettlements'];
 
-		$capitalsourceArray = CapitalsourceControllerHandler::getInstance()->getAllCapitalsourcesByDateRange( time(), time() );
-		$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
-
-		if (is_array( $temp_months )) {
-			foreach ( $temp_months as $key => $value ) {
-				$months [] = array (
+		if (is_array( $allMonth )) {
+			foreach ( $allMonth as $key => $value ) {
+				$temp_array = array (
 						'nummeric' => sprintf( '%02d', $value ),
 						'name' => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int ) $value )
 				);
-			}
-		}
-
-		if ($month > 0 && $year > 0) {
-			$capitalsourceArray = CapitalsourceControllerHandler::getInstance()->getAllCapitalsourcesByDateRange( mktime( 0, 0, 0, $month, 1, $year ), mktime( 0, 0, 0, $month + 1, 0, $year ) );
-			$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
-
-			$data_found = false;
-			foreach ( $capitalsource_values as $capitalsource ) {
-
-				$amount = $this->coreMonthlySettlement->get_amount( USERID, $capitalsource ['capitalsourceid'], $month, $year );
-				if ($amount != NULL) {
-					$data_found = true;
-
-					$all_data [] = array (
-							'id' => $capitalsource ['capitalsourceid'],
-							'comment' => $capitalsource ['comment'],
-							'amount' => $amount
-					);
+				$months [] = $temp_array;
+				if (( int ) $month === ( int ) $value) {
+					$monthArray = $temp_array;
 				}
 			}
 
-			$sumamount = $this->coreMonthlySettlement->get_sum_amount( $month, $year );
+			if ($month > 0 && $year > 0 && is_array( $monthlySettlements )) {
+				foreach ( $monthlySettlements as $settlement ) {
 
-			$month = array (
-					'nummeric' => sprintf( '%02d', $month ),
-					'name' => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int ) $month )
-			);
+					$all_data [] = array (
+							'id' => $settlement ['capitalsourceid'],
+							'comment' => $settlement ['capitalsourcecomment'],
+							'amount' => $settlement ['amount']
+					);
 
-			if ($data_found) {
+					$sumamount += $settlement ['amount'];
+				}
+
 				$this->template->assign( 'SUMAMOUNT', $sumamount );
-				$this->template->assign( 'MONTH', $month );
+				$this->template->assign( 'MONTH', $monthArray );
 				$this->template->assign( 'YEAR', $year );
 				$this->template->assign( 'ALL_DATA', $all_data );
 				$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 			}
 		}
-
-		$num_source = count( $capitalsource_values );
-		$this->template->assign( 'ALL_YEARS', $years );
+		$this->template->assign( 'ALL_YEARS', $allYears );
 		$this->template->assign( 'ALL_MONTHS', $months );
-		$this->template->assign( 'SELECTED_MONTH', $month ['nummeric'] );
+		$this->template->assign( 'SELECTED_MONTH', $month );
 		$this->template->assign( 'SELECTED_YEAR', $year );
-		$this->template->assign( 'NUM_SOURCE', $num_source );
+		$this->template->assign( 'NUM_EDITABLE_SETTLEMENTS', $numberOfEditableSettlements );
+		$this->template->assign( 'NUM_ADDABLE_SETTLEMENTS', $numberOfAddableSettlements );
 		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
 
 		$this->parse_header();
@@ -134,14 +126,11 @@ class moduleMonthlySettlement extends module {
 						if ($value ['new'] === "1") {
 							$new = 2;
 							if ($exists === true) {
-								add_error( 154 );
+								add_error( ErrorCode::MONTHLY_SETTLEMENT_ALREADY_EXISTS );
 								$data_is_valid = false;
 							}
 						}
-						if (! (preg_match( '/^-{0,1}[0-9]*([\.][0-9][0-9][0-9]){0,}([,][0-9]{1,2}){0,1}$/', $value ['amount'] ) || preg_match( '/^-{0,1}[0-9]*([,][0-9][0-9][0-9]){0,}([\.][0-9]{1,2}){0,1}$/', $value ['amount'] ))) {
-							add_error( 132, array (
-									$value ['amount']
-							) );
+						if (! fix_amount( $value ['amount'] )) {
 							$all_data [$id] ['amount_error'] = 1;
 							$data_is_valid = false;
 						}
@@ -217,7 +206,7 @@ class moduleMonthlySettlement extends module {
 								'id' => $capitalsource ['capitalsourceid'],
 								'comment' => $capitalsource ['comment'],
 								'amount' => $amount,
-								'amount_error' => $all_data [$id] ['amount_error']
+								'amount_error' => $all_data [$capitalsource ['capitalsourceid']] ['amount_error']
 						);
 					}
 
@@ -244,22 +233,25 @@ class moduleMonthlySettlement extends module {
 	function display_delete_monthlysettlement($realaction, $month, $year) {
 		switch ($realaction) {
 			case 'yes' :
-				if ($this->coreMonthlySettlement->delete_monthlysettlement( $month, $year )) {
-					// $this->template->assign( 'ENV_REFERER', $this->index_php.'?action=list_monthlysettlements' );
+				if (MonthlySettlementControllerHandler::getInstance()->deleteMonthlySettlement( $year, $month )) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
 			default :
-				$capitalsourceArray = CapitalsourceControllerHandler::getInstance()->getAllCapitalsourcesByDateRange( mktime( 0, 0, 0, $month, 1, $year ), mktime( 0, 0, 0, $month + 1, 0, $year ) );
-				$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
-				foreach ( $capitalsource_values as $capitalsource ) {
-					$all_data [] = array (
-							'id' => $capitalsource ['capitalsourceid'],
-							'comment' => $capitalsource ['comment'],
-							'amount' => $this->coreMonthlySettlement->get_amount( USERID, $capitalsource ['capitalsourceid'], $month, $year )
-					);
+				$showMonthlySettlementDelete = MonthlySettlementControllerHandler::getInstance()->showMonthlySettlementDelete( $year, $month );
+				$monthlySettlements = $showMonthlySettlementDelete ['monthly_settlements'];
+				if (is_array( $monthlySettlements )) {
+					foreach ( $monthlySettlements as $settlement ) {
+
+						$all_data [] = array (
+								'id' => $settlement ['capitalsourceid'],
+								'comment' => $settlement ['capitalsourcecomment'],
+								'amount' => $settlement ['amount']
+						);
+
+						$sumamount += $settlement ['amount'];
+					}
 				}
-				$sumamount = $this->coreMonthlySettlement->get_sum_amount( $month, $year );
 
 				$month = array (
 						'nummeric' => sprintf( '%02d', $month ),
@@ -269,7 +261,6 @@ class moduleMonthlySettlement extends module {
 				$this->template->assign( 'MONTH', $month );
 				$this->template->assign( 'YEAR', $year );
 				$this->template->assign( 'ALL_DATA', $all_data );
-				$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 				break;
 		}
 

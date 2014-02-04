@@ -26,7 +26,7 @@ use rest\client\handler\CapitalsourceControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.73 2014/02/03 21:05:52 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.74 2014/02/04 20:43:58 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -67,8 +67,12 @@ class moduleReports extends module {
 		$turnover_capitalsources = $listReports ['turnover_capitalsources'];
 		$firstamount = $listReports ['firstamount'];
 		$movement_calculated_year = $listReports ['calculated_yearly_turnover'];
-		$prev_link = $listReports['prev_link'];
-		$next_link = $listReports['next_link'];
+		$prev_link = $listReports ['prev_link'];
+		$next_link = $listReports ['next_link'];
+		$prev_month = $listReports ['prev_month'];
+		$prev_year = $listReports ['prev_year'];
+		$next_month = $listReports ['next_month'];
+		$next_year = $listReports ['next_year'];
 
 		if (is_array( $allMonth )) {
 			foreach ( $allMonth as $key => $value ) {
@@ -160,7 +164,6 @@ class moduleReports extends module {
 						$all_moneyflow_data [$key] ['owner'] = false;
 					}
 				}
-				$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
 				if (is_array( $turnover_capitalsources )) {
 					foreach ( $turnover_capitalsources as $key => $turnover_capitalsource ) {
@@ -176,27 +179,12 @@ class moduleReports extends module {
 					}
 				}
 
-				if ($month == 1) {
-					$prev_month = 12;
-					$prev_year = $year - 1;
-					$next_month = $month + 1;
-					$next_year = $year;
-				} elseif ($month == 12) {
-					$prev_month = $month - 1;
-					$prev_year = $year;
-					$next_month = 1;
-					$next_year = $year + 1;
-				} else {
-					$prev_month = $month - 1;
-					$prev_year = $year;
-					$next_month = $month + 1;
-					$next_year = $year;
-				}
-
 				$month_array = array (
 						'nummeric' => sprintf( '%02d', $month ),
 						'name' => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int ) $month )
 				);
+
+				$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
 				$this->template->assign( 'PREV_MONTH', $prev_month );
 				$this->template->assign( 'PREV_YEAR', $prev_year );
@@ -232,25 +220,16 @@ class moduleReports extends module {
 	}
 
 	function display_plot_trends($all_data) {
-		$capitalsource_values = CapitalsourceControllerHandler::getInstance()->getAllCapitalsources();
-		if (is_array( $capitalsource_values )) {
-			$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
+		$showTrendsForm = ReportControllerHandler::getInstance()->showTrendsForm();
+		if (is_array( $showTrendsForm ['capitalsources'] )) {
+			$this->template->assign( 'CAPITALSOURCE_VALUES', $showTrendsForm ['capitalsources'] );
 		}
-
-		$years = $this->coreMonthlySettlement->get_all_years();
-		// add the current year to the list off displayable years in case last year found
-		// is not the current year so you can see a trend in january if the last reccorded
-		// monthly settlement is from december of the last year
-		if ($years [count( $years ) - 1] != date( 'Y' )) {
-			$years [] = date( 'Y' );
-		}
-		$this->template->assign( 'ALL_YEARS', $years );
+		$this->template->assign( 'ALL_YEARS', $showTrendsForm['allYears'] );
 
 		if (is_array( $all_data ) && isset( $all_data ['mcs_capitalsourceid'] )) {
 			$this->coreSettings->set_trend_capitalsourceid( USERID, $all_data ['mcs_capitalsourceid'] );
 			$this->template->assign( 'PLOT_GRAPH', 1 );
 		} else {
-
 			$all_data ['mcs_capitalsourceid'] = $this->coreSettings->get_trend_capitalsourceid( USERID );
 			if (empty( $all_data [mcs_capitalsourceid] ))
 				foreach ( $capitalsource_values as $capitalsource ) {

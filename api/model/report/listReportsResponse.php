@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: listReportsResponse.php,v 1.5 2014/02/03 21:05:53 olivleh1 Exp $
+// $Id: listReportsResponse.php,v 1.6 2014/02/04 20:43:58 olivleh1 Exp $
 //
 namespace rest\api\model\report;
 
@@ -42,6 +42,10 @@ class listReportsResponse {
 	public $amountBeginOfYear;
 	public $nextMonthHasMoneyflows;
 	public $previousMonthHasMoneyflows;
+	public $previousMonth;
+	public $previousYear;
+	public $nextMonth;
+	public $nextYear;
 
 	public final function getMoneyflowTransport() {
 		return $this->moneyflowTransport;
@@ -121,6 +125,38 @@ class listReportsResponse {
 
 	public final function getPreviousMonthHasMoneyflows() {
 		return $this->previousMonthHasMoneyflows;
+	}
+
+	public final function setPreviousMonth($previousMonth) {
+		$this->previousMonth = $previousMonth;
+	}
+
+	public final function setPreviousYear($previousYear) {
+		$this->previousYear = $previousYear;
+	}
+
+	public final function setNextMonth($nextMonth) {
+		$this->nextMonth = $nextMonth;
+	}
+
+	public final function setNextYear($nextYear) {
+		$this->nextYear = $nextYear;
+	}
+
+	public final function getPreviousMonth() {
+		return $this->previousMonth;
+	}
+
+	public final function getPreviousYear() {
+		return $this->previousYear;
+	}
+
+	public final function getNextMonth() {
+		return $this->nextMonth;
+	}
+
+	public final function getNextYear() {
+		return $this->nextYear;
 	}
 }
 

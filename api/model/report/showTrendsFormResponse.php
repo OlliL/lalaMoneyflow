@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,39 +25,29 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ErrorCode.php,v 1.9 2014/02/04 20:43:58 olivleh1 Exp $
+// $Id: showTrendsFormResponse.php,v 1.1 2014/02/04 20:43:58 olivleh1 Exp $
 //
-namespace rest\base;
+namespace rest\api\model\report;
 
-class ErrorCode extends \SplEnum {
-	const __default = self::UNKNOWN;
-	const UNKNOWN = 0;
-	const CAPITALSOURCE_STILL_REFERENCED = 120;
-	const CAPITALSOURCE_IN_USE_PERIOD = 121;
-	const CAPITALSOURCE_USE_OUT_OF_VALIDITY = 122;
-	const CONTRACTPARTNER_IN_USE = 124;
-	const CAPITALSOURCE_IS_NOT_SET = 127;
-	const CONTRACTPARTNER_IS_NOT_SET = 128;
-	const INVOICEDATE_IN_WRONG_FORMAT = 129;
-	const BOOKINGDATE_IN_WRONG_FORMAT = 130;
-	const COMMENT_IS_NOT_SET = 131;
-	const AMOUNT_IN_WRONG_FORMAT = 132;
-	const NOTHING_MARKED_TO_ADD = 133;
-	const DATE_FORMAT_NOT_CORRECT = 147;
-	const MONTHLY_SETTLEMENT_ALREADY_EXISTS = 154;
-	const FILEUPLOAD_FAILED = 191;
-	const AMOUNT_IS_ZERO = 200;
-	const NAME_ALREADY_EXISTS = 203;
-	const ATTENTION = 204;
-	const NAME_MUST_NOT_BE_EMPTY = 218;
-	const ACCOUNT_NUMBER_NOT_A_NUMBER = 225;
-	const BANK_CODE_NOT_A_NUMBER = 226;
-	const ACCOUNT_NUMBER_TO_LONG = 227;
-	const BANK_CODE_TO_LONG = 228;
-	const VALIDFROM_AFTER_VALIDTIL = 229;
-	const POSTCODE_MUST_BE_A_NUMBER = 233;
-	const CAPITALSOURCE_DOES_NOT_EXIST = 19; // TODO
-	const CONTRACTPARTNER_DOES_NOT_EXIST = 2; // TODO
+class showTrendsFormResponse {
+	public $allYears;
+	public $capitalsourceTransport;
+
+	public final function getCapitalsourceTransport() {
+		return $this->capitalsourceTransport;
+	}
+
+	public final function setCapitalsourceTransport(array $capitalsourceTransport) {
+		$this->capitalsourceTransport = $capitalsourceTransport;
+	}
+
+	public final function getAllYears() {
+		return $this->allYears;
+	}
+
+	public final function setAllYears(array $allYears) {
+		$this->allYears = $allYears;
+	}
 }
 
 ?>

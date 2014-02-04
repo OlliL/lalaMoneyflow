@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportControllerHandler.php,v 1.4 2014/02/03 21:05:53 olivleh1 Exp $
+// $Id: ReportControllerHandler.php,v 1.5 2014/02/04 20:43:58 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -39,6 +39,7 @@ class ReportControllerHandler extends AbstractJsonSender {
 
 	protected function __construct() {
 		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToReportTurnoverCapitalsourceTransportMapper', ClientArrayMapperEnum::REPORTTURNOVERCAPITALSOURCE_TRANSPORT );
 	}
@@ -53,16 +54,16 @@ class ReportControllerHandler extends AbstractJsonSender {
 
 	public final function listReports($year, $month) {
 		$url = URLPREFIX . SERVERPREFIX . 'report/listReports/' . $year . '/' . $month . '/' . self::$callServer->getSessionId();
-		$result = self::$callServer->getJson( $url );
-		if (is_array( $result )) {
-			$listReports = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\report' );
+		$response = self::$callServer->getJson( $url );
+		if (is_array( $response )) {
+			$listReports = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\report' );
 			if (is_array( $listReports->getMoneyflowTransport() )) {
 				$result ['moneyflows'] = parent::mapArray( $listReports->getMoneyflowTransport() );
 			} else {
 				$result ['moneyflows'] = '';
 			}
 			if (is_array( $listReports->getReportTurnoverCapitalsourceTransport() )) {
-				$result ['turnover_capitalsources'] = parent::mapArray( $listReports->getReportTurnoverCapitalsourceTransport());
+				$result ['turnover_capitalsources'] = parent::mapArray( $listReports->getReportTurnoverCapitalsourceTransport() );
 			} else {
 				$result ['turnover_capitalsources'] = '';
 			}
@@ -74,6 +75,26 @@ class ReportControllerHandler extends AbstractJsonSender {
 			$result ['calculated_yearly_turnover'] = $listReports->getTurnoverEndOfYearCalculated();
 			$result ['prev_link'] = $listReports->getPreviousMonthHasMoneyflows();
 			$result ['next_link'] = $listReports->getNextMonthHasMoneyflows();
+			$result ['prev_month'] = $listReports->getPreviousMonth();
+			$result ['prev_year'] = $listReports->getPreviousYear();
+			$result ['next_month'] = $listReports->getNextMonth();
+			$result ['next_year'] = $listReports->getNextYear();
+		}
+
+		return $result;
+	}
+
+	public final function showTrendsForm() {
+		$url = URLPREFIX . SERVERPREFIX . 'report/showTrendsForm/' . self::$callServer->getSessionId();
+		$response = self::$callServer->getJson( $url );
+		if (is_array( $response )) {
+			$showTrendsForm = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\report' );
+			$result ['allYears'] = $showTrendsForm->getAllYears();
+			if (is_array( $showTrendsForm->getCapitalsourceTransport() )) {
+				$result ['capitalsources'] = parent::mapArray( $showTrendsForm->getCapitalsourceTransport() );
+			} else {
+				$result ['capitalsources'] = array ();
+			}
 		}
 
 		return $result;

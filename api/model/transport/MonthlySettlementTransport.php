@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MonthlySettlementTransport.php,v 1.1 2014/02/02 19:09:59 olivleh1 Exp $
+// $Id: MonthlySettlementTransport.php,v 1.2 2014/02/04 20:43:58 olivleh1 Exp $
 //
 namespace rest\api\model\transport;
 
@@ -37,9 +37,7 @@ class MonthlySettlementTransport {
 	public $amount;
 	public $capitalsourceid;
 	public $capitalsourcecomment;
-	public $capitalsourcetype;
-	public $capitalsourcestate;
-	public $movementCalculated;
+	public $capitalsourcegroupuse;
 
 	public final function setId($id) {
 		$this->id = $id;
@@ -68,9 +66,8 @@ class MonthlySettlementTransport {
 	public final function setCapitalsourcecomment($capitalsourcecomment) {
 		$this->capitalsourcecomment = $capitalsourcecomment;
 	}
-
-	public final function setMovementCalculated($movementCalculated) {
-		$this->movementCalculated = $movementCalculated;
+	public final function setCapitalsourcegroupuse($capitalsourcegroupuse) {
+		$this->capitalsourcegroupuse = $capitalsourcegroupuse;
 	}
 
 	public final function getId() {
@@ -100,25 +97,8 @@ class MonthlySettlementTransport {
 	public final function getCapitalsourcecomment() {
 		return $this->capitalsourcecomment;
 	}
-
-	public final function getMovementCalculated() {
-		return $this->movementCalculated;
-	}
-
-	public final function setCapitalsourcetype($capitalsourcetype) {
-		$this->capitalsourcetype = $capitalsourcetype;
-	}
-
-	public final function setCapitalsourcestate($capitalsourcestate) {
-		$this->capitalsourcestate = $capitalsourcestate;
-	}
-
-	public final function getCapitalsourcetype() {
-		return $this->capitalsourcetype;
-	}
-
-	public final function getCapitalsourcestate() {
-		return $this->capitalsourcestate;
+	public final function getCapitalsourcegroupuse() {
+		return $this->capitalsourcegroupuse;
 	}
 }
 

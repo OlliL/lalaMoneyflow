@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreMonthlySettlement.php,v 1.35 2014/02/03 21:05:52 olivleh1 Exp $
+// $Id: coreMonthlySettlement.php,v 1.36 2014/02/04 20:43:58 olivleh1 Exp $
 //
 require_once 'core/core.php';
 
@@ -104,21 +104,6 @@ class coreMonthlySettlement extends core {
 			return false;
 	}
 
-	function get_all_years() {
-		return $this->select_cols( '	SELECT DISTINCT year
-						  FROM vw_monthlysettlements
-						 WHERE mug_mur_userid = ' . USERID . '
-						 ORDER BY year ASC' );
-	}
-
-	function get_all_months($year) {
-		return $this->select_cols( "     SELECT DISTINCT month
-						   FROM vw_monthlysettlements
-						  WHERE year       = $year
-						    AND mug_mur_userid = " . USERID . "
-						  ORDER BY month ASC" );
-	}
-
 	function get_next_date() {
 		$result = $this->select_row( '	SELECT MAX(month) month
 						      ,MAX(year)  year
@@ -132,14 +117,6 @@ class coreMonthlySettlement extends core {
 		} else {
 			return false;
 		}
-	}
-
-	function delete_monthlysettlement($month, $year) {
-		$this->delete_row( "     DELETE FROM monthlysettlements
-					  WHERE month          = $month
-					    AND year           = $year
-					    AND mur_userid = " . USERID );
-		return true;
 	}
 
 	function update_monthlysettlement($sourceid, $month, $year, $amount) {

@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToMonthlySettlementTransportMapper.php,v 1.1 2014/02/02 19:09:59 olivleh1 Exp $
+// $Id: ArrayToMonthlySettlementTransportMapper.php,v 1.2 2014/02/04 20:43:58 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
@@ -37,7 +37,6 @@ class ArrayToMonthlySettlementTransportMapper extends AbstractArrayMapper {
 		$b = new MonthlySettlementTransport();
 		$b->setId( $a ['monthlysettlementid'] );
 		$b->setAmount( $a ['amount'] );
-		$b->setMovementCalculated( $a ['movement_calculated'] );
 		$b->setYear( $a ['year'] );
 		$b->setMonth( $a ['month'] );
 		$b->setCapitalsourceid( $a ['mcs_capitalsourceid'] );
@@ -48,13 +47,11 @@ class ArrayToMonthlySettlementTransportMapper extends AbstractArrayMapper {
 		$a ['mur_userid'] = $b->getUserid();
 		$a ['monthlysettlementid'] = $b->getId();
 		$a ['amount'] = $b->getAmount();
-		$a ['movement_calculated'] = $b->getMovementCalculated();
 		$a ['year'] = $b->getYear();
 		$a ['month'] = $b->getMonth();
 		$a ['mcs_capitalsourceid'] = $b->getCapitalsourceid();
 		$a ['capitalsourcecomment'] = $b->getCapitalsourcecomment();
-		$a ['capitalsourcetype'] = $b->getCapitalsourcetype();
-		$a ['capitalsourcestate'] = $b->getCapitalsourcestate();
+		$a ['capitalsourcegroupuse'] = $b->getCapitalsourcegroupuse();  //FIXME: delete?
 
 		return $a;
 	}
