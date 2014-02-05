@@ -2,7 +2,7 @@
        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 {if $CLOSE != 1}
-	<head><title>lalaMoneyflow: {if $NEW != 1}{$TEXT_54}{else}{$TEXT_55}{/if}</title>
+	<head><title>lalaMoneyflow: {if $NEW != 1}{#TEXT_54#}{else}{#TEXT_55#}{/if}</title>
 {literal}
 <script type="text/javascript">
 <!--
@@ -22,14 +22,14 @@ function Go(month,year)
 {$HEADER}
 
 		<td align="center">
-		<h1>{if $NEW != 1}{$TEXT_54}{else}{$TEXT_55}{/if}</h1>
+		<h1>{if $NEW != 1}{#TEXT_54#}{else}{#TEXT_55#}{/if}</h1>
 		{section name=ERROR loop=$ERRORS}
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br>
 		{/section}<br>
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action" value="edit_monthlysettlement">
 			<input type="hidden" name="realaction" value="">
-			{$TEXT_56}
+			{#TEXT_56#}
 			<select class="contrastbgcolor" name="monthlysettlements_month" onchange="Go(this.form.monthlysettlements_month.options[this.form.monthlysettlements_month.options.selectedIndex].value,this.form.monthlysettlements_year.value)">
 				<option {if $MONTH.nummeric == "01"}selected{/if} value="01"> 01
 				<option {if $MONTH.nummeric == "02"}selected{/if} value="02"> 02
@@ -44,13 +44,13 @@ function Go(month,year)
 				<option {if $MONTH.nummeric == "11"}selected{/if} value="11"> 11
 				<option {if $MONTH.nummeric == "12"}selected{/if} value="12"> 12
 			</select>
-			{$TEXT_57}
+			{#TEXT_57#}
 			<input class="contrastbgcolor" type="text" name="monthlysettlements_year" value="{$YEAR}" size="4" onchange="Go(this.form.monthlysettlements_month.options[this.form.monthlysettlements_month.options.selectedIndex].value,this.form.monthlysettlements_year.value)">
 			<input type="hidden" name="REFERER" value="{$ENV_REFERER}">
 			<table border=0 width="350" cellpadding=2>
 				<tr>
-					<th>{$TEXT_19}</th>
-					<th width="30%">{$TEXT_18}</th>
+					<th>{#TEXT_19#}</th>
+					<th width="30%">{#TEXT_18#}</th>
 				</tr>
 				{section name=DATA loop=$ALL_DATA}
 					<tr>
@@ -61,8 +61,8 @@ function Go(month,year)
 				{/section}
 			</table>
 			<br>
-			<input type="submit" value="{$TEXT_22}" onClick="this.form.realaction.value = 'save'">
-			<input type="button" value="{$TEXT_23}" onclick="javascript:void self.close();">
+			<input type="submit" value="{#TEXT_22#}" onClick="this.form.realaction.value = 'save'">
+			<input type="button" value="{#TEXT_23#}" onclick="javascript:void self.close();">
 		</form>
 		</td>
 {$FOOTER}

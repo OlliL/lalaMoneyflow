@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.40 2014/02/01 23:38:48 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.41 2014/02/05 21:17:08 olivleh1 Exp $
 //
 
 use rest\base\ErrorCode;
@@ -38,7 +38,7 @@ class moduleCapitalSources extends module {
 	}
 
 	public final function display_list_capitalsources($letter) {
-		$maxRows = $this->coreTemplates->get_max_rows();
+		$maxRows = $this->coreSettings->get_max_rows( USERID );
 		$listCapitalsources = CapitalsourceControllerHandler::getInstance()->showCapitalsourceList( $maxRows, $letter );
 
 		$all_index_letters = $listCapitalsources ['initials'];

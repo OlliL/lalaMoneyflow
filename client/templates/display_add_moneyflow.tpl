@@ -1,11 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-	<head><title>lalaMoneyflow: {$TEXT_8}</title>
+	<head><title>lalaMoneyflow: {#TEXT_8#}</title>
 {$HEADER}
 
 		<td align="center" valign="top">
-		<h1>{$TEXT_8}</h1>
+		<h1>{#TEXT_8#}</h1>
 		{section name=ERROR loop=$ERRORS}
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br>
 		{/section}
@@ -15,15 +15,15 @@
 			<table border=0>
 				<tr>
 					<th>&nbsp;</th>
-					<th>{$TEXT_209}</th>
-					<th>{$TEXT_16}</th>
-					<th>{$TEXT_17}</th>
-					<th>{$TEXT_18}</th>
-					<th>{$TEXT_2}</th>
-					<th>{$TEXT_21}</th>
-					<th>{$TEXT_232}</th>
-					<th>{$TEXT_19}</th>
-					<th>{$TEXT_207}</th>
+					<th>{#TEXT_209#}</th>
+					<th>{#TEXT_16#}</th>
+					<th>{#TEXT_17#}</th>
+					<th>{#TEXT_18#}</th>
+					<th>{#TEXT_2#}</th>
+					<th>{#TEXT_21#}</th>
+					<th>{#TEXT_232#}</th>
+					<th>{#TEXT_19#}</th>
+					<th>{#TEXT_207#}</th>
 				</tr>
 				{assign var=elements value="1"}
 				{section name=DATA loop=$ALL_DATA}
@@ -75,7 +75,7 @@
 			</table>
 			<br>
 			<input type="hidden" name="realaction" value="save">
-			<input type="submit" value="{$TEXT_22}">
+			<input type="submit" value="{#TEXT_22#}">
 		</form>
 		</td>
 {$FOOTER}

@@ -2,14 +2,14 @@
        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 {if $CLOSE != 1}
-	<head><title>lalaMoneyflow: {$TEXT_24}</title>
+	<head><title>lalaMoneyflow: {#TEXT_24#}</title>
 {$HEADER}
 
 		<td align="center">
 		{section name=ERROR loop=$ERRORS}
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br>
 		{/section}
-		<u>{$TEXT_27}</u><br><br>
+		<u>{#TEXT_27#}</u><br><br>
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action"      value="delete_moneyflow">
 			<input type="hidden" name="realaction"  value="yes">
@@ -17,13 +17,13 @@
 			<input type="hidden" name="REFERER"     value="{$ENV_REFERER}">
 			<table border=0>
 				<tr>
-				 	 <th width="80">{$TEXT_16}</th>
-				 	 <th width="80">{$TEXT_17}</th>
-				 	 <th width="80">{$TEXT_18}</th>
-				 	 <th width="200">{$TEXT_2}</th>
-				 	 <th width="200">{$TEXT_21}</th>
-				 	 <th>{$TEXT_232}</th>
-				 	 <th width="100">{$TEXT_19}</th>
+				 	 <th width="80">{#TEXT_16#}</th>
+				 	 <th width="80">{#TEXT_17#}</th>
+				 	 <th width="80">{#TEXT_18#}</th>
+				 	 <th width="200">{#TEXT_2#}</th>
+				 	 <th width="200">{#TEXT_21#}</th>
+				 	 <th>{#TEXT_232#}</th>
+				 	 <th width="100">{#TEXT_19#}</th>
 				</tr>
 				<tr>
 					<td class="contrastbgcolor">{$ALL_DATA.bookingdate}</td>
@@ -35,8 +35,8 @@
 					<td class="contrastbgcolornobr">{$ALL_DATA.capitalsourcecomment|escape:htmlall}</td>
 				</tr>
 			</table>
-			<input type="submit" value="{$TEXT_25}">
-			<input type="button" value="{$TEXT_26}" onclick="javascript:void self.close();">
+			<input type="submit" value="{#TEXT_25#}">
+			<input type="button" value="{#TEXT_26#}" onclick="javascript:void self.close();">
 		</form>
 		</td>
 {$FOOTER}

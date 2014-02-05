@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.47 2014/02/01 23:26:24 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.48 2014/02/05 21:17:08 olivleh1 Exp $
 //
 use rest\base\ErrorCode;
 use rest\client\handler\PreDefMoneyflowControllerHandler;
@@ -40,7 +40,7 @@ class modulePreDefMoneyFlows extends module {
 	}
 
 	public final function display_list_predefmoneyflows($letter) {
-		$maxRows = $this->coreTemplates->get_max_rows();
+		$maxRows = $this->coreSettings->get_max_rows( USERID );
 		$listPreDefMoneyflows = PreDefMoneyflowControllerHandler::getInstance()->showPreDefMoneyflowList( $maxRows, $letter );
 
 		$all_index_letters = $listPreDefMoneyflows ['initials'];

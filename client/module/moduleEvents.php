@@ -1,4 +1,6 @@
 <?php
+use rest\client\handler\SessionControllerHandler;
+use rest\client\handler\EventControllerHandler;
 //
 // Copyright (c) 2009-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -24,7 +26,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleEvents.php,v 1.7 2014/02/01 10:46:43 olivleh1 Exp $
+// $Id: moduleEvents.php,v 1.8 2014/02/05 21:17:08 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreMonthlySettlement.php';
@@ -41,17 +43,10 @@ class moduleEvents extends module {
 	function check_events() {
 		if ($this->coreSession->getAttribute( 'events_shown' ) === false) {
 			$this->coreSession->setAttribute( 'events_shown', true );
-
-			// check if for the previous month, a monthly settlement was done
-			// if not, remind the user to do so
-
-			$previous_month = mktime( 0, 0, 0, date( 'm' ) - 1, 1, date( 'Y' ) );
-			$month = date( 'm', $previous_month );
-			$year = date( 'Y', $previous_month );
-
-			if ($this->coreMonthlySettlement->monthlysettlement_exists( $month, $year ) === false) {
-				$this->template->assign( 'MONTH', $month );
-				$this->template->assign( 'YEAR', $year );
+			$events = EventControllerHandler::getInstance()->showEventList();
+			if ($events['mms_missing'] === true) {
+				$this->template->assign( 'MONTH', $events['month'] );
+				$this->template->assign( 'YEAR', $events['year'] );
 
 				$this->parse_header( 1 );
 				return $this->fetch_template( 'display_event_monthlysettlement.tpl' );

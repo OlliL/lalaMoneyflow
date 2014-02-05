@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2006-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,33 +25,38 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreTemplates.php,v 1.10 2014/01/26 12:24:47 olivleh1 Exp $
+// $Id: showEventListResponse.php,v 1.1 2014/02/05 21:17:09 olivleh1 Exp $
 //
-require_once 'core/core.php';
-require_once 'core/coreSettings.php';
+namespace rest\api\model\event;
 
-class coreTemplates extends core {
+class showEventListResponse {
+	public $monthlySettlementMissing;
+	public $monthlySettlementMonth;
+	public $monthlySettlementYear;
 
-	function coreTemplates() {
-		parent::__construct();
-		$this->coreSettings = new coreSettings();
-		$this->coreText = new coreText();
+	public final function setMonthlySettlementMissing($monthlySettlementMissing) {
+		$this->monthlySettlementMissing = $monthlySettlementMissing;
 	}
 
-	function get_template_text($name) {
-		$ids = $this->select_cols( "	SELECT mtx_textid
-						  FROM templatevalues
-						 WHERE mte_templatename       = '$name'" );
-		if (is_array( $ids )) {
-			foreach ( $ids as $key => $id ) {
-				$retval [$key] ['variable'] = 'TEXT_' . $id;
-				$retval [$key] ['text'] = $this->coreText->get_text( $id, 't' );
-			}
-		}
-		return $retval;
+	public final function setMonthlySettlementMonth($monthlySettlementMonth) {
+		$this->monthlySettlementMonth = $monthlySettlementMonth;
 	}
 
-	function get_max_rows() {
-		return $this->coreSettings->get_max_rows( USERID );
+	public final function setMonthlySettlementYear($monthlySettlementYear) {
+		$this->monthlySettlementYear = $monthlySettlementYear;
+	}
+
+	public final function isMonthlySettlementMissing() {
+		return $this->monthlySettlementMissing;
+	}
+
+	public final function getMonthlySettlementMonth() {
+		return $this->monthlySettlementMonth;
+	}
+
+	public final function getMonthlySettlementYear() {
+		return $this->monthlySettlementYear;
 	}
 }
+
+?>

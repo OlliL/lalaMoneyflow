@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleLanguages.php,v 1.6 2014/01/26 12:24:48 olivleh1 Exp $
+# $Id: moduleLanguages.php,v 1.7 2014/02/05 21:17:08 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -44,7 +44,7 @@ class moduleLanguages extends module {
 		$all_index_letters = $this->coreLanguages->get_all_index_letters();
 		$num_languages = $this->coreLanguages->count_all_data();
 		
-		if( empty( $letter ) && $num_languages < $this->coreTemplates->get_max_rows() ) {
+		if( empty( $letter ) && $num_languages < $this->coreSettings->get_max_rows( USERID ) ) {
 			$letter = 'all';
 		}
 		

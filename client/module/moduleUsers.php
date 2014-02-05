@@ -25,7 +25,7 @@ use rest\client\handler\SessionControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.30 2014/02/01 23:26:24 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.31 2014/02/05 21:17:08 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -122,7 +122,7 @@ class moduleUsers extends module {
 		$all_index_letters = $this->coreUsers->get_all_index_letters();
 		$num_users = $this->coreUsers->count_all_data();
 
-		if (empty( $letter ) && $num_users < $this->coreTemplates->get_max_rows()) {
+		if (empty( $letter ) && $num_users < $this->coreSettings->get_max_rows( USERID )) {
 			$letter = 'all';
 		}
 

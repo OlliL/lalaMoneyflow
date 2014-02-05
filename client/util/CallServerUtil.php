@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServerUtil.php,v 1.2 2014/02/02 00:28:19 olivleh1 Exp $
+// $Id: CallServerUtil.php,v 1.3 2014/02/05 21:17:09 olivleh1 Exp $
 //
 namespace rest\client\util;
 
@@ -85,6 +85,7 @@ class CallServerUtil extends AbstractJsonSender {
 	}
 
 	public final function getJson($url) {
+		file_put_contents('/tmp/cache.log', $url."\n");
 		// response = Request::get( $url )->withoutStrictSsl()->addOnCurlOption( CURLOPT_ENCODING, 'compress, deflate, gzip' )->send();
 		$response = Request::get( $url )->withoutStrictSsl()->send();
 		if ($response->code == 204) {

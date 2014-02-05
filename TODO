@@ -1,21 +1,8 @@
-
+0. domain handling also via ini-loading and not via cache manager
 1. implement moduleMonthlySettlements
-
- - new elements in listReportsResponse
-	- array of:
-		- Capitalsource Type
-		- Capitalsource State
-		- Capitalsource Comment
-		- fixed begin of month amount
-		(- fixed end of month amount)
-		-  calculated end of month amount
-	- monthly turnover based on fixed amounts
-	- monthly turnover based on calculated movements
-	- yearly turnover based on fixed amounts
-	- yearly turnover based on calculated movements
-	
 2. implement moduleSearch
 3. implement remaining moduleMoneyFlows (trend-graph)
+
 
 4. implement Logout Call to destroy the session on the server.
 

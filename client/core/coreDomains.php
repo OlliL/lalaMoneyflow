@@ -24,8 +24,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreDomains.php,v 1.10 2014/01/26 12:24:47 olivleh1 Exp $
+// $Id: coreDomains.php,v 1.11 2014/02/05 21:17:08 olivleh1 Exp $
 //
+use rest\base\config\CacheManager;
 require_once 'core/core.php';
 
 class coreDomains extends core {
@@ -37,7 +38,7 @@ class coreDomains extends core {
 	}
 
 	private final function getDomain($domain) {
-		return \rest\base\config\CacheManager::getInstance()->get( 'lalaMoneyflowDomains#' . $domain );
+		return CacheManager::getInstance()->get( 'lalaMoneyflowDomains#' . $domain );
 	}
 
 	public final function get_domain_data($domain) {
@@ -46,7 +47,7 @@ class coreDomains extends core {
 			foreach ( $ids as $key => $id ) {
 				$retval [] = array (
 						'value' => $key,
-						'text' => $this->coreText->get_text( $id, 'd' )
+						'text' => $this->coreText->get_text( $id )
 				);
 			}
 		}
@@ -55,6 +56,6 @@ class coreDomains extends core {
 
 	public final function get_domain_meaning($domain, $value) {
 		$ids = self::getDomain( $domain );
-		return $this->coreText->get_text( $ids [$value], 'd' );
+		return $this->coreText->get_text( $ids [$value] );
 	}
 }

@@ -1,11 +1,11 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-	<head><title>lalaMoneyflow: {$TEXT_184}</title>
+	<head><title>lalaMoneyflow: {#TEXT_184#}</title>
 {$HEADER}
 
 		<td align="center" valign="top">
-			<h1>{$TEXT_184}</h1>
+			<h1>{#TEXT_184#}</h1>
 			<form action="{$ENV_INDEX_PHP}" method="POST">
 				<input type="hidden" name="action"     value="edit_language">
 				<input type="hidden" name="realaction" value="save">
@@ -28,8 +28,8 @@
 						</tr>
 					{/section}
 				</table>
-				<input type="submit" value="{$TEXT_22}">
-				<input type="button" value="{$TEXT_23}" onclick="history.back();">
+				<input type="submit" value="{#TEXT_22#}">
+				<input type="button" value="{#TEXT_23#}" onclick="history.back();">
 			</form>
 		</td>
 {$FOOTER}

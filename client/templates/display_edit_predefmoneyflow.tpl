@@ -2,7 +2,7 @@
        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 {if $CLOSE != 1}
-	<head><title>lalaMoneyflow: {if $ALL_DATA.predefmoneyflowid > 0}{$TEXT_49}{else}{$TEXT_12}{/if}</title>
+	<head><title>lalaMoneyflow: {if $ALL_DATA.predefmoneyflowid > 0}{#TEXT_49#}{else}{#TEXT_12#}{/if}</title>
 {$HEADER}
 
 		<td align="center">
@@ -16,11 +16,11 @@
 			{/section}
 			<table border=0>
 				<tr>
-					<th>{$TEXT_18}</th>
-					<th>{$TEXT_2}</th>
-					<th>{$TEXT_21}</th>
-					<th>{$TEXT_19}</th>
-					<th>{$TEXT_206}</th>
+					<th>{#TEXT_18#}</th>
+					<th>{#TEXT_2#}</th>
+					<th>{#TEXT_21#}</th>
+					<th>{#TEXT_19#}</th>
+					<th>{#TEXT_206#}</th>
 				</tr>
 				<tr>
 					<td class="contrastbgcolornobr"><input class="contrastbgcolor" type="text" name="all_data[amount]" value="{$ALL_DATA.amount}" align="right" size="8"> {$CURRENCY}</td>
@@ -37,14 +37,14 @@
 					</select></td>
 					<td class="contrastbgcolor">
 						<select class="contrastbgcolor" name="all_data[once_a_month]" size=1>
-							<option value=0 {if $ALL_DATA.once_a_month == 0}selected{/if} > {$TEXT_26}
-							<option value=1 {if $ALL_DATA.once_a_month == 1}selected{/if} > {$TEXT_25}
+							<option value=0 {if $ALL_DATA.once_a_month == 0}selected{/if} > {#TEXT_26#}
+							<option value=1 {if $ALL_DATA.once_a_month == 1}selected{/if} > {#TEXT_25#}
 						</select>
 					</td>
 				</tr>
 			</table>
-			<input type="submit" value="{$TEXT_22}">
-			<input type="button" value="{$TEXT_23}" onclick="javascript:void self.close();">
+			<input type="submit" value="{#TEXT_22#}">
+			<input type="button" value="{#TEXT_23#}" onclick="javascript:void self.close();">
 		</form>
 		</td>
 {$FOOTER}

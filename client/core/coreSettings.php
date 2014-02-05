@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreSettings.php,v 1.17 2014/01/26 12:24:47 olivleh1 Exp $
+# $Id: coreSettings.php,v 1.18 2014/02/05 21:17:08 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -101,25 +101,25 @@ class coreSettings extends core {
 		$patterns[0] = '/YYYY/';
 		$patterns[1] = '/MM/';
 		$patterns[2] = '/DD/';
-	
+
 		$replacements[0] = '';
 		$replacements[1] = '';
 		$replacements[2] = '';
-	
+
 		$delimiter = preg_replace( $patterns, $replacements, $dateformat );
-		
+
 		$ret['date_delimiter1'] = substr( $delimiter, 0, 1 );
 		$ret['date_delimiter2'] = substr( $delimiter, 1, 1 );
-		
+
 		$pos_delimiter1 = strpos( $dateformat, $ret['date_delimiter1'] );
 		$pos_delimiter2 = strpos( substr( $dateformat, $pos_delimiter1+1 ), $ret['date_delimiter2'] )+$pos_delimiter1+1;
 
 		$ret['date_data1'] = substr( $dateformat, 0, $pos_delimiter1 );
 		$ret['date_data2'] = substr( $dateformat, $pos_delimiter1+1, $pos_delimiter2-$pos_delimiter1-1 );
 		$ret['date_data3'] = substr( $dateformat, $pos_delimiter2+1 );
-		
+
 		$ret['dateformat'] = $dateformat;
-		
+
 		return $ret;
 
 	}

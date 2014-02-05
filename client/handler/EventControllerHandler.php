@@ -24,17 +24,42 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: test.php,v 1.3 2014/02/05 21:17:09 olivleh1 Exp $
+// $Id: EventControllerHandler.php,v 1.1 2014/02/05 21:17:09 olivleh1 Exp $
 //
+namespace rest\client\handler;
 
-#apc_store('test',"hugo");
-#var_dump(apc_fetch('test'));
-#var_dump(apc_fetch('lalaMoneyflowText#1-1'));
-#var_dump(apc_fetch('lalaMoneyflowText#2-1'));
-#var_dump(apc_fetch('CapitalsourceById#1'));
+use rest\client\util\CallServerUtil;
+use rest\base\AbstractJsonSender;
+use rest\client\mapper\ClientArrayMapperEnum;
+use rest\base\JsonAutoMapper;
 
-$yac = new Yac();
-$yac->set('MoneyflowSumAmount(3)#1-20140201-20140228-21','hugo');
-var_dump($yac->get('MoneyflowSumAmount(3)#1-20140201-20140228-21'));
+class EventControllerHandler extends AbstractJsonSender {
+	private static $instance;
+	private static $callServer;
+
+	protected function __construct() {
+		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
+	}
+
+	public static function getInstance() {
+		if (! isset( self::$instance )) {
+			self::$instance = new EventControllerHandler();
+			self::$callServer = CallServerUtil::getInstance();
+		}
+		return self::$instance;
+	}
+
+	public final function showEventList() {
+		$url = URLPREFIX . SERVERPREFIX . 'event/showEventList/' . self::$callServer->getSessionId();
+		$response = self::$callServer->getJson( $url );
+		if (is_array( $response )) {
+			$showEventList = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\event' );
+			$result ['mms_missing'] = $showEventList->isMonthlySettlementMissing();
+			$result ['month'] = $showEventList->getMonthlySettlementMonth();
+			$result ['year'] = $showEventList->getMonthlySettlementYear();
+		}
+		return $result;
+	}
+}
+
 ?>
-

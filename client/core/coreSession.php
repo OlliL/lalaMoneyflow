@@ -26,7 +26,7 @@ use rest\client\util\CallServerUtil;
 # SUCH DAMAGE.
 #
 # $MCom: portstools/tinderbox/webui/module/moduleSession.php,v 1.3 2005/07/21 11:28:29 oliver Exp $
-# $Id: coreSession.php,v 1.10 2014/02/01 23:26:23 olivleh1 Exp $
+# $Id: coreSession.php,v 1.11 2014/02/05 21:17:08 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -80,10 +80,10 @@ class coreSession extends core {
 	}
 
 	function destroy() {
+		LoggedOnUser::destroyInstance($this->getAttribute( 'users_id' ));
 		if( session_id() ) {
 			session_destroy();
 		}
-// Not working		LoggedOnUser::destroyInstance();
 	}
 }
 ?>

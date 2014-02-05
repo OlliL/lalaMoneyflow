@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-	<head><title>lalaMoneyflow: {$TEXT_6}</title>
+	<head><title>lalaMoneyflow: {#TEXT_6#}</title>
 {$HEADER}
 		<td align="center" valign="top">
 			<form action="{$ENV_INDEX_PHP}" method="POST">
@@ -10,10 +10,10 @@
 				<table border=0>
 					<tr>
 						<td align="center">
-							<h1>{$TEXT_6}</h1>
+							<h1>{#TEXT_6#}</h1>
 							<table>
 					<tr>
-						<th>{$TEXT_69}</th>
+						<th>{#TEXT_69#}</th>
 						<td class="contrastbgcolor">
 							<select class="contrastbgcolor" name="all_data[startmonth]" size=1>
 								<option value="1"  {if 1 == $ALL_DATA.startmonth}selected{/if}>Jan</option>
@@ -37,7 +37,7 @@
 						</td>
 					</tr>
 					<tr>
-						<th>{$TEXT_70}</th>
+						<th>{#TEXT_70#}</th>
 						<td class="contrastbgcolor">
 							<select class="contrastbgcolor" name="all_data[endmonth]" size=1>
 								<option value="1"  {if 1 == $ALL_DATA.endmonth}selected{/if}>Jan</option>
@@ -61,7 +61,7 @@
 						</td>
 					</tr>
 					<tr>
-						<th>{$TEXT_19}</th>
+						<th>{#TEXT_19#}</th>
 						<td class="contrastbgcolor">
 							<select name="all_data[mcs_capitalsourceid][]" size="5" multiple>
 							{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
@@ -77,7 +77,7 @@
 					<tr>
 						<td colspan="2" align="center">
 							<br>
-							<input type="submit" value="{$TEXT_71}">
+							<input type="submit" value="{#TEXT_71#}">
 						</td>
 					</tr>
 							</table>

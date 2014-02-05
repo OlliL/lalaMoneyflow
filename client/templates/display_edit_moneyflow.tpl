@@ -2,7 +2,7 @@
        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 {if $CLOSE != 1}
-	<head><title>lalaMoneyflow: {$TEXT_15}</title>
+	<head><title>lalaMoneyflow: {#TEXT_15#}</title>
 {$HEADER}
 
 		<td align="center">
@@ -16,14 +16,14 @@
 			{/section}
 			<table border=0>
 				<tr>
-					<th>{$TEXT_209}</th>
-					<th>{$TEXT_16}</th>
-					<th>{$TEXT_17}</th>
-					<th>{$TEXT_18}</th>
-					<th>{$TEXT_2}</th>
-					<th>{$TEXT_21}</th>
-					<th>{$TEXT_232}</th>
-					<th>{$TEXT_19}</th>
+					<th>{#TEXT_209#}</th>
+					<th>{#TEXT_16#}</th>
+					<th>{#TEXT_17#}</th>
+					<th>{#TEXT_18#}</th>
+					<th>{#TEXT_2#}</th>
+					<th>{#TEXT_21#}</th>
+					<th>{#TEXT_232#}</th>
+					<th>{#TEXT_19#}</th>
 				</tr>
 				<tr>
 				    <td class="contrastbgcolor"><input class="contrastbgcolor" type="checkbox" name="all_data[private]" value=1 {if $ALL_DATA.private == 1}checked{/if} ></td>
@@ -48,8 +48,8 @@
 					</select></td>
 				</tr>
 			</table>
-			<input type="submit" value="{$TEXT_22}">
-			<input type="button" value="{$TEXT_23}" onclick="javascript:void self.close();">
+			<input type="submit" value="{#TEXT_22#}">
+			<input type="button" value="{#TEXT_23#}" onclick="javascript:void self.close();">
 		</form>
 		</td>
 {$FOOTER}

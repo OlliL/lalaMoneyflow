@@ -24,11 +24,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.63 2014/02/03 19:18:27 olivleh1 Exp $
+// $Id: module.php,v 1.64 2014/02/05 21:17:08 olivleh1 Exp $
 //
 
 require_once 'Smarty.class.php';
-require_once 'core/coreTemplates.php';
 require_once 'core/coreText.php';
 require_once 'core/coreUsers.php';
 require_once 'core/coreDomains.php';
@@ -37,10 +36,10 @@ class module {
 
 	public function __construct() {
 		$this->mapper = array ();
-		$this->coreTemplates = new coreTemplates();
 		$this->coreText = new coreText();
 		$this->coreUsers = new coreUsers();
 		$this->coreDomains = new coreDomains();
+		$this->coreSettings = new coreSettings();
 		$this->template = new Smarty();
 		$this->index_php = 'index.php';
 		$this->template->registerPlugin( 'modifier', 'number_format', 'my_number_format' );
@@ -74,7 +73,7 @@ class module {
 		global $ERRORS;
 		if (is_array( $ERRORS )) {
 			foreach ( $ERRORS as $error ) {
-				$error_text = $this->coreText->get_error( $error ['id'] );
+				$error_text = $this->coreText->get_text( $error ['id'] );
 				if (is_array( $error ['arguments'] )) {
 					foreach ( $error ['arguments'] as $id => $value ) {
 						$error_text = str_replace( 'A' . ($id + 1) . 'A', $value, $error_text );
@@ -87,19 +86,8 @@ class module {
 	}
 
 	function fetch_template($name) {
-		$text = $this->coreTemplates->get_template_text( $name );
-		if (is_array( $text )) {
-			foreach ( $text as $id => $value ) {
-				$this->template->assign( $value ['variable'], $value ['text'] );
-			}
-		}
-
+		$this->template->configLoad('rest/client/locale/'.GUI_LANGUAGE.'.conf');
 		$result = $this->template->fetch( './' . $name );
-		if (is_array( $text )) {
-			foreach ( $text as $id => $value ) {
-				$this->template->clearAssign( $value ['variable'] );
-			}
-		}
 		return $result;
 	}
 

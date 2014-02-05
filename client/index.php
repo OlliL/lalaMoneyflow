@@ -25,7 +25,7 @@ use rest\base\config\CacheManager;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.61 2014/02/02 01:55:14 olivleh1 Exp $
+// $Id: index.php,v 1.62 2014/02/05 21:17:08 olivleh1 Exp $
 //
 require_once 'include.php';
 require_once 'functions.php';
@@ -86,17 +86,6 @@ if ($is_logged_in == 2) {
 	/* user tries to login */
 
 	define( GUI_LANGUAGE, $coreSettings->get_displayed_language( 0 ) );
-	if (! CacheManager::getInstance()->get( 'lalaMoneyflowText#' . GUI_LANGUAGE . '-loaded' )) {
-		switch (GUI_LANGUAGE) {
-			case 2 :
-				require 'rest/client/locale/de.php';
-				break;
-			default :
-				require 'rest/client/locale/en.php';
-				break;
-		}
-	}
-
 	$realaction = $_REQUEST ['realaction'];
 	$name = $_REQUEST ['name'];
 	$password = $_REQUEST ['password'];
@@ -115,16 +104,7 @@ if ($is_logged_in == 0) {
 	$date_format = $coreSettings->get_date_format( USERID );
 	define( GUI_DATE_FORMAT, $date_format ['dateformat'] );
 	define( GUI_LANGUAGE, $coreSettings->get_displayed_language( USERID ) );
-	if (! CacheManager::getInstance()->get( 'lalaMoneyflowText#' . GUI_LANGUAGE . '-loaded' )) {
-		switch (GUI_LANGUAGE) {
-			case 2 :
-				require 'rest/client/locale/de.php';
-				break;
-			default :
-				require 'rest/client/locale/en.php';
-				break;
-		}
-	}
+
 	if (! CacheManager::getInstance()->get( 'lalaMoneyflowDomains-loaded' )) {
 		require 'rest/client/locale/domains.php';
 	}

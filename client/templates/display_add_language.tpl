@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-	<head><title>lalaMoneyflow: {$TEXT_185}</title>
+	<head><title>lalaMoneyflow: {#TEXT_185#}</title>
 {$HEADER}
 
 		<td align="center" valign="top">
@@ -13,8 +13,8 @@
 				{/section}
 				<table border=0>
 					<tr>
-						<th>{$TEXT_183}</th>
-						<th>{$TEXT_186}</th>
+						<th>{#TEXT_183#}</th>
+						<th>{#TEXT_186#}</th>
 					</tr>
 					<tr>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[language]" value="{$ALL_DATA.language}" size=50></td>
@@ -25,8 +25,8 @@
 						</select></td>
 					</tr>
 				</table>
-				<input type="submit" value="{$TEXT_29}">
-				<input type="button" value="{$TEXT_23}" onclick="javascript:void self.close();">
+				<input type="submit" value="{#TEXT_29#}">
+				<input type="button" value="{#TEXT_23#}" onclick="javascript:void self.close();">
 			</form>
 		</td>
 {$FOOTER}

@@ -2,7 +2,7 @@
        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 {if $CLOSE != 1}
-	<head><title>lalaMoneyflow: {if $ALL_DATA.id > 0}{$TEXT_111}{else}{$TEXT_112}{/if}</title>
+	<head><title>lalaMoneyflow: {if $ALL_DATA.id > 0}{#TEXT_111#}{else}{#TEXT_112#}{/if}</title>
 {$HEADER}
 
 		<td align="center">
@@ -17,11 +17,11 @@
 			{/section}
 			<table border=0>
 				<tr>
-					<th width="100">{$TEXT_107}</th>
-					<th width="80" >{$TEXT_108}</th>
-					<th width="60" >{$TEXT_34}</th>
+					<th width="100">{#TEXT_107#}</th>
+					<th width="80" >{#TEXT_108#}</th>
+					<th width="60" >{#TEXT_34#}</th>
 					{if $NEW != 1}
-					<th width="60" >{$TEXT_35}</th>
+					<th width="60" >{#TEXT_35#}</th>
 					{/if}
 				</tr>
 				<tr>
@@ -43,8 +43,8 @@
 					{/if}
 				</tr>
 			</table>
-			<input type="submit" value="{$TEXT_22}">
-			<input type="button" value="{$TEXT_23}" onclick="javascript:void self.close();">
+			<input type="submit" value="{#TEXT_22#}">
+			<input type="button" value="{#TEXT_23#}" onclick="javascript:void self.close();">
 		</form>
 		</td>
 {$FOOTER}
