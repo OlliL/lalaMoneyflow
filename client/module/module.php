@@ -24,9 +24,8 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.64 2014/02/05 21:17:08 olivleh1 Exp $
+// $Id: module.php,v 1.65 2014/02/06 22:04:33 olivleh1 Exp $
 //
-
 require_once 'Smarty.class.php';
 require_once 'core/coreText.php';
 require_once 'core/coreUsers.php';
@@ -86,7 +85,8 @@ class module {
 	}
 
 	function fetch_template($name) {
-		$this->template->configLoad('rest/client/locale/'.GUI_LANGUAGE.'.conf');
+		global $GUI_LANGUAGE;
+		$this->template->configLoad( 'rest/client/locale/' . $GUI_LANGUAGE . '.conf' );
 		$result = $this->template->fetch( './' . $name );
 		return $result;
 	}
@@ -98,7 +98,7 @@ class module {
 		$this->template->assign( 'VERSION', '0.13.0' );
 		$this->template->assign( 'NO_NAVIGATION', $nonavi );
 		$user = LoggedOnUser::getInstance()->getUser();
-		if ($user['perm_admin'] == "1" ) {
+		if ($user ['perm_admin'] == "1") {
 			$this->template->assign( 'IS_ADMIN', true );
 		} else {
 			$this->template->assign( 'IS_ADMIN', false );

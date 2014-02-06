@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreText.php,v 1.17 2014/02/05 21:17:08 olivleh1 Exp $
+// $Id: coreText.php,v 1.18 2014/02/06 22:04:33 olivleh1 Exp $
 //
 require_once 'core/core.php';
 
@@ -37,8 +37,9 @@ class coreText extends core {
 	}
 
 	function get_text($id) {
+		global $GUI_LANGUAGE;
 		if ($this->inifile === null)
-			$this->inifile = parse_ini_file( 'rest/client/locale/' . GUI_LANGUAGE . '.conf' );
+			$this->inifile = parse_ini_file( 'rest/client/locale/' . $GUI_LANGUAGE . '.conf' );
 
 		return htmlentities( $this->inifile ['TEXT_' . $id], ENT_COMPAT | ENT_HTML401, ENCODING );
 	}

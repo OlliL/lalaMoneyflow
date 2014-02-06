@@ -25,7 +25,7 @@ use rest\client\handler\SessionControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.31 2014/02/05 21:17:08 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.32 2014/02/06 22:04:34 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -88,6 +88,8 @@ class moduleUsers extends module {
 					$this->coreSession->setAttribute( 'users_name', $session ['username'] );
 					$this->coreSession->setAttribute( 'users_id', $session ['mur_userid'] );
 					$this->coreSession->setAttribute( 'server_id', $session ['sessionid'] );
+					$this->coreSession->setAttribute( 'date_format', $this->coreSettings->get_date_format( $session ['mur_userid'] )['dateformat'] );
+					$this->coreSession->setAttribute( 'gui_language', $this->coreSettings->get_displayed_language( $session ['mur_userid'] ) );
 					$loginok = 1;
 				}
 				break;

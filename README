@@ -10,3 +10,4 @@ Requirements:
 - Yac (https://github.com/laruence/yac/)
 - Smarty (http://www.smarty.net/)
 - JpGraph (http://jpgraph.net/)
+- PECL spl_types

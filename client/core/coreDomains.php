@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreDomains.php,v 1.11 2014/02/05 21:17:08 olivleh1 Exp $
+// $Id: coreDomains.php,v 1.12 2014/02/06 22:04:33 olivleh1 Exp $
 //
 use rest\base\config\CacheManager;
 require_once 'core/core.php';
@@ -38,7 +38,33 @@ class coreDomains extends core {
 	}
 
 	private final function getDomain($domain) {
-		return CacheManager::getInstance()->get( 'lalaMoneyflowDomains#' . $domain );
+		switch ($domain) {
+			case 'MONTHS' :
+				return array (
+						1 => 155,
+						2 => 156,
+						3 => 157,
+						4 => 158,
+						5 => 159,
+						6 => 160,
+						7 => 161,
+						8 => 162,
+						9 => 163,
+						10 => 164,
+						11 => 165,
+						12 => 166
+				);
+			case 'CAPITALSOURCE_TYPE' :
+				return array (
+						1 => 173,
+						2 => 174
+				);
+			case 'CAPITALSOURCE_STATE' :
+				return array (
+						1 => 175,
+						2 => 176
+				);
+		}
 	}
 
 	public final function get_domain_data($domain) {

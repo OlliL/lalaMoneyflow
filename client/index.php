@@ -25,10 +25,11 @@ use rest\base\config\CacheManager;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.62 2014/02/05 21:17:08 olivleh1 Exp $
+// $Id: index.php,v 1.63 2014/02/06 22:04:33 olivleh1 Exp $
 //
 require_once 'include.php';
 require_once 'functions.php';
+require_once 'core/coreSession.php';
 require_once 'module/moduleEvents.php';
 require_once 'module/moduleSettings.php';
 require_once 'module/moduleUsers.php';
@@ -52,6 +53,7 @@ function my_number_format($number) {
 $moduleEvents = new moduleEvents();
 $moduleUsers = new moduleUsers();
 $moduleSettings = new moduleSettings();
+$coreSession = new coreSession();
 
 $request_uri = $_SERVER ['REQUEST_URI'];
 
@@ -85,7 +87,7 @@ if ($is_logged_in == 2) {
 
 	/* user tries to login */
 
-	define( GUI_LANGUAGE, $coreSettings->get_displayed_language( 0 ) );
+	$GUI_LANGUAGE = $coreSettings->get_displayed_language( 0 ) ;
 	$realaction = $_REQUEST ['realaction'];
 	$name = $_REQUEST ['name'];
 	$password = $_REQUEST ['password'];
@@ -101,13 +103,8 @@ if ($money_debug === true)
 
 if ($is_logged_in == 0) {
 
-	$date_format = $coreSettings->get_date_format( USERID );
-	define( GUI_DATE_FORMAT, $date_format ['dateformat'] );
-	define( GUI_LANGUAGE, $coreSettings->get_displayed_language( USERID ) );
-
-	if (! CacheManager::getInstance()->get( 'lalaMoneyflowDomains-loaded' )) {
-		require 'rest/client/locale/domains.php';
-	}
+	define( GUI_DATE_FORMAT, $coreSession->getAttribute( 'date_format' ) );
+	$GUI_LANGUAGE = $coreSession->getAttribute( 'gui_language' );
 
 	$display = $moduleEvents->check_events();
 
