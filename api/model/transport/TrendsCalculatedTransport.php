@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2006-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,49 +25,38 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreText.php,v 1.19 2014/02/08 01:38:14 olivleh1 Exp $
+// $Id: TrendsCalculatedTransport.php,v 1.1 2014/02/08 01:38:15 olivleh1 Exp $
 //
-require_once 'core/core.php';
+namespace rest\api\model\transport;
 
-class coreText extends core {
-	private $inifile;
+class TrendsCalculatedTransport {
+	public $year;
+	public $month;
+	public $amount;
 
-	function coreText() {
-		parent::__construct();
-		$this->inifile = null;
+	public final function setYear($year) {
+		$this->year = $year;
 	}
 
-	function get_text_raw($id) {
-		global $GUI_LANGUAGE;
-		if ($this->inifile === null)
-			$this->inifile = parse_ini_file( 'rest/client/locale/' . $GUI_LANGUAGE . '.conf' );
-
-		return $this->inifile ['TEXT_' . $id];
-
-	}
-	function get_text($id) {
-		return htmlentities( $this->get_text_raw($id), ENT_COMPAT | ENT_HTML401, ENCODING );
+	public final function setMonth($month) {
+		$this->month = $month;
 	}
 
-	function get_lang_data($id) {
-		return $this->select_rows( "	SELECT textid
-						      ,text
-						  FROM text
-						 WHERE mla_languageid = $id" );
+	public final function setAmount($amount) {
+		$this->amount = $amount;
 	}
 
-	function update_text($id, $languageid, $text) {
-		return $this->update_row( "	UPDATE text
-						   SET text = '$text'
-						 WHERE textid         = $id
-						   AND mla_languageid = $languageid" );
+	public final function getYear() {
+		return $this->year;
 	}
 
-	function get_error($id) {
-		return $this->get_text( $id );
+	public final function getMonth() {
+		return $this->month;
 	}
 
-	function get_graph($id) {
-		return $this->get_text_raw( $id );
+	public final function getAmount() {
+		return $this->amount;
 	}
 }
+
+?>

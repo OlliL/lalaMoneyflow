@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.60 2014/02/03 21:05:52 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.61 2014/02/08 01:38:14 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -41,26 +41,6 @@ class coreMoneyFlows extends core {
 		 * month are stored
 		 */
 		return $this->exec_function('mms_calc_movement_calculated('.$userid.','.$month.','.$year.','.$id.')');
-	}
-
-	function get_max_year_month() {
-		return $this->select_row( '	SELECT MONTH(bookingdate) month
-						      ,YEAR(bookingdate) year
-						  FROM vw_moneyflows
-						 WHERE mug_mur_userid  = '.USERID.'
-						   AND (private        = 0
-						        OR
-						        mur_userid     = '.USERID.'
-						       )
-						   AND bookingdate = (SELECT MAX(bookingdate)
-						                        FROM vw_moneyflows
-						                       WHERE mug_mur_userid  = '.USERID.'
-						                         AND (private        = 0
-						                              OR
-						                              mur_userid     = '.USERID.'
-						                             )
-						                       LIMIT 1)
-						 LIMIT 1');
 	}
 
 	function search_moneyflows( $params ) {
@@ -179,26 +159,6 @@ class coreMoneyFlows extends core {
 						       )
 						 GROUP BY$GROUP_CONDITION
 						 ORDER BY$ORDER_CONDITION" );
-	}
-
-	function month_has_moneyflows( $month, $year ) {
-		$date = $this->make_date( $year."-".$month."-01" );
-		$value = $this->select_col( "	SELECT 1
-						  FROM vw_moneyflows mmf
-						 WHERE bookingdate BETWEEN $date AND LAST_DAY($date)
-						   AND mmf.mug_mur_userid  = ".USERID."
-						   AND (mmf.private        = 0
-						        OR
-						        mmf.mur_userid     = ".USERID."
-						       )
-						LIMIT 1" );
-		if( $value != 1 ) {
-			$value = false;
-		} else {
-			$value = true;
-		}
-
-		return $value;
 	}
 
 }

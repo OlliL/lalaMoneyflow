@@ -1,7 +1,5 @@
-0. domain handling also via ini-loading and not via cache manager
 1. implement moduleMonthlySettlements
 2. implement moduleSearch
-3. implement remaining moduleMoneyFlows (trend-graph)
 
 
 4. implement Logout Call to destroy the session on the server.
@@ -9,7 +7,6 @@
 5. continue removing Core Classes
    - move all the remaining "service" Controller forward methods to client based / view based controller methods to reduce
      multiple HTTP calls and to live the "Controller way" which is a client depending interface
-   - implement REST/JSON Services + use them
    - move calc_amount to the client (for the time being, the personal Currency handling is broken)
    - think about language handling - it is no longer DB backed but cache backed in files
    - maybe extra Validator Classes with insert/update/delete relevant validations and not in the Service
@@ -29,10 +26,6 @@ Bugs detected so far:
      
 
 - evaluate:
-  - switch from data being bound to user-ids to data being bound to accounts and users being allowed to work with accounts
-    so for example having one acount "Family Doe" with 2 Users "John" and "Marry" able to work with the "Family Doe" account.
-    Contract Partner, Capital Sources, Money Flows, and so on are then linked to "Family Doe" instead of single users. Beside
-    that, they can also be defined privatly. Some sort of hirarchical concepts. "Group", and "User" data.  
   - Doctrine + Serializer
   - PHPUnit
     -> PHP_CodeCoverage needed
@@ -48,7 +41,40 @@ some far time in the future:
 ###########################################################################################################################
 
 
-old (but still valid) TODOs:
+New User/Group handling concept:
+
+- user and groups share the same ID pool and are just differentiated by priority levels (user ID has a higher priority than group ID)
+	- Migration:
+		- create one group for user 1 and user 2 and assign it to them
+		- move user 2 to the group of user 1 beginning of 2012
+- moneyflows are maintained on group IDs (generall access for all members) and private ones on user IDs (only shown to the user itself)
+	- Migration:
+		- update moneyflows set new-id = group-id where private != 1;
+		- update moneyflows set new-id = user-id where private = 1;
+- contractparter are always maintained on group IDs
+- predefmoneyflows can be maintained on group or user level and are shown then to the whole group or only to the user (change creation+update screens)
+	- Migration:
+		- move all predefmoneyflows to the user-Level
+- contractparter will have to get validfrom/validtil fields
+	- Migration:
+		- move all existing contractpartner to the user groups of user 1 and user 2
+		- migrate all existing moneyflows of user 2 after 01.01.2012 (new group assignment) to the contractpartner of the new assigned group.
+		- migrate all existing predefmoneyflows to the new contractpartner for user 2
+		- invalidate all contractpartners which where not used in the past 2 or 3 years
+- the contractpartner list screen will get a functionality to re-activate deactivated contractpartners and to deactivate contractpartners.
+- settlements are also always maintained on group level
+- capitalsources are also maintained on group level, and the "group usage allowed" still applies (they'll be seen by all, but used only by
+  the creator except "group usage allowed" is flagged)
+- capitalsources will have two ID fields one "creator" and one "assigned" ID
+
+- questions:
+	- what if user 2 edits a group-assigned moneyflow where user 1 has created it with a capitalsource user 2 has no permission to use?
+	
+		 
+
+
+
+old (but maybe still valid) TODOs:
 
   
 - create group-mantainance screens 

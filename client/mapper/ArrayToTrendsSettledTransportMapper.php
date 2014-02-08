@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,19 +25,27 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: getAllCapitalsourcesResponse.php,v 1.3 2014/01/26 12:24:48 olivleh1 Exp $
+// $Id: ArrayToTrendsSettledTransportMapper.php,v 1.1 2014/02/08 01:38:15 olivleh1 Exp $
 //
-namespace rest\api\model\capitalsource;
+namespace rest\client\mapper;
 
-class getAllCapitalsourcesResponse {
-	public $capitalsourceTransport;
+use rest\api\model\transport\TrendsSettledTransport;
 
-	public final function getCapitalsourceTransport() {
-		return $this->capitalsourceTransport;
+class ArrayToTrendsSettledTransportMapper extends AbstractArrayMapper {
+
+	public static function mapAToB(array $a) {
+		$b = new TrendsSettledTransport();
+		$b->setAmount( $a ['amount'] );
+		$b->setYear( $a ['year'] );
+		$b->setMonth( $a ['month'] );
+		return $b;
 	}
 
-	public final function setCapitalsourceTransport(array $capitalsourceTransport) {
-		$this->capitalsourceTransport = $capitalsourceTransport;
+	public static function mapBToA(TrendsSettledTransport $b) {
+		$a ['amount'] = $b->getAmount();
+		$a ['year'] = $b->getYear();
+		$a ['month'] = $b->getMonth();
+		return $a;
 	}
 }
 

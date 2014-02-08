@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: compareDataRequest.php,v 1.2 2014/02/01 10:46:44 olivleh1 Exp $
+// $Id: compareDataRequest.php,v 1.3 2014/02/08 01:38:15 olivleh1 Exp $
 //
 namespace rest\api\model\comparedata;
 
@@ -76,6 +76,7 @@ class compareDataRequest {
 
 	public final function getFileContents() {
 		return $this->fileContents;
-	}}
+	}
+}
 
 ?>

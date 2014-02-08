@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportControllerHandler.php,v 1.5 2014/02/04 20:43:58 olivleh1 Exp $
+// $Id: ReportControllerHandler.php,v 1.6 2014/02/08 01:38:15 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -32,6 +32,8 @@ use rest\client\util\CallServerUtil;
 use rest\base\AbstractJsonSender;
 use rest\client\mapper\ClientArrayMapperEnum;
 use rest\base\JsonAutoMapper;
+use rest\api\model\report\showTrendsGraphRequest;
+use rest\client\util\DateUtil;
 
 class ReportControllerHandler extends AbstractJsonSender {
 	private static $instance;
@@ -42,6 +44,8 @@ class ReportControllerHandler extends AbstractJsonSender {
 		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToReportTurnoverCapitalsourceTransportMapper', ClientArrayMapperEnum::REPORTTURNOVERCAPITALSOURCE_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToTrendsCalculatedTransportMapper', ClientArrayMapperEnum::TRENDSCALCULATED_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToTrendsSettledTransportMapper', ClientArrayMapperEnum::TRENDSSETTLED_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -94,6 +98,32 @@ class ReportControllerHandler extends AbstractJsonSender {
 				$result ['capitalsources'] = parent::mapArray( $showTrendsForm->getCapitalsourceTransport() );
 			} else {
 				$result ['capitalsources'] = array ();
+			}
+		}
+
+		return $result;
+	}
+
+	public final function showTrendsGraph($capitalsourceIds, $startdate, $enddate) {
+		$url = URLPREFIX . SERVERPREFIX . 'report/showTrendsGraph/' . self::$callServer->getSessionId();
+
+		$request = new showTrendsGraphRequest();
+		$request->setCapitalsourceIds( $capitalsourceIds );
+		$request->setStartDate( $startdate->format( 'U' ) );
+		$request->setEndDate( $enddate->format( 'U' ) );
+
+		$response = self::$callServer->putJson( $url, parent::json_encode_response( $request ) );
+		if (is_array( $response )) {
+			$showTrendsGraphResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\report' );
+			if (is_array( $showTrendsGraphResponse->getTrendsSettledTransport() )) {
+				$result ['settled'] = parent::mapArray( $showTrendsGraphResponse->getTrendsSettledTransport() );
+			} else {
+				$result ['settled'] = array ();
+			}
+			if (is_array( $showTrendsGraphResponse->getTrendsCalculatedTransport() )) {
+				$result ['calculated'] = parent::mapArray( $showTrendsGraphResponse->getTrendsCalculatedTransport() );
+			} else {
+				$result ['calculated'] = array ();
 			}
 		}
 

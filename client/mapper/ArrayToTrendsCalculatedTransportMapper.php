@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2006-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,49 +25,28 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreText.php,v 1.19 2014/02/08 01:38:14 olivleh1 Exp $
+// $Id: ArrayToTrendsCalculatedTransportMapper.php,v 1.1 2014/02/08 01:38:15 olivleh1 Exp $
 //
-require_once 'core/core.php';
+namespace rest\client\mapper;
 
-class coreText extends core {
-	private $inifile;
+use rest\api\model\transport\TrendsCalculatedTransport;
 
-	function coreText() {
-		parent::__construct();
-		$this->inifile = null;
+class ArrayToTrendsCalculatedTransportMapper extends AbstractArrayMapper {
+
+	public static function mapAToB(array $a) {
+		$b = new TrendsCalculatedTransport();
+		$b->setAmount( $a ['amount'] );
+		$b->setYear( $a ['year'] );
+		$b->setMonth( $a ['month'] );
+		return $b;
 	}
 
-	function get_text_raw($id) {
-		global $GUI_LANGUAGE;
-		if ($this->inifile === null)
-			$this->inifile = parse_ini_file( 'rest/client/locale/' . $GUI_LANGUAGE . '.conf' );
-
-		return $this->inifile ['TEXT_' . $id];
-
-	}
-	function get_text($id) {
-		return htmlentities( $this->get_text_raw($id), ENT_COMPAT | ENT_HTML401, ENCODING );
-	}
-
-	function get_lang_data($id) {
-		return $this->select_rows( "	SELECT textid
-						      ,text
-						  FROM text
-						 WHERE mla_languageid = $id" );
-	}
-
-	function update_text($id, $languageid, $text) {
-		return $this->update_row( "	UPDATE text
-						   SET text = '$text'
-						 WHERE textid         = $id
-						   AND mla_languageid = $languageid" );
-	}
-
-	function get_error($id) {
-		return $this->get_text( $id );
-	}
-
-	function get_graph($id) {
-		return $this->get_text_raw( $id );
+	public static function mapBToA(TrendsCalculatedTransport $b) {
+		$a ['amount'] = $b->getAmount();
+		$a ['year'] = $b->getYear();
+		$a ['month'] = $b->getMonth();
+		return $a;
 	}
 }
+
+?>

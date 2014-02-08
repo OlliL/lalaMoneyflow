@@ -26,13 +26,11 @@ use rest\client\handler\CapitalsourceControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.74 2014/02/04 20:43:58 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.75 2014/02/08 01:38:15 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
-require_once 'core/coreMoneyFlows.php';
-require_once 'core/coreMonthlySettlement.php';
 require_once 'core/coreDomains.php';
 require_once 'core/coreSettings.php';
 
@@ -48,8 +46,6 @@ class moduleReports extends module {
 
 		// old shit
 		$this->coreCurrencies = new coreCurrencies();
-		$this->coreMoneyFlows = new coreMoneyFlows();
-		$this->coreMonthlySettlement = new coreMonthlySettlement();
 		$this->coreDomains = new coreDomains();
 		$this->coreSettings = new coreSettings();
 	}
@@ -224,7 +220,7 @@ class moduleReports extends module {
 		if (is_array( $showTrendsForm ['capitalsources'] )) {
 			$this->template->assign( 'CAPITALSOURCE_VALUES', $showTrendsForm ['capitalsources'] );
 		}
-		$this->template->assign( 'ALL_YEARS', $showTrendsForm['allYears'] );
+		$this->template->assign( 'ALL_YEARS', $showTrendsForm ['allYears'] );
 
 		if (is_array( $all_data ) && isset( $all_data ['mcs_capitalsourceid'] )) {
 			$this->coreSettings->set_trend_capitalsourceid( USERID, $all_data ['mcs_capitalsourceid'] );
@@ -248,6 +244,9 @@ class moduleReports extends module {
 
 	function plot_graph($all_capitalsources_ids, $startmonth, $startyear, $endmonth, $endyear) {
 		$coreText = new coreText();
+		$startdate = new DateTime( $startyear . "-" . $startmonth . "-01" );
+		$enddate = new DateTime( $endyear . "-" . $endmonth . "-01" );
+		$showTrendsGraph = ReportControllerHandler::getInstance()->showTrendsGraph( $all_capitalsources_ids, $startdate, $enddate );
 
 		$graph_comment = $coreText->get_graph( 168 );
 		$graph_from = $coreText->get_graph( 169 );
@@ -255,71 +254,26 @@ class moduleReports extends module {
 		$graph_xaxis = $coreText->get_graph( 171 );
 		$graph_yaxis = $coreText->get_graph( 172 );
 
-		$startdate = new DateTime( $startyear . "-" . $startmonth . "-01" );
-		$enddate = new DateTime( $endyear . "-" . $endmonth . "-01" );
-		$startdate_orig = clone $startdate;
-		$enddate_orig = clone $enddate;
-
-		// find first recorded monthly settlement
-		$exists = false;
-		while ( $exists === false && $startdate->format( "U" ) <= $enddate->format( "U" ) ) {
-			$exists = $this->coreMonthlySettlement->monthlysettlement_exists( $startdate->format( "m" ), $startdate->format( "Y" ), $all_capitalsources_ids );
-			if ($exists === false)
-				$startdate->modify( "+1 month" );
-		}
-
-		// find last recorded monthly settlement
-		$exists = false;
-		while ( $exists === false && $enddate->format( "U" ) >= $startdate->format( "U" ) ) {
-			$exists = $this->coreMonthlySettlement->monthlysettlement_exists( $enddate->format( "m" ), $enddate->format( "Y" ), $all_capitalsources_ids );
-			if ($exists === false)
-				$enddate->modify( "-1 month" );
-		}
-
-		$startdate_real = clone $startdate;
-		$enddate_real = clone $enddate;
-
-		// build the 1st graph containing all monthly settlements
 		$i = 0;
-		while ( $startdate->format( "U" ) <= $enddate->format( "U" ) ) {
-			foreach ( $all_capitalsources_ids as $capitalsources_id ) {
-				$monthly_data [$i] += $this->coreMonthlySettlement->get_amount( USERID, $capitalsources_id, $startdate->format( "m" ), $startdate->format( "Y" ) );
+		if (is_array( $showTrendsGraph ['settled'] )) {
+			foreach ( $showTrendsGraph ['settled'] as $settledAmount ) {
+				$monthly_data [$i] = $settledAmount ['amount'];
+				$monthly2_data [$i] = NULL;
+				$monthly_x [$i] = sprintf( "%02s/%02s", $settledAmount ['month'], substr( $settledAmount ['year'], 2 ) );
+				$i ++;
 			}
-			$monthly2_data [$i] = NULL;
-			$monthly_x [$i] = $startdate->format( "m/y" );
-			$i ++;
-			$startdate->modify( "+1 month" );
 		}
 
-		// build the 12st graph containing all calculated monthly settlements based on the moneyflows happend after the last settlement
-		if ($startdate->format( "U" ) > $enddate->format( "U" ) && $startdate->format( "U" ) <= $enddate_orig->format( "U" )) {
+		if (is_array( $showTrendsGraph ['calculated'] )) {
 			$last_amount = $monthly_data [$i - 1];
 			$monthly2_data [$i - 1] = $last_amount;
-			$max_moneyflow_date = $this->coreMoneyFlows->get_max_year_month();
-
-			$enddate = new DateTime( $max_moneyflow_date ['year'] . "-" . $max_moneyflow_date ['month'] . "-01" );
-			$enddate_real = clone $enddate;
-
-			while ( $startdate->format( "U" ) <= $enddate->format( "U" ) ) {
-				foreach ( $all_capitalsources_ids as $capitalsources_id ) {
-					$monthly2_data [$i] += $this->coreMoneyFlows->get_monthly_capitalsource_movement( USERID, $capitalsources_id, $startdate->format( "m" ), $startdate->format( "Y" ) );
-				}
-				$monthly2_data [$i] += $last_amount;
-				$last_amount = $monthly2_data [$i];
-				$monthly_x [$i] = $startdate->format( "m/y" );
+			foreach ( $showTrendsGraph ['calculated'] as $calculatedAmount ) {
+				$monthly2_data [$i] += $calculatedAmount ['amount'];
+				$monthly_x [$i] = sprintf( "%02s/%02s", $calculatedAmount ['month'], substr( $calculatedAmount ['year'], 2 ) );
 				$i ++;
-				$startdate->modify( "+1 month" );
 			}
 		} else {
 			$monthly2_data = NULL;
-		}
-
-		$i --;
-		// fill dummy x labels because the graph gets always stretcht x-wide as a multiple of 5
-		while ( $i % 5 != 0 ) {
-			$i ++;
-			$monthly_x [$i] = $startdate->format( "m/y" );
-			$startdate->modify( "+1 month" );
 		}
 
 		$graph = new Graph( 700, 400 );
@@ -332,7 +286,7 @@ class moduleReports extends module {
 				0
 		), 0 );
 
-		$txt = new Text( $graph_comment . "\n" . $graph_from . $startdate_real->format( "m/y" ) . $graph_until . $enddate_real->format( "m/y" ) );
+		$txt = new Text( $graph_comment . "\n" . $graph_from . $monthly_x [0] . $graph_until . end( $monthly_x ) );
 		$txt->SetFont( FF_FONT1, FS_BOLD );
 		$txt->Center( 0, 700 );
 		$txt->ParagraphAlign( 'center' );
@@ -342,8 +296,6 @@ class moduleReports extends module {
 		$p1->SetWeight( 1 );
 		$p1->SetFillGradient( '#E6E6FA', '#B0C4DE' );
 		$p1->mark->SetType( MARK_STAR );
-		// $p1->value->Show();
-		// $p1->value->SetAngle(90);
 		$graph->Add( $p1 );
 
 		if (is_array( $monthly2_data )) {
@@ -351,8 +303,6 @@ class moduleReports extends module {
 			$p2->SetWeight( 1 );
 			$p2->SetFillGradient( '#aeaefa', '#689bde' );
 			$p2->mark->SetType( MARK_STAR );
-			// $p2->value->Show();
-			// $p2->value->SetAngle(90);
 			$graph->Add( $p2 );
 		}
 

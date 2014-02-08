@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreMonthlySettlement.php,v 1.36 2014/02/04 20:43:58 olivleh1 Exp $
+// $Id: coreMonthlySettlement.php,v 1.37 2014/02/08 01:38:14 olivleh1 Exp $
 //
 require_once 'core/core.php';
 
@@ -47,17 +47,6 @@ class coreMonthlySettlement extends core {
 						 LIMIT 1" );
 	}
 
-	function get_sum_data($month, $year) {
-		$date = $this->make_date( $year . "-" . $month . "-01" );
-		return $this->select_row( "	SELECT SUM(calc_amount(amount,'OUT'," . USERID . ",LAST_DAY($date))) amount
-						      ,SUM(movement_calculated) movement_calculated
-						  FROM vw_monthlysettlements
-						 WHERE month      = $month
-						   AND year       = $year
-						   AND mug_mur_userid = " . USERID . "
-						 LIMIT 1" );
-	}
-
 	function get_amount($userid, $sourceid, $month, $year) {
 		$date = $this->make_date( $year . "-" . $month . "-01" );
 		return $this->select_col( "	SELECT calc_amount(amount,'OUT'," . USERID . ",LAST_DAY($date)) amount
@@ -69,29 +58,8 @@ class coreMonthlySettlement extends core {
 						 LIMIT 1" );
 	}
 
-	function get_sum_amount($month, $year) {
-		$date = $this->make_date( $year . "-" . $month . "-01" );
-
-		return $this->select_col( "	SELECT SUM(calc_amount(amount,'OUT'," . USERID . ",LAST_DAY($date))) amount
-						  FROM vw_monthlysettlements mms
-						 WHERE month      = $month
-						   AND year       = $year
-						   AND mug_mur_userid = " . USERID . "
-						 LIMIT 1" );
-	}
-
-	function monthlysettlement_exists($month, $year, $sourceid = 0) {
-		if (is_array( $sourceid ))
-			$result = $this->select_col( "	SELECT 1
-							  FROM vw_monthlysettlements
-							 WHERE mcs_capitalsourceid IN (" . implode( $sourceid, ',' ) . ")
-							   AND month          = $month
-							   AND year           = $year
-							   AND mug_mur_userid = " . USERID . "
-							 LIMIT 1" );
-
-		elseif ($sourceid == 0)
-			$result = $this->select_col( "	SELECT 1
+	function monthlysettlement_exists($month, $year) {
+		$result = $this->select_col( "	SELECT 1
 							  FROM monthlysettlements
 							 WHERE month          = $month
 							   AND year           = $year

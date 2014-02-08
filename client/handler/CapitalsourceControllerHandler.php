@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CapitalsourceControllerHandler.php,v 1.3 2014/02/02 00:28:19 olivleh1 Exp $
+// $Id: CapitalsourceControllerHandler.php,v 1.4 2014/02/08 01:38:15 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -62,25 +62,6 @@ class CapitalsourceControllerHandler extends AbstractJsonSender {
 				$result ['capitalsources'] = array ();
 			}
 			$result ['initials'] = $listCapitalsources->getInitials();
-		}
-
-		return $result;
-	}
-
-	/**
-	 *
-	 * @deprecated to be replaced by a new specific REST-Call
-	 */
-	public final function getAllCapitalsources() {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/getAllCapitalsources/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
-		if (is_array( $response )) {
-			$getAllCapitalsourcesResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
-			if (is_array( $getAllCapitalsourcesResponse->getCapitalsourceTransport() )) {
-				$result = parent::mapArray( $getAllCapitalsourcesResponse->getCapitalsourceTransport() );
-			} else {
-				$result = '';
-			}
 		}
 
 		return $result;
