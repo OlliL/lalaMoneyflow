@@ -27,7 +27,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.47 2014/02/09 14:19:03 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.48 2014/02/09 19:14:01 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -111,18 +111,10 @@ class moduleMonthlySettlement extends module {
 		switch ($realaction) {
 			case 'save' :
 				$ret = true;
-				$exists = $this->coreMonthlySettlement->monthlysettlement_exists( $month, $year );
 				$data_is_valid = true;
 
 				foreach ( $all_data as $id => $value ) {
 					if (is_array( $value )) {
-						if ($value ['new'] === "1") {
-							$new = 2;
-							if ($exists === true) {
-								add_error( ErrorCode::MONTHLY_SETTLEMENT_ALREADY_EXISTS );
-								$data_is_valid = false;
-							}
-						}
 						if (! fix_amount( $value ['amount'] )) {
 							$all_data [$id] ['amount_error'] = 1;
 							$data_is_valid = false;
@@ -131,24 +123,25 @@ class moduleMonthlySettlement extends module {
 				}
 
 				if ($data_is_valid === true) {
-					foreach ( $all_data as $id => $value ) {
-						if (is_array( $value )) {
-							if ($value ['new'] === "1" || ! is_array( $this->coreMonthlySettlement->get_data( $value ['mcs_capitalsourceid'], $month, $year ) )) {
-								if (! $this->coreMonthlySettlement->insert_monthlysettlement( $value ['mcs_capitalsourceid'], $month, $year, $value ['amount'] ))
-									$ret = false;
-							} else {
-								if (! $this->coreMonthlySettlement->update_monthlysettlement( $value ['mcs_capitalsourceid'], $month, $year, $value ['amount'] ))
-									$ret = false;
+					$ret = MonthlySettlementControllerHandler::getInstance()->upsertMonthlySettlement( $all_data );
+					if ($ret === true) {
+						$this->template->assign( 'CLOSE', 1 );
+					} else {
+						foreach ( $ret ['errors'] as $validationResult ) {
+							$error = $validationResult ['error'];
+
+							add_error( $error );
+
+							switch ($error) {
+								// case ErrorCode::NAME_ALREADY_EXISTS :
+								// $all_data ['name_error'] = 1;
+								// break;
 							}
 						}
 					}
 				}
 
-				if ($data_is_valid === true && $ret === true) {
-					$this->template->assign( 'CLOSE', 1 );
-				} else {
-					$all_data_new = $all_data;
-				}
+				$all_data_new = $all_data;
 				break;
 
 			default :
@@ -159,6 +152,9 @@ class moduleMonthlySettlement extends module {
 				if ($monthlySettlementCreate ['edit_mode'] == 0) {
 					$this->template->assign( 'NEW', 1 );
 				}
+				foreach ( $all_data_new as $key => $data ) {
+					$all_data_new [$key] ['amount'] = sprintf( '%.02f', $data ['amount'] );
+				}
 				break;
 		}
 
@@ -166,6 +162,7 @@ class moduleMonthlySettlement extends module {
 				'nummeric' => sprintf( '%02d', $month ),
 				'name' => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int ) $month )
 		);
+
 		$this->template->assign( 'MONTH', $monthArray );
 		$this->template->assign( 'YEAR', $year );
 		$this->template->assign( 'ALL_DATA', $all_data_new );

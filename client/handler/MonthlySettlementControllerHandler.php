@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MonthlySettlementControllerHandler.php,v 1.2 2014/02/09 14:19:03 olivleh1 Exp $
+// $Id: MonthlySettlementControllerHandler.php,v 1.3 2014/02/09 19:14:01 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -32,6 +32,7 @@ use rest\client\util\CallServerUtil;
 use rest\base\AbstractJsonSender;
 use rest\client\mapper\ClientArrayMapperEnum;
 use rest\base\JsonAutoMapper;
+use rest\api\model\monthlysettlement\upsertMonthlySettlementRequest;
 
 class MonthlySettlementControllerHandler extends AbstractJsonSender {
 	private static $instance;
@@ -80,9 +81,9 @@ class MonthlySettlementControllerHandler extends AbstractJsonSender {
 			} else {
 				$result ['monthly_settlements'] = '';
 			}
-			$result['year'] = $showMonthlySettlementCreate->getYear();
-			$result['month'] = $showMonthlySettlementCreate->getMonth();
-			$result['edit_mode'] = $showMonthlySettlementCreate->getEditMode();
+			$result ['year'] = $showMonthlySettlementCreate->getYear();
+			$result ['month'] = $showMonthlySettlementCreate->getMonth();
+			$result ['edit_mode'] = $showMonthlySettlementCreate->getEditMode();
 		}
 
 		return $result;
@@ -101,6 +102,17 @@ class MonthlySettlementControllerHandler extends AbstractJsonSender {
 		}
 
 		return $result;
+	}
+
+	public final function upsertMonthlySettlement(array $monthlySettlement) {
+		$url = URLPREFIX . SERVERPREFIX . 'monthlysettlement/upsertMonthlySettlement/' . self::$callServer->getSessionId();
+
+		$monthlySettlementTransport = parent::mapArray( $monthlySettlement, ClientArrayMapperEnum::MONTHLYSETTLEMENT_TRANSPORT );
+
+		$request = new upsertMonthlySettlementRequest();
+		$request->setMonthlySettlementTransport( $monthlySettlementTransport );
+
+		return self::$callServer->postJson( $url, parent::json_encode_response( $request ) );
 	}
 
 	public final function deleteMonthlySettlement($year, $month) {
