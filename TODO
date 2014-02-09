@@ -22,6 +22,9 @@ Bugs detected so far:
      the Client does not allow it already)
    - check if the deletion of a PreDefMoneyflow was successful and if not post an error message and send a propper response object.
    - same goes for Capitalsources and Contractpartner
+   - MonthlySettlements - create for a far month in the future - check if the propper capitalsources are selected. All capitalsources
+     which are valid with at least one day in this month have to be selected (valid only at the beginning, only at the end for example)
+     check this.....
 
      
 

@@ -24,18 +24,15 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showMonthlySettlementListResponse.php,v 1.2 2014/02/09 14:19:03 olivleh1 Exp $
+// $Id: showMonthlySettlementCreateResponse.php,v 1.1 2014/02/09 14:19:03 olivleh1 Exp $
 //
 namespace rest\api\model\monthlysettlement;
 
-class showMonthlySettlementListResponse {
+class showMonthlySettlementCreateResponse {
 	public $year;
 	public $month;
-	public $allYears;
-	public $allMonth;
+	public $editMode;
 	public $monthlySettlementTransport;
-	public $numberOfEditableSettlements;
-	public $numberOfAddableSettlements;
 
 	public final function getYear() {
 		return $this->year;
@@ -53,22 +50,6 @@ class showMonthlySettlementListResponse {
 		$this->month = $month;
 	}
 
-	public final function getAllYears() {
-		return $this->allYears;
-	}
-
-	public final function setAllYears(array $allYears) {
-		$this->allYears = $allYears;
-	}
-
-	public final function getAllMonth() {
-		return $this->allMonth;
-	}
-
-	public final function setAllMonth(array $allMonth) {
-		$this->allMonth = $allMonth;
-	}
-
 	public final function getMonthlySettlementTransport() {
 		return $this->monthlySettlementTransport;
 	}
@@ -77,20 +58,12 @@ class showMonthlySettlementListResponse {
 		$this->monthlySettlementTransport = $monthlySettlementTransport;
 	}
 
-	public final function getNumberOfEditableSettlements() {
-		return $this->numberOfEditableSettlements;
+	public final function getEditMode() {
+		return $this->editMode;
 	}
 
-	public final function setNumberOfEditableSettlements($numberOfEditableSettlements) {
-		$this->numberOfEditableSettlements = $numberOfEditableSettlements;
-	}
-
-	public final function getNumberOfAddableSettlements() {
-		return $this->numberOfAddableSettlements;
-	}
-
-	public final function setNumberOfAddableSettlements($numberOfAddableSettlements) {
-		$this->numberOfAddableSettlements = $numberOfAddableSettlements;
+	public final function setEditMode($editMode) {
+		$this->editMode = $editMode;
 	}
 }
 

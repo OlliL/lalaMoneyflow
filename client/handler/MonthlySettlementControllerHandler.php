@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MonthlySettlementControllerHandler.php,v 1.1 2014/02/04 20:43:58 olivleh1 Exp $
+// $Id: MonthlySettlementControllerHandler.php,v 1.2 2014/02/09 14:19:03 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -65,6 +65,24 @@ class MonthlySettlementControllerHandler extends AbstractJsonSender {
 			$result ['month'] = $showMonthlySettlementList->getMonth();
 			$result ['numberOfEditableSettlements'] = $showMonthlySettlementList->getNumberOfEditableSettlements();
 			$result ['numberOfAddableSettlements'] = $showMonthlySettlementList->getNumberOfAddableSettlements();
+		}
+
+		return $result;
+	}
+
+	public final function showMonthlySettlementCreate($year, $month) {
+		$url = URLPREFIX . SERVERPREFIX . 'monthlysettlement/showMonthlySettlementCreate/' . $year . '/' . $month . '/' . self::$callServer->getSessionId();
+		$response = self::$callServer->getJson( $url );
+		if (is_array( $response )) {
+			$showMonthlySettlementCreate = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\monthlysettlement' );
+			if (is_array( $showMonthlySettlementCreate->getMonthlySettlementTransport() )) {
+				$result ['monthly_settlements'] = parent::mapArray( $showMonthlySettlementCreate->getMonthlySettlementTransport() );
+			} else {
+				$result ['monthly_settlements'] = '';
+			}
+			$result['year'] = $showMonthlySettlementCreate->getYear();
+			$result['month'] = $showMonthlySettlementCreate->getMonth();
+			$result['edit_mode'] = $showMonthlySettlementCreate->getEditMode();
 		}
 
 		return $result;

@@ -24,7 +24,7 @@
 				</tr>
 				{section name=DATA loop=$ALL_DATA}
 					<tr>
-						<td class="contrastbgcolor">{$ALL_DATA[DATA].comment}</td>
+						<td class="contrastbgcolor">{$ALL_DATA[DATA].capitalsourcecomment}</td>
 						<td class="contrastbgcolor" align="right"><font {if $ALL_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_DATA[DATA].amount|number_format} {$CURRENCY}</font></td>
 					</tr>
 				{/section}

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.65 2014/02/06 22:04:33 olivleh1 Exp $
+// $Id: module.php,v 1.66 2014/02/09 14:19:03 olivleh1 Exp $
 //
 require_once 'Smarty.class.php';
 require_once 'core/coreText.php';

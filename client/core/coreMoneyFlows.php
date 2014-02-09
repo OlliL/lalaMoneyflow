@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreMoneyFlows.php,v 1.61 2014/02/08 01:38:14 olivleh1 Exp $
+# $Id: coreMoneyFlows.php,v 1.62 2014/02/09 14:19:03 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -33,14 +33,6 @@ class coreMoneyFlows extends core {
 
 	function coreMoneyFlows() {
 		parent::__construct();
-	}
-
-	function get_monthly_capitalsource_movement( $userid, $id, $month, $year ) {
-		/* function needs to be there for calculating the movement for
-		 * the actual month because in monthlysettlements only previous
-		 * month are stored
-		 */
-		return $this->exec_function('mms_calc_movement_calculated('.$userid.','.$month.','.$year.','.$id.')');
 	}
 
 	function search_moneyflows( $params ) {

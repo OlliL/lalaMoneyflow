@@ -54,9 +54,13 @@ function Go(month,year)
 				</tr>
 				{section name=DATA loop=$ALL_DATA}
 					<tr>
-						{if $NEW == 1 }<input type="hidden" name="all_data[{$ALL_DATA[DATA].id}][new]" value="1">{/if}
-						<td class="contrastbgcolor"><input class="contrastbgcolor" type="hidden" name="all_data[{$ALL_DATA[DATA].id}][mcs_capitalsourceid]" value="{$ALL_DATA[DATA].id}">{$ALL_DATA[DATA].comment}</td>
-						<td class="contrastbgcolor" align="right"><input class="contrastbgcolor" type="text" name="all_data[{$ALL_DATA[DATA].id}][amount]" value="{$ALL_DATA[DATA].amount}" {if $ALL_DATA[DATA].amount_error == 1}style="color:red"{/if} size=8 align="right"> {$CURRENCY}</td>
+						<td class="contrastbgcolor">
+							{if $NEW == 1 }<input type="hidden" name="all_data[{$smarty.section.DATA.index}][new]" value="1">
+							{/if}<input type="hidden" name="all_data[{$smarty.section.DATA.index}][mcs_capitalsourceid]" value="{$ALL_DATA[DATA].mcs_capitalsourceid}">
+							<input type="hidden" name="all_data[{$smarty.section.DATA.index}][capitalsourcecomment]" value="{$ALL_DATA[DATA].capitalsourcecomment|escape:htmlall}">
+						{$ALL_DATA[DATA].capitalsourcecomment|escape:htmlall}
+						</td>
+						<td class="contrastbgcolor" align="right"><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][amount]" value="{$ALL_DATA[DATA].amount}" {if $ALL_DATA[DATA].amount_error == 1}style="color:red"{/if} size=8 align="right"> {$CURRENCY}</td>
 					</tr>
 				{/section}
 			</table>

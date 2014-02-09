@@ -27,7 +27,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.46 2014/02/04 20:43:58 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.47 2014/02/09 14:19:03 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -67,7 +67,7 @@ class moduleMonthlySettlement extends module {
 		$allMonth = $showMonthlySettlementList ['allMonth'];
 		$year = $showMonthlySettlementList ['year'];
 		$month = $showMonthlySettlementList ['month'];
-		$monthlySettlements = $showMonthlySettlementList ['monthly_settlements'];
+		$all_data = $showMonthlySettlementList ['monthly_settlements'];
 		$numberOfEditableSettlements = $showMonthlySettlementList ['numberOfEditableSettlements'];
 		$numberOfAddableSettlements = $showMonthlySettlementList ['numberOfAddableSettlements'];
 
@@ -83,15 +83,8 @@ class moduleMonthlySettlement extends module {
 				}
 			}
 
-			if ($month > 0 && $year > 0 && is_array( $monthlySettlements )) {
-				foreach ( $monthlySettlements as $settlement ) {
-
-					$all_data [] = array (
-							'id' => $settlement ['capitalsourceid'],
-							'comment' => $settlement ['capitalsourcecomment'],
-							'amount' => $settlement ['amount']
-					);
-
+			if ($month > 0 && $year > 0 && is_array( $all_data )) {
+				foreach ( $all_data as $settlement ) {
 					$sumamount += $settlement ['amount'];
 				}
 
@@ -153,76 +146,31 @@ class moduleMonthlySettlement extends module {
 
 				if ($data_is_valid === true && $ret === true) {
 					$this->template->assign( 'CLOSE', 1 );
-					break;
-				}
-			default :
-				$timestamp = $this->coreMonthlySettlement->get_next_date();
-
-				if (! $timestamp) {
-					$next_month = date( 'm', time() );
-					$next_year = date( 'Y', time() );
 				} else {
-					$next_month = date( 'm', $timestamp );
-					$next_year = date( 'Y', $timestamp );
+					$all_data_new = $all_data;
 				}
+				break;
 
-				if (! empty( $month ) && ! empty( $year )) {
-					$exists = $this->coreMonthlySettlement->monthlysettlement_exists( $month, $year );
-					if ($exists === false) {
-						if ($month == $next_month && $year == $next_year) {
-							$new = 1;
-						} else {
-							$new = 2;
-						}
-						$this->template->assign( 'NEW', 1 );
-					}
-				} elseif ($month == 0 && $year == 0) {
-					$month = $next_month;
-					$year = $next_year;
-					$new = 1;
+			default :
+				$monthlySettlementCreate = MonthlySettlementControllerHandler::getInstance()->showMonthlySettlementCreate( $year, $month );
+				$year = $monthlySettlementCreate ['year'];
+				$month = $monthlySettlementCreate ['month'];
+				$all_data_new = $monthlySettlementCreate ['monthly_settlements'];
+				if ($monthlySettlementCreate ['edit_mode'] == 0) {
 					$this->template->assign( 'NEW', 1 );
-				} elseif ($new === 2) {
-					$this->template->assign( 'NEW', 1 );
-				}
-
-				if ($month > 0 && $year > 0) {
-
-					$capitalsourceArray = CapitalsourceControllerHandler::getInstance()->getAllCapitalsourcesByDateRange( mktime( 0, 0, 0, $month, 1, $year ), mktime( 0, 0, 0, $month + 1, 0, $year ) );
-					$capitalsource_values = $this->filterCapitalsource( $capitalsourceArray );
-
-					$all_data_new = array ();
-					foreach ( $capitalsource_values as $capitalsource ) {
-						if ($new === 1) {
-							$amount = $this->coreMonthlySettlement->get_amount( USERID, $capitalsource ['capitalsourceid'], date( 'm', mktime( 0, 0, 0, $month - 1, 1, $year ) ), date( 'Y', mktime( 0, 0, 0, $month - 1, 1, $year ) ) );
-							$amount += round( $this->coreMoneyFlows->get_monthly_capitalsource_movement( USERID, $capitalsource ['capitalsourceid'], $month, $year ), 2 );
-						} elseif ($realaction !== 'save' && $new != 2) {
-							$amount = $this->coreMonthlySettlement->get_amount( USERID, $capitalsource ['capitalsourceid'], $month, $year );
-						} elseif (! empty( $all_data [$capitalsource ['capitalsourceid']] ['amount'] )) {
-							$amount = $all_data [$capitalsource ['capitalsourceid']] ['amount'];
-						} else {
-							$amount = "0.00";
-						}
-						$all_data_new [] = array (
-								'id' => $capitalsource ['capitalsourceid'],
-								'comment' => $capitalsource ['comment'],
-								'amount' => $amount,
-								'amount_error' => $all_data [$capitalsource ['capitalsourceid']] ['amount_error']
-						);
-					}
-
-					$month = array (
-							'nummeric' => sprintf( '%02d', $month ),
-							'name' => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int ) $month )
-					);
-					$this->template->assign( 'MONTH', $month );
-					$this->template->assign( 'YEAR', $year );
-					$this->template->assign( 'ALL_DATA', $all_data_new );
-					$this->template->assign( 'COUNT_ALL_DATA', count( $all_data_new ) );
-					$this->template->assign( 'ERRORS', $this->get_errors() );
 				}
 				break;
 		}
 
+		$monthArray = array (
+				'nummeric' => sprintf( '%02d', $month ),
+				'name' => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int ) $month )
+		);
+		$this->template->assign( 'MONTH', $monthArray );
+		$this->template->assign( 'YEAR', $year );
+		$this->template->assign( 'ALL_DATA', $all_data_new );
+		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data_new ) );
+		$this->template->assign( 'ERRORS', $this->get_errors() );
 		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
@@ -231,39 +179,34 @@ class moduleMonthlySettlement extends module {
 	}
 
 	function display_delete_monthlysettlement($realaction, $month, $year) {
-		switch ($realaction) {
-			case 'yes' :
-				if (MonthlySettlementControllerHandler::getInstance()->deleteMonthlySettlement( $year, $month )) {
-					$this->template->assign( 'CLOSE', 1 );
-					break;
-				}
-			default :
-				$showMonthlySettlementDelete = MonthlySettlementControllerHandler::getInstance()->showMonthlySettlementDelete( $year, $month );
-				$monthlySettlements = $showMonthlySettlementDelete ['monthly_settlements'];
-				if (is_array( $monthlySettlements )) {
-					foreach ( $monthlySettlements as $settlement ) {
-
-						$all_data [] = array (
-								'id' => $settlement ['capitalsourceid'],
-								'comment' => $settlement ['capitalsourcecomment'],
-								'amount' => $settlement ['amount']
-						);
-
-						$sumamount += $settlement ['amount'];
+		if ($month > 0 && $year > 0) {
+			switch ($realaction) {
+				case 'yes' :
+					if (MonthlySettlementControllerHandler::getInstance()->deleteMonthlySettlement( $year, $month )) {
+						$this->template->assign( 'CLOSE', 1 );
+						break;
 					}
-				}
+				default :
 
-				$month = array (
-						'nummeric' => sprintf( '%02d', $month ),
-						'name' => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int ) $month )
-				);
-				$this->template->assign( 'SUMAMOUNT', $sumamount );
-				$this->template->assign( 'MONTH', $month );
-				$this->template->assign( 'YEAR', $year );
-				$this->template->assign( 'ALL_DATA', $all_data );
-				break;
+					$showMonthlySettlementDelete = MonthlySettlementControllerHandler::getInstance()->showMonthlySettlementDelete( $year, $month );
+					$all_data = $showMonthlySettlementDelete ['monthly_settlements'];
+					if (is_array( $all_data )) {
+						foreach ( $all_data as $settlement ) {
+							$sumamount += $settlement ['amount'];
+						}
+					}
+
+					$monthArray = array (
+							'nummeric' => sprintf( '%02d', $month ),
+							'name' => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int ) $month )
+					);
+					$this->template->assign( 'SUMAMOUNT', $sumamount );
+					$this->template->assign( 'MONTH', $monthArray );
+					$this->template->assign( 'YEAR', $year );
+					$this->template->assign( 'ALL_DATA', $all_data );
+					break;
+			}
 		}
-
 		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 

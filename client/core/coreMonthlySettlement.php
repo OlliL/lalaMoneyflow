@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreMonthlySettlement.php,v 1.37 2014/02/08 01:38:14 olivleh1 Exp $
+// $Id: coreMonthlySettlement.php,v 1.38 2014/02/09 14:19:03 olivleh1 Exp $
 //
 require_once 'core/core.php';
 
@@ -47,17 +47,6 @@ class coreMonthlySettlement extends core {
 						 LIMIT 1" );
 	}
 
-	function get_amount($userid, $sourceid, $month, $year) {
-		$date = $this->make_date( $year . "-" . $month . "-01" );
-		return $this->select_col( "	SELECT calc_amount(amount,'OUT'," . USERID . ",LAST_DAY($date)) amount
-						  FROM vw_monthlysettlements
-						 WHERE mcs_capitalsourceid = $sourceid
-						   AND month               = $month
-						   AND year                = $year
-						   AND mug_mur_userid      = " . $userid . "
-						 LIMIT 1" );
-	}
-
 	function monthlysettlement_exists($month, $year) {
 		$result = $this->select_col( "	SELECT 1
 							  FROM monthlysettlements
@@ -70,21 +59,6 @@ class coreMonthlySettlement extends core {
 			return true;
 		else
 			return false;
-	}
-
-	function get_next_date() {
-		$result = $this->select_row( '	SELECT MAX(month) month
-						      ,MAX(year)  year
-						  FROM vw_monthlysettlements
-						 WHERE year       = (SELECT MAX(year)
-						                       FROM vw_monthlysettlements
-						                      WHERE mur_userid = ' . USERID . ')
-						   AND mur_userid = ' . USERID . '' );
-		if (! empty( $result ['month'] ) && ! empty( $result ['year'] )) {
-			return mktime( 0, 0, 0, $result ['month'] + 1, 1, $result ['year'] );
-		} else {
-			return false;
-		}
 	}
 
 	function update_monthlysettlement($sourceid, $month, $year, $amount) {
