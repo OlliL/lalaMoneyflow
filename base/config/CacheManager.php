@@ -25,30 +25,60 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CacheManager.php,v 1.3 2014/01/26 12:24:49 olivleh1 Exp $
+// $Id: CacheManager.php,v 1.4 2014/02/14 22:54:31 olivleh1 Exp $
 //
 namespace rest\base\config;
 
 class CacheManager {
 	private static $instance;
-	private $connection;
+	private $delegate;
 
 	private function __construct() {
 	}
 
 	public static function getInstance() {
 		if (! isset( self::$instance )) {
-			self::$instance = new \Yac();
+			$className = __CLASS__;
+			self::$instance = new $className();
+			self::$instance->setDelegate();
 		}
 		return self::$instance;
 	}
 
-	public function __clone() {
+	private final function setDelegate() {
+		$this->delegate = new \Yac();
+	}
+
+	public final function __clone() {
 		trigger_error( 'Cloning not supported', E_USER_ERROR );
 	}
 
-	public function __wakeup() {
+	public final function __wakeup() {
 		trigger_error( 'Deserialisation not supported', E_USER_ERROR );
+	}
+
+	private final function getCacheName($name) {
+		$name = APPID . $name;
+		if (strlen( $name ) > YAC_MAX_KEY_LEN) {
+			$name = crc32( $name );
+		}
+		return $name;
+	}
+
+	public final function get($name) {
+		return $this->delegate->get( $this->getCacheName( $name ) );
+	}
+
+	public final function set($name, $content) {
+		$this->delegate->set( $this->getCacheName( $name ), $content );
+	}
+
+	public final function delete($name) {
+		$this->delegate->delete( $this->getCacheName( $name ) );
+	}
+
+	public final function deleteAll($name) {
+		$this->delegate->delete( $this->getCacheName( $name ) );
 	}
 }
 

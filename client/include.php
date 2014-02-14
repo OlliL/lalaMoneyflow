@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.22 2014/02/02 01:55:14 olivleh1 Exp $
+// $Id: include.php,v 1.23 2014/02/14 22:54:31 olivleh1 Exp $
 //
 
 // ########
@@ -36,6 +36,7 @@ $dsn = "mysql://moneyflow:moneyflow@db/moneyflow";
 const DATASOURCE = 'mysql:host=db;dbname=moneyflow';
 const DB_USER = 'moneyflow';
 const DB_PASS = 'moneyflow';
+const APPID = 1;
 
 // jpgraph is used for plotting trends
 define( 'ENABLE_JPGRAPH', true );

@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: DbConnection.php,v 1.3 2014/01/26 12:24:49 olivleh1 Exp $
+// $Id: DbConnection.php,v 1.4 2014/02/14 22:54:31 olivleh1 Exp $
 //
 namespace rest\base\config;
 
@@ -45,22 +45,22 @@ class DbConnection {
 		return self::$instance;
 	}
 
-	public function __clone() {
+	public final function __clone() {
 		trigger_error( 'Cloning not supported', E_USER_ERROR );
 	}
 
-	public function __wakeup() {
+	public final function __wakeup() {
 		trigger_error( 'Deserialisation not supported', E_USER_ERROR );
 	}
 
-	public function getConnection() {
+	public final function getConnection() {
 		return $this->connection;
 	}
 
-	public function setConnection() {
-		$this->connection = new \PDO( DATASOURCE . ';charset=utf8', DB_USER, DB_PASS, array (
-//				\PDO::ATTR_PERSISTENT => true
-		) );
+	private final function setConnection() {
+		$this->connection = new \PDO( DATASOURCE . ';charset=utf8', DB_USER, DB_PASS, array ()
+		// \PDO::ATTR_PERSISTENT => true
+		 );
 		$this->connection->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_WARNING );
 	}
 }
