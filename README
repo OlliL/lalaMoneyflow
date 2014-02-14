@@ -11,3 +11,18 @@ Requirements:
 - Smarty (http://www.smarty.net/)
 - JpGraph (http://jpgraph.net/)
 - PECL spl_types
+
+
+
+Installation:
+- create a DB user and a DB
+- grant INSERT, UPDATE, DELETE, SELECT to the created DB to this user
+- edit include.php and rest/client/include.php
+  - change DB credentials
+  - change paths
+  - change URL
+- execute mysqldump.sql
+	mysql -u <user> -p<password> -h <dbhost> <dbname> < mysqldump.sql
+- execute mysqlext.sql
+	mysql -u <user> -p<password> -h <dbhost> <dbname> < mysqlext.sql
+- log in as admin (password admin)

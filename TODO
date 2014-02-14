@@ -19,7 +19,10 @@ Bugs detected so far:
      which are valid with at least one day in this month have to be selected (valid only at the beginning, only at the end for example)
      check this.....
 
-     
+New Installation
+   - "No monthly settlement for the previous month exists. Do you want to create it now?"
+   - cache usage is not unique - content is retrieved from another installation - caches are shared.
+     This is bad
 
 - evaluate:
   - Doctrine + Serializer
