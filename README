@@ -37,4 +37,4 @@ Installation:
 			groups
 			user_groups
 			insert into user_groups values (1,1,now(),'2999-12-31');
-- 
+- add posting accounts via SQL
