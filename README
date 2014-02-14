@@ -21,6 +21,8 @@ Installation:
   - change DB credentials
   - change paths
   - change URL
+  - set APPID to a unique number in each file. If you run multiple
+    installations, it has to be always a different number! unique!!
 - execute mysqldump.sql
 	mysql -u <user> -p<password> -h <dbhost> <dbname> < mysqldump.sql
 - execute mysqlext.sql
