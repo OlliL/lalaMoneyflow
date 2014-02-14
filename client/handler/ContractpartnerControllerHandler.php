@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerControllerHandler.php,v 1.2 2014/02/02 00:28:19 olivleh1 Exp $
+// $Id: ContractpartnerControllerHandler.php,v 1.3 2014/02/14 22:02:51 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -82,24 +82,6 @@ class ContractpartnerControllerHandler extends AbstractJsonSender {
 		if (is_array( $response )) {
 			$showDeleteContractpartner = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\contractpartner' );
 			$result = parent::map( $showDeleteContractpartner->getContractpartnerTransport() );
-		}
-		return $result;
-	}
-
-	/**
-	 *
-	 * @deprecated to be replaced by a new specific REST-Call
-	 */
-	public final function getAllContractpartner() {
-		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/getAllContractpartner/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
-		if (is_array( $response )) {
-			$getAllContractpartnerResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\contractpartner' );
-			if (is_array( $getAllContractpartnerResponse->getContractpartnerTransport() )) {
-				$result = parent::mapArray( $getAllContractpartnerResponse->getContractpartnerTransport() );
-			} else {
-				$result = '';
-			}
 		}
 		return $result;
 	}

@@ -97,9 +97,9 @@
 					<tr>
 						{if $COLUMNS.year  == "1"}<td class="contrastbgcolor" align="center">{$RESULTS[DATA].year}</td>{/if}
 						{if $COLUMNS.month == "1"}<td class="contrastbgcolor" align="center">{$RESULTS[DATA].month}</td>{/if}
-						{if $COLUMNS.name  == "1"}<td class="contrastbgcolor" align="center">{$RESULTS[DATA].name}</td>{/if}
+						{if $COLUMNS.name  == "1"}<td class="contrastbgcolor" align="center">{$RESULTS[DATA].name|escape:htmlall}</td>{/if}
 						<td align="right" class="contrastbgcolor"><font {if $RESULTS[DATA].amount < 0}color="red"{else}color="black"{/if}>{$RESULTS[DATA].amount|number_format} {$CURRENCY}</font></td>
-						<td class="contrastbgcolor">{$RESULTS[DATA].comment}</td>
+						<td class="contrastbgcolor">{$RESULTS[DATA].comment|escape:htmlall}</td>
 					</tr>
 				{/section}
 			</table>

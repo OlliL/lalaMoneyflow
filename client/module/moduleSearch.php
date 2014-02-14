@@ -1,5 +1,7 @@
 <?php
 use rest\client\handler\ContractpartnerControllerHandler;
+use rest\base\ErrorCode;
+use rest\client\handler\MoneyflowControllerHandler;
 //
 // Copyright (c) 2006-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -25,35 +27,27 @@ use rest\client\handler\ContractpartnerControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSearch.php,v 1.27 2014/02/01 23:26:24 olivleh1 Exp $
+// $Id: moduleSearch.php,v 1.28 2014/02/14 22:02:51 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
-require_once 'core/coreMoneyFlows.php';
-require_once 'core/coreSettings.php';
 
 class moduleSearch extends module {
 
 	function moduleSearch() {
 		parent::__construct();
 		$this->coreCurrencies = new coreCurrencies();
-		$this->coreMoneyFlows = new coreMoneyFlows();
-		$this->coreSettings = new coreSettings();
-
-		$date_format = $this->coreSettings->get_date_format( USERID );
-		$this->date_format = $date_format ['dateformat'];
 	}
 
-	function display_search() {
-		$contractpartner_values = ContractpartnerControllerHandler::getInstance()->getAllContractpartner();
-		$searchparams = $this->template->getTemplateVars( 'SEARCHPARAMS' );
+	function display_search($searchparams = null) {
+		$contractpartner_values = MoneyflowControllerHandler::getInstance()->showSearchMoneyflow();
 		if (empty( $searchparams )) {
 			$searchparams ['grouping1'] = 'year';
 			$searchparams ['grouping2'] = 'month';
 			$searchparams ['order'] = 'grouping';
-			$this->template->assign( 'SEARCHPARAMS', $searchparams );
 		}
+		$this->template->assign( 'SEARCHPARAMS', $searchparams );
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
@@ -68,38 +62,8 @@ class moduleSearch extends module {
 			$searchparams ['casesensitive'] = 1;
 		if ($regexp)
 			$searchparams ['regexp'] = 1;
-		if ($orderbyseries)
-			$searchparams ['orderbyseries'] = 1;
 		if ($minus)
 			$searchparams ['minus'] = 1;
-
-		$valid_data = true;
-		$startdate_orig = $startdate;
-		$enddate_orig = $enddate;
-
-		if (! empty( $startdate )) {
-			$startdate = convert_date_to_db( $startdate, $this->date_format );
-			if ($startdate === false) {
-				add_error( 147, array (
-						$this->date_format
-				) );
-				$startdate = $startdate_orig;
-				$searchparams ['startdate_error'] = 1;
-				$valid_data = false;
-			}
-		}
-
-		if (! empty( $enddate )) {
-			$enddate = convert_date_to_db( $enddate, $this->date_format );
-			if ($enddate === false) {
-				add_error( 147, array (
-						$this->date_format
-				) );
-				$enddate = $startdate_orig;
-				$searchparams ['enddate_error'] = 1;
-				$valid_data = false;
-			}
-		}
 
 		$searchparams ['mcp_contractpartnerid'] = $contractpartner;
 		$searchparams ['pattern'] = stripslashes( $searchstring );
@@ -109,37 +73,110 @@ class moduleSearch extends module {
 		$searchparams ['grouping2'] = $grouping2;
 		$searchparams ['order'] = $order;
 
-		if (empty( $searchparams ['mcp_contractpartnerid'] ) && empty( $searchparams ['pattern'] )) {
-			add_error( 141 );
-		} elseif (empty( $searchparams ['grouping1'] ) && empty( $searchparams ['grouping2'] )) {
-			add_error( 142 );
-		} else {
-			$results = $this->coreMoneyFlows->search_moneyflows( $searchparams );
-			if (is_array( $results ) && count( $results ) > 0) {
-				$this->template->assign( 'SEARCH_DONE', 1 );
-				foreach ( array_keys( $results [0] ) as $column ) {
-					$columns [$column] = 1;
-				}
-				if ($searchparams ['grouping1'] == "contractpartner" || $searchparams ['grouping2'] == "contractpartner") {
-					foreach ( $results as $key => $result ) {
-						$result [$key] ['name'] = htmlentities( $value ['name'], ENT_COMPAT | ENT_HTML401, ENCODING );
-					}
-				}
-			} else {
-				add_error( 143 );
+		$data_is_valid = true;
+
+		if (! empty( $startdate )) {
+			if (! dateIsValid( $startdate )) {
+				add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
+						GUI_DATE_FORMAT
+				) );
+				$searchparams ['startdate_error'] = 1;
+				$data_is_valid = false;
 			}
 		}
 
-		if (empty( $searchparams ['startdate_error'] ) && ! empty( $searchparams ['startdate'] ))
-			$searchparams ['startdate'] = convert_date_to_gui( $searchparams ['startdate'], $this->date_format );
-		if (empty( $searchparams ['enddate_error'] ) && ! empty( $searchparams ['enddate'] ))
-			$searchparams ['enddate'] = convert_date_to_gui( $searchparams ['enddate'], $this->date_format );
+		if (! empty( $enddate )) {
+			if (! dateIsValid( $enddate )) {
+				add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
+						GUI_DATE_FORMAT
+				) );
+				$searchparams ['enddate_error'] = 1;
+				$data_is_valid = false;
+			}
+		}
 
-		$this->template->assign( 'SEARCHPARAMS', $searchparams );
-		$this->template->assign( 'COLUMNS', $columns );
-		$this->template->assign( 'RESULTS', $results );
-		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
-		return $this->display_search();
+		if ($data_is_valid) {
+
+			$searchMoneyflows = MoneyflowControllerHandler::getInstance()->searchMoneyflows( $searchparams );
+			$contractpartner_values = $searchMoneyflows ['contractpartner'];
+
+			if ($searchMoneyflows ['result'] == false) {
+				$data_is_valid = false;
+				foreach ( $searchMoneyflows ['errors'] as $validationResult ) {
+					$error = $validationResult ['error'];
+					add_error( $error );
+				}
+			}
+
+			if ($data_is_valid) {
+				$results = $searchMoneyflows ['search_results'];
+				if (is_array( $results ) && count( $results ) > 0) {
+					if ($order) {
+						if ($order === 'grouping') {
+							if ($grouping1 == 'contractpartner') {
+								$sortOrder1 = SORT_ASC | SORT_STRING;
+							} else {
+								$sortOrder1 = SORT_ASC;
+							}
+							if ($grouping2 == 'contractpartner') {
+								$sortOrder2 = SORT_ASC | SORT_STRING;
+							} else {
+								$sortOrder2 = SORT_ASC;
+							}
+							foreach ( $results as $key => $result ) {
+								if ($grouping1 == 'contractpartner') {
+									$sortKey1 [$key] = strtolower( $result ['name'] );
+								} else {
+									$sortKey1 [$key] = $result [$grouping1];
+								}
+								if ($grouping2 == 'contractpartner') {
+									$sortKey2 [$key] = strtolower( $result ['name'] );
+								} else {
+									$sortKey2 [$key] = $result [$grouping2];
+								}
+							}
+							array_multisort( $sortKey1, $sortOrder1, $sortKey2, $sortOrder2, $results );
+						} else {
+							if ($order == 'comment') {
+								$sortOrder = SORT_ASC | SORT_STRING;
+							} else {
+								$sortOrder = SORT_ASC;
+							}
+							foreach ( $results as $key => $result ) {
+								if ($order == 'comment') {
+									$sortKey [$key] = strtolower( $result ['comment'] );
+								} else {
+									$sortKey [$key] = $result [$order];
+								}
+							}
+							var_dump( $order );
+							array_multisort( $sortKey, $sortOrder, $results );
+						}
+					}
+
+					foreach ( array_keys( $results [0] ) as $column ) {
+						$columns [$column] = 1;
+					}
+
+					$this->template->assign( 'SEARCH_DONE', 1 );
+					$this->template->assign( 'COLUMNS', $columns );
+					$this->template->assign( 'RESULTS', $results );
+					$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
+				} else {
+					add_error( ErrorCode::NO_DATA_FOUND );
+				}
+			}
+
+			$this->template->assign( 'SEARCHPARAMS', $searchparams );
+			$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
+			$this->template->assign( 'ERRORS', $this->get_errors() );
+
+			$this->parse_header();
+			return $this->fetch_template( 'display_search.tpl' );
+		}
+
+		return $this->display_search( $searchparams );
 	}
 }
+
 ?>

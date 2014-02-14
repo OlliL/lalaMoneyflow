@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CapitalsourceControllerHandler.php,v 1.4 2014/02/08 01:38:15 olivleh1 Exp $
+// $Id: CapitalsourceControllerHandler.php,v 1.5 2014/02/14 22:02:51 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -64,24 +64,6 @@ class CapitalsourceControllerHandler extends AbstractJsonSender {
 			$result ['initials'] = $listCapitalsources->getInitials();
 		}
 
-		return $result;
-	}
-
-	/**
-	 *
-	 * @deprecated to be replaced by a new specific REST-Call
-	 */
-	public final function getAllCapitalsourcesByDateRange($validfrom, $validtil) {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/getAllCapitalsourcesByDateRange/' . $validfrom . '/' . $validtil . '/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
-		if (is_array( $response )) {
-			$getAllCapitalsourcesByDateRangeResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
-			if (is_array( $getAllCapitalsourcesByDateRangeResponse->getCapitalsourceTransport() )) {
-				$result = parent::mapArray( $getAllCapitalsourcesByDateRangeResponse->getCapitalsourceTransport() );
-			} else {
-				$result = '';
-			}
-		}
 		return $result;
 	}
 

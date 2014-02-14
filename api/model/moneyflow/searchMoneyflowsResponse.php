@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,11 +25,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: getAllContractpartnerResponse.php,v 1.3 2014/01/26 12:24:48 olivleh1 Exp $
+// $Id: searchMoneyflowsResponse.php,v 1.1 2014/02/14 22:02:51 olivleh1 Exp $
 //
-namespace rest\api\model\contractpartner;
+namespace rest\api\model\moneyflow;
 
-class getAllContractpartnerResponse {
+use rest\api\model\validation\validationResponse;
+
+class searchMoneyflowsResponse extends validationResponse {
+	public $moneyflowSearchResultTransport;
 	public $contractpartnerTransport;
 
 	public final function getContractpartnerTransport() {
@@ -38,6 +41,14 @@ class getAllContractpartnerResponse {
 
 	public final function setContractpartnerTransport(array $contractpartnerTransport) {
 		$this->contractpartnerTransport = $contractpartnerTransport;
+	}
+
+	public final function getMoneyflowSearchResultTransport() {
+		return $this->moneyflowSearchResultTransport;
+	}
+
+	public final function setMoneyflowSearchResultTransport(array $moneyflowSearchResultTransport) {
+		$this->moneyflowSearchResultTransport = $moneyflowSearchResultTransport;
 	}
 }
 

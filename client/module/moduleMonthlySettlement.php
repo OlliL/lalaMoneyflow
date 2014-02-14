@@ -27,35 +27,19 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.48 2014/02/09 19:14:01 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.49 2014/02/14 22:02:51 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
-require_once 'core/coreMonthlySettlement.php';
 require_once 'core/coreDomains.php';
-require_once 'core/coreMoneyFlows.php';
 
 class moduleMonthlySettlement extends module {
 
 	function moduleMonthlySettlement() {
 		parent::__construct();
 		$this->coreCurrencies = new coreCurrencies();
-		$this->coreMoneyFlows = new coreMoneyFlows();
-		$this->coreMonthlySettlement = new coreMonthlySettlement();
 		$this->coreDomains = new coreDomains();
-	}
-
-	// TODO - duplicate code
-	// filter only the capitalsources which are owned by the user or allowed for group use.
-	private function filterCapitalsource($capitalsourceArray) {
-		if (is_array( $capitalsourceArray )) {
-			foreach ( $capitalsourceArray as $capitalsource ) {
-				if ($capitalsource ['mur_userid'] == USERID)
-					$capitalsource_values [] = $capitalsource;
-			}
-		}
-		return $capitalsource_values;
 	}
 
 	function display_list_monthlysettlements($month, $year) {

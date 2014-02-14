@@ -26,18 +26,16 @@ use rest\client\handler\CompareDataControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.36 2014/02/02 00:28:19 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.37 2014/02/14 22:02:51 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
-require_once 'core/coreSettings.php';
 
 class moduleCompare extends module {
 
 	function moduleCompare() {
 		parent::__construct();
 		$this->coreCurrencies = new coreCurrencies();
-		$this->coreSettings = new coreSettings();
 	}
 
 	function display_upload_form($all_data = array()) {

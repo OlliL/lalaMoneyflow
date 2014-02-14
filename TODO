@@ -1,16 +1,11 @@
-1. implement validation on moduleMonthlySettlement creation/update
-2. implement moduleSearch
-
-
 4. implement Logout Call to destroy the session on the server.
 
 5. continue removing Core Classes
-   - move all the remaining "service" Controller forward methods to client based / view based controller methods to reduce
-     multiple HTTP calls and to live the "Controller way" which is a client depending interface
    - move calc_amount to the client (for the time being, the personal Currency handling is broken)
    - think about language handling - it is no longer DB backed but cache backed in files
    - maybe extra Validator Classes with insert/update/delete relevant validations and not in the Service
    - centralize all cachenames
+   - think about removing "movement_calculated" from monthlysettlements since we now have caching
 
 ###########################################################################################################################
 
@@ -20,8 +15,6 @@ Bugs detected so far:
      correct size (height = NUM_SOURCES * 35+something)
    - moneyflows for capitalsources which are not allowed for the user must not be possible (verify this with RESTClient,
      the Client does not allow it already)
-   - check if the deletion of a PreDefMoneyflow was successful and if not post an error message and send a propper response object.
-   - same goes for Capitalsources and Contractpartner
    - MonthlySettlements - create for a far month in the future - check if the propper capitalsources are selected. All capitalsources
      which are valid with at least one day in this month have to be selected (valid only at the beginning, only at the end for example)
      check this.....

@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ClientArrayMapperEnum.php,v 1.14 2014/02/08 01:38:15 olivleh1 Exp $
+// $Id: ClientArrayMapperEnum.php,v 1.15 2014/02/14 22:02:52 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
@@ -43,6 +43,8 @@ class ClientArrayMapperEnum {
 	const REPORTTURNOVERCAPITALSOURCE_TRANSPORT = 'ReportTurnoverCapitalsourceTransport';
 	const TRENDSCALCULATED_TRANSPORT = 'TrendsCalculatedTransport';
 	const TRENDSSETTLED_TRANSPORT = 'TrendsSettledTransport';
+	const MONEYFLOWSEARCHPARAMS_TRANSPORT = 'MoneyflowSearchParamsTransport';
+	const MONEYFLOWSEARCHRESULT_TRANSPORT = 'MoneyflowSearchResultTransport';
 }
 
 ?>

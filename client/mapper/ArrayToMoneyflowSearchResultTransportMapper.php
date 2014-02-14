@@ -1,8 +1,7 @@
 <?php
-use rest\client\handler\SessionControllerHandler;
-use rest\client\handler\EventControllerHandler;
+
 //
-// Copyright (c) 2009-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,30 +25,30 @@ use rest\client\handler\EventControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleEvents.php,v 1.9 2014/02/14 22:02:51 olivleh1 Exp $
+// $Id: ArrayToMoneyflowSearchResultTransportMapper.php,v 1.1 2014/02/14 22:02:52 olivleh1 Exp $
 //
-require_once 'module/module.php';
-require_once 'core/coreSession.php';
+namespace rest\client\mapper;
 
-class moduleEvents extends module {
+use rest\api\model\transport\MoneyflowSearchResultTransport;
 
-	function moduleEvents() {
-		parent::__construct();
-		$this->coreSession = new coreSession();
+class ArrayToMoneyflowSearchResultTransportMapper extends AbstractArrayMapper {
+
+	public static function mapAToB(array $a) {
 	}
 
-	function check_events() {
-		if ($this->coreSession->getAttribute( 'events_shown' ) === false) {
-			$this->coreSession->setAttribute( 'events_shown', true );
-			$events = EventControllerHandler::getInstance()->showEventList();
-			if ($events['mms_missing'] === true) {
-				$this->template->assign( 'MONTH', $events['month'] );
-				$this->template->assign( 'YEAR', $events['year'] );
+	public static function mapBToA(MoneyflowSearchResultTransport $b) {
+		$a ['mur_userid'] = $b->getUserid();
+		$a ['amount'] = $b->getAmount();
+		$a ['comment'] = $b->getComment();
+		if ($b->getYear())
+			$a ['year'] = $b->getYear();
+		if ($b->getMonth())
+			$a ['month'] = $b->getMonth();
+		if ($b->getContractpartnername())
+			$a ['name'] = $b->getContractpartnername();
 
-				$this->parse_header( 1 );
-				return $this->fetch_template( 'display_event_monthlysettlement.tpl' );
-			}
-		}
+		return $a;
 	}
 }
 
+?>

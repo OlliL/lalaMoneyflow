@@ -26,11 +26,10 @@ use rest\client\handler\MoneyflowControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.74 2014/02/01 23:26:24 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.75 2014/02/14 22:02:51 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
-require_once 'core/coreSettings.php';
 
 class moduleMoneyFlows extends module {
 
@@ -39,7 +38,6 @@ class moduleMoneyFlows extends module {
 
 		// TODO: old shit
 		$this->coreCurrencies = new coreCurrencies();
-		$this->coreSettings = new coreSettings();
 	}
 
 	function display_edit_moneyflow($realaction, $id, $all_data) {
@@ -242,6 +240,11 @@ class moduleMoneyFlows extends module {
 							}
 						}
 					}
+				} else {
+					$addMoneyflow = MoneyflowControllerHandler::getInstance()->showAddMoneyflows();
+					$capitalsource_values = $addMoneyflow ['capitalsources'];
+					$contractpartner_values = $addMoneyflow ['contractpartner'];
+					$postingaccount_values = $addMoneyflow ['postingaccounts'];
 				}
 			default :
 				if ($realaction === 'save' && $data_is_valid == true || $realaction != 'save') {

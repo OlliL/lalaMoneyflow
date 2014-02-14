@@ -1,8 +1,7 @@
 <?php
-use rest\client\handler\SessionControllerHandler;
-use rest\client\handler\EventControllerHandler;
+
 //
-// Copyright (c) 2009-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,30 +25,22 @@ use rest\client\handler\EventControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleEvents.php,v 1.9 2014/02/14 22:02:51 olivleh1 Exp $
+// $Id: searchMoneyflowsRequest.php,v 1.1 2014/02/14 22:02:51 olivleh1 Exp $
 //
-require_once 'module/module.php';
-require_once 'core/coreSession.php';
+namespace rest\api\model\moneyflow;
 
-class moduleEvents extends module {
+use rest\api\model\transport\MoneyflowSearchParamsTransport;
 
-	function moduleEvents() {
-		parent::__construct();
-		$this->coreSession = new coreSession();
+class searchMoneyflowsRequest {
+	public $moneyflowSearchParamsTransport;
+
+	public final function getMoneyflowSearchParamsTransport() {
+		return $this->moneyflowSearchParamsTransport;
 	}
 
-	function check_events() {
-		if ($this->coreSession->getAttribute( 'events_shown' ) === false) {
-			$this->coreSession->setAttribute( 'events_shown', true );
-			$events = EventControllerHandler::getInstance()->showEventList();
-			if ($events['mms_missing'] === true) {
-				$this->template->assign( 'MONTH', $events['month'] );
-				$this->template->assign( 'YEAR', $events['year'] );
-
-				$this->parse_header( 1 );
-				return $this->fetch_template( 'display_event_monthlysettlement.tpl' );
-			}
-		}
+	public final function setMoneyflowSearchParamsTransport(MoneyflowSearchParamsTransport $moneyflowSearchParamsTransport) {
+		$this->moneyflowSearchParamsTransport = $moneyflowSearchParamsTransport;
 	}
 }
 
+?>

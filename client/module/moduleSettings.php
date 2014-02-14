@@ -24,12 +24,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSettings.php,v 1.20 2014/02/06 22:04:33 olivleh1 Exp $
+// $Id: moduleSettings.php,v 1.21 2014/02/14 22:02:51 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
 require_once 'core/coreLanguages.php';
-require_once 'core/coreSettings.php';
 require_once 'core/coreUsers.php';
 
 class moduleSettings extends module {

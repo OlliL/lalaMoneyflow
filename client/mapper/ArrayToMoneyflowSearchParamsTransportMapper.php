@@ -25,19 +25,31 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: getAllCapitalsourcesByDateRangeResponse.php,v 1.3 2014/01/26 12:24:48 olivleh1 Exp $
+// $Id: ArrayToMoneyflowSearchParamsTransportMapper.php,v 1.1 2014/02/14 22:02:52 olivleh1 Exp $
 //
-namespace rest\api\model\capitalsource;
+namespace rest\client\mapper;
 
-class getAllCapitalsourcesByDateRangeResponse {
-	public $capitalsourceTransport;
+use rest\api\model\transport\MoneyflowSearchParamsTransport;
 
-	public final function getCapitalsourceTransport() {
-		return $this->capitalsourceTransport;
+class ArrayToMoneyflowSearchParamsTransportMapper extends AbstractArrayMapper {
+
+	public static function mapAToB(array $a) {
+		$b = new MoneyflowSearchParamsTransport();
+		$b->setStartDate( parent::convertClientDateToTransport( $a ['startdate'] ) );
+		$b->setEndDate( parent::convertClientDateToTransport( $a ['enddate'] ) );
+		$b->setSearchString( $a ['pattern'] );
+		$b->setFeatureEqual( $a ['equal'] );
+		$b->setFeatureRegexp( $a ['regexp'] );
+		$b->setFeatureCaseSensitive( $a ['casesensitive'] );
+		$b->setFeatureOnlyMinusAmounts( $a ['minus'] );
+		$b->setContractpartnerId( $a ['mcp_contractpartnerid'] );
+		$b->setGroupBy1( $a ['grouping1'] );
+		$b->setGroupBy2( $a ['grouping2'] );
+
+		return $b;
 	}
 
-	public final function setCapitalsourceTransport(array $capitalsourceTransport) {
-		$this->capitalsourceTransport = $capitalsourceTransport;
+	public static function mapBToA(MoneyflowSearchParamsTransport $b) {
 	}
 }
 

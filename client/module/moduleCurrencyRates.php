@@ -24,13 +24,12 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleCurrencyRates.php,v 1.15 2014/02/05 21:17:08 olivleh1 Exp $
+# $Id: moduleCurrencyRates.php,v 1.16 2014/02/14 22:02:51 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
 require_once 'core/coreCurrencyRates.php';
 require_once 'core/coreCurrencies.php';
-require_once 'core/coreSettings.php';
 
 class moduleCurrencyRates extends module {
 
@@ -38,7 +37,6 @@ class moduleCurrencyRates extends module {
 		parent::__construct();
 		$this->coreCurrencyRates = new coreCurrencyRates();
 		$this->coreCurrencies    = new coreCurrencies();
-		$this->coreSettings      = new coreSettings();
 
 		$date_format = $this->coreSettings->get_date_format( USERID );
 		$this->date_format = $date_format['dateformat'];
@@ -48,11 +46,11 @@ class moduleCurrencyRates extends module {
 
 		$all_index_letters = $this->coreCurrencies->get_all_index_letters();
 		$num_currencies    = $this->coreCurrencyRates->count_all_data();
-		
+
 		if( empty( $letter ) && $num_currencies < $this->coreSettings->get_max_rows( USERID ) ) {
 			$letter = 'all';
 		}
-		
+
 		if( $letter == 'all' ) {
 			$all_data = $this->coreCurrencyRates->get_all_data();
 		} elseif( !empty( $letter ) ) {
@@ -95,7 +93,7 @@ class moduleCurrencyRates extends module {
 						add_error( 148 );
 						$valid = false;
 					}
-					
+
 					if( empty( $all_data['rate'] ) ) {
 						add_error( 149 );
 						$valid = false;
@@ -113,7 +111,7 @@ class moduleCurrencyRates extends module {
 				if( $ret === true || $ret > 0 ) {
 					$this->template->assign( 'CLOSE',    1 );
 					break;
-				}				
+				}
 			default:
 				$currency_values = $this->coreCurrencies->get_all_data();
 

@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: JsonAutoMapper.php,v 1.4 2014/01/26 12:24:49 olivleh1 Exp $
+// $Id: JsonAutoMapper.php,v 1.5 2014/02/14 22:02:51 olivleh1 Exp $
 //
 namespace rest\base;
 
@@ -61,6 +61,7 @@ class JsonAutoMapper {
 			// Single Transport-Object in the Response-Object
 			if (is_array( $property ) && array_values( $property ) !== $property) {
 				$setter = 'set' . ucfirst( $key );
+
 				$method = new \ReflectionParameter( array (
 						$b,
 						$setter
@@ -69,6 +70,7 @@ class JsonAutoMapper {
 				$b->$setter( self::map( $property, $newclass, '\\rest\\api\\model\\transport' ) );
 			} else if ($property != NULL || $property === 0) {
 				$setter = 'set' . ucfirst( $key );
+
 				// A List ob Transport-Objects in the Response-Object
 				if ($key != ( string ) ( int ) $key && is_array( $property ) && is_array( reset( $property ) )) {
 					$b->$setter( self::mapAToB( array (

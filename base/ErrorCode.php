@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ErrorCode.php,v 1.10 2014/02/06 22:04:34 olivleh1 Exp $
+// $Id: ErrorCode.php,v 1.11 2014/02/14 22:02:51 olivleh1 Exp $
 //
 namespace rest\base;
 
@@ -43,6 +43,9 @@ class ErrorCode extends \SplEnum {
 	const COMMENT_IS_NOT_SET = 131;
 	const AMOUNT_IN_WRONG_FORMAT = 132;
 	const NOTHING_MARKED_TO_ADD = 133;
+	const NO_SEARCH_CRITERIA_ENTERED = 141;
+	const NO_GROUPING_CRITERIA_GIVEN = 142;
+	const NO_DATA_FOUND = 143;
 	const DATE_FORMAT_NOT_CORRECT = 147;
 	const MONTHLY_SETTLEMENT_ALREADY_EXISTS = 154;
 	const FILEUPLOAD_FAILED = 191;

@@ -26,13 +26,12 @@ use rest\client\handler\CapitalsourceControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.75 2014/02/08 01:38:15 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.76 2014/02/14 22:02:51 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
 require_once 'core/coreDomains.php';
-require_once 'core/coreSettings.php';
 
 if (ENABLE_JPGRAPH) {
 	require_once 'jpgraph.php';
@@ -47,7 +46,6 @@ class moduleReports extends module {
 		// old shit
 		$this->coreCurrencies = new coreCurrencies();
 		$this->coreDomains = new coreDomains();
-		$this->coreSettings = new coreSettings();
 	}
 
 	public final function display_list_reports($month, $year, $sortby, $order) {

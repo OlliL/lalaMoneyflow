@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowControllerHandler.php,v 1.1 2014/02/01 23:26:24 olivleh1 Exp $
+// $Id: MoneyflowControllerHandler.php,v 1.2 2014/02/14 22:02:51 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -34,6 +34,7 @@ use rest\client\mapper\ClientArrayMapperEnum;
 use rest\base\JsonAutoMapper;
 use rest\api\model\moneyflow\updateMoneyflowRequest;
 use rest\api\model\moneyflow\createMoneyflowsRequest;
+use rest\api\model\moneyflow\searchMoneyflowsRequest;
 
 class MoneyflowControllerHandler extends AbstractJsonSender {
 	private static $instance;
@@ -45,6 +46,8 @@ class MoneyflowControllerHandler extends AbstractJsonSender {
 		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToPreDefMoneyflowTransportMapper', ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToPostingAccountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowSearchParamsTransportMapper', ClientArrayMapperEnum::MONEYFLOWSEARCHPARAMS_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowSearchResultTransportMapper', ClientArrayMapperEnum::MONEYFLOWSEARCHRESULT_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -54,6 +57,7 @@ class MoneyflowControllerHandler extends AbstractJsonSender {
 		}
 		return self::$instance;
 	}
+
 	public final function showAddMoneyflows() {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/showAddMoneyflows/' . self::$callServer->getSessionId();
 		$response = self::$callServer->getJson( $url );
@@ -218,6 +222,51 @@ class MoneyflowControllerHandler extends AbstractJsonSender {
 	public final function deleteMoneyflow($id) {
 		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/deleteMoneyflowById/' . $id . '/' . self::$callServer->getSessionId();
 		return self::$callServer->deleteJson( $url );
+	}
+
+	public final function showSearchMoneyflow() {
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/showSearchMoneyflowForm/' . self::$callServer->getSessionId();
+		$response = self::$callServer->getJson( $url );
+		if (is_array( $response )) {
+			$showSearchMoneyflowResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
+			if (is_array( $showSearchMoneyflowResponse->getContractpartnerTransport() )) {
+				$result = parent::mapArray( $showSearchMoneyflowResponse->getContractpartnerTransport() );
+			} else {
+				$result = '';
+			}
+		}
+		return $result;
+	}
+
+	public final function searchMoneyflows(array $params) {
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/searchMoneyflows/' . self::$callServer->getSessionId();
+
+		$searchParamsTransport = parent::map( $params, ClientArrayMapperEnum::MONEYFLOWSEARCHPARAMS_TRANSPORT );
+
+		$request = new searchMoneyflowsRequest();
+		$request->setMoneyflowSearchParamsTransport( $searchParamsTransport );
+		$response = self::$callServer->putJson( $url, parent::json_encode_response( $request ) );
+
+		if (is_array( $response )) {
+			$searchMoneyflows = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
+			if (is_array( $searchMoneyflows->getMoneyflowSearchResultTransport() )) {
+				$result ['search_results'] = parent::mapArray( $searchMoneyflows->getMoneyflowSearchResultTransport() );
+			} else {
+				$result ['search_results'] = '';
+			}
+			if (is_array( $searchMoneyflows->getContractpartnerTransport() )) {
+				$result ['contractpartner'] = parent::mapArray( $searchMoneyflows->getContractpartnerTransport() );
+			} else {
+				$result ['contractpartner'] = '';
+			}
+			if (is_array( $searchMoneyflows->getValidationItemTransport() )) {
+				$result ['errors'] = $response ['searchMoneyflowsResponse'] ['validationItemTransport'];
+			} else {
+				$result ['errors'] = array ();
+			}
+			$result ['result'] = $searchMoneyflows->getResult();
+		}
+		return $result;
 	}
 }
 
