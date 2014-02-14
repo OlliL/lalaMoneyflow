@@ -26,7 +26,7 @@ use rest\client\handler\CapitalsourceControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.76 2014/02/14 22:02:51 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.77 2014/02/14 23:29:56 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -225,9 +225,9 @@ class moduleReports extends module {
 			$this->template->assign( 'PLOT_GRAPH', 1 );
 		} else {
 			$all_data ['mcs_capitalsourceid'] = $this->coreSettings->get_trend_capitalsourceid( USERID );
-			if (empty( $all_data [mcs_capitalsourceid] ))
-				foreach ( $capitalsource_values as $capitalsource ) {
-					$all_data [mcs_capitalsourceid] [$capitalsource ['capitalsourceid']] = 1;
+			if (empty( $all_data ['mcs_capitalsourceid'] ))
+				foreach ( $showTrendsForm ['capitalsources'] as $capitalsource ) {
+					$all_data ['mcs_capitalsourceid'] [$capitalsource ['capitalsourceid']] = 1;
 				}
 			$all_data ['endyear'] = $years [count( $years ) - 1];
 			$all_data ['endmonth'] = 12;

@@ -21,8 +21,8 @@ Bugs detected so far:
 
 New Installation
    - "No monthly settlement for the previous month exists. Do you want to create it now?"
-   - cache usage is not unique - content is retrieved from another installation - caches are shared.
-     This is bad
+   - user handling must be migrated completly to REST, otherwise the first logon triggers a password change, and then sets
+     back the att_new. But this setting back happens in coreUsers but is not in the cache on the REST-Server
 
 - evaluate:
   - Doctrine + Serializer

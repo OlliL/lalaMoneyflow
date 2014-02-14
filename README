@@ -28,3 +28,13 @@ Installation:
 - execute mysqlext.sql
 	mysql -u <user> -p<password> -h <dbhost> <dbname> < mysqlext.sql
 - log in as admin (password admin)
+- change the password
+- create a new user
+- create a new group
+- assign the user to the new group via SQL
+	Tables:
+			users
+			groups
+			user_groups
+			insert into user_groups values (1,1,now(),'2999-12-31');
+- 

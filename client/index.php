@@ -25,7 +25,7 @@ use rest\base\config\CacheManager;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.63 2014/02/06 22:04:33 olivleh1 Exp $
+// $Id: index.php,v 1.64 2014/02/14 23:29:56 olivleh1 Exp $
 //
 require_once 'include.php';
 require_once 'functions.php';
@@ -71,15 +71,13 @@ if ($is_logged_in == 2) {
 
 	/* user is new and must change his password */
 
+	$GUI_LANGUAGE = $coreSettings->get_displayed_language( USERID );
 	if (empty( $_POST ['realaction'] ) || $_POST ['realaction'] != 'save') {
 		add_error( 152 );
 	}
 	$realaction = $_REQUEST ['realaction'];
-	$language = $_REQUEST ['language'];
-	$currency = $_REQUEST ['currency'];
-	$password1 = $_REQUEST ['password1'];
-	$password2 = $_REQUEST ['password2'];
-	$display = $moduleSettings->display_personal_settings( $realaction, $language, $currency, $password1, $password2 );
+	$all_data = $_REQUEST ['all_data'];
+	$display = $moduleSettings->display_personal_settings( $realaction, $all_data );
 
 	if ($_POST ['realaction'] == 'save' && ! is_array( $ERRORS ))
 		header( "Location: " . $_SERVER ['PHP_SELF'] );
@@ -87,7 +85,7 @@ if ($is_logged_in == 2) {
 
 	/* user tries to login */
 
-	$GUI_LANGUAGE = $coreSettings->get_displayed_language( 0 ) ;
+	$GUI_LANGUAGE = $coreSettings->get_displayed_language( 0 );
 	$realaction = $_REQUEST ['realaction'];
 	$name = $_REQUEST ['name'];
 	$password = $_REQUEST ['password'];

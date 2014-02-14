@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CacheManager.php,v 1.4 2014/02/14 22:54:31 olivleh1 Exp $
+// $Id: CacheManager.php,v 1.5 2014/02/14 23:29:56 olivleh1 Exp $
 //
 namespace rest\base\config;
 
@@ -70,15 +70,15 @@ class CacheManager {
 	}
 
 	public final function set($name, $content) {
-		$this->delegate->set( $this->getCacheName( $name ), $content );
+		return $this->delegate->set( $this->getCacheName( $name ), $content );
 	}
 
 	public final function delete($name) {
-		$this->delegate->delete( $this->getCacheName( $name ) );
+		return $this->delegate->delete( $this->getCacheName( $name ) );
 	}
 
 	public final function deleteAll($name) {
-		$this->delegate->delete( $this->getCacheName( $name ) );
+		return $this->delegate->delete( $this->getCacheName( $name ) );
 	}
 }
 
