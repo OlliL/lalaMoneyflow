@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CapitalsourceControllerHandler.php,v 1.5 2014/02/14 22:02:51 olivleh1 Exp $
+// $Id: CapitalsourceControllerHandler.php,v 1.6 2014/02/15 19:20:48 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -51,8 +51,8 @@ class CapitalsourceControllerHandler extends AbstractJsonSender {
 		return self::$instance;
 	}
 
-	public final function showCapitalsourceList($maxRows, $restriction) {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/showCapitalsourceList/' . $maxRows . '/' . utf8_encode($restriction) . '/' . self::$callServer->getSessionId();
+	public final function showCapitalsourceList($restriction) {
+		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/showCapitalsourceList/' . utf8_encode($restriction) . '/' . self::$callServer->getSessionId();
 		$response = self::$callServer->getJson( $url );
 		if (is_array( $response )) {
 			$listCapitalsources = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );

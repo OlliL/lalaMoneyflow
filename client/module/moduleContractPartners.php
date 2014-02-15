@@ -26,11 +26,12 @@ use rest\client\handler\ContractpartnerControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.32 2014/02/05 21:17:08 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.33 2014/02/15 19:20:48 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
 
+// core clean
 class moduleContractPartners extends module {
 
 	public final function __construct() {
@@ -38,9 +39,7 @@ class moduleContractPartners extends module {
 	}
 
 	public final function display_list_contractpartners($letter) {
-		$maxRows = $this->coreSettings->get_max_rows( USERID );
-		$listContractpartner = ContractpartnerControllerHandler::getInstance()->showContractpartnerList( $maxRows, $letter );
-
+		$listContractpartner = ContractpartnerControllerHandler::getInstance()->showContractpartnerList( $letter );
 		$all_index_letters = $listContractpartner ['initials'];
 		$all_data = $listContractpartner ['contractpartner'];
 

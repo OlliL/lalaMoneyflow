@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PreDefMoneyflowControllerHandler.php,v 1.2 2014/02/02 00:28:19 olivleh1 Exp $
+// $Id: PreDefMoneyflowControllerHandler.php,v 1.3 2014/02/15 19:20:48 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -54,8 +54,8 @@ class PreDefMoneyflowControllerHandler extends AbstractJsonSender {
 		return self::$instance;
 	}
 
-	public final function showPreDefMoneyflowList($maxRows, $restriction) {
-		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/showPreDefMoneyflowList/' . $maxRows . '/' . utf8_encode($restriction) . '/' . self::$callServer->getSessionId();
+	public final function showPreDefMoneyflowList($restriction) {
+		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/showPreDefMoneyflowList/' . utf8_encode( $restriction ) . '/' . self::$callServer->getSessionId();
 		$response = self::$callServer->getJson( $url );
 		if (is_array( $response )) {
 			$listPreDefMoneyflows = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\predefmoneyflow' );

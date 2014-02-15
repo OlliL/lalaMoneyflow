@@ -26,7 +26,7 @@ use rest\client\handler\CompareDataControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.37 2014/02/14 22:02:51 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.38 2014/02/15 19:20:48 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreCurrencies.php';
@@ -42,12 +42,14 @@ class moduleCompare extends module {
 		$showCompareDataForm = CompareDataControllerHandler::getInstance()->showCompareDataForm();
 		$format_values = $showCompareDataForm ['comparedataformats'];
 		$capitalsource_values = $showCompareDataForm ['capitalsources'];
+		$selected_format = $showCompareDataForm ['selected_format'];
+		$selected_capitalsource = $showCompareDataForm ['selected_capitalsource'];
 
 		if (count( $all_data ) === 0) {
 			$all_data ['startdate'] = convert_date_to_gui( date( "Y-m-d", mktime( 0, 0, 0, date( 'm', time() ), 1, date( 'Y', time() ) ) ) );
 			$all_data ['enddate'] = convert_date_to_gui( date( "Y-m-d", mktime( 0, 0, 0, date( 'm', time() ) + 1, 0, date( 'Y', time() ) ) ) );
-			$all_data ['format'] = $this->coreSettings->get_compare_format( USERID );
-			$all_data ['mcs_capitalsourceid'] = $this->coreSettings->get_compare_capitalsource( USERID );
+			$all_data ['format'] = $selected_format;
+			$all_data ['mcs_capitalsourceid'] = $selected_capitalsource;
 		}
 
 		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
@@ -91,14 +93,6 @@ class moduleCompare extends module {
 
 		if ($valid_data === false) {
 			return $this->display_upload_form( $all_data );
-		}
-
-		// update the chosen capitalsource and format in the usersettings to remember/reuse the selection next time
-		if ($all_data ['mcs_capitalsourceid'] != $this->coreSettings->get_compare_capitalsource( USERID )) {
-			$this->coreSettings->set_compare_capitalsource( USERID, $all_data ['mcs_capitalsourceid'] );
-		}
-		if ($all_data ['format'] != $this->coreSettings->get_compare_format( USERID )) {
-			$this->coreSettings->set_compare_format( USERID, $all_data ['format'] );
 		}
 
 		$all_data ['filecontents'] = file_get_contents( $fileName );

@@ -20,9 +20,12 @@ Bugs detected so far:
      check this.....
 
 New Installation
-   - "No monthly settlement for the previous month exists. Do you want to create it now?"
+   - check that after the first logon, on a clean DB, the password has to be changed first
+   - "No monthly settlement for the previous month exists. Do you want to create it now?" - it makes no sense without a capitalsource
+   - assume for new capitalsources always "0" as the previous month settlement
    - user handling must be migrated completly to REST, otherwise the first logon triggers a password change, and then sets
      back the att_new. But this setting back happens in coreUsers but is not in the cache on the REST-Server
+   - Trend does not work - maybe because no settlement done yet?
 
 - evaluate:
   - Doctrine + Serializer
