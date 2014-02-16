@@ -25,12 +25,13 @@ use rest\client\handler\SessionControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.32 2014/02/06 22:04:34 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.33 2014/02/16 14:43:14 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
 require_once 'core/coreSession.php';
 require_once 'core/coreUsers.php';
+require_once 'core/coreSettings.php';
 
 class moduleUsers extends module {
 
@@ -38,6 +39,7 @@ class moduleUsers extends module {
 		parent::__construct();
 		$this->coreSession = new coreSession();
 		$this->coreUsers = new coreUsers();
+		$this->coreSettings = new coreSettings();
 	}
 
 	// uses REST Service
@@ -88,8 +90,8 @@ class moduleUsers extends module {
 					$this->coreSession->setAttribute( 'users_name', $session ['username'] );
 					$this->coreSession->setAttribute( 'users_id', $session ['mur_userid'] );
 					$this->coreSession->setAttribute( 'server_id', $session ['sessionid'] );
-					$this->coreSession->setAttribute( 'date_format', $this->coreSettings->get_date_format( $session ['mur_userid'] )['dateformat'] );
-					$this->coreSession->setAttribute( 'gui_language', $this->coreSettings->get_displayed_language( $session ['mur_userid'] ) );
+					$this->coreSession->setAttribute( 'date_format', $session ['dateformat'] );
+					$this->coreSession->setAttribute( 'gui_language', $session ['displayed_language'] );
 					$loginok = 1;
 				}
 				break;

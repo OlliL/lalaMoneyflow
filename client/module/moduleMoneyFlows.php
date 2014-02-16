@@ -26,7 +26,7 @@ use rest\client\handler\MoneyflowControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.76 2014/02/16 10:36:39 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.77 2014/02/16 14:43:14 olivleh1 Exp $
 //
 require_once 'module/module.php';
 
@@ -189,6 +189,8 @@ class moduleMoneyFlows extends module {
 					$contractpartner_values = $createMoneyflows ['contractpartner'];
 					$postingaccount_values = $createMoneyflows ['postingaccounts'];
 
+					$numflows = $addMoneyflow ['num_free_moneyflows'];
+
 					$result = $createMoneyflows ['result'];
 					if ($result === true) {
 						$all_data_pre = $createMoneyflows ['predefmoneyflows'];
@@ -251,13 +253,12 @@ class moduleMoneyFlows extends module {
 						$contractpartner_values = $addMoneyflow ['contractpartner'];
 						$postingaccount_values = $addMoneyflow ['postingaccounts'];
 						$all_data_pre = $addMoneyflow ['predefmoneyflows'];
+						$numflows = $addMoneyflow ['num_free_moneyflows'];
 					}
 
 					// clean the array before filling it.
 					$all_data = array ();
 					$date = convert_date_to_gui( date( 'Y-m-d' ) );
-
-					$numflows = $this->coreSettings->get_num_free_moneyflows( USERID );
 
 					for($i = $numflows; $i > 0; $i --) {
 						$all_data [$numflows - $i] = array (

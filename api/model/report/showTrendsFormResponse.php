@@ -25,13 +25,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showTrendsFormResponse.php,v 1.1 2014/02/04 20:43:58 olivleh1 Exp $
+// $Id: showTrendsFormResponse.php,v 1.2 2014/02/16 14:43:14 olivleh1 Exp $
 //
 namespace rest\api\model\report;
 
 class showTrendsFormResponse {
 	public $allYears;
 	public $capitalsourceTransport;
+	public $settingTrendCapitalsourceId;
 
 	public final function getCapitalsourceTransport() {
 		return $this->capitalsourceTransport;
@@ -47,6 +48,14 @@ class showTrendsFormResponse {
 
 	public final function setAllYears(array $allYears) {
 		$this->allYears = $allYears;
+	}
+
+	public final function setSettingTrendCapitalsourceId($settingTrendCapitalsourceId) {
+		$this->settingTrendCapitalsourceId = $settingTrendCapitalsourceId;
+	}
+
+	public final function getSettingTrendCapitalsourceId() {
+		return $this->settingTrendCapitalsourceId;
 	}
 }
 

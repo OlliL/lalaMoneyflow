@@ -24,11 +24,13 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSettings.php,v 1.22 2014/02/16 10:36:39 olivleh1 Exp $
+// $Id: moduleSettings.php,v 1.23 2014/02/16 14:43:14 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreLanguages.php';
 require_once 'core/coreUsers.php';
+require_once 'core/coreSession.php';
+require_once 'core/coreSettings.php';
 
 class moduleSettings extends module {
 
@@ -37,6 +39,7 @@ class moduleSettings extends module {
 		$this->coreLanguages = new coreLanguages();
 		$this->coreUsers = new coreUsers();
 		$this->coreSession = new coreSession();
+		$this->coreSettings = new coreSettings();
 	}
 
 	function general_settings($data_is_valid, $userid, $realaction, $all_data) {

@@ -1,6 +1,7 @@
 <?php
 use rest\client\handler\ReportControllerHandler;
 use rest\client\handler\CapitalsourceControllerHandler;
+use Zend\Validator\File\Count;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -26,7 +27,7 @@ use rest\client\handler\CapitalsourceControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.78 2014/02/16 10:36:39 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.79 2014/02/16 14:43:14 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -211,13 +212,13 @@ class moduleReports extends module {
 		if (is_array( $showTrendsForm ['capitalsources'] )) {
 			$this->template->assign( 'CAPITALSOURCE_VALUES', $showTrendsForm ['capitalsources'] );
 		}
-		$this->template->assign( 'ALL_YEARS', $showTrendsForm ['allYears'] );
+		$years = $showTrendsForm ['allYears'];
+		$this->template->assign( 'ALL_YEARS', $years );
 
 		if (is_array( $all_data ) && isset( $all_data ['mcs_capitalsourceid'] )) {
-			$this->coreSettings->set_trend_capitalsourceid( USERID, $all_data ['mcs_capitalsourceid'] );
 			$this->template->assign( 'PLOT_GRAPH', 1 );
 		} else {
-			$all_data ['mcs_capitalsourceid'] = $this->coreSettings->get_trend_capitalsourceid( USERID );
+			$all_data ['mcs_capitalsourceid'] = $showTrendsForm ['selected_capitalsources'];
 			if (empty( $all_data ['mcs_capitalsourceid'] ))
 				foreach ( $showTrendsForm ['capitalsources'] as $capitalsource ) {
 					$all_data ['mcs_capitalsourceid'] [$capitalsource ['capitalsourceid']] = 1;

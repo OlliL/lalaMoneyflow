@@ -24,17 +24,19 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.42 2014/02/15 19:20:48 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.43 2014/02/16 14:43:14 olivleh1 Exp $
 //
 
 use rest\base\ErrorCode;
 use rest\client\handler\CapitalsourceControllerHandler;
 require_once 'module/module.php';
+require_once 'core/coreDomains.php';
 
 class moduleCapitalSources extends module {
 
 	public final function __construct() {
 		parent::__construct();
+		$this->coreDomains = new coreDomains();
 	}
 
 	public final function display_list_capitalsources($letter) {

@@ -1,7 +1,10 @@
-4. implement Logout Call to destroy the session on the server.
+1. move coreText-stuff to the client
+2. move coreLanguage-stuff to the client
+3. move coreSettings-stuff to REST
+4. redo the user handling
+5. implement Logout Call to destroy the session on the server.
 
-5. continue removing Core Classes
-   - think about language handling - it is no longer DB backed but cache backed in files
+further thoughts:
    - maybe extra Validator Classes with insert/update/delete relevant validations and not in the Service
    - centralize all cachenames
    - think about removing "movement_calculated" from monthlysettlements since we now have caching
@@ -27,6 +30,7 @@ New Installation
    - Trend does not work - maybe because no settlement done yet?
 
 - evaluate:
+  - Redis / Predis
   - Doctrine + Serializer
   - PHPUnit
     -> PHP_CodeCoverage needed

@@ -25,14 +25,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showCompareDataFormResponse.php,v 1.2 2014/02/15 19:20:48 olivleh1 Exp $
+// $Id: showCompareDataFormResponse.php,v 1.3 2014/02/16 14:43:14 olivleh1 Exp $
 //
 namespace rest\api\model\comparedata;
 
 class showCompareDataFormResponse {
 	public $compareDataFormatTransport;
 	public $capitalsourceTransport;
-	public $selectedCapitalsource;
+	public $selectedCapitalsourceId;
 	public $selectedDataFormat;
 
 	public final function getCompareDataFormatTransport() {
@@ -51,16 +51,16 @@ class showCompareDataFormResponse {
 		$this->capitalsourceTransport = $capitalsourceTransport;
 	}
 
-	public final function setSelectedCapitalsource($selectedCapitalsource) {
-		$this->selectedCapitalsource = $selectedCapitalsource;
+	public final function setSelectedCapitalsourceId($selectedCapitalsourceId) {
+		$this->selectedCapitalsourceId = $selectedCapitalsourceId;
 	}
 
 	public final function setSelectedDataFormat($selectedDataFormat) {
 		$this->selectedDataFormat = $selectedDataFormat;
 	}
 
-	public final function getSelectedCapitalsource() {
-		return $this->selectedCapitalsource;
+	public final function getSelectedCapitalsourceId() {
+		return $this->selectedCapitalsourceId;
 	}
 
 	public final function getSelectedDataFormat() {

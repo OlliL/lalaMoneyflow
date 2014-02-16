@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: SessionControllerHandler.php,v 1.2 2014/02/05 21:17:09 olivleh1 Exp $
+// $Id: SessionControllerHandler.php,v 1.3 2014/02/16 14:43:13 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -58,6 +58,8 @@ class SessionControllerHandler extends AbstractJsonSender {
 					'mur_userid' => $doLogonResponse->getUserid(),
 					'username' => $doLogonResponse->getUserName(),
 					'sessionid' => $doLogonResponse->getSessionId(),
+					'dateformat' => $doLogonResponse->getSettingDateFormat(),
+					'displayed_language' => $doLogonResponse->getSettingDisplayedLanguage()
 			);
 		}
 		return $result;

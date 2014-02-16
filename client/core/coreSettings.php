@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreSettings.php,v 1.20 2014/02/16 10:36:39 olivleh1 Exp $
+# $Id: coreSettings.php,v 1.21 2014/02/16 14:43:14 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -79,10 +79,6 @@ class coreSettings extends core {
 		return $this->get_value( $userid, 'max_rows' );
 	}
 
-	function get_trend_capitalsourceid( $userid ) {
-		return unserialize($this->get_value( $userid, 'trend_capitalsourceid' ));
-	}
-
 	function get_date_format( $userid ) {
 		$dateformat = $this->get_value( $userid, 'date_format' );
 
@@ -122,10 +118,6 @@ class coreSettings extends core {
 
 	function set_max_rows( $userid, $maxnum ) {
 		return $this->set_value( $userid, 'max_rows', $maxnum );
-	}
-
-	function set_trend_capitalsourceid( $userid, $capitalsourceid ) {
-		return $this->set_value( $userid, 'trend_capitalsourceid', serialize($capitalsourceid) );
 	}
 
 	function set_date_format( $userid, $dateformat ) {

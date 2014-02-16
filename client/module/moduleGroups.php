@@ -24,12 +24,13 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleGroups.php,v 1.5 2014/02/05 21:17:08 olivleh1 Exp $
+# $Id: moduleGroups.php,v 1.6 2014/02/16 14:43:14 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
 require_once 'core/coreSession.php';
 require_once 'core/coreGroups.php';
+require_once 'core/coreSettings.php';
 
 class moduleGroups extends module {
 
@@ -37,17 +38,18 @@ class moduleGroups extends module {
 		parent::__construct();
 		$this->coreSession = new coreSession();
 		$this->coreGroups = new coreGroups();
+		$this->coreSettings = new coreSettings();
 	}
 
 	function display_list_groups( $letter ) {
 
 		$all_index_letters = $this->coreGroups->get_all_index_letters();
 		$num_groups = $this->coreGroups->count_all_data();
-		
+
 		if( empty( $letter ) && $num_groups < $this->coreSettings->get_max_rows( USERID ) ) {
 			$letter = 'all';
 		}
-		
+
 		if( $letter == 'all' ) {
 			$all_data = $this->coreGroups->get_all_data();
 		} elseif( !empty( $letter ) ) {
@@ -55,7 +57,7 @@ class moduleGroups extends module {
 		} else {
 			$all_data = array();
 		}
-		
+
 		$this->template->assign( 'ALL_DATA',          $all_data          );
 		$this->template->assign( 'COUNT_ALL_DATA',    count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
@@ -78,7 +80,7 @@ class moduleGroups extends module {
 					$this->template->assign( 'CLOSE',    1 );
 				} else {
 					$this->template->assign( 'ALL_DATA', $all_data );
-				}				
+				}
 				break;
 			default:
 				if( $id > 0 ) {

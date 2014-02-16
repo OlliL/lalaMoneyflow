@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportControllerHandler.php,v 1.6 2014/02/08 01:38:15 olivleh1 Exp $
+// $Id: ReportControllerHandler.php,v 1.7 2014/02/16 14:43:13 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -100,6 +100,7 @@ class ReportControllerHandler extends AbstractJsonSender {
 				$result ['capitalsources'] = array ();
 			}
 		}
+		$result['selected_capitalsources'] = $showTrendsForm->getSettingTrendCapitalsourceId();
 
 		return $result;
 	}

@@ -24,12 +24,13 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleLanguages.php,v 1.7 2014/02/05 21:17:08 olivleh1 Exp $
+# $Id: moduleLanguages.php,v 1.8 2014/02/16 14:43:14 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
 require_once 'core/coreLanguages.php';
 require_once 'core/coreText.php';
+require_once 'core/coreSettings.php';
 
 class moduleLanguages extends module {
 
@@ -37,17 +38,18 @@ class moduleLanguages extends module {
 		parent::__construct();
 		$this->coreLanguages  = new coreLanguages();
 		$this->coreText  = new coreText();
+		$this->coreSettings = new coreSettings();
 	}
 
 	function display_list_languages( $letter ) {
 
 		$all_index_letters = $this->coreLanguages->get_all_index_letters();
 		$num_languages = $this->coreLanguages->count_all_data();
-		
+
 		if( empty( $letter ) && $num_languages < $this->coreSettings->get_max_rows( USERID ) ) {
 			$letter = 'all';
 		}
-		
+
 		if( $letter == 'all' ) {
 			$all_data = $this->coreLanguages->get_all_data();
 		} elseif( !empty( $letter ) ) {
@@ -55,7 +57,7 @@ class moduleLanguages extends module {
 		} else {
 			$all_data = array();
 		}
-		
+
 		$this->template->assign( 'ALL_DATA',          $all_data          );
 		$this->template->assign( 'COUNT_ALL_DATA',    count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
@@ -72,7 +74,7 @@ class moduleLanguages extends module {
 
 		switch( $realaction ) {
 			case 'save':
-			
+
 				foreach( $all_data as $textid => $data ) {
 					if( $data['text'] != $data['orig_text'] ) {
 						$this->coreText->update_text( $textid, $id, $data['text'] );
@@ -88,8 +90,8 @@ class moduleLanguages extends module {
 				foreach($all_data_eng as $key => $data) {
 					$all_data_eng[$key]['text'] = htmlentities($data['text'], ENT_COMPAT | ENT_HTML401, ENCODING);
 				}
-				
-				
+
+
 				$lang_eng     = $this->coreLanguages->get_language( 1 );
 				$lang         = $this->coreLanguages->get_language( $id );
 
@@ -112,13 +114,13 @@ class moduleLanguages extends module {
 
 		switch( $realaction ) {
 			case 'save':
-			
+
 				$ret = $this->coreLanguages->add_language( $all_data['language'], $all_data['source'] );
-			
+
 				if( $ret ) {
 					$this->template->assign( 'CLOSE',    1 );
 					break;
-				}				
+				}
 
 			default:
 				break;

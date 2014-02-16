@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataControllerHandler.php,v 1.3 2014/02/15 19:20:48 olivleh1 Exp $
+// $Id: CompareDataControllerHandler.php,v 1.4 2014/02/16 14:43:13 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -71,7 +71,7 @@ class CompareDataControllerHandler extends AbstractJsonSender {
 				$result ['comparedataformats'] = array ();
 			}
 			$result['selected_format'] = $showCompareDataForm->getSelectedDataFormat();
-			$result['selected_capitalsource'] = $showCompareDataForm->getSelectedCapitalsource();
+			$result['selected_capitalsource'] = $showCompareDataForm->getSelectedCapitalsourceId();
 		}
 
 		return $result;

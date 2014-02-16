@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowControllerHandler.php,v 1.2 2014/02/14 22:02:51 olivleh1 Exp $
+// $Id: MoneyflowControllerHandler.php,v 1.3 2014/02/16 14:43:13 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -83,6 +83,7 @@ class MoneyflowControllerHandler extends AbstractJsonSender {
 			} else {
 				$result ['postingaccounts'] = array ();
 			}
+			$result ['num_free_moneyflows'] = $addMoneyflow->getSettingNumberOfFreeMoneyflows();
 		}
 
 		return $result;
@@ -177,6 +178,7 @@ class MoneyflowControllerHandler extends AbstractJsonSender {
 				$result ['errors'] = array ();
 			}
 			$result ['result'] = $createMoneyflow->getResult();
+			$result ['num_free_moneyflows'] = $createMoneyflow->getSettingNumberOfFreeMoneyflows();
 		}
 
 		return $result;

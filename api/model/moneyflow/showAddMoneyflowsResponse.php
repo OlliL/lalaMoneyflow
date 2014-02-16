@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showAddMoneyflowsResponse.php,v 1.3 2014/01/26 12:24:48 olivleh1 Exp $
+// $Id: showAddMoneyflowsResponse.php,v 1.4 2014/02/16 14:43:14 olivleh1 Exp $
 //
 namespace rest\api\model\moneyflow;
 
@@ -34,6 +34,7 @@ class showAddMoneyflowsResponse {
 	public $capitalsourceTransport;
 	public $contractpartnerTransport;
 	public $postingAccountTransport;
+	public $settingNumberOfFreeMoneyflows;
 
 	public final function getPreDefMoneyflowTransport() {
 		return $this->preDefMoneyflowTransport;
@@ -65,6 +66,14 @@ class showAddMoneyflowsResponse {
 
 	public final function setPostingAccountTransport(array $postingAccountTransport) {
 		$this->postingAccountTransport = $postingAccountTransport;
+	}
+
+	public final function setSettingNumberOfFreeMoneyflows($settingNumberOfFreeMoneyflows) {
+		$this->settingNumberOfFreeMoneyflows = $settingNumberOfFreeMoneyflows;
+	}
+
+	public final function getSettingNumberOfFreeMoneyflows() {
+		return $this->settingNumberOfFreeMoneyflows;
 	}
 }
 

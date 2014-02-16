@@ -25,7 +25,7 @@ use rest\base\config\CacheManager;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.65 2014/02/16 10:36:39 olivleh1 Exp $
+// $Id: index.php,v 1.66 2014/02/16 14:43:13 olivleh1 Exp $
 //
 require_once 'include.php';
 require_once 'functions.php';
@@ -71,7 +71,7 @@ if ($is_logged_in == 2) {
 
 	/* user is new and must change his password */
 
-	$GUI_LANGUAGE = $coreSettings->get_displayed_language( USERID );
+	$GUI_LANGUAGE = $coreSession->getAttribute( 'gui_language' );
 	if (empty( $_POST ['realaction'] ) || $_POST ['realaction'] != 'save') {
 		add_error( 152 );
 	}

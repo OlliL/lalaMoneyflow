@@ -24,25 +24,17 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.66 2014/02/09 14:19:03 olivleh1 Exp $
+// $Id: module.php,v 1.67 2014/02/16 14:43:14 olivleh1 Exp $
 //
 require_once 'Smarty.class.php';
 require_once 'core/coreText.php';
-require_once 'core/coreUsers.php';
-require_once 'core/coreDomains.php';
 
 class module {
 
 	public function __construct() {
-		$this->mapper = array ();
-		$this->coreText = new coreText();
-		$this->coreUsers = new coreUsers();
-		$this->coreDomains = new coreDomains();
-		$this->coreSettings = new coreSettings();
 		$this->template = new Smarty();
-		$this->index_php = 'index.php';
 		$this->template->registerPlugin( 'modifier', 'number_format', 'my_number_format' );
-		$this->template->assign( 'ENV_INDEX_PHP', $this->index_php );
+		$this->template->assign( 'ENV_INDEX_PHP', 'index.php' );
 
 		if (! empty( $_SERVER ['HTTP_REFERER'] )) {
 			$http_referer = $_SERVER ['HTTP_REFERER'];
@@ -65,14 +57,12 @@ class module {
 		}
 	}
 
-	function module() {
-	}
-
 	function get_errors() {
 		global $ERRORS;
 		if (is_array( $ERRORS )) {
+			$coreText = new coreText();
 			foreach ( $ERRORS as $error ) {
-				$error_text = $this->coreText->get_text( $error ['id'] );
+				$error_text = $coreText->get_text( $error ['id'] );
 				if (is_array( $error ['arguments'] )) {
 					foreach ( $error ['arguments'] as $id => $value ) {
 						$error_text = str_replace( 'A' . ($id + 1) . 'A', $value, $error_text );
