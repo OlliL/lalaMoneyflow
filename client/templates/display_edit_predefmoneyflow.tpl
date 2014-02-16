@@ -23,7 +23,7 @@
 					<th>{#TEXT_206#}</th>
 				</tr>
 				<tr>
-					<td class="contrastbgcolornobr"><input class="contrastbgcolor" type="text" name="all_data[amount]" value="{$ALL_DATA.amount}" align="right" size="8"> {$CURRENCY}</td>
+					<td class="contrastbgcolornobr"><input class="contrastbgcolor" type="text" name="all_data[amount]" value="{$ALL_DATA.amount}" align="right" size="8"> {#CURRENCY#}</td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcp_contractpartnerid]" size=1>
 					{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
 						<option {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $ALL_DATA.mcp_contractpartnerid}selected{/if} value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name|escape:htmlall}

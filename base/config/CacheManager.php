@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CacheManager.php,v 1.8 2014/02/14 23:44:18 olivleh1 Exp $
+// $Id: CacheManager.php,v 1.9 2014/02/16 10:36:39 olivleh1 Exp $
 //
 namespace rest\base\config;
 
@@ -46,7 +46,11 @@ class CacheManager {
 	}
 
 	private final function setDelegate() {
-		$this->delegate = new \Yac();
+// 		$this->delegate = new \Yac();
+		// $this->delegate = new \Memcache();
+		// $this->delegate->connect( '10.0.0.22', 11211 );
+		$this->delegate = new \Memcached();
+		$this->delegate->addServer( '10.0.0.22', 11211 );
 	}
 
 	public final function __clone() {
@@ -78,8 +82,12 @@ class CacheManager {
 	}
 
 	public final function deleteAll(array $nameArray) {
-		$fixedNameArray = array_map(array($this,'getCacheName'),$nameArray);
-		return $this->delegate->delete( $fixedNameArray );
+		$fixedNameArray = array_map( array (
+				$this,
+				'getCacheName'
+		), $nameArray );
+		return $this->delegate->deleteMulti( $fixedNameArray );
+// 		return $this->delegate->delete( $fixedNameArray );
 	}
 }
 

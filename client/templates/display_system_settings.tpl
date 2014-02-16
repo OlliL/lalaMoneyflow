@@ -23,14 +23,6 @@
 					</select></td>
 				</tr>
 				<tr>
-					<th>{#TEXT_91#}</th>
-					<td width=300><select class="contrastbgcolor" name="all_data[currency]" size=1>
-					{section name=CURRENCIES loop=$CURRENCY_VALUES}
-						<option value="{$CURRENCY_VALUES[CURRENCIES].currencyid}" {if $CURRENCY_VALUES[CURRENCIES].currencyid == $ALL_DATA.currency}selected{/if}> {$CURRENCY_VALUES[CURRENCIES].currency}</option>
-					{/section}
-					</select></td>
-				</tr>
-				<tr>
 					<th>{#TEXT_178#}</th>
 					<td width=300>
 						<select class="contrastbgcolor" name="all_data[date_data1]" size=1>

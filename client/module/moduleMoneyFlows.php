@@ -26,18 +26,14 @@ use rest\client\handler\MoneyflowControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.75 2014/02/14 22:02:51 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.76 2014/02/16 10:36:39 olivleh1 Exp $
 //
 require_once 'module/module.php';
-require_once 'core/coreCurrencies.php';
 
 class moduleMoneyFlows extends module {
 
 	public final function __construct() {
 		parent::__construct();
-
-		// TODO: old shit
-		$this->coreCurrencies = new coreCurrencies();
 	}
 
 	function display_edit_moneyflow($realaction, $id, $all_data) {
@@ -139,7 +135,6 @@ class moduleMoneyFlows extends module {
 		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'MONEYFLOWID', $id );
-		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
@@ -294,7 +289,6 @@ class moduleMoneyFlows extends module {
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header();
@@ -316,7 +310,6 @@ class moduleMoneyFlows extends module {
 				break;
 		}
 
-		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );

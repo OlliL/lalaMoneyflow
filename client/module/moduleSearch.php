@@ -27,17 +27,15 @@ use rest\client\handler\MoneyflowControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSearch.php,v 1.28 2014/02/14 22:02:51 olivleh1 Exp $
+// $Id: moduleSearch.php,v 1.29 2014/02/16 10:36:39 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
-require_once 'core/coreCurrencies.php';
 
 class moduleSearch extends module {
 
 	function moduleSearch() {
 		parent::__construct();
-		$this->coreCurrencies = new coreCurrencies();
 	}
 
 	function display_search($searchparams = null) {
@@ -161,7 +159,6 @@ class moduleSearch extends module {
 					$this->template->assign( 'SEARCH_DONE', 1 );
 					$this->template->assign( 'COLUMNS', $columns );
 					$this->template->assign( 'RESULTS', $results );
-					$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
 				} else {
 					add_error( ErrorCode::NO_DATA_FOUND );
 				}

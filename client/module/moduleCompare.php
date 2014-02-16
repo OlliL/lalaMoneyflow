@@ -26,16 +26,14 @@ use rest\client\handler\CompareDataControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.38 2014/02/15 19:20:48 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.39 2014/02/16 10:36:39 olivleh1 Exp $
 //
 require_once 'module/module.php';
-require_once 'core/coreCurrencies.php';
 
 class moduleCompare extends module {
 
 	function moduleCompare() {
 		parent::__construct();
-		$this->coreCurrencies = new coreCurrencies();
 	}
 
 	function display_upload_form($all_data = array()) {
@@ -103,10 +101,6 @@ class moduleCompare extends module {
 		$result ['matching'] = $this->setOwnerAndFilterPrivate( $result ['matching'] );
 		$result ['not_in_file'] = $this->setOwnerAndFilterPrivate( $result ['not_in_file'] );
 		$result ['wrong_source'] = $this->setOwnerAndFilterPrivate( $result ['wrong_source'] );
-
-		// TODO: old shit
-		$displayed_currency = $this->coreCurrencies->get_displayed_currency();
-		$this->template->assign( 'CURRENCY', $displayed_currency );
 
 		$this->template->assign( 'MATCHING', $result ['matching'] );
 		$this->template->assign( 'NOT_IN_DB', $result ['not_in_db'] );

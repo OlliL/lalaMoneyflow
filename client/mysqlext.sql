@@ -1,25 +1,3 @@
-/*
- * all domain values for a user
- */
-CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_domainvalues (
-   mur_userid
-  ,domain
-  ,value
-  ,text
-  ) AS
-      SELECT mur.userid
-            ,mdv.mdm_domain
-            ,mdv.value
-            ,mtx.text
-        FROM text         mtx
-            ,domainvalues mdv
-            ,settings     mse
-            ,users        mur
-       WHERE mtx.textid         = mdv.mtx_textid
-         AND mtx.mla_languageid = mse.value
-         AND mse.name           = 'displayed_language'
-         AND mse.mur_userid     = mur.userid;
-
 /* 
  * this view will show all possible permutations of user/groups
  */
@@ -200,115 +178,7 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_capitalsources (
                AND mug.mug2_mur_userid = mcs.mur_userid
              );
 
-
-/*
- * this view will show the text entries for all users
- * in their maintained display language
- */
-CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_text (
-   textid
-  ,text
-  ,type
-  ,mur_userid
-  ) AS
-     SELECT mtx.textid
-           ,mtx.text
-           ,mtx.type
-           ,mse.mur_userid
-      FROM text     mtx
-          ,settings mse
-     WHERE mtx.mla_languageid = mse.value
-       AND mse.name           = 'displayed_language';
-
-/*
- * this view is used to generate all variables maintained
- * for each ttemplate with the translated text strings
- * from view vw_text
- */
-CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_template_text (
-   mur_userid
-  ,templatename
-  ,variable
-  ,text
-  ) AS
-     SELECT mvt.mur_userid
-           ,mtv.mte_templatename
-           ,CONCAT('TEXT_',mvt.textid)
-           ,mvt.text
-      FROM templatevalues mtv
-          ,vw_text        mvt
-     WHERE mtv.mtx_textid = mvt.textid
-       AND mvt.type       = 't';
-
-
-DELIMITER $$
-
 -- FUNCTIONS
-
-/*
- * this function returns the meaning of a specific domain
- * code (value)
- */
-DROP FUNCTION IF EXISTS domain_meaning$$
-CREATE FUNCTION domain_meaning (pi_domain VARCHAR(30)
-                               ,pi_value  VARCHAR(3)
-                               ,pi_userid INT(10) UNSIGNED
-                               ) RETURNS  VARCHAR(255)
-READS SQL DATA
-BEGIN
-  DECLARE l_text VARCHAR(255);
-
-  SELECT mtx.text
-    INTO l_text
-    FROM text         mtx
-        ,domainvalues mdv
-        ,settings     mse
-   WHERE mdv.mdm_domain     = pi_domain
-     AND mdv.value          = pi_value
-     AND mtx.textid         = mdv.mtx_textid
-     AND mtx.mla_languageid = mse.value
-     AND mse.name           = 'displayed_language'
-     AND mse.mur_userid     = pi_userid;
-
-  RETURN l_text;
-END;$$
-
-/*
- * the amount is always stored in a db wide configured
- * currency. The currency the user has choosen to display
- * might be different. If thats the case, the currency
- * to display has to be recalculated. Same applies to the
- * other way round (if the entered amount in the GUI has
- * to be saved in the DB
- */
-DROP FUNCTION IF EXISTS calc_amount$$
-CREATE FUNCTION calc_amount (pi_amount FLOAT(8,2)
-                            ,pi_type   VARCHAR(3)
-                            ,pi_userid INT(10) UNSIGNED
-                            ,pi_date   DATE
-                            ) RETURNS  FLOAT(8,2)
-READS SQL DATA
-BEGIN
-  DECLARE l_amount FLOAT(7,2);
-  DECLARE l_rate FLOAT;
-
-  SELECT rate
-    INTO l_rate
-    FROM currencyrates
-   WHERE mcu_currencyid = (SELECT value
-                             FROM settings
-                            WHERE name = 'displayed_currency'  
-                              AND mur_userid = pi_userid)
-     AND pi_date BETWEEN validfrom AND validtil;
-
-  IF pi_type = 'OUT' THEN  
-    SET l_amount := ROUND(l_rate*pi_amount,2);
-  ELSEIF pi_type = 'IN' THEN
-    SET l_amount := ROUND(pi_amount/l_rate,2);
-  END IF;
-
-  RETURN l_amount;
-END;$$
 
 /*
  * this function checks if there still exists data
@@ -453,10 +323,7 @@ BEGIN
   DECLARE l_amount     FLOAT(8,2);
   
   DECLARE c_mmf CURSOR FOR
-    SELECT IFNULL(SUM(calc_amount(amount
-                                 ,'OUT'
-                                 ,pi_userid
-                                 ,invoicedate)),0)
+    SELECT IFNULL(SUM(amount),0)
       FROM vw_moneyflows
      WHERE bookingdate   BETWEEN l_date_begin AND l_date_end
        AND mug_mur_userid      = pi_userid
@@ -525,8 +392,7 @@ END;$$
 
 /*
  * this procedure fills the column monthlysettlements.movement_calculated
- * when the settlement gets created the first time or the user changes
- * the displayed currency.
+ * when the settlement gets created the first time
  */
 DROP PROCEDURE IF EXISTS mms_init_movement_calculated$$
 CREATE PROCEDURE mms_init_movement_calculated(IN pi_userid INT(10) UNSIGNED)
@@ -784,20 +650,6 @@ CREATE TRIGGER mms_trg_01 BEFORE INSERT ON monthlysettlements
                                                                ,NEW.year
                                                                ,NEW.mcs_capitalsourceid
                                                                );
-  END;
-$$
-
-/*
- * when the displayed currency gets changed,
- * recalculate monthlysettlements.movement_calculated
- */
-DROP TRIGGER IF EXISTS mse_trg_01$$
-CREATE TRIGGER mse_trg_01 AFTER UPDATE ON settings
-  FOR EACH ROW BEGIN
-    IF NEW.name   = 'displayed_currency' AND
-       NEW.value != OLD.value THEN
-      CALL mms_init_movement_calculated(NEW.mur_userid);
-    END IF;
   END;
 $$
 

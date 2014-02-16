@@ -26,7 +26,7 @@
 					</tr>
 					{section name=DATA loop=$ALL_DATA}
 						<tr>
-							<td class="contrastbgcolor" align="right"><font {if $ALL_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_DATA[DATA].amount|number_format} {$CURRENCY}</font></td>
+							<td class="contrastbgcolor" align="right"><font {if $ALL_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_DATA[DATA].amount|number_format} {#CURRENCY#}</font></td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].contractpartnername|escape:htmlall}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].comment|escape:htmlall}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].capitalsourcecomment|escape:htmlall}</td>

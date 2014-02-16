@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: coreSettings.php,v 1.19 2014/02/15 19:20:48 olivleh1 Exp $
+# $Id: coreSettings.php,v 1.20 2014/02/16 10:36:39 olivleh1 Exp $
 #
 
 require_once 'core/core.php';
@@ -71,10 +71,6 @@ class coreSettings extends core {
 							   ON DUPLICATE KEY UPDATE value = VALUES(value)" );
 	}
 
-	function get_displayed_currency( $userid ) {
-		return $this->get_value( $userid, 'displayed_currency' );
-	}
-
 	function get_displayed_language( $userid ) {
 		return $this->get_value( $userid, 'displayed_language' );
 	}
@@ -118,10 +114,6 @@ class coreSettings extends core {
 
 	function get_num_free_moneyflows( $userid ) {
 		return $this->get_value( $userid, 'num_free_moneyflows' );
-	}
-
-	function set_displayed_currency( $userid, $currency ) {
-		return $this->set_value( $userid, 'displayed_currency', $currency );
 	}
 
 	function set_displayed_language( $userid, $language ) {

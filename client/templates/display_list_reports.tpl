@@ -73,7 +73,7 @@ function Go(x)
 				<tr>
 					<th width="90"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_bookingdate&amp;reports_order={$NEWORDER}" >{#TEXT_16#}</a></th>
 					<th width="90"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_invoicedate&amp;reports_order={$NEWORDER}" >{#TEXT_17#}</a></th>
-					<th width="100"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_amount&amp;reports_order={$NEWORDER}"     >{#TEXT_18#}</a></th>
+					<th width="70"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_amount&amp;reports_order={$NEWORDER}"     >{#TEXT_18#}</a></th>
 					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=contractpartners_name&amp;reports_order={$NEWORDER}" >{#TEXT_2#}</a></th>
 					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_comment&amp;reports_order={$NEWORDER}"    >{#TEXT_21#}</a></th>
 					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=postingaccount_name&amp;reports_order={$NEWORDER}">{#TEXT_232#}</a></th>
@@ -85,7 +85,7 @@ function Go(x)
 					<tr>
 						<td class="contrastbgcolor" align="center">{$ALL_MONEYFLOW_DATA[DATA].bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$ALL_MONEYFLOW_DATA[DATA].invoicedate}</td>
-						<td align="right" class="contrastbgcolor"><font {if $ALL_MONEYFLOW_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_MONEYFLOW_DATA[DATA].amount|number_format} {$CURRENCY}</font></td>
+						<td align="right" class="contrastbgcolor"><font {if $ALL_MONEYFLOW_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_MONEYFLOW_DATA[DATA].amount|number_format} {#CURRENCY#}</font></td>
 						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].contractpartnername}</td>
 						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].comment}</td>
 						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].postingaccountname}</td>
@@ -99,7 +99,7 @@ function Go(x)
 				<tr>
 					<td></td>
 					<td align="right">&sum;</td>
-					<td align="right" class="contrastbgcolor"><font {if $MON_CALCULATEDTURNOVER < 0}color="red"{else}color="black"{/if}><u>{$MON_CALCULATEDTURNOVER|number_format} {$CURRENCY}</u></font></td>
+					<td align="right" class="contrastbgcolor"><font {if $MON_CALCULATEDTURNOVER < 0}color="red"{else}color="black"{/if}><u>{$MON_CALCULATEDTURNOVER|number_format} {#CURRENCY#}</u></font></td>
 			</table>
 			<table width="830" border=0>
 				<tr>
@@ -142,15 +142,15 @@ function Go(x)
 						<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].typecomment}</td>
 						<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].statecomment}</td>
 						<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].comment}</td>
-						<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].lastamount < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].lastamount|number_format} {$CURRENCY}</font></td>
+						<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].lastamount < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].lastamount|number_format} {#CURRENCY#}</font></td>
 						{if $MONTHLYSETTLEMENT_EXISTS == true}
-						<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].fixamount  < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].fixamount|number_format} {$CURRENCY}</font></td>
+						<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].fixamount  < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].fixamount|number_format} {#CURRENCY#}</font></td>
 						{/if}
-						<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].calcamount < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].calcamount|number_format} {$CURRENCY}</font></td>
+						<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].calcamount < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].calcamount|number_format} {#CURRENCY#}</font></td>
 						{if $MONTHLYSETTLEMENT_EXISTS == true}
 						{math equation="x - y" x=$SUMMARY_DATA[DATA].fixamount y=$SUMMARY_DATA[DATA].calcamount assign=CAPITALSOURCE_DIFFERENCE}
 						
-						<td align="right" class="contrastbgcolor"><font {if $CAPITALSOURCE_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$CAPITALSOURCE_DIFFERENCE|number_format} {$CURRENCY}</font></td>
+						<td align="right" class="contrastbgcolor"><font {if $CAPITALSOURCE_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$CAPITALSOURCE_DIFFERENCE|number_format} {#CURRENCY#}</font></td>
 						{/if}
 					</tr>
 				{/section}
@@ -158,14 +158,14 @@ function Go(x)
 						<td></td>
 						<td></td>
 						<td align="right">&sum;</td>
-						<td align="right" class="contrastbgcolor"><font {if $LASTAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$LASTAMOUNT|number_format} {$CURRENCY}</u></font></td>
+						<td align="right" class="contrastbgcolor"><font {if $LASTAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$LASTAMOUNT|number_format} {#CURRENCY#}</u></font></td>
 						{if $MONTHLYSETTLEMENT_EXISTS == true}
-						<td align="right" class="contrastbgcolor"><font {if $FIXAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$FIXAMOUNT|number_format} {$CURRENCY}</u></font></td>
+						<td align="right" class="contrastbgcolor"><font {if $FIXAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$FIXAMOUNT|number_format} {#CURRENCY#}</u></font></td>
 						{/if}
-						<td align="right" class="contrastbgcolor"><font {if $MON_CALCAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$MON_CALCAMOUNT|number_format} {$CURRENCY}</u></font></td>
+						<td align="right" class="contrastbgcolor"><font {if $MON_CALCAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$MON_CALCAMOUNT|number_format} {#CURRENCY#}</u></font></td>
 						{if $MONTHLYSETTLEMENT_EXISTS == true}
 						{math equation="x - y" x=$FIXAMOUNT y=$MON_CALCAMOUNT assign=MON_DIFFERENCE}
-						<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{else}color="black"{/if}><u>{$MON_DIFFERENCE|number_format} {$CURRENCY}</u></font></td>
+						<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{else}color="black"{/if}><u>{$MON_DIFFERENCE|number_format} {#CURRENCY#}</u></font></td>
 						{/if}
 					</tr>
 			</table>
@@ -181,22 +181,22 @@ function Go(x)
 				<tr>
 					<th align="right">{#TEXT_66#}</th>
 					{math equation="y-x" x=$LASTAMOUNT y=$FIXAMOUNT assign=MON_FIXEDTURNOVER}
-					<td align="right" class="contrastbgcolor"><font {if $MON_FIXEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$MON_FIXEDTURNOVER|number_format} {$CURRENCY}</font></td>
+					<td align="right" class="contrastbgcolor"><font {if $MON_FIXEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$MON_FIXEDTURNOVER|number_format} {#CURRENCY#}</font></td>
 					{math equation="y-x" x=$FIRSTAMOUNT y=$FIXAMOUNT assign=YEA_FIXEDTURNOVER}
-					<td align="right" class="contrastbgcolor"><font {if $YEA_FIXEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$YEA_FIXEDTURNOVER|number_format} {$CURRENCY}</font></td>
+					<td align="right" class="contrastbgcolor"><font {if $YEA_FIXEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$YEA_FIXEDTURNOVER|number_format} {#CURRENCY#}</font></td>
 				</tr>
 				{/if}
 				<tr>
 					<th align="right">{#TEXT_67#}</th>
-					<td align="right" class="contrastbgcolor"><font {if $MON_CALCULATEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$MON_CALCULATEDTURNOVER|number_format} {$CURRENCY}</font></td>
-					<td align="right" class="contrastbgcolor"><font {if $YEA_CALCULATEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$YEA_CALCULATEDTURNOVER|number_format} {$CURRENCY}</font></td>
+					<td align="right" class="contrastbgcolor"><font {if $MON_CALCULATEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$MON_CALCULATEDTURNOVER|number_format} {#CURRENCY#}</font></td>
+					<td align="right" class="contrastbgcolor"><font {if $YEA_CALCULATEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$YEA_CALCULATEDTURNOVER|number_format} {#CURRENCY#}</font></td>
 				</tr>
 				{if $MONTHLYSETTLEMENT_EXISTS == true}
 				<tr>
 					<th align="right">{#TEXT_65#}</th>
-					<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$MON_DIFFERENCE|number_format} {$CURRENCY}</font></td>
+					<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$MON_DIFFERENCE|number_format} {#CURRENCY#}</font></td>
 					{math equation="x - y" x=$YEA_FIXEDTURNOVER y=$YEA_CALCULATEDTURNOVER assign=YEA_DIFFERENCE}
-					<td align="right" class="contrastbgcolor"><font {if $YEA_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$YEA_DIFFERENCE|number_format} {$CURRENCY}</font></td>
+					<td align="right" class="contrastbgcolor"><font {if $YEA_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$YEA_DIFFERENCE|number_format} {#CURRENCY#}</font></td>
 				</tr>
 				{/if}
 			</table>

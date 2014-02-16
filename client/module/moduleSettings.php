@@ -24,10 +24,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSettings.php,v 1.21 2014/02/14 22:02:51 olivleh1 Exp $
+// $Id: moduleSettings.php,v 1.22 2014/02/16 10:36:39 olivleh1 Exp $
 //
 require_once 'module/module.php';
-require_once 'core/coreCurrencies.php';
 require_once 'core/coreLanguages.php';
 require_once 'core/coreUsers.php';
 
@@ -35,7 +34,6 @@ class moduleSettings extends module {
 
 	function moduleSettings() {
 		parent::__construct();
-		$this->coreCurrencies = new coreCurrencies();
 		$this->coreLanguages = new coreLanguages();
 		$this->coreUsers = new coreUsers();
 		$this->coreSession = new coreSession();
@@ -50,7 +48,6 @@ class moduleSettings extends module {
 						$data_is_valid = false;
 						add_error( 180 );
 					} else {
-						$this->coreSettings->set_displayed_currency( $userid, $all_data ['currency'] );
 						$this->coreSettings->set_displayed_language( $userid, $all_data ['language'] );
 						$this->coreSettings->set_max_rows( $userid, $all_data ['maxrows'] );
 						$this->coreSettings->set_num_free_moneyflows( $userid, $all_data ['numflows'] );
@@ -69,7 +66,6 @@ class moduleSettings extends module {
 		}
 
 		if ($data_is_valid === true) {
-			$all_data ['currency'] = $this->coreSettings->get_displayed_currency( $userid );
 			$all_data ['language'] = $this->coreSettings->get_displayed_language( $userid );
 			$all_data ['maxrows'] = $this->coreSettings->get_max_rows( $userid );
 			$all_data ['numflows'] = $this->coreSettings->get_num_free_moneyflows( $userid );
@@ -78,7 +74,6 @@ class moduleSettings extends module {
 		}
 
 		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'CURRENCY_VALUES', $this->coreCurrencies->get_all_data() );
 		$this->template->assign( 'LANGUAGE_VALUES', $this->coreLanguages->get_all_data() );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 

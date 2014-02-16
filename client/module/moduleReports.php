@@ -26,11 +26,10 @@ use rest\client\handler\CapitalsourceControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.77 2014/02/14 23:29:56 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.78 2014/02/16 10:36:39 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
-require_once 'core/coreCurrencies.php';
 require_once 'core/coreDomains.php';
 
 if (ENABLE_JPGRAPH) {
@@ -43,8 +42,6 @@ class moduleReports extends module {
 	public final function __construct() {
 		parent::__construct();
 
-		// old shit
-		$this->coreCurrencies = new coreCurrencies();
 		$this->coreDomains = new coreDomains();
 	}
 
@@ -100,9 +97,6 @@ class moduleReports extends module {
 			}
 
 			if ($_all_moneyflow_data) {
-
-				// TODO: old shit
-				$displayed_currency = $this->coreCurrencies->get_displayed_currency();
 
 				switch ($sortby) {
 					case 'capitalsources_comment' :
@@ -199,7 +193,6 @@ class moduleReports extends module {
 				$this->template->assign( 'MON_CALCULATEDTURNOVER', $movement_calculated_month );
 				$this->template->assign( 'YEA_CALCULATEDTURNOVER', $movement_calculated_year );
 				$this->template->assign( 'MONTHLYSETTLEMENT_EXISTS', $mms_exists );
-				$this->template->assign( 'CURRENCY', $displayed_currency );
 				$this->template->assign( 'REPORT', 1 );
 			}
 		}

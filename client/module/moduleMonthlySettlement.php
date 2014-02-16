@@ -27,18 +27,16 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.49 2014/02/14 22:02:51 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.50 2014/02/16 10:36:39 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
-require_once 'core/coreCurrencies.php';
 require_once 'core/coreDomains.php';
 
 class moduleMonthlySettlement extends module {
 
 	function moduleMonthlySettlement() {
 		parent::__construct();
-		$this->coreCurrencies = new coreCurrencies();
 		$this->coreDomains = new coreDomains();
 	}
 
@@ -85,7 +83,6 @@ class moduleMonthlySettlement extends module {
 		$this->template->assign( 'SELECTED_YEAR', $year );
 		$this->template->assign( 'NUM_EDITABLE_SETTLEMENTS', $numberOfEditableSettlements );
 		$this->template->assign( 'NUM_ADDABLE_SETTLEMENTS', $numberOfAddableSettlements );
-		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_monthlysettlements.tpl' );
@@ -152,7 +149,6 @@ class moduleMonthlySettlement extends module {
 		$this->template->assign( 'ALL_DATA', $all_data_new );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data_new ) );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
@@ -188,7 +184,6 @@ class moduleMonthlySettlement extends module {
 					break;
 			}
 		}
-		$this->template->assign( 'CURRENCY', $this->coreCurrencies->get_displayed_currency() );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );

@@ -25,7 +25,7 @@ use rest\base\config\CacheManager;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.64 2014/02/14 23:29:56 olivleh1 Exp $
+// $Id: index.php,v 1.65 2014/02/16 10:36:39 olivleh1 Exp $
 //
 require_once 'include.php';
 require_once 'functions.php';
@@ -151,17 +151,6 @@ if ($is_logged_in == 0) {
 		case 'personal_settings' :
 		case 'system_settings' :
 			break;
-		case 'list_currencies' :
-		case 'edit_currency' :
-		case 'delete_currency' :
-			require_once 'module/moduleCurrencies.php';
-			$moduleCurrencies = new moduleCurrencies();
-			break;
-		case 'list_currencyrates' :
-		case 'edit_currencyrate' :
-			require_once 'module/moduleCurrencyRates.php';
-			$moduleCurrencyRates = new moduleCurrencyRates();
-			break;
 		case 'list_languages' :
 		case 'edit_language' :
 		case 'add_language' :
@@ -197,38 +186,6 @@ if ($is_logged_in == 0) {
 				$realaction = $_REQUEST ['realaction'];
 				$all_data = $_REQUEST ['all_data'];
 				$display = $moduleSettings->display_system_settings( $realaction, $all_data );
-				break;
-
-			/* currencies */
-
-			case 'list_currencies' :
-				$letter = $_REQUEST ['letter'];
-				$display = $moduleCurrencies->display_list_currencies( $letter );
-				break;
-			case 'edit_currency' :
-				$realaction = $_REQUEST ['realaction'];
-				$id = $_REQUEST ['currencyid'];
-				$all_data = $_REQUEST ['all_data'];
-				$display = $moduleCurrencies->display_edit_currency( $realaction, $id, $all_data );
-				break;
-			case 'delete_currency' :
-				$realaction = $_REQUEST ['realaction'];
-				$id = $_REQUEST ['currencyid'];
-				$display = $moduleCurrencies->display_delete_currency( $realaction, $id );
-				break;
-
-			/* currencyrates */
-
-			case 'list_currencyrates' :
-				$letter = $_REQUEST ['letter'];
-				$display = $moduleCurrencyRates->display_list_currencyrates( $letter );
-				break;
-			case 'edit_currencyrate' :
-				$realaction = $_REQUEST ['realaction'];
-				$currencyid = $_REQUEST ['mcu_currencyid'];
-				$validfrom = $_REQUEST ['validfrom'];
-				$all_data = $_REQUEST ['all_data'];
-				$display = $moduleCurrencyRates->display_edit_currencyrate( $realaction, $currencyid, $validfrom, $all_data );
 				break;
 
 			/* languages */

@@ -59,7 +59,7 @@ function toggle(div_name) {
 						<th align="right">{#TEXT_193#}</th>
 						<td class="contrastbgcolor" align="center">{$file.bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$file.invoicedate}</td>
-						<td align="right" class="contrastbgcolor"><font {if $file.amount < 0}color="red"{else}color="black"{/if}>{$file.amount|number_format} {$CURRENCY}</font></td>
+						<td align="right" class="contrastbgcolor"><font {if $file.amount < 0}color="red"{else}color="black"{/if}>{$file.amount|number_format} {#CURRENCY#}</font></td>
 						<td class="contrastbgcolor">{$file.contractpartnername|escape:htmlall}</td>
 						<td class="contrastbgcolor">{$file.comment|escape:htmlall}</td>
 						<td class="contrastbgcolor">{$CAPITALSOURCECOMMENT|escape:htmlall}</td>
@@ -93,7 +93,7 @@ function toggle(div_name) {
 						<th align="right">{#TEXT_194#}</th>
 						<td class="contrastbgcolor" align="center">{$moneyflow.bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$moneyflow.invoicedate}</td>
-						<td align="right" class="contrastbgcolor"><font {if $moneyflow.amount < 0}color="red"{else}color="black"{/if}>{$moneyflow.amount|number_format} {$CURRENCY}</font></td>
+						<td align="right" class="contrastbgcolor"><font {if $moneyflow.amount < 0}color="red"{else}color="black"{/if}>{$moneyflow.amount|number_format} {#CURRENCY#}</font></td>
 						<td class="contrastbgcolor">{$moneyflow.contractpartnername|escape:htmlall}</td>
 						<td class="contrastbgcolor">{$moneyflow.comment|escape:htmlall}</td>
 						<td class="contrastbgcolor">{$moneyflow.capitalsourcecomment|escape:htmlall}</td>
@@ -130,7 +130,7 @@ function toggle(div_name) {
 						<th align="right">{#TEXT_193#}</th>
 						<td class="contrastbgcolor" align="center">{$file.bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$file.invoicedate}</td>
-						<td align="right" class="contrastbgcolor"><font {if $file.amount < 0}color="red"{else}color="black"{/if}>{$file.amount|number_format} {$CURRENCY}</font></td>
+						<td align="right" class="contrastbgcolor"><font {if $file.amount < 0}color="red"{else}color="black"{/if}>{$file.amount|number_format} {#CURRENCY#}</font></td>
 						<td class="contrastbgcolor">{$file.contractpartnername|escape:htmlall}</td>
 						<td class="contrastbgcolor">{$file.comment|escape:htmlall}</td>
 						<td class="contrastbgcolor">{$CAPITALSOURCECOMMENT|escape:htmlall}</td>
@@ -142,7 +142,7 @@ function toggle(div_name) {
 						<th align="right">{#TEXT_194#}</th>
 						<td class="contrastbgcolor" align="center">{$moneyflow.bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$moneyflow.invoicedate}</td>
-						<td align="right" class="contrastbgcolor"><font {if $moneyflow.amount < 0}color="red"{else}color="black"{/if}>{$moneyflow.amount|number_format} {$CURRENCY}</font></td>
+						<td align="right" class="contrastbgcolor"><font {if $moneyflow.amount < 0}color="red"{else}color="black"{/if}>{$moneyflow.amount|number_format} {#CURRENCY#}</font></td>
 						<td class="contrastbgcolor">{$moneyflow.contractpartnername|escape:htmlall}</td>
 						<td class="contrastbgcolor">{$moneyflow.comment|escape:htmlall}</td>
 						<td class="contrastbgcolor">{$moneyflow.capitalsourcecomment|escape:htmlall}</td>
@@ -180,7 +180,7 @@ function toggle(div_name) {
 						<th align="right">{#TEXT_193#}</th>
 						<td class="contrastbgcolor" align="center">{$file.bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$file.invoicedate}</td>
-						<td align="right" class="contrastbgcolor"><font {if $file.amount < 0}color="red"{else}color="black"{/if}>{$file.amount|number_format} {$CURRENCY}</font></td>
+						<td align="right" class="contrastbgcolor"><font {if $file.amount < 0}color="red"{else}color="black"{/if}>{$file.amount|number_format} {#CURRENCY#}</font></td>
 						<td class="contrastbgcolor">{$file.contractpartnername|escape:htmlall}</td>	
 						<td class="contrastbgcolor">{$file.comment|escape:htmlall}</td>
 						<td class="contrastbgcolor">{$CAPITALSOURCECOMMENT|escape:htmlall}</td>
@@ -192,7 +192,7 @@ function toggle(div_name) {
 						<th align="right">{#TEXT_194#}</th>
 						<td class="contrastbgcolor" align="center">{$moneyflow.bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$moneyflow.invoicedate}</td>
-						<td align="right" class="contrastbgcolor"><font {if $moneyflow.amount < 0}color="red"{else}color="black"{/if}>{$moneyflow.amount|number_format} {$CURRENCY}</font></td>
+						<td align="right" class="contrastbgcolor"><font {if $moneyflow.amount < 0}color="red"{else}color="black"{/if}>{$moneyflow.amount|number_format} {#CURRENCY#}</font></td>
 						<td class="contrastbgcolor">{$moneyflow.contractpartnername|escape:htmlall}</td>
 						<td class="contrastbgcolor">{$moneyflow.comment|escape:htmlall}</td>
 						<td class="contrastbgcolor">{$moneyflow.capitalsourcecomment|escape:htmlall}</td>
