@@ -9,6 +9,17 @@ further thoughts:
    - centralize all cachenames
    - think about removing "movement_calculated" from monthlysettlements since we now have caching
 
+
+
+###########################################################################################################################
+
+What is currently missing:
+
+ - good User/Group handling (users cannot assigned to groups)
+ - Posting Accounts cannot be listed, edited, deleted, added
+ - PredefMoneyflows can not be assigned with default Posting Accounts
+
+
 ###########################################################################################################################
 
 Bugs detected so far:
