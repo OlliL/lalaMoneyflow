@@ -194,21 +194,6 @@ CREATE TABLE predefmoneyflows (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `languages`
---
-
-DROP TABLE IF EXISTS languages;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE languages (
-  languageid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `language` varchar(10) NOT NULL,
-  PRIMARY KEY (languageid),
-  UNIQUE KEY mla_i_01 (`language`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mla';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `imp_data`
 --
 
@@ -325,9 +310,7 @@ CREATE TABLE user_groups (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-02-17 18:53:31
-INSERT INTO languages VALUES (2,'deutsch');
-INSERT INTO languages VALUES (1,'english');
+-- Dump completed on 2014-02-17 20:08:06
 INSERT INTO cmp_data_formats VALUES (1,'Postbank Direkt','/^Datum	Wertstellung	Art/','	',1,5,7,4,'DD.MM.YYYY',',','.',6,3,'/^(Überweisung|Dauerauftrag)/');
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','/^Buchungstag	Wertstellungstag	Verwendungszweck/','	',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','/^\"Buchungstag\";\"Wertstellung\";\"Umsatzart\"/',';',1,6,7,4,'DD.MM.YYYY',',','.',5,3,'/^(Gutschrift|Gehalt)/');
