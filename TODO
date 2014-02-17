@@ -1,4 +1,3 @@
-2. move coreLanguage-stuff to the client
 3. move coreSettings-stuff to REST
 4. redo the user handling
 5. implement Logout Call to destroy the session on the server.

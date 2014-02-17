@@ -27,17 +27,17 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.50 2014/02/16 10:36:39 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.51 2014/02/17 19:07:27 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
-require_once 'core/coreDomains.php';
+require_once 'core/coreText.php';
 
 class moduleMonthlySettlement extends module {
 
 	function moduleMonthlySettlement() {
 		parent::__construct();
-		$this->coreDomains = new coreDomains();
+		$this->coreText = new coreText();
 	}
 
 	function display_list_monthlysettlements($month, $year) {
@@ -57,7 +57,7 @@ class moduleMonthlySettlement extends module {
 			foreach ( $allMonth as $key => $value ) {
 				$temp_array = array (
 						'nummeric' => sprintf( '%02d', $value ),
-						'name' => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int ) $value )
+						'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $value )
 				);
 				$months [] = $temp_array;
 				if (( int ) $month === ( int ) $value) {
@@ -141,7 +141,7 @@ class moduleMonthlySettlement extends module {
 
 		$monthArray = array (
 				'nummeric' => sprintf( '%02d', $month ),
-				'name' => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int ) $month )
+				'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month )
 		);
 
 		$this->template->assign( 'MONTH', $monthArray );
@@ -175,7 +175,7 @@ class moduleMonthlySettlement extends module {
 
 					$monthArray = array (
 							'nummeric' => sprintf( '%02d', $month ),
-							'name' => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int ) $month )
+							'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month )
 					);
 					$this->template->assign( 'SUMAMOUNT', $sumamount );
 					$this->template->assign( 'MONTH', $monthArray );

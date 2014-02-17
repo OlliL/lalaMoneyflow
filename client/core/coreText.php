@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreText.php,v 1.21 2014/02/17 17:55:51 olivleh1 Exp $
+// $Id: coreText.php,v 1.22 2014/02/17 19:07:27 olivleh1 Exp $
 //
 require_once 'core/core.php';
 
@@ -61,6 +61,10 @@ class coreText extends core {
 		file_put_contents( $this->getFileName( $languageid ), $lines );
 	}
 
+	public final function create_new_textfile($sourceId, $newId) {
+		copy( $this->getFileName( $sourceId ), $this->getFileName( $newId ) );
+	}
+
 	public final function get_text($id) {
 		global $GUI_LANGUAGE;
 		$inifile = $this->get_lang_data( $GUI_LANGUAGE );
@@ -69,5 +73,53 @@ class coreText extends core {
 
 	public final function get_graph($id) {
 		return html_entity_decode( $this->get_text( $id ), ENT_COMPAT | ENT_HTML401, ENCODING );
+	}
+
+	private final function getDomain($domain) {
+		switch ($domain) {
+			case 'MONTHS' :
+				return array (
+						1 => 155,
+						2 => 156,
+						3 => 157,
+						4 => 158,
+						5 => 159,
+						6 => 160,
+						7 => 161,
+						8 => 162,
+						9 => 163,
+						10 => 164,
+						11 => 165,
+						12 => 166
+				);
+			case 'CAPITALSOURCE_TYPE' :
+				return array (
+						1 => 173,
+						2 => 174
+				);
+			case 'CAPITALSOURCE_STATE' :
+				return array (
+						1 => 175,
+						2 => 176
+				);
+		}
+	}
+
+	public final function get_domain_data($domain) {
+		$ids = self::getDomain( $domain );
+		if (is_array( $ids )) {
+			foreach ( $ids as $key => $id ) {
+				$retval [] = array (
+						'value' => $key,
+						'text' => $this->get_text( $id )
+				);
+			}
+		}
+		return $retval;
+	}
+
+	public final function get_domain_meaning($domain, $value) {
+		$ids = self::getDomain( $domain );
+		return $this->get_text( $ids [$value] );
 	}
 }

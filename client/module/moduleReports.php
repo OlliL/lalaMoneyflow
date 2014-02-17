@@ -27,11 +27,11 @@ use Zend\Validator\File\Count;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.79 2014/02/16 14:43:14 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.80 2014/02/17 19:07:27 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
-require_once 'core/coreDomains.php';
+require_once 'core/coreText.php';
 
 if (ENABLE_JPGRAPH) {
 	require_once 'jpgraph.php';
@@ -43,7 +43,7 @@ class moduleReports extends module {
 	public final function __construct() {
 		parent::__construct();
 
-		$this->coreDomains = new coreDomains();
+		$this->coreText = new coreText();
 	}
 
 	public final function display_list_reports($month, $year, $sortby, $order) {
@@ -70,7 +70,7 @@ class moduleReports extends module {
 			foreach ( $allMonth as $key => $value ) {
 				$months [] = array (
 						'nummeric' => sprintf( '%02d', $value ),
-						'name' => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int ) $value )
+						'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $value )
 				);
 			}
 		}
@@ -156,8 +156,8 @@ class moduleReports extends module {
 
 				if (is_array( $turnover_capitalsources )) {
 					foreach ( $turnover_capitalsources as $key => $turnover_capitalsource ) {
-						$turnover_capitalsources [$key] ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $turnover_capitalsource ['type'] );
-						$turnover_capitalsources [$key] ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $turnover_capitalsource ['state'] );
+						$turnover_capitalsources [$key] ['typecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_TYPE', $turnover_capitalsource ['type'] );
+						$turnover_capitalsources [$key] ['statecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_STATE', $turnover_capitalsource ['state'] );
 						$movement_calculated_month += $turnover_capitalsource ['calcamount'] - $turnover_capitalsource ['lastamount'];
 						$calcamount += $turnover_capitalsource ['calcamount'];
 						$lastamount += $turnover_capitalsource ['lastamount'];
@@ -170,7 +170,7 @@ class moduleReports extends module {
 
 				$month_array = array (
 						'nummeric' => sprintf( '%02d', $month ),
-						'name' => $this->coreDomains->get_domain_meaning( 'MONTHS', ( int ) $month )
+						'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month )
 				);
 
 				$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );

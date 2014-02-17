@@ -24,66 +24,90 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreLanguages.php,v 1.15 2014/02/17 17:55:51 olivleh1 Exp $
+// $Id: coreLanguages.php,v 1.16 2014/02/17 19:07:27 olivleh1 Exp $
 //
 require_once 'core/core.php';
-require_once 'core/coreSettings.php';
 
 class coreLanguages extends core {
+	private $languageConf = 'rest/client/locale/languages.conf';
+	private $columnNames = array (
+			'languageid',
+			'language'
+	);
 
 	function coreLanguages() {
 		parent::__construct();
-		$this->coreSettings = new coreSettings();
 	}
 
-	function count_all_data() {
-		if ($num = $this->select_col( 'SELECT count(*)
-						  FROM languages' )) {
-			return $num;
-		} else {
-			return;
+	private final function getLanguagesFile() {
+		return file( $this->languageConf );
+	}
+
+	private final function splitLanguagesFile() {
+		return array_map( 'str_getcsv', $this->getLanguagesFile() );
+	}
+
+	private final function mapToResult($csvRows) {
+		foreach ( $csvRows as $csvRow ) {
+			$result [] = array_combine( $this->columnNames, $csvRow );
+			$sort [] = strtolower( $csvRow [1] );
 		}
+		if (count( $sort ) > 1)
+			array_multisort( $sort, $result );
+		return $result;
 	}
 
-	function get_all_data() {
-		return $this->select_rows( '	SELECT languageid
-						      ,language
-					          FROM languages
-					         ORDER BY language' );
+	public final function count_all_data() {
+		return count( $this->getLanguagesFile() );
 	}
 
-	function get_all_matched_data($letter) {
-		return $this->select_rows( "	SELECT languageid
-						      ,language
-					          FROM languages
-						 WHERE UPPER(language) LIKE UPPER('$letter%')
-						 ORDER BY language" );
+	public final function get_all_data() {
+		return $this->mapToResult( $this->splitLanguagesFile() );
 	}
 
-	function get_all_index_letters() {
-		return $this->select_cols( '	SELECT DISTINCT UPPER(SUBSTR(language,1,1)) letters
-						  FROM languages
-						 ORDER BY letters' );
-	}
-
-	function add_language($language, $source) {
-		error('not supported right now');
-
-		if ($ret == 0) {
-			return false;
-		} else {
-			return true;
+	public final function get_all_matched_data($letter) {
+		foreach ( $this->splitLanguagesFile() as $csvRow ) {
+			if (strcasecmp( (substr( $csvRow [1], 0, 1 )), $letter ) === 0)
+				$csvRows [] = $csvRow;
 		}
+		return $this->mapToResult( $csvRows );
 	}
 
-	function get_language($id) {
-		if (! empty( $id )) {
-			return $this->select_col( "	SELECT language
-						          FROM languages
-						         WHERE languageid = $id
-						         LIMIT 1" );
-		} else {
-			return;
+	public final function get_all_index_letters() {
+		foreach ( $this->splitLanguagesFile() as $csvRow ) {
+			$result [] = strtoupper( substr( $csvRow [1], 0, 1 ) );
 		}
+		$result = array_unique( $result );
+		sort( $result );
+		return $result;
+	}
+
+	public final function add_language($language) {
+		$cvsRows = $this->splitLanguagesFile();
+		$nextId = 0;
+
+		$fp = fopen( $this->languageConf, 'w' );
+		if ($fp !== FALSE) {
+			foreach ( $cvsRows as $csvRow ) {
+				fputcsv( $fp, $csvRow );
+				if ($nextId < $csvRow [0])
+					$nextId = $csvRow [0];
+			}
+
+			fputcsv( $fp, array (
+					++ $nextId,
+					$language
+			) );
+			fclose( $fp );
+		}
+		return $nextId;
+	}
+
+	public final function get_language_name($id) {
+		foreach ( $this->splitLanguagesFile() as $csvRow ) {
+			if ($csvRow [0] == $id)
+				$name = $csvRow [1];
+		}
+		return $name;
 	}
 }

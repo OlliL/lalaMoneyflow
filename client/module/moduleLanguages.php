@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleLanguages.php,v 1.9 2014/02/17 17:55:51 olivleh1 Exp $
+# $Id: moduleLanguages.php,v 1.10 2014/02/17 19:07:27 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -33,6 +33,9 @@ require_once 'core/coreText.php';
 require_once 'core/coreSettings.php';
 
 class moduleLanguages extends module {
+	private $coreLanguages;
+	private $coreText;
+	private $coreSettings;
 
 	function moduleLanguages() {
 		parent::__construct();
@@ -83,18 +86,10 @@ class moduleLanguages extends module {
 
 			default:
 				$all_data     = $this->coreText->get_lang_data( $id );
+				$lang         = $this->coreLanguages->get_language_name( $id );
+
 				$all_data_eng = $this->coreText->get_lang_data( 1 );
-
-// 				foreach($all_data as $key => $data) {
-// 					$all_data[$key]['text'] = htmlentities($data['text'], ENT_COMPAT | ENT_HTML401, ENCODING);
-// 				}
-// 				foreach($all_data_eng as $key => $data) {
-// 					$all_data_eng[$key]['text'] = htmlentities($data['text'], ENT_COMPAT | ENT_HTML401, ENCODING);
-// 				}
-
-
-				$lang_eng     = $this->coreLanguages->get_language( 1 );
-				$lang         = $this->coreLanguages->get_language( $id );
+				$lang_eng     = $this->coreLanguages->get_language_name( 1 );
 
 				$this->template->assign( 'LANGUAGEID',   $id           );
 				$this->template->assign( 'LANG',         $lang         );
@@ -116,9 +111,10 @@ class moduleLanguages extends module {
 		switch( $realaction ) {
 			case 'save':
 
-				$ret = $this->coreLanguages->add_language( $all_data['language'], $all_data['source'] );
+				$languageId = $this->coreLanguages->add_language( $all_data['language'] );
 
-				if( $ret ) {
+				if( $languageId > 0 ) {
+					$this->coreText->create_new_textfile($all_data['source'], $languageId);
 					$this->template->assign( 'CLOSE',    1 );
 					break;
 				}

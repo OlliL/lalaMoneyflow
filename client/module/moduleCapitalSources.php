@@ -24,19 +24,19 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.43 2014/02/16 14:43:14 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.44 2014/02/17 19:07:27 olivleh1 Exp $
 //
 
 use rest\base\ErrorCode;
 use rest\client\handler\CapitalsourceControllerHandler;
 require_once 'module/module.php';
-require_once 'core/coreDomains.php';
+require_once 'core/coreText.php';
 
 class moduleCapitalSources extends module {
 
 	public final function __construct() {
 		parent::__construct();
-		$this->coreDomains = new coreDomains();
+		$this->coreText = new coreText();
 	}
 
 	public final function display_list_capitalsources($letter) {
@@ -46,8 +46,8 @@ class moduleCapitalSources extends module {
 		$all_data = $listCapitalsources ['capitalsources'];
 
 		foreach ( $all_data as $key => $data ) {
-			$all_data [$key] ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $data ['state'] );
-			$all_data [$key] ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $data ['type'] );
+			$all_data [$key] ['statecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_STATE', $data ['state'] );
+			$all_data [$key] ['typecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_TYPE', $data ['type'] );
 			if ($data ['mur_userid'] == USERID) {
 				$all_data [$key] ['owner'] = true;
 			} else {
@@ -134,8 +134,8 @@ class moduleCapitalSources extends module {
 						$all_data ['validtil'] = convert_date_to_gui( MAX_YEAR );
 					}
 				}
-				$type_values = $this->coreDomains->get_domain_data( 'CAPITALSOURCE_TYPE' );
-				$state_values = $this->coreDomains->get_domain_data( 'CAPITALSOURCE_STATE' );
+				$type_values = $this->coreText->get_domain_data( 'CAPITALSOURCE_TYPE' );
+				$state_values = $this->coreText->get_domain_data( 'CAPITALSOURCE_STATE' );
 
 				$this->template->assign( 'TYPE_VALUES', $type_values );
 				$this->template->assign( 'STATE_VALUES', $state_values );
@@ -161,8 +161,8 @@ class moduleCapitalSources extends module {
 				if ($capitalsourceid > 0) {
 					$all_data = CapitalsourceControllerHandler::getInstance()->showDeleteCapitalsource( $capitalsourceid );
 					if (is_array( $all_data )) {
-						$all_data ['statecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_STATE', $all_data ['state'] );
-						$all_data ['typecomment'] = $this->coreDomains->get_domain_meaning( 'CAPITALSOURCE_TYPE', $all_data ['type'] );
+						$all_data ['statecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_STATE', $all_data ['state'] );
+						$all_data ['typecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_TYPE', $all_data ['type'] );
 						$this->template->assign( 'ALL_DATA', $all_data );
 					}
 				}
