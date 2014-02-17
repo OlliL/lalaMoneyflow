@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleLanguages.php,v 1.8 2014/02/16 14:43:14 olivleh1 Exp $
+# $Id: moduleLanguages.php,v 1.9 2014/02/17 17:55:51 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -84,12 +84,13 @@ class moduleLanguages extends module {
 			default:
 				$all_data     = $this->coreText->get_lang_data( $id );
 				$all_data_eng = $this->coreText->get_lang_data( 1 );
-				foreach($all_data as $key => $data) {
-					$all_data[$key]['text'] = htmlentities($data['text'], ENT_COMPAT | ENT_HTML401, ENCODING);
-				}
-				foreach($all_data_eng as $key => $data) {
-					$all_data_eng[$key]['text'] = htmlentities($data['text'], ENT_COMPAT | ENT_HTML401, ENCODING);
-				}
+
+// 				foreach($all_data as $key => $data) {
+// 					$all_data[$key]['text'] = htmlentities($data['text'], ENT_COMPAT | ENT_HTML401, ENCODING);
+// 				}
+// 				foreach($all_data_eng as $key => $data) {
+// 					$all_data_eng[$key]['text'] = htmlentities($data['text'], ENT_COMPAT | ENT_HTML401, ENCODING);
+// 				}
 
 
 				$lang_eng     = $this->coreLanguages->get_language( 1 );

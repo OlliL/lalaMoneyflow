@@ -24,46 +24,50 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreText.php,v 1.20 2014/02/16 14:43:14 olivleh1 Exp $
+// $Id: coreText.php,v 1.21 2014/02/17 17:55:51 olivleh1 Exp $
 //
 require_once 'core/core.php';
 
 class coreText extends core {
 	private $inifile;
 
-	function coreText() {
+	public final function __construct() {
 		parent::__construct();
 		$this->inifile = null;
 	}
 
-	function get_text($id) {
+	private final function getFileName($id) {
+		return 'rest/client/locale/' . $id . '.conf';
+	}
+
+	private final function getTextfile($id) {
+		if ($this->inifile === null || $this->inifile [$id] === null)
+			$this->inifile [$id] = parse_ini_file( $this->getFileName( $id ) );
+		return $this->inifile [$id];
+	}
+
+	public final function get_lang_data($id) {
+		$inifile = $this->getTextfile( $id );
+		return $inifile;
+	}
+
+	public final function update_text($id, $languageid, $text) {
+		$lines = file( $this->getFileName( $languageid ) );
+		foreach ( $lines as $key => $line ) {
+			if (strpos( $line, $id . ' = ' ) === 0) {
+				$lines [$key] = sprintf( "%s = '%s'\n", $id, htmlentities( $text, ENT_COMPAT | ENT_HTML401, ENCODING ) );
+			}
+		}
+		file_put_contents( $this->getFileName( $languageid ), $lines );
+	}
+
+	public final function get_text($id) {
 		global $GUI_LANGUAGE;
-		if ($this->inifile === null)
-			$this->inifile = parse_ini_file( 'rest/client/locale/' . $GUI_LANGUAGE . '.conf' );
-
-		return $this->inifile ['TEXT_' . $id];
-
+		$inifile = $this->get_lang_data( $GUI_LANGUAGE );
+		return $inifile ['TEXT_' . $id];
 	}
 
-	function get_lang_data($id) {
-		return $this->select_rows( "	SELECT textid
-						      ,text
-						  FROM text
-						 WHERE mla_languageid = $id" );
-	}
-
-	function update_text($id, $languageid, $text) {
-		return $this->update_row( "	UPDATE text
-						   SET text = '$text'
-						 WHERE textid         = $id
-						   AND mla_languageid = $languageid" );
-	}
-
-	function get_error($id) {
-		return $this->get_text( $id );
-	}
-
-	function get_graph($id) {
-		return html_entity_decode($this->get_text( $id ), ENT_COMPAT | ENT_HTML401, ENCODING );
+	public final function get_graph($id) {
+		return html_entity_decode( $this->get_text( $id ), ENT_COMPAT | ENT_HTML401, ENCODING );
 	}
 }

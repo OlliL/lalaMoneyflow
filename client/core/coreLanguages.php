@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreLanguages.php,v 1.14 2014/02/16 14:43:14 olivleh1 Exp $
+// $Id: coreLanguages.php,v 1.15 2014/02/17 17:55:51 olivleh1 Exp $
 //
 require_once 'core/core.php';
 require_once 'core/coreSettings.php';
@@ -67,7 +67,7 @@ class coreLanguages extends core {
 	}
 
 	function add_language($language, $source) {
-		$ret = $this->exec_function( "add_language( '$language', $source )" );
+		error('not supported right now');
 
 		if ($ret == 0) {
 			return false;
