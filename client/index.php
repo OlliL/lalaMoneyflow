@@ -1,5 +1,4 @@
 <?php
-use rest\base\config\CacheManager;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -25,7 +24,7 @@ use rest\base\config\CacheManager;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.66 2014/02/16 14:43:13 olivleh1 Exp $
+// $Id: index.php,v 1.67 2014/02/17 21:01:43 olivleh1 Exp $
 //
 require_once 'include.php';
 require_once 'functions.php';
@@ -42,7 +41,6 @@ $timer = new utilTimer();
 $timer->mStart();
 //
 
-$coreSettings = new \coreSettings();
 
 $action = $_POST ['action'] ? $_POST ['action'] : $_GET ['action'];
 
@@ -85,7 +83,6 @@ if ($is_logged_in == 2) {
 
 	/* user tries to login */
 
-	$GUI_LANGUAGE = $coreSettings->get_displayed_language( 0 );
 	$realaction = $_REQUEST ['realaction'];
 	$name = $_REQUEST ['name'];
 	$password = $_REQUEST ['password'];

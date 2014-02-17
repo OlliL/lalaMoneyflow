@@ -25,7 +25,7 @@ use rest\client\handler\SessionControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.34 2014/02/17 20:54:27 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.35 2014/02/17 21:01:43 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -72,6 +72,7 @@ class moduleUsers extends module {
 
 	// uses REST Service
 	function display_login_user($realaction, $name, $password, $stay_logged_in, $request_uri) {
+		global $GUI_LANGUAGE;
 		switch ($realaction) {
 			case 'login' :
 				if ($stay_logged_in == 'on') {
@@ -103,6 +104,7 @@ class moduleUsers extends module {
 			return;
 		} else {
 			define( USERID, 0 );
+			$GUI_LANGUAGE = $this->coreSettings->get_displayed_language( USERID );
 			$this->template->assign( 'NAME', $name );
 			$this->template->assign( 'STAY_LOGGED_IN', $stay_logged_in );
 			$this->template->assign( 'ERRORS', $this->get_errors() );
@@ -156,14 +158,13 @@ class moduleUsers extends module {
 						add_error( 140 );
 					} else {
 						$ret = $this->coreUsers->add_user( $all_data ['name'], $all_data ['password1'], $all_data ['perm_login'], $all_data ['perm_admin'], $all_data ['att_new'] );
-						if( $ret > 0 ) {
+						if ($ret > 0) {
 							$coreSettings = new coreSettings();
-							if( ! $this->coreSettings->init_settings( $ret ) ) {
+							if (! $this->coreSettings->init_settings( $ret )) {
 								$this->coreUsers->delete_user( $ret );
 								$ret = false;
 							}
 						}
-
 					}
 				} else {
 					$ret = $this->coreUsers->update_user( $id, $all_data ['name'], $all_data ['perm_login'], $all_data ['perm_admin'], $all_data ['att_new'] );
