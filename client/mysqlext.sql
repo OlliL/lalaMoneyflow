@@ -267,44 +267,6 @@ BEGIN
 END;$$
 
 /*
- * this function adds a new language by copying the
- * text from a "source" language
- */
-DROP FUNCTION IF EXISTS add_language$$
-CREATE FUNCTION add_language (pi_language VARCHAR(10)
-                             ,pi_source   INT(10) UNSIGNED
-                             ) RETURNS  INT(10)
-READS SQL DATA
-BEGIN
-  DECLARE l_languageid INT(10);
-  
-  INSERT INTO languages (language
-                        )
-                          VALUES
-                        (pi_language
-                        );
-
-  SELECT LAST_INSERT_ID()
-    INTO l_languageid
-    FROM DUAL;
-
-  INSERT INTO text (textid
-                   ,mla_languageid
-                   ,text
-                   ,type
-                   )
-                   SELECT textid
-                         ,l_languageid
-                         ,text
-                         ,type
-                     FROM text
-		    WHERE mla_languageid = pi_source;
-
-  RETURN l_languageid;
-  
-END;$$
-
-/*
  * this function returns the calculated movment in
  * a given month/year combination to store it for
  * example into monthlysettlements.movement_calculated

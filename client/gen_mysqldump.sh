@@ -21,7 +21,6 @@ mysqldump -u root --skip-quote-names --skip-triggers --default-character-set=lat
 	postingaccounts \
 	predefmoneyflows \
 	languages \
-	text \
 	imp_data \
 	imp_mapping_source \
 	imp_mapping_partner \
@@ -45,7 +44,6 @@ mysqldump -u root --skip-quote-names --skip-triggers --default-character-set=lat
 #mysqldump -u root --set-variable=quote-names=FALSE --set-variable=extended-insert=FALSE --default-character-set=latin1 --tables moneyflow \
 mysqldump -u root --skip-quote-names --skip-extended-insert --skip-triggers --default-character-set=latin1 --tables moneyflow \
 	languages \
-	text \
 	cmp_data_formats \
 		|grep INSERT >> ${PROGPATH}/mysqldump.sql
 
