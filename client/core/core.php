@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2005-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: core.php,v 1.27 2014/01/26 12:24:47 olivleh1 Exp $
+// $Id: core.php,v 1.28 2014/02/17 20:54:27 olivleh1 Exp $
 //
 require_once 'DbConnection.php';
 

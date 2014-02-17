@@ -25,7 +25,7 @@ use rest\client\handler\SessionControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.33 2014/02/16 14:43:14 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.34 2014/02/17 20:54:27 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -156,6 +156,14 @@ class moduleUsers extends module {
 						add_error( 140 );
 					} else {
 						$ret = $this->coreUsers->add_user( $all_data ['name'], $all_data ['password1'], $all_data ['perm_login'], $all_data ['perm_admin'], $all_data ['att_new'] );
+						if( $ret > 0 ) {
+							$coreSettings = new coreSettings();
+							if( ! $this->coreSettings->init_settings( $ret ) ) {
+								$this->coreUsers->delete_user( $ret );
+								$ret = false;
+							}
+						}
+
 					}
 				} else {
 					$ret = $this->coreUsers->update_user( $id, $all_data ['name'], $all_data ['perm_login'], $all_data ['perm_admin'], $all_data ['att_new'] );
