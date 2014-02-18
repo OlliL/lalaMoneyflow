@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,44 +25,40 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: SessionControllerHandler.php,v 1.4 2014/02/18 19:21:41 olivleh1 Exp $
+// $Id: AbstractEnvironment.php,v 1.1 2014/02/18 19:21:41 olivleh1 Exp $
 //
-namespace rest\client\handler;
+namespace rest\base;
 
-use rest\client\util\CallServerUtil;
-use rest\base\AbstractJsonSender;
-use rest\client\mapper\ClientArrayMapperEnum;
-use rest\base\JsonAutoMapper;
-
-class SessionControllerHandler extends AbstractJsonSender {
+abstract class AbstractEnvironment {
 	private static $instance;
-	private static $callServer;
+	private $environment = array ();
 
-	protected function __construct() {
-		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
+	private function __construct() {
 	}
 
 	public static function getInstance() {
 		if (! isset( self::$instance )) {
-			self::$instance = new SessionControllerHandler();
-			self::$callServer = CallServerUtil::getInstance();
+			// $className = __CLASS__;
+			$className = get_called_class();
+			self::$instance = new $className();
 		}
 		return self::$instance;
 	}
 
-	public final function doLogon($user, $password) {
-		$url = URLPREFIX . SERVERPREFIX . 'session/logon/' . $user . '/' . $password;
-		$response = self::$callServer->getJson( $url );
-		if (is_array( $response )) {
-			$doLogonResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\session' );
-			$result = array (
-					'mur_userid' => $doLogonResponse->getUserid(),
-					'sessionid' => $doLogonResponse->getSessionId(),
-					'dateformat' => $doLogonResponse->getSettingDateFormat(),
-					'displayed_language' => $doLogonResponse->getSettingDisplayedLanguage()
-			);
-		}
-		return $result;
+	public final function __clone() {
+		trigger_error( 'Cloning not supported', E_USER_ERROR );
+	}
+
+	public final function __wakeup() {
+		trigger_error( 'Deserialisation not supported', E_USER_ERROR );
+	}
+
+	public final function getValue($key) {
+		return $this->environment [$key];
+	}
+
+	public final function setValue($key, $value) {
+		$this->environment [$key] = $value;
 	}
 }
 

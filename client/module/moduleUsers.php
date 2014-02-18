@@ -25,7 +25,7 @@ use rest\client\handler\SessionControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.35 2014/02/17 21:01:43 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.36 2014/02/18 19:21:41 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -45,7 +45,7 @@ class moduleUsers extends module {
 	// uses REST Service
 	function is_logged_in() {
 		$this->coreSession->start();
-		if (! $this->coreSession->getAttribute( 'users_name' ) || ! $this->coreSession->getAttribute( 'users_id' )) {
+		if (! $this->coreSession->getAttribute( 'users_id' )) {
 			return 3;
 		} else {
 			define( USERID, $this->coreSession->getAttribute( 'users_id' ) );
@@ -88,7 +88,6 @@ class moduleUsers extends module {
 
 				$session = SessionControllerHandler::getInstance()->doLogon( $name, sha1( $password ) );
 				if ($session) {
-					$this->coreSession->setAttribute( 'users_name', $session ['username'] );
 					$this->coreSession->setAttribute( 'users_id', $session ['mur_userid'] );
 					$this->coreSession->setAttribute( 'server_id', $session ['sessionid'] );
 					$this->coreSession->setAttribute( 'date_format', $session ['dateformat'] );
