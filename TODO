@@ -1,3 +1,33 @@
+- merge all Logic to work with the new accessor tables
+- rename User(Service|Dao|Controller) to Access*
+
+- no moneyflows must be createable before the current group assignment was valid
+  (no moneyflows for the previous group after the group assignment changed)
+
+Migration:
+
+update moneyflows set mac_id_creator=mur_userid,mac_id_accessor=(select IF(id_level_2=0,id_level_1,id_level_2) from access_flattened where bookingdate between validfrom and validtil and id=mur_userid);
+
+
+
+select mur_userid,moneyflowid from vw_moneyflows where mug_mur_userid=1 and (private=0 or mur_userid=1) and moneyflowid not in (
+select a.moneyflowid from moneyflows a,test_flach b where b.id=1 and a.bookingdate between b.validfrom and b.validtil and (a.groupid=b.hier_1 or a.groupid=b.hier_2))
+
+mysql> update moneyflows a set groupid=(select hier_2 from test_flach b where a.mur_userid=b.id and a.bookingdate between b.validfrom and validtil);
+Query OK, 29 rows affected (3.73 sec)
+Rows matched: 14096  Changed: 29  Warnings: 0
+
+mysql> update moneyflows set groupid=mur_userid where private=1;
+Query OK, 28 rows affected (0.16 sec)
+Rows matched: 28  Changed: 28  Warnings: 0
+
+
+
+
+
+
+
+
 3. move coreSettings-stuff to REST
 4. redo the user handling
 5. implement Logout Call to destroy the session on the server.

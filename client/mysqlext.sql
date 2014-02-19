@@ -18,25 +18,25 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_user_groups (
                
                
 /*
- * this view will show all data from all users which are in the
- * same group as mur_userid. Use mug_mur_userid in the query,
- * mur_userid is the real userid of the dataset
+ * this view will show all data from moneyflows which is visible
+ * to a user. Use maf_id in your SELECT for your userid. In
+ * mac_id_creator you'll find the original userid of the creator
  */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_moneyflows (
-   mur_userid
-  ,mug_mur_userid
-  ,moneyflowid         
+   mac_id_creator
+  ,maf_id
+  ,moneyflowid
   ,bookingdate
-  ,invoicedate          
-  ,amount               
-  ,mcs_capitalsourceid  
+  ,invoicedate
+  ,amount
+  ,mcs_capitalsourceid
   ,mcp_contractpartnerid
-  ,comment              
+  ,comment
   ,mpa_postingaccountid
-  ,private              
+  ,private
   ) AS
-      SELECT mmf.mur_userid
-            ,mug.mug2_mur_userid
+      SELECT mmf.mac_id_creator
+            ,maf.id
             ,mmf.moneyflowid
             ,mmf.bookingdate
             ,mmf.invoicedate
@@ -46,15 +46,18 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_moneyflows (
             ,mmf.comment
             ,mmf.mpa_postingaccountid
             ,mmf.private
-        FROM moneyflows     mmf
-            ,vw_user_groups mug
-       WHERE (     mug.mug1_mur_userid = mmf.mur_userid
-               AND mmf.bookingdate BETWEEN mug.validfrom and mug.validtil
-             )
-          OR (     mug.mug1_mur_userid = mmf.mur_userid
-               AND mug.mug2_mur_userid = mmf.mur_userid
-             );
-
+        FROM moneyflows       mmf
+            ,access_flattened maf
+       WHERE  mmf.bookingdate BETWEEN maf.validfrom AND maf.validtil
+         AND (mmf.mac_id_accessor = maf.id_level_1
+              OR
+              mmf.mac_id_accessor = maf.id_level_2
+              OR
+              mmf.mac_id_accessor = maf.id_level_3
+              OR
+              mmf.mac_id_accessor = maf.id_level_4
+              OR
+              mmf.mac_id_accessor = maf.id_level_5);
 /*
  * this view will show all data from all users which are in the
  * same group as mur_userid. Use mug_mur_userid in the query,

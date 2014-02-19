@@ -16,6 +16,76 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `access`
+--
+
+DROP TABLE IF EXISTS access;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE access (
+  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) NOT NULL,
+  `password` varchar(40) DEFAULT NULL,
+  att_user tinyint(1) unsigned NOT NULL,
+  att_change_password tinyint(1) unsigned NOT NULL,
+  perm_login tinyint(1) unsigned NOT NULL,
+  perm_admin tinyint(1) unsigned NOT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY mac_i_01 (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mac';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `access_relation`
+--
+
+DROP TABLE IF EXISTS access_relation;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE access_relation (
+  id int(10) unsigned NOT NULL,
+  ref_id int(10) unsigned NOT NULL,
+  validfrom date NOT NULL,
+  validtil date NOT NULL,
+  PRIMARY KEY (id,validfrom),
+  KEY mar_i_01 (ref_id),
+  CONSTRAINT mar_mac_pk_01 FOREIGN KEY (id) REFERENCES access (id) ON UPDATE CASCADE,
+  CONSTRAINT mar_mac_pk_02 FOREIGN KEY (ref_id) REFERENCES access (id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `access_flattened`
+--
+
+DROP TABLE IF EXISTS access_flattened;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE access_flattened (
+  id int(10) unsigned NOT NULL,
+  validfrom date NOT NULL,
+  validtil date NOT NULL,
+  id_level_1 int(10) unsigned NOT NULL,
+  id_level_2 int(10) unsigned NOT NULL,
+  id_level_3 int(10) unsigned DEFAULT NULL,
+  id_level_4 int(10) unsigned DEFAULT NULL,
+  id_level_5 int(10) unsigned DEFAULT NULL,
+  PRIMARY KEY (id,validfrom),
+  KEY maf_i_01 (id_level_1),
+  KEY maf_i_02 (id_level_2),
+  KEY maf_i_03 (id_level_3),
+  KEY maf_i_04 (id_level_4),
+  KEY maf_i_05 (id_level_5),
+  CONSTRAINT maf_mac_pk_06 FOREIGN KEY (id_level_5) REFERENCES access (id),
+  CONSTRAINT maf_mac_pk_01 FOREIGN KEY (id) REFERENCES access (id),
+  CONSTRAINT maf_mac_pk_02 FOREIGN KEY (id_level_1) REFERENCES access (id),
+  CONSTRAINT maf_mac_pk_03 FOREIGN KEY (id_level_2) REFERENCES access (id),
+  CONSTRAINT maf_mac_pk_04 FOREIGN KEY (id_level_3) REFERENCES access (id),
+  CONSTRAINT maf_mac_pk_05 FOREIGN KEY (id_level_4) REFERENCES access (id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='maf';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `users`
 --
 
@@ -106,6 +176,8 @@ DROP TABLE IF EXISTS moneyflows;
 CREATE TABLE moneyflows (
   mur_userid int(10) unsigned NOT NULL,
   moneyflowid int(10) unsigned NOT NULL AUTO_INCREMENT,
+  mac_id_creator int(10) unsigned NOT NULL,
+  mac_id_accessor int(10) unsigned NOT NULL,
   bookingdate date NOT NULL DEFAULT '0000-00-00',
   invoicedate date NOT NULL DEFAULT '0000-00-00',
   amount float(8,2) NOT NULL DEFAULT '0.00',
@@ -120,10 +192,14 @@ CREATE TABLE moneyflows (
   KEY mmf_mcs_pk (mcs_capitalsourceid),
   KEY mmf_mcp_pk (mcp_contractpartnerid),
   KEY mmf_mpa_pk (mpa_postingaccountid),
+  KEY mmf_i_03 (mac_id_creator),
+  KEY mmf_i_04 (mac_id_accessor),
+  CONSTRAINT moneyflows_ibfk_2 FOREIGN KEY (mac_id_accessor) REFERENCES access (id) ON UPDATE CASCADE,
   CONSTRAINT mmf_mcp_pk FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners (contractpartnerid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid) ON UPDATE CASCADE,
-  CONSTRAINT mmf_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
+  CONSTRAINT mmf_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE,
+  CONSTRAINT moneyflows_ibfk_1 FOREIGN KEY (mac_id_creator) REFERENCES access (id) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mmf';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -310,11 +386,16 @@ CREATE TABLE user_groups (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-02-17 20:08:06
+-- Dump completed on 2014-02-19 21:52:51
 INSERT INTO cmp_data_formats VALUES (1,'Postbank Direkt','/^Datum	Wertstellung	Art/','	',1,5,7,4,'DD.MM.YYYY',',','.',6,3,'/^(Überweisung|Dauerauftrag)/');
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','/^Buchungstag	Wertstellungstag	Verwendungszweck/','	',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','/^\"Buchungstag\";\"Wertstellung\";\"Umsatzart\"/',';',1,6,7,4,'DD.MM.YYYY',',','.',5,3,'/^(Gutschrift|Gehalt)/');
 INSERT INTO cmp_data_formats VALUES (4,'XML camt.052.001.03','camt','',0,NULL,0,NULL,'','',NULL,NULL,NULL,NULL);
+INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,1,1);
+INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_admin) VALUES ('root','NULL',0,0,0,0);
+UPDATE access SET id=0 WHERE name='root');
+INSERT INTO access_relation (id,ref_id,validfrom,validtil) VALUES (1,0,'0001-01-01','2999-12-31');
+INSERT INTO access_flattened (id,validfrom,validtil,id_level_1,id_level_2) VALUES (1,'0001-01-01','2999-12-31',1,0);
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,1);
 INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('','',0,0,0);
 UPDATE users SET userid=0 WHERE name='';

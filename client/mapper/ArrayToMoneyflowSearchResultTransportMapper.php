@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToMoneyflowSearchResultTransportMapper.php,v 1.1 2014/02/14 22:02:52 olivleh1 Exp $
+// $Id: ArrayToMoneyflowSearchResultTransportMapper.php,v 1.2 2014/02/19 20:55:01 olivleh1 Exp $
 //
 namespace rest\client\mapper;
 
@@ -37,7 +37,6 @@ class ArrayToMoneyflowSearchResultTransportMapper extends AbstractArrayMapper {
 	}
 
 	public static function mapBToA(MoneyflowSearchResultTransport $b) {
-		$a ['mur_userid'] = $b->getUserid();
 		$a ['amount'] = $b->getAmount();
 		$a ['comment'] = $b->getComment();
 		if ($b->getYear())

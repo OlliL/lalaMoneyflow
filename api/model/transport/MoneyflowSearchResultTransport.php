@@ -25,22 +25,17 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowSearchResultTransport.php,v 1.1 2014/02/14 22:02:51 olivleh1 Exp $
+// $Id: MoneyflowSearchResultTransport.php,v 1.2 2014/02/19 20:55:01 olivleh1 Exp $
 //
 namespace rest\api\model\transport;
 
 class MoneyflowSearchResultTransport {
-	public $userid;
 	public $year;
 	public $month;
 	public $amount;
 	public $contractpartnerid;
 	public $contractpartnername;
 	public $comment;
-
-	public final function setUserid($userid) {
-		$this->userid = $userid;
-	}
 
 	public final function setYear($year) {
 		$this->year = $year;
@@ -64,10 +59,6 @@ class MoneyflowSearchResultTransport {
 
 	public final function setComment($comment) {
 		$this->comment = $comment;
-	}
-
-	public final function getUserid() {
-		return $this->userid;
 	}
 
 	public final function getYear() {
