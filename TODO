@@ -4,11 +4,35 @@
 - no moneyflows must be createable before the current group assignment was valid
   (no moneyflows for the previous group after the group assignment changed)
 
-- assign moneyflows to groups always - no single user asignment
---> assign contractpartner also only to groups
---> check accesses to contractpartner table that they contain dates where needed to be able to also "see" old data after a group change
+--> assign moneyflows to groups always - no single user asignment -> create a group for user 4 (group id = 3)
+--> assign contractpartner also only to groups, assign mac_id_accessor to 3 where it is 4 now
+--> editing of moneyflows which where created in a time when the user was assigned to another than the current group must not be editable
+    anymore -> check how to supress that in the client, validate that in the backend
+--> searching for contractpartners is only possible for contractpartners accessable for the current group of the user
+--> editing/listing/deleting is not possible with contractpartners from previously assigned groups
+--> thats it i guess....
 
 Migration:
+insert into contractpartners (select mur_userid,null,mac_id_creator,2,name,street,postcode,town,country,validfrom,validtil from contractpartners where contractpartnerid in (select mcp_contractpartnerid from moneyflows where mur_userid=4 and bookingdate >= '2011-12-31'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 update moneyflows set mac_id_creator=mur_userid,mac_id_accessor=(select IF(id_level_2=0,id_level_1,id_level_2) from access_flattened where bookingdate between validfrom and validtil and id=mur_userid);
 
