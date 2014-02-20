@@ -155,13 +155,21 @@ DROP TABLE IF EXISTS contractpartners;
 CREATE TABLE contractpartners (
   mur_userid int(10) unsigned NOT NULL,
   contractpartnerid int(10) unsigned NOT NULL AUTO_INCREMENT,
+  mac_id_creator int(10) unsigned NOT NULL,
+  mac_id_accessor int(10) unsigned NOT NULL,
   `name` varchar(100) NOT NULL DEFAULT '',
   street varchar(100) DEFAULT '',
   postcode int(12) DEFAULT '0',
   town varchar(100) DEFAULT '',
   country varchar(100) DEFAULT '',
+  validfrom date NOT NULL,
+  validtil date NOT NULL,
   PRIMARY KEY (contractpartnerid),
   UNIQUE KEY mcp_i_01 (mur_userid,`name`),
+  KEY mcp_i_02 (mac_id_creator),
+  KEY mcp_i_03 (mac_id_accessor),
+  CONSTRAINT mcp_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id) ON UPDATE CASCADE,
+  CONSTRAINT mcp_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id) ON UPDATE CASCADE,
   CONSTRAINT mcp_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcp';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -194,12 +202,12 @@ CREATE TABLE moneyflows (
   KEY mmf_mpa_pk (mpa_postingaccountid),
   KEY mmf_i_03 (mac_id_creator),
   KEY mmf_i_04 (mac_id_accessor),
-  CONSTRAINT moneyflows_ibfk_2 FOREIGN KEY (mac_id_accessor) REFERENCES access (id) ON UPDATE CASCADE,
+  CONSTRAINT mmf_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id) ON UPDATE CASCADE,
+  CONSTRAINT mmf_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id) ON UPDATE CASCADE,
   CONSTRAINT mmf_mcp_pk FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners (contractpartnerid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid) ON UPDATE CASCADE,
-  CONSTRAINT mmf_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE,
-  CONSTRAINT moneyflows_ibfk_1 FOREIGN KEY (mac_id_creator) REFERENCES access (id) ON UPDATE CASCADE
+  CONSTRAINT mmf_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mmf';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -386,7 +394,7 @@ CREATE TABLE user_groups (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-02-19 21:52:51
+-- Dump completed on 2014-02-20 23:15:18
 INSERT INTO cmp_data_formats VALUES (1,'Postbank Direkt','/^Datum	Wertstellung	Art/','	',1,5,7,4,'DD.MM.YYYY',',','.',6,3,'/^(Überweisung|Dauerauftrag)/');
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','/^Buchungstag	Wertstellungstag	Verwendungszweck/','	',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','/^\"Buchungstag\";\"Wertstellung\";\"Umsatzart\"/',';',1,6,7,4,'DD.MM.YYYY',',','.',5,3,'/^(Gutschrift|Gehalt)/');
