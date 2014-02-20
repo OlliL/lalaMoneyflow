@@ -116,6 +116,8 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_contractpartners (
   ,postcode
   ,town
   ,country
+  ,validfrom
+  ,validtil
   ) AS
       SELECT mcp.mac_id_creator
             ,maf.id
@@ -125,6 +127,8 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_contractpartners (
             ,mcp.postcode
             ,mcp.town
             ,mcp.country
+            ,mcp.validfrom
+            ,mcp.validtil
         FROM contractpartners mcp
             ,access_flattened maf
        WHERE mcp.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5)
