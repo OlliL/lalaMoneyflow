@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.44 2014/02/17 19:07:27 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.45 2014/02/20 22:17:51 olivleh1 Exp $
 //
 
 use rest\base\ErrorCode;
@@ -127,9 +127,7 @@ class moduleCapitalSources extends module {
 						if (! is_array( $all_data )) {
 							unset( $capitalsourceid );
 						}
-					}
-
-					if ($capitalsourceid == 0) {
+					} else {
 						$all_data ['validfrom'] = convert_date_to_gui( date( 'Y-m-d' ) );
 						$all_data ['validtil'] = convert_date_to_gui( MAX_YEAR );
 					}

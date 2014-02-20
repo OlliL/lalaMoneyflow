@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerTransport.php,v 1.2 2014/01/26 12:24:49 olivleh1 Exp $
+// $Id: ContractpartnerTransport.php,v 1.3 2014/02/20 22:17:51 olivleh1 Exp $
 //
 namespace rest\api\model\transport;
 
@@ -36,6 +36,8 @@ class ContractpartnerTransport {
 	public $street;
 	public $postcode;
 	public $town;
+	public $validTil;
+	public $validFrom;
 	public $country;
 
 	public final function setId($id) {
@@ -66,6 +68,14 @@ class ContractpartnerTransport {
 		$this->country = $country;
 	}
 
+	public final function setValidTil($validTil) {
+		$this->validTil = $validTil;
+	}
+
+	public final function setValidFrom($validFrom) {
+		$this->validFrom = $validFrom;
+	}
+
 	public final function getId() {
 		return $this->id;
 	}
@@ -92,6 +102,14 @@ class ContractpartnerTransport {
 
 	public final function getCountry() {
 		return $this->country;
+	}
+
+	public final function getValidTil() {
+		return $this->validTil;
+	}
+
+	public final function getValidFrom() {
+		return $this->validFrom;
 	}
 }
 

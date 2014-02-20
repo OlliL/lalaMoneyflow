@@ -1,10 +1,19 @@
+- merge all Logic to work with the new accessor tables
+- rename User(Service|Dao|Controller) to Access*
+
 - no moneyflows must be createable before the current group assignment was valid
   (no moneyflows for the previous group after the group assignment changed)
+
+- assign moneyflows to groups always - no single user asignment
+--> assign contractpartner also only to groups
+--> check accesses to contractpartner table that they contain dates where needed to be able to also "see" old data after a group change
 
 Migration:
 
 update moneyflows set mac_id_creator=mur_userid,mac_id_accessor=(select IF(id_level_2=0,id_level_1,id_level_2) from access_flattened where bookingdate between validfrom and validtil and id=mur_userid);
 
+# lock old contractpartners
+ update contractpartners a set validtil = (select max(bookingdate) from moneyflows b where b.mcp_contractpartnerid=a.contractpartnerid) where contractpartnerid not in (select distinct mcp_contractpartnerid from moneyflows where bookingdate > '2011-12-31');
 
 
 select mur_userid,moneyflowid from vw_moneyflows where mug_mur_userid=1 and (private=0 or mur_userid=1) and moneyflowid not in (

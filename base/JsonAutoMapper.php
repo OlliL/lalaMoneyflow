@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: JsonAutoMapper.php,v 1.5 2014/02/14 22:02:51 olivleh1 Exp $
+// $Id: JsonAutoMapper.php,v 1.6 2014/02/20 22:17:51 olivleh1 Exp $
 //
 namespace rest\base;
 
@@ -49,7 +49,7 @@ class JsonAutoMapper {
 		return $b;
 	}
 
-	private function map(array $json, $class, $classPath) {
+	private static function map(array $json, $class, $classPath) {
 		$b = $class->newInstance();
 		foreach ( $json as $key => $property ) {
 			// when the element of the array is another associative array, the property

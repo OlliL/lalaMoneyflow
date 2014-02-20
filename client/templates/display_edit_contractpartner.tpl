@@ -21,13 +21,17 @@
 					<th>{#TEXT_43#}</th>
 					<th>{#TEXT_44#}</th>
 					<th>{#TEXT_45#}</th>
+					<th>{#TEXT_34#}</th>
+					<th>{#TEXT_35#}</th>
 				</tr>
 				<tr>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[name]"     value="{$ALL_DATA.name|escape:htmlall}"             {if $ALL_DATA.name_error == 1}style="color:red"{/if}></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[street]"   value="{$ALL_DATA.street|escape:htmlall}"           ></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[postcode]" value="{$ALL_DATA.postcode|escape:htmlall}" size="5"></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[town]"     value="{$ALL_DATA.town|escape:htmlall}"             ></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[country]"  value="{$ALL_DATA.country|escape:htmlall}" size="10"></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[name]"      value="{$ALL_DATA.name|escape:htmlall}"             {if $ALL_DATA.name_error       == 1}style="color:red"{/if}></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[street]"    value="{$ALL_DATA.street|escape:htmlall}"           ></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[postcode]"  value="{$ALL_DATA.postcode|escape:htmlall}" size="5"></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[town]"      value="{$ALL_DATA.town|escape:htmlall}"             ></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[country]"   value="{$ALL_DATA.country|escape:htmlall}" size="10"></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validfrom]" value="{$ALL_DATA.validfrom}"               size=8  {if $ALL_DATA.validfrom_error  == 1}style="color:red"{/if}></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[validtil]"  value="{$ALL_DATA.validtil}"                size=8  {if $ALL_DATA.validtil_error   == 1}style="color:red"{/if}></td>
 				</tr>
 			</table>
 			<input type="submit" value="{#TEXT_22#}">

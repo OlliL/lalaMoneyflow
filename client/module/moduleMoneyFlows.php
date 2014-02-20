@@ -26,7 +26,7 @@ use rest\client\handler\MoneyflowControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.78 2014/02/17 17:55:51 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.79 2014/02/20 22:17:51 olivleh1 Exp $
 //
 require_once 'module/module.php';
 
@@ -111,6 +111,10 @@ class moduleMoneyFlows extends module {
 								case ErrorCode::AMOUNT_IS_ZERO :
 								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
 									$all_data ['amount_error'] = 1;
+									break;
+								case ErrorCode::CONTRACTPARTNER_NO_LONGER_VALID :
+									$all_data ['contractpartner_error'] = 1;
+									$all_data ['bookingdate_error'] = 1;
 									break;
 							}
 						}
@@ -234,6 +238,9 @@ class moduleMoneyFlows extends module {
 								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
 									$all_data [$key] ['amount_error'] = 1;
 									break;
+								case ErrorCode::CONTRACTPARTNER_NO_LONGER_VALID :
+									$all_data [$key] ['contractpartner_error'] = 1;
+									$all_data [$key] ['bookingdate_error'] = 1;
 							}
 						}
 					}

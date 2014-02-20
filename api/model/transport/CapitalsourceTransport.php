@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CapitalsourceTransport.php,v 1.2 2014/01/26 12:24:49 olivleh1 Exp $
+// $Id: CapitalsourceTransport.php,v 1.3 2014/02/20 22:17:51 olivleh1 Exp $
 //
 namespace rest\api\model\transport;
 
@@ -126,13 +126,11 @@ class CapitalsourceTransport {
 		return $this->comment;
 	}
 
-	public final function getValidTil()
-	{
+	public final function getValidTil() {
 		return $this->validTil;
 	}
 
-	public final function getValidFrom()
-	{
+	public final function getValidFrom() {
 		return $this->validFrom;
 	}
 

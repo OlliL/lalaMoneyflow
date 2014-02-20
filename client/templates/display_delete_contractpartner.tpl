@@ -22,6 +22,8 @@
 					<th width="50" >{#TEXT_43#}</th>
 					<th width="100">{#TEXT_44#}</th>
 					<th width="100">{#TEXT_45#}</th>
+					<th width="60" >{#TEXT_34#}</th>
+					<th width="60" >{#TEXT_35#}</th>
 				</tr>
 				<tr>
 					<td class="contrastbgcolor">{$ALL_DATA.name|escape:htmlall}</td>
@@ -29,6 +31,8 @@
 					<td class="contrastbgcolor">{$ALL_DATA.postcode}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.town|escape:htmlall}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.country|escape:htmlall}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.validfrom}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.validtil}</td>
 				</tr>
 			</table>
 			<input type="submit" value="{#TEXT_25#}">

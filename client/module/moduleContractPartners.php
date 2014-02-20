@@ -26,7 +26,7 @@ use rest\client\handler\ContractpartnerControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.33 2014/02/15 19:20:48 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.34 2014/02/20 22:17:51 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -54,40 +54,58 @@ class moduleContractPartners extends module {
 	public final function display_edit_contractpartner($realaction, $contractpartnerid, $all_data) {
 		switch ($realaction) {
 			case 'save' :
+				$valid_data = true;
 				$all_data ['contractpartnerid'] = $contractpartnerid;
+				if (! dateIsValid( $all_data ['validfrom'] )) {
+					add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
+							GUI_DATE_FORMAT
+					) );
+					$all_data ['validfrom_error'] = 1;
+					$valid_data = false;
+				}
+				if (! dateIsValid( $all_data ['validtil'] )) {
+					add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
+							GUI_DATE_FORMAT
+					) );
+					$all_data ['validtil_error'] = 1;
+					$valid_data = false;
+				}
+				if ($valid_data === true) {
 
-				if ($contractpartnerid == 0)
-					$ret = ContractpartnerControllerHandler::getInstance()->createContractpartner( $all_data );
-				else
-					$ret = ContractpartnerControllerHandler::getInstance()->updateContractpartner( $all_data );
+					if ($contractpartnerid == 0)
+						$ret = ContractpartnerControllerHandler::getInstance()->createContractpartner( $all_data );
+					else
+						$ret = ContractpartnerControllerHandler::getInstance()->updateContractpartner( $all_data );
 
-				if ($ret === true) {
-					$this->template->assign( 'CLOSE', 1 );
-				} else {
-					foreach ( $ret ['errors'] as $validationResult ) {
-						$error = $validationResult ['error'];
+					if ($ret === true) {
+						$this->template->assign( 'CLOSE', 1 );
+					} else {
+						foreach ( $ret ['errors'] as $validationResult ) {
+							$error = $validationResult ['error'];
 
-						add_error( $error );
+							add_error( $error );
 
-						switch ($error) {
-							case ErrorCode::NAME_ALREADY_EXISTS :
-								$all_data ['name_error'] = 1;
-								break;
+							switch ($error) {
+								case ErrorCode::NAME_ALREADY_EXISTS :
+									$all_data ['name_error'] = 1;
+									break;
+							}
 						}
 					}
-					$this->template->assign( 'ALL_DATA', $all_data );
 				}
-				break;
 			default :
-				if ($contractpartnerid > 0) {
-					$all_data = ContractpartnerControllerHandler::getInstance()->showEditContractpartner( $contractpartnerid );
-					if ($all_data) {
-						$this->template->assign( 'ALL_DATA', $all_data );
+				if (! is_array( $all_data )) {
+					if ($contractpartnerid > 0) {
+						$all_data = ContractpartnerControllerHandler::getInstance()->showEditContractpartner( $contractpartnerid );
+					} else {
+						$all_data ['validfrom'] = convert_date_to_gui( date( 'Y-m-d' ) );
+						$all_data ['validtil'] = convert_date_to_gui( MAX_YEAR );
 					}
 				}
 				break;
 		}
 
+		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
