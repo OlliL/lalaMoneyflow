@@ -48,16 +48,9 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_moneyflows (
             ,mmf.private
         FROM moneyflows       mmf
             ,access_flattened maf
-       WHERE  mmf.bookingdate BETWEEN maf.validfrom AND maf.validtil
-         AND (mmf.mac_id_accessor = maf.id_level_1
-              OR
-              mmf.mac_id_accessor = maf.id_level_2
-              OR
-              mmf.mac_id_accessor = maf.id_level_3
-              OR
-              mmf.mac_id_accessor = maf.id_level_4
-              OR
-              mmf.mac_id_accessor = maf.id_level_5);
+       WHERE mmf.bookingdate BETWEEN maf.validfrom AND maf.validtil
+         AND mmf.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5);
+
 /*
  * this view will show all data from all users which are in the
  * same group as mur_userid. Use mug_mur_userid in the query,
@@ -110,13 +103,13 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_postingaccounts (
        WHERE mug.mug1_mur_userid = mpa.mur_userid;
 
 /*
- * this view will show all data from all users which are in the
- * same group as mur_userid. Use mug_mur_userid in the query,
- * mur_userid is the real userid of the dataset
+ * this view will show all data from contractpartners which is visible
+ * to a user. Use maf_id in your SELECT for your userid. In
+ * mac_id_creator you'll find the original userid of the creator
  */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_contractpartners (
-   mur_userid
-  ,mug_mur_userid
+   mac_id_creator
+  ,maf_id
   ,contractpartnerid
   ,name
   ,street
@@ -124,8 +117,8 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_contractpartners (
   ,town
   ,country
   ) AS
-      SELECT mcp.mur_userid
-            ,mug.mug2_mur_userid
+      SELECT mcp.mac_id_creator
+            ,maf.id
             ,mcp.contractpartnerid
             ,mcp.name
             ,mcp.street
@@ -133,8 +126,9 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_contractpartners (
             ,mcp.town
             ,mcp.country
         FROM contractpartners mcp
-            ,vw_user_groups   mug
-       WHERE mug.mug1_mur_userid = mcp.mur_userid;
+            ,access_flattened maf
+       WHERE mcp.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5)
+         AND NOW() between maf.validfrom AND maf.validtil;
 
 /*
  * this view will show all data from all users which are in the
