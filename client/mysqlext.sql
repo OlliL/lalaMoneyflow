@@ -118,6 +118,8 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_contractpartners (
   ,country
   ,validfrom
   ,validtil
+  ,maf_validfrom
+  ,maf_validtil
   ) AS
       SELECT mcp.mac_id_creator
             ,maf.id
@@ -129,10 +131,11 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_contractpartners (
             ,mcp.country
             ,mcp.validfrom
             ,mcp.validtil
+            ,maf.validfrom maf_validfrom
+            ,maf.validtil  maf_validtil
         FROM contractpartners mcp
             ,access_flattened maf
-       WHERE mcp.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5)
-         AND NOW() between maf.validfrom AND maf.validtil;
+       WHERE mcp.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5);
 
 /*
  * this view will show all data from all users which are in the
