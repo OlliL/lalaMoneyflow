@@ -20,7 +20,7 @@
 				 	 <th width="80" >{#TEXT_18#}</th>
 				 	 <th width="200">{#TEXT_2#}</th>
 				 	 <th width="200">{#TEXT_21#}</th>
-				 	 <th width="100">{#TEXT_19#}</th>
+				 	 <th width="200">{#TEXT_19#}</th>
 				</tr>
 				<tr>
 					<td class="contrastbgcolor" align="right">{$ALL_DATA.amount|string_format:"%.2f"} {#CURRENCY#}</td>
