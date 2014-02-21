@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: DbConnection.php,v 1.4 2014/02/14 22:54:31 olivleh1 Exp $
+// $Id: DbConnection.php,v 1.5 2014/02/21 23:17:50 olivleh1 Exp $
 //
 namespace rest\base\config;
 
@@ -40,7 +40,7 @@ class DbConnection {
 		if (! isset( self::$instance )) {
 			$className = __CLASS__;
 			self::$instance = new $className();
-			self::$instance->setConnection();
+			#self::$instance->setConnection();
 		}
 		return self::$instance;
 	}
@@ -54,6 +54,8 @@ class DbConnection {
 	}
 
 	public final function getConnection() {
+		if($this->connection === null)
+			$this->setConnection();
 		return $this->connection;
 	}
 

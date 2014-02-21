@@ -24,14 +24,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: core.php,v 1.28 2014/02/17 20:54:27 olivleh1 Exp $
+// $Id: core.php,v 1.29 2014/02/21 23:17:51 olivleh1 Exp $
 //
 require_once 'DbConnection.php';
 
 class core {
+	private $db;
 
 	public function __construct() {
-		$this->db = DbConnection::getInstance()->getConnection();
 	}
 
 	function query($query) {
@@ -44,6 +44,9 @@ class core {
 			$timer = new utilTimer();
 			$timer->mStart();
 		}
+		if ($this->db == null)
+			$this->db = DbConnection::getInstance()->getConnection();
+
 		$result = $this->db->query( $query );
 		if ($money_debug === true) {
 			$querytime = $timer->mGetTime();
@@ -55,7 +58,7 @@ class core {
 
 	function select_col($query) {
 		$reslink = $this->query( $query );
-		if ($reslink->errorCode()!=0)
+		if ($reslink->errorCode() != 0)
 			die( $reslink->errorInfo() );
 		if ($reslink->rowCount() <= 1) {
 			list ( $retval ) = $reslink->fetch( \PDO::FETCH_NUM );
@@ -68,7 +71,7 @@ class core {
 	function select_cols($query) {
 		$retval = false;
 		$reslink = $this->query( $query );
-		if ($reslink->errorCode()!=0)
+		if ($reslink->errorCode() != 0)
 			die( $reslink->errorInfo() );
 		while ( list ( $retval ) = $reslink->fetch( \PDO::FETCH_NUM ) )
 			$retvals [] = $retval;
@@ -77,7 +80,7 @@ class core {
 
 	function select_row($query) {
 		$reslink = $this->query( $query );
-		if ($reslink->errorCode()!=0)
+		if ($reslink->errorCode() != 0)
 			die( $reslink->errorInfo() );
 		if ($reslink->rowCount() <= 1) {
 			$retval = $reslink->fetch( \PDO::FETCH_ASSOC );
@@ -90,7 +93,7 @@ class core {
 	function select_rows($query) {
 		$retval = false;
 		$reslink = $this->query( $query );
-		if ($reslink->errorCode()!=0)
+		if ($reslink->errorCode() != 0)
 			die( $reslink->errorInfo() );
 		$retval = $reslink->fetchAll( \PDO::FETCH_ASSOC );
 		return $retval;
@@ -98,7 +101,7 @@ class core {
 
 	function generic_query($query) {
 		$reslink = $this->query( $query );
-		if ($reslink->errorCode()!=0)
+		if ($reslink->errorCode() != 0)
 			die( $reslink->errorInfo() );
 		return true;
 	}

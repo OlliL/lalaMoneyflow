@@ -89,6 +89,8 @@ Bugs detected so far:
    - MonthlySettlements - create for a far month in the future - check if the propper capitalsources are selected. All capitalsources
      which are valid with at least one day in this month have to be selected (valid only at the beginning, only at the end for example)
      check this.....
+   - when reassigning a user from group a to group b ask:
+      - also copy capitalsources?
 
 New Installation
    - check that after the first logon, on a clean DB, the password has to be changed first
