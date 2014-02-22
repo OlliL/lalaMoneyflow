@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreSettings.php,v 1.22 2014/02/17 20:54:28 olivleh1 Exp $
+// $Id: coreSettings.php,v 1.23 2014/02/22 16:54:52 olivleh1 Exp $
 //
 require_once 'core/core.php';
 
@@ -38,13 +38,13 @@ class coreSettings extends core {
 		return $this->select_col( "	SELECT value
 						  FROM settings
 						 WHERE name       = '$name'
-						   AND mur_userid = $userid
+						   AND mac_id = $userid
 						 LIMIT 1" );
 	}
 
 	function set_value( $userid, $name, $value ) {
 		return $this->insert_row( "	INSERT INTO settings
-						           (mur_userid
+						           (mac_id
 						           ,name
 						           ,value
 						           )
@@ -58,7 +58,7 @@ class coreSettings extends core {
 
 	function init_settings( $userid ) {
 		return $this->insert_row( "	INSERT INTO settings
-						           (mur_userid
+						           (mac_id
 						           ,name
 						           ,value
 						           )
@@ -66,7 +66,7 @@ class coreSettings extends core {
 						                  ,name
 						                  ,value
 						              FROM settings
-						             WHERE mur_userid = 0)
+						             WHERE mac_id = 0)
 							   ON DUPLICATE KEY UPDATE value = VALUES(value)" );
 	}
 
