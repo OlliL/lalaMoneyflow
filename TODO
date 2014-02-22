@@ -1,74 +1,17 @@
-- consider Conductor handling for showEdit*... -> edit* -> Error -> re-use the showEdit functionality
 - merge all Logic to work with the new accessor tables
 - rename User(Service|Dao|Controller) to Access*
 
 - no moneyflows must be createable before the current group assignment was valid
   (no moneyflows for the previous group after the group assignment changed)
 
---> assign moneyflows to groups always - no single user asignment -> create a group for user 4 (group id = 3)
---> assign contractpartner also only to groups, assign mac_id_accessor to 3 where it is 4 now
---> editing of moneyflows which where created in a time when the user was assigned to another than the current group must not be editable
-    anymore -> check how to supress that in the client, validate that in the backend
---> searching for contractpartners is only possible for contractpartners accessable for the current group of the user
---> editing/listing/deleting is not possible with contractpartners from previously assigned groups
---> thats it i guess....
-
-Migration:
-insert into contractpartners (select mur_userid,null,mac_id_creator,2,name,street,postcode,town,country,validfrom,validtil from contractpartners where contractpartnerid in (select mcp_contractpartnerid from moneyflows where mur_userid=4 and bookingdate >= '2011-12-31'));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-update moneyflows set mac_id_creator=mur_userid,mac_id_accessor=(select IF(id_level_2=0,id_level_1,id_level_2) from access_flattened where bookingdate between validfrom and validtil and id=mur_userid);
-
-# lock old contractpartners
- update contractpartners a set validtil = (select max(bookingdate) from moneyflows b where b.mcp_contractpartnerid=a.contractpartnerid) where contractpartnerid not in (select distinct mcp_contractpartnerid from moneyflows where bookingdate > '2011-12-31');
-
-
-select mur_userid,moneyflowid from vw_moneyflows where mug_mur_userid=1 and (private=0 or mur_userid=1) and moneyflowid not in (
-select a.moneyflowid from moneyflows a,test_flach b where b.id=1 and a.bookingdate between b.validfrom and b.validtil and (a.groupid=b.hier_1 or a.groupid=b.hier_2))
-
-mysql> update moneyflows a set groupid=(select hier_2 from test_flach b where a.mur_userid=b.id and a.bookingdate between b.validfrom and validtil);
-Query OK, 29 rows affected (3.73 sec)
-Rows matched: 14096  Changed: 29  Warnings: 0
-
-mysql> update moneyflows set groupid=mur_userid where private=1;
-Query OK, 28 rows affected (0.16 sec)
-Rows matched: 28  Changed: 28  Warnings: 0
-
-
-
-
-
-
-
-
 3. move coreSettings-stuff to REST
 4. redo the user handling
 5. implement Logout Call to destroy the session on the server.
 
 further thoughts:
+   - consider Conductor handling for showEdit*... -> edit* -> Error -> re-use the showEdit functionality
    - maybe extra Validator Classes with insert/update/delete relevant validations and not in the Service
    - centralize all cachenames
-   - think about removing "movement_calculated" from monthlysettlements since we now have caching
-
-
 
 ###########################################################################################################################
 
@@ -77,7 +20,6 @@ What is currently missing:
  - good User/Group handling (users cannot assigned to groups)
  - Posting Accounts cannot be listed, edited, deleted, added
  - PredefMoneyflows can not be assigned with default Posting Accounts
-
 
 ###########################################################################################################################
 
@@ -109,79 +51,8 @@ New Installation
     -> Xdebug needed (drops performance heavily)
     ---> not sure if OK
 
-
-
 some far time in the future:
-666. Redo the Webclient MVC like
 
-
-###########################################################################################################################
-
-
-New User/Group handling concept:
-
-- user and groups share the same ID pool and are just differentiated by priority levels (user ID has a higher priority than group ID)
-	- Migration:
-		- create one group for user 1 and user 2 and assign it to them
-		- move user 2 to the group of user 1 beginning of 2012
-- moneyflows are maintained on group IDs (generall access for all members) and private ones on user IDs (only shown to the user itself)
-	- Migration:
-		- update moneyflows set new-id = group-id where private != 1;
-		- update moneyflows set new-id = user-id where private = 1;
-- contractparter are always maintained on group IDs
-- predefmoneyflows can be maintained on group or user level and are shown then to the whole group or only to the user (change creation+update screens)
-	- Migration:
-		- move all predefmoneyflows to the user-Level
-- contractparter will have to get validfrom/validtil fields
-	- Migration:
-		- move all existing contractpartner to the user groups of user 1 and user 2
-		- migrate all existing moneyflows of user 2 after 01.01.2012 (new group assignment) to the contractpartner of the new assigned group.
-		- migrate all existing predefmoneyflows to the new contractpartner for user 2
-		- invalidate all contractpartners which where not used in the past 2 or 3 years
-- the contractpartner list screen will get a functionality to re-activate deactivated contractpartners and to deactivate contractpartners.
-- settlements are also always maintained on group level
-- capitalsources are also maintained on group level, and the "group usage allowed" still applies (they'll be seen by all, but used only by
-  the creator except "group usage allowed" is flagged)
-- capitalsources will have two ID fields one "creator" and one "assigned" ID
-
-- questions:
-	- what if user 2 edits a group-assigned moneyflow where user 1 has created it with a capitalsource user 2 has no permission to use?
-	
-		 
-
-
-
-old (but maybe still valid) TODOs:
-
-  
-- create group-mantainance screens 
-
-  - add user to group(s)
-  - remove user from group(s)
-    -> in the Users view. When adding or editing user, show two List-of value
-       boxes. One on the right of the groups where the user is assigned to, and
-       on the left a box with the groups where the user is not assigned to. Make
-       butons to move a group from left to right and vice versa.
-
-  +--------------------------------------------------------+
-  |                                                        |
-  |     User Groups                     All Groups         |
-  |    +---------------+              +---------------+    |
-  |    | test1         |              | test3         |    |
-  |    |               |              | test4         |    |
-  |    |               |              |               |    |
-  |    |               |     [<<]     |               |    |
-  |    |               |              |               |    |
-  |    |               |     [>>]     |               |    |
-  |    |               |              |               |    |
-  |    |               |              |               |    |
-  |    |               |              |               |    |
-  |    |               |              |               |    |
-  |    +---------------+              +---------------+    |
-  |                                                        |
-  |    [Save]                                  [Cancel]    |
-  |                                                        |
-  +--------------------------------------------------------+
-
+- 666. Redo the Webclient MVC like
 - put the available countries into the db and have them selectable when
   handling contractual partners instead of having it free editable

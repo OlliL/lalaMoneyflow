@@ -112,12 +112,12 @@ DROP TABLE IF EXISTS settings;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE settings (
-  mur_userid int(10) unsigned NOT NULL,
+  mac_id int(10) unsigned NOT NULL,
   `name` varchar(50) NOT NULL DEFAULT '',
   `value` varchar(256) DEFAULT NULL,
-  PRIMARY KEY (`name`,mur_userid),
-  KEY mse_mur_pk (mur_userid),
-  CONSTRAINT mse_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
+  PRIMARY KEY (`name`,mac_id),
+  KEY mse_mac_pk (mac_id),
+  CONSTRAINT mse_mac_pk FOREIGN KEY (mac_id) REFERENCES access (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mse';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -129,8 +129,9 @@ DROP TABLE IF EXISTS capitalsources;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE capitalsources (
-  mur_userid int(10) unsigned NOT NULL,
   capitalsourceid int(10) unsigned NOT NULL AUTO_INCREMENT,
+  mac_id_creator int(10) unsigned NOT NULL,
+  mac_id_accessor int(10) unsigned NOT NULL,
   `type` enum('1','2') NOT NULL DEFAULT '1',
   state enum('1','2') NOT NULL DEFAULT '1',
   accountnumber bigint(20) unsigned DEFAULT NULL,
@@ -139,9 +140,11 @@ CREATE TABLE capitalsources (
   validtil date NOT NULL DEFAULT '2999-12-31',
   validfrom date NOT NULL DEFAULT '1970-01-01',
   att_group_use tinyint(1) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (capitalsourceid),
-  KEY mcs_i_01 (mur_userid),
-  CONSTRAINT mcs_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
+  PRIMARY KEY (capitalsourceid,mac_id_accessor),
+  KEY mcs_i_02 (mac_id_creator),
+  KEY mcs_i_03 (mac_id_accessor),
+  CONSTRAINT mcs_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id),
+  CONSTRAINT mcs_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcs';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -153,7 +156,6 @@ DROP TABLE IF EXISTS contractpartners;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE contractpartners (
-  mur_userid int(10) unsigned NOT NULL,
   contractpartnerid int(10) unsigned NOT NULL AUTO_INCREMENT,
   mac_id_creator int(10) unsigned NOT NULL,
   mac_id_accessor int(10) unsigned NOT NULL,
@@ -165,12 +167,11 @@ CREATE TABLE contractpartners (
   validfrom date NOT NULL,
   validtil date NOT NULL,
   PRIMARY KEY (contractpartnerid),
-  UNIQUE KEY mcp_i_01 (mur_userid,`name`),
+  UNIQUE KEY mcp_i_01 (mac_id_accessor,`name`),
   KEY mcp_i_02 (mac_id_creator),
   KEY mcp_i_03 (mac_id_accessor),
-  CONSTRAINT mcp_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id) ON UPDATE CASCADE,
-  CONSTRAINT mcp_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id) ON UPDATE CASCADE,
-  CONSTRAINT mcp_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
+  CONSTRAINT mcp_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id),
+  CONSTRAINT mcp_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mcp';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -182,7 +183,6 @@ DROP TABLE IF EXISTS moneyflows;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE moneyflows (
-  mur_userid int(10) unsigned NOT NULL,
   moneyflowid int(10) unsigned NOT NULL AUTO_INCREMENT,
   mac_id_creator int(10) unsigned NOT NULL,
   mac_id_accessor int(10) unsigned NOT NULL,
@@ -194,20 +194,18 @@ CREATE TABLE moneyflows (
   `comment` varchar(100) NOT NULL DEFAULT '',
   mpa_postingaccountid int(10) unsigned NOT NULL,
   private tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (moneyflowid,mur_userid),
-  KEY mmf_i_01 (mur_userid,bookingdate),
-  KEY mmf_i_02 (bookingdate),
+  PRIMARY KEY (moneyflowid),
   KEY mmf_mcs_pk (mcs_capitalsourceid),
   KEY mmf_mcp_pk (mcp_contractpartnerid),
   KEY mmf_mpa_pk (mpa_postingaccountid),
   KEY mmf_i_03 (mac_id_creator),
-  KEY mmf_i_04 (mac_id_accessor),
-  CONSTRAINT mmf_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id) ON UPDATE CASCADE,
+  KEY mmf_i_02 (mac_id_accessor),
+  KEY mmf_i_01 (bookingdate,mac_id_accessor,moneyflowid),
   CONSTRAINT mmf_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id) ON UPDATE CASCADE,
+  CONSTRAINT mmf_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id) ON UPDATE CASCADE,
   CONSTRAINT mmf_mcp_pk FOREIGN KEY (mcp_contractpartnerid) REFERENCES contractpartners (contractpartnerid) ON UPDATE CASCADE,
   CONSTRAINT mmf_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid) ON UPDATE CASCADE,
-  CONSTRAINT mmf_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid) ON UPDATE CASCADE,
-  CONSTRAINT mmf_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
+  CONSTRAINT mmf_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mmf';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -225,7 +223,6 @@ CREATE TABLE monthlysettlements (
   `month` tinyint(4) unsigned NOT NULL DEFAULT '0',
   `year` year(4) NOT NULL DEFAULT '0000',
   amount float(8,2) NOT NULL DEFAULT '0.00',
-  movement_calculated float(8,2) DEFAULT NULL,
   PRIMARY KEY (monthlysettlementid,mur_userid),
   UNIQUE KEY mms_i_01 (mur_userid,`month`,`year`,mcs_capitalsourceid),
   KEY mms_mcs_pk (mcs_capitalsourceid),
@@ -260,8 +257,8 @@ DROP TABLE IF EXISTS predefmoneyflows;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE predefmoneyflows (
-  mur_userid int(10) unsigned NOT NULL,
   predefmoneyflowid int(10) unsigned NOT NULL AUTO_INCREMENT,
+  mac_id int(10) unsigned NOT NULL,
   amount float(8,2) NOT NULL DEFAULT '0.00',
   mcs_capitalsourceid int(10) unsigned NOT NULL,
   mcp_contractpartnerid int(10) unsigned NOT NULL,
@@ -269,11 +266,11 @@ CREATE TABLE predefmoneyflows (
   createdate date NOT NULL,
   once_a_month tinyint(1) unsigned NOT NULL DEFAULT '0',
   last_used date DEFAULT NULL,
-  PRIMARY KEY (predefmoneyflowid,mur_userid),
-  KEY mpm_mur_pk (mur_userid),
+  PRIMARY KEY (predefmoneyflowid),
   KEY mpm_mcs_pk (mcs_capitalsourceid),
-  CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid) ON UPDATE CASCADE,
-  CONSTRAINT mpm_mur_pk FOREIGN KEY (mur_userid) REFERENCES `users` (userid) ON UPDATE CASCADE
+  KEY mpm_mac_pk (mac_id),
+  CONSTRAINT mpm_mac_pk FOREIGN KEY (mac_id) REFERENCES access (id),
+  CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mpm';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -394,7 +391,7 @@ CREATE TABLE user_groups (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-02-20 23:15:18
+-- Dump completed on 2014-02-22 23:30:31
 INSERT INTO cmp_data_formats VALUES (1,'Postbank Direkt','/^Datum	Wertstellung	Art/','	',1,5,7,4,'DD.MM.YYYY',',','.',6,3,'/^(Überweisung|Dauerauftrag)/');
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','/^Buchungstag	Wertstellungstag	Verwendungszweck/','	',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','/^\"Buchungstag\";\"Wertstellung\";\"Umsatzart\"/',';',1,6,7,4,'DD.MM.YYYY',',','.',5,3,'/^(Gutschrift|Gehalt)/');

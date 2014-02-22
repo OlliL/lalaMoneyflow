@@ -64,7 +64,6 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
   ,month
   ,year
   ,amount
-  ,movement_calculated
   ) AS
       SELECT mms.mur_userid
             ,mug.mug2_mur_userid
@@ -73,7 +72,6 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
             ,mms.month
             ,mms.year
             ,mms.amount
-            ,mms.movement_calculated
         FROM monthlysettlements mms
             ,vw_user_groups     mug
        WHERE (     mug.mug1_mur_userid = mms.mur_userid
@@ -270,45 +268,6 @@ BEGIN
   
 END;$$
 
-/*
- * this function returns the calculated movment in
- * a given month/year combination to store it for
- * example into monthlysettlements.movement_calculated
- */
-DROP FUNCTION IF EXISTS mms_calc_movement_calculated$$
-CREATE FUNCTION mms_calc_movement_calculated(pi_userid          INT(10)    UNSIGNED
-                                            ,pi_month           TINYINT(4) UNSIGNED
-                                            ,pi_year            YEAR(4)
-                                            ,pi_capitalsourceid INT(10)
-                                            ) RETURNS  FLOAT(8,2)
-READS SQL DATA
-BEGIN
-  DECLARE l_found      BOOLEAN DEFAULT TRUE;
-  DECLARE l_date_begin DATE;
-  DECLARE l_date_end   DATE;
-  DECLARE l_amount     FLOAT(8,2);
-  
-  DECLARE c_mmf CURSOR FOR
-    SELECT IFNULL(SUM(amount),0)
-      FROM vw_moneyflows
-     WHERE bookingdate   BETWEEN l_date_begin AND l_date_end
-       AND mug_mur_userid      = pi_userid
-       AND mcs_capitalsourceid = pi_capitalsourceid;
-
-  DECLARE CONTINUE HANDLER FOR NOT FOUND SET l_amount := 0;
-
-  SET l_date_begin := STR_TO_DATE(CONCAT(pi_year,'-',pi_month,'-01'),GET_FORMAT(DATE,'ISO'));
-  SET l_date_end   := LAST_DAY(l_date_begin);
-  
-  OPEN  c_mmf;
-  FETCH c_mmf INTO l_amount;
-  CLOSE c_mmf;
-
-  RETURN l_amount;
-END;
-$$
-
-
 -- PROCEDURES
 
 /*
@@ -355,84 +314,6 @@ BEGIN
   SET po_ret := 1;
 
 END;$$
-
-/*
- * this procedure fills the column monthlysettlements.movement_calculated
- * when the settlement gets created the first time
- */
-DROP PROCEDURE IF EXISTS mms_init_movement_calculated$$
-CREATE PROCEDURE mms_init_movement_calculated(IN pi_userid INT(10) UNSIGNED)
-READS SQL DATA
-BEGIN
-  DECLARE l_found           BOOLEAN             DEFAULT TRUE;
-  DECLARE l_month           TINYINT(4) UNSIGNED;
-  DECLARE l_year            YEAR(4);
-  DECLARE l_capitalsourceid INT(10);
-
-  DECLARE c_mms CURSOR FOR
-    SELECT month
-          ,year
-          ,mcs_capitalsourceid
-      FROM monthlysettlements
-     WHERE mur_userid = pi_userid;
-
-  DECLARE CONTINUE HANDLER FOR NOT FOUND SET l_found := FALSE ;
-
-  OPEN c_mms;
-  REPEAT
-    FETCH c_mms INTO l_month, l_year, l_capitalsourceid;
-    IF l_found THEN
-      UPDATE monthlysettlements
-         SET movement_calculated = mms_calc_movement_calculated(pi_userid, l_month, l_year, l_capitalsourceid)
-       WHERE month               = l_month
-         AND year                = l_year
-         AND mcs_capitalsourceid = l_capitalsourceid
-         AND mur_userid          = pi_userid;
-    END IF;
-  UNTIL NOT l_found END REPEAT;
-  CLOSE c_mms;
-END;
-$$
-
-/*
- * this procedure is used to change the movement_calculated
- * column in table monthlysettlements if a moneyflow got
- * changed, inserted or deleted
- */
-DROP PROCEDURE IF EXISTS mmf_trg_procedure$$
-CREATE PROCEDURE mmf_trg_procedure(IN pi_bookingdate     DATE
-                                  ,IN pi_userid          INT(10) UNSIGNED
-                                  ,IN pi_capitalsourceid INT(10) UNSIGNED
-                                  )
-READS SQL DATA
-BEGIN
-  DECLARE l_found       BOOLEAN             DEFAULT TRUE;
-  DECLARE l_mur_userid  INT(1)     UNSIGNED;
-  DECLARE l_month       TINYINT(4) UNSIGNED DEFAULT MONTH(pi_bookingdate);
-  DECLARE l_year        YEAR(4)             DEFAULT YEAR(pi_bookingdate);
-
-  DECLARE c_mms CURSOR FOR
-    SELECT mur_userid
-      FROM vw_monthlysettlements
-     WHERE mug_mur_userid = pi_userid
-       AND month          = l_month
-       AND year           = l_year;
-
-  DECLARE CONTINUE HANDLER FOR NOT FOUND        SET l_mur_userid := 0;
-
-  OPEN  c_mms;
-  FETCH c_mms INTO l_mur_userid;
-  CLOSE c_mms;
-  
-  IF l_mur_userid > 0 THEN
-    UPDATE monthlysettlements
-       SET movement_calculated = mms_calc_movement_calculated(pi_userid, l_month, l_year, pi_capitalsourceid)
-     WHERE month               = l_month
-       AND year                = l_year
-       AND mcs_capitalsourceid = pi_capitalsourceid;
-  END IF;
-END;
-$$
 
 /*
  * import data which is stored in table imp_data
@@ -534,88 +415,6 @@ DROP TRIGGER IF EXISTS mpm_trg_01$$
 CREATE TRIGGER mpm_trg_01 BEFORE INSERT ON predefmoneyflows
   FOR EACH ROW BEGIN
     SET NEW.createdate = NOW();
-  END;
-$$
-
-/*
- * when a new moneyflow got inserted, recalculate
- * monthlysettlements.movement_calculated
- */
-DROP TRIGGER IF EXISTS mmf_trg_01$$
-CREATE TRIGGER mmf_trg_01 AFTER INSERT ON moneyflows
-  FOR EACH ROW BEGIN
-    CALL mmf_trg_procedure(NEW.bookingdate
-                          ,NEW.mur_userid
-                          ,NEW.mcs_capitalsourceid
-                          );
-  END;
-$$
-
-/*
- * when a moneyflow got changed, recalculate
- * monthlysettlements.movement_calculated for the
- * new month (can be the same) or for the new and old
- * month if the date of  the moneyflow got changed or
- * the capitalsource.
- */
-DROP TRIGGER IF EXISTS mmf_trg_02$$
-CREATE TRIGGER mmf_trg_02 AFTER UPDATE ON moneyflows
-  FOR EACH ROW BEGIN
-    DECLARE l_calc_new    BOOLEAN             DEFAULT FALSE;
-    DECLARE l_calc_old    BOOLEAN             DEFAULT FALSE;
-    
-    IF OLD.amount                != NEW.amount                THEN
-      SET l_calc_new := TRUE;
-    END IF;
-    
-    IF LAST_DAY(OLD.bookingdate) != LAST_DAY(NEW.bookingdate) OR
-       OLD.mcs_capitalsourceid   != NEW.mcs_capitalsourceid   THEN
-      SET l_calc_old := TRUE;
-      SET l_calc_new := TRUE;
-    END IF;
-       
-    IF l_calc_old THEN
-      CALL mmf_trg_procedure(OLD.bookingdate
-                            ,OLD.mur_userid
-                            ,OLD.mcs_capitalsourceid
-                            );
-    END IF;
-
-    IF l_calc_new THEN
-      CALL mmf_trg_procedure(NEW.bookingdate
-                            ,NEW.mur_userid
-                            ,NEW.mcs_capitalsourceid
-                            );
-    END IF;
-  END;
-$$
-
-/*
- * when a moneyflow gets deleted, recalculate
- * monthlysettlements.movement_calculated
- */
-DROP TRIGGER IF EXISTS mmf_trg_03$$
-CREATE TRIGGER mmf_trg_03 AFTER DELETE ON moneyflows
-  FOR EACH ROW BEGIN
-    CALL mmf_trg_procedure(OLD.bookingdate
-                          ,OLD.mur_userid
-                          ,OLD.mcs_capitalsourceid
-                          );
-  END;
-$$
-
-/*
- * when a new settlement gets created, init
- * monthlysettlements.movement_calculated
- */
-DROP TRIGGER IF EXISTS mms_trg_01$$
-CREATE TRIGGER mms_trg_01 BEFORE INSERT ON monthlysettlements
-  FOR EACH ROW BEGIN
-    SET NEW.movement_calculated := mms_calc_movement_calculated(NEW.mur_userid
-                                                               ,NEW.month
-                                                               ,NEW.year
-                                                               ,NEW.mcs_capitalsourceid
-                                                               );
   END;
 $$
 
