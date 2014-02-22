@@ -24,10 +24,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.67 2014/02/16 14:43:14 olivleh1 Exp $
+// $Id: module.php,v 1.68 2014/02/22 00:33:01 olivleh1 Exp $
 //
 require_once 'Smarty.class.php';
 require_once 'core/coreText.php';
+require_once 'core/coreSession.php';
 
 class module {
 
@@ -87,7 +88,8 @@ class module {
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
 		$this->template->assign( 'VERSION', '0.13.0' );
 		$this->template->assign( 'NO_NAVIGATION', $nonavi );
-		$user = LoggedOnUser::getInstance()->getUser();
+		$coreSession = new coreSession();
+		$user = $coreSession->getAttribute( 'user' );
 		if ($user ['perm_admin'] == "1") {
 			$this->template->assign( 'IS_ADMIN', true );
 		} else {

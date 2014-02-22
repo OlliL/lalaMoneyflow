@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ErrorCode.php,v 1.12 2014/02/20 22:17:51 olivleh1 Exp $
+// $Id: ErrorCode.php,v 1.13 2014/02/22 00:33:01 olivleh1 Exp $
 //
 namespace rest\base;
 
@@ -58,6 +58,7 @@ class ErrorCode extends \SplEnum {
 	const ACCOUNT_NUMBER_TO_LONG = 227;
 	const BANK_CODE_TO_LONG = 228;
 	const VALIDFROM_AFTER_VALIDTIL = 229;
+	const LOGGED_OUT = 231;
 	const POSTCODE_MUST_BE_A_NUMBER = 233;
 	const POSTING_ACCOUNT_NOT_SPECIFIED = 234;
 	const CAPITALSOURCE_DOES_NOT_EXIST = 19; // TODO

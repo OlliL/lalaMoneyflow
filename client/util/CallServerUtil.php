@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServerUtil.php,v 1.3 2014/02/05 21:17:09 olivleh1 Exp $
+// $Id: CallServerUtil.php,v 1.4 2014/02/22 00:33:02 olivleh1 Exp $
 //
 namespace rest\client\util;
 
@@ -79,14 +79,20 @@ class CallServerUtil extends AbstractJsonSender {
 				add_error( ErrorCode::ATTENTION );
 			}
 			add_error( $result ['error'] ['code'] );
+			if($result['error']['code'] == ErrorCode::LOGGED_OUT) {
+				// FIXME: omg what a hack
+				require_once 'module/moduleUsers.php';
+				$moduleUsers = new \moduleUsers();
+				$moduleUsers->logout();
+				header( "Location: " . $_SERVER ['PHP_SELF'] );
+			}
 			return false;
 		}
 		return $result;
 	}
 
 	public final function getJson($url) {
-		file_put_contents('/tmp/cache.log', $url."\n");
-		// response = Request::get( $url )->withoutStrictSsl()->addOnCurlOption( CURLOPT_ENCODING, 'compress, deflate, gzip' )->send();
+// 		$response = Request::get( $url )->withoutStrictSsl()->addOnCurlOption( CURLOPT_ENCODING, 'compress, deflate, gzip' )->send();
 		$response = Request::get( $url )->withoutStrictSsl()->send();
 		if ($response->code == 204) {
 			return false;

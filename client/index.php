@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.67 2014/02/17 21:01:43 olivleh1 Exp $
+// $Id: index.php,v 1.68 2014/02/22 00:33:02 olivleh1 Exp $
 //
 require_once 'include.php';
 require_once 'functions.php';
@@ -32,8 +32,6 @@ require_once 'core/coreSession.php';
 require_once 'module/moduleEvents.php';
 require_once 'module/moduleSettings.php';
 require_once 'module/moduleUsers.php';
-
-require_once 'rest/client/model/LoggedOnUser.php';
 
 // f( $money_debug === true ) {
 require_once 'util/utilTimer.php';

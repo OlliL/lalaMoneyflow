@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreUsers.php,v 1.20 2014/02/17 20:54:27 olivleh1 Exp $
+// $Id: coreUsers.php,v 1.21 2014/02/22 00:33:02 olivleh1 Exp $
 //
 require_once 'core/core.php';
 
@@ -35,7 +35,6 @@ class coreUsers extends core {
 	}
 
 	function set_password( $id, $password ) {
-		LoggedOnUser::getInstance()->destroyInstance($id);
 		return $this->update_row( "	UPDATE users
 						   SET password = '".sha1( $password )."'
 						      ,att_new  = 0
@@ -135,7 +134,6 @@ class coreUsers extends core {
 	}
 
 	function update_user( $id, $name, $perm_login, $perm_admin, $att_new ) {
-		LoggedOnUser::getInstance()->destroyInstance($id);
 		return $this->update_row( "	UPDATE users
 						   SET name       = '$name'
 						      ,perm_login = $perm_login

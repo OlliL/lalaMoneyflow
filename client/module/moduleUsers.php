@@ -1,5 +1,6 @@
 <?php
 use rest\client\handler\SessionControllerHandler;
+use rest\client\handler\UserControllerHandler;
 //
 // Copyright (c) 2006-2014 Oliver Lehmann <oliver@FreeBSD.org>
 // All rights reserved.
@@ -25,7 +26,7 @@ use rest\client\handler\SessionControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.36 2014/02/18 19:21:41 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.37 2014/02/22 00:33:01 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -49,7 +50,7 @@ class moduleUsers extends module {
 			return 3;
 		} else {
 			define( USERID, $this->coreSession->getAttribute( 'users_id' ) );
-			$user = LoggedOnUser::getInstance()->getUser();
+			$user = $this->coreSession->getAttribute( 'user' );
 
 			// Apache Restart or went cache empty -> sessionId not set;
 			if (! $user ['name']) {
@@ -92,6 +93,10 @@ class moduleUsers extends module {
 					$this->coreSession->setAttribute( 'server_id', $session ['sessionid'] );
 					$this->coreSession->setAttribute( 'date_format', $session ['dateformat'] );
 					$this->coreSession->setAttribute( 'gui_language', $session ['displayed_language'] );
+
+					$this->coreSession->start();
+					$this->coreSession->setAttribute( 'user', UserControllerHandler::getInstance()->getUserById( $session ['mur_userid'] ) );
+
 					$loginok = 1;
 				}
 				break;
@@ -119,7 +124,7 @@ class moduleUsers extends module {
 	}
 
 	function is_admin() {
-		$user = LoggedOnUser::getInstance()->getUser();
+		$user = $this->coreSession->getAttribute( 'user' );
 		return $user ['perm_admin'] == "1" ? true : false;
 	}
 

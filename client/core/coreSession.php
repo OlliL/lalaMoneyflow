@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreSession.php,v 1.12 2014/02/17 20:54:28 olivleh1 Exp $
+// $Id: coreSession.php,v 1.13 2014/02/22 00:33:02 olivleh1 Exp $
 //
 use rest\client\util\CallServerUtil;
 require_once 'core/core.php';
@@ -78,7 +78,6 @@ class coreSession extends core {
 	}
 
 	function destroy() {
-		LoggedOnUser::destroyInstance( $this->getAttribute( 'users_id' ) );
 		if (session_id()) {
 			session_destroy();
 		}
