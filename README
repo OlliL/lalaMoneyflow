@@ -39,9 +39,4 @@ Installation:
 - create a new user
 - create a new group
 - assign the user to the new group via SQL
-	Tables:
-			users
-			groups
-			user_groups
-			insert into user_groups values (1,1,now(),'2999-12-31');
 - add posting accounts via SQL

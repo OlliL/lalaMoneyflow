@@ -1,22 +1,3 @@
-/* 
- * this view will show all possible permutations of user/groups
- */
-CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_user_groups (
-   mug1_mur_userid
-  ,mug2_mur_userid
-  ,validfrom
-  ,validtil
-  ) AS
-     SELECT DISTINCT
-            mug1.mur_userid mug1_mur_userid
-           ,mug2.mur_userid mug2_mur_userid
-           ,mug1.validfrom
-           ,mug1.validtil
-       FROM user_groups mug1
-           ,user_groups mug2
-      WHERE mug1.mgr_groupid = mug2.mgr_groupid;
-               
-               
 /*
  * this view will show all data from moneyflows which is visible
  * to a user. Use maf_id in your SELECT for your userid. In
@@ -57,29 +38,25 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_moneyflows (
  * mur_userid is the real userid of the dataset
  */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
-   mur_userid
-  ,mug_mur_userid
+   mac_id_creator
+  ,maf_id
   ,monthlysettlementid
   ,mcs_capitalsourceid
   ,month
   ,year
   ,amount
   ) AS
-      SELECT mms.mur_userid
-            ,mug.mug2_mur_userid
+      SELECT mms.mac_id_creator
+            ,maf.id
             ,mms.monthlysettlementid
             ,mms.mcs_capitalsourceid
             ,mms.month
             ,mms.year
             ,mms.amount
         FROM monthlysettlements mms
-            ,vw_user_groups     mug
-       WHERE (     mug.mug1_mur_userid = mms.mur_userid
-               AND LAST_DAY(STR_TO_DATE(CONCAT(year,'-',LPAD(month,2,'0'),'-01'),GET_FORMAT(DATE,'ISO'))) BETWEEN mug.validfrom and mug.validtil
-             )
-          OR (     mug.mug1_mur_userid = mms.mur_userid
-               AND mug.mug2_mur_userid = mms.mur_userid
-             );
+            ,access_flattened   maf
+       WHERE LAST_DAY(STR_TO_DATE(CONCAT(year,'-',LPAD(month,2,'0'),'-01'),GET_FORMAT(DATE,'ISO'))) BETWEEN maf.validfrom and maf.validtil
+             AND mms.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5);
 
 /*
  * this view will show all data from all users which are in the
@@ -87,18 +64,24 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
  * mur_userid is the real userid of the dataset
  */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_postingaccounts (
-   mur_userid
-  ,mug_mur_userid
+   mac_id_creator
+  ,maf_id
+  ,mac_id_accessor
   ,postingaccountid
   ,postingaccountname
+  ,maf_validfrom
+  ,maf_validtil
   ) AS
-      SELECT mpa.mur_userid
-            ,mug.mug2_mur_userid
+      SELECT mpa.mac_id_creator
+            ,maf.id
+            ,mpa.mac_id_accessor
             ,mpa.postingaccountid
             ,mpa.postingaccountname
+            ,maf.validfrom maf_validfrom
+            ,maf.validtil  maf_validtil
         FROM postingaccounts  mpa
-            ,vw_user_groups   mug
-       WHERE mug.mug1_mur_userid = mpa.mur_userid;
+            ,access_flattened maf
+       WHERE mpa.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5);
 
 /*
  * this view will show all data from contractpartners which is visible
@@ -141,8 +124,9 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_contractpartners (
  * mur_userid is the real userid of the dataset
  */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_capitalsources (
-   mur_userid
-  ,mug_mur_userid
+   mac_id_creator
+  ,maf_id
+  ,mac_id_accessor
   ,capitalsourceid
   ,type
   ,state
@@ -152,33 +136,27 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_capitalsources (
   ,validtil
   ,validfrom
   ,att_group_use
+  ,maf_validfrom
+  ,maf_validtil
   ) AS
-      SELECT mcs.mur_userid
-            ,mug.mug2_mur_userid
+      SELECT mcs.mac_id_creator
+            ,maf.id
+            ,mcs.mac_id_accessor
             ,mcs.capitalsourceid
             ,mcs.type
             ,mcs.state
             ,mcs.accountnumber
             ,mcs.bankcode
             ,mcs.comment
-            ,(CASE
-                WHEN mug.mug2_mur_userid != mcs.mur_userid AND mcs.validtil  > mug.validtil THEN mug.validtil
-                ELSE mcs.validtil
-              END)
-            ,(CASE
-                WHEN mug.mug2_mur_userid != mcs.mur_userid AND mcs.validfrom < mug.validfrom THEN mug.validfrom
-                ELSE mcs.validfrom
-              END)
+            ,mcs.validtil
+            ,mcs.validfrom
             ,mcs.att_group_use
+            ,maf.validfrom maf_validfrom
+            ,maf.validtil  maf_validtil
         FROM capitalsources     mcs
-            ,vw_user_groups     mug
-       WHERE (     mug.mug1_mur_userid = mcs.mur_userid
-               AND mcs.validfrom < mug.validtil
-               AND mcs.validtil  > mug.validfrom
-             )
-          OR (     mug.mug1_mur_userid = mcs.mur_userid
-               AND mug.mug2_mur_userid = mcs.mur_userid
-             );
+            ,access_flattened   maf
+       WHERE mcs.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5);
+
 
 -- FUNCTIONS
 

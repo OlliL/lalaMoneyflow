@@ -1,5 +1,6 @@
 - merge all Logic to work with the new accessor tables
 - rename User(Service|Dao|Controller) to Access*
+- all BOs should get an Accessor object
 
 - no moneyflows must be createable before the current group assignment was valid
   (no moneyflows for the previous group after the group assignment changed)

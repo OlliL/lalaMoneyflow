@@ -27,8 +27,6 @@ mysqldump -u root --skip-quote-names --skip-triggers --default-character-set=lat
 	imp_mapping_source \
 	imp_mapping_partner \
 	cmp_data_formats \
-	groups \
-	user_groups \
 		| awk '
 	{
 		if( $1 == ")" ) {
