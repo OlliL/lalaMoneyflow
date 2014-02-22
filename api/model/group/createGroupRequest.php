@@ -25,27 +25,22 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ClientArrayMapperEnum.php,v 1.16 2014/02/22 22:10:42 olivleh1 Exp $
+// $Id: createGroupRequest.php,v 1.1 2014/02/22 22:10:41 olivleh1 Exp $
 //
-namespace rest\client\mapper;
+namespace rest\api\model\group;
 
-class ClientArrayMapperEnum {
-	const CAPITALSOURCE_TRANSPORT = 'ClientCapitalsourceTransport';
-	const CONTRACTPARTNER_TRANSPORT = 'ClientContractpartnerTransport';
-	const MONEYFLOW_TRANSPORT = 'ClientMoneyflowTransport';
-	const PREDEFMONEYFLOW_TRANSPORT = 'ClientPreDefMoneyflowTransport';
-	const USER_TRANSPORT = 'ClientUserTransport';
-	const GROUP_TRANSPORT = 'ClientGroupTransport';
-	const POSTINGACCOUNT_TRANSPORT = 'PostingAccountTransport';
-	const VALIDATIONITEM_TRANSPORT = 'ClientValidationItemTransport';
-	const COMPAREDATAFORMAT_TRANSPORT = 'CompareDataFormatTransport';
-	const COMPAREDATADATASET_TRANSPORT = 'CompareDataDatasetTransport';
-	const MONTHLYSETTLEMENT_TRANSPORT = 'MonthlySettlementTransport';
-	const REPORTTURNOVERCAPITALSOURCE_TRANSPORT = 'ReportTurnoverCapitalsourceTransport';
-	const TRENDSCALCULATED_TRANSPORT = 'TrendsCalculatedTransport';
-	const TRENDSSETTLED_TRANSPORT = 'TrendsSettledTransport';
-	const MONEYFLOWSEARCHPARAMS_TRANSPORT = 'MoneyflowSearchParamsTransport';
-	const MONEYFLOWSEARCHRESULT_TRANSPORT = 'MoneyflowSearchResultTransport';
+use rest\api\model\transport\GroupTransport;
+
+class createGroupRequest {
+	public $groupTransport;
+
+	public final function getGroupTransport() {
+		return $this->groupTransport;
+	}
+
+	public final function setGroupTransport(GroupTransport $groupTransport) {
+		$this->groupTransport = $groupTransport;
+	}
 }
 
 ?>

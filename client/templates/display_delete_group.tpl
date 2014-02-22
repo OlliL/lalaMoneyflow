@@ -20,7 +20,7 @@
 			{/if}
 			<table border=0>
 				<tr>
-					<th width="200">{#TEXT_210#}</th>
+					<th width="200">{#TEXT_41#}</th>
 				</tr>
 				<tr>
 					<td class="contrastbgcolor">{$ALL_DATA.name}</td>

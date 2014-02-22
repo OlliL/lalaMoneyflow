@@ -7,7 +7,11 @@ Requirements:
 	- Extension: session
 	- Extension: ? I guess I forgot some.....
 - MySQL 5.x
-- Yac (https://github.com/laruence/yac/)
+- Caching:
+  - Yac (https://github.com/laruence/yac/)
+    OR
+  - memcached + memcached extension with igbinary support
+- igbinary
 - Smarty (http://www.smarty.net/)
 - JpGraph (http://jpgraph.net/)
 - PECL spl_types

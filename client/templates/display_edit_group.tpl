@@ -16,7 +16,7 @@
 			<input type="hidden" name="REFERER"    value="{$ENV_REFERER}">
 			<table border=0>
 				<tr>
-					<th>{#TEXT_210#}</th>
+					<th>{#TEXT_41#}</th>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[name]"          size=10 value="{$ALL_DATA.name}"></td>
 				</tr>
 			</table>

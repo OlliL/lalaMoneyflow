@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataFormatTransport.php,v 1.2 2014/02/01 10:46:44 olivleh1 Exp $
+// $Id: CompareDataFormatTransport.php,v 1.3 2014/02/22 22:10:43 olivleh1 Exp $
 //
 namespace rest\api\model\transport;
 

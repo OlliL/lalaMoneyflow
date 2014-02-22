@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2005-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.23 2014/02/14 22:54:31 olivleh1 Exp $
+// $Id: include.php,v 1.24 2014/02/22 22:10:42 olivleh1 Exp $
 //
 
 // ########
@@ -45,7 +45,7 @@ define( 'ENCODING', 'ISO-8859-15' );
 const ROOTDIR = '/mnt/files/www/sites/olli.homeip.net/htdocs/moneyflow/';
 const HTTPFULSUBDIR = 'contrib/httpful/src/';
 const SLIMSUBDIR = 'contrib/Slim/';
-const URLPREFIX = 'http://www/moneyflow/';
+const URLPREFIX = 'http://127.0.0.1/moneyflow/';
 const SERVERPREFIX = 'rest/server/';
 
 // ########

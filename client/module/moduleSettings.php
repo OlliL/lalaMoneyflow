@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2006-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2006-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSettings.php,v 1.24 2014/02/22 00:33:01 olivleh1 Exp $
+// $Id: moduleSettings.php,v 1.25 2014/02/22 22:10:41 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreLanguages.php';

@@ -1,3 +1,4 @@
+- consider Conductor handling for showEdit*... -> edit* -> Error -> re-use the showEdit functionality
 - merge all Logic to work with the new accessor tables
 - rename User(Service|Dao|Controller) to Access*
 

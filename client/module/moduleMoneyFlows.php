@@ -2,7 +2,7 @@
 use rest\base\ErrorCode;
 use rest\client\handler\MoneyflowControllerHandler;
 //
-// Copyright (c) 2005-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@ use rest\client\handler\MoneyflowControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.79 2014/02/20 22:17:51 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.80 2014/02/22 22:10:41 olivleh1 Exp $
 //
 require_once 'module/module.php';
 
@@ -276,17 +276,10 @@ class moduleMoneyFlows extends module {
 
 					if (is_array( $all_data_pre )) {
 						$i = $numflows;
-						foreach ( $all_data_pre as $key => $value ) {
-							$last_used = NULL;
-							if (array_key_exists( 'last_used', $value ) && $value ['once_a_month'])
-								$last_used = convert_date_to_timestamp( $value ['last_used'] );
-
-							if (empty( $last_used ) || date( 'Y-m' ) != date( 'Y-m', $last_used )) {
-								$all_data [$i] = $value;
-								$all_data [$i] ['bookingdate'] = $date;
-								$all_data [$i] ['amount'] = sprintf( '%.02f', $all_data_pre [$key] ['amount'] );
-								$i ++;
-							}
+						foreach ( $all_data_pre as $value ) {
+							$all_data [$i] = $value;
+							$all_data [$i] ['bookingdate'] = $date;
+							$i ++;
 						}
 					}
 				}

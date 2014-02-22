@@ -2,7 +2,7 @@
 use rest\client\handler\SessionControllerHandler;
 use rest\client\handler\EventControllerHandler;
 //
-// Copyright (c) 2009-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2009-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@ use rest\client\handler\EventControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleEvents.php,v 1.9 2014/02/14 22:02:51 olivleh1 Exp $
+// $Id: moduleEvents.php,v 1.10 2014/02/22 22:10:41 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreSession.php';

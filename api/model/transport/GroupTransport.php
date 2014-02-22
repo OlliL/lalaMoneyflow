@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,45 +25,28 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: DbConnection.php,v 1.5 2014/02/21 23:17:50 olivleh1 Exp $
+// $Id: GroupTransport.php,v 1.1 2014/02/22 22:10:43 olivleh1 Exp $
 //
-namespace rest\base\config;
+namespace rest\api\model\transport;
 
-class DbConnection {
-	private static $instance;
-	private $connection;
+class GroupTransport {
+	public $id;
+	public $name;
 
-	private function __construct() {
+	public final function setId($id) {
+		$this->id = $id;
 	}
 
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			$className = __CLASS__;
-			self::$instance = new $className();
-			#self::$instance->setConnection();
-		}
-		return self::$instance;
+	public final function setName($name) {
+		$this->name = $name;
 	}
 
-	public final function __clone() {
-		trigger_error( 'Cloning not supported', E_USER_ERROR );
+	public final function getId() {
+		return $this->id;
 	}
 
-	public final function __wakeup() {
-		trigger_error( 'Deserialisation not supported', E_USER_ERROR );
-	}
-
-	public final function getConnection() {
-		if($this->connection === null)
-			$this->setConnection();
-		return $this->connection;
-	}
-
-	private final function setConnection() {
-		$this->connection = new \PDO( DATASOURCE . ';charset=utf8', DB_USER, DB_PASS, array ()
-		// \PDO::ATTR_PERSISTENT => true
-		 );
-		$this->connection->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_WARNING );
+	public final function getName() {
+		return $this->name;
 	}
 }
 

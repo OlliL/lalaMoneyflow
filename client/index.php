@@ -1,6 +1,7 @@
 <?php
+use rest\base\ErrorCode;
 //
-// Copyright (c) 2005-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.68 2014/02/22 00:33:02 olivleh1 Exp $
+// $Id: index.php,v 1.69 2014/02/22 22:10:42 olivleh1 Exp $
 //
 require_once 'include.php';
 require_once 'functions.php';
@@ -39,11 +40,12 @@ $timer = new utilTimer();
 $timer->mStart();
 //
 
-
 $action = $_POST ['action'] ? $_POST ['action'] : $_GET ['action'];
 
 function my_number_format($number) {
-	return number_format( $number, 2 );
+	// to not change NULL to 0.00 - for example in display_add_moneyflow at the empty lines
+	if ($number !== null)
+		return number_format( $number, 2 );
 }
 
 $moduleEvents = new moduleEvents();
@@ -69,7 +71,7 @@ if ($is_logged_in == 2) {
 
 	$GUI_LANGUAGE = $coreSession->getAttribute( 'gui_language' );
 	if (empty( $_POST ['realaction'] ) || $_POST ['realaction'] != 'save') {
-		add_error( 152 );
+		add_error( ErrorCode::PASSWORD_MUST_BE_CHANGED );
 	}
 	$realaction = $_REQUEST ['realaction'];
 	$all_data = $_REQUEST ['all_data'];

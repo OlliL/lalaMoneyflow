@@ -15,7 +15,7 @@
 				<br><br>
 				<table border=0>
 					<tr>
-						<th width="200">{#TEXT_210#}</th>
+						<th width="200">{#TEXT_41#}</th>
 					</tr>
 					{section name=DATA loop=$ALL_DATA}
 						<tr>

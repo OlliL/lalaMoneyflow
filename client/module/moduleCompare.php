@@ -2,7 +2,7 @@
 use rest\base\ErrorCode;
 use rest\client\handler\CompareDataControllerHandler;
 //
-// Copyright (c) 2007-2013 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2007-2013 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@ use rest\client\handler\CompareDataControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.39 2014/02/16 10:36:39 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.40 2014/02/22 22:10:41 olivleh1 Exp $
 //
 require_once 'module/module.php';
 

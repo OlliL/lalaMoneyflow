@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2005-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,18 +24,20 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.68 2014/02/22 00:33:01 olivleh1 Exp $
+// $Id: module.php,v 1.69 2014/02/22 22:10:41 olivleh1 Exp $
 //
 require_once 'Smarty.class.php';
 require_once 'core/coreText.php';
 require_once 'core/coreSession.php';
 
 class module {
+	protected $template;
 
 	public function __construct() {
-		$this->template = new Smarty();
+		$this->template = new \Smarty();
 		$this->template->registerPlugin( 'modifier', 'number_format', 'my_number_format' );
 		$this->template->assign( 'ENV_INDEX_PHP', 'index.php' );
+		$this->template->setCompileCheck( \Smarty::COMPILECHECK_OFF );
 
 		if (! empty( $_SERVER ['HTTP_REFERER'] )) {
 			$http_referer = $_SERVER ['HTTP_REFERER'];
@@ -75,10 +77,20 @@ class module {
 		return $result;
 	}
 
-	function fetch_template($name) {
+	private final function loadLanguageFile() {
 		global $GUI_LANGUAGE;
 		$this->template->configLoad( 'rest/client/locale/' . $GUI_LANGUAGE . '.conf' );
-		$result = $this->template->fetch( './' . $name );
+	}
+
+	function fetch_template($name, $cacheid = false) {
+		if (! $cacheid) {
+			$this->loadLanguageFile();
+			$result = $this->template->fetch( './' . $name );
+		} else {
+			if (! $this->template->isCached( './' . $name, $cacheid ))
+				$this->loadLanguageFile();
+			$result = $this->template->fetch( './' . $name, $cacheid );
+		}
 		return $result;
 	}
 
@@ -95,12 +107,14 @@ class module {
 		} else {
 			$this->template->assign( 'IS_ADMIN', false );
 		}
-
-		$header = $this->fetch_template( 'display_header.tpl' );
+		$cache_id = $user ['userid'];
+		$this->template->setCaching( true );
+		$header = $this->fetch_template( 'display_header.tpl', 'header_' . $nonavi . '_' . $cache_id );
 		$this->template->assign( 'HEADER', $header );
 
-		$footer = $this->fetch_template( 'display_footer.tpl' );
+		$footer = $this->fetch_template( 'display_footer.tpl', 'footer_' . $cache_id );
 		$this->template->assign( 'FOOTER', $footer );
+		$this->template->setCaching( false );
 	}
 }
 ?>

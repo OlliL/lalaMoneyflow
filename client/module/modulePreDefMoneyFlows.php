@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2005-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.50 2014/02/16 10:36:39 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.51 2014/02/22 22:10:41 olivleh1 Exp $
 //
 use rest\base\ErrorCode;
 use rest\client\handler\PreDefMoneyflowControllerHandler;

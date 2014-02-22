@@ -3,7 +3,7 @@ use rest\client\handler\ContractpartnerControllerHandler;
 use rest\base\ErrorCode;
 use rest\client\handler\MoneyflowControllerHandler;
 //
-// Copyright (c) 2006-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2006-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@ use rest\client\handler\MoneyflowControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSearch.php,v 1.29 2014/02/16 10:36:39 olivleh1 Exp $
+// $Id: moduleSearch.php,v 1.30 2014/02/22 22:10:41 olivleh1 Exp $
 //
 
 require_once 'module/module.php';

@@ -1,7 +1,7 @@
 <?php
-use rest\base\ErrorCode;
+
 //
-// Copyright (c) 2006-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2006-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,8 +25,9 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: functions.php,v 1.22 2014/02/04 20:43:58 olivleh1 Exp $
+// $Id: functions.php,v 1.23 2014/02/22 22:10:42 olivleh1 Exp $
 //
+use rest\base\ErrorCode;
 function add_error($id, $args = NULL) {
 	global $ERRORS;
 	if (is_array( $args )) {
@@ -53,33 +54,6 @@ function convert_array_to_utf8($arr) {
 	return $arr;
 }
 
-function check_date($year, $month, $day) {
-	if ($month == 1 || $month == 3 || $month == 5 || $month == 7 || $month == 8 || $month == 10 || $month == 12) {
-		$maxday = 31;
-	} elseif ($month == 2) {
-		if (($year % 4 === 0 && $year % 100 !== 0) || $year % 400 === 0) {
-			$maxday = 29;
-		} else {
-			$maxday = 28;
-		}
-	} else {
-		$maxday = 30;
-	}
-
-	if ($year < 1970 || $year > 2999 || $month < 1 || $month > 12 || $day < 1 || $day > $maxday) {
-		return false;
-	} else {
-		return true;
-	}
-}
-
-function convert_timestamp_to_db($timestamp) {
-	if (empty( $timestamp ))
-		return false;
-
-	return date( 'Y-m-d', $timestamp );
-}
-
 function dateIsValid($date) {
 	if (empty( $date ))
 		return false;
@@ -103,55 +77,7 @@ function dateIsValid($date) {
 	}
 }
 
-function convert_date_to_db($date, $dateformat = GUI_DATE_FORMAT) {
-	if (empty( $date ))
-		return false;
 
-	$patterns [0] = '/YYYY/';
-	$patterns [1] = '/MM/';
-	$patterns [2] = '/DD/';
-
-	$replacements [0] = '%Y';
-	$replacements [1] = '%m';
-	$replacements [2] = '%d';
-
-	$strptime_format = preg_replace( $patterns, $replacements, $dateformat );
-
-	$date_array = strptime( $date, $strptime_format );
-
-	$retval = false;
-
-	if (is_array( $date_array ) && check_date( ($date_array ['tm_year'] + 1900), ($date_array ['tm_mon'] + 1), $date_array ['tm_mday'] )) {
-		$retval = sprintf( '%4d-%02d-%02d', ($date_array ['tm_year'] + 1900), ($date_array ['tm_mon'] + 1), $date_array ['tm_mday'] );
-	}
-
-	return $retval;
-}
-
-function convert_date_to_timestamp($date, $dateformat = GUI_DATE_FORMAT) {
-	if (empty( $date ))
-		return false;
-
-	$patterns [0] = '/YYYY/';
-	$patterns [1] = '/MM/';
-	$patterns [2] = '/DD/';
-
-	$replacements [0] = '%Y';
-	$replacements [1] = '%m';
-	$replacements [2] = '%d';
-
-	$strptime_format = preg_replace( $patterns, $replacements, $dateformat );
-
-	$date_array = strptime( $date, $strptime_format );
-
-	$retval = false;
-
-	if (is_array( $date_array ) && check_date( ($date_array ['tm_year'] + 1900), ($date_array ['tm_mon'] + 1), $date_array ['tm_mday'] )) {
-		$retval = mktime( 0, 0, 0, $date_array ['tm_mon'] + 1, $date_array ['tm_mday'], $date_array ['tm_year'] + 1900 );
-	}
-
-	return $retval;
-}
 
 function convert_date_to_gui($date, $dateformat = GUI_DATE_FORMAT) {
 	if (empty( $date ))

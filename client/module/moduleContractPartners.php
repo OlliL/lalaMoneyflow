@@ -2,7 +2,7 @@
 use rest\base\ErrorCode;
 use rest\client\handler\ContractpartnerControllerHandler;
 //
-// Copyright (c) 2005-2014 Oliver Lehmann <oliver@FreeBSD.org>
+// Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@ use rest\client\handler\ContractpartnerControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.34 2014/02/20 22:17:51 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.35 2014/02/22 22:10:41 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
