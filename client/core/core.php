@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: core.php,v 1.29 2014/02/21 23:17:51 olivleh1 Exp $
+// $Id: core.php,v 1.30 2014/02/23 13:15:54 olivleh1 Exp $
 //
 require_once 'DbConnection.php';
 
@@ -37,22 +37,10 @@ class core {
 	function query($query) {
 		GLOBAL $money_debug;
 
-		if ($money_debug === true) {
-			GLOBAL $sql_querytime;
-			$query = str_replace( "	", "", $query );
-			echo '<a href="explain.php?query=' . urlencode( $query ) . '" style="text-decoration:none"><pre>' . $query . '</pre></a>';
-			$timer = new utilTimer();
-			$timer->mStart();
-		}
 		if ($this->db == null)
 			$this->db = DbConnection::getInstance()->getConnection();
 
 		$result = $this->db->query( $query );
-		if ($money_debug === true) {
-			$querytime = $timer->mGetTime();
-			$sql_querytime += $querytime;
-			$timer->mPrintTime( $querytime );
-		}
 		return $result;
 	}
 
@@ -68,46 +56,11 @@ class core {
 		}
 	}
 
-	function select_cols($query) {
-		$retval = false;
-		$reslink = $this->query( $query );
-		if ($reslink->errorCode() != 0)
-			die( $reslink->errorInfo() );
-		while ( list ( $retval ) = $reslink->fetch( \PDO::FETCH_NUM ) )
-			$retvals [] = $retval;
-		return $retvals;
-	}
-
-	function select_row($query) {
-		$reslink = $this->query( $query );
-		if ($reslink->errorCode() != 0)
-			die( $reslink->errorInfo() );
-		if ($reslink->rowCount() <= 1) {
-			$retval = $reslink->fetch( \PDO::FETCH_ASSOC );
-			return $retval;
-		} else {
-			die( 'more than one results, but it should be unique!' );
-		}
-	}
-
-	function select_rows($query) {
-		$retval = false;
-		$reslink = $this->query( $query );
-		if ($reslink->errorCode() != 0)
-			die( $reslink->errorInfo() );
-		$retval = $reslink->fetchAll( \PDO::FETCH_ASSOC );
-		return $retval;
-	}
-
 	function generic_query($query) {
 		$reslink = $this->query( $query );
 		if ($reslink->errorCode() != 0)
 			die( $reslink->errorInfo() );
 		return true;
-	}
-
-	function delete_row($query) {
-		return $this->generic_query( $query );
 	}
 
 	function insert_row($query) {
@@ -119,44 +72,4 @@ class core {
 		return $this->generic_query( $query );
 	}
 
-	function exec_function($function) {
-		return $this->select_col( 'SELECT ' . $function . ' FROM DUAL' );
-	}
-
-	function exec_procedure($procedure) {
-		$ret = $this->query( 'CALL ' . $procedure );
-
-		$all_params_string = preg_replace( '/[^\(]*\([\s]*(.*)[\s]*\)/', '$1', $procedure );
-		$all_params_array = preg_split( '/,[\s]*/', $all_params_string );
-
-		foreach ( $all_params_array as $key => $param ) {
-			$pos = strpos( $param, '@' );
-			if ($pos === 0) {
-				$out_params_array [] = $param;
-			}
-		}
-
-		if (is_array( $out_params_array )) {
-			$out_params_string = implode( ',', $out_params_array );
-			preg_replace( '/\s/', '', $out_params_string );
-			$out_params = $this->select_row( "SELECT $out_params_string FROM DUAL" );
-			if (is_array( $out_params )) {
-				$ret = $out_params;
-			} else {
-				$ret = array ();
-			}
-		}
-
-		return $ret;
-	}
-
-	function make_date($date) {
-		if (empty( $date )) {
-			$date = 'NOW()';
-		} else {
-			$date = "STR_TO_DATE('$date',GET_FORMAT(DATE,'ISO'))";
-		}
-
-		return $date;
-	}
 }
