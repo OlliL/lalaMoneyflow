@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreSettings.php,v 1.23 2014/02/22 16:54:52 olivleh1 Exp $
+// $Id: coreSettings.php,v 1.24 2014/02/23 12:14:34 olivleh1 Exp $
 //
 require_once 'core/core.php';
 
@@ -54,20 +54,6 @@ class coreSettings extends core {
 							   ,'$value'
 							   )
 							   ON DUPLICATE KEY UPDATE value = VALUES(value)");
-	}
-
-	function init_settings( $userid ) {
-		return $this->insert_row( "	INSERT INTO settings
-						           (mac_id
-						           ,name
-						           ,value
-						           )
-						           (SELECT $userid
-						                  ,name
-						                  ,value
-						              FROM settings
-						             WHERE mac_id = 0)
-							   ON DUPLICATE KEY UPDATE value = VALUES(value)" );
 	}
 
 	function get_displayed_language( $userid ) {

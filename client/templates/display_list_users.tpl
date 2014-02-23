@@ -10,7 +10,7 @@
 			{section name=LETTER loop=$ALL_INDEX_LETTERS}
 				<a href="{$ENV_INDEX_PHP}?action=list_users&amp;letter={$ALL_INDEX_LETTERS[LETTER]}">{$ALL_INDEX_LETTERS[LETTER]}</a> 
 			{/section}
-			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_user&amp;sr=1','_blank','width=230,height=200')">{#TEXT_29#}</a> 
+			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_user&amp;sr=1','_blank','width=230,height=250')">{#TEXT_29#}</a> 
 			{if $COUNT_ALL_DATA > 0}
 				<br><br>
 				<table border=0>
@@ -26,8 +26,8 @@
 							<td class="contrastbgcolor" align="center"><b>{if $ALL_DATA[DATA].perm_login == 1}<font color="green">{#TEXT_25#}{else}<font color="red">{#TEXT_26#}{/if}</font></b></td>
 							<td class="contrastbgcolor" align="center"><b>{if $ALL_DATA[DATA].perm_admin == 1}<font color="green">{#TEXT_25#}{else}<font color="red">{#TEXT_26#}{/if}</font></b></td>
 							<td class="contrastbgcolor" align="center"><b>{if $ALL_DATA[DATA].att_new == 1}<font color="green">{#TEXT_25#}{else}<font color="red">{#TEXT_26#}{/if}</font></b></td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_user&amp;userid={$ALL_DATA[DATA].userid}&amp;sr=1','_blank','width=230,height=200')">{#TEXT_36#}</a></td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_user&amp;userid={$ALL_DATA[DATA].userid}&amp;sr=1','_blank','width=800,height=120')">{#TEXT_37#}</a></td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_user&amp;userid={$ALL_DATA[DATA].userid}&amp;sr=1','_blank','width=230,height=250')">{#TEXT_36#}</a></td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_user&amp;userid={$ALL_DATA[DATA].userid}&amp;sr=1','_blank','width=800,height=150')">{#TEXT_37#}</a></td>
 						</tr>
 					{/section}
 				</table>

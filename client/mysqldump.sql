@@ -86,25 +86,6 @@ CREATE TABLE access_flattened (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `users`
---
-
-DROP TABLE IF EXISTS users;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE users (
-  userid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) NOT NULL,
-  `password` varchar(40) NOT NULL,
-  att_new tinyint(1) unsigned NOT NULL,
-  perm_login tinyint(1) unsigned NOT NULL,
-  perm_admin tinyint(1) unsigned NOT NULL,
-  PRIMARY KEY (userid),
-  UNIQUE KEY mur_i_01 (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mur';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `settings`
 --
 
@@ -364,7 +345,7 @@ CREATE TABLE cmp_data_formats (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-02-23  0:47:23
+-- Dump completed on 2014-02-23 13:11:04
 INSERT INTO cmp_data_formats VALUES (1,'Postbank Direkt','/^Datum	Wertstellung	Art/','	',1,5,7,4,'DD.MM.YYYY',',','.',6,3,'/^(Überweisung|Dauerauftrag)/');
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','/^Buchungstag	Wertstellungstag	Verwendungszweck/','	',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','/^\"Buchungstag\";\"Wertstellung\";\"Umsatzart\"/',';',1,6,7,4,'DD.MM.YYYY',',','.',5,3,'/^(Gutschrift|Gehalt)/');
@@ -374,8 +355,5 @@ INSERT INTO access (name,password,att_user,att_change_password,perm_login,perm_a
 UPDATE access SET id=0 WHERE name='root');
 INSERT INTO access_relation (id,ref_id,validfrom,validtil) VALUES (1,0,'0001-01-01','2999-12-31');
 INSERT INTO access_flattened (id,validfrom,validtil,id_level_1,id_level_2) VALUES (1,'0001-01-01','2999-12-31',1,0);
-INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1,1,1);
-INSERT INTO users (name,password,perm_login,perm_admin,att_new) VALUES ('','',0,0,0);
-UPDATE users SET userid=0 WHERE name='';
 INSERT INTO settings VALUES (0,'displayed_language','1'),(0,'max_rows','40'),(0,'date_format','YYYY-MM-DD'),(0,'num_free_moneyflows','1');
-INSERT INTO settings (SELECT (SELECT userid FROM users WHERE name='admin'),name,value FROM settings WHERE mur_userid=0);
+INSERT INTO settings (SELECT (SELECT id FROM access WHERE name='admin'),name,value FROM settings WHERE mac_id=0);

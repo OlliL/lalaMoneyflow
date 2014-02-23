@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2006-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,21 +25,22 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreUsers.php,v 1.22 2014/02/23 12:14:34 olivleh1 Exp $
+// $Id: showEditUserResponse.php,v 1.1 2014/02/23 12:14:35 olivleh1 Exp $
 //
-require_once 'core/core.php';
+namespace rest\api\model\user;
 
-class coreUsers extends core {
+use rest\api\model\transport\UserTransport;
 
-	function coreUsers() {
-		parent::__construct();
+class showEditUserResponse {
+	public $userTransport;
+
+	public final function getUserTransport() {
+		return $this->userTransport;
 	}
 
-	function set_password( $id, $password ) {
-		return $this->update_row( "	UPDATE access
-						   SET password = '".sha1( $password )."'
-						      ,att_change_password  = 0
-						 WHERE id = $id" );
+	public final function setUserTransport(UserTransport $userTransport) {
+		$this->userTransport = $userTransport;
 	}
-
 }
+
+?>

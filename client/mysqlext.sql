@@ -33,9 +33,9 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_moneyflows (
          AND mmf.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5);
 
 /*
- * this view will show all data from all users which are in the
- * same group as mur_userid. Use mug_mur_userid in the query,
- * mur_userid is the real userid of the dataset
+ * this view will show all data from monthlysettlements which is visible
+ * to a user. Use maf_id in your SELECT for your userid. In
+ * mac_id_creator you'll find the original userid of the creator
  */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
    mac_id_creator
@@ -59,9 +59,9 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
              AND mms.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5);
 
 /*
- * this view will show all data from all users which are in the
- * same group as mur_userid. Use mug_mur_userid in the query,
- * mur_userid is the real userid of the dataset
+ * this view will show all data from postingaccounts which is visible
+ * to a user. Use maf_id in your SELECT for your userid. In
+ * mac_id_creator you'll find the original userid of the creator
  */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_postingaccounts (
    mac_id_creator
@@ -119,9 +119,9 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_contractpartners (
        WHERE mcp.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5);
 
 /*
- * this view will show all data from all users which are in the
- * same group as mur_userid. Use mug_mur_userid in the query,
- * mur_userid is the real userid of the dataset
+ * this view will show all data from capitalsources which is visible
+ * to a user. Use maf_id in your SELECT for your userid. In
+ * mac_id_creator you'll find the original userid of the creator
  */
 CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_capitalsources (
    mac_id_creator
@@ -160,144 +160,16 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_capitalsources (
 
 -- FUNCTIONS
 
-/*
- * this function checks if there still exists data
- * which has to be done before dropping a user to avoid
- * an foreign key constraint violation (and to alert the
- * admin that he is about to drop a user who still owns
- * data
- */
-DROP FUNCTION IF EXISTS user_owns_data$$
-CREATE FUNCTION user_owns_data (pi_userid INT(10) UNSIGNED
-                               ) RETURNS  INT(1)
-READS SQL DATA
-BEGIN
-  DECLARE l_num INT(1);
-  
-  DECLARE c_mcs CURSOR FOR
-    SELECT 1
-      FROM capitalsources
-     WHERE mur_userid = pi_userid
-     LIMIT 1;
-
-  DECLARE c_mcp CURSOR FOR
-    SELECT 1
-      FROM contractpartners
-     WHERE mur_userid = pi_userid
-     LIMIT 1;
-
-  DECLARE c_mmf CURSOR FOR
-    SELECT 1
-      FROM moneyflows
-     WHERE mur_userid = pi_userid
-     LIMIT 1;
-
-  DECLARE c_mms CURSOR FOR
-    SELECT 1
-      FROM monthlysettlements
-     WHERE mur_userid = pi_userid
-     LIMIT 1;
-
-  DECLARE c_mpm CURSOR FOR
-    SELECT 1
-      FROM predefmoneyflows
-     WHERE mur_userid = pi_userid
-     LIMIT 1;
-
-  DECLARE CONTINUE HANDLER FOR NOT FOUND SET l_num := 0;
-
-  OPEN  c_mcs;
-  FETCH c_mcs INTO l_num;
-  CLOSE c_mcs;
-  
-  IF l_num = 0 THEN
-
-    OPEN  c_mcp;
-    FETCH c_mcp INTO l_num;
-    CLOSE c_mcp;
-
-    IF l_num = 0 THEN
-
-      OPEN  c_mmf;
-      FETCH c_mmf INTO l_num;
-      CLOSE c_mmf;
-
-      IF l_num = 0 THEN
-
-        OPEN  c_mms;
-        FETCH c_mms INTO l_num;
-        CLOSE c_mms;
-
-        IF l_num = 0 THEN
-
-          OPEN  c_mpm;
-          FETCH c_mpm INTO l_num;
-          CLOSE c_mpm;
-
-        END IF;
-
-      END IF;
-
-    END IF;
-
-  END IF;
-
-  RETURN l_num;
-  
-END;$$
-
 -- PROCEDURES
-
-/*
- * this procedure deletes a user by first deleting all the data
- * the user might own and then finally deleting the user from
- * the table users
- */
-DROP PROCEDURE IF EXISTS user_delete$$
-CREATE PROCEDURE user_delete (IN  pi_userid INT(10) UNSIGNED
-                             ,OUT po_ret    INT(1) UNSIGNED
-                             )
-READS SQL DATA
-BEGIN
-  DECLARE l_num INT(1);
-  DECLARE EXIT HANDLER FOR SQLEXCEPTION ROLLBACK;
-
-  SET po_ret := 0;
-
-  START TRANSACTION;
-  
-  DELETE FROM moneyflows
-   WHERE mur_userid = pi_userid;
-
-  DELETE FROM monthlysettlements
-   WHERE mur_userid = pi_userid;
-
-  DELETE FROM predefmoneyflows
-   WHERE mur_userid = pi_userid;
-
-  DELETE FROM capitalsources
-   WHERE mur_userid = pi_userid;
-
-  DELETE FROM contractpartners
-   WHERE mur_userid = pi_userid;
-
-  DELETE FROM settings
-   WHERE mur_userid = pi_userid;
-  
-  DELETE FROM users
-   WHERE userid = pi_userid;
-
-  COMMIT;
-
-  SET po_ret := 1;
-
-END;$$
 
 /*
  * import data which is stored in table imp_data
  * and try to map the capitalsource and the contractpartner
  * if possible to the internal IDs (External data comes as
  * text instead of IDs)
+ *
+ * FIXME: long time not tested.... it probably does NOT work without modification
+ *
  */
 DROP PROCEDURE IF EXISTS imp_moneyflows$$
 CREATE PROCEDURE imp_moneyflows (IN pi_userid   INT(10) UNSIGNED
@@ -324,8 +196,8 @@ BEGIN
       FROM                 imp_data            mid
            LEFT OUTER JOIN imp_mapping_source  mis ON mid.source  LIKE mis.source_from
            LEFT OUTER JOIN imp_mapping_partner mip ON mid.partner = mip.partner_from
-           LEFT OUTER JOIN capitalsources      mcs ON IFNULL(mis.source_to,mid.source)   = mcs.comment AND mcs.mur_userid = pi_userid
-           LEFT OUTER JOIN contractpartners    mcp ON IFNULL(mip.partner_to,mid.partner) = mcp.name    AND mcp.mur_userid = pi_userid
+           LEFT OUTER JOIN capitalsources      mcs ON IFNULL(mis.source_to,mid.source)   = mcs.comment AND mcs.mac_id_creator = pi_userid
+           LEFT OUTER JOIN contractpartners    mcp ON IFNULL(mip.partner_to,mid.partner) = mcp.name    AND mcp.mac_id_Creator = pi_userid
      WHERE mid.status = 1;
 
   DECLARE CONTINUE HANDLER FOR NOT FOUND        SET l_found  := FALSE;
@@ -343,7 +215,8 @@ BEGIN
       SET l_insert := TRUE;
 
       INSERT INTO moneyflows
-            (mur_userid
+            (mac_id_creator
+            ,mac_id_accessor
             ,bookingdate
             ,invoicedate
             ,amount
@@ -353,6 +226,7 @@ BEGIN
             )
               VALUES
             (pi_userid
+            ,pi_userid
             ,str_to_date(l_date,'%d.%m.%Y')
             ,str_to_date(l_date,'%d.%m.%Y')
             ,l_amount

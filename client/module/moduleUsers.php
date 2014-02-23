@@ -1,6 +1,7 @@
 <?php
 use rest\client\handler\SessionControllerHandler;
 use rest\client\handler\UserControllerHandler;
+use rest\base\ErrorCode;
 //
 // Copyright (c) 2006-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -26,24 +27,19 @@ use rest\client\handler\UserControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.38 2014/02/22 22:10:41 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.39 2014/02/23 12:14:35 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
 require_once 'core/coreSession.php';
-require_once 'core/coreUsers.php';
-require_once 'core/coreSettings.php';
 
 class moduleUsers extends module {
 
 	function moduleUsers() {
 		parent::__construct();
 		$this->coreSession = new coreSession();
-		$this->coreUsers = new coreUsers();
-		$this->coreSettings = new coreSettings();
 	}
 
-	// uses REST Service
 	function is_logged_in() {
 		$this->coreSession->start();
 		if (! $this->coreSession->getAttribute( 'users_id' )) {
@@ -71,7 +67,6 @@ class moduleUsers extends module {
 		}
 	}
 
-	// uses REST Service
 	function display_login_user($realaction, $name, $password, $stay_logged_in, $request_uri) {
 		global $GUI_LANGUAGE;
 		switch ($realaction) {
@@ -108,7 +103,7 @@ class moduleUsers extends module {
 			return;
 		} else {
 			define( USERID, 0 );
-			$GUI_LANGUAGE = $this->coreSettings->get_displayed_language( USERID );
+			$GUI_LANGUAGE = LOGIN_FORM_LANGUAGE;
 			$this->template->assign( 'NAME', $name );
 			$this->template->assign( 'STAY_LOGGED_IN', $stay_logged_in );
 			$this->template->assign( 'ERRORS', $this->get_errors() );
@@ -129,20 +124,9 @@ class moduleUsers extends module {
 	}
 
 	function display_list_users($letter) {
-		$all_index_letters = $this->coreUsers->get_all_index_letters();
-		$num_users = $this->coreUsers->count_all_data();
-
-		if (empty( $letter ) && $num_users < $this->coreSettings->get_max_rows( USERID )) {
-			$letter = 'all';
-		}
-
-		if ($letter == 'all') {
-			$all_data = $this->coreUsers->get_all_data();
-		} elseif (! empty( $letter )) {
-			$all_data = $this->coreUsers->get_all_matched_data( $letter );
-		} else {
-			$all_data = array ();
-		}
+		$listGroups = UserControllerHandler::getInstance()->showUserList( $letter );
+		$all_index_letters = $listGroups ['initials'];
+		$all_data = $listGroups ['users'];
 
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
@@ -152,71 +136,78 @@ class moduleUsers extends module {
 		return $this->fetch_template( 'display_list_users.tpl' );
 	}
 
-	function display_edit_user($realaction, $id, $all_data) {
+	function display_edit_user($realaction, $userid, $all_data) {
 		switch ($realaction) {
 			case 'save' :
-				if ($all_data ['password1'] != $all_data ['password2']) {
-					add_error( 137 );
-				} elseif ($id == 0) {
-					if (empty( $all_data ['password1'] )) {
-						add_error( 140 );
+				$all_data ['userid'] = $userid;
+				$valid_data = true;
+				if ($all_data ['password'] != $all_data ['password2']) {
+					add_error( ErrorCode::PASSWORD_NOT_MATCHING );
+					$valid_data = false;
+				} elseif ($userid == 0) {
+					if (empty( $all_data ['password'] )) {
+						add_error( ErrorCode::PASSWORD_EMPTY );
+						$valid_data = false;
+					}
+				}
+
+				if ($valid_data == true) {
+					if ($userid == 0) {
+						$ret = UserControllerHandler::getInstance()->createUser( $all_data );
 					} else {
-						$ret = $this->coreUsers->add_user( $all_data ['name'], $all_data ['password1'], $all_data ['perm_login'], $all_data ['perm_admin'], $all_data ['att_new'] );
-						if ($ret > 0) {
-							$coreSettings = new coreSettings();
-							if (! $this->coreSettings->init_settings( $ret )) {
-								$this->coreUsers->delete_user( $ret );
-								$ret = false;
+						$ret = UserControllerHandler::getInstance()->updateUser( $all_data );
+					}
+
+					if ($ret === true) {
+						$this->template->assign( 'CLOSE', 1 );
+					} else {
+						foreach ( $ret ['errors'] as $validationResult ) {
+							$error = $validationResult ['error'];
+
+							add_error( $error );
+
+							switch ($error) {
+								case ErrorCode::NAME_MUST_NOT_BE_EMPTY :
+								case ErrorCode::USER_WITH_SAME_NAME_ALREADY_EXISTS :
+									$all_data ['name_error'] = 1;
+									break;
 							}
 						}
 					}
-				} else {
-					$ret = $this->coreUsers->update_user( $id, $all_data ['name'], $all_data ['perm_login'], $all_data ['perm_admin'], $all_data ['att_new'] );
-					if (! empty( $all_data ['password1'] ) && $ret) {
-						$ret = $this->coreUsers->set_password( $id, $all_data ['password1'] );
+				}
+			default :
+				if (! is_array( $all_data )) {
+					if ($userid > 0) {
+						$all_data = UserControllerHandler::getInstance()->showEditUser( $userid );
+					} else {
+						$all_data ['perm_login'] = 1;
+						$all_data ['att_new'] = 1;
 					}
 				}
-
-				if ($ret) {
-					$this->template->assign( 'CLOSE', 1 );
-				} else {
-					$this->template->assign( 'ALL_DATA', $all_data );
-				}
-				break;
-			default :
-				if ($id > 0) {
-					$all_data = $this->coreUsers->get_id_data( $id );
-				} else {
-					$all_data ['perm_login'] = 1;
-					$all_data ['att_new'] = 1;
-				}
-				$this->template->assign( 'ALL_DATA', $all_data );
 				break;
 		}
 
+		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_user.tpl' );
 	}
 
-	function display_delete_user($realaction, $id, $force) {
+	function display_delete_user($realaction, $userid) {
 		switch ($realaction) {
 			case 'yes' :
-				if (empty( $force ) && $this->coreUsers->user_owns_data( $id )) {
-					add_error( 151 );
-					$this->template->assign( 'ASK', 1 );
-				} else {
-					if ($this->coreUsers->delete_user( $id )) {
-						$this->template->assign( 'CLOSE', 1 );
-						break;
-					} else {
-						add_error( 153 );
-					}
+				if (UserControllerHandler::getInstance()->deleteUser( $userid )) {
+					$this->template->assign( 'CLOSE', 1 );
+					break;
 				}
 			default :
-				$all_data = $this->coreUsers->get_id_data( $id );
-				$this->template->assign( 'ALL_DATA', $all_data );
+				if ($userid > 0) {
+					$all_data = UserControllerHandler::getInstance()->showDeleteUser( $userid );
+					if ($all_data) {
+						$this->template->assign( 'ALL_DATA', $all_data );
+					}
+				}
 				break;
 		}
 

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.24 2014/02/22 22:10:42 olivleh1 Exp $
+// $Id: include.php,v 1.25 2014/02/23 12:14:34 olivleh1 Exp $
 //
 
 // ########
@@ -37,6 +37,9 @@ const DATASOURCE = 'mysql:host=db;dbname=moneyflow';
 const DB_USER = 'moneyflow';
 const DB_PASS = 'moneyflow';
 const APPID = 1;
+
+// defines which language is used to display the login screen
+const LOGIN_FORM_LANGUAGE = 1;
 
 // jpgraph is used for plotting trends
 define( 'ENABLE_JPGRAPH', true );

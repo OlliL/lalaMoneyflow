@@ -21,7 +21,7 @@
 				</tr>
 				<tr>
 					<th>{#TEXT_86#}</th>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="password" name="all_data[password1]" size=10 value=""></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="password" name="all_data[password]" size=10 value=""></td>
 				</tr>
 				<tr>
 					<th>{#TEXT_92#}</th>

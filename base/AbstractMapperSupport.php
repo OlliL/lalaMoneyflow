@@ -25,22 +25,23 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractMapperSupport.php,v 1.5 2014/01/26 12:24:49 olivleh1 Exp $
+// $Id: AbstractMapperSupport.php,v 1.6 2014/02/23 12:14:35 olivleh1 Exp $
 //
 namespace rest\base;
 
 abstract class AbstractMapperSupport {
 	private $mapper;
 
-	protected function map($obj, $arrayType = NULL) {
+	protected function map($obj, $arrayType = null) {
 		if ($obj) {
+			$object = null;
 			if ($arrayType) {
 				$object = $this->mapper [$arrayType];
-			} else {
+			} elseif (array_key_exists( get_class( $obj ), $this->mapper )) {
 				$object = $this->mapper [get_class( $obj )];
 			}
 
-			if ($object == NULL) {
+			if ($object == null) {
 				throw new \Exception( 'Mapper for ' . get_class( $obj ) . ' not defined in ' . get_class( $this ) . '!' );
 			}
 
@@ -56,7 +57,7 @@ abstract class AbstractMapperSupport {
 		}
 	}
 
-	protected function mapArray(array $aArray, $arrayType = NULL) {
+	protected function mapArray(array $aArray, $arrayType = null) {
 		$result = array ();
 		foreach ( $aArray as $a ) {
 			$result [] = self::map( $a, $arrayType );
@@ -64,7 +65,7 @@ abstract class AbstractMapperSupport {
 		return $result;
 	}
 
-	protected function addMapper($class, $arrayTypeA = NULL, $arrayTypeB = NULL) {
+	protected function addMapper($class, $arrayTypeA = null, $arrayTypeB = null) {
 		if ($arrayTypeA) {
 			/* if the source is an array which has to be mapped */
 			$this->mapper [$arrayTypeA] = array (
