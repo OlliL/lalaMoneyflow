@@ -26,7 +26,7 @@ use rest\client\handler\CompareDataControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.41 2014/02/23 16:53:20 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.42 2014/02/23 18:59:59 olivleh1 Exp $
 //
 require_once 'module/module.php';
 
@@ -89,13 +89,22 @@ class moduleCompare extends module {
 			$valid_data = false;
 		}
 
+		if ($valid_data === true) {
+			$all_data ['filecontents'] = file_get_contents( $fileName );
+
+			$result = CompareDataControllerHandler::getInstance()->compareData( $all_data );
+			if (is_array( $result ['errors'] )) {
+				foreach ( $result ['errors'] as $validationResult ) {
+					$valid_data = false;
+					$error = $validationResult ['error'];
+					add_error( $error );
+				}
+			}
+		}
+
 		if ($valid_data === false) {
 			return $this->display_upload_form( $all_data );
 		}
-
-		$all_data ['filecontents'] = file_get_contents( $fileName );
-
-		$result = CompareDataControllerHandler::getInstance()->compareData( $all_data );
 
 		// set "owner" + remove private entries
 		$result ['matching'] = $this->setOwnerAndFilterPrivate( $result ['matching'] );

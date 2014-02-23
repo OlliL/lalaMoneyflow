@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ErrorCode.php,v 1.17 2014/02/23 17:53:55 olivleh1 Exp $
+// $Id: ErrorCode.php,v 1.18 2014/02/23 18:59:58 olivleh1 Exp $
 //
 namespace rest\base;
 
@@ -57,6 +57,7 @@ class ErrorCode extends \SplEnum {
 	const MONTHLY_SETTLEMENT_ALREADY_EXISTS = 154;
 	const INVALID_DATE_FORMAT_CHOOSEN = 180;
 	const FILEUPLOAD_FAILED = 191;
+	const WRONG_FILE_FORMAT = 199;
 	const AMOUNT_IS_ZERO = 200;
 	const NAME_ALREADY_EXISTS = 203;
 	const ATTENTION = 204;

@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: compareDataResponse.php,v 1.2 2014/02/01 21:03:25 olivleh1 Exp $
+// $Id: compareDataResponse.php,v 1.3 2014/02/23 18:59:58 olivleh1 Exp $
 //
 namespace rest\api\model\comparedata;
 
@@ -35,8 +35,9 @@ use rest\api\model\transport\CompareDataWrongCapitalsourceTransport;
 use rest\api\model\transport\CompareDataNotInFileTransport;
 use rest\api\model\transport\CompareDataNotInDatabaseTransport;
 use rest\api\model\transport\CapitalsourceTransport;
+use rest\api\model\validation\validationResponse;
 
-class compareDataResponse {
+class compareDataResponse extends validationResponse{
 	public $compareDataMatchingTransport;
 	public $compareDataWrongCapitalsourceTransport;
 	public $compareDataNotInFileTransport;

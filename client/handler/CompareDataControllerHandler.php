@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataControllerHandler.php,v 1.4 2014/02/16 14:43:13 olivleh1 Exp $
+// $Id: CompareDataControllerHandler.php,v 1.5 2014/02/23 18:59:59 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -70,8 +70,8 @@ class CompareDataControllerHandler extends AbstractJsonSender {
 			} else {
 				$result ['comparedataformats'] = array ();
 			}
-			$result['selected_format'] = $showCompareDataForm->getSelectedDataFormat();
-			$result['selected_capitalsource'] = $showCompareDataForm->getSelectedCapitalsourceId();
+			$result ['selected_format'] = $showCompareDataForm->getSelectedDataFormat();
+			$result ['selected_capitalsource'] = $showCompareDataForm->getSelectedCapitalsourceId();
 		}
 
 		return $result;
@@ -125,6 +125,12 @@ class CompareDataControllerHandler extends AbstractJsonSender {
 			} else {
 				$result ['capitalsource'] = array ();
 			}
+			if (is_array( $compareDataResponse->getValidationItemTransport() )) {
+				$result ['errors'] = $response ['compareDataResponse'] ['validationItemTransport'];
+			} else {
+				$result ['errors'] = array ();
+			}
+			$result ['result'] = $compareDataResponse->getResult();
 		}
 
 		return $result;
