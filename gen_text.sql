@@ -1,1 +1,0 @@
-select concat('apc_store(''lalaMoneyflowText#',concat(mla_languageid,concat('-',concat(textid,concat(''', ''',concat(REPLACE(text,'''',CONCAT('\\','''')),''');')))))) from text where mla_languageid=2 order by textid;
