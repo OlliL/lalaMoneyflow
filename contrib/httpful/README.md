@@ -1,6 +1,6 @@
 # Httpful
 
-[![Build Status](https://secure.travis-ci.org/nategood/httpful.png?branch=master)](http://travis-ci.org/nategood/httpful)
+[![Build Status](https://secure.travis-ci.org/nategood/httpful.png?branch=master)](http://travis-ci.org/nategood/httpful) [![Total Downloads](https://poser.pugx.org/nategood/httpful/downloads.png)](https://packagist.org/packages/nategood/httpful)
 
 [Httpful](http://phphttpclient.com) is a simple Http Client library for PHP 5.3+.  There is an emphasis of readability, simplicity, and flexibility – basically provide the features and flexibility to get the job done and make those features really easy to use.
 
@@ -18,14 +18,16 @@ Features
 
 Here's something to whet your appetite.  Search the twitter API for tweets containing "#PHP".  Include a trivial header for the heck of it.  Notice that the library automatically interprets the response as JSON (can override this if desired) and parses it as an array of objects.
 
-    $url = "http://search.twitter.com/search.json?q=" . urlencode('#PHP');
-    $response = Request::get($url)
-        ->withXTrivialHeader('Just as a demo')
-        ->send();
+```php
+$url = "http://search.twitter.com/search.json?q=" . urlencode('#PHP');
+$response = Request::get($url)
+    ->withXTrivialHeader('Just as a demo')
+    ->send();
 
-    foreach ($response->body->results as $tweet) {
-        echo "@{$tweet->from_user} tweets \"{$tweet->text}\"\n";
-    }
+foreach ($response->body->results as $tweet) {
+    echo "@{$tweet->from_user} tweets \"{$tweet->text}\"\n";
+}
+```
 
 # Installation
 
@@ -33,10 +35,11 @@ Here's something to whet your appetite.  Search the twitter API for tweets conta
 
 A [PHP Archive](http://php.net/manual/en/book.phar.php) (or .phar) file is available for [downloading](http://phphttpclient.com/httpful.phar).  Simply [download](http://phphttpclient.com/httpful.phar) the .phar, drop it into your project, and include it like you would any other php file.  _This method is ideal smaller projects, one off scripts, and quick API hacking_.
 
-    <?php
-    include('httpful.phar');
-    $r = \Httpful\Request::get($uri)->sendIt();
-    ...
+```php
+include('httpful.phar');
+$r = \Httpful\Request::get($uri)->sendIt();
+...
+```
 
 ## Composer
 
@@ -68,6 +71,18 @@ Httpful highly encourages sending in pull requests.  When submitting a pull requ
  - Include commenting where appropriate and add a descriptive pull request message
 
 # Changelog
+## 0.2.11
+
+ - FIX [I #99](https://github.com/nategood/httpful/pull/99) Prevent hanging on HEAD requests
+
+## 0.2.10
+
+ - FIX [I #93](https://github.com/nategood/httpful/pull/86) Fixes edge case where content-length would be set incorrectly
+
+## 0.2.9
+
+ - FEATURE [I #89](https://github.com/nategood/httpful/pull/89) multipart/form-data support (a.k.a. file uploads)! Thanks @dtelaroli!
+
 ## 0.2.8
 
  - FIX Notice fix for Pull Request 86
@@ -155,3 +170,7 @@ Httpful highly encourages sending in pull requests.  When submitting a pull requ
   - Created AbstractMimeHandler type that all Mime Handlers must extend
   - Pulled out the parsing/serializing logic from the Request/Response classes into their own MimeHandler classes
   - Added ability to register new mime handlers for mime types
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/nategood/httpful/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+

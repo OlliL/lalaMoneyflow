@@ -17,6 +17,7 @@ use Httpful\Request;
 use Httpful\Mime;
 use Httpful\Http;
 use Httpful\Response;
+use Httpful\Handlers\JsonHandler;
 
 class HttpfulTest extends \PHPUnit_Framework_TestCase
 {
@@ -58,11 +59,22 @@ Connection: keep-alive
 Transfer-Encoding: chunked
 X-My-Header:Value1
 X-My-Header:Value2\r\n";
+
     function testInit()
     {
       $r = Request::init();
       // Did we get a 'Request' object?
       $this->assertEquals('Httpful\Request', get_class($r));
+    }
+
+    function testDetermineLength()
+    {
+      $r = Request::init();
+      $this->assertEquals(1, $r->_determineLength('A'));
+      $this->assertEquals(2, $r->_determineLength('À'));
+      $this->assertEquals(2, $r->_determineLength('Ab'));
+      $this->assertEquals(3, $r->_determineLength('Àb'));
+      $this->assertEquals(6, $r->_determineLength('世界'));
     }
 
     function testMethods()
@@ -91,12 +103,14 @@ X-My-Header:Value2\r\n";
         $this->assertEquals(Mime::XML,   Mime::getFullMime('xml'));
         $this->assertEquals(Mime::HTML,  Mime::getFullMime('html'));
         $this->assertEquals(Mime::CSV,  Mime::getFullMime('csv'));
+        $this->assertEquals(Mime::UPLOAD,  Mime::getFullMime('upload'));
 
         // Valid long ones
         $this->assertEquals(Mime::JSON, Mime::getFullMime(Mime::JSON));
         $this->assertEquals(Mime::XML,  Mime::getFullMime(Mime::XML));
         $this->assertEquals(Mime::HTML, Mime::getFullMime(Mime::HTML));
         $this->assertEquals(Mime::CSV, Mime::getFullMime(Mime::CSV));
+        $this->assertEquals(Mime::UPLOAD, Mime::getFullMime(Mime::UPLOAD));
 
         // No false positives
         $this->assertNotEquals(Mime::XML,  Mime::getFullMime(Mime::HTML));
@@ -239,7 +253,7 @@ X-My-Header:Value2\r\n";
         $this->assertEquals($username, $r->username);
         $this->assertEquals($password, $r->password);
         $this->assertTrue($r->hasDigestAuth());
-    } 
+    }
 
     function testJsonResponseParse()
     {
@@ -292,6 +306,35 @@ Content-Type: text/plain; charset=utf-8\r\n", $req);
         $this->assertEquals($response->headers['Content-Type'], 'text/plain; charset=utf-8');
         $this->assertEquals($response->content_type, 'text/plain');
         $this->assertEquals($response->charset, 'utf-8');
+    }
+
+    function testParsingContentTypeUpload()
+    {
+        $req = Request::init();
+
+        $req->sendsType(Mime::UPLOAD);
+        // $response = new Response(SAMPLE_JSON_RESPONSE, "", $req);
+        // // Check default content type of iso-8859-1
+        $this->assertEquals($req->content_type, 'multipart/form-data');
+    }
+
+    function testAttach() {
+        $req = Request::init();
+
+        $req->attach(array('index' => '/dir/filename'));
+        // $response = new Response(SAMPLE_JSON_RESPONSE, "", $req);
+        // // Check default content type of iso-8859-1
+        $this->assertEquals($req->payload['index'], '@/dir/filename');
+        $this->assertEquals($req->content_type, Mime::UPLOAD);
+        $this->assertEquals($req->serialize_payload_method, Request::SERIALIZE_PAYLOAD_NEVER);
+    }
+
+    function testIsUpload() {
+        $req = Request::init();
+
+        $req->sendsType(Mime::UPLOAD);
+
+        $this->assertTrue($req->isUpload());
     }
 
     function testEmptyResponseParse()
@@ -458,6 +501,28 @@ Transfer-Encoding: chunked\r\n", $request);
         $r = Request::get('some_other_url');
         $r->useProxy('proxy.com');
         $this->assertTrue($r->hasProxy());
+    }
+
+    public function testParseJSON() {
+        $handler = new JsonHandler();
+
+        $bodies = array(
+            'foo',
+            array(),
+            array('foo', 'bar'),
+            null
+        );
+        foreach ($bodies as $body) {
+            $this->assertEquals($body, $handler->parse(json_encode($body)));
+        }
+
+        try {
+            $result = $handler->parse('invalid{json');
+        } catch(\Exception $e) {
+            $this->assertEquals('Unable to parse response as JSON', $e->getMessage());
+            return;
+        }
+        $this->fail('Expected an exception to be thrown due to invalid json');
     }
 }
 

@@ -216,6 +216,8 @@ class Request
         $body = array_pop($response);
         $headers = array_pop($response);
 
+        curl_close($this->_ch);
+
         return new Response($body, $headers, $this);
     }
     public function sendIt()
@@ -333,6 +335,9 @@ class Request
     {
         if (empty($mime)) return $this;
         $this->content_type = $this->expected_type = Mime::getFullMime($mime);
+        if($this->isUpload()) {
+            $this->neverSerializePayload();
+        }
         return $this;
     }
     // @alias of mime
@@ -375,6 +380,15 @@ class Request
         return $this->expects($mime);
     }
 
+    public function attach($files) {
+        foreach ($files as $key => $file) {
+            $this->payload[$key] = "@{$file}";
+        }
+
+        $this->sendsType(Mime::UPLOAD);
+        return $this;
+    }
+
     /**
      * @return Request this
      * @param string $mime
@@ -383,6 +397,9 @@ class Request
     {
         if (empty($mime)) return $this;
         $this->content_type  = Mime::getFullMime($mime);
+        if($this->isUpload()) {
+            $this->neverSerializePayload();
+        }
         return $this;
     }
     // @alias of contentType
@@ -605,7 +622,7 @@ class Request
      */
     public function serializePayloadWith(\Closure $callback)
     {
-        return $this->regregisterPayloadSerializer('*', $callback);
+        return $this->registerPayloadSerializer('*', $callback);
     }
 
     /**
@@ -756,6 +773,9 @@ class Request
         $ch = curl_init($this->uri);
 
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method);
+        if ($this->method === Http::HEAD) {
+            curl_setopt($ch, CURLOPT_NOBODY, true);
+        }
 
         if ($this->hasBasicAuth()) {
             curl_setopt($ch, CURLOPT_USERPWD, $this->username . ':' . $this->password);
@@ -787,6 +807,11 @@ class Request
         }
 
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->strict_ssl);
+        // zero is safe for all curl versions
+        $verifyValue = $this->strict_ssl + 0;
+        //Support for value 1 removed in cURL 7.28.1 value 2 valid in all versions
+        if ($verifyValue > 0) $verifyValue++;
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $verifyValue);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         // https://github.com/nategood/httpful/issues/84
@@ -794,7 +819,10 @@ class Request
         if (isset($this->payload)) {
             $this->serialized_payload = $this->_serializePayload($this->payload);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $this->serialized_payload);
-            $this->headers['Content-Length'] = strlen($this->serialized_payload);
+            if(!$this->isUpload()) {
+                $this->headers['Content-Length'] =
+                    $this->_determineLength($this->serialized_payload);
+            }
         }
 
         $headers = array();
@@ -821,7 +849,7 @@ class Request
         }
 
         // Solve a bug on squid proxy, NONE/411 when miss content length
-        if (!isset($this->headers['Content-Length'])) {
+        if (!isset($this->headers['Content-Length']) && !$this->isUpload()) {
             $this->headers['Content-Length'] = 0;
         }
 
@@ -856,7 +884,32 @@ class Request
         return $this;
     }
 
-    public function buildUserAgent() {
+    /**
+     * @return int length of payload in bytes
+     * @param string $str payload
+     */
+    public function _determineLength($str)
+    {
+        if (function_exists('mb_strlen')) {
+            return mb_strlen($str, '8bit');
+        } else {
+            return strlen($str);
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUpload()
+    {
+        return Mime::UPLOAD == $this->content_type;
+    }
+
+    /**
+     * @return string
+     */
+    public function buildUserAgent()
+    {
         $user_agent = 'User-Agent: Httpful/' . Httpful::VERSION . ' (cURL/';
         $curl = \curl_version();
 
