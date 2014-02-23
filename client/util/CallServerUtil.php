@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServerUtil.php,v 1.4 2014/02/22 00:33:02 olivleh1 Exp $
+// $Id: CallServerUtil.php,v 1.5 2014/02/23 00:40:06 olivleh1 Exp $
 //
 namespace rest\client\util;
 
@@ -122,6 +122,7 @@ class CallServerUtil extends AbstractJsonSender {
 
 	// update
 	public final function putJson($url, $json) {
+		echo $json;
 		$response = Request::put( $url )->withoutStrictSsl()->sendsJson()->body( $json )->send();
 		if ($response->code == 204) {
 			return true;

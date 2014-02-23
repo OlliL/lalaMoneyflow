@@ -1,13 +1,9 @@
-- merge all Logic to work with the new accessor tables
+- move User-Stuff to REST
+- move Settings-Stuff to REST
+- implement User -> Group Assignment in REST
 - rename User(Service|Dao|Controller) to Access*
 - all BOs should get an Accessor object
-
-- no moneyflows must be createable before the current group assignment was valid
-  (no moneyflows for the previous group after the group assignment changed)
-
-3. move coreSettings-stuff to REST
-4. redo the user handling
-5. implement Logout Call to destroy the session on the server.
+- implement Logout Call to destroy the session on the server.
 
 further thoughts:
    - consider Conductor handling for showEdit*... -> edit* -> Error -> re-use the showEdit functionality
@@ -35,6 +31,9 @@ Bugs detected so far:
      check this.....
    - when reassigning a user from group a to group b ask:
       - also copy capitalsources?
+   - no moneyflows must be createable before the current group assignment was valid
+     (no moneyflows for the previous group after the group assignment changed)
+
 
 New Installation
    - check that after the first logon, on a clean DB, the password has to be changed first
@@ -55,5 +54,5 @@ New Installation
 some far time in the future:
 
 - 666. Redo the Webclient MVC like
-- put the available countries into the db and have them selectable when
-  handling contractual partners instead of having it free editable
+- put the available countries into the db and have them selectable when handling contractual partners instead of 
+  having it free editable
