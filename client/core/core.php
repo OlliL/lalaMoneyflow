@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: core.php,v 1.30 2014/02/23 13:15:54 olivleh1 Exp $
+// $Id: core.php,v 1.31 2014/02/23 13:16:04 olivleh1 Exp $
 //
 require_once 'DbConnection.php';
 
@@ -35,8 +35,6 @@ class core {
 	}
 
 	function query($query) {
-		GLOBAL $money_debug;
-
 		if ($this->db == null)
 			$this->db = DbConnection::getInstance()->getConnection();
 
