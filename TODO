@@ -1,4 +1,3 @@
-- check that only an admin may handle users and system settings on the REST-server
 - implement User -> Group Assignment in REST
 - rename User(Service|Dao|Controller) to Access*
 - all BOs should get an Accessor object

@@ -27,7 +27,7 @@ use rest\client\handler\UserControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSettings.php,v 1.26 2014/02/23 16:53:20 olivleh1 Exp $
+// $Id: moduleSettings.php,v 1.27 2014/02/23 17:53:56 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreLanguages.php';
@@ -100,7 +100,11 @@ class moduleSettings extends module {
 				if (! is_array( $all_data )) {
 
 					$showDefaultSettings = SettingControllerHandler::getInstance()->showDefaultSettings();
-					$all_data = array_merge( $showDefaultSettings, $this->convertDateFormatSetting( $showDefaultSettings ['dateformat'] ) );
+					if (is_array( $showDefaultSettings )) {
+						$dateformat = $showDefaultSettings ['dateformat'];
+						if (dateformat)
+							$all_data = array_merge( $showDefaultSettings, $this->convertDateFormatSetting( $dateformat ) );
+					}
 				}
 				;
 				break;

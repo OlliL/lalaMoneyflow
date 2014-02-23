@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.70 2014/02/23 16:53:20 olivleh1 Exp $
+// $Id: module.php,v 1.71 2014/02/23 17:53:56 olivleh1 Exp $
 //
 require_once 'Smarty.class.php';
 require_once 'core/coreText.php';
@@ -102,14 +102,15 @@ class module {
 		$this->template->assign( 'VERSION', '0.13.0' );
 		$this->template->assign( 'NO_NAVIGATION', $nonavi );
 		$coreSession = new coreSession();
-		if ($coreSession->getAttribute( 'perm_admin' )) {
+		$admin = $coreSession->getAttribute( 'perm_admin' );
+		if ($admin) {
 			$this->template->assign( 'IS_ADMIN', true );
 		} else {
 			$this->template->assign( 'IS_ADMIN', false );
 		}
 		$cache_id = $user ['userid'];
 		$this->template->setCaching( true );
-		$header = $this->fetch_template( 'display_header.tpl', 'header_' . $GUI_LANGUAGE . '_' . $nonavi . '_' . $cache_id );
+		$header = $this->fetch_template( 'display_header.tpl', 'header_' . $GUI_LANGUAGE . '_' . $admin . '_' . $nonavi . '_' . $cache_id );
 		$this->template->assign( 'HEADER', $header );
 
 		$footer = $this->fetch_template( 'display_footer.tpl', 'footer_' . $GUI_LANGUAGE . '_' . $cache_id );
