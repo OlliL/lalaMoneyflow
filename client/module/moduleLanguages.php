@@ -24,32 +24,29 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleLanguages.php,v 1.11 2014/02/22 22:10:41 olivleh1 Exp $
+# $Id: moduleLanguages.php,v 1.12 2014/02/23 16:53:20 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
 require_once 'core/coreLanguages.php';
 require_once 'core/coreText.php';
-require_once 'core/coreSettings.php';
 
 class moduleLanguages extends module {
 	private $coreLanguages;
 	private $coreText;
-	private $coreSettings;
 
-	function moduleLanguages() {
+	public final function moduleLanguages() {
 		parent::__construct();
 		$this->coreLanguages  = new coreLanguages();
 		$this->coreText  = new coreText();
-		$this->coreSettings = new coreSettings();
 	}
 
-	function display_list_languages( $letter ) {
+	public final function display_list_languages( $letter ) {
 
 		$all_index_letters = $this->coreLanguages->get_all_index_letters();
 		$num_languages = $this->coreLanguages->count_all_data();
 
-		if( empty( $letter ) && $num_languages < $this->coreSettings->get_max_rows( USERID ) ) {
+		if( empty( $letter ) ) {
 			$letter = 'all';
 		}
 
@@ -69,7 +66,7 @@ class moduleLanguages extends module {
 		return $this->fetch_template( 'display_list_languages.tpl' );
 	}
 
-	function display_edit_language( $realaction, $id, $all_data ) {
+	public final function display_edit_language( $realaction, $id, $all_data ) {
 
 		if( !$id ) {
 			return ' ';
@@ -105,7 +102,7 @@ class moduleLanguages extends module {
 		return $this->fetch_template( 'display_edit_language.tpl' );
 	}
 
-	function display_add_language( $realaction, $all_data ) {
+	public final function display_add_language( $realaction, $all_data ) {
 
 
 		switch( $realaction ) {

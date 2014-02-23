@@ -1,4 +1,7 @@
 <?php
+use rest\client\handler\SettingControllerHandler;
+use rest\base\ErrorCode;
+use rest\client\handler\UserControllerHandler;
 //
 // Copyright (c) 2006-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -24,56 +27,51 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSettings.php,v 1.25 2014/02/22 22:10:41 olivleh1 Exp $
+// $Id: moduleSettings.php,v 1.26 2014/02/23 16:53:20 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreLanguages.php';
-require_once 'core/coreUsers.php';
 require_once 'core/coreSession.php';
-require_once 'core/coreSettings.php';
 
 class moduleSettings extends module {
 
-	function moduleSettings() {
+	public final function moduleSettings() {
 		parent::__construct();
 		$this->coreLanguages = new coreLanguages();
-		$this->coreUsers = new coreUsers();
 		$this->coreSession = new coreSession();
-		$this->coreSettings = new coreSettings();
 	}
 
-	function general_settings($data_is_valid, $userid, $realaction, $all_data) {
+	public final function display_personal_settings($realaction, $all_data) {
 		global $GUI_LANGUAGE;
 		switch ($realaction) {
 			case 'save' :
-				if ($data_is_valid === true) {
-					if ($all_data ['date_data1'] == $all_data ['date_data2'] || $all_data ['date_data1'] == $all_data ['date_data3'] || $all_data ['date_data2'] == $all_data ['date_data4']) {
-						$data_is_valid = false;
-						add_error( 180 );
-					} else {
-						$this->coreSettings->set_displayed_language( $userid, $all_data ['language'] );
-						$this->coreSettings->set_max_rows( $userid, $all_data ['maxrows'] );
-						$this->coreSettings->set_num_free_moneyflows( $userid, $all_data ['numflows'] );
-						$dateformat = $all_data ['date_data1'] . $all_data ['date_delimiter1'] . $all_data ['date_data2'] . $all_data ['date_delimiter2'] . $all_data ['date_data3'];
-						$this->coreSettings->set_date_format( $userid, $dateformat );
-
-						$this->coreSession->setAttribute( 'date_format', $dateformat );
-						$this->coreSession->setAttribute( 'gui_language', $all_data ['language'] );
-						define( GUI_DATE_FORMAT, $dateformat );
-						$GUI_LANGUAGE = $all_data ['language'];
-					}
+				$data_is_valid = true;
+				if ($all_data ['date_data1'] == $all_data ['date_data2'] || $all_data ['date_data1'] == $all_data ['date_data3'] || $all_data ['date_data2'] == $all_data ['date_data3']) {
+					$data_is_valid = false;
+					add_error( ErrorCode::INVALID_DATE_FORMAT_CHOOSEN );
 				}
-				break;
-			default :
-				break;
-		}
+				if ($all_data ['password'] != $all_data ['password2']) {
+					add_error( ErrorCode::PASSWORD_NOT_MATCHING );
+					$data_is_valid = false;
+				}
 
-		if ($data_is_valid === true) {
-			$all_data ['language'] = $this->coreSettings->get_displayed_language( $userid );
-			$all_data ['maxrows'] = $this->coreSettings->get_max_rows( $userid );
-			$all_data ['numflows'] = $this->coreSettings->get_num_free_moneyflows( $userid );
-			$dateformat = $this->coreSettings->get_date_format( $userid );
-			$all_data = array_merge( $all_data, $dateformat );
+				if ($data_is_valid === true) {
+					$all_data ['dateformat'] = $all_data ['date_data1'] . $all_data ['date_delimiter1'] . $all_data ['date_data2'] . $all_data ['date_delimiter2'] . $all_data ['date_data3'];
+					SettingControllerHandler::getInstance()->updatePersonalSettings( $all_data );
+					$this->coreSession->setAttribute( 'date_format', $all_data ['dateformat'] );
+					$this->coreSession->setAttribute( 'gui_language', $all_data ['language'] );
+					define( GUI_DATE_FORMAT, $dateformat );
+					$GUI_LANGUAGE = $all_data ['language'];
+					$this->coreSession->removeAttribute( 'att_new' );
+				}
+			default :
+				if (! is_array( $all_data )) {
+
+					$showPersonalSettings = SettingControllerHandler::getInstance()->showPersonalSettings();
+					$all_data = array_merge( $showPersonalSettings, $this->convertDateFormatSetting( $showPersonalSettings ['dateformat'] ) );
+				}
+				;
+				break;
 		}
 
 		$this->template->assign( 'ALL_DATA', $all_data );
@@ -81,37 +79,64 @@ class moduleSettings extends module {
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header();
-	}
-
-	function display_personal_settings($realaction, $all_data) {
-		$data_is_valid = true;
-
-		switch ($realaction) {
-			case 'save' :
-				$user = $this->coreSession->getAttribute('user');
-				if ($user ['att_new'] && (empty( $all_data ['password1'] ) && empty( $all_data ['password2'] ))) {
-					add_error( 152 );
-					$data_is_valid = false;
-				} elseif ($all_data ['password1'] != $all_data ['password2']) {
-					add_error( 137 );
-					$data_is_valid = false;
-				} elseif (! empty( $all_data ['password1'] )) {
-					$this->coreUsers->set_password( USERID, $all_data ['password1'] );
-				}
-				break;
-			default :
-				break;
-		}
-
-		$this->general_settings( $data_is_valid, USERID, $realaction, $all_data );
 
 		return $this->fetch_template( 'display_personal_settings.tpl' );
 	}
 
-	function display_system_settings($realaction, $all_data) {
-		$this->general_settings( true, 0, $realaction, $all_data );
+	public final function display_system_settings($realaction, $all_data) {
+		switch ($realaction) {
+			case 'save' :
+				$data_is_valid = true;
+				if ($all_data ['date_data1'] == $all_data ['date_data2'] || $all_data ['date_data1'] == $all_data ['date_data3'] || $all_data ['date_data2'] == $all_data ['date_data3']) {
+					$data_is_valid = false;
+					add_error( ErrorCode::INVALID_DATE_FORMAT_CHOOSEN );
+				}
+
+				if ($data_is_valid === true) {
+					$all_data ['dateformat'] = $all_data ['date_data1'] . $all_data ['date_delimiter1'] . $all_data ['date_data2'] . $all_data ['date_delimiter2'] . $all_data ['date_data3'];
+					SettingControllerHandler::getInstance()->updateDefaultSettings( $all_data );
+				}
+			default :
+				if (! is_array( $all_data )) {
+
+					$showDefaultSettings = SettingControllerHandler::getInstance()->showDefaultSettings();
+					$all_data = array_merge( $showDefaultSettings, $this->convertDateFormatSetting( $showDefaultSettings ['dateformat'] ) );
+				}
+				;
+				break;
+		}
+
+		$this->template->assign( 'ALL_DATA', $all_data );
+		$this->template->assign( 'LANGUAGE_VALUES', $this->coreLanguages->get_all_data() );
+		$this->template->assign( 'ERRORS', $this->get_errors() );
+
+		$this->parse_header();
 
 		return $this->fetch_template( 'display_system_settings.tpl' );
+	}
+
+	private final function convertDateFormatSetting($dateformat) {
+		$patterns [0] = '/YYYY/';
+		$patterns [1] = '/MM/';
+		$patterns [2] = '/DD/';
+
+		$replacements [0] = '';
+		$replacements [1] = '';
+		$replacements [2] = '';
+
+		$delimiter = preg_replace( $patterns, $replacements, $dateformat );
+
+		$ret ['date_delimiter1'] = substr( $delimiter, 0, 1 );
+		$ret ['date_delimiter2'] = substr( $delimiter, 1, 1 );
+
+		$pos_delimiter1 = strpos( $dateformat, $ret ['date_delimiter1'] );
+		$pos_delimiter2 = strpos( substr( $dateformat, $pos_delimiter1 + 1 ), $ret ['date_delimiter2'] ) + $pos_delimiter1 + 1;
+
+		$ret ['date_data1'] = substr( $dateformat, 0, $pos_delimiter1 );
+		$ret ['date_data2'] = substr( $dateformat, $pos_delimiter1 + 1, $pos_delimiter2 - $pos_delimiter1 - 1 );
+		$ret ['date_data3'] = substr( $dateformat, $pos_delimiter2 + 1 );
+
+		return $ret;
 	}
 }
 ?>

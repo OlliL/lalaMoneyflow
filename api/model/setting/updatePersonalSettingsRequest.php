@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,42 +25,55 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: DbConnection.php,v 1.3 2014/02/17 20:54:28 olivleh1 Exp $
+// $Id: updatePersonalSettingsRequest.php,v 1.1 2014/02/23 16:53:21 olivleh1 Exp $
 //
+namespace rest\api\model\setting;
 
-class DbConnection {
-	private static $instance;
-	private $connection;
+class updatePersonalSettingsRequest {
+	public $language;
+	public $dateFormat;
+	public $maxRows;
+	public $numFreeMoneyflows;
+	public $password;
 
-	private function __construct() {
+	public final function setLanguage($language) {
+		$this->language = $language;
 	}
 
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			$className = __CLASS__;
-			self::$instance = new $className();
-			self::$instance->setConnection();
-		}
-		return self::$instance;
+	public final function setDateFormat($dateFormat) {
+		$this->dateFormat = $dateFormat;
 	}
 
-	public function __clone() {
-		trigger_error( 'Cloning not supported', E_USER_ERROR );
+	public final function setMaxRows($maxRows) {
+		$this->maxRows = $maxRows;
 	}
 
-	public function __wakeup() {
-		trigger_error( 'Deserialisation not supported', E_USER_ERROR );
+	public final function setNumFreeMoneyflows($numFreeMoneyflows) {
+		$this->numFreeMoneyflows = $numFreeMoneyflows;
 	}
 
-	public function getConnection() {
-		return $this->connection;
+	public final function setPassword($password) {
+		$this->password = $password;
 	}
 
-	public function setConnection() {
-		$this->connection = new \PDO( DATASOURCE , DB_USER, DB_PASS, array (
-//				\PDO::ATTR_PERSISTENT => true
-		) );
-		$this->connection->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_WARNING );
+	public final function getLanguage() {
+		return $this->language;
+	}
+
+	public final function getDateFormat() {
+		return $this->dateFormat;
+	}
+
+	public final function getMaxRows() {
+		return $this->maxRows;
+	}
+
+	public final function getNumFreeMoneyflows() {
+		return $this->numFreeMoneyflows;
+	}
+
+	public final function getPassword() {
+		return $this->password;
 	}
 }
 

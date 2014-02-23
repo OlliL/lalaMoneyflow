@@ -56,7 +56,7 @@
 				</tr>
 				<tr>
 					<th>{#TEXT_86#}</th>
-					<td width=300><input class="contrastbgcolor" type="password" name="all_data[password1]" size=10 value=""></td>
+					<td width=300><input class="contrastbgcolor" type="password" name="all_data[password]" size=10 value=""></td>
 				</tr>
 				<tr>
 					<th>{#TEXT_92#}</th>

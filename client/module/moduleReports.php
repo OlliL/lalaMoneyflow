@@ -27,7 +27,7 @@ use Zend\Validator\File\Count;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.80 2014/02/17 19:07:27 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.81 2014/02/23 16:53:20 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -207,7 +207,7 @@ class moduleReports extends module {
 		return $this->fetch_template( 'display_list_reports.tpl' );
 	}
 
-	function display_plot_trends($all_data) {
+	public final function display_plot_trends($all_data) {
 		$showTrendsForm = ReportControllerHandler::getInstance()->showTrendsForm();
 		if (is_array( $showTrendsForm ['capitalsources'] )) {
 			$this->template->assign( 'CAPITALSOURCE_VALUES', $showTrendsForm ['capitalsources'] );
@@ -234,7 +234,7 @@ class moduleReports extends module {
 		return $this->fetch_template( 'display_plot_trends.tpl' );
 	}
 
-	function plot_graph($all_capitalsources_ids, $startmonth, $startyear, $endmonth, $endyear) {
+	public final function plot_graph($all_capitalsources_ids, $startmonth, $startyear, $endmonth, $endyear) {
 		$coreText = new coreText();
 		$startdate = new DateTime( $startyear . "-" . $startmonth . "-01" );
 		$enddate = new DateTime( $endyear . "-" . $endmonth . "-01" );

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.69 2014/02/22 22:10:41 olivleh1 Exp $
+// $Id: module.php,v 1.70 2014/02/23 16:53:20 olivleh1 Exp $
 //
 require_once 'Smarty.class.php';
 require_once 'core/coreText.php';
@@ -60,7 +60,7 @@ class module {
 		}
 	}
 
-	function get_errors() {
+	protected final function get_errors() {
 		global $ERRORS;
 		if (is_array( $ERRORS )) {
 			$coreText = new coreText();
@@ -82,7 +82,7 @@ class module {
 		$this->template->configLoad( 'rest/client/locale/' . $GUI_LANGUAGE . '.conf' );
 	}
 
-	function fetch_template($name, $cacheid = false) {
+	protected final function fetch_template($name, $cacheid = false) {
 		if (! $cacheid) {
 			$this->loadLanguageFile();
 			$result = $this->template->fetch( './' . $name );
@@ -94,25 +94,25 @@ class module {
 		return $result;
 	}
 
-	function parse_header($nonavi = 0) {
+	protected final function parse_header($nonavi = 0) {
+		global $GUI_LANGUAGE;
 		$this->template->assign( 'REPORTS_YEAR', date( 'Y' ) );
 		$this->template->assign( 'REPORTS_MONTH', date( 'm' ) );
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
 		$this->template->assign( 'VERSION', '0.13.0' );
 		$this->template->assign( 'NO_NAVIGATION', $nonavi );
 		$coreSession = new coreSession();
-		$user = $coreSession->getAttribute( 'user' );
-		if ($user ['perm_admin'] == "1") {
+		if ($coreSession->getAttribute( 'perm_admin' )) {
 			$this->template->assign( 'IS_ADMIN', true );
 		} else {
 			$this->template->assign( 'IS_ADMIN', false );
 		}
 		$cache_id = $user ['userid'];
 		$this->template->setCaching( true );
-		$header = $this->fetch_template( 'display_header.tpl', 'header_' . $nonavi . '_' . $cache_id );
+		$header = $this->fetch_template( 'display_header.tpl', 'header_' . $GUI_LANGUAGE . '_' . $nonavi . '_' . $cache_id );
 		$this->template->assign( 'HEADER', $header );
 
-		$footer = $this->fetch_template( 'display_footer.tpl', 'footer_' . $cache_id );
+		$footer = $this->fetch_template( 'display_footer.tpl', 'footer_' . $GUI_LANGUAGE . '_' . $cache_id );
 		$this->template->assign( 'FOOTER', $footer );
 		$this->template->setCaching( false );
 	}

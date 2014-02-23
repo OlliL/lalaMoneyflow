@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.51 2014/02/22 22:10:41 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.52 2014/02/23 16:53:20 olivleh1 Exp $
 //
 use rest\base\ErrorCode;
 use rest\client\handler\PreDefMoneyflowControllerHandler;
@@ -33,7 +33,7 @@ require_once 'module/module.php';
 
 class modulePreDefMoneyFlows extends module {
 
-	function modulePreDefMoneyFlows() {
+	public final function modulePreDefMoneyFlows() {
 		parent::__construct();
 	}
 
@@ -51,7 +51,7 @@ class modulePreDefMoneyFlows extends module {
 		return $this->fetch_template( 'display_list_predefmoneyflows.tpl' );
 	}
 
-	function display_edit_predefmoneyflow($realaction, $predefmoneyflowid, $all_data) {
+	public final function display_edit_predefmoneyflow($realaction, $predefmoneyflowid, $all_data) {
 		switch ($realaction) {
 			case 'save' :
 				$data_is_valid = true;
@@ -133,7 +133,7 @@ class modulePreDefMoneyFlows extends module {
 		return $this->fetch_template( 'display_edit_predefmoneyflow.tpl' );
 	}
 
-	function display_delete_predefmoneyflow($realaction, $predefmoneyflowid) {
+	public final function display_delete_predefmoneyflow($realaction, $predefmoneyflowid) {
 		switch ($realaction) {
 			case 'yes' :
 				if (PreDefMoneyflowControllerHandler::getInstance()->deletePreDefMoneyflow( $predefmoneyflowid )) {

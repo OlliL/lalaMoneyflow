@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: UserControllerHandler.php,v 1.2 2014/02/23 12:14:34 olivleh1 Exp $
+// $Id: UserControllerHandler.php,v 1.3 2014/02/23 16:53:20 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -50,16 +50,6 @@ class UserControllerHandler extends AbstractJsonSender {
 			self::$callServer = CallServerUtil::getInstance();
 		}
 		return self::$instance;
-	}
-
-	public final function getUserById($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'user/getUserById/' . $id . '/' . self::$callServer->getSessionId();
-		$result = self::$callServer->getJson( $url );
-		if (is_array( $result )) {
-			$getUserByIdResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\user' );
-			$result = parent::map( $getUserByIdResponse->getUserTransport() );
-		}
-		return $result;
 	}
 
 	public final function showUserList($restriction) {

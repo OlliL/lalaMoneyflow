@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,7 +25,47 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: core.php,v 1.32 2014/02/23 16:53:20 olivleh1 Exp $
+// $Id: showDefaultSettingsResponse.php,v 1.1 2014/02/23 16:53:21 olivleh1 Exp $
 //
-class core {
+namespace rest\api\model\setting;
+
+class showDefaultSettingsResponse {
+	public $language;
+	public $dateFormat;
+	public $maxRows;
+	public $numFreeMoneyflows;
+
+	public final function setLanguage($language) {
+		$this->language = $language;
+	}
+
+	public final function setDateFormat($dateFormat) {
+		$this->dateFormat = $dateFormat;
+	}
+
+	public final function setMaxRows($maxRows) {
+		$this->maxRows = $maxRows;
+	}
+
+	public final function setNumFreeMoneyflows($numFreeMoneyflows) {
+		$this->numFreeMoneyflows = $numFreeMoneyflows;
+	}
+
+	public final function getLanguage() {
+		return $this->language;
+	}
+
+	public final function getDateFormat() {
+		return $this->dateFormat;
+	}
+
+	public final function getMaxRows() {
+		return $this->maxRows;
+	}
+
+	public final function getNumFreeMoneyflows() {
+		return $this->numFreeMoneyflows;
+	}
 }
+
+?>

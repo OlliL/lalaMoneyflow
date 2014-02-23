@@ -26,18 +26,18 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleGroups.php,v 1.7 2014/02/22 22:10:41 olivleh1 Exp $
+// $Id: moduleGroups.php,v 1.8 2014/02/23 16:53:20 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
 
 class moduleGroups extends module {
 
-	function moduleGroups() {
+	public final function moduleGroups() {
 		parent::__construct();
 	}
 
-	function display_list_groups($letter) {
+	public final function display_list_groups($letter) {
 		$listGroups = GroupControllerHandler::getInstance()->showGroupList( $letter );
 		$all_index_letters = $listGroups ['initials'];
 		$all_data = $listGroups ['groups'];
@@ -50,7 +50,7 @@ class moduleGroups extends module {
 		return $this->fetch_template( 'display_list_groups.tpl' );
 	}
 
-	function display_edit_group($realaction, $groupid, $all_data) {
+	public final function display_edit_group($realaction, $groupid, $all_data) {
 		switch ($realaction) {
 			case 'save' :
 				$all_data ['groupid'] = $groupid;
@@ -91,7 +91,7 @@ class moduleGroups extends module {
 		return $this->fetch_template( 'display_edit_group.tpl' );
 	}
 
-	function display_delete_group($realaction, $groupid, $force) {
+	public final function display_delete_group($realaction, $groupid, $force) {
 		switch ($realaction) {
 			case 'yes' :
 				if (GroupControllerHandler::getInstance()->deleteGroup( $groupid )) {

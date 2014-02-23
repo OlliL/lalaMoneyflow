@@ -27,18 +27,18 @@ use rest\client\handler\MoneyflowControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSearch.php,v 1.30 2014/02/22 22:10:41 olivleh1 Exp $
+// $Id: moduleSearch.php,v 1.31 2014/02/23 16:53:20 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
 
 class moduleSearch extends module {
 
-	function moduleSearch() {
+	public final function moduleSearch() {
 		parent::__construct();
 	}
 
-	function display_search($searchparams = null) {
+	public final function display_search($searchparams = null) {
 		$contractpartner_values = MoneyflowControllerHandler::getInstance()->showSearchMoneyflow();
 		if (empty( $searchparams )) {
 			$searchparams ['grouping1'] = 'year';
@@ -53,7 +53,7 @@ class moduleSearch extends module {
 		return $this->fetch_template( 'display_search.tpl' );
 	}
 
-	function do_search($searchstring, $contractpartner, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus, $grouping1, $grouping2, $order) {
+	public final function do_search($searchstring, $contractpartner, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus, $grouping1, $grouping2, $order) {
 		if ($equal)
 			$searchparams ['equal'] = 1;
 		if ($casesensitive)

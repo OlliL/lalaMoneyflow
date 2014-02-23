@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,21 +25,46 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: getUserByIdResponse.php,v 1.3 2014/01/26 12:24:49 olivleh1 Exp $
+// $Id: showPersonalSettingsResponse.php,v 1.1 2014/02/23 16:53:21 olivleh1 Exp $
 //
-namespace rest\api\model\user;
+namespace rest\api\model\setting;
 
-use rest\api\model\transport\UserTransport;
+class showPersonalSettingsResponse {
+	public $language;
+	public $dateFormat;
+	public $maxRows;
+	public $numFreeMoneyflows;
 
-class getUserByIdResponse {
-	public $userTransport;
-
-	public final function getUserTransport() {
-		return $this->userTransport;
+	public final function setLanguage($language) {
+		$this->language = $language;
 	}
 
-	public final function setUserTransport(UserTransport $userTransport) {
-		$this->userTransport = $userTransport;
+	public final function setDateFormat($dateFormat) {
+		$this->dateFormat = $dateFormat;
+	}
+
+	public final function setMaxRows($maxRows) {
+		$this->maxRows = $maxRows;
+	}
+
+	public final function setNumFreeMoneyflows($numFreeMoneyflows) {
+		$this->numFreeMoneyflows = $numFreeMoneyflows;
+	}
+
+	public final function getLanguage() {
+		return $this->language;
+	}
+
+	public final function getDateFormat() {
+		return $this->dateFormat;
+	}
+
+	public final function getMaxRows() {
+		return $this->maxRows;
+	}
+
+	public final function getNumFreeMoneyflows() {
+		return $this->numFreeMoneyflows;
 	}
 }
 

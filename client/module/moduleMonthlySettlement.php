@@ -27,7 +27,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.52 2014/02/22 22:10:41 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.53 2014/02/23 16:53:20 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -35,12 +35,12 @@ require_once 'core/coreText.php';
 
 class moduleMonthlySettlement extends module {
 
-	function moduleMonthlySettlement() {
+	public final function moduleMonthlySettlement() {
 		parent::__construct();
 		$this->coreText = new coreText();
 	}
 
-	function display_list_monthlysettlements($month, $year) {
+	public final function display_list_monthlysettlements($month, $year) {
 		if (! $year)
 			$year = date( 'Y' );
 
@@ -88,7 +88,7 @@ class moduleMonthlySettlement extends module {
 		return $this->fetch_template( 'display_list_monthlysettlements.tpl' );
 	}
 
-	function display_edit_monthlysettlement($realaction, $month, $year, $all_data) {
+	public final function display_edit_monthlysettlement($realaction, $month, $year, $all_data) {
 		switch ($realaction) {
 			case 'save' :
 				$ret = true;
@@ -155,7 +155,7 @@ class moduleMonthlySettlement extends module {
 		return $this->fetch_template( 'display_edit_monthlysettlement.tpl' );
 	}
 
-	function display_delete_monthlysettlement($realaction, $month, $year) {
+	public final function display_delete_monthlysettlement($realaction, $month, $year) {
 		if ($month > 0 && $year > 0) {
 			switch ($realaction) {
 				case 'yes' :

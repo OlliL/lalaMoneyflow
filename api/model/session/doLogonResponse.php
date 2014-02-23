@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: doLogonResponse.php,v 1.4 2014/02/18 19:21:41 olivleh1 Exp $
+// $Id: doLogonResponse.php,v 1.5 2014/02/23 16:53:21 olivleh1 Exp $
 //
 namespace rest\api\model\session;
 
@@ -34,6 +34,8 @@ class doLogonResponse {
 	public $sessionId;
 	public $settingDateFormat;
 	public $settingDisplayedLanguage;
+	public $permissionAdmin;
+	public $attributeNew;
 
 	public final function setUserId($userId) {
 		$this->userId = $userId;
@@ -65,6 +67,22 @@ class doLogonResponse {
 
 	public final function getSettingDisplayedLanguage() {
 		return $this->settingDisplayedLanguage;
+	}
+
+	public final function setPermissionAdmin($permissionAdmin) {
+		$this->permissionAdmin = $permissionAdmin;
+	}
+
+	public final function setAttributeNew($attributeNew) {
+		$this->attributeNew = $attributeNew;
+	}
+
+	public final function getPermissionAdmin() {
+		return $this->permissionAdmin;
+	}
+
+	public final function getAttributeNew() {
+		return $this->attributeNew;
 	}
 }
 

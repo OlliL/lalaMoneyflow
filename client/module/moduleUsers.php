@@ -27,7 +27,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.39 2014/02/23 12:14:35 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.40 2014/02/23 16:53:20 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -35,31 +35,19 @@ require_once 'core/coreSession.php';
 
 class moduleUsers extends module {
 
-	function moduleUsers() {
+	public final function moduleUsers() {
 		parent::__construct();
 		$this->coreSession = new coreSession();
 	}
 
-	function is_logged_in() {
+	public final function is_logged_in() {
 		$this->coreSession->start();
 		if (! $this->coreSession->getAttribute( 'users_id' )) {
 			return 3;
 		} else {
 			define( USERID, $this->coreSession->getAttribute( 'users_id' ) );
-			$user = $this->coreSession->getAttribute( 'user' );
 
-			// Apache Restart or went cache empty -> sessionId not set;
-			if (! $user ['name']) {
-				$this->coreSession->destroy();
-				return 1;
-			}
-
-			if (! $user ['perm_login']) {
-				$this->coreSession->destroy();
-				add_error( 138 );
-				return 1;
-			}
-			if ($user ['att_new']) {
+			if ($this->coreSession->getAttribute( 'att_new' )) {
 				return 2;
 			} else {
 				return 0;
@@ -67,7 +55,7 @@ class moduleUsers extends module {
 		}
 	}
 
-	function display_login_user($realaction, $name, $password, $stay_logged_in, $request_uri) {
+	public final function display_login_user($realaction, $name, $password, $stay_logged_in, $request_uri) {
 		global $GUI_LANGUAGE;
 		switch ($realaction) {
 			case 'login' :
@@ -77,9 +65,9 @@ class moduleUsers extends module {
 				}
 				$this->coreSession->restart();
 				if (empty( $name )) {
-					add_error( 139 );
+					add_error( ErrorCode::USERNAME_IS_MANDATORY );
 				} elseif (empty( $password )) {
-					add_error( 140 );
+					add_error( ErrorCode::PASSWORD_EMPTY );
 				}
 
 				$session = SessionControllerHandler::getInstance()->doLogon( $name, sha1( $password ) );
@@ -88,10 +76,10 @@ class moduleUsers extends module {
 					$this->coreSession->setAttribute( 'server_id', $session ['sessionid'] );
 					$this->coreSession->setAttribute( 'date_format', $session ['dateformat'] );
 					$this->coreSession->setAttribute( 'gui_language', $session ['displayed_language'] );
+					$this->coreSession->setAttribute( 'att_new', $session ['att_new'] );
+					$this->coreSession->setAttribute( 'perm_admin', $session ['perm_admin'] );
 
 					$this->coreSession->start();
-					$this->coreSession->setAttribute( 'user', UserControllerHandler::getInstance()->getUserById( $session ['mur_userid'] ) );
-
 					$loginok = 1;
 				}
 				break;
@@ -113,17 +101,17 @@ class moduleUsers extends module {
 		}
 	}
 
-	function logout() {
+	public final function logout() {
 		$this->coreSession->start();
 		$this->coreSession->destroy();
 	}
 
-	function is_admin() {
-		$user = $this->coreSession->getAttribute( 'user' );
-		return $user ['perm_admin'] == "1" ? true : false;
+	public final function is_admin() {
+		$perm_admin = $this->coreSession->getAttribute( 'perm_admin' );
+		return $perm_admin ? true : false;
 	}
 
-	function display_list_users($letter) {
+	public final function display_list_users($letter) {
 		$listGroups = UserControllerHandler::getInstance()->showUserList( $letter );
 		$all_index_letters = $listGroups ['initials'];
 		$all_data = $listGroups ['users'];
@@ -136,7 +124,7 @@ class moduleUsers extends module {
 		return $this->fetch_template( 'display_list_users.tpl' );
 	}
 
-	function display_edit_user($realaction, $userid, $all_data) {
+	public final function display_edit_user($realaction, $userid, $all_data) {
 		switch ($realaction) {
 			case 'save' :
 				$all_data ['userid'] = $userid;
@@ -194,7 +182,7 @@ class moduleUsers extends module {
 		return $this->fetch_template( 'display_edit_user.tpl' );
 	}
 
-	function display_delete_user($realaction, $userid) {
+	public final function display_delete_user($realaction, $userid) {
 		switch ($realaction) {
 			case 'yes' :
 				if (UserControllerHandler::getInstance()->deleteUser( $userid )) {

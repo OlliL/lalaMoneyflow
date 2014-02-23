@@ -26,7 +26,7 @@ use rest\client\handler\MoneyflowControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.80 2014/02/22 22:10:41 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.81 2014/02/23 16:53:20 olivleh1 Exp $
 //
 require_once 'module/module.php';
 
@@ -36,7 +36,7 @@ class moduleMoneyFlows extends module {
 		parent::__construct();
 	}
 
-	function display_edit_moneyflow($realaction, $id, $all_data) {
+	public final function display_edit_moneyflow($realaction, $id, $all_data) {
 		if (empty( $id ))
 			return;
 
@@ -145,7 +145,7 @@ class moduleMoneyFlows extends module {
 		return $this->fetch_template( 'display_edit_moneyflow.tpl' );
 	}
 
-	function display_add_moneyflow($realaction, $all_data) {
+	public final function display_add_moneyflow($realaction, $all_data) {
 		switch ($realaction) {
 			case 'save' :
 				$data_is_valid = true;
@@ -296,7 +296,7 @@ class moduleMoneyFlows extends module {
 		return $this->fetch_template( 'display_add_moneyflow.tpl' );
 	}
 
-	function display_delete_moneyflow($realaction, $id) {
+	public final function display_delete_moneyflow($realaction, $id) {
 		switch ($realaction) {
 			case 'yes' :
 				if (MoneyflowControllerHandler::getInstance()->deleteMoneyflow( $id )) {

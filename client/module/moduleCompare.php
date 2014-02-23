@@ -26,17 +26,17 @@ use rest\client\handler\CompareDataControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.40 2014/02/22 22:10:41 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.41 2014/02/23 16:53:20 olivleh1 Exp $
 //
 require_once 'module/module.php';
 
 class moduleCompare extends module {
 
-	function moduleCompare() {
+	public final function moduleCompare() {
 		parent::__construct();
 	}
 
-	function display_upload_form($all_data = array()) {
+	public final function display_upload_form($all_data = array()) {
 		$showCompareDataForm = CompareDataControllerHandler::getInstance()->showCompareDataForm();
 		$format_values = $showCompareDataForm ['comparedataformats'];
 		$capitalsource_values = $showCompareDataForm ['capitalsources'];
@@ -59,7 +59,7 @@ class moduleCompare extends module {
 		return $this->fetch_template( 'display_upfrm_cmp_data.tpl' );
 	}
 
-	function display_analyze_form($file, $all_data) {
+	public final function display_analyze_form($file, $all_data) {
 		$fileName = $file ['tmp_name'];
 		$startDate = $all_data ['startdate'];
 		$endDate = $all_data ['enddate'];

@@ -26,19 +26,19 @@ use rest\client\handler\EventControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleEvents.php,v 1.10 2014/02/22 22:10:41 olivleh1 Exp $
+// $Id: moduleEvents.php,v 1.11 2014/02/23 16:53:20 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreSession.php';
 
 class moduleEvents extends module {
 
-	function moduleEvents() {
+	public final function moduleEvents() {
 		parent::__construct();
 		$this->coreSession = new coreSession();
 	}
 
-	function check_events() {
+	public final function check_events() {
 		if ($this->coreSession->getAttribute( 'events_shown' ) === false) {
 			$this->coreSession->setAttribute( 'events_shown', true );
 			$events = EventControllerHandler::getInstance()->showEventList();

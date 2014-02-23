@@ -24,16 +24,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreText.php,v 1.23 2014/02/17 20:54:27 olivleh1 Exp $
+// $Id: coreText.php,v 1.24 2014/02/23 16:53:20 olivleh1 Exp $
 //
 require_once 'core/core.php';
 
 class coreText extends core {
-	private $inifile;
+	private $inifile = null;
 
 	public final function __construct() {
-		parent::__construct();
-		$this->inifile = null;
 	}
 
 	private final function getFileName($id) {

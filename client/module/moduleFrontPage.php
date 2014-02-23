@@ -24,18 +24,18 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleFrontPage.php,v 1.12 2014/02/22 22:10:41 olivleh1 Exp $
+# $Id: moduleFrontPage.php,v 1.13 2014/02/23 16:53:20 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
 
 class moduleFrontPage extends module {
 
-	function moduleFrontPage() {
+	public final function moduleFrontPage() {
 		parent::__construct();
 	}
 
-	function display_main() {
+	public final function display_main() {
 		$this->parse_header();
 		return $this->fetch_template( 'display_main.tpl' );
 	}

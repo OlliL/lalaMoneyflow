@@ -24,18 +24,17 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreSession.php,v 1.13 2014/02/22 00:33:02 olivleh1 Exp $
+// $Id: coreSession.php,v 1.14 2014/02/23 16:53:20 olivleh1 Exp $
 //
 use rest\client\util\CallServerUtil;
 require_once 'core/core.php';
 
 class coreSession extends core {
 
-	function coreSession() {
-		parent::__construct();
+	public final function coreSession() {
 	}
 
-	function setAttribute($attribute, $value) {
+	public final function setAttribute($attribute, $value) {
 		if (! session_id()) {
 			if (! $this->start()) {
 				return false;
@@ -46,7 +45,7 @@ class coreSession extends core {
 		return true;
 	}
 
-	function getAttribute($attribute) {
+	public final function getAttribute($attribute) {
 		if (isset( $_SESSION [$attribute] )) {
 			return $_SESSION [$attribute];
 		} else {
@@ -54,11 +53,11 @@ class coreSession extends core {
 		}
 	}
 
-	function removeAttribute($attribute) {
+	public final function removeAttribute($attribute) {
 		unset( $_SESSION [$attribute] );
 	}
 
-	function start() {
+	public final function start() {
 		if (! headers_sent()) {
 			session_start();
 			CallServerUtil::getInstance()->setSessionId( $this->getAttribute( 'server_id' ) );
@@ -67,7 +66,7 @@ class coreSession extends core {
 		return false;
 	}
 
-	function restart() {
+	public final function restart() {
 		if (! session_id()) {
 			if (! $this->start()) {
 				return false;
@@ -77,7 +76,7 @@ class coreSession extends core {
 		return true;
 	}
 
-	function destroy() {
+	public final function destroy() {
 		if (session_id()) {
 			session_destroy();
 		}
