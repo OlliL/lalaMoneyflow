@@ -1,3 +1,4 @@
+- check why the header in "edit user" for "grouphistory" is not shown... maybe a limit of smartys configLoad()?
 - implement User -> Group Assignment in REST
 - rename User(Service|Dao|Controller) to Access*
 - all BOs should get an Accessor object

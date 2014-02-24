@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: updateUserRequest.php,v 1.1 2014/02/23 12:14:35 olivleh1 Exp $
+// $Id: updateUserRequest.php,v 1.2 2014/02/24 21:06:24 olivleh1 Exp $
 //
 namespace rest\api\model\user;
 
@@ -33,6 +33,8 @@ use rest\api\model\transport\UserTransport;
 
 class updateUserRequest {
 	public $userTransport;
+	public $group;
+	public $validFrom;
 
 	public final function getUserTransport() {
 		return $this->userTransport;
@@ -40,6 +42,22 @@ class updateUserRequest {
 
 	public final function setUserTransport(UserTransport $userTransport) {
 		$this->userTransport = $userTransport;
+	}
+
+	public final function getGroup() {
+		return $this->group;
+	}
+
+	public final function setGroup($group) {
+		$this->group = $group;
+	}
+
+	public final function setValidFrom($validFrom) {
+		$this->validFrom = $validFrom;
+	}
+
+	public final function getValidFrom() {
+		return $this->validFrom;
 	}
 }
 

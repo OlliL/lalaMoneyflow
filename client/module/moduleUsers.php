@@ -27,7 +27,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.40 2014/02/23 16:53:20 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.41 2014/02/24 21:06:24 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -112,9 +112,30 @@ class moduleUsers extends module {
 	}
 
 	public final function display_list_users($letter) {
-		$listGroups = UserControllerHandler::getInstance()->showUserList( $letter );
-		$all_index_letters = $listGroups ['initials'];
-		$all_data = $listGroups ['users'];
+		$listUsers = UserControllerHandler::getInstance()->showUserList( $letter );
+		$all_index_letters = $listUsers ['initials'];
+		$all_data = $listUsers ['users'];
+		$access_relations = $listUsers ['access_relations'];
+		$groups = $listUsers ['groups'];
+
+		foreach ( $all_data as $key => $user ) {
+			$userid = $user ['userid'];
+			$groupid = null;
+			foreach ( $access_relations as $relation ) {
+				if ($relation ['id'] == $userid) {
+					$groupid = $relation ['ref_id'];
+					break;
+				}
+			}
+			if ($groupid) {
+				foreach ( $groups as $group ) {
+					if ($group ['groupid'] == $groupid) {
+						$all_data [$key] ['group'] = $group ['name'];
+						break;
+					}
+				}
+			}
+		}
 
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
@@ -166,7 +187,10 @@ class moduleUsers extends module {
 			default :
 				if (! is_array( $all_data )) {
 					if ($userid > 0) {
-						$all_data = UserControllerHandler::getInstance()->showEditUser( $userid );
+						$showEditUser = UserControllerHandler::getInstance()->showEditUser( $userid );
+						$all_data = $showEditUser ['user'];
+						$access_relations = $showEditUser ['access_relations'];
+						$groups = $showEditUser ['groups'];
 					} else {
 						$all_data ['perm_login'] = 1;
 						$all_data ['att_new'] = 1;
@@ -175,7 +199,20 @@ class moduleUsers extends module {
 				break;
 		}
 
+		foreach ( $groups as $group ) {
+			$groupById [$group ['groupid']] = $group ['name'];
+		}
+
+		foreach ( $access_relations as $key => $access_relation ) {
+			$access_relations [$key] ['name'] = $groupById [$access_relation ['ref_id']];
+			$sort [$key] = $access_relation ['validfrom_sort'];
+		}
+
+		array_multisort( $sort, SORT_DESC, $access_relations );
+
 		$this->template->assign( 'ALL_DATA', $all_data );
+		$this->template->assign( 'ACCESS_RELATIONS', $access_relations );
+		$this->template->assign( 'GROUPS', $groups );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );

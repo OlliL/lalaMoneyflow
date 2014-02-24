@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: UserControllerHandler.php,v 1.3 2014/02/23 16:53:20 olivleh1 Exp $
+// $Id: UserControllerHandler.php,v 1.4 2014/02/24 21:06:24 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -42,6 +42,8 @@ class UserControllerHandler extends AbstractJsonSender {
 	protected function __construct() {
 		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToUserTransportMapper', ClientArrayMapperEnum::USER_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToGroupTransportMapper', ClientArrayMapperEnum::GROUP_TRANSPORT );
+		parent::addMapper( 'rest\client\mapper\ArrayToAccessRelationTransportMapper', ClientArrayMapperEnum::ACCESS_RELATION_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -62,6 +64,16 @@ class UserControllerHandler extends AbstractJsonSender {
 			} else {
 				$result ['users'] = array ();
 			}
+			if (is_array( $listUsers->getAccessRelationTransport() )) {
+				$result ['access_relations'] = parent::mapArray( $listUsers->getAccessRelationTransport() );
+			} else {
+				$result ['access_relations'] = array ();
+			}
+			if (is_array( $listUsers->getGroupTransport() )) {
+				$result ['groups'] = parent::mapArray( $listUsers->getGroupTransport() );
+			} else {
+				$result ['groups'] = array ();
+			}
 			$result ['initials'] = $listUsers->getInitials();
 		}
 
@@ -73,7 +85,9 @@ class UserControllerHandler extends AbstractJsonSender {
 		$response = self::$callServer->getJson( $url );
 		if (is_array( $response )) {
 			$showEditUserResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\user' );
-			$result = parent::map( $showEditUserResponse->getUserTransport() );
+			$result ['user'] = parent::map( $showEditUserResponse->getUserTransport() );
+			$result ['access_relations'] = parent::mapArray( $showEditUserResponse->getAccessRelationTransport() );
+			$result ['groups'] = parent::mapArray( $showEditUserResponse->getGroupTransport() );
 		}
 		return $result;
 	}

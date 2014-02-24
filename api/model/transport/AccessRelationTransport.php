@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,30 +25,46 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: createUserRequest.php,v 1.2 2014/02/24 21:06:24 olivleh1 Exp $
+// $Id: AccessRelationTransport.php,v 1.1 2014/02/24 21:06:24 olivleh1 Exp $
 //
-namespace rest\api\model\user;
+namespace rest\api\model\transport;
 
-use rest\api\model\transport\UserTransport;
+class AccessRelationTransport {
+	public $id;
+	public $refId;
+	public $validfrom;
+	public $validtil;
 
-class createUserRequest {
-	public $userTransport;
-	public $group;
-
-	public final function getUserTransport() {
-		return $this->userTransport;
+	public final function setId($id) {
+		$this->id = $id;
 	}
 
-	public final function setUserTransport(UserTransport $userTransport) {
-		$this->userTransport = $userTransport;
+	public final function setRefId($refId) {
+		$this->refId = $refId;
 	}
 
-	public final function getGroup() {
-		return $this->group;
+	public final function setValidfrom($validfrom) {
+		$this->validfrom = $validfrom;
 	}
 
-	public final function setGroup($group) {
-		$this->group = $group;
+	public final function setValidtil($validtil) {
+		$this->validtil = $validtil;
+	}
+
+	public final function getId() {
+		return $this->id;
+	}
+
+	public final function getRefId() {
+		return $this->refId;
+	}
+
+	public final function getValidfrom() {
+		return $this->validfrom;
+	}
+
+	public final function getValidtil() {
+		return $this->validtil;
 	}
 }
 

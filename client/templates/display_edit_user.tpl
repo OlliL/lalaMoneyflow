@@ -58,6 +58,22 @@
 			<br>
 			<input type="submit" value="{#TEXT_22#}">
 			<input type="button" value="{#TEXT_23#}" onclick="javascript:void self.close();">
+			<br><br>
+			<h2>{#TEXT_242}</h2>
+			<table>
+				<tr>
+					<th width="100">{#TEXT_210#}</th>
+					<th width="80">{#TEXT_34#}</th>
+					<th width="80">{#TEXT_35#}</th>
+				<tr/>
+				{section name=RELATION loop=$ACCESS_RELATIONS}
+				<tr>
+					<td class="contrastbgcolor">{$ACCESS_RELATIONS[RELATION].name}</td>
+					<td class="contrastbgcolor" style="text-align:center;">{$ACCESS_RELATIONS[RELATION].validfrom}</td>
+					<td class="contrastbgcolor" style="text-align:center;">{$ACCESS_RELATIONS[RELATION].validtil}</td>
+				</tr>
+				{/section}
+			</table>
 		</form>
 		</td>
 {$FOOTER}

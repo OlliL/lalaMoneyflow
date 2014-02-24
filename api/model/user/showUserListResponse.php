@@ -25,13 +25,15 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showUserListResponse.php,v 1.1 2014/02/23 12:14:35 olivleh1 Exp $
+// $Id: showUserListResponse.php,v 1.2 2014/02/24 21:06:24 olivleh1 Exp $
 //
 namespace rest\api\model\user;
 
 class showUserListResponse {
 	public $userTransport;
 	public $initials;
+	public $accessRelationTransport;
+	public $groupTransport;
 
 	public final function getUserTransport() {
 		return $this->userTransport;
@@ -47,6 +49,22 @@ class showUserListResponse {
 
 	public final function setInitials(array $initials) {
 		$this->initials = $initials;
+	}
+
+	public final function setAccessRelationTransport(array $accessRelationTransport) {
+		$this->accessRelationTransport = $accessRelationTransport;
+	}
+
+	public final function setGroupTransport(array $groupTransport) {
+		$this->groupTransport = $groupTransport;
+	}
+
+	public final function getAccessRelationTransport() {
+		return $this->accessRelationTransport;
+	}
+
+	public final function getGroupTransport() {
+		return $this->groupTransport;
 	}
 }
 

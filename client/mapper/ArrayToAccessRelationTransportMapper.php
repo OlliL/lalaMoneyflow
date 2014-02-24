@@ -25,30 +25,38 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: createUserRequest.php,v 1.2 2014/02/24 21:06:24 olivleh1 Exp $
+// $Id: ArrayToAccessRelationTransportMapper.php,v 1.1 2014/02/24 21:06:24 olivleh1 Exp $
 //
-namespace rest\api\model\user;
+namespace rest\client\mapper;
 
-use rest\api\model\transport\UserTransport;
+use rest\api\model\transport\AccessRelationTransport;
 
-class createUserRequest {
-	public $userTransport;
-	public $group;
+class ArrayToAccessRelationTransportMapper extends AbstractArrayMapper {
 
-	public final function getUserTransport() {
-		return $this->userTransport;
+	public static function mapAToB(array $a) {
+		$b = new AccessRelationTransport();
+		$b->setId( $a ['id'] );
+		$b->setRefId( $a ['ref_id'] );
+
+		$validfrom = parent::convertClientDateToTransport( $a ['validfrom'] );
+		if ($validfrom)
+			$b->setValidFrom( $validfrom );
+
+		$validtil = parent::convertClientDateToTransport( $a ['validtil'] );
+		if ($validtil)
+			$b->setValidTil( $validtil );
+
+		return $b;
 	}
 
-	public final function setUserTransport(UserTransport $userTransport) {
-		$this->userTransport = $userTransport;
-	}
+	public static function mapBToA(AccessRelationTransport $b) {
+		$a ['id'] = $b->getId();
+		$a ['ref_id'] = $b->getRefId();
+		$a ['validfrom'] = parent::convertTransportDateToClient( $b->getValidFrom() );
+		$a ['validtil'] = parent::convertTransportDateToClient( $b->getValidTil() );
+		$a ['validfrom_sort'] = $b->getValidfrom();
 
-	public final function getGroup() {
-		return $this->group;
-	}
-
-	public final function setGroup($group) {
-		$this->group = $group;
+		return $a;
 	}
 }
 
