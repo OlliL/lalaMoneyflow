@@ -9,6 +9,9 @@
 		{section name=ERROR loop=$ERRORS}
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br>
 		{/section}
+		{if $ALL_DATA.userid gt 0}
+			<table><tr><td>
+		{/if}
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action"     value="edit_user">
 			<input type="hidden" name="realaction" value="save">
@@ -17,7 +20,7 @@
 			<table border=0>
 				<tr>
 					<th>{#TEXT_85#}</th>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[name]"          size=10 value="{$ALL_DATA.name}"></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[name]"          size=10 value="{$ALL_DATA.name|escape:htmlall}"></td>
 				</tr>
 				<tr>
 					<th>{#TEXT_86#}</th>
@@ -54,27 +57,52 @@
 						</select>
 					</td>
 				</tr>
+				<tr>
+				<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<th>{#TEXT_210#}</th>
+					<td class="contrastbgcolor">
+						<select class="contrastbgcolor" name="access_relation[ref_id]" size=1>
+							<option value=""> </option> 
+							{section name=GROUP loop=$GROUPS}
+								<option {if $GROUPS[GROUP].groupid == $ACCESS_RELATION.ref_id}selected{/if} value="{$GROUPS[GROUP].groupid}">{$GROUPS[GROUP].name|escape:htmlall}</option>
+							{/section}
+						</select>
+					</td>
+				</tr>
+				{if $ALL_DATA.userid gt 0}
+				<tr>
+					<th>{#TEXT_34#}</th>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="access_relation[validfrom]"          size=10 value="{$ACCESS_RELATION.validfrom}"{if $ACCESS_RELATION.validfrom_error == 1}style="color:red"{/if}></td>
+				</tr>
+				{/if}
 			</table>
 			<br>
 			<input type="submit" value="{#TEXT_22#}">
 			<input type="button" value="{#TEXT_23#}" onclick="javascript:void self.close();">
-			<br><br>
-			<h2>{#TEXT_242}</h2>
-			<table>
-				<tr>
-					<th width="100">{#TEXT_210#}</th>
-					<th width="80">{#TEXT_34#}</th>
-					<th width="80">{#TEXT_35#}</th>
-				<tr/>
-				{section name=RELATION loop=$ACCESS_RELATIONS}
-				<tr>
-					<td class="contrastbgcolor">{$ACCESS_RELATIONS[RELATION].name}</td>
-					<td class="contrastbgcolor" style="text-align:center;">{$ACCESS_RELATIONS[RELATION].validfrom}</td>
-					<td class="contrastbgcolor" style="text-align:center;">{$ACCESS_RELATIONS[RELATION].validtil}</td>
-				</tr>
-				{/section}
-			</table>
 		</form>
+		{if $ALL_DATA.userid gt 0}
+		</td><td style="border-right:solid #000000"></td>
+		<td valign="top" align="center" style="padding-left:10px">
+
+		<h2>{#TEXT_242#}</h2>
+		<table>
+			<tr>
+				<th width="100">{#TEXT_210#}</th>
+				<th width="80">{#TEXT_34#}</th>
+				<th width="80">{#TEXT_35#}</th>
+			<tr/>
+			{section name=RELATION loop=$ACCESS_RELATIONS}
+			<tr>
+				<td class="contrastbgcolor">{$ACCESS_RELATIONS[RELATION].name|escape:htmlall}</td>
+				<td class="contrastbgcolor" style="text-align:center;">{$ACCESS_RELATIONS[RELATION].validfrom}</td>
+				<td class="contrastbgcolor" style="text-align:center;">{$ACCESS_RELATIONS[RELATION].validtil}</td>
+			</tr>
+			{/section}
+		</table>
+		</td></tr></table>
+		{/if}
 		</td>
 {$FOOTER}
 {else}

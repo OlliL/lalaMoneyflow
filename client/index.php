@@ -25,7 +25,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.70 2014/02/23 12:14:34 olivleh1 Exp $
+// $Id: index.php,v 1.71 2014/02/25 21:12:36 olivleh1 Exp $
 //
 require_once 'include.php';
 require_once 'functions.php';
@@ -213,7 +213,8 @@ if ($is_logged_in == 0) {
 				$realaction = $_REQUEST ['realaction'];
 				$id = $_REQUEST ['userid'];
 				$all_data = $_REQUEST ['all_data'];
-				$display = $moduleUsers->display_edit_user( $realaction, $id, $all_data );
+				$access_relation = $_REQUEST ['access_relation'];
+				$display = $moduleUsers->display_edit_user( $realaction, $id, $all_data, $access_relation );
 				break;
 			case 'delete_user' :
 				$realaction = $_REQUEST ['realaction'];

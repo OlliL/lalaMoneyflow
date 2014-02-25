@@ -25,27 +25,27 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: createUserRequest.php,v 1.3 2014/02/25 21:12:36 olivleh1 Exp $
+// $Id: updateUserResponse.php,v 1.1 2014/02/25 21:12:36 olivleh1 Exp $
 //
 namespace rest\api\model\user;
 
 use rest\api\model\transport\UserTransport;
-use rest\api\model\transport\AccessRelationTransport;
+use rest\api\model\validation\validationResponse;
 
-class createUserRequest {
-	public $userTransport;
+class updateUserResponse extends validationResponse{
 	public $accessRelationTransport;
+	public $groupTransport;
 
-	public final function getUserTransport() {
-		return $this->userTransport;
+	public final function getGroupTransport() {
+		return $this->groupTransport;
 	}
 
-	public final function setUserTransport(UserTransport $userTransport) {
-		$this->userTransport = $userTransport;
-	}
-
-	public final function setAccessRelationTransport(AccessRelationTransport $accessRelationTransport) {
+	public final function setAccessRelationTransport(array $accessRelationTransport) {
 		$this->accessRelationTransport = $accessRelationTransport;
+	}
+
+	public final function setGroupTransport(array $groupTransport) {
+		$this->groupTransport = $groupTransport;
 	}
 
 	public final function getAccessRelationTransport() {

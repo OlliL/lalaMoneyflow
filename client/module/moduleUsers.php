@@ -27,7 +27,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.41 2014/02/24 21:06:24 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.42 2014/02/25 21:12:37 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -145,7 +145,7 @@ class moduleUsers extends module {
 		return $this->fetch_template( 'display_list_users.tpl' );
 	}
 
-	public final function display_edit_user($realaction, $userid, $all_data) {
+	public final function display_edit_user($realaction, $userid, $all_data, $access_relation) {
 		switch ($realaction) {
 			case 'save' :
 				$all_data ['userid'] = $userid;
@@ -159,17 +159,30 @@ class moduleUsers extends module {
 						$valid_data = false;
 					}
 				}
+				if ($userid > 0) {
+					if (! dateIsValid( $access_relation ['validfrom'] )) {
+						add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
+								GUI_DATE_FORMAT
+						) );
+						$access_relation ['validfrom_error'] = 1;
+						$valid_data = false;
+					}
+				}
 
 				if ($valid_data == true) {
 					if ($userid == 0) {
-						$ret = UserControllerHandler::getInstance()->createUser( $all_data );
+						$access_relation ['validfrom'] = convert_date_to_gui( date( 'Y-m-d' ) );
+						$ret = UserControllerHandler::getInstance()->createUser( $all_data, $access_relation );
 					} else {
-						$ret = UserControllerHandler::getInstance()->updateUser( $all_data );
+						$access_relation ['id'] = $userid;
+						$ret = UserControllerHandler::getInstance()->updateUser( $all_data, $access_relation );
 					}
 
 					if ($ret === true) {
 						$this->template->assign( 'CLOSE', 1 );
 					} else {
+						$access_relations = $ret ['access_relations'];
+						$groups = $ret ['groups'];
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
 
@@ -183,34 +196,47 @@ class moduleUsers extends module {
 							}
 						}
 					}
+					break;
 				}
 			default :
+				if ($userid > 0) {
+					$showEditUser = UserControllerHandler::getInstance()->showEditUser( $userid );
+					$all_data_pre = $showEditUser ['user'];
+					$access_relations = $showEditUser ['access_relations'];
+					$groups = $showEditUser ['groups'];
+				} else {
+					$showCreateUser = UserControllerHandler::getInstance()->showCreateUser( $userid );
+					$groups = $showCreateUser ['groups'];
+					$all_data_pre ['perm_login'] = 1;
+					$all_data_pre ['att_new'] = 1;
+				}
 				if (! is_array( $all_data )) {
-					if ($userid > 0) {
-						$showEditUser = UserControllerHandler::getInstance()->showEditUser( $userid );
-						$all_data = $showEditUser ['user'];
-						$access_relations = $showEditUser ['access_relations'];
-						$groups = $showEditUser ['groups'];
-					} else {
-						$all_data ['perm_login'] = 1;
-						$all_data ['att_new'] = 1;
-					}
+					$all_data = $all_data_pre;
 				}
 				break;
 		}
 
-		foreach ( $groups as $group ) {
-			$groupById [$group ['groupid']] = $group ['name'];
-		}
+		if (is_array( $groups ) && is_array( $access_relations )) {
+			foreach ( $groups as $group ) {
+				$groupById [$group ['groupid']] = $group ['name'];
+			}
 
-		foreach ( $access_relations as $key => $access_relation ) {
-			$access_relations [$key] ['name'] = $groupById [$access_relation ['ref_id']];
-			$sort [$key] = $access_relation ['validfrom_sort'];
-		}
+			foreach ( $access_relations as $key => $relation ) {
+				$access_relations [$key] ['name'] = $groupById [$relation ['ref_id']];
+				$sort [$key] = $relation ['validfrom_sort'];
+			}
 
-		array_multisort( $sort, SORT_DESC, $access_relations );
+			if (is_array( $sort ))
+				array_multisort( $sort, SORT_DESC, $access_relations );
+
+			if (! is_array( $access_relation ) || ! array_key_exists( 'groupid', $access_relation )) {
+				$access_relation ['ref_id'] = $access_relations [0] ['ref_id'];
+				$access_relation ['validfrom'] = convert_date_to_gui( date( 'Y-m-d', time() + 86400 ) );
+			}
+		}
 
 		$this->template->assign( 'ALL_DATA', $all_data );
+		$this->template->assign( 'ACCESS_RELATION', $access_relation );
 		$this->template->assign( 'ACCESS_RELATIONS', $access_relations );
 		$this->template->assign( 'GROUPS', $groups );
 		$this->template->assign( 'ERRORS', $this->get_errors() );

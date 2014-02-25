@@ -1,5 +1,5 @@
-- check why the header in "edit user" for "grouphistory" is not shown... maybe a limit of smartys configLoad()?
-- implement User -> Group Assignment in REST
+- implement userService->setAccessRelation (User -> Group Assignment in REST)
+- do not check before deleting contractpartner or capitalsource or user if this is OK - let the DB raise an constraint violation and just catch this and tell the user.
 - rename User(Service|Dao|Controller) to Access*
 - all BOs should get an Accessor object
 - implement Logout Call to destroy the session on the server.
