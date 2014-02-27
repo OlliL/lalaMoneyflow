@@ -27,7 +27,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.42 2014/02/25 21:12:37 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.43 2014/02/27 19:14:48 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -193,6 +193,9 @@ class moduleUsers extends module {
 								case ErrorCode::USER_WITH_SAME_NAME_ALREADY_EXISTS :
 									$all_data ['name_error'] = 1;
 									break;
+								case ErrorCode::VALIDFROM_EARLIER_THAN_TOMORROW :
+									$access_relation ['validfrom_error'] = 1;
+									break;
 							}
 						}
 					}
@@ -229,7 +232,7 @@ class moduleUsers extends module {
 			if (is_array( $sort ))
 				array_multisort( $sort, SORT_DESC, $access_relations );
 
-			if (! is_array( $access_relation ) || ! array_key_exists( 'groupid', $access_relation )) {
+			if (! is_array( $access_relation ) || ! array_key_exists( 'ref_id', $access_relation )) {
 				$access_relation ['ref_id'] = $access_relations [0] ['ref_id'];
 				$access_relation ['validfrom'] = convert_date_to_gui( date( 'Y-m-d', time() + 86400 ) );
 			}

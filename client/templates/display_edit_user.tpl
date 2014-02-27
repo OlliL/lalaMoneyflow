@@ -74,7 +74,7 @@
 				{if $ALL_DATA.userid gt 0}
 				<tr>
 					<th>{#TEXT_34#}</th>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="access_relation[validfrom]"          size=10 value="{$ACCESS_RELATION.validfrom}"{if $ACCESS_RELATION.validfrom_error == 1}style="color:red"{/if}></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="access_relation[validfrom]"          size=10 value="{$ACCESS_RELATION.validfrom}"{if $ACCESS_RELATION.validfrom_error == 1} style="color:red"{/if}></td>
 				</tr>
 				{/if}
 			</table>

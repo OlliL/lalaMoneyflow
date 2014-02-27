@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ErrorCode.php,v 1.18 2014/02/23 18:59:58 olivleh1 Exp $
+// $Id: ErrorCode.php,v 1.19 2014/02/27 19:14:48 olivleh1 Exp $
 //
 namespace rest\base;
 
@@ -80,6 +80,8 @@ class ErrorCode extends \SplEnum {
 	const VALIDTIL_NOT_DEFINED = 239;
 	const USER_WITH_SAME_NAME_ALREADY_EXISTS = 240;
 	const USER_IS_NO_ADMIN = 241;
+	const GROUP_MUST_BE_SPECIFIED = 243;
+	const VALIDFROM_EARLIER_THAN_TOMORROW = 244;
 }
 
 ?>
