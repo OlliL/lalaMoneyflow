@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportControllerHandler.php,v 1.8 2014/02/27 19:31:01 olivleh1 Exp $
+// $Id: ReportControllerHandler.php,v 1.9 2014/02/27 20:02:14 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -53,9 +53,15 @@ class ReportControllerHandler extends AbstractHandler {
 		return self::$instance;
 	}
 
+	protected final function getCategory() {
+		return 'report';
+	}
+
 	public final function listReports($year, $month) {
-		$url = URLPREFIX . SERVERPREFIX . 'report/listReports/' . $year . '/' . $month . '/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'listReports', array (
+				$year,
+				$month
+		) );
 		if (is_array( $response )) {
 			$listReports = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\report' );
 			if (is_array( $listReports->getMoneyflowTransport() )) {
@@ -86,8 +92,7 @@ class ReportControllerHandler extends AbstractHandler {
 	}
 
 	public final function showTrendsForm() {
-		$url = URLPREFIX . SERVERPREFIX . 'report/showTrendsForm/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showTrendsForm' );
 		if (is_array( $response )) {
 			$showTrendsForm = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\report' );
 			$result ['allYears'] = $showTrendsForm->getAllYears();
@@ -97,20 +102,18 @@ class ReportControllerHandler extends AbstractHandler {
 				$result ['capitalsources'] = array ();
 			}
 		}
-		$result['selected_capitalsources'] = $showTrendsForm->getSettingTrendCapitalsourceId();
+		$result ['selected_capitalsources'] = $showTrendsForm->getSettingTrendCapitalsourceId();
 
 		return $result;
 	}
 
 	public final function showTrendsGraph($capitalsourceIds, $startdate, $enddate) {
-		$url = URLPREFIX . SERVERPREFIX . 'report/showTrendsGraph/' . parent::getSessionId();
-
 		$request = new showTrendsGraphRequest();
 		$request->setCapitalsourceIds( $capitalsourceIds );
 		$request->setStartDate( $startdate->format( 'U' ) );
 		$request->setEndDate( $enddate->format( 'U' ) );
 
-		$response = parent::putJson( $url, parent::json_encode_response( $request ) );
+		$response = parent::putJson( 'showTrendsGraph', parent::json_encode_response( $request ) );
 		if (is_array( $response )) {
 			$showTrendsGraphResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\report' );
 			if (is_array( $showTrendsGraphResponse->getTrendsSettledTransport() )) {

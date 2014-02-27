@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MonthlySettlementControllerHandler.php,v 1.4 2014/02/27 19:31:01 olivleh1 Exp $
+// $Id: MonthlySettlementControllerHandler.php,v 1.5 2014/02/27 20:02:14 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -47,9 +47,15 @@ class MonthlySettlementControllerHandler extends AbstractHandler {
 		return self::$instance;
 	}
 
+	protected final function getCategory() {
+		return 'monthlysettlement';
+	}
+
 	public final function showMonthlySettlementList($year, $month) {
-		$url = URLPREFIX . SERVERPREFIX . 'monthlysettlement/showMonthlySettlementList/' . $year . '/' . $month . '/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showMonthlySettlementList', array (
+				$year,
+				$month
+		) );
 		if (is_array( $response )) {
 			$showMonthlySettlementList = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\monthlysettlement' );
 			if (is_array( $showMonthlySettlementList->getMonthlySettlementTransport() )) {
@@ -69,8 +75,10 @@ class MonthlySettlementControllerHandler extends AbstractHandler {
 	}
 
 	public final function showMonthlySettlementCreate($year, $month) {
-		$url = URLPREFIX . SERVERPREFIX . 'monthlysettlement/showMonthlySettlementCreate/' . $year . '/' . $month . '/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showMonthlySettlementCreate', array (
+				$year,
+				$month
+		) );
 		if (is_array( $response )) {
 			$showMonthlySettlementCreate = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\monthlysettlement' );
 			if (is_array( $showMonthlySettlementCreate->getMonthlySettlementTransport() )) {
@@ -87,8 +95,10 @@ class MonthlySettlementControllerHandler extends AbstractHandler {
 	}
 
 	public final function showMonthlySettlementDelete($year, $month) {
-		$url = URLPREFIX . SERVERPREFIX . 'monthlysettlement/showMonthlySettlementDelete/' . $year . '/' . $month . '/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showMonthlySettlementDelete', array (
+				$year,
+				$month
+		) );
 		if (is_array( $response )) {
 			$showMonthlySettlementDelete = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\monthlysettlement' );
 			if (is_array( $showMonthlySettlementDelete->getMonthlySettlementTransport() )) {
@@ -102,19 +112,19 @@ class MonthlySettlementControllerHandler extends AbstractHandler {
 	}
 
 	public final function upsertMonthlySettlement(array $monthlySettlement) {
-		$url = URLPREFIX . SERVERPREFIX . 'monthlysettlement/upsertMonthlySettlement/' . parent::getSessionId();
-
 		$monthlySettlementTransport = parent::mapArray( $monthlySettlement, ClientArrayMapperEnum::MONTHLYSETTLEMENT_TRANSPORT );
 
 		$request = new upsertMonthlySettlementRequest();
 		$request->setMonthlySettlementTransport( $monthlySettlementTransport );
 
-		return parent::postJson( $url, parent::json_encode_response( $request ) );
+		return parent::postJson( 'upsertMonthlySettlement', parent::json_encode_response( $request ) );
 	}
 
 	public final function deleteMonthlySettlement($year, $month) {
-		$url = URLPREFIX . SERVERPREFIX . 'monthlysettlement/deleteMonthlySettlement/' . $year . '/' . $month . '/' . parent::getSessionId();
-		return parent::deleteJson( $url );
+		return parent::deleteJson( 'deleteMonthlySettlement', array (
+				$year,
+				$month
+		) );
 	}
 }
 ?>

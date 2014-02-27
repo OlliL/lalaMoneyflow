@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: SessionControllerHandler.php,v 1.6 2014/02/27 19:31:01 olivleh1 Exp $
+// $Id: SessionControllerHandler.php,v 1.7 2014/02/27 20:02:14 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -46,9 +46,15 @@ class SessionControllerHandler extends AbstractHandler {
 		return self::$instance;
 	}
 
+	protected final function getCategory() {
+		return 'session';
+	}
+
 	public final function doLogon($user, $password) {
-		$url = URLPREFIX . SERVERPREFIX . 'session/logon/' . $user . '/' . $password;
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'logon', array (
+				$user,
+				$password
+		) );
 		if (is_array( $response )) {
 			$doLogonResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\session' );
 			$result = array (

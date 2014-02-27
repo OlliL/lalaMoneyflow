@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: EventControllerHandler.php,v 1.2 2014/02/27 19:31:01 olivleh1 Exp $
+// $Id: EventControllerHandler.php,v 1.3 2014/02/27 20:02:14 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -46,9 +46,12 @@ class EventControllerHandler extends AbstractHandler {
 		return self::$instance;
 	}
 
+	protected final function getCategory() {
+		return 'event';
+	}
+
 	public final function showEventList() {
-		$url = URLPREFIX . SERVERPREFIX . 'event/showEventList/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showEventList' );
 		if (is_array( $response )) {
 			$showEventList = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\event' );
 			$result ['mms_missing'] = $showEventList->isMonthlySettlementMissing();

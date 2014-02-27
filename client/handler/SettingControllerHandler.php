@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: SettingControllerHandler.php,v 1.2 2014/02/27 19:31:01 olivleh1 Exp $
+// $Id: SettingControllerHandler.php,v 1.3 2014/02/27 20:02:14 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -46,9 +46,12 @@ class SettingControllerHandler extends AbstractHandler {
 		return self::$instance;
 	}
 
+	protected final function getCategory() {
+		return 'setting';
+	}
+
 	public final function showDefaultSettings() {
-		$url = URLPREFIX . SERVERPREFIX . 'setting/showDefaultSettings/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showDefaultSettings' );
 		if (is_array( $response )) {
 			$showDefaultSettingsResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\setting' );
 			$result ['maxrows'] = $showDefaultSettingsResponse->getMaxRows();
@@ -61,20 +64,17 @@ class SettingControllerHandler extends AbstractHandler {
 	}
 
 	public final function updateDefaultSettings(array $settings) {
-		$url = URLPREFIX . SERVERPREFIX . 'setting/updateDefaultSettings/' . parent::getSessionId();
-
 		$request = new updateDefaultSettingsRequest();
 		$request->setDateFormat( $settings ['dateformat'] );
 		$request->setLanguage( $settings ['language'] );
 		$request->setMaxRows( $settings ['maxrows'] );
 		$request->setNumFreeMoneyflows( $settings ['numflows'] );
 
-		return parent::putJson( $url, parent::json_encode_response( $request ) );
+		return parent::putJson( 'updateDefaultSettings', parent::json_encode_response( $request ) );
 	}
 
 	public final function showPersonalSettings() {
-		$url = URLPREFIX . SERVERPREFIX . 'setting/showPersonalSettings/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showPersonalSettings' );
 		if (is_array( $response )) {
 			$showPersonalSettingsResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\setting' );
 			$result ['maxrows'] = $showPersonalSettingsResponse->getMaxRows();
@@ -87,8 +87,6 @@ class SettingControllerHandler extends AbstractHandler {
 	}
 
 	public final function updatePersonalSettings(array $settings) {
-		$url = URLPREFIX . SERVERPREFIX . 'setting/updatePersonalSettings/' . parent::getSessionId();
-
 		$request = new updatePersonalSettingsRequest();
 		$request->setDateFormat( $settings ['dateformat'] );
 		$request->setLanguage( $settings ['language'] );
@@ -96,7 +94,7 @@ class SettingControllerHandler extends AbstractHandler {
 		$request->setNumFreeMoneyflows( $settings ['numflows'] );
 		$request->setPassword( $settings ['password'] );
 
-		return parent::putJson( $url, parent::json_encode_response( $request ) );
+		return parent::putJson( 'updatePersonalSettings', parent::json_encode_response( $request ) );
 	}
 }
 

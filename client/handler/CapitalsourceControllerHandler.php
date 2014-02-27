@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CapitalsourceControllerHandler.php,v 1.7 2014/02/27 19:31:01 olivleh1 Exp $
+// $Id: CapitalsourceControllerHandler.php,v 1.8 2014/02/27 20:02:14 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -48,9 +48,14 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 		return self::$instance;
 	}
 
+	protected final function getCategory() {
+		return 'capitalsource';
+	}
+
 	public final function showCapitalsourceList($restriction) {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/showCapitalsourceList/' . utf8_encode($restriction) . '/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showCapitalsourceList', array (
+				utf8_encode( $restriction )
+		) );
 		if (is_array( $response )) {
 			$listCapitalsources = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
 			if (is_array( $listCapitalsources->getCapitalsourceTransport() )) {
@@ -65,8 +70,9 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 	}
 
 	public final function showEditCapitalsource($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/showEditCapitalsource/' . $id . '/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( showEditCapitalsource, array (
+				$id
+		) );
 		if (is_array( $response )) {
 			$showEditCapitalsourceResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
 			$result = parent::map( $showEditCapitalsourceResponse->getCapitalsourceTransport() );
@@ -75,8 +81,9 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 	}
 
 	public final function showDeleteCapitalsource($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/showDeleteCapitalsource/' . $id . '/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showDeleteCapitalsource', array (
+				$id
+		) );
 		if (is_array( $response )) {
 			$showDeleteCapitalsourceResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
 			$result = parent::map( $showDeleteCapitalsourceResponse->getCapitalsourceTransport() );
@@ -85,26 +92,25 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 	}
 
 	public final function createCapitalsource(array $capitalsource) {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/createCapitalsource/' . parent::getSessionId();
 		$capitalsourceTransport = parent::map( $capitalsource, ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
 
 		$request = new createCapitalsourceRequest();
 		$request->setCapitalsourceTransport( $capitalsourceTransport );
-		return parent::postJson( $url, parent::json_encode_response( $request ) );
+		return parent::postJson( 'createCapitalsource', parent::json_encode_response( $request ) );
 	}
 
 	public final function updateCapitalsource(array $capitalsource) {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/updateCapitalsource/' . parent::getSessionId();
 		$capitalsourceTransport = parent::map( $capitalsource, ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
 
 		$request = new updateCapitalsourceRequest();
 		$request->setCapitalsourceTransport( $capitalsourceTransport );
-		return parent::putJson( $url, parent::json_encode_response( $request ) );
+		return parent::putJson( 'updateCapitalsource', parent::json_encode_response( $request ) );
 	}
 
 	public final function deleteCapitalsource($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'capitalsource/deleteCapitalsourceById/' . $id . '/' . parent::getSessionId();
-		return parent::deleteJson( $url );
+		return parent::deleteJson( 'deleteCapitalsourceById', array (
+				$id
+		) );
 	}
 }
 

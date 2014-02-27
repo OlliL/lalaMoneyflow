@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PreDefMoneyflowControllerHandler.php,v 1.4 2014/02/27 19:31:01 olivleh1 Exp $
+// $Id: PreDefMoneyflowControllerHandler.php,v 1.5 2014/02/27 20:02:14 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -51,9 +51,14 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 		return self::$instance;
 	}
 
+	protected final function getCategory() {
+		return 'predefmoneyflow';
+	}
+
 	public final function showPreDefMoneyflowList($restriction) {
-		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/showPreDefMoneyflowList/' . utf8_encode( $restriction ) . '/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showPreDefMoneyflowList', array (
+				utf8_encode( $restriction )
+		) );
 		if (is_array( $response )) {
 			$listPreDefMoneyflows = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\predefmoneyflow' );
 			if (is_array( $listPreDefMoneyflows->getPreDefMoneyflowTransport() )) {
@@ -68,8 +73,9 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 	}
 
 	public final function showEditPreDefMoneyflow($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/showEditPreDefMoneyflow/' . $id . '/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showEditPreDefMoneyflow', array (
+				$id
+		) );
 		if (is_array( $response )) {
 			$showEditPreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\predefmoneyflow' );
 			if (is_array( $showEditPreDefMoneyflow->getCapitalsourceTransport() )) {
@@ -98,8 +104,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 	}
 
 	public final function showCreatePreDefMoneyflow() {
-		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/showCreatePreDefMoneyflow/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showCreatePreDefMoneyflow' );
 		if (is_array( $response )) {
 			$showCreatePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\predefmoneyflow' );
 			if (is_array( $showCreatePreDefMoneyflow->getCapitalsourceTransport() )) {
@@ -123,8 +128,9 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 	}
 
 	public final function showDeletePreDefMoneyflow($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/showDeletePreDefMoneyflow/' . $id . '/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showDeletePreDefMoneyflow', array (
+				$id
+		) );
 		if (is_array( $response )) {
 			$showDeletePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\predefmoneyflow' );
 			$result = parent::map( $showDeletePreDefMoneyflow->getPreDefMoneyflowTransport() );
@@ -133,12 +139,11 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 	}
 
 	public final function createPreDefMoneyflow(array $preDefMoneyflow) {
-		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/createPreDefMoneyflow/' . parent::getSessionId();
 		$preDefMoneyflowTransport = parent::map( $preDefMoneyflow, ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
 
 		$request = new createPreDefMoneyflowRequest();
 		$request->setPreDefMoneyflowTransport( $preDefMoneyflowTransport );
-		$response = parent::postJson( $url, parent::json_encode_response( $request ) );
+		$response = parent::postJson( 'createPreDefMoneyflow', parent::json_encode_response( $request ) );
 
 		if ($response === true) {
 			$result = true;
@@ -170,12 +175,11 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 	}
 
 	public final function updatePreDefMoneyflow(array $preDefMoneyflow) {
-		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/updatePreDefMoneyflow/' . parent::getSessionId();
 		$preDefMoneyflowTransport = parent::map( $preDefMoneyflow, ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
 
 		$request = new updatePreDefMoneyflowRequest();
 		$request->setPreDefMoneyflowTransport( $preDefMoneyflowTransport );
-		$response = parent::putJson( $url, parent::json_encode_response( $request ) );
+		$response = parent::putJson( 'updatePreDefMoneyflow', parent::json_encode_response( $request ) );
 
 		if ($response === true) {
 			$result = true;
@@ -207,8 +211,9 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 	}
 
 	public final function deletePreDefMoneyflow($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'predefmoneyflow/deletePreDefMoneyflow/' . $id . '/' . parent::getSessionId();
-		return parent::deleteJson( $url );
+		return parent::deleteJson( 'deletePreDefMoneyflow', array (
+				$id
+		) );
 	}
 }
 

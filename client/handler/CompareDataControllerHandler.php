@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataControllerHandler.php,v 1.6 2014/02/27 19:31:01 olivleh1 Exp $
+// $Id: CompareDataControllerHandler.php,v 1.7 2014/02/27 20:02:14 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -51,9 +51,12 @@ class CompareDataControllerHandler extends AbstractHandler {
 		return self::$instance;
 	}
 
+	protected final function getCategory() {
+		return 'comparedata';
+	}
+
 	public final function showCompareDataForm() {
-		$url = URLPREFIX . SERVERPREFIX . 'comparedata/showCompareDataForm/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showCompareDataForm' );
 		if (is_array( $response )) {
 			$showCompareDataForm = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\comparedata' );
 
@@ -75,8 +78,6 @@ class CompareDataControllerHandler extends AbstractHandler {
 	}
 
 	public final function compareData(array $compareData) {
-		$url = URLPREFIX . SERVERPREFIX . 'comparedata/compareData/' . parent::getSessionId();
-
 		$request = new compareDataRequest();
 		$request->setCapitalSourceId( $compareData ['mcs_capitalsourceid'] );
 		$request->setEndDate( DateUtil::convertClientDateToTransport( $compareData ['enddate'] ) );
@@ -84,7 +85,7 @@ class CompareDataControllerHandler extends AbstractHandler {
 		$request->setFormatId( $compareData ['format'] );
 		$request->setStartDate( DateUtil::convertClientDateToTransport( $compareData ['startdate'] ) );
 
-		$response = parent::putJson( $url, parent::json_encode_response( $request ) );
+		$response = parent::putJson( 'compareData', parent::json_encode_response( $request ) );
 		if (is_array( $response )) {
 			$compareDataResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\comparedata' );
 			if (is_array( $compareDataResponse->getCompareDataMatchingTransport() )) {

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: GroupControllerHandler.php,v 1.2 2014/02/27 19:31:01 olivleh1 Exp $
+// $Id: GroupControllerHandler.php,v 1.3 2014/02/27 20:02:14 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -48,9 +48,14 @@ class GroupControllerHandler extends AbstractHandler {
 		return self::$instance;
 	}
 
+	protected final function getCategory() {
+		return 'group';
+	}
+
 	public final function showGroupList($restriction) {
-		$url = URLPREFIX . SERVERPREFIX . 'group/showGroupList/' . utf8_encode($restriction) . '/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showGroupList', array (
+				utf8_encode( $restriction )
+		) );
 		if (is_array( $response )) {
 			$listGroups = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\group' );
 			if (is_array( $listGroups->getGroupTransport() )) {
@@ -65,8 +70,9 @@ class GroupControllerHandler extends AbstractHandler {
 	}
 
 	public final function showEditGroup($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'group/showEditGroup/' . $id . '/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showEditGroup', array (
+				$id
+		) );
 		if (is_array( $response )) {
 			$showEditGroupResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\group' );
 			$result = parent::map( $showEditGroupResponse->getGroupTransport() );
@@ -75,8 +81,9 @@ class GroupControllerHandler extends AbstractHandler {
 	}
 
 	public final function showDeleteGroup($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'group/showDeleteGroup/' . $id . '/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showDeleteGroup', array (
+				$id
+		) );
 		if (is_array( $response )) {
 			$showDeleteGroupResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\group' );
 			$result = parent::map( $showDeleteGroupResponse->getGroupTransport() );
@@ -85,26 +92,25 @@ class GroupControllerHandler extends AbstractHandler {
 	}
 
 	public final function createGroup(array $group) {
-		$url = URLPREFIX . SERVERPREFIX . 'group/createGroup/' . parent::getSessionId();
 		$groupTransport = parent::map( $group, ClientArrayMapperEnum::GROUP_TRANSPORT );
 
 		$request = new createGroupRequest();
 		$request->setGroupTransport( $groupTransport );
-		return parent::postJson( $url, parent::json_encode_response( $request ) );
+		return parent::postJson( 'createGroup', parent::json_encode_response( $request ) );
 	}
 
 	public final function updateGroup(array $group) {
-		$url = URLPREFIX . SERVERPREFIX . 'group/updateGroup/' . parent::getSessionId();
 		$groupTransport = parent::map( $group, ClientArrayMapperEnum::GROUP_TRANSPORT );
 
 		$request = new updateGroupRequest();
 		$request->setGroupTransport( $groupTransport );
-		return parent::putJson( $url, parent::json_encode_response( $request ) );
+		return parent::putJson( 'updateGroup', parent::json_encode_response( $request ) );
 	}
 
 	public final function deleteGroup($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'group/deleteGroupById/' . $id . '/' . parent::getSessionId();
-		return parent::deleteJson( $url );
+		return parent::deleteJson( 'deleteGroupById', array (
+				$id
+		) );
 	}
 }
 

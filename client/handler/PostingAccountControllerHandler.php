@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PostingAccountControllerHandler.php,v 1.2 2014/02/27 19:31:01 olivleh1 Exp $
+// $Id: PostingAccountControllerHandler.php,v 1.3 2014/02/27 20:02:14 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -44,6 +44,10 @@ class PostingAccountControllerHandler extends AbstractHandler {
 			self::$instance = new PostingAccountControllerHandler();
 		}
 		return self::$instance;
+	}
+
+	protected final function getCategory() {
+		return 'postingaccount';
 	}
 }
 

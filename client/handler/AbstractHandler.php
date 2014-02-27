@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractHandler.php,v 1.1 2014/02/27 19:31:01 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.2 2014/02/27 20:02:14 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -40,8 +40,7 @@ use rest\client\mapper\ClientArrayMapperEnum;
 use rest\base\JsonAutoMapper;
 use rest\base\ErrorCode;
 
-class AbstractHandler extends AbstractJsonSender {
-	private static $instance;
+abstract class AbstractHandler extends AbstractJsonSender {
 	private $coreSession;
 
 	protected function __construct() {
@@ -52,19 +51,9 @@ class AbstractHandler extends AbstractJsonSender {
 		$this->coreSession = new \coreSession();
 	}
 
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			self::$instance = new CallServerUtil();
-		}
-		return self::$instance;
-	}
+	abstract protected function getCategory();
 
-
-	public function getSessionId() {
-		return $this->coreSession->getAttribute(server_id);
-	}
-
-	public final function handle_result($result) {
+	protected final function handle_result($result) {
 		if (! is_array( $result )) {
 			echo '<font color="red"><u>Server Error occured</u><pre>' . $result . '</pre></font><br>';
 			add_error( ErrorCode::ATTENTION );
@@ -92,27 +81,34 @@ class AbstractHandler extends AbstractJsonSender {
 		return $result;
 	}
 
-	public final function getJson($url) {
-		// $response = Request::get( $url )->withoutStrictSsl()->addOnCurlOption( CURLOPT_ENCODING, 'compress, deflate, gzip' )->send();
+	private final function getUrl($usecase, $parameter) {
+		$url = URLPREFIX . SERVERPREFIX;
+		$url .= $this->getCategory();
+		$url .= '/';
+		$url .= $usecase;
+		if (is_array( $parameter ) && count( $parameter ) > 0) {
+			$parameterStr = implode( '/', $parameter );
+			$url .= '/';
+			$url .= $parameterStr;
+		}
+		$url .= '/';
+		$url .= $this->coreSession->getAttribute( server_id );
+		return $url;
+	}
+
+	protected final function getJson($usecase, $parameter = array()) {
+		$url = $this->getUrl( $usecase, $parameter );
 		$response = Request::get( $url )->withoutStrictSsl()->send();
 		if ($response->code == 204) {
 			return false;
 		} else {
 			return self::handle_result( $response->body );
 		}
-
-		// $ch = curl_init();
-		// curl_setopt( $ch, CURLOPT_URL, $url );
-		// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		// curl_setopt($ch, CURLOPT_ENCODING, 'compress, deflate, gzip');
-		// $result = curl_exec( $ch );
-		// $ret = self::handle_result( json_decode( $result, true ));
-		// curl_close( $ch );
-		// return $ret;
 	}
 
 	// create
-	public final function postJson($url, $json) {
+	protected final function postJson($usecase, $json, $parameter = array()) {
+		$url = $this->getUrl( $usecase, $parameter );
 		$response = Request::post( $url )->withoutStrictSsl()->sendsJson()->body( $json )->send();
 		if ($response->code == 204) {
 			return true;
@@ -122,7 +118,8 @@ class AbstractHandler extends AbstractJsonSender {
 	}
 
 	// update
-	public final function putJson($url, $json) {
+	protected final function putJson($usecase, $json, $parameter = array()) {
+		$url = $this->getUrl( $usecase, $parameter );
 		$response = Request::put( $url )->withoutStrictSsl()->sendsJson()->body( $json )->send();
 		if ($response->code == 204) {
 			return true;
@@ -131,7 +128,8 @@ class AbstractHandler extends AbstractJsonSender {
 		}
 	}
 
-	public final function deleteJson($url) {
+	protected final function deleteJson($usecase, $parameter = array()) {
+		$url = $this->getUrl( $usecase, $parameter );
 		$response = Request::delete( $url )->withoutStrictSsl()->send();
 		if ($response->code == 204) {
 			return true;

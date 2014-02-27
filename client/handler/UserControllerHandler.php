@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: UserControllerHandler.php,v 1.6 2014/02/27 19:31:01 olivleh1 Exp $
+// $Id: UserControllerHandler.php,v 1.7 2014/02/27 20:02:14 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -51,9 +51,14 @@ class UserControllerHandler extends AbstractHandler {
 		return self::$instance;
 	}
 
+	protected final function getCategory() {
+		return 'user';
+	}
+
 	public final function showUserList($restriction) {
-		$url = URLPREFIX . SERVERPREFIX . 'user/showUserList/' . utf8_encode( $restriction ) . '/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showUserList', array (
+				utf8_encode( $restriction )
+		) );
 		if (is_array( $response )) {
 			$listUsers = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\user' );
 			if (is_array( $listUsers->getUserTransport() )) {
@@ -78,8 +83,7 @@ class UserControllerHandler extends AbstractHandler {
 	}
 
 	public final function showCreateUser($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'user/showCreateUser/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showCreateUser' );
 		if (is_array( $response )) {
 			$showCreateUserResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\user' );
 			if (is_array( $showCreateUserResponse->getGroupTransport() )) {
@@ -92,8 +96,9 @@ class UserControllerHandler extends AbstractHandler {
 	}
 
 	public final function showEditUser($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'user/showEditUser/' . $id . '/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showEditUser', array (
+				$id
+		) );
 		if (is_array( $response )) {
 			$showEditUserResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\user' );
 			$result ['user'] = parent::map( $showEditUserResponse->getUserTransport() );
@@ -112,8 +117,9 @@ class UserControllerHandler extends AbstractHandler {
 	}
 
 	public final function showDeleteUser($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'user/showDeleteUser/' . $id . '/' . parent::getSessionId();
-		$response = parent::getJson( $url );
+		$response = parent::getJson( 'showDeleteUser', array (
+				$id
+		) );
 		if (is_array( $response )) {
 			$showDeleteUserResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\user' );
 			$result = parent::map( $showDeleteUserResponse->getUserTransport() );
@@ -122,14 +128,13 @@ class UserControllerHandler extends AbstractHandler {
 	}
 
 	public final function createUser(array $user, array $access_relation) {
-		$url = URLPREFIX . SERVERPREFIX . 'user/createUser/' . parent::getSessionId();
 		$userTransport = parent::map( $user, ClientArrayMapperEnum::USER_TRANSPORT );
 		$accessRelationTransport = parent::map( $access_relation, ClientArrayMapperEnum::ACCESS_RELATION_TRANSPORT );
 
 		$request = new createUserRequest();
 		$request->setUserTransport( $userTransport );
 		$request->setAccessRelationTransport( $accessRelationTransport );
-		$response = parent::postJson( $url, parent::json_encode_response( $request ) );
+		$response = parent::postJson( 'createUser', parent::json_encode_response( $request ) );
 
 		if ($response === true) {
 			$result = true;
@@ -151,14 +156,13 @@ class UserControllerHandler extends AbstractHandler {
 	}
 
 	public final function updateUser(array $user, array $access_relation) {
-		$url = URLPREFIX . SERVERPREFIX . 'user/updateUser/' . parent::getSessionId();
 		$userTransport = parent::map( $user, ClientArrayMapperEnum::USER_TRANSPORT );
 		$accessRelationTransport = parent::map( $access_relation, ClientArrayMapperEnum::ACCESS_RELATION_TRANSPORT );
 
 		$request = new updateUserRequest();
 		$request->setUserTransport( $userTransport );
 		$request->setAccessRelationTransport( $accessRelationTransport );
-		$response = parent::putJson( $url, parent::json_encode_response( $request ) );
+		$response = parent::putJson( 'updateUser', parent::json_encode_response( $request ) );
 		if ($response === true) {
 			$result = true;
 		} else if (is_array( $response )) {
@@ -184,8 +188,9 @@ class UserControllerHandler extends AbstractHandler {
 	}
 
 	public final function deleteUser($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'user/deleteUserById/' . $id . '/' . parent::getSessionId();
-		return parent::deleteJson( $url );
+		return parent::deleteJson( 'deleteUserById', array (
+				$id
+		) );
 	}
 }
 
