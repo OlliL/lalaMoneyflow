@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: SessionControllerHandler.php,v 1.7 2014/02/27 20:02:14 olivleh1 Exp $
+// $Id: SessionControllerHandler.php,v 1.8 2014/02/27 21:37:48 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -59,7 +59,6 @@ class SessionControllerHandler extends AbstractHandler {
 			$doLogonResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\session' );
 			$result = array (
 					'mur_userid' => $doLogonResponse->getUserid(),
-					'sessionid' => $doLogonResponse->getSessionId(),
 					'dateformat' => $doLogonResponse->getSettingDateFormat(),
 					'displayed_language' => $doLogonResponse->getSettingDisplayedLanguage(),
 					'att_new' => $doLogonResponse->getAttributeNew(),

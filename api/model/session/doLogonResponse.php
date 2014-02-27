@@ -25,13 +25,12 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: doLogonResponse.php,v 1.5 2014/02/23 16:53:21 olivleh1 Exp $
+// $Id: doLogonResponse.php,v 1.6 2014/02/27 21:37:48 olivleh1 Exp $
 //
 namespace rest\api\model\session;
 
 class doLogonResponse {
 	public $userId;
-	public $sessionId;
 	public $settingDateFormat;
 	public $settingDisplayedLanguage;
 	public $permissionAdmin;
@@ -41,16 +40,8 @@ class doLogonResponse {
 		$this->userId = $userId;
 	}
 
-	public final function setSessionId($sessionId) {
-		$this->sessionId = $sessionId;
-	}
-
 	public final function getUserId() {
 		return $this->userId;
-	}
-
-	public final function getSessionId() {
-		return $this->sessionId;
 	}
 
 	public final function setSettingDateFormat($settingDateFormat) {

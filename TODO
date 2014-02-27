@@ -1,27 +1,5 @@
-Thoughts
-- encryption:
-  - use an Authentication: header
-  - get rid of the server-session-id
-  - the content + parts of the URL are together with the user-password as secret key hashed
-  - the server will now receive "Authentication: hash:username"
-  - The server looks up username and the password, and will do the hashing too.
-  - If both hashes (the one of the client and the one of the server) are the same, the access is legit.
-
-- CallServerUtil -> AbstractHandler
-  - define the "user" "moneyflow" "contractpartner" part of the url in the extending classes as protected final USECASE
-  - the server and regular prefix is used only in the AbstractHandler
-  - each method hands only the method specific part e.g. "showMoneyflowList" to the send method and an array of parameters
-    .e.g: parent::json_get("showMoneyflowList", array('2014-01-01','2014-01-31'). "json_get" does now form the URL on its
-    own
-
-
-
-
-
-
-
-
-
+- implement HMAC hasing in AuthMiddleware + AbstractHandler.getHeaders() as described here:
+   http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
 - do not check before deleting contractpartner or capitalsource or user if this is OK - let the DB raise an constraint violation and just catch this and tell the user.
 - rename User(Service|Dao|Controller) to Access* -> Refactor AccessRelation/AccessFlattened/Access
 - all BOs should get an Accessor object
