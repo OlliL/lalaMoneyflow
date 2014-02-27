@@ -24,22 +24,20 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataControllerHandler.php,v 1.5 2014/02/23 18:59:59 olivleh1 Exp $
+// $Id: CompareDataControllerHandler.php,v 1.6 2014/02/27 19:31:01 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
-use rest\client\util\CallServerUtil;
-use rest\base\AbstractJsonSender;
 use rest\client\mapper\ClientArrayMapperEnum;
 use rest\base\JsonAutoMapper;
 use rest\client\util\DateUtil;
 use rest\api\model\comparedata\compareDataRequest;
 
-class CompareDataControllerHandler extends AbstractJsonSender {
+class CompareDataControllerHandler extends AbstractHandler {
 	private static $instance;
-	private static $callServer;
 
 	protected function __construct() {
+		parent::__construct();
 		parent::addMapper( 'rest\client\mapper\ArrayToCompareDataFormatTransportMapper', ClientArrayMapperEnum::COMPAREDATAFORMAT_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToCompareDataDatasetTransportMapper', ClientArrayMapperEnum::COMPAREDATADATASET_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
@@ -49,14 +47,13 @@ class CompareDataControllerHandler extends AbstractJsonSender {
 	public static function getInstance() {
 		if (! isset( self::$instance )) {
 			self::$instance = new CompareDataControllerHandler();
-			self::$callServer = CallServerUtil::getInstance();
 		}
 		return self::$instance;
 	}
 
 	public final function showCompareDataForm() {
-		$url = URLPREFIX . SERVERPREFIX . 'comparedata/showCompareDataForm/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'comparedata/showCompareDataForm/' . parent::getSessionId();
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$showCompareDataForm = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\comparedata' );
 
@@ -78,7 +75,7 @@ class CompareDataControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function compareData(array $compareData) {
-		$url = URLPREFIX . SERVERPREFIX . 'comparedata/compareData/' . self::$callServer->getSessionId();
+		$url = URLPREFIX . SERVERPREFIX . 'comparedata/compareData/' . parent::getSessionId();
 
 		$request = new compareDataRequest();
 		$request->setCapitalSourceId( $compareData ['mcs_capitalsourceid'] );
@@ -87,7 +84,7 @@ class CompareDataControllerHandler extends AbstractJsonSender {
 		$request->setFormatId( $compareData ['format'] );
 		$request->setStartDate( DateUtil::convertClientDateToTransport( $compareData ['startdate'] ) );
 
-		$response = self::$callServer->putJson( $url, parent::json_encode_response( $request ) );
+		$response = parent::putJson( $url, parent::json_encode_response( $request ) );
 		if (is_array( $response )) {
 			$compareDataResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\comparedata' );
 			if (is_array( $compareDataResponse->getCompareDataMatchingTransport() )) {

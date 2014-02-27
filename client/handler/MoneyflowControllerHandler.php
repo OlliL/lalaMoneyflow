@@ -24,23 +24,21 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowControllerHandler.php,v 1.3 2014/02/16 14:43:13 olivleh1 Exp $
+// $Id: MoneyflowControllerHandler.php,v 1.4 2014/02/27 19:31:01 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
-use rest\client\util\CallServerUtil;
-use rest\base\AbstractJsonSender;
 use rest\client\mapper\ClientArrayMapperEnum;
 use rest\base\JsonAutoMapper;
 use rest\api\model\moneyflow\updateMoneyflowRequest;
 use rest\api\model\moneyflow\createMoneyflowsRequest;
 use rest\api\model\moneyflow\searchMoneyflowsRequest;
 
-class MoneyflowControllerHandler extends AbstractJsonSender {
+class MoneyflowControllerHandler extends AbstractHandler {
 	private static $instance;
-	private static $callServer;
 
 	protected function __construct() {
+		parent::__construct();
 		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerTransportMapper', ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
@@ -53,14 +51,13 @@ class MoneyflowControllerHandler extends AbstractJsonSender {
 	public static function getInstance() {
 		if (! isset( self::$instance )) {
 			self::$instance = new MoneyflowControllerHandler();
-			self::$callServer = CallServerUtil::getInstance();
 		}
 		return self::$instance;
 	}
 
 	public final function showAddMoneyflows() {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/showAddMoneyflows/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/showAddMoneyflows/' . parent::getSessionId();
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$addMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
 			if (is_array( $addMoneyflow->getCapitalsourceTransport() )) {
@@ -90,8 +87,8 @@ class MoneyflowControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function showEditMoneyflow($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/showEditMoneyflow/' . $id . '/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/showEditMoneyflow/' . $id . '/' . parent::getSessionId();
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$showEditMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
 			if (is_array( $showEditMoneyflow->getCapitalsourceTransport() )) {
@@ -120,8 +117,8 @@ class MoneyflowControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function showDeleteMoneyflow($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/showDeleteMoneyflow/' . $id . '/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/showDeleteMoneyflow/' . $id . '/' . parent::getSessionId();
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$showDeleteMoneyflowResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
 			$result = parent::map( $showDeleteMoneyflowResponse->getMoneyflowTransport() );
@@ -130,7 +127,7 @@ class MoneyflowControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function createMoneyflows(array $moneyflows) {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/createMoneyflows/' . self::$callServer->getSessionId();
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/createMoneyflows/' . parent::getSessionId();
 
 		$preDefMoneyflowIds = array ();
 
@@ -145,7 +142,7 @@ class MoneyflowControllerHandler extends AbstractJsonSender {
 		$request->setMoneyflowTransport( $moneyflowTransport );
 		$request->setUsedPreDefMoneyflowIds( $preDefMoneyflowIds );
 
-		$response = self::$callServer->postJson( $url, parent::json_encode_response( $request ) );
+		$response = parent::postJson( $url, parent::json_encode_response( $request ) );
 
 		if ($response === true) {
 			$result = true;
@@ -185,12 +182,12 @@ class MoneyflowControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function updateMoneyflow(array $moneyflow) {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/updateMoneyflow/' . self::$callServer->getSessionId();
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/updateMoneyflow/' . parent::getSessionId();
 		$moneyflowTransport = parent::map( $moneyflow, ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
 
 		$request = new updateMoneyflowRequest();
 		$request->setMoneyflowTransport( $moneyflowTransport );
-		$response = self::$callServer->putJson( $url, parent::json_encode_response( $request ) );
+		$response = parent::putJson( $url, parent::json_encode_response( $request ) );
 
 		if ($response === true) {
 			$result = true;
@@ -222,13 +219,13 @@ class MoneyflowControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function deleteMoneyflow($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/deleteMoneyflowById/' . $id . '/' . self::$callServer->getSessionId();
-		return self::$callServer->deleteJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/deleteMoneyflowById/' . $id . '/' . parent::getSessionId();
+		return parent::deleteJson( $url );
 	}
 
 	public final function showSearchMoneyflow() {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/showSearchMoneyflowForm/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/showSearchMoneyflowForm/' . parent::getSessionId();
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$showSearchMoneyflowResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
 			if (is_array( $showSearchMoneyflowResponse->getContractpartnerTransport() )) {
@@ -241,13 +238,13 @@ class MoneyflowControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function searchMoneyflows(array $params) {
-		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/searchMoneyflows/' . self::$callServer->getSessionId();
+		$url = URLPREFIX . SERVERPREFIX . 'moneyflow/searchMoneyflows/' . parent::getSessionId();
 
 		$searchParamsTransport = parent::map( $params, ClientArrayMapperEnum::MONEYFLOWSEARCHPARAMS_TRANSPORT );
 
 		$request = new searchMoneyflowsRequest();
 		$request->setMoneyflowSearchParamsTransport( $searchParamsTransport );
-		$response = self::$callServer->putJson( $url, parent::json_encode_response( $request ) );
+		$response = parent::putJson( $url, parent::json_encode_response( $request ) );
 
 		if (is_array( $response )) {
 			$searchMoneyflows = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );

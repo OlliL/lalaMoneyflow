@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreSession.php,v 1.14 2014/02/23 16:53:20 olivleh1 Exp $
+// $Id: coreSession.php,v 1.15 2014/02/27 19:31:02 olivleh1 Exp $
 //
 use rest\client\util\CallServerUtil;
 require_once 'core/core.php';
@@ -60,7 +60,6 @@ class coreSession extends core {
 	public final function start() {
 		if (! headers_sent()) {
 			session_start();
-			CallServerUtil::getInstance()->setSessionId( $this->getAttribute( 'server_id' ) );
 			return true;
 		}
 		return false;

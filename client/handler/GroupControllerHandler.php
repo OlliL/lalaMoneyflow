@@ -24,36 +24,33 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: GroupControllerHandler.php,v 1.1 2014/02/22 22:10:43 olivleh1 Exp $
+// $Id: GroupControllerHandler.php,v 1.2 2014/02/27 19:31:01 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
-use rest\client\util\CallServerUtil;
-use rest\base\AbstractJsonSender;
 use rest\client\mapper\ClientArrayMapperEnum;
 use rest\base\JsonAutoMapper;
 use rest\api\model\group\updateGroupRequest;
 use rest\api\model\group\createGroupRequest;
 
-class GroupControllerHandler extends AbstractJsonSender {
+class GroupControllerHandler extends AbstractHandler {
 	private static $instance;
-	private static $callServer;
 
 	protected function __construct() {
+		parent::__construct();
 		parent::addMapper( 'rest\client\mapper\ArrayToGroupTransportMapper', ClientArrayMapperEnum::GROUP_TRANSPORT );
 	}
 
 	public static function getInstance() {
 		if (! isset( self::$instance )) {
 			self::$instance = new GroupControllerHandler();
-			self::$callServer = CallServerUtil::getInstance();
 		}
 		return self::$instance;
 	}
 
 	public final function showGroupList($restriction) {
-		$url = URLPREFIX . SERVERPREFIX . 'group/showGroupList/' . utf8_encode($restriction) . '/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'group/showGroupList/' . utf8_encode($restriction) . '/' . parent::getSessionId();
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$listGroups = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\group' );
 			if (is_array( $listGroups->getGroupTransport() )) {
@@ -68,8 +65,8 @@ class GroupControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function showEditGroup($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'group/showEditGroup/' . $id . '/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'group/showEditGroup/' . $id . '/' . parent::getSessionId();
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$showEditGroupResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\group' );
 			$result = parent::map( $showEditGroupResponse->getGroupTransport() );
@@ -78,8 +75,8 @@ class GroupControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function showDeleteGroup($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'group/showDeleteGroup/' . $id . '/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'group/showDeleteGroup/' . $id . '/' . parent::getSessionId();
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$showDeleteGroupResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\group' );
 			$result = parent::map( $showDeleteGroupResponse->getGroupTransport() );
@@ -88,26 +85,26 @@ class GroupControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function createGroup(array $group) {
-		$url = URLPREFIX . SERVERPREFIX . 'group/createGroup/' . self::$callServer->getSessionId();
+		$url = URLPREFIX . SERVERPREFIX . 'group/createGroup/' . parent::getSessionId();
 		$groupTransport = parent::map( $group, ClientArrayMapperEnum::GROUP_TRANSPORT );
 
 		$request = new createGroupRequest();
 		$request->setGroupTransport( $groupTransport );
-		return self::$callServer->postJson( $url, parent::json_encode_response( $request ) );
+		return parent::postJson( $url, parent::json_encode_response( $request ) );
 	}
 
 	public final function updateGroup(array $group) {
-		$url = URLPREFIX . SERVERPREFIX . 'group/updateGroup/' . self::$callServer->getSessionId();
+		$url = URLPREFIX . SERVERPREFIX . 'group/updateGroup/' . parent::getSessionId();
 		$groupTransport = parent::map( $group, ClientArrayMapperEnum::GROUP_TRANSPORT );
 
 		$request = new updateGroupRequest();
 		$request->setGroupTransport( $groupTransport );
-		return self::$callServer->putJson( $url, parent::json_encode_response( $request ) );
+		return parent::putJson( $url, parent::json_encode_response( $request ) );
 	}
 
 	public final function deleteGroup($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'group/deleteGroupById/' . $id . '/' . self::$callServer->getSessionId();
-		return self::$callServer->deleteJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'group/deleteGroupById/' . $id . '/' . parent::getSessionId();
+		return parent::deleteJson( $url );
 	}
 }
 

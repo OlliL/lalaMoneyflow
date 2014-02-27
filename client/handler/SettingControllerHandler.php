@@ -24,34 +24,31 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: SettingControllerHandler.php,v 1.1 2014/02/23 16:53:20 olivleh1 Exp $
+// $Id: SettingControllerHandler.php,v 1.2 2014/02/27 19:31:01 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
-use rest\client\util\CallServerUtil;
-use rest\base\AbstractJsonSender;
 use rest\base\JsonAutoMapper;
 use rest\api\model\setting\updateDefaultSettingsRequest;
 use rest\api\model\setting\updatePersonalSettingsRequest;
 
-class SettingControllerHandler extends AbstractJsonSender {
+class SettingControllerHandler extends AbstractHandler {
 	private static $instance;
-	private static $callServer;
 
 	protected function __construct() {
+		parent::__construct();
 	}
 
 	public static function getInstance() {
 		if (! isset( self::$instance )) {
 			self::$instance = new SettingControllerHandler();
-			self::$callServer = CallServerUtil::getInstance();
 		}
 		return self::$instance;
 	}
 
 	public final function showDefaultSettings() {
-		$url = URLPREFIX . SERVERPREFIX . 'setting/showDefaultSettings/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'setting/showDefaultSettings/' . parent::getSessionId();
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$showDefaultSettingsResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\setting' );
 			$result ['maxrows'] = $showDefaultSettingsResponse->getMaxRows();
@@ -64,7 +61,7 @@ class SettingControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function updateDefaultSettings(array $settings) {
-		$url = URLPREFIX . SERVERPREFIX . 'setting/updateDefaultSettings/' . self::$callServer->getSessionId();
+		$url = URLPREFIX . SERVERPREFIX . 'setting/updateDefaultSettings/' . parent::getSessionId();
 
 		$request = new updateDefaultSettingsRequest();
 		$request->setDateFormat( $settings ['dateformat'] );
@@ -72,12 +69,12 @@ class SettingControllerHandler extends AbstractJsonSender {
 		$request->setMaxRows( $settings ['maxrows'] );
 		$request->setNumFreeMoneyflows( $settings ['numflows'] );
 
-		return self::$callServer->putJson( $url, parent::json_encode_response( $request ) );
+		return parent::putJson( $url, parent::json_encode_response( $request ) );
 	}
 
 	public final function showPersonalSettings() {
-		$url = URLPREFIX . SERVERPREFIX . 'setting/showPersonalSettings/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'setting/showPersonalSettings/' . parent::getSessionId();
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$showPersonalSettingsResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\setting' );
 			$result ['maxrows'] = $showPersonalSettingsResponse->getMaxRows();
@@ -90,7 +87,7 @@ class SettingControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function updatePersonalSettings(array $settings) {
-		$url = URLPREFIX . SERVERPREFIX . 'setting/updatePersonalSettings/' . self::$callServer->getSessionId();
+		$url = URLPREFIX . SERVERPREFIX . 'setting/updatePersonalSettings/' . parent::getSessionId();
 
 		$request = new updatePersonalSettingsRequest();
 		$request->setDateFormat( $settings ['dateformat'] );
@@ -99,7 +96,7 @@ class SettingControllerHandler extends AbstractJsonSender {
 		$request->setNumFreeMoneyflows( $settings ['numflows'] );
 		$request->setPassword( $settings ['password'] );
 
-		return self::$callServer->putJson( $url, parent::json_encode_response( $request ) );
+		return parent::putJson( $url, parent::json_encode_response( $request ) );
 	}
 }
 

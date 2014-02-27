@@ -24,27 +24,24 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PostingAccountControllerHandler.php,v 1.1 2014/02/01 23:26:24 olivleh1 Exp $
+// $Id: PostingAccountControllerHandler.php,v 1.2 2014/02/27 19:31:01 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
-use rest\client\util\CallServerUtil;
-use rest\base\AbstractJsonSender;
 use rest\client\mapper\ClientArrayMapperEnum;
 use rest\base\JsonAutoMapper;
 
-class PostingAccountControllerHandler extends AbstractJsonSender {
+class PostingAccountControllerHandler extends AbstractHandler {
 	private static $instance;
-	private static $callServer;
 
 	protected function __construct() {
+		parent::__construct();
 		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 	}
 
 	public static function getInstance() {
 		if (! isset( self::$instance )) {
 			self::$instance = new PostingAccountControllerHandler();
-			self::$callServer = CallServerUtil::getInstance();
 		}
 		return self::$instance;
 	}

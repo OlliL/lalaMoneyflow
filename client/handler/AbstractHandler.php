@@ -25,9 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CallServerUtil.php,v 1.6 2014/02/23 01:31:50 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.1 2014/02/27 19:31:01 olivleh1 Exp $
 //
-namespace rest\client\util;
+namespace rest\client\handler;
+
+require_once 'core/coreSession.php';
 
 use \Httpful\Request;
 use \Httpful\Httpful;
@@ -38,15 +40,16 @@ use rest\client\mapper\ClientArrayMapperEnum;
 use rest\base\JsonAutoMapper;
 use rest\base\ErrorCode;
 
-class CallServerUtil extends AbstractJsonSender {
-	private $sessionId;
+class AbstractHandler extends AbstractJsonSender {
 	private static $instance;
+	private $coreSession;
 
 	protected function __construct() {
 		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
 		) ) );
+		$this->coreSession = new \coreSession();
 	}
 
 	public static function getInstance() {
@@ -56,11 +59,9 @@ class CallServerUtil extends AbstractJsonSender {
 		return self::$instance;
 	}
 
-	public function setSessionId($sessionId) {
-		$this->sessionId = $sessionId;
-	}
+
 	public function getSessionId() {
-		return $this->sessionId;
+		return $this->coreSession->getAttribute(server_id);
 	}
 
 	public final function handle_result($result) {
@@ -79,7 +80,7 @@ class CallServerUtil extends AbstractJsonSender {
 				add_error( ErrorCode::ATTENTION );
 			}
 			add_error( $result ['error'] ['code'] );
-			if($result['error']['code'] == ErrorCode::LOGGED_OUT) {
+			if ($result ['error'] ['code'] == ErrorCode::LOGGED_OUT) {
 				// FIXME: omg what a hack
 				require_once 'module/moduleUsers.php';
 				$moduleUsers = new \moduleUsers();
@@ -92,7 +93,7 @@ class CallServerUtil extends AbstractJsonSender {
 	}
 
 	public final function getJson($url) {
-// 		$response = Request::get( $url )->withoutStrictSsl()->addOnCurlOption( CURLOPT_ENCODING, 'compress, deflate, gzip' )->send();
+		// $response = Request::get( $url )->withoutStrictSsl()->addOnCurlOption( CURLOPT_ENCODING, 'compress, deflate, gzip' )->send();
 		$response = Request::get( $url )->withoutStrictSsl()->send();
 		if ($response->code == 204) {
 			return false;

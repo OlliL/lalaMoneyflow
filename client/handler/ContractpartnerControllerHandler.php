@@ -24,35 +24,32 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerControllerHandler.php,v 1.4 2014/02/15 19:20:48 olivleh1 Exp $
+// $Id: ContractpartnerControllerHandler.php,v 1.5 2014/02/27 19:31:01 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
-use rest\client\util\CallServerUtil;
-use rest\base\AbstractJsonSender;
 use rest\client\mapper\ClientArrayMapperEnum;
 use rest\base\JsonAutoMapper;
 use rest\api\model\contractpartner\updateContractpartnerRequest;
 use rest\api\model\contractpartner\createContractpartnerRequest;
 
-class ContractpartnerControllerHandler extends AbstractJsonSender {
+class ContractpartnerControllerHandler extends AbstractHandler {
 	private static $instance;
-	private static $callServer;
 
 	protected function __construct() {
+		parent::__construct();
 		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerTransportMapper', ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
 	}
 
 	public static function getInstance() {
 		if (! isset( self::$instance )) {
 			self::$instance = new ContractpartnerControllerHandler();
-			self::$callServer = CallServerUtil::getInstance();
 		}
 		return self::$instance;
 	}
 	public final function showContractpartnerList($restriction) {
-		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/showContractpartnerList/' . utf8_encode($restriction) . '/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/showContractpartnerList/' . utf8_encode($restriction) . '/' . parent::getSessionId();
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$listContractpartner = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\contractpartner' );
 			if (is_array( $listContractpartner->getContractpartnerTransport() )) {
@@ -67,8 +64,8 @@ class ContractpartnerControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function showEditContractpartner($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/showEditContractpartner/' . $id . '/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/showEditContractpartner/' . $id . '/' . parent::getSessionId();
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$showEditContractpartner = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\contractpartner' );
 			$result = parent::map( $showEditContractpartner->getContractpartnerTransport() );
@@ -77,8 +74,8 @@ class ContractpartnerControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function showDeleteContractpartner($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/showDeleteContractpartner/' . $id . '/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/showDeleteContractpartner/' . $id . '/' . parent::getSessionId();
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$showDeleteContractpartner = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\contractpartner' );
 			$result = parent::map( $showDeleteContractpartner->getContractpartnerTransport() );
@@ -87,26 +84,26 @@ class ContractpartnerControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function createContractpartner(array $contractpartner) {
-		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/createContractpartner/' . self::$callServer->getSessionId();
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/createContractpartner/' . parent::getSessionId();
 		$contractpartnerTransport = parent::map( $contractpartner, ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
 
 		$request = new createContractpartnerRequest();
 		$request->setContractpartnerTransport( $contractpartnerTransport );
-		return self::$callServer->postJson( $url, parent::json_encode_response( $request ) );
+		return parent::postJson( $url, parent::json_encode_response( $request ) );
 	}
 
 	public final function updateContractpartner(array $contractpartner) {
-		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/updateContractpartner/' . self::$callServer->getSessionId();
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/updateContractpartner/' . parent::getSessionId();
 		$contractpartnerTransport = parent::map( $contractpartner, ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
 
 		$request = new updateContractpartnerRequest();
 		$request->setContractpartnerTransport( $contractpartnerTransport );
-		return self::$callServer->putJson( $url, parent::json_encode_response( $request ) );
+		return parent::putJson( $url, parent::json_encode_response( $request ) );
 	}
 
 	public final function deleteContractpartner($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/deleteContractpartnerById/' . $id . '/' . self::$callServer->getSessionId();
-		return self::$callServer->deleteJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'contractpartner/deleteContractpartnerById/' . $id . '/' . parent::getSessionId();
+		return parent::deleteJson( $url );
 	}
 }
 

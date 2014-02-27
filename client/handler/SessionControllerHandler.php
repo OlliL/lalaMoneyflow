@@ -24,34 +24,31 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: SessionControllerHandler.php,v 1.5 2014/02/23 16:53:20 olivleh1 Exp $
+// $Id: SessionControllerHandler.php,v 1.6 2014/02/27 19:31:01 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
-use rest\client\util\CallServerUtil;
-use rest\base\AbstractJsonSender;
 use rest\client\mapper\ClientArrayMapperEnum;
 use rest\base\JsonAutoMapper;
 
-class SessionControllerHandler extends AbstractJsonSender {
+class SessionControllerHandler extends AbstractHandler {
 	private static $instance;
-	private static $callServer;
 
 	protected function __construct() {
+		parent::__construct();
 		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 	}
 
 	public static function getInstance() {
 		if (! isset( self::$instance )) {
 			self::$instance = new SessionControllerHandler();
-			self::$callServer = CallServerUtil::getInstance();
 		}
 		return self::$instance;
 	}
 
 	public final function doLogon($user, $password) {
 		$url = URLPREFIX . SERVERPREFIX . 'session/logon/' . $user . '/' . $password;
-		$response = self::$callServer->getJson( $url );
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$doLogonResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\session' );
 			$result = array (

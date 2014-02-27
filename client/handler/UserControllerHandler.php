@@ -24,22 +24,20 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: UserControllerHandler.php,v 1.5 2014/02/25 21:12:36 olivleh1 Exp $
+// $Id: UserControllerHandler.php,v 1.6 2014/02/27 19:31:01 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
-use rest\client\util\CallServerUtil;
-use rest\base\AbstractJsonSender;
 use rest\client\mapper\ClientArrayMapperEnum;
 use rest\base\JsonAutoMapper;
 use rest\api\model\user\createUserRequest;
 use rest\api\model\user\updateUserRequest;
 
-class UserControllerHandler extends AbstractJsonSender {
+class UserControllerHandler extends AbstractHandler {
 	private static $instance;
-	private static $callServer;
 
 	protected function __construct() {
+		parent::__construct();
 		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToUserTransportMapper', ClientArrayMapperEnum::USER_TRANSPORT );
 		parent::addMapper( 'rest\client\mapper\ArrayToGroupTransportMapper', ClientArrayMapperEnum::GROUP_TRANSPORT );
@@ -49,14 +47,13 @@ class UserControllerHandler extends AbstractJsonSender {
 	public static function getInstance() {
 		if (! isset( self::$instance )) {
 			self::$instance = new UserControllerHandler();
-			self::$callServer = CallServerUtil::getInstance();
 		}
 		return self::$instance;
 	}
 
 	public final function showUserList($restriction) {
-		$url = URLPREFIX . SERVERPREFIX . 'user/showUserList/' . utf8_encode( $restriction ) . '/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'user/showUserList/' . utf8_encode( $restriction ) . '/' . parent::getSessionId();
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$listUsers = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\user' );
 			if (is_array( $listUsers->getUserTransport() )) {
@@ -81,8 +78,8 @@ class UserControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function showCreateUser($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'user/showCreateUser/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'user/showCreateUser/' . parent::getSessionId();
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$showCreateUserResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\user' );
 			if (is_array( $showCreateUserResponse->getGroupTransport() )) {
@@ -95,8 +92,8 @@ class UserControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function showEditUser($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'user/showEditUser/' . $id . '/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'user/showEditUser/' . $id . '/' . parent::getSessionId();
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$showEditUserResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\user' );
 			$result ['user'] = parent::map( $showEditUserResponse->getUserTransport() );
@@ -115,8 +112,8 @@ class UserControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function showDeleteUser($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'user/showDeleteUser/' . $id . '/' . self::$callServer->getSessionId();
-		$response = self::$callServer->getJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'user/showDeleteUser/' . $id . '/' . parent::getSessionId();
+		$response = parent::getJson( $url );
 		if (is_array( $response )) {
 			$showDeleteUserResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\user' );
 			$result = parent::map( $showDeleteUserResponse->getUserTransport() );
@@ -125,14 +122,14 @@ class UserControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function createUser(array $user, array $access_relation) {
-		$url = URLPREFIX . SERVERPREFIX . 'user/createUser/' . self::$callServer->getSessionId();
+		$url = URLPREFIX . SERVERPREFIX . 'user/createUser/' . parent::getSessionId();
 		$userTransport = parent::map( $user, ClientArrayMapperEnum::USER_TRANSPORT );
 		$accessRelationTransport = parent::map( $access_relation, ClientArrayMapperEnum::ACCESS_RELATION_TRANSPORT );
 
 		$request = new createUserRequest();
 		$request->setUserTransport( $userTransport );
 		$request->setAccessRelationTransport( $accessRelationTransport );
-		$response = self::$callServer->postJson( $url, parent::json_encode_response( $request ) );
+		$response = parent::postJson( $url, parent::json_encode_response( $request ) );
 
 		if ($response === true) {
 			$result = true;
@@ -154,14 +151,14 @@ class UserControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function updateUser(array $user, array $access_relation) {
-		$url = URLPREFIX . SERVERPREFIX . 'user/updateUser/' . self::$callServer->getSessionId();
+		$url = URLPREFIX . SERVERPREFIX . 'user/updateUser/' . parent::getSessionId();
 		$userTransport = parent::map( $user, ClientArrayMapperEnum::USER_TRANSPORT );
 		$accessRelationTransport = parent::map( $access_relation, ClientArrayMapperEnum::ACCESS_RELATION_TRANSPORT );
 
 		$request = new updateUserRequest();
 		$request->setUserTransport( $userTransport );
 		$request->setAccessRelationTransport( $accessRelationTransport );
-		$response = self::$callServer->putJson( $url, parent::json_encode_response( $request ) );
+		$response = parent::putJson( $url, parent::json_encode_response( $request ) );
 		if ($response === true) {
 			$result = true;
 		} else if (is_array( $response )) {
@@ -187,8 +184,8 @@ class UserControllerHandler extends AbstractJsonSender {
 	}
 
 	public final function deleteUser($id) {
-		$url = URLPREFIX . SERVERPREFIX . 'user/deleteUserById/' . $id . '/' . self::$callServer->getSessionId();
-		return self::$callServer->deleteJson( $url );
+		$url = URLPREFIX . SERVERPREFIX . 'user/deleteUserById/' . $id . '/' . parent::getSessionId();
+		return parent::deleteJson( $url );
 	}
 }
 
