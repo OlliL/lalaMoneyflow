@@ -24,19 +24,12 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.27 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: include.php,v 1.28 2014/02/28 22:52:00 olivleh1 Exp $
 //
 
 // ########
 // user defined variables
 // ########
-
-// MySQL config - syntax: mysql://user/password@server/database
-$dsn = "mysql://moneyflow:moneyflow@db/moneyflow";
-const DATASOURCE = 'mysql:host=db;dbname=moneyflow';
-const DB_USER = 'moneyflow';
-const DB_PASS = 'moneyflow';
-const APPID = 1;
 
 // defines which language is used to display the login screen
 const LOGIN_FORM_LANGUAGE = 1;
@@ -47,6 +40,7 @@ define( 'ENABLE_JPGRAPH', true );
 define( 'ENCODING', 'ISO-8859-15' );
 const ROOTDIR = '/mnt/files/www/sites/olli.homeip.net/htdocs/moneyflow/';
 const HTTPFULSUBDIR = 'contrib/httpful/src/';
+
 // How to Reach the REST-Server
 const URLPREFIX = 'http://127.0.0.1/moneyflow/';
 const SERVERPREFIX = 'server/';
