@@ -8,10 +8,11 @@ Requirements:
 	- Extension: ? I guess I forgot some.....
 - MySQL 5.x
 - Caching:
-  - Yac (https://github.com/laruence/yac/)
-    OR
-  - memcached + memcached extension with igbinary support
-- igbinary
+	- Yac (https://github.com/laruence/yac/)
+	- PHP Extension msgpack
+	  OR
+	- memcached Server + PHP Extension memcached (with igbinary support)
+	- igbinary
 - Smarty (http://www.smarty.net/)
 - JpGraph (http://jpgraph.net/)
 - PECL spl_types
