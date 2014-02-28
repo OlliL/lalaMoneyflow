@@ -24,7 +24,7 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 #
-# $Id: moduleLanguages.php,v 1.12 2014/02/23 16:53:20 olivleh1 Exp $
+# $Id: moduleLanguages.php,v 1.13 2014/02/28 17:04:59 olivleh1 Exp $
 #
 
 require_once 'module/module.php';
@@ -38,7 +38,7 @@ class moduleLanguages extends module {
 	public final function moduleLanguages() {
 		parent::__construct();
 		$this->coreLanguages  = new coreLanguages();
-		$this->coreText  = new coreText();
+		$this->coreText  = new coreText(parent::getGuiLanguage());
 	}
 
 	public final function display_list_languages( $letter ) {

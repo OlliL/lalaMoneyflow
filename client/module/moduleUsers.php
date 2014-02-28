@@ -27,7 +27,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.44 2014/02/27 21:37:48 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.45 2014/02/28 17:04:59 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -56,7 +56,6 @@ class moduleUsers extends module {
 	}
 
 	public final function display_login_user($realaction, $name, $password, $stay_logged_in, $request_uri) {
-		global $GUI_LANGUAGE;
 		switch ($realaction) {
 			case 'login' :
 				if ($stay_logged_in == 'on') {
@@ -92,7 +91,7 @@ class moduleUsers extends module {
 			return;
 		} else {
 			define( USERID, 0 );
-			$GUI_LANGUAGE = LOGIN_FORM_LANGUAGE;
+			parent::setGuiLanguage(LOGIN_FORM_LANGUAGE);
 			$this->template->assign( 'NAME', $name );
 			$this->template->assign( 'STAY_LOGGED_IN', $stay_logged_in );
 			$this->template->assign( 'ERRORS', $this->get_errors() );

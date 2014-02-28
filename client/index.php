@@ -25,7 +25,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.71 2014/02/25 21:12:36 olivleh1 Exp $
+// $Id: index.php,v 1.72 2014/02/28 17:04:59 olivleh1 Exp $
 //
 require_once 'include.php';
 require_once 'functions.php';
@@ -48,10 +48,10 @@ function my_number_format($number) {
 		return number_format( $number, 2 );
 }
 
+$coreSession = new coreSession();
 $moduleEvents = new moduleEvents();
 $moduleUsers = new moduleUsers();
 $moduleSettings = new moduleSettings();
-$coreSession = new coreSession();
 
 $request_uri = $_SERVER ['REQUEST_URI'];
 
@@ -69,7 +69,6 @@ if ($is_logged_in == 2) {
 
 	/* user is new and must change his password */
 
-	$GUI_LANGUAGE = $coreSession->getAttribute( 'gui_language' );
 	if (empty( $_POST ['realaction'] ) || $_POST ['realaction'] != 'save') {
 		add_error( ErrorCode::PASSWORD_MUST_BE_CHANGED );
 	}
@@ -99,7 +98,6 @@ if ($money_debug === true)
 if ($is_logged_in == 0) {
 
 	define( GUI_DATE_FORMAT, $coreSession->getAttribute( 'date_format' ) );
-	$GUI_LANGUAGE = $coreSession->getAttribute( 'gui_language' );
 
 	$display = $moduleEvents->check_events();
 

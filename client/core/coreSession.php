@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreSession.php,v 1.15 2014/02/27 19:31:02 olivleh1 Exp $
+// $Id: coreSession.php,v 1.16 2014/02/28 17:04:59 olivleh1 Exp $
 //
 use rest\client\util\CallServerUtil;
 require_once 'core/core.php';
@@ -32,6 +32,7 @@ require_once 'core/core.php';
 class coreSession extends core {
 
 	public final function coreSession() {
+		$this->start();
 	}
 
 	public final function setAttribute($attribute, $value) {

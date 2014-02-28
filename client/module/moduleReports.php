@@ -27,7 +27,7 @@ use Zend\Validator\File\Count;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.81 2014/02/23 16:53:20 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.82 2014/02/28 17:04:59 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -42,8 +42,7 @@ class moduleReports extends module {
 
 	public final function __construct() {
 		parent::__construct();
-
-		$this->coreText = new coreText();
+		$this->coreText = new coreText(parent::getGuiLanguage());
 	}
 
 	public final function display_list_reports($month, $year, $sortby, $order) {
@@ -235,16 +234,15 @@ class moduleReports extends module {
 	}
 
 	public final function plot_graph($all_capitalsources_ids, $startmonth, $startyear, $endmonth, $endyear) {
-		$coreText = new coreText();
 		$startdate = new DateTime( $startyear . "-" . $startmonth . "-01" );
 		$enddate = new DateTime( $endyear . "-" . $endmonth . "-01" );
 		$showTrendsGraph = ReportControllerHandler::getInstance()->showTrendsGraph( $all_capitalsources_ids, $startdate, $enddate );
 
-		$graph_comment = $coreText->get_graph( 168 );
-		$graph_from = $coreText->get_graph( 169 );
-		$graph_until = $coreText->get_graph( 170 );
-		$graph_xaxis = $coreText->get_graph( 171 );
-		$graph_yaxis = $coreText->get_graph( 172 );
+		$graph_comment = $this->coreText->get_graph( 168 );
+		$graph_from = $this->coreText->get_graph( 169 );
+		$graph_until = $this->coreText->get_graph( 170 );
+		$graph_xaxis = $this->coreText->get_graph( 171 );
+		$graph_yaxis = $this->coreText->get_graph( 172 );
 
 		$i = 0;
 		if (is_array( $showTrendsGraph ['settled'] )) {

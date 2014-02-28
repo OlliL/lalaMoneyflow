@@ -27,7 +27,7 @@ use rest\client\handler\UserControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSettings.php,v 1.27 2014/02/23 17:53:56 olivleh1 Exp $
+// $Id: moduleSettings.php,v 1.28 2014/02/28 17:04:59 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreLanguages.php';
@@ -42,7 +42,6 @@ class moduleSettings extends module {
 	}
 
 	public final function display_personal_settings($realaction, $all_data) {
-		global $GUI_LANGUAGE;
 		switch ($realaction) {
 			case 'save' :
 				$data_is_valid = true;
@@ -60,8 +59,7 @@ class moduleSettings extends module {
 					SettingControllerHandler::getInstance()->updatePersonalSettings( $all_data );
 					$this->coreSession->setAttribute( 'date_format', $all_data ['dateformat'] );
 					$this->coreSession->setAttribute( 'gui_language', $all_data ['language'] );
-					define( GUI_DATE_FORMAT, $dateformat );
-					$GUI_LANGUAGE = $all_data ['language'];
+					parent::setGuiLanguage( $all_data ['language'] );
 					$this->coreSession->removeAttribute( 'att_new' );
 				}
 			default :

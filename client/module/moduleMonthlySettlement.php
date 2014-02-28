@@ -27,7 +27,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.53 2014/02/23 16:53:20 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.54 2014/02/28 17:04:59 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -37,7 +37,7 @@ class moduleMonthlySettlement extends module {
 
 	public final function moduleMonthlySettlement() {
 		parent::__construct();
-		$this->coreText = new coreText();
+		$this->coreText = new coreText(parent::getGuiLanguage());
 	}
 
 	public final function display_list_monthlysettlements($month, $year) {

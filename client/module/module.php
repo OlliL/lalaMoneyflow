@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.71 2014/02/23 17:53:56 olivleh1 Exp $
+// $Id: module.php,v 1.72 2014/02/28 17:04:59 olivleh1 Exp $
 //
 require_once 'Smarty.class.php';
 require_once 'core/coreText.php';
@@ -32,8 +32,13 @@ require_once 'core/coreSession.php';
 
 class module {
 	protected $template;
+	private $coreSession;
+	private $guiLanguage;
 
 	public function __construct() {
+		$this->coreSession = new coreSession();
+		$this->guiLanguage = $this->coreSession->getAttribute( 'gui_language' );
+
 		$this->template = new \Smarty();
 		$this->template->registerPlugin( 'modifier', 'number_format', 'my_number_format' );
 		$this->template->assign( 'ENV_INDEX_PHP', 'index.php' );
@@ -60,6 +65,14 @@ class module {
 		}
 	}
 
+	protected final function setGuiLanguage($guiLanguage) {
+		$this->guiLanguage = $guiLanguage;
+	}
+
+	protected final function getGuiLanguage() {
+		return $this->guiLanguage;
+	}
+
 	protected final function get_errors() {
 		global $ERRORS;
 		if (is_array( $ERRORS )) {
@@ -78,8 +91,7 @@ class module {
 	}
 
 	private final function loadLanguageFile() {
-		global $GUI_LANGUAGE;
-		$this->template->configLoad( 'rest/client/locale/' . $GUI_LANGUAGE . '.conf' );
+		$this->template->configLoad( 'rest/client/locale/' . $this->guiLanguage . '.conf' );
 	}
 
 	protected final function fetch_template($name, $cacheid = false) {
@@ -95,7 +107,6 @@ class module {
 	}
 
 	protected final function parse_header($nonavi = 0) {
-		global $GUI_LANGUAGE;
 		$this->template->assign( 'REPORTS_YEAR', date( 'Y' ) );
 		$this->template->assign( 'REPORTS_MONTH', date( 'm' ) );
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
@@ -110,10 +121,10 @@ class module {
 		}
 		$cache_id = $user ['userid'];
 		$this->template->setCaching( true );
-		$header = $this->fetch_template( 'display_header.tpl', 'header_' . $GUI_LANGUAGE . '_' . $admin . '_' . $nonavi . '_' . $cache_id );
+		$header = $this->fetch_template( 'display_header.tpl', 'header_' . $this->guiLanguage . '_' . $admin . '_' . $nonavi . '_' . $cache_id );
 		$this->template->assign( 'HEADER', $header );
 
-		$footer = $this->fetch_template( 'display_footer.tpl', 'footer_' . $GUI_LANGUAGE . '_' . $cache_id );
+		$footer = $this->fetch_template( 'display_footer.tpl', 'footer_' . $this->guiLanguage . '_' . $cache_id );
 		$this->template->assign( 'FOOTER', $footer );
 		$this->template->setCaching( false );
 	}

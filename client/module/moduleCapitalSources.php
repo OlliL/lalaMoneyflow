@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.46 2014/02/22 22:10:41 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.47 2014/02/28 17:04:59 olivleh1 Exp $
 //
 
 use rest\base\ErrorCode;
@@ -36,7 +36,7 @@ class moduleCapitalSources extends module {
 
 	public final function __construct() {
 		parent::__construct();
-		$this->coreText = new coreText();
+		$this->coreText = new coreText(parent::getGuiLanguage());
 	}
 
 	public final function display_list_capitalsources($letter) {
