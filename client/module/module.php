@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.72 2014/02/28 17:04:59 olivleh1 Exp $
+// $Id: module.php,v 1.73 2014/02/28 19:39:19 olivleh1 Exp $
 //
 require_once 'Smarty.class.php';
 require_once 'core/coreText.php';
@@ -76,7 +76,7 @@ class module {
 	protected final function get_errors() {
 		global $ERRORS;
 		if (is_array( $ERRORS )) {
-			$coreText = new coreText();
+			$coreText = new coreText($this->guiLanguage);
 			foreach ( $ERRORS as $error ) {
 				$error_text = $coreText->get_text( $error ['id'] );
 				if (is_array( $error ['arguments'] )) {
