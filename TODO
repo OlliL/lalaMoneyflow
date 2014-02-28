@@ -1,4 +1,3 @@
-- rename User(Service|Dao|Controller) to Access* -> Refactor AccessRelation/AccessFlattened/Access
 - all BOs should get an Accessor object
 
 further thoughts:
