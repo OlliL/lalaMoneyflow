@@ -1,4 +1,3 @@
-- do not check before deleting contractpartner or capitalsource or user if this is OK - let the DB raise an constraint violation and just catch this and tell the user.
 - rename User(Service|Dao|Controller) to Access* -> Refactor AccessRelation/AccessFlattened/Access
 - all BOs should get an Accessor object
 
