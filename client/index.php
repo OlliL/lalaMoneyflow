@@ -25,7 +25,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.72 2014/02/28 17:04:59 olivleh1 Exp $
+// $Id: index.php,v 1.73 2014/02/28 21:56:07 olivleh1 Exp $
 //
 require_once 'include.php';
 require_once 'functions.php';
@@ -34,11 +34,11 @@ require_once 'module/moduleEvents.php';
 require_once 'module/moduleSettings.php';
 require_once 'module/moduleUsers.php';
 
-// f( $money_debug === true ) {
-require_once 'util/utilTimer.php';
-$timer = new utilTimer();
-$timer->mStart();
-//
+if ($money_debug === true) {
+	require_once 'util/utilTimer.php';
+	$timer = new utilTimer();
+	$timer->mStart();
+}
 
 $action = $_POST ['action'] ? $_POST ['action'] : $_GET ['action'];
 
@@ -412,11 +412,8 @@ if ($is_logged_in == 0) {
 	}
 }
 echo $display;
-// f( $money_debug === true ) {
-// echo "SQL Queries: ";
-// $timer->mPrintTime( $sql_querytime );
-// echo "<br >";
-echo "overall: ";
-$timer->mPrintTime();
-//
+if ($money_debug === true) {
+	echo "overall: ";
+	$timer->mPrintTime();
+}
 ?>

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.25 2014/02/23 12:14:34 olivleh1 Exp $
+// $Id: include.php,v 1.26 2014/02/28 21:56:07 olivleh1 Exp $
 //
 
 // ########
@@ -47,7 +47,7 @@ define( 'ENABLE_JPGRAPH', true );
 define( 'ENCODING', 'ISO-8859-15' );
 const ROOTDIR = '/mnt/files/www/sites/olli.homeip.net/htdocs/moneyflow/';
 const HTTPFULSUBDIR = 'contrib/httpful/src/';
-const SLIMSUBDIR = 'contrib/Slim/';
+// How to Reach the REST-Server
 const URLPREFIX = 'http://127.0.0.1/moneyflow/';
 const SERVERPREFIX = 'rest/server/';
 
@@ -65,19 +65,13 @@ $money_debug = false;
 // default year for "valid til" columns when creating a new dataset
 define( 'MAX_YEAR', '2999-12-31' );
 
-#set_include_path( get_include_path() );
 
 function framework_autoload($className) {
 	$fname = str_replace( '\\', DIRECTORY_SEPARATOR, $className ) . '.php';
-	// if (@stream_resolve_include_path( $fname ))
-	// require_once ($fname);
-	// require_once(ROOTDIR . $fname);
 	if (is_file( ROOTDIR . $fname )) {
 		require (ROOTDIR . $fname);
 	} else if (is_file( ROOTDIR . HTTPFULSUBDIR . $fname )) {
 		require (ROOTDIR . HTTPFULSUBDIR . $fname);
-	} else if (is_file( ROOTDIR . SLIMSUBDIR . $fname )) {
-		require (ROOTDIR . SLIMSUBDIR . $fname);
 	}
 }
 spl_autoload_register( 'framework_autoload' );
