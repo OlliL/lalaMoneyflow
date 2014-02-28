@@ -24,21 +24,21 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerControllerHandler.php,v 1.6 2014/02/27 20:02:14 olivleh1 Exp $
+// $Id: ContractpartnerControllerHandler.php,v 1.7 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\client\handler;
+namespace client\handler;
 
-use rest\client\mapper\ClientArrayMapperEnum;
-use rest\base\JsonAutoMapper;
-use rest\api\model\contractpartner\updateContractpartnerRequest;
-use rest\api\model\contractpartner\createContractpartnerRequest;
+use client\mapper\ClientArrayMapperEnum;
+use base\JsonAutoMapper;
+use api\model\contractpartner\updateContractpartnerRequest;
+use api\model\contractpartner\createContractpartnerRequest;
 
 class ContractpartnerControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerTransportMapper', ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToContractpartnerTransportMapper', ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -57,7 +57,7 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 				utf8_encode( $restriction )
 		) );
 		if (is_array( $response )) {
-			$listContractpartner = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\contractpartner' );
+			$listContractpartner = JsonAutoMapper::mapAToB( $response, '\\api\\model\\contractpartner' );
 			if (is_array( $listContractpartner->getContractpartnerTransport() )) {
 				$result ['contractpartner'] = parent::mapArray( $listContractpartner->getContractpartnerTransport() );
 			} else {
@@ -74,7 +74,7 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 				$id
 		) );
 		if (is_array( $response )) {
-			$showEditContractpartner = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\contractpartner' );
+			$showEditContractpartner = JsonAutoMapper::mapAToB( $response, '\\api\\model\\contractpartner' );
 			$result = parent::map( $showEditContractpartner->getContractpartnerTransport() );
 		}
 		return $result;
@@ -85,7 +85,7 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 				$id
 		) );
 		if (is_array( $response )) {
-			$showDeleteContractpartner = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\contractpartner' );
+			$showDeleteContractpartner = JsonAutoMapper::mapAToB( $response, '\\api\\model\\contractpartner' );
 			$result = parent::map( $showDeleteContractpartner->getContractpartnerTransport() );
 		}
 		return $result;

@@ -25,9 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ClientArrayMapperEnum.php,v 1.17 2014/02/24 21:06:24 olivleh1 Exp $
+// $Id: ClientArrayMapperEnum.php,v 1.18 2014/02/28 22:19:48 olivleh1 Exp $
 //
-namespace rest\client\mapper;
+namespace client\mapper;
 
 class ClientArrayMapperEnum {
 	const CAPITALSOURCE_TRANSPORT = 'ClientCapitalsourceTransport';

@@ -25,13 +25,13 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: JsonAutoMapper.php,v 1.6 2014/02/20 22:17:51 olivleh1 Exp $
+// $Id: JsonAutoMapper.php,v 1.7 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\base;
+namespace base;
 
 class JsonAutoMapper {
 
-	public static function mapAToB(array $a, $classPath = '\\rest\\model') {
+	public static function mapAToB(array $a, $classPath = '\\model') {
 		// the first element of the json is always the name of the model object
 		// by convention
 		foreach ( $a as $className => $json ) {
@@ -67,7 +67,7 @@ class JsonAutoMapper {
 						$setter
 				), 0 );
 				$newclass = new \ReflectionClass( $method->getClass()->name );
-				$b->$setter( self::map( $property, $newclass, '\\rest\\api\\model\\transport' ) );
+				$b->$setter( self::map( $property, $newclass, '\\api\\model\\transport' ) );
 			} else if ($property != NULL || $property === 0) {
 				$setter = 'set' . ucfirst( $key );
 
@@ -75,7 +75,7 @@ class JsonAutoMapper {
 				if ($key != ( string ) ( int ) $key && is_array( $property ) && is_array( reset( $property ) )) {
 					$b->$setter( self::mapAToB( array (
 							ucfirst( $key ) => $property
-					), '\\rest\\api\\model\\transport' ) );
+					), '\\api\\model\\transport' ) );
 				} else {
 					// regular array (list), or scalar value - just call the setter
 					$b->$setter( $property );

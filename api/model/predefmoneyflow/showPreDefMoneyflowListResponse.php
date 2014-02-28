@@ -25,9 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showPreDefMoneyflowListResponse.php,v 1.2 2014/01/26 12:24:48 olivleh1 Exp $
+// $Id: showPreDefMoneyflowListResponse.php,v 1.3 2014/02/28 22:19:46 olivleh1 Exp $
 //
-namespace rest\api\model\predefmoneyflow;
+namespace api\model\predefmoneyflow;
 
 class showPreDefMoneyflowListResponse {
 	public $preDefMoneyflowTransport;

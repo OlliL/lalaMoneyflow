@@ -24,11 +24,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.47 2014/02/28 17:04:59 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.48 2014/02/28 22:19:48 olivleh1 Exp $
 //
 
-use rest\base\ErrorCode;
-use rest\client\handler\CapitalsourceControllerHandler;
+use base\ErrorCode;
+use client\handler\CapitalsourceControllerHandler;
 require_once 'module/module.php';
 require_once 'core/coreText.php';
 

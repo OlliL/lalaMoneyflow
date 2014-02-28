@@ -24,24 +24,24 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: UserControllerHandler.php,v 1.7 2014/02/27 20:02:14 olivleh1 Exp $
+// $Id: UserControllerHandler.php,v 1.8 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\client\handler;
+namespace client\handler;
 
-use rest\client\mapper\ClientArrayMapperEnum;
-use rest\base\JsonAutoMapper;
-use rest\api\model\user\createUserRequest;
-use rest\api\model\user\updateUserRequest;
+use client\mapper\ClientArrayMapperEnum;
+use base\JsonAutoMapper;
+use api\model\user\createUserRequest;
+use api\model\user\updateUserRequest;
 
 class UserControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToUserTransportMapper', ClientArrayMapperEnum::USER_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToGroupTransportMapper', ClientArrayMapperEnum::GROUP_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToAccessRelationTransportMapper', ClientArrayMapperEnum::ACCESS_RELATION_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToUserTransportMapper', ClientArrayMapperEnum::USER_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToGroupTransportMapper', ClientArrayMapperEnum::GROUP_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToAccessRelationTransportMapper', ClientArrayMapperEnum::ACCESS_RELATION_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -60,7 +60,7 @@ class UserControllerHandler extends AbstractHandler {
 				utf8_encode( $restriction )
 		) );
 		if (is_array( $response )) {
-			$listUsers = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\user' );
+			$listUsers = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
 			if (is_array( $listUsers->getUserTransport() )) {
 				$result ['users'] = parent::mapArray( $listUsers->getUserTransport() );
 			} else {
@@ -85,7 +85,7 @@ class UserControllerHandler extends AbstractHandler {
 	public final function showCreateUser($id) {
 		$response = parent::getJson( 'showCreateUser' );
 		if (is_array( $response )) {
-			$showCreateUserResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\user' );
+			$showCreateUserResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
 			if (is_array( $showCreateUserResponse->getGroupTransport() )) {
 				$result ['groups'] = parent::mapArray( $showCreateUserResponse->getGroupTransport() );
 			} else {
@@ -100,7 +100,7 @@ class UserControllerHandler extends AbstractHandler {
 				$id
 		) );
 		if (is_array( $response )) {
-			$showEditUserResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\user' );
+			$showEditUserResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
 			$result ['user'] = parent::map( $showEditUserResponse->getUserTransport() );
 			if (is_array( $showEditUserResponse->getAccessRelationTransport() )) {
 				$result ['access_relations'] = parent::mapArray( $showEditUserResponse->getAccessRelationTransport() );
@@ -121,7 +121,7 @@ class UserControllerHandler extends AbstractHandler {
 				$id
 		) );
 		if (is_array( $response )) {
-			$showDeleteUserResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\user' );
+			$showDeleteUserResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
 			$result = parent::map( $showDeleteUserResponse->getUserTransport() );
 		}
 		return $result;
@@ -139,7 +139,7 @@ class UserControllerHandler extends AbstractHandler {
 		if ($response === true) {
 			$result = true;
 		} else if (is_array( $response )) {
-			$createUser = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\user' );
+			$createUser = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
 			if (is_array( $createUser->getGroupTransport() )) {
 				$result ['groups'] = parent::mapArray( $createUser->getGroupTransport() );
 			} else {
@@ -166,7 +166,7 @@ class UserControllerHandler extends AbstractHandler {
 		if ($response === true) {
 			$result = true;
 		} else if (is_array( $response )) {
-			$updateUser = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\user' );
+			$updateUser = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
 			if (is_array( $updateUser->getAccessRelationTransport() )) {
 				$result ['access_relations'] = parent::mapArray( $updateUser->getAccessRelationTransport() );
 			} else {

@@ -25,9 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowSearchParamsTransport.php,v 1.1 2014/02/14 22:02:51 olivleh1 Exp $
+// $Id: MoneyflowSearchParamsTransport.php,v 1.2 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\api\model\transport;
+namespace api\model\transport;
 
 class MoneyflowSearchParamsTransport {
 	public $startDate;

@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToCompareDataFormatTransportMapper.php,v 1.1 2014/01/26 14:23:45 olivleh1 Exp $
+// $Id: ArrayToCompareDataFormatTransportMapper.php,v 1.2 2014/02/28 22:19:48 olivleh1 Exp $
 //
-namespace rest\client\mapper;
+namespace client\mapper;
 
-use rest\api\model\transport\CompareDataFormatTransport;
+use api\model\transport\CompareDataFormatTransport;
 
 class ArrayToCompareDataFormatTransportMapper extends AbstractArrayMapper {
 

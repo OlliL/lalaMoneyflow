@@ -1,5 +1,5 @@
 <?php
-use rest\base\ErrorCode;
+use base\ErrorCode;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -25,7 +25,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.73 2014/02/28 21:56:07 olivleh1 Exp $
+// $Id: index.php,v 1.74 2014/02/28 22:19:47 olivleh1 Exp $
 //
 require_once 'include.php';
 require_once 'functions.php';

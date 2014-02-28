@@ -25,9 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerTransport.php,v 1.3 2014/02/20 22:17:51 olivleh1 Exp $
+// $Id: ContractpartnerTransport.php,v 1.4 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\api\model\transport;
+namespace api\model\transport;
 
 class ContractpartnerTransport {
 	public $id;

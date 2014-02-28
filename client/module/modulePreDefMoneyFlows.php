@@ -24,10 +24,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.52 2014/02/23 16:53:20 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.53 2014/02/28 22:19:48 olivleh1 Exp $
 //
-use rest\base\ErrorCode;
-use rest\client\handler\PreDefMoneyflowControllerHandler;
+use base\ErrorCode;
+use client\handler\PreDefMoneyflowControllerHandler;
 
 require_once 'module/module.php';
 

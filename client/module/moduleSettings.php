@@ -1,7 +1,7 @@
 <?php
-use rest\client\handler\SettingControllerHandler;
-use rest\base\ErrorCode;
-use rest\client\handler\UserControllerHandler;
+use client\handler\SettingControllerHandler;
+use base\ErrorCode;
+use client\handler\UserControllerHandler;
 //
 // Copyright (c) 2006-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -27,7 +27,7 @@ use rest\client\handler\UserControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSettings.php,v 1.28 2014/02/28 17:04:59 olivleh1 Exp $
+// $Id: moduleSettings.php,v 1.29 2014/02/28 22:19:48 olivleh1 Exp $
 //
 require_once 'module/module.php';
 require_once 'core/coreLanguages.php';

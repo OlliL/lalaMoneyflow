@@ -1,6 +1,6 @@
 <?php
-use rest\base\ErrorCode;
-use rest\client\handler\MoneyflowControllerHandler;
+use base\ErrorCode;
+use client\handler\MoneyflowControllerHandler;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -26,7 +26,7 @@ use rest\client\handler\MoneyflowControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.81 2014/02/23 16:53:20 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.82 2014/02/28 22:19:48 olivleh1 Exp $
 //
 require_once 'module/module.php';
 

@@ -25,9 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showSearchMoneyflowFormResponse.php,v 1.1 2014/02/14 22:02:51 olivleh1 Exp $
+// $Id: showSearchMoneyflowFormResponse.php,v 1.2 2014/02/28 22:19:46 olivleh1 Exp $
 //
-namespace rest\api\model\moneyflow;
+namespace api\model\moneyflow;
 
 class showSearchMoneyflowFormResponse {
 	public $contractpartnerTransport;

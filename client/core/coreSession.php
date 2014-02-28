@@ -24,9 +24,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreSession.php,v 1.16 2014/02/28 17:04:59 olivleh1 Exp $
+// $Id: coreSession.php,v 1.17 2014/02/28 22:19:47 olivleh1 Exp $
 //
-use rest\client\util\CallServerUtil;
+use client\util\CallServerUtil;
 require_once 'core/core.php';
 
 class coreSession extends core {

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.73 2014/02/28 19:39:19 olivleh1 Exp $
+// $Id: module.php,v 1.74 2014/02/28 22:19:48 olivleh1 Exp $
 //
 require_once 'Smarty.class.php';
 require_once 'core/coreText.php';
@@ -91,7 +91,7 @@ class module {
 	}
 
 	private final function loadLanguageFile() {
-		$this->template->configLoad( 'rest/client/locale/' . $this->guiLanguage . '.conf' );
+		$this->template->configLoad( 'locale/' . $this->guiLanguage . '.conf' );
 	}
 
 	protected final function fetch_template($name, $cacheid = false) {

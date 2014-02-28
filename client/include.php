@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.26 2014/02/28 21:56:07 olivleh1 Exp $
+// $Id: include.php,v 1.27 2014/02/28 22:19:47 olivleh1 Exp $
 //
 
 // ########
@@ -49,7 +49,7 @@ const ROOTDIR = '/mnt/files/www/sites/olli.homeip.net/htdocs/moneyflow/';
 const HTTPFULSUBDIR = 'contrib/httpful/src/';
 // How to Reach the REST-Server
 const URLPREFIX = 'http://127.0.0.1/moneyflow/';
-const SERVERPREFIX = 'rest/server/';
+const SERVERPREFIX = 'server/';
 
 // ########
 // more or less system defined stuff following

@@ -25,9 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractMapperSupport.php,v 1.6 2014/02/23 12:14:35 olivleh1 Exp $
+// $Id: AbstractMapperSupport.php,v 1.7 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\base;
+namespace base;
 
 abstract class AbstractMapperSupport {
 	private $mapper;

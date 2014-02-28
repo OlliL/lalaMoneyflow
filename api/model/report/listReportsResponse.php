@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: listReportsResponse.php,v 1.6 2014/02/04 20:43:58 olivleh1 Exp $
+// $Id: listReportsResponse.php,v 1.7 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\api\model\report;
+namespace api\model\report;
 
-use rest\api\model\transport\ReportTurnoverCapitalsourceTransport;
+use api\model\transport\ReportTurnoverCapitalsourceTransport;
 
 class listReportsResponse {
 	public $moneyflowTransport;

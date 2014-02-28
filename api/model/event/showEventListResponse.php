@@ -25,9 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showEventListResponse.php,v 1.1 2014/02/05 21:17:09 olivleh1 Exp $
+// $Id: showEventListResponse.php,v 1.2 2014/02/28 22:19:46 olivleh1 Exp $
 //
-namespace rest\api\model\event;
+namespace api\model\event;
 
 class showEventListResponse {
 	public $monthlySettlementMissing;

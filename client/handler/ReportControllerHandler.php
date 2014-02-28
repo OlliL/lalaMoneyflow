@@ -24,26 +24,26 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportControllerHandler.php,v 1.9 2014/02/27 20:02:14 olivleh1 Exp $
+// $Id: ReportControllerHandler.php,v 1.10 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\client\handler;
+namespace client\handler;
 
-use rest\client\mapper\ClientArrayMapperEnum;
-use rest\base\JsonAutoMapper;
-use rest\api\model\report\showTrendsGraphRequest;
-use rest\client\util\DateUtil;
+use client\mapper\ClientArrayMapperEnum;
+use base\JsonAutoMapper;
+use api\model\report\showTrendsGraphRequest;
+use client\util\DateUtil;
 
 class ReportControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToReportTurnoverCapitalsourceTransportMapper', ClientArrayMapperEnum::REPORTTURNOVERCAPITALSOURCE_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToTrendsCalculatedTransportMapper', ClientArrayMapperEnum::TRENDSCALCULATED_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToTrendsSettledTransportMapper', ClientArrayMapperEnum::TRENDSSETTLED_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToReportTurnoverCapitalsourceTransportMapper', ClientArrayMapperEnum::REPORTTURNOVERCAPITALSOURCE_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToTrendsCalculatedTransportMapper', ClientArrayMapperEnum::TRENDSCALCULATED_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToTrendsSettledTransportMapper', ClientArrayMapperEnum::TRENDSSETTLED_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -63,7 +63,7 @@ class ReportControllerHandler extends AbstractHandler {
 				$month
 		) );
 		if (is_array( $response )) {
-			$listReports = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\report' );
+			$listReports = JsonAutoMapper::mapAToB( $response, '\\api\\model\\report' );
 			if (is_array( $listReports->getMoneyflowTransport() )) {
 				$result ['moneyflows'] = parent::mapArray( $listReports->getMoneyflowTransport() );
 			} else {
@@ -94,7 +94,7 @@ class ReportControllerHandler extends AbstractHandler {
 	public final function showTrendsForm() {
 		$response = parent::getJson( 'showTrendsForm' );
 		if (is_array( $response )) {
-			$showTrendsForm = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\report' );
+			$showTrendsForm = JsonAutoMapper::mapAToB( $response, '\\api\\model\\report' );
 			$result ['allYears'] = $showTrendsForm->getAllYears();
 			if (is_array( $showTrendsForm->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $showTrendsForm->getCapitalsourceTransport() );
@@ -115,7 +115,7 @@ class ReportControllerHandler extends AbstractHandler {
 
 		$response = parent::putJson( 'showTrendsGraph', parent::json_encode_response( $request ) );
 		if (is_array( $response )) {
-			$showTrendsGraphResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\report' );
+			$showTrendsGraphResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\report' );
 			if (is_array( $showTrendsGraphResponse->getTrendsSettledTransport() )) {
 				$result ['settled'] = parent::mapArray( $showTrendsGraphResponse->getTrendsSettledTransport() );
 			} else {

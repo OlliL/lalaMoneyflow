@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToGroupTransportMapper.php,v 1.1 2014/02/22 22:10:42 olivleh1 Exp $
+// $Id: ArrayToGroupTransportMapper.php,v 1.2 2014/02/28 22:19:48 olivleh1 Exp $
 //
-namespace rest\client\mapper;
+namespace client\mapper;
 
-use rest\api\model\transport\GroupTransport;
+use api\model\transport\GroupTransport;
 
 class ArrayToGroupTransportMapper extends AbstractArrayMapper {
 

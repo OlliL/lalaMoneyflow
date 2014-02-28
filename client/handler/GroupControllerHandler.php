@@ -24,21 +24,21 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: GroupControllerHandler.php,v 1.3 2014/02/27 20:02:14 olivleh1 Exp $
+// $Id: GroupControllerHandler.php,v 1.4 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\client\handler;
+namespace client\handler;
 
-use rest\client\mapper\ClientArrayMapperEnum;
-use rest\base\JsonAutoMapper;
-use rest\api\model\group\updateGroupRequest;
-use rest\api\model\group\createGroupRequest;
+use client\mapper\ClientArrayMapperEnum;
+use base\JsonAutoMapper;
+use api\model\group\updateGroupRequest;
+use api\model\group\createGroupRequest;
 
 class GroupControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToGroupTransportMapper', ClientArrayMapperEnum::GROUP_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToGroupTransportMapper', ClientArrayMapperEnum::GROUP_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -57,7 +57,7 @@ class GroupControllerHandler extends AbstractHandler {
 				utf8_encode( $restriction )
 		) );
 		if (is_array( $response )) {
-			$listGroups = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\group' );
+			$listGroups = JsonAutoMapper::mapAToB( $response, '\\api\\model\\group' );
 			if (is_array( $listGroups->getGroupTransport() )) {
 				$result ['groups'] = parent::mapArray( $listGroups->getGroupTransport() );
 			} else {
@@ -74,7 +74,7 @@ class GroupControllerHandler extends AbstractHandler {
 				$id
 		) );
 		if (is_array( $response )) {
-			$showEditGroupResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\group' );
+			$showEditGroupResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\group' );
 			$result = parent::map( $showEditGroupResponse->getGroupTransport() );
 		}
 		return $result;
@@ -85,7 +85,7 @@ class GroupControllerHandler extends AbstractHandler {
 				$id
 		) );
 		if (is_array( $response )) {
-			$showDeleteGroupResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\group' );
+			$showDeleteGroupResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\group' );
 			$result = parent::map( $showDeleteGroupResponse->getGroupTransport() );
 		}
 		return $result;

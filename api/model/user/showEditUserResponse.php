@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showEditUserResponse.php,v 1.2 2014/02/24 21:06:24 olivleh1 Exp $
+// $Id: showEditUserResponse.php,v 1.3 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\api\model\user;
+namespace api\model\user;
 
-use rest\api\model\transport\UserTransport;
+use api\model\transport\UserTransport;
 
 class showEditUserResponse {
 	public $userTransport;

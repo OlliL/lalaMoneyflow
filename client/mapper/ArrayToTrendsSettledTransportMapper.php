@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToTrendsSettledTransportMapper.php,v 1.1 2014/02/08 01:38:15 olivleh1 Exp $
+// $Id: ArrayToTrendsSettledTransportMapper.php,v 1.2 2014/02/28 22:19:48 olivleh1 Exp $
 //
-namespace rest\client\mapper;
+namespace client\mapper;
 
-use rest\api\model\transport\TrendsSettledTransport;
+use api\model\transport\TrendsSettledTransport;
 
 class ArrayToTrendsSettledTransportMapper extends AbstractArrayMapper {
 

@@ -1,7 +1,7 @@
 <?php
-use rest\client\handler\SessionControllerHandler;
-use rest\client\handler\UserControllerHandler;
-use rest\base\ErrorCode;
+use client\handler\SessionControllerHandler;
+use client\handler\UserControllerHandler;
+use base\ErrorCode;
 //
 // Copyright (c) 2006-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -27,7 +27,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.46 2014/02/28 19:40:28 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.47 2014/02/28 22:19:48 olivleh1 Exp $
 //
 
 require_once 'module/module.php';

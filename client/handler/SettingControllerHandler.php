@@ -24,13 +24,13 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: SettingControllerHandler.php,v 1.3 2014/02/27 20:02:14 olivleh1 Exp $
+// $Id: SettingControllerHandler.php,v 1.4 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\client\handler;
+namespace client\handler;
 
-use rest\base\JsonAutoMapper;
-use rest\api\model\setting\updateDefaultSettingsRequest;
-use rest\api\model\setting\updatePersonalSettingsRequest;
+use base\JsonAutoMapper;
+use api\model\setting\updateDefaultSettingsRequest;
+use api\model\setting\updatePersonalSettingsRequest;
 
 class SettingControllerHandler extends AbstractHandler {
 	private static $instance;
@@ -53,7 +53,7 @@ class SettingControllerHandler extends AbstractHandler {
 	public final function showDefaultSettings() {
 		$response = parent::getJson( 'showDefaultSettings' );
 		if (is_array( $response )) {
-			$showDefaultSettingsResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\setting' );
+			$showDefaultSettingsResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\setting' );
 			$result ['maxrows'] = $showDefaultSettingsResponse->getMaxRows();
 			$result ['language'] = $showDefaultSettingsResponse->getLanguage();
 			$result ['numflows'] = $showDefaultSettingsResponse->getNumFreeMoneyflows();
@@ -76,7 +76,7 @@ class SettingControllerHandler extends AbstractHandler {
 	public final function showPersonalSettings() {
 		$response = parent::getJson( 'showPersonalSettings' );
 		if (is_array( $response )) {
-			$showPersonalSettingsResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\setting' );
+			$showPersonalSettingsResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\setting' );
 			$result ['maxrows'] = $showPersonalSettingsResponse->getMaxRows();
 			$result ['language'] = $showPersonalSettingsResponse->getLanguage();
 			$result ['numflows'] = $showPersonalSettingsResponse->getNumFreeMoneyflows();

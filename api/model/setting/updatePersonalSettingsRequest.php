@@ -25,9 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: updatePersonalSettingsRequest.php,v 1.1 2014/02/23 16:53:21 olivleh1 Exp $
+// $Id: updatePersonalSettingsRequest.php,v 1.2 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\api\model\setting;
+namespace api\model\setting;
 
 class updatePersonalSettingsRequest {
 	public $language;

@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: updatePreDefMoneyflowResponse.php,v 1.4 2014/02/01 10:46:44 olivleh1 Exp $
+// $Id: updatePreDefMoneyflowResponse.php,v 1.5 2014/02/28 22:19:46 olivleh1 Exp $
 //
-namespace rest\api\model\predefmoneyflow;
+namespace api\model\predefmoneyflow;
 
-use rest\api\model\validation\validationResponse;
+use api\model\validation\validationResponse;
 
 class updatePreDefMoneyflowResponse extends validationResponse {
 	public $capitalsourceTransport;

@@ -24,21 +24,21 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CapitalsourceControllerHandler.php,v 1.8 2014/02/27 20:02:14 olivleh1 Exp $
+// $Id: CapitalsourceControllerHandler.php,v 1.9 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\client\handler;
+namespace client\handler;
 
-use rest\client\mapper\ClientArrayMapperEnum;
-use rest\base\JsonAutoMapper;
-use rest\api\model\capitalsource\updateCapitalsourceRequest;
-use rest\api\model\capitalsource\createCapitalsourceRequest;
+use client\mapper\ClientArrayMapperEnum;
+use base\JsonAutoMapper;
+use api\model\capitalsource\updateCapitalsourceRequest;
+use api\model\capitalsource\createCapitalsourceRequest;
 
 class CapitalsourceControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -57,7 +57,7 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 				utf8_encode( $restriction )
 		) );
 		if (is_array( $response )) {
-			$listCapitalsources = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
+			$listCapitalsources = JsonAutoMapper::mapAToB( $response, '\\api\\model\\capitalsource' );
 			if (is_array( $listCapitalsources->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $listCapitalsources->getCapitalsourceTransport() );
 			} else {
@@ -74,7 +74,7 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 				$id
 		) );
 		if (is_array( $response )) {
-			$showEditCapitalsourceResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
+			$showEditCapitalsourceResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\capitalsource' );
 			$result = parent::map( $showEditCapitalsourceResponse->getCapitalsourceTransport() );
 		}
 		return $result;
@@ -85,7 +85,7 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 				$id
 		) );
 		if (is_array( $response )) {
-			$showDeleteCapitalsourceResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\capitalsource' );
+			$showDeleteCapitalsourceResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\capitalsource' );
 			$result = parent::map( $showDeleteCapitalsourceResponse->getCapitalsourceTransport() );
 		}
 		return $result;

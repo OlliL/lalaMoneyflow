@@ -24,24 +24,24 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PreDefMoneyflowControllerHandler.php,v 1.5 2014/02/27 20:02:14 olivleh1 Exp $
+// $Id: PreDefMoneyflowControllerHandler.php,v 1.6 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\client\handler;
+namespace client\handler;
 
-use rest\client\mapper\ClientArrayMapperEnum;
-use rest\base\JsonAutoMapper;
-use rest\api\model\predefmoneyflow\updatePreDefMoneyflowRequest;
-use rest\api\model\predefmoneyflow\createPreDefMoneyflowRequest;
+use client\mapper\ClientArrayMapperEnum;
+use base\JsonAutoMapper;
+use api\model\predefmoneyflow\updatePreDefMoneyflowRequest;
+use api\model\predefmoneyflow\createPreDefMoneyflowRequest;
 
 class PreDefMoneyflowControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerTransportMapper', ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToPostingAccountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToPreDefMoneyflowTransportMapper', ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToContractpartnerTransportMapper', ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToPostingAccountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToPreDefMoneyflowTransportMapper', ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -60,7 +60,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 				utf8_encode( $restriction )
 		) );
 		if (is_array( $response )) {
-			$listPreDefMoneyflows = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\predefmoneyflow' );
+			$listPreDefMoneyflows = JsonAutoMapper::mapAToB( $response, '\\api\\model\\predefmoneyflow' );
 			if (is_array( $listPreDefMoneyflows->getPreDefMoneyflowTransport() )) {
 				$result ['predefmoneyflows'] = parent::mapArray( $listPreDefMoneyflows->getPreDefMoneyflowTransport() );
 			} else {
@@ -77,7 +77,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 				$id
 		) );
 		if (is_array( $response )) {
-			$showEditPreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\predefmoneyflow' );
+			$showEditPreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\predefmoneyflow' );
 			if (is_array( $showEditPreDefMoneyflow->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $showEditPreDefMoneyflow->getCapitalsourceTransport() );
 			} else {
@@ -106,7 +106,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 	public final function showCreatePreDefMoneyflow() {
 		$response = parent::getJson( 'showCreatePreDefMoneyflow' );
 		if (is_array( $response )) {
-			$showCreatePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\predefmoneyflow' );
+			$showCreatePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\predefmoneyflow' );
 			if (is_array( $showCreatePreDefMoneyflow->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $showCreatePreDefMoneyflow->getCapitalsourceTransport() );
 			} else {
@@ -132,7 +132,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 				$id
 		) );
 		if (is_array( $response )) {
-			$showDeletePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\predefmoneyflow' );
+			$showDeletePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\predefmoneyflow' );
 			$result = parent::map( $showDeletePreDefMoneyflow->getPreDefMoneyflowTransport() );
 		}
 		return $result;
@@ -148,7 +148,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 		if ($response === true) {
 			$result = true;
 		} else if (is_array( $response )) {
-			$reatePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\predefmoneyflow' );
+			$reatePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\predefmoneyflow' );
 			if (is_array( $reatePreDefMoneyflow->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $reatePreDefMoneyflow->getCapitalsourceTransport() );
 			} else {
@@ -184,7 +184,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 		if ($response === true) {
 			$result = true;
 		} else if (is_array( $response )) {
-			$updatePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\predefmoneyflow' );
+			$updatePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\predefmoneyflow' );
 			if (is_array( $updatePreDefMoneyflow->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $updatePreDefMoneyflow->getCapitalsourceTransport() );
 			} else {

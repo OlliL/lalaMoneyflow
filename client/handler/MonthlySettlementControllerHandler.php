@@ -24,20 +24,20 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MonthlySettlementControllerHandler.php,v 1.5 2014/02/27 20:02:14 olivleh1 Exp $
+// $Id: MonthlySettlementControllerHandler.php,v 1.6 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\client\handler;
+namespace client\handler;
 
-use rest\client\mapper\ClientArrayMapperEnum;
-use rest\base\JsonAutoMapper;
-use rest\api\model\monthlysettlement\upsertMonthlySettlementRequest;
+use client\mapper\ClientArrayMapperEnum;
+use base\JsonAutoMapper;
+use api\model\monthlysettlement\upsertMonthlySettlementRequest;
 
 class MonthlySettlementControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToMonthlySettlementTransportMapper', ClientArrayMapperEnum::MONTHLYSETTLEMENT_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToMonthlySettlementTransportMapper', ClientArrayMapperEnum::MONTHLYSETTLEMENT_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -57,7 +57,7 @@ class MonthlySettlementControllerHandler extends AbstractHandler {
 				$month
 		) );
 		if (is_array( $response )) {
-			$showMonthlySettlementList = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\monthlysettlement' );
+			$showMonthlySettlementList = JsonAutoMapper::mapAToB( $response, '\\api\\model\\monthlysettlement' );
 			if (is_array( $showMonthlySettlementList->getMonthlySettlementTransport() )) {
 				$result ['monthly_settlements'] = parent::mapArray( $showMonthlySettlementList->getMonthlySettlementTransport() );
 			} else {
@@ -80,7 +80,7 @@ class MonthlySettlementControllerHandler extends AbstractHandler {
 				$month
 		) );
 		if (is_array( $response )) {
-			$showMonthlySettlementCreate = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\monthlysettlement' );
+			$showMonthlySettlementCreate = JsonAutoMapper::mapAToB( $response, '\\api\\model\\monthlysettlement' );
 			if (is_array( $showMonthlySettlementCreate->getMonthlySettlementTransport() )) {
 				$result ['monthly_settlements'] = parent::mapArray( $showMonthlySettlementCreate->getMonthlySettlementTransport() );
 			} else {
@@ -100,7 +100,7 @@ class MonthlySettlementControllerHandler extends AbstractHandler {
 				$month
 		) );
 		if (is_array( $response )) {
-			$showMonthlySettlementDelete = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\monthlysettlement' );
+			$showMonthlySettlementDelete = JsonAutoMapper::mapAToB( $response, '\\api\\model\\monthlysettlement' );
 			if (is_array( $showMonthlySettlementDelete->getMonthlySettlementTransport() )) {
 				$result ['monthly_settlements'] = parent::mapArray( $showMonthlySettlementDelete->getMonthlySettlementTransport() );
 			} else {

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreText.php,v 1.25 2014/02/28 17:04:59 olivleh1 Exp $
+// $Id: coreText.php,v 1.26 2014/02/28 22:19:47 olivleh1 Exp $
 //
 require_once 'core/core.php';
 
@@ -37,7 +37,7 @@ class coreText extends core {
 	}
 
 	private final function getFileName($id) {
-		return 'rest/client/locale/' . $id . '.conf';
+		return 'locale/' . $id . '.conf';
 	}
 
 	private final function getTextfile($id) {

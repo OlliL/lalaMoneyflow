@@ -25,9 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractHandler.php,v 1.4 2014/02/28 19:40:28 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.5 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\client\handler;
+namespace client\handler;
 
 require_once 'core/coreSession.php';
 
@@ -35,11 +35,11 @@ use \Httpful\Request;
 use \Httpful\Httpful;
 use \Httpful\Mime;
 use \Httpful\Handlers\JsonHandler;
-use rest\base\AbstractJsonSender;
-use rest\client\mapper\ClientArrayMapperEnum;
-use rest\base\JsonAutoMapper;
-use rest\base\ErrorCode;
-use rest\base\RESTAuthorization;
+use base\AbstractJsonSender;
+use client\mapper\ClientArrayMapperEnum;
+use base\JsonAutoMapper;
+use base\ErrorCode;
+use base\RESTAuthorization;
 use Httpful\Http;
 
 abstract class AbstractHandler extends AbstractJsonSender {
@@ -47,7 +47,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 	private $userPassword;
 
 	protected function __construct() {
-		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
 		) ) );
@@ -64,7 +64,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 			add_error( ErrorCode::ATTENTION );
 			return false;
 		} else if (array_key_exists( 'validationResponse', $result )) {
-			$validationResponse = JsonAutoMapper::mapAToB( $result, '\\rest\\api\\model\\validation' );
+			$validationResponse = JsonAutoMapper::mapAToB( $result, '\\api\\model\\validation' );
 			$validation ['is_valid'] = $validationResponse->getResult();
 			$validation ['errors'] = parent::mapArray( $validationResponse->getValidationItemTransport(), ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 			return ($validation);

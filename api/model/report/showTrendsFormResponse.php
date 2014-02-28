@@ -25,9 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showTrendsFormResponse.php,v 1.2 2014/02/16 14:43:14 olivleh1 Exp $
+// $Id: showTrendsFormResponse.php,v 1.3 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\api\model\report;
+namespace api\model\report;
 
 class showTrendsFormResponse {
 	public $allYears;

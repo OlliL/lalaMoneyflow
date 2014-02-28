@@ -24,28 +24,28 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowControllerHandler.php,v 1.5 2014/02/27 20:02:14 olivleh1 Exp $
+// $Id: MoneyflowControllerHandler.php,v 1.6 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\client\handler;
+namespace client\handler;
 
-use rest\client\mapper\ClientArrayMapperEnum;
-use rest\base\JsonAutoMapper;
-use rest\api\model\moneyflow\updateMoneyflowRequest;
-use rest\api\model\moneyflow\createMoneyflowsRequest;
-use rest\api\model\moneyflow\searchMoneyflowsRequest;
+use client\mapper\ClientArrayMapperEnum;
+use base\JsonAutoMapper;
+use api\model\moneyflow\updateMoneyflowRequest;
+use api\model\moneyflow\createMoneyflowsRequest;
+use api\model\moneyflow\searchMoneyflowsRequest;
 
 class MoneyflowControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToContractpartnerTransportMapper', ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToPreDefMoneyflowTransportMapper', ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToPostingAccountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowSearchParamsTransportMapper', ClientArrayMapperEnum::MONEYFLOWSEARCHPARAMS_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowSearchResultTransportMapper', ClientArrayMapperEnum::MONEYFLOWSEARCHRESULT_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToContractpartnerTransportMapper', ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToPreDefMoneyflowTransportMapper', ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToPostingAccountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToMoneyflowSearchParamsTransportMapper', ClientArrayMapperEnum::MONEYFLOWSEARCHPARAMS_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToMoneyflowSearchResultTransportMapper', ClientArrayMapperEnum::MONEYFLOWSEARCHRESULT_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -62,7 +62,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 	public final function showAddMoneyflows() {
 		$response = parent::getJson( 'showAddMoneyflows' );
 		if (is_array( $response )) {
-			$addMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
+			$addMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
 			if (is_array( $addMoneyflow->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $addMoneyflow->getCapitalsourceTransport() );
 			} else {
@@ -94,7 +94,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 				$id
 		) );
 		if (is_array( $response )) {
-			$showEditMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
+			$showEditMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
 			if (is_array( $showEditMoneyflow->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $showEditMoneyflow->getCapitalsourceTransport() );
 			} else {
@@ -125,7 +125,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 				$id
 		) );
 		if (is_array( $response )) {
-			$showDeleteMoneyflowResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
+			$showDeleteMoneyflowResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
 			$result = parent::map( $showDeleteMoneyflowResponse->getMoneyflowTransport() );
 		}
 		return $result;
@@ -150,7 +150,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		if ($response === true) {
 			$result = true;
 		} else if (is_array( $response )) {
-			$createMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
+			$createMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
 
 			if (is_array( $createMoneyflow->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $createMoneyflow->getCapitalsourceTransport() );
@@ -194,7 +194,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		if ($response === true) {
 			$result = true;
 		} else if (is_array( $response )) {
-			$updateMoneyflow = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
+			$updateMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
 			if (is_array( $updateMoneyflow->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $updateMoneyflow->getCapitalsourceTransport() );
 			} else {
@@ -229,7 +229,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 	public final function showSearchMoneyflow() {
 		$response = parent::getJson( 'showSearchMoneyflowForm' );
 		if (is_array( $response )) {
-			$showSearchMoneyflowResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
+			$showSearchMoneyflowResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
 			if (is_array( $showSearchMoneyflowResponse->getContractpartnerTransport() )) {
 				$result = parent::mapArray( $showSearchMoneyflowResponse->getContractpartnerTransport() );
 			} else {
@@ -247,7 +247,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		$response = parent::putJson( 'searchMoneyflows', parent::json_encode_response( $request ) );
 
 		if (is_array( $response )) {
-			$searchMoneyflows = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\moneyflow' );
+			$searchMoneyflows = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
 			if (is_array( $searchMoneyflows->getMoneyflowSearchResultTransport() )) {
 				$result ['search_results'] = parent::mapArray( $searchMoneyflows->getMoneyflowSearchResultTransport() );
 			} else {

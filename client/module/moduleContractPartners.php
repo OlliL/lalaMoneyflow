@@ -1,6 +1,6 @@
 <?php
-use rest\base\ErrorCode;
-use rest\client\handler\ContractpartnerControllerHandler;
+use base\ErrorCode;
+use client\handler\ContractpartnerControllerHandler;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -26,7 +26,7 @@ use rest\client\handler\ContractpartnerControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.35 2014/02/22 22:10:41 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.36 2014/02/28 22:19:48 olivleh1 Exp $
 //
 
 require_once 'module/module.php';

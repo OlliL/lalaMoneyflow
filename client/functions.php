@@ -25,9 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: functions.php,v 1.23 2014/02/22 22:10:42 olivleh1 Exp $
+// $Id: functions.php,v 1.24 2014/02/28 22:19:47 olivleh1 Exp $
 //
-use rest\base\ErrorCode;
+use base\ErrorCode;
 function add_error($id, $args = NULL) {
 	global $ERRORS;
 	if (is_array( $args )) {

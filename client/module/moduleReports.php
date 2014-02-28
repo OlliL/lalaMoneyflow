@@ -1,6 +1,6 @@
 <?php
-use rest\client\handler\ReportControllerHandler;
-use rest\client\handler\CapitalsourceControllerHandler;
+use client\handler\ReportControllerHandler;
+use client\handler\CapitalsourceControllerHandler;
 use Zend\Validator\File\Count;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
@@ -27,7 +27,7 @@ use Zend\Validator\File\Count;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.82 2014/02/28 17:04:59 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.83 2014/02/28 22:19:48 olivleh1 Exp $
 //
 
 require_once 'module/module.php';

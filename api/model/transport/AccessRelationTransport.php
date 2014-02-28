@@ -25,9 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AccessRelationTransport.php,v 1.1 2014/02/24 21:06:24 olivleh1 Exp $
+// $Id: AccessRelationTransport.php,v 1.2 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\api\model\transport;
+namespace api\model\transport;
 
 class AccessRelationTransport {
 	public $id;

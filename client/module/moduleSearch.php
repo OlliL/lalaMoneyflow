@@ -1,7 +1,7 @@
 <?php
-use rest\client\handler\ContractpartnerControllerHandler;
-use rest\base\ErrorCode;
-use rest\client\handler\MoneyflowControllerHandler;
+use client\handler\ContractpartnerControllerHandler;
+use base\ErrorCode;
+use client\handler\MoneyflowControllerHandler;
 //
 // Copyright (c) 2006-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -27,7 +27,7 @@ use rest\client\handler\MoneyflowControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSearch.php,v 1.31 2014/02/23 16:53:20 olivleh1 Exp $
+// $Id: moduleSearch.php,v 1.32 2014/02/28 22:19:48 olivleh1 Exp $
 //
 
 require_once 'module/module.php';

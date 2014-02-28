@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showEditGroupResponse.php,v 1.1 2014/02/22 22:10:41 olivleh1 Exp $
+// $Id: showEditGroupResponse.php,v 1.2 2014/02/28 22:19:46 olivleh1 Exp $
 //
-namespace rest\api\model\group;
+namespace api\model\group;
 
-use rest\api\model\transport\GroupTransport;
+use api\model\transport\GroupTransport;
 
 class showEditGroupResponse {
 	public $groupTransport;

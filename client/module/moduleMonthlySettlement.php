@@ -1,7 +1,7 @@
 <?php
-use rest\client\handler\CapitalsourceControllerHandler;
-use rest\client\handler\MonthlySettlementControllerHandler;
-use rest\base\ErrorCode;
+use client\handler\CapitalsourceControllerHandler;
+use client\handler\MonthlySettlementControllerHandler;
+use base\ErrorCode;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -27,7 +27,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.54 2014/02/28 17:04:59 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.55 2014/02/28 22:19:48 olivleh1 Exp $
 //
 
 require_once 'module/module.php';

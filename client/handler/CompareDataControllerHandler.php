@@ -24,24 +24,24 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataControllerHandler.php,v 1.7 2014/02/27 20:02:14 olivleh1 Exp $
+// $Id: CompareDataControllerHandler.php,v 1.8 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\client\handler;
+namespace client\handler;
 
-use rest\client\mapper\ClientArrayMapperEnum;
-use rest\base\JsonAutoMapper;
-use rest\client\util\DateUtil;
-use rest\api\model\comparedata\compareDataRequest;
+use client\mapper\ClientArrayMapperEnum;
+use base\JsonAutoMapper;
+use client\util\DateUtil;
+use api\model\comparedata\compareDataRequest;
 
 class CompareDataControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToCompareDataFormatTransportMapper', ClientArrayMapperEnum::COMPAREDATAFORMAT_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToCompareDataDatasetTransportMapper', ClientArrayMapperEnum::COMPAREDATADATASET_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
-		parent::addMapper( 'rest\client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToCompareDataFormatTransportMapper', ClientArrayMapperEnum::COMPAREDATAFORMAT_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToCompareDataDatasetTransportMapper', ClientArrayMapperEnum::COMPAREDATADATASET_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -58,7 +58,7 @@ class CompareDataControllerHandler extends AbstractHandler {
 	public final function showCompareDataForm() {
 		$response = parent::getJson( 'showCompareDataForm' );
 		if (is_array( $response )) {
-			$showCompareDataForm = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\comparedata' );
+			$showCompareDataForm = JsonAutoMapper::mapAToB( $response, '\\api\\model\\comparedata' );
 
 			if (is_array( $showCompareDataForm->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $showCompareDataForm->getCapitalsourceTransport() );
@@ -87,7 +87,7 @@ class CompareDataControllerHandler extends AbstractHandler {
 
 		$response = parent::putJson( 'compareData', parent::json_encode_response( $request ) );
 		if (is_array( $response )) {
-			$compareDataResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\comparedata' );
+			$compareDataResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\comparedata' );
 			if (is_array( $compareDataResponse->getCompareDataMatchingTransport() )) {
 				foreach ( $compareDataResponse->getCompareDataMatchingTransport() as $key => $compareDataMatchingTransport ) {
 					$result ['matching'] [$key] ['moneyflow'] = parent::map( $compareDataMatchingTransport->getMoneyflowTransport() );

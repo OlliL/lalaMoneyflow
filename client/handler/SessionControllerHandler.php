@@ -24,19 +24,19 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: SessionControllerHandler.php,v 1.8 2014/02/27 21:37:48 olivleh1 Exp $
+// $Id: SessionControllerHandler.php,v 1.9 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\client\handler;
+namespace client\handler;
 
-use rest\client\mapper\ClientArrayMapperEnum;
-use rest\base\JsonAutoMapper;
+use client\mapper\ClientArrayMapperEnum;
+use base\JsonAutoMapper;
 
 class SessionControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'rest\client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -56,7 +56,7 @@ class SessionControllerHandler extends AbstractHandler {
 				$password
 		) );
 		if (is_array( $response )) {
-			$doLogonResponse = JsonAutoMapper::mapAToB( $response, '\\rest\\api\\model\\session' );
+			$doLogonResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\session' );
 			$result = array (
 					'mur_userid' => $doLogonResponse->getUserid(),
 					'dateformat' => $doLogonResponse->getSettingDateFormat(),

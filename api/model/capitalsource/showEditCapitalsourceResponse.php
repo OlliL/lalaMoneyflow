@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showEditCapitalsourceResponse.php,v 1.1 2014/02/01 23:38:48 olivleh1 Exp $
+// $Id: showEditCapitalsourceResponse.php,v 1.2 2014/02/28 22:19:46 olivleh1 Exp $
 //
-namespace rest\api\model\capitalsource;
+namespace api\model\capitalsource;
 
-use rest\api\model\transport\CapitalsourceTransport;
+use api\model\transport\CapitalsourceTransport;
 
 class showEditCapitalsourceResponse {
 	public $capitalsourceTransport;

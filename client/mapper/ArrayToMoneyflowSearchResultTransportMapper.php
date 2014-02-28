@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToMoneyflowSearchResultTransportMapper.php,v 1.2 2014/02/19 20:55:01 olivleh1 Exp $
+// $Id: ArrayToMoneyflowSearchResultTransportMapper.php,v 1.3 2014/02/28 22:19:48 olivleh1 Exp $
 //
-namespace rest\client\mapper;
+namespace client\mapper;
 
-use rest\api\model\transport\MoneyflowSearchResultTransport;
+use api\model\transport\MoneyflowSearchResultTransport;
 
 class ArrayToMoneyflowSearchResultTransportMapper extends AbstractArrayMapper {
 

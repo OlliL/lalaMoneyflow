@@ -25,9 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataFormatTransport.php,v 1.3 2014/02/22 22:10:43 olivleh1 Exp $
+// $Id: CompareDataFormatTransport.php,v 1.4 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\api\model\transport;
+namespace api\model\transport;
 
 class CompareDataFormatTransport {
 	public $formatId;

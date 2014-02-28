@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractArrayMapper.php,v 1.6 2014/02/01 10:46:44 olivleh1 Exp $
+// $Id: AbstractArrayMapper.php,v 1.7 2014/02/28 22:19:48 olivleh1 Exp $
 //
-namespace rest\client\mapper;
+namespace client\mapper;
 
-use rest\client\util\DateUtil;
+use client\util\DateUtil;
 abstract class AbstractArrayMapper {
 // 	protected final function convertClientDateToModel($clientDate) {
 // 		if (empty( $clientDate ))

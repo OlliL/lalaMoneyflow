@@ -24,9 +24,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showMonthlySettlementListResponse.php,v 1.2 2014/02/09 14:19:03 olivleh1 Exp $
+// $Id: showMonthlySettlementListResponse.php,v 1.3 2014/02/28 22:19:46 olivleh1 Exp $
 //
-namespace rest\api\model\monthlysettlement;
+namespace api\model\monthlysettlement;
 
 class showMonthlySettlementListResponse {
 	public $year;

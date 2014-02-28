@@ -25,12 +25,12 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: updateUserResponse.php,v 1.1 2014/02/25 21:12:36 olivleh1 Exp $
+// $Id: updateUserResponse.php,v 1.2 2014/02/28 22:19:47 olivleh1 Exp $
 //
-namespace rest\api\model\user;
+namespace api\model\user;
 
-use rest\api\model\transport\UserTransport;
-use rest\api\model\validation\validationResponse;
+use api\model\transport\UserTransport;
+use api\model\validation\validationResponse;
 
 class updateUserResponse extends validationResponse{
 	public $accessRelationTransport;

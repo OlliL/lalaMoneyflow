@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToCompareDataDatasetTransportMapper.php,v 1.2 2014/02/01 22:03:33 olivleh1 Exp $
+// $Id: ArrayToCompareDataDatasetTransportMapper.php,v 1.3 2014/02/28 22:19:48 olivleh1 Exp $
 //
-namespace rest\client\mapper;
+namespace client\mapper;
 
-use rest\api\model\transport\CompareDataDatasetTransport;
+use api\model\transport\CompareDataDatasetTransport;
 
 class ArrayToCompareDataDatasetTransportMapper extends AbstractArrayMapper {
 

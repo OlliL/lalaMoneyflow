@@ -25,9 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: DateUtil.php,v 1.1 2014/02/01 10:46:44 olivleh1 Exp $
+// $Id: DateUtil.php,v 1.2 2014/02/28 22:19:48 olivleh1 Exp $
 //
-namespace rest\client\util;
+namespace client\util;
 
 class DateUtil {
 	private static $clientDateFormat;

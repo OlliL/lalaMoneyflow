@@ -24,12 +24,12 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreLanguages.php,v 1.18 2014/02/23 16:53:20 olivleh1 Exp $
+// $Id: coreLanguages.php,v 1.19 2014/02/28 22:19:47 olivleh1 Exp $
 //
 require_once 'core/core.php';
 
 class coreLanguages extends core {
-	private $languageConf = 'rest/client/locale/languages.conf';
+	private $languageConf = 'locale/languages.conf';
 	private $columnNames = array (
 			'languageid',
 			'language'

@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToPreDefMoneyflowTransportMapper.php,v 1.3 2014/01/26 12:24:49 olivleh1 Exp $
+// $Id: ArrayToPreDefMoneyflowTransportMapper.php,v 1.4 2014/02/28 22:19:48 olivleh1 Exp $
 //
-namespace rest\client\mapper;
+namespace client\mapper;
 
-use rest\api\model\transport\PreDefMoneyflowTransport;
+use api\model\transport\PreDefMoneyflowTransport;
 
 class ArrayToPreDefMoneyflowTransportMapper extends AbstractArrayMapper {
 
