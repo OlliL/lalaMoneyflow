@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractHandler.php,v 1.3 2014/02/27 21:37:48 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.4 2014/02/28 19:40:28 olivleh1 Exp $
 //
 namespace rest\client\handler;
 
@@ -39,6 +39,8 @@ use rest\base\AbstractJsonSender;
 use rest\client\mapper\ClientArrayMapperEnum;
 use rest\base\JsonAutoMapper;
 use rest\base\ErrorCode;
+use rest\base\RESTAuthorization;
+use Httpful\Http;
 
 abstract class AbstractHandler extends AbstractJsonSender {
 	private $userName;
@@ -100,16 +102,29 @@ abstract class AbstractHandler extends AbstractJsonSender {
 		return $url;
 	}
 
-	private final function getHeaders($url, $body = null) {
-		return array (
-				'Authentication' => $this->userName . ':' . base64_encode( $this->userPassword ),
-				'Date' => gmdate( 'D, d M Y H:i:s' ) . ' GMT'
+	private final function getHeaders($httpVerb, $url, $body = null) {
+		switch ($httpVerb) {
+			case Http::PUT :
+			case Http::POST :
+				$contentType = \Httpful\Mime::JSON;
+				break;
+			default :
+				$contentType = null;
+		}
+
+		$dateStr = gmdate( 'D, d M Y H:i:s' ) . ' GMT';
+		$authorization = RESTAuthorization::getRESTAuthorization( $this->userPassword, $httpVerb, $contentType, $url, $dateStr, $body, $this->userName );
+
+		$headers = array (
+				'Date' => $dateStr,
+				'Authentication' => $authorization
 		);
+		return $headers;
 	}
 
 	protected final function getJson($usecase, $parameter = array()) {
 		$url = $this->getUrl( $usecase, $parameter );
-		$response = Request::get( $url )->withoutStrictSsl()->addHeaders( $this->getHeaders( $url ) )->send();
+		$response = Request::get( $url )->withoutStrictSsl()->addHeaders( $this->getHeaders( Http::GET, $url ) )->send();
 		if ($response->code == 204) {
 			return false;
 		} else {
@@ -120,7 +135,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 	// create
 	protected final function postJson($usecase, $json, $parameter = array()) {
 		$url = $this->getUrl( $usecase, $parameter );
-		$response = Request::post( $url )->withoutStrictSsl()->sendsJson()->body( $json )->addHeaders( $this->getHeaders( $url, $json ) )->send();
+		$response = Request::post( $url )->withoutStrictSsl()->sendsJson()->body( $json )->addHeaders( $this->getHeaders( Http::POST, $url, $json ) )->send();
 		if ($response->code == 204) {
 			return true;
 		} else {
@@ -131,7 +146,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 	// update
 	protected final function putJson($usecase, $json, $parameter = array()) {
 		$url = $this->getUrl( $usecase, $parameter );
-		$response = Request::put( $url )->withoutStrictSsl()->sendsJson()->body( $json )->addHeaders( $this->getHeaders( $url, $json ) )->send();
+		$response = Request::put( $url )->withoutStrictSsl()->sendsJson()->body( $json )->addHeaders( $this->getHeaders( Http::PUT, $url, $json ) )->send();
 		if ($response->code == 204) {
 			return true;
 		} else {
@@ -141,7 +156,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 
 	protected final function deleteJson($usecase, $parameter = array()) {
 		$url = $this->getUrl( $usecase, $parameter );
-		$response = Request::delete( $url )->withoutStrictSsl()->addHeaders( $this->getHeaders( $url ) )->send();
+		$response = Request::delete( $url )->withoutStrictSsl()->addHeaders( $this->getHeaders( HTTP::DELETE, $url ) )->send();
 		if ($response->code == 204) {
 			return true;
 		} else {

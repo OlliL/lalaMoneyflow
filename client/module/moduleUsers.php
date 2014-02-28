@@ -27,7 +27,7 @@ use rest\base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.45 2014/02/28 17:04:59 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.46 2014/02/28 19:40:28 olivleh1 Exp $
 //
 
 require_once 'module/module.php';
@@ -69,10 +69,10 @@ class moduleUsers extends module {
 					add_error( ErrorCode::PASSWORD_EMPTY );
 				}
 
+				$this->coreSession->setAttribute( 'user_name', $name );
+				$this->coreSession->setAttribute( 'user_password', sha1( $password ) );
 				$session = SessionControllerHandler::getInstance()->doLogon( $name, sha1( $password ) );
 				if ($session) {
-					$this->coreSession->setAttribute( 'user_name', $name );
-					$this->coreSession->setAttribute( 'user_password', sha1($password ));
 					$this->coreSession->setAttribute( 'users_id', $session ['mur_userid'] );
 					$this->coreSession->setAttribute( 'date_format', $session ['dateformat'] );
 					$this->coreSession->setAttribute( 'gui_language', $session ['displayed_language'] );
@@ -91,7 +91,7 @@ class moduleUsers extends module {
 			return;
 		} else {
 			define( USERID, 0 );
-			parent::setGuiLanguage(LOGIN_FORM_LANGUAGE);
+			parent::setGuiLanguage( LOGIN_FORM_LANGUAGE );
 			$this->template->assign( 'NAME', $name );
 			$this->template->assign( 'STAY_LOGGED_IN', $stay_logged_in );
 			$this->template->assign( 'ERRORS', $this->get_errors() );
