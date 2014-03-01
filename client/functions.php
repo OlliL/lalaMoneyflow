@@ -25,13 +25,13 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: functions.php,v 1.25 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: functions.php,v 1.26 2014/03/01 09:09:33 olivleh1 Exp $
 //
 use base\ErrorCode;
 
 function my_number_format($number) {
 	// to not change NULL to 0.00 - for example in display_add_moneyflow at the empty lines
-	if ($number !== null)
+	if ($number !== null && $number !== '')
 		return number_format( $number, 2 );
 }
 
