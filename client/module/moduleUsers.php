@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.51 2014/03/01 19:32:34 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.52 2014/03/01 20:46:42 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -57,9 +57,9 @@ class moduleUsers extends module {
 		switch ($realaction) {
 			case 'login' :
 				if (empty( $name )) {
-					add_error( ErrorCode::USERNAME_IS_MANDATORY );
+					$this->add_error( ErrorCode::USERNAME_IS_MANDATORY );
 				} elseif (empty( $password )) {
-					add_error( ErrorCode::PASSWORD_EMPTY );
+					$this->add_error( ErrorCode::PASSWORD_EMPTY );
 				}
 
 				Environment::getInstance()->setUserName( $name );
@@ -146,18 +146,18 @@ class moduleUsers extends module {
 				$access_relation ['validfrom_error'] = 0;
 				$valid_data = true;
 				if ($all_data ['password'] != $all_data ['password2']) {
-					add_error( ErrorCode::PASSWORD_NOT_MATCHING );
+					$this->add_error( ErrorCode::PASSWORD_NOT_MATCHING );
 					$valid_data = false;
 				} elseif ($userid == 0) {
 					if (empty( $all_data ['password'] )) {
-						add_error( ErrorCode::PASSWORD_EMPTY );
+						$this->add_error( ErrorCode::PASSWORD_EMPTY );
 						$valid_data = false;
 					}
 				}
 				if ($userid > 0) {
-					if (! dateIsValid( $access_relation ['validfrom'] )) {
-						add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-								GUI_DATE_FORMAT
+					if (! $this->dateIsValid( $access_relation ['validfrom'] )) {
+						$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
+								Environment::getInstance()->getSettingDateFormat()
 						) );
 						$access_relation ['validfrom_error'] = 1;
 						$valid_data = false;
@@ -166,7 +166,7 @@ class moduleUsers extends module {
 
 				if ($valid_data == true) {
 					if ($userid == 0) {
-						$access_relation ['validfrom'] = convert_date_to_gui( date( 'Y-m-d' ) );
+						$access_relation ['validfrom'] = $this->convertDateToGui( date( 'Y-m-d' ) );
 						$ret = UserControllerHandler::getInstance()->createUser( $all_data, $access_relation );
 					} else {
 						$access_relation ['id'] = $userid;
@@ -181,7 +181,7 @@ class moduleUsers extends module {
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
 
-							add_error( $error );
+							$this->add_error( $error );
 
 							switch ($error) {
 								case ErrorCode::NAME_MUST_NOT_BE_EMPTY :
@@ -237,7 +237,7 @@ class moduleUsers extends module {
 
 			if (! is_array( $access_relation ) || ! array_key_exists( 'ref_id', $access_relation )) {
 				$access_relation ['ref_id'] = $access_relations [0] ['ref_id'];
-				$access_relation ['validfrom'] = convert_date_to_gui( date( 'Y-m-d', time() + 86400 ) );
+				$access_relation ['validfrom'] = $this->convertDateToGui( date( 'Y-m-d', time() + 86400 ) );
 			}
 		} else {
 			$access_relation = array (

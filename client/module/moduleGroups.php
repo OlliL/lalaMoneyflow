@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleGroups.php,v 1.10 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: moduleGroups.php,v 1.11 2014/03/01 20:46:42 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -66,7 +66,7 @@ class moduleGroups extends module {
 					foreach ( $ret ['errors'] as $validationResult ) {
 						$error = $validationResult ['error'];
 
-						add_error( $error );
+						$this->add_error( $error );
 
 						switch ($error) {
 							case ErrorCode::NAME_MUST_NOT_BE_EMPTY :

@@ -24,12 +24,15 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.76 2014/03/01 19:32:34 olivleh1 Exp $
+// $Id: module.php,v 1.77 2014/03/01 20:46:42 olivleh1 Exp $
 //
 namespace client\module;
 
 use client\core\coreText;
 use client\util\Environment;
+use base\ErrorCode;
+use client\util\ErrorHandler;
+use client\util\DateUtil;
 
 require_once 'Smarty.class.php';
 
@@ -37,9 +40,8 @@ abstract class module {
 	protected $template;
 
 	protected function __construct() {
-
 		$this->template = new \Smarty();
-		$this->template->registerPlugin( 'modifier', 'number_format', 'my_number_format' );
+		$this->template->registerPlugin( 'modifier', 'number_format', 'client\util\SmartyPlugin::my_number_format' );
 		$this->template->assign( 'ENV_INDEX_PHP', 'index.php' );
 		$this->template->setCompileCheck( \Smarty::COMPILECHECK_OFF );
 
@@ -65,11 +67,11 @@ abstract class module {
 	}
 
 	protected final function get_errors() {
-		global $ERRORS;
 		$result = array ();
-		if (is_array( $ERRORS )) {
+		$errors = ErrorHandler::getErrors();
+		if (is_array( $errors )) {
 			$coreText = new coreText();
-			foreach ( $ERRORS as $error ) {
+			foreach ( $errors as $error ) {
 				$error_text = $coreText->get_text( $error ['id'] );
 				if (array_key_exists( 'arguments', $error ) && is_array( $error ['arguments'] )) {
 					foreach ( $error ['arguments'] as $id => $value ) {
@@ -118,6 +120,36 @@ abstract class module {
 		$footer = $this->fetch_template( 'display_footer.tpl', 'footer_' . $this->guiLanguage . '_' . $cache_id );
 		$this->template->assign( 'FOOTER', $footer );
 		$this->template->setCaching( false );
+	}
+
+	protected final function fix_amount(&$amount) {
+		$return = true;
+
+		if (preg_match( '/^-{0,1}[0-9]*([\.][0-9][0-9][0-9]){0,}([,][0-9]{1,2}){0,1}$/', $amount )) {
+			$amount = str_replace( '.', '', $amount );
+			$amount = str_replace( ',', '.', $amount );
+		} elseif (preg_match( '/^-{0,1}[0-9]*([,][0-9][0-9][0-9]){0,}([\.][0-9]{1,2}){0,1}$/', $amount )) {
+			$amount = str_replace( ',', '', $amount );
+		} else {
+			$this->add_error( ErrorCode::AMOUNT_IN_WRONG_FORMAT, array (
+					$amount
+			) );
+			$return = false;
+		}
+
+		return $return;
+	}
+
+	protected final function add_error($id, $args = null) {
+		ErrorHandler::addError( $id, $args );
+	}
+
+	protected final function dateIsValid($date) {
+		return DateUtil::validateStringDate( $date );
+	}
+
+	protected final function convertDateToGui($date) {
+		return DateUtil::convertStringDateToClient( $date );
 	}
 }
 ?>

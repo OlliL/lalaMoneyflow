@@ -24,12 +24,13 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.44 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.45 2014/03/01 20:46:42 olivleh1 Exp $
 //
 namespace client\module;
 
 use base\ErrorCode;
 use client\handler\CompareDataControllerHandler;
+use client\util\Environment;
 
 class moduleCompare extends module {
 
@@ -45,8 +46,8 @@ class moduleCompare extends module {
 		$selected_capitalsource = $showCompareDataForm ['selected_capitalsource'];
 
 		if (count( $all_data ) === 0) {
-			$all_data ['startdate'] = convert_date_to_gui( date( "Y-m-d", mktime( 0, 0, 0, date( 'm', time() ), 1, date( 'Y', time() ) ) ) );
-			$all_data ['enddate'] = convert_date_to_gui( date( "Y-m-d", mktime( 0, 0, 0, date( 'm', time() ) + 1, 0, date( 'Y', time() ) ) ) );
+			$all_data ['startdate'] = $this->convertDateToGui( date( "Y-m-d", mktime( 0, 0, 0, date( 'm', time() ), 1, date( 'Y', time() ) ) ) );
+			$all_data ['enddate'] = $this->convertDateToGui( date( "Y-m-d", mktime( 0, 0, 0, date( 'm', time() ) + 1, 0, date( 'Y', time() ) ) ) );
 			$all_data ['format'] = $selected_format;
 			$all_data ['mcs_capitalsourceid'] = $selected_capitalsource;
 		}
@@ -69,24 +70,24 @@ class moduleCompare extends module {
 
 		$valid_data = true;
 
-		if (! dateIsValid( $startDate )) {
-			add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-					GUI_DATE_FORMAT
+		if (! $this->dateIsValid( $startDate )) {
+			$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
+					Environment::getInstance()->getSettingDateFormat()
 			) );
 			$all_data ['startdate_error'] = 1;
 			$valid_data = false;
 		}
 
-		if (! dateIsValid( $endDate )) {
-			add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-					GUI_DATE_FORMAT
+		if (! $this->dateIsValid( $endDate )) {
+			$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
+					Environment::getInstance()->getSettingDateFormat()
 			) );
 			$all_data ['enddate_error'] = 1;
 			$valid_data = false;
 		}
 
 		if (! $fileName) {
-			add_error( ErrorCode::FILEUPLOAD_FAILED );
+			$this->add_error( ErrorCode::FILEUPLOAD_FAILED );
 			$valid_data = false;
 		}
 
@@ -98,7 +99,7 @@ class moduleCompare extends module {
 				foreach ( $result ['errors'] as $validationResult ) {
 					$valid_data = false;
 					$error = $validationResult ['error'];
-					add_error( $error );
+					$this->add_error( $error );
 				}
 			}
 		}

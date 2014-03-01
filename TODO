@@ -15,12 +15,6 @@ What is currently missing:
 
 ###########################################################################################################################
 
-Client stuff:
- - introduce Environment() instead of const / global / session handling of different user specific stuff (dateformat, language, userid)
- - migrate functions.php to module.php as much as possible
-
-###########################################################################################################################
-
 Bugs detected so far:
    - predefmoneyflows: edit moneyflow with out-of-daterange capitalsource - do not allow to save it!
    - when a new month start and after the login the settlement question is raised - the new window should open in the

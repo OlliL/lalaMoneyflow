@@ -24,12 +24,13 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.83 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.84 2014/03/01 20:46:42 olivleh1 Exp $
 //
 namespace client\module;
 
 use base\ErrorCode;
 use client\handler\MoneyflowControllerHandler;
+use client\util\Environment;
 
 class moduleMoneyFlows extends module {
 
@@ -48,21 +49,21 @@ class moduleMoneyFlows extends module {
 				$valid_data = true;
 				$all_data ['moneyflowid'] = $id;
 
-				if (! fix_amount( $all_data ['amount'] )) {
+				if (! $this->fix_amount( $all_data ['amount'] )) {
 					$all_data ['amount_error'] = 1;
 					$valid_data = false;
 				}
 
-				if (! dateIsValid( $all_data ['bookingdate'] )) {
-					add_error( ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT, array (
-							GUI_DATE_FORMAT
+				if (! $this->dateIsValid( $all_data ['bookingdate'] )) {
+					$this->add_error( ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT, array (
+							Environment::getInstance()->getSettingDateFormat()
 					) );
 					$all_data ['bookingdate_error'] = 1;
 					$valid_data = false;
 				}
-				if (! dateIsValid( $all_data ['invoicedate'] )) {
-					add_error( ErrorCode::INVOICEDATE_IN_WRONG_FORMAT, array (
-							GUI_DATE_FORMAT
+				if (! $this->dateIsValid( $all_data ['invoicedate'] )) {
+					$this->add_error( ErrorCode::INVOICEDATE_IN_WRONG_FORMAT, array (
+							Environment::getInstance()->getSettingDateFormat()
 					) );
 					$all_data ['invoicedate_error'] = 1;
 					$valid_data = false;
@@ -81,17 +82,17 @@ class moduleMoneyFlows extends module {
 
 							switch ($error) {
 								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-									add_error( $error, array (
+									$this->add_error( $error, array (
 											$orig_amount
 									) );
 									break;
 								case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
-									add_error( $error, array (
-											GUI_DATE_FORMAT
+									$this->add_error( $error, array (
+											Environment::getInstance()->getSettingDateFormat()
 									) );
 									break;
 								default :
-									add_error( $error );
+									$this->add_error( $error );
 							}
 
 							switch ($error) {
@@ -154,23 +155,23 @@ class moduleMoneyFlows extends module {
 				foreach ( $all_data as $id => $value ) {
 					if ($value ['checked'] == 1) {
 
-						if (! fix_amount( $value ['amount'] )) {
+						if (! $this->fix_amount( $value ['amount'] )) {
 							$all_data [$id] ['amount_error'] = 1;
 							$data_is_valid = false;
 						}
 						$nothing_checked = false;
 						if (! empty( $value ['invoicedate'] )) {
-							if (! dateIsValid( $value ['invoicedate'] )) {
-								add_error( ErrorCode::INVOICEDATE_IN_WRONG_FORMAT, array (
-										GUI_DATE_FORMAT
+							if (! $this->dateIsValid( $value ['invoicedate'] )) {
+								$this->add_error( ErrorCode::INVOICEDATE_IN_WRONG_FORMAT, array (
+										Environment::getInstance()->getSettingDateFormat()
 								) );
 								$all_data [$id] ['invoicedate_error'] = 1;
 							}
 						}
 
-						if (! dateIsValid( $value ['bookingdate'] )) {
-							add_error( ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT, array (
-									GUI_DATE_FORMAT
+						if (! $this->dateIsValid( $value ['bookingdate'] )) {
+							$this->add_error( ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT, array (
+									Environment::getInstance()->getSettingDateFormat()
 							) );
 							$all_data [$id] ['bookingdate_error'] = 1;
 							$data_is_valid = false;
@@ -182,7 +183,7 @@ class moduleMoneyFlows extends module {
 				}
 
 				if ($nothing_checked) {
-					add_error( ErrorCode::NOTHING_MARKED_TO_ADD );
+					$this->add_error( ErrorCode::NOTHING_MARKED_TO_ADD );
 					$data_is_valid = false;
 				}
 
@@ -207,17 +208,17 @@ class moduleMoneyFlows extends module {
 
 							switch ($error) {
 								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-									add_error( $error, array (
+									$this->add_error( $error, array (
 											$all_data [$key] ['amount']
 									) );
 									break;
 								case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
-									add_error( $error, array (
-											GUI_DATE_FORMAT
+									$this->add_error( $error, array (
+											Environment::getInstance()->getSettingDateFormat()
 									) );
 									break;
 								default :
-									add_error( $error );
+									$this->add_error( $error );
 							}
 
 							switch ($error) {
@@ -266,7 +267,7 @@ class moduleMoneyFlows extends module {
 
 					// clean the array before filling it.
 					$all_data = array ();
-					$date = convert_date_to_gui( date( 'Y-m-d' ) );
+					$date = $this->convertDateToGui( date( 'Y-m-d' ) );
 
 					for($i = $numflows; $i > 0; $i --) {
 						$all_data [$numflows - $i] = array (

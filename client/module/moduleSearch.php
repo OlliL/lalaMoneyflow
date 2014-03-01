@@ -24,12 +24,13 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSearch.php,v 1.33 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: moduleSearch.php,v 1.34 2014/03/01 20:46:42 olivleh1 Exp $
 //
 namespace client\module;
 
 use base\ErrorCode;
 use client\handler\MoneyflowControllerHandler;
+use client\util\Environment;
 
 class moduleSearch extends module {
 
@@ -73,9 +74,9 @@ class moduleSearch extends module {
 		$data_is_valid = true;
 
 		if (! empty( $startdate )) {
-			if (! dateIsValid( $startdate )) {
-				add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-						GUI_DATE_FORMAT
+			if (! $this->dateIsValid( $startdate )) {
+				$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
+						Environment::getInstance()->getSettingDateFormat()
 				) );
 				$searchparams ['startdate_error'] = 1;
 				$data_is_valid = false;
@@ -83,9 +84,9 @@ class moduleSearch extends module {
 		}
 
 		if (! empty( $enddate )) {
-			if (! dateIsValid( $enddate )) {
-				add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-						GUI_DATE_FORMAT
+			if (! $this->dateIsValid( $enddate )) {
+				$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
+						Environment::getInstance()->getSettingDateFormat()
 				) );
 				$searchparams ['enddate_error'] = 1;
 				$data_is_valid = false;
@@ -101,7 +102,7 @@ class moduleSearch extends module {
 				$data_is_valid = false;
 				foreach ( $searchMoneyflows ['errors'] as $validationResult ) {
 					$error = $validationResult ['error'];
-					add_error( $error );
+					$this->add_error( $error );
 				}
 			}
 
@@ -159,7 +160,7 @@ class moduleSearch extends module {
 					$this->template->assign( 'COLUMNS', $columns );
 					$this->template->assign( 'RESULTS', $results );
 				} else {
-					add_error( ErrorCode::NO_DATA_FOUND );
+					$this->add_error( ErrorCode::NO_DATA_FOUND );
 				}
 			}
 

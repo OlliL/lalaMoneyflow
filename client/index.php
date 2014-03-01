@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.77 2014/03/01 19:32:34 olivleh1 Exp $
+// $Id: index.php,v 1.78 2014/03/01 20:46:43 olivleh1 Exp $
 //
 namespace client;
 
@@ -45,9 +45,21 @@ use client\module\moduleCompare;
 use client\module\moduleFrontPage;
 use client\util\utilTimer;
 use client\util\Environment;
+use client\util\ErrorHandler;
 
 require_once 'include.php';
-require_once 'functions.php';
+
+function convert_array_to_utf8($arr) {
+	foreach ( $arr as $key => $value ) {
+		if (is_array( $value )) {
+			$arr [$key] = convert_array_to_utf8( $value );
+		} else if (! mb_check_encoding( $value, 'UTF-8' )) {
+			$arr [$key] = utf8_encode( $value );
+		}
+	}
+
+	return $arr;
+}
 
 session_start();
 
@@ -80,7 +92,7 @@ if ($is_logged_in == 2) {
 	/* user is new and must change his password */
 
 	if (empty( $_POST ['realaction'] ) || $_POST ['realaction'] != 'save') {
-		add_error( ErrorCode::PASSWORD_MUST_BE_CHANGED );
+		ErrorHandler::addError( ErrorCode::PASSWORD_MUST_BE_CHANGED );
 	}
 	$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 	$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
@@ -105,8 +117,6 @@ if ($is_logged_in == 2) {
 // error_reporting( E_ALL );
 
 if ($is_logged_in == 0) {
-
-	define( 'GUI_DATE_FORMAT', Environment::getInstance()->getSettingDateFormat() );
 
 	$display = $moduleEvents->check_events();
 
@@ -244,7 +254,7 @@ if ($is_logged_in == 0) {
 		// UTF8 needed for REST-server communication - german umlauts will generate errors otherwise (for example)
 		if (array_key_exists( 'all_data', $_REQUEST ) && is_array( $_REQUEST ['all_data'] )) {
 			$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
-			$all_data = convert_array_to_utf8( $all_data );
+			$all_data = convert_array_to_utf8($all_data);
 		}
 
 		switch ($action) {

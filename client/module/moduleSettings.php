@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSettings.php,v 1.31 2014/03/01 19:32:34 olivleh1 Exp $
+// $Id: moduleSettings.php,v 1.32 2014/03/01 20:46:42 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -47,10 +47,10 @@ class moduleSettings extends module {
 				$data_is_valid = true;
 				if ($all_data ['date_data1'] == $all_data ['date_data2'] || $all_data ['date_data1'] == $all_data ['date_data3'] || $all_data ['date_data2'] == $all_data ['date_data3']) {
 					$data_is_valid = false;
-					add_error( ErrorCode::INVALID_DATE_FORMAT_CHOOSEN );
+					$this->add_error( ErrorCode::INVALID_DATE_FORMAT_CHOOSEN );
 				}
 				if ($all_data ['password'] != $all_data ['password2']) {
-					add_error( ErrorCode::PASSWORD_NOT_MATCHING );
+					$this->add_error( ErrorCode::PASSWORD_NOT_MATCHING );
 					$data_is_valid = false;
 				}
 
@@ -88,7 +88,7 @@ class moduleSettings extends module {
 				$data_is_valid = true;
 				if ($all_data ['date_data1'] == $all_data ['date_data2'] || $all_data ['date_data1'] == $all_data ['date_data3'] || $all_data ['date_data2'] == $all_data ['date_data3']) {
 					$data_is_valid = false;
-					add_error( ErrorCode::INVALID_DATE_FORMAT_CHOOSEN );
+					$this->add_error( ErrorCode::INVALID_DATE_FORMAT_CHOOSEN );
 				}
 
 				if ($data_is_valid === true) {

@@ -24,12 +24,13 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.37 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.38 2014/03/01 20:46:42 olivleh1 Exp $
 //
 namespace client\module;
 
 use base\ErrorCode;
 use client\handler\ContractpartnerControllerHandler;
+use client\util\Environment;
 
 class moduleContractPartners extends module {
 
@@ -56,16 +57,16 @@ class moduleContractPartners extends module {
 			case 'save' :
 				$valid_data = true;
 				$all_data ['contractpartnerid'] = $contractpartnerid;
-				if (! dateIsValid( $all_data ['validfrom'] )) {
-					add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-							GUI_DATE_FORMAT
+				if (! $this->dateIsValid( $all_data ['validfrom'] )) {
+					$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
+							Environment::getInstance()->getSettingDateFormat()
 					) );
 					$all_data ['validfrom_error'] = 1;
 					$valid_data = false;
 				}
-				if (! dateIsValid( $all_data ['validtil'] )) {
-					add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-							GUI_DATE_FORMAT
+				if (! $this->dateIsValid( $all_data ['validtil'] )) {
+					$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
+							Environment::getInstance()->getSettingDateFormat()
 					) );
 					$all_data ['validtil_error'] = 1;
 					$valid_data = false;
@@ -83,7 +84,7 @@ class moduleContractPartners extends module {
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
 
-							add_error( $error );
+							$this->add_error( $error );
 
 							switch ($error) {
 								case ErrorCode::NAME_ALREADY_EXISTS :
@@ -103,8 +104,8 @@ class moduleContractPartners extends module {
 						$all_data ['postcode'] = '';
 						$all_data ['town'] = '';
 						$all_data ['country'] = '';
-						$all_data ['validfrom'] = convert_date_to_gui( date( 'Y-m-d' ) );
-						$all_data ['validtil'] = convert_date_to_gui( MAX_YEAR );
+						$all_data ['validfrom'] = $this->convertDateToGui( date( 'Y-m-d' ) );
+						$all_data ['validtil'] = $this->convertDateToGui( MAX_YEAR );
 
 						$all_data ['name_error'] = 0;
 						$all_data ['validfrom_error'] = 0;

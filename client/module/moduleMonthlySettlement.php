@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.57 2014/03/01 19:32:34 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.58 2014/03/01 20:46:42 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -101,7 +101,7 @@ class moduleMonthlySettlement extends module {
 
 				foreach ( $all_data as $id => $value ) {
 					if (is_array( $value )) {
-						if (! fix_amount( $value ['amount'] )) {
+						if (! $this->fix_amount( $value ['amount'] )) {
 							$all_data [$id] ['amount_error'] = 1;
 							$data_is_valid = false;
 						}
@@ -116,7 +116,7 @@ class moduleMonthlySettlement extends module {
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
 
-							add_error( $error );
+							$this->add_error( $error );
 
 							switch ($error) {
 								// case ErrorCode::NAME_ALREADY_EXISTS :

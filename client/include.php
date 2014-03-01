@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.29 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: include.php,v 1.30 2014/03/01 20:46:43 olivleh1 Exp $
 //
 
 // ########
@@ -37,7 +37,7 @@ const LOGIN_FORM_LANGUAGE = 1;
 // jpgraph is used for plotting trends
 define( 'ENABLE_JPGRAPH', true );
 
-define( 'ENCODING', 'ISO-8859-15' );
+const ENCODING = 'ISO-8859-15';
 const ROOTDIR = '/mnt/files/www/sites/olli.homeip.net/htdocs/moneyflow/';
 const HTTPFULSUBDIR = 'contrib/httpful/src/';
 

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.85 2014/03/01 19:32:34 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.86 2014/03/01 20:46:42 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -237,8 +237,8 @@ class moduleReports extends module {
 	}
 
 	public final function plot_graph($all_capitalsources_ids, $startmonth, $startyear, $endmonth, $endyear) {
-		$startdate = new DateTime( $startyear . "-" . $startmonth . "-01" );
-		$enddate = new DateTime( $endyear . "-" . $endmonth . "-01" );
+		$startdate = new \DateTime( $startyear . "-" . $startmonth . "-01" );
+		$enddate = new \DateTime( $endyear . "-" . $endmonth . "-01" );
 		$showTrendsGraph = ReportControllerHandler::getInstance()->showTrendsGraph( $all_capitalsources_ids, $startdate, $enddate );
 
 		$graph_comment = $this->coreText->get_graph( 168 );
@@ -269,7 +269,7 @@ class moduleReports extends module {
 			$monthly2_data = NULL;
 		}
 
-		$graph = new Graph( 700, 400 );
+		$graph = new \Graph( 700, 400 );
 		$graph->SetMargin( 50, 20, 40, 35 );
 		$graph->SetScale( "intlin" );
 		$graph->SetMarginColor( '#E6E6FA' );
@@ -279,20 +279,20 @@ class moduleReports extends module {
 				0
 		), 0 );
 
-		$txt = new Text( $graph_comment . "\n" . $graph_from . $monthly_x [0] . $graph_until . end( $monthly_x ) );
+		$txt = new \Text( $graph_comment . "\n" . $graph_from . $monthly_x [0] . $graph_until . end( $monthly_x ) );
 		$txt->SetFont( FF_FONT1, FS_BOLD );
 		$txt->Center( 0, 700 );
 		$txt->ParagraphAlign( 'center' );
 		$graph->AddText( $txt );
 
-		$p1 = new LinePlot( $monthly_data );
+		$p1 = new \LinePlot( $monthly_data );
 		$p1->SetWeight( 1 );
 		$p1->SetFillGradient( '#E6E6FA', '#B0C4DE' );
 		$p1->mark->SetType( MARK_STAR );
 		$graph->Add( $p1 );
 
 		if (is_array( $monthly2_data )) {
-			$p2 = new LinePlot( $monthly2_data );
+			$p2 = new \LinePlot( $monthly2_data );
 			$p2->SetWeight( 1 );
 			$p2->SetFillGradient( '#aeaefa', '#689bde' );
 			$p2->mark->SetType( MARK_STAR );

@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractHandler.php,v 1.7 2014/03/01 19:32:34 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.8 2014/03/01 20:46:43 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -41,6 +41,7 @@ use base\RESTAuthorization;
 use Httpful\Http;
 use client\module\moduleUsers;
 use client\util\Environment;
+use client\util\ErrorHandler;
 
 abstract class AbstractHandler extends AbstractJsonSender {
 	private $userName;
@@ -60,7 +61,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 	private final function handle_result($result) {
 		if (! is_array( $result )) {
 			echo '<font color="red"><u>Server Error occured</u><pre>' . $result . '</pre></font><br>';
-			add_error( ErrorCode::ATTENTION );
+			ErrorHandler::addError( ErrorCode::ATTENTION );
 			return false;
 		} else if (array_key_exists( 'validationResponse', $result )) {
 			$validationResponse = JsonAutoMapper::mapAToB( $result, '\\api\\model\\validation' );
@@ -70,9 +71,9 @@ abstract class AbstractHandler extends AbstractJsonSender {
 		} else if (array_key_exists( 'error', $result )) {
 			if ($result ['error'] ['code'] < 0) {
 				echo '<font color="red"><u>Server Error occured</u><pre>' . $result ['error'] ['message'] . '</pre></font><br>';
-				add_error( ErrorCode::ATTENTION );
+				ErrorHandler::addError( ErrorCode::ATTENTION );
 			}
-			add_error( $result ['error'] ['code'] );
+			ErrorHandler::addError( $result ['error'] ['code'] );
 			switch ($result ['error'] ['code']) {
 				case ErrorCode::LOGGED_OUT :
 				case ErrorCode::CLIENT_CLOCK_OFF :

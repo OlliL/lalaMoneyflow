@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.55 2014/03/01 17:11:14 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.56 2014/03/01 20:46:42 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -60,8 +60,8 @@ class modulePreDefMoneyFlows extends module {
 				$all_data ['amount_error'] = 0;
 				$all_data ['capitalsource_error'] = 0;
 				$all_data ['contractpartner_error'] = 0;
-				if (! fix_amount( $all_data ['amount'] )) {
-					add_error( ErrorCode::AMOUNT_IN_WRONG_FORMAT, array (
+				if (! $this->fix_amount( $all_data ['amount'] )) {
+					$this->add_error( ErrorCode::AMOUNT_IN_WRONG_FORMAT, array (
 							$all_data ['amount']
 					) );
 					break;
@@ -88,12 +88,12 @@ class modulePreDefMoneyFlows extends module {
 
 							switch ($error) {
 								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-									add_error( $error, array (
+									$this->add_error( $error, array (
 											$all_data ['amount']
 									) );
 									break;
 								default :
-									add_error( $error );
+									$this->add_error( $error );
 							}
 
 							switch ($error) {
