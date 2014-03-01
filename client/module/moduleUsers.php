@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.48 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.49 2014/03/01 17:10:17 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -91,7 +91,6 @@ class moduleUsers extends module {
 		if ($loginok == 1) {
 			return;
 		} else {
-			define( USERID, 0 );
 			parent::setGuiLanguage( LOGIN_FORM_LANGUAGE );
 			$this->template->assign( 'NAME', $name );
 			$this->template->assign( 'STAY_LOGGED_IN', $stay_logged_in );
