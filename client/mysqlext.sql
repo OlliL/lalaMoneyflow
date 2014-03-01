@@ -59,31 +59,6 @@ CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_monthlysettlements (
              AND mms.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5);
 
 /*
- * this view will show all data from postingaccounts which is visible
- * to a user. Use maf_id in your SELECT for your userid. In
- * mac_id_creator you'll find the original userid of the creator
- */
-CREATE OR REPLACE SQL SECURITY INVOKER VIEW vw_postingaccounts (
-   mac_id_creator
-  ,maf_id
-  ,mac_id_accessor
-  ,postingaccountid
-  ,postingaccountname
-  ,maf_validfrom
-  ,maf_validtil
-  ) AS
-      SELECT mpa.mac_id_creator
-            ,maf.id
-            ,mpa.mac_id_accessor
-            ,mpa.postingaccountid
-            ,mpa.postingaccountname
-            ,maf.validfrom maf_validfrom
-            ,maf.validtil  maf_validtil
-        FROM postingaccounts  mpa
-            ,access_flattened maf
-       WHERE mpa.mac_id_accessor IN (maf.id_level_1,maf.id_level_2,maf.id_level_3,maf.id_level_4,maf.id_level_5);
-
-/*
  * this view will show all data from contractpartners which is visible
  * to a user. Use maf_id in your SELECT for your userid. In
  * mac_id_creator you'll find the original userid of the creator
