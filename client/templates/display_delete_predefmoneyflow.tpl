@@ -17,16 +17,23 @@
 			<input type="hidden" name="REFERER"           value="{$ENV_REFERER}">
 			<table border=0>
 				<tr>
-				 	 <th width="80" >{#TEXT_18#}</th>
-				 	 <th width="200">{#TEXT_2#}</th>
-				 	 <th width="200">{#TEXT_21#}</th>
-				 	 <th width="200">{#TEXT_19#}</th>
+					<th width="75">{#TEXT_18#}</th>
+					<th width="130">{#TEXT_2#}</th>
+					<th width="180">{#TEXT_21#}</th>
+					<th width="150">{#TEXT_232#}</th>
+					<th width="150">{#TEXT_19#}</th>
+					<th width="20">{#TEXT_206#}</th>
+					<th width="80">{#TEXT_207#}</th>
+
 				</tr>
 				<tr>
 					<td class="contrastbgcolor" align="right">{$ALL_DATA.amount|string_format:"%.2f"} {#CURRENCY#}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.contractpartnername|escape:htmlall}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.comment|escape:htmlall}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.postingaccountname|escape:htmlall}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.capitalsourcecomment|escape:htmlall}</td>
+					<td class="contrastbgcolor">{if $ALL_DATA.once_a_month == 1}{#TEXT_25#}{else}{#TEXT_26#}{/if}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.last_used}</td>
 				</tr>
 			</table>
 			<input type="submit" value="{#TEXT_25#}">

@@ -15,10 +15,11 @@
 				<br><br>
 				<table border=0 align="center" cellpadding=2>
 					<tr>
-						<th width="85">{#TEXT_18#}</th>
+						<th width="75">{#TEXT_18#}</th>
 						<th width="130">{#TEXT_2#}</th>
-						<th width="240">{#TEXT_21#}</th>
-						<th width="180">{#TEXT_19#}</th>
+						<th width="180">{#TEXT_21#}</th>
+						<th width="150">{#TEXT_232#}</th>
+						<th width="150">{#TEXT_19#}</th>
 						<th width="20">{#TEXT_206#}</th>
 						<th width="80">{#TEXT_207#}</th>
 						<th width="20">&nbsp</th>
@@ -29,6 +30,7 @@
 							<td class="contrastbgcolor" align="right"><font {if $ALL_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_DATA[DATA].amount|number_format} {#CURRENCY#}</font></td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].contractpartnername|escape:htmlall}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].comment|escape:htmlall}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].postingaccountname|escape:htmlall}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].capitalsourcecomment|escape:htmlall}</td>
 							<td class="contrastbgcolor">{if $ALL_DATA[DATA].once_a_month == 1}{#TEXT_25#}{else}{#TEXT_26#}{/if}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].last_used}</td>

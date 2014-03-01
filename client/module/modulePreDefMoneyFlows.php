@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.54 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.55 2014/03/01 17:11:14 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -82,6 +82,7 @@ class modulePreDefMoneyFlows extends module {
 					} else {
 						$capitalsource_values = $ret ['capitalsources'];
 						$contractpartner_values = $ret ['contractpartner'];
+						$postingaccount_values = $ret ['postingaccounts'];
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
 
@@ -120,10 +121,12 @@ class modulePreDefMoneyFlows extends module {
 					$all_data = $showEditPreDefMoneyflow ['predefmoneyflow'];
 					$capitalsource_values = $showEditPreDefMoneyflow ['capitalsources'];
 					$contractpartner_values = $showEditPreDefMoneyflow ['contractpartner'];
+					$postingaccount_values = $showEditPreDefMoneyflow ['postingaccounts'];
 				} else {
 					$showCreatePreDefMoneyflow = PreDefMoneyflowControllerHandler::getInstance()->showCreatePreDefMoneyflow();
 					$capitalsource_values = $showCreatePreDefMoneyflow ['capitalsources'];
 					$contractpartner_values = $showCreatePreDefMoneyflow ['contractpartner'];
+					$postingaccount_values = $showCreatePreDefMoneyflow ['postingaccounts'];
 					$all_data = array (
 							'amount' => null,
 							'mcp_contractpartnerid' => '',
@@ -142,6 +145,7 @@ class modulePreDefMoneyFlows extends module {
 		$this->template->assign( 'PREDEFMONEYFLOWID', $predefmoneyflowid );
 		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
+		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );

@@ -1,6 +1,8 @@
 - move session controller stuff to settings to get the initial settings -  no extra "logon" required.
 - all BOs should get an Accessor object
 
+- consider creating an "AbstractMoneyflow" -> Moneyflow / PreDefMoneyflow....
+
 further thoughts:
    - consider Conductor handling for showEdit*... -> edit* -> Error -> re-use the showEdit functionality
    - maybe extra Validator Classes with insert/update/delete relevant validations and not in the Service
@@ -11,7 +13,6 @@ further thoughts:
 What is currently missing:
 
  - Posting Accounts cannot be listed, edited, deleted, added
- - PredefMoneyflows can not be assigned with default Posting Accounts
 
 ###########################################################################################################################
 

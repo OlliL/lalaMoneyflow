@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PreDefMoneyflowTransport.php,v 1.3 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: PreDefMoneyflowTransport.php,v 1.4 2014/03/01 17:11:15 olivleh1 Exp $
 //
 namespace api\model\transport;
 
@@ -41,6 +41,8 @@ class PreDefMoneyflowTransport {
 	public $createdate;
 	public $onceAMonth;
 	public $lastUsed;
+	public $postingaccountid;
+	public $postingaccountname;
 
 	public final function setId($id) {
 		$this->id = $id;
@@ -128,6 +130,22 @@ class PreDefMoneyflowTransport {
 
 	public final function getLastUsed() {
 		return $this->lastUsed;
+	}
+
+	public final function setPostingaccountid($postingaccountid) {
+		$this->postingaccountid = $postingaccountid;
+	}
+
+	public final function setPostingaccountname($postingaccountname) {
+		$this->postingaccountname = $postingaccountname;
+	}
+
+	public final function getPostingaccountid() {
+		return $this->postingaccountid;
+	}
+
+	public final function getPostingaccountname() {
+		return $this->postingaccountname;
 	}
 }
 
