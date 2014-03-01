@@ -1,4 +1,3 @@
-- move session controller stuff to settings to get the initial settings -  no extra "logon" required.
 - all BOs should get an Accessor object
 
 - consider creating an "AbstractMoneyflow" -> Moneyflow / PreDefMoneyflow....

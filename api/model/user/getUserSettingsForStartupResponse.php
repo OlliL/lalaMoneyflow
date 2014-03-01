@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: doLogonResponse.php,v 1.7 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: getUserSettingsForStartupResponse.php,v 1.1 2014/03/01 17:30:21 olivleh1 Exp $
 //
-namespace api\model\session;
+namespace api\model\user;
 
-class doLogonResponse {
+class getUserSettingsForStartupResponse {
 	public $userId;
 	public $settingDateFormat;
 	public $settingDisplayedLanguage;

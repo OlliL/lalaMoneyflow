@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: UserControllerHandler.php,v 1.9 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: UserControllerHandler.php,v 1.10 2014/03/01 17:30:21 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -55,6 +55,22 @@ class UserControllerHandler extends AbstractHandler {
 		return 'user';
 	}
 
+	public final function getUserSettingsForStartup($name) {
+		$response = parent::getJson( 'getUserSettingsForStartup', array (
+				$name
+		) );
+		if (is_array( $response )) {
+			$getUserSettingsForStartup = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
+			$result = array (
+					'mur_userid' => $getUserSettingsForStartup->getUserid(),
+					'dateformat' => $getUserSettingsForStartup->getSettingDateFormat(),
+					'displayed_language' => $getUserSettingsForStartup->getSettingDisplayedLanguage(),
+					'att_new' => $getUserSettingsForStartup->getAttributeNew(),
+					'perm_admin' => $getUserSettingsForStartup->getPermissionAdmin()
+			);
+		}
+		return $result;
+	}
 	public final function showUserList($restriction) {
 		$response = parent::getJson( 'showUserList', array (
 				utf8_encode( $restriction )

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.49 2014/03/01 17:10:17 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.50 2014/03/01 17:30:21 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -72,7 +72,7 @@ class moduleUsers extends module {
 
 				$this->coreSession->setAttribute( 'user_name', $name );
 				$this->coreSession->setAttribute( 'user_password', sha1( $password ) );
-				$session = SessionControllerHandler::getInstance()->doLogon( $name, sha1( $password ) );
+				$session = UserControllerHandler::getInstance()->getUserSettingsForStartup($name);
 				if ($session) {
 					$this->coreSession->setAttribute( 'users_id', $session ['mur_userid'] );
 					$this->coreSession->setAttribute( 'date_format', $session ['dateformat'] );

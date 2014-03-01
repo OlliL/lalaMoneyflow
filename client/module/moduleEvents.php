@@ -24,11 +24,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleEvents.php,v 1.13 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: moduleEvents.php,v 1.14 2014/03/01 17:30:21 olivleh1 Exp $
 //
 namespace client\module;
 
-use client\handler\SessionControllerHandler;
 use client\handler\EventControllerHandler;
 use client\core\coreSession;
 
