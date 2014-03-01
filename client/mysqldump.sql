@@ -49,7 +49,7 @@ CREATE TABLE access_relation (
   validtil date NOT NULL,
   PRIMARY KEY (id,validfrom),
   KEY mar_i_01 (ref_id),
-  CONSTRAINT mar_mac_pk_01 FOREIGN KEY (id) REFERENCES access (id) ON UPDATE CASCADE,
+  CONSTRAINT mar_mac_pk_01 FOREIGN KEY (id) REFERENCES access (id),
   CONSTRAINT mar_mac_pk_02 FOREIGN KEY (ref_id) REFERENCES access (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -176,12 +176,12 @@ CREATE TABLE moneyflows (
   mpa_postingaccountid int(10) unsigned NOT NULL,
   private tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (moneyflowid),
-  KEY mmf_mpa_pk (mpa_postingaccountid),
   KEY mmf_i_01 (bookingdate,mac_id_accessor,moneyflowid),
   KEY mmf_mac_pk_01 (mac_id_creator),
   KEY ` mmf_mac_pk_02` (mac_id_accessor),
   KEY mmf_mcs_pk (mcs_capitalsourceid),
   KEY mmf_mcp_pk (mcp_contractpartnerid),
+  KEY mmf_mpa_pk (mpa_postingaccountid),
   CONSTRAINT mmf_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid),
   CONSTRAINT mmf_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id),
   CONSTRAINT mmf_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id),
@@ -225,15 +225,8 @@ DROP TABLE IF EXISTS postingaccounts;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE postingaccounts (
   postingaccountid int(10) unsigned NOT NULL AUTO_INCREMENT,
-  mac_id_creator int(10) unsigned NOT NULL,
-  mac_id_accessor int(10) unsigned NOT NULL,
   postingaccountname varchar(20) NOT NULL,
-  PRIMARY KEY (postingaccountid,mac_id_accessor),
-  UNIQUE KEY mpa_i_01 (postingaccountname,mac_id_accessor),
-  KEY mpa_mac_pk_01 (mac_id_creator),
-  KEY mpa_mac_pk_02 (mac_id_accessor),
-  CONSTRAINT mpa_mac_pk_01 FOREIGN KEY (mac_id_creator) REFERENCES access (id),
-  CONSTRAINT mpa_mac_pk_02 FOREIGN KEY (mac_id_accessor) REFERENCES access (id)
+  PRIMARY KEY (postingaccountid)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mpa';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -254,11 +247,14 @@ CREATE TABLE predefmoneyflows (
   createdate date NOT NULL,
   once_a_month tinyint(1) unsigned NOT NULL DEFAULT '0',
   last_used date DEFAULT NULL,
+  mpa_postingaccountid int(10) unsigned NOT NULL,
   PRIMARY KEY (predefmoneyflowid),
-  KEY mpm_mcs_pk (mcs_capitalsourceid),
   KEY mpm_mac_pk (mac_id),
+  KEY mpm_mpa_pk (mpa_postingaccountid),
+  KEY mpm_mcs_pk (mcs_capitalsourceid),
+  CONSTRAINT mpm_mpa_pk FOREIGN KEY (mpa_postingaccountid) REFERENCES postingaccounts (postingaccountid),
   CONSTRAINT mpm_mac_pk FOREIGN KEY (mac_id) REFERENCES access (id),
-  CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid) ON UPDATE CASCADE
+  CONSTRAINT mpm_mcs_pk FOREIGN KEY (mcs_capitalsourceid) REFERENCES capitalsources (capitalsourceid)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mpm';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -345,7 +341,7 @@ CREATE TABLE cmp_data_formats (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-02-23 13:11:04
+-- Dump completed on 2014-03-01 18:13:18
 INSERT INTO cmp_data_formats VALUES (1,'Postbank Direkt','/^Datum	Wertstellung	Art/','	',1,5,7,4,'DD.MM.YYYY',',','.',6,3,'/^(Überweisung|Dauerauftrag)/');
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','/^Buchungstag	Wertstellungstag	Verwendungszweck/','	',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','/^\"Buchungstag\";\"Wertstellung\";\"Umsatzart\"/',';',1,6,7,4,'DD.MM.YYYY',',','.',5,3,'/^(Gutschrift|Gehalt)/');
