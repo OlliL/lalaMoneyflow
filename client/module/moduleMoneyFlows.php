@@ -1,6 +1,4 @@
 <?php
-use base\ErrorCode;
-use client\handler\MoneyflowControllerHandler;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -26,9 +24,12 @@ use client\handler\MoneyflowControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.82 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.83 2014/03/01 00:48:59 olivleh1 Exp $
 //
-require_once 'module/module.php';
+namespace client\module;
+
+use base\ErrorCode;
+use client\handler\MoneyflowControllerHandler;
 
 class moduleMoneyFlows extends module {
 

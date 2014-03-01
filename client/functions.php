@@ -25,9 +25,16 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: functions.php,v 1.24 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: functions.php,v 1.25 2014/03/01 00:48:59 olivleh1 Exp $
 //
 use base\ErrorCode;
+
+function my_number_format($number) {
+	// to not change NULL to 0.00 - for example in display_add_moneyflow at the empty lines
+	if ($number !== null)
+		return number_format( $number, 2 );
+}
+
 function add_error($id, $args = NULL) {
 	global $ERRORS;
 	if (is_array( $args )) {
@@ -76,8 +83,6 @@ function dateIsValid($date) {
 		return false;
 	}
 }
-
-
 
 function convert_date_to_gui($date, $dateformat = GUI_DATE_FORMAT) {
 	if (empty( $date ))

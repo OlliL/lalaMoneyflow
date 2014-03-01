@@ -2,20 +2,20 @@
        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 {if $CLOSE != 1}
-	<head><title>lalaMoneyflow: {if $ALL_DATA.id > 0}{#TEXT_99#}{else}{#TEXT_100#}{/if}</title>
+	<head><title>lalaMoneyflow: {if $USERID > 0}{#TEXT_99#}{else}{#TEXT_100#}{/if}</title>
 {$HEADER}
 
 		<td align="center">
 		{section name=ERROR loop=$ERRORS}
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br>
 		{/section}
-		{if $ALL_DATA.userid gt 0}
+		{if $USERID gt 0}
 			<table><tr><td>
 		{/if}
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action"     value="edit_user">
 			<input type="hidden" name="realaction" value="save">
-			<input type="hidden" name="userid"     value="{$ALL_DATA.userid}">
+			<input type="hidden" name="userid"     value="{$USERID}">
 			<input type="hidden" name="REFERER"    value="{$ENV_REFERER}">
 			<table border=0>
 				<tr>
@@ -71,7 +71,7 @@
 						</select>
 					</td>
 				</tr>
-				{if $ALL_DATA.userid gt 0}
+				{if $USERID gt 0}
 				<tr>
 					<th>{#TEXT_34#}</th>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="access_relation[validfrom]"          size=10 value="{$ACCESS_RELATION.validfrom}"{if $ACCESS_RELATION.validfrom_error == 1} style="color:red"{/if}></td>
@@ -82,7 +82,7 @@
 			<input type="submit" value="{#TEXT_22#}">
 			<input type="button" value="{#TEXT_23#}" onclick="javascript:void self.close();">
 		</form>
-		{if $ALL_DATA.userid gt 0}
+		{if $USERID gt 0}
 		</td><td style="border-right:solid #000000"></td>
 		<td valign="top" align="center" style="padding-left:10px">
 

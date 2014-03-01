@@ -1,6 +1,4 @@
 <?php
-use client\handler\SessionControllerHandler;
-use client\handler\EventControllerHandler;
 //
 // Copyright (c) 2009-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -26,14 +24,18 @@ use client\handler\EventControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleEvents.php,v 1.12 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: moduleEvents.php,v 1.13 2014/03/01 00:48:59 olivleh1 Exp $
 //
-require_once 'module/module.php';
-require_once 'core/coreSession.php';
+namespace client\module;
+
+use client\handler\SessionControllerHandler;
+use client\handler\EventControllerHandler;
+use client\core\coreSession;
 
 class moduleEvents extends module {
+	private $coreSession;
 
-	public final function moduleEvents() {
+	public final function __construct() {
 		parent::__construct();
 		$this->coreSession = new coreSession();
 	}
@@ -42,9 +44,9 @@ class moduleEvents extends module {
 		if ($this->coreSession->getAttribute( 'events_shown' ) === false) {
 			$this->coreSession->setAttribute( 'events_shown', true );
 			$events = EventControllerHandler::getInstance()->showEventList();
-			if ($events['mms_missing'] === true) {
-				$this->template->assign( 'MONTH', $events['month'] );
-				$this->template->assign( 'YEAR', $events['year'] );
+			if ($events ['mms_missing'] === true) {
+				$this->template->assign( 'MONTH', $events ['month'] );
+				$this->template->assign( 'YEAR', $events ['year'] );
 
 				$this->parse_header( 1 );
 				return $this->fetch_template( 'display_event_monthlysettlement.tpl' );

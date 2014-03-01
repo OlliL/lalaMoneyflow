@@ -25,14 +25,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: DateUtil.php,v 1.2 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: DateUtil.php,v 1.3 2014/03/01 00:48:59 olivleh1 Exp $
 //
 namespace client\util;
 
 class DateUtil {
 	private static $clientDateFormat;
 
-	private final function getClientDateFormat() {
+	private static final function getClientDateFormat() {
 		if (! self::$clientDateFormat) {
 			$patterns [0] = 'YYYY';
 			$patterns [1] = 'MM';
@@ -47,30 +47,6 @@ class DateUtil {
 		return self::$clientDateFormat;
 	}
 
-	// public static final function convertClientDateToModel($clientDate) {
-	// if (empty( $clientDate ))
-	// return false;
-
-	// $format = self::getClientDateFormat();
-	// $parsedDate = date_parse_from_format( $format, $clientDate );
-
-	// if ($parsedDate ['warning_count'] > 0)
-	// return false;
-
-	// $modelDate = \DateTime::createFromFormat( $format, $clientDate );
-	// if ($modelDate)
-	// $modelDate->setTime( 0, 0, 0 );
-
-	// return $modelDate;
-	// }
-
-	// public static final function convertModelDateToClient($modelDate) {
-	// $format = self::getClientDateFormat();
-
-	// $clientDate = $modelDate->format( $format );
-
-	// return $clientDate;
-	// }
 	public static final function convertClientDateToTransport($clientDate) {
 		if (empty( $clientDate ))
 			return null;

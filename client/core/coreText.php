@@ -24,15 +24,16 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreText.php,v 1.26 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: coreText.php,v 1.27 2014/03/01 00:48:59 olivleh1 Exp $
 //
-require_once 'core/core.php';
+namespace client\core;
 
 class coreText extends core {
 	private $inifile = null;
 	private $guiLanguage;
 
 	public final function __construct($guiLanguage) {
+		parent::__construct();
 		$this->guiLanguage = $guiLanguage;
 	}
 

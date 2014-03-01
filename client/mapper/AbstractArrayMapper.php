@@ -25,43 +25,20 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractArrayMapper.php,v 1.7 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: AbstractArrayMapper.php,v 1.8 2014/03/01 00:48:59 olivleh1 Exp $
 //
 namespace client\mapper;
 
 use client\util\DateUtil;
+
 abstract class AbstractArrayMapper {
-// 	protected final function convertClientDateToModel($clientDate) {
-// 		if (empty( $clientDate ))
-// 			return false;
 
-// 		$format = self::getClientDateFormat();
-// 		$parsedDate = date_parse_from_format( $format, $clientDate );
-
-// 		if ($parsedDate ['warning_count'] > 0)
-// 			return false;
-
-// 		$modelDate = \DateTime::createFromFormat( $format, $clientDate );
-// 		if ($modelDate)
-// 			$modelDate->setTime( 0, 0, 0 );
-
-// 		return $modelDate;
-// 	}
-
-// 	protected final function convertModelDateToClient($modelDate) {
-// 		$format = self::getClientDateFormat();
-
-// 		$clientDate = $modelDate->format( $format );
-
-// 		return $clientDate;
-// 	}
-
-	protected final function convertClientDateToTransport($clientDate) {
-		return DateUtil::convertClientDateToTransport($clientDate);
+	protected static final function convertClientDateToTransport($clientDate) {
+		return DateUtil::convertClientDateToTransport( $clientDate );
 	}
 
-	protected final function convertTransportDateToClient($transportDate) {
-		return DateUtil::convertTransportDateToClient($transportDate);
+	protected static final function convertTransportDateToClient($transportDate) {
+		return DateUtil::convertTransportDateToClient( $transportDate );
 	}
 }
 

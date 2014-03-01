@@ -25,11 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractHandler.php,v 1.5 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.6 2014/03/01 00:48:59 olivleh1 Exp $
 //
 namespace client\handler;
-
-require_once 'core/coreSession.php';
 
 use \Httpful\Request;
 use \Httpful\Httpful;
@@ -41,6 +39,8 @@ use base\JsonAutoMapper;
 use base\ErrorCode;
 use base\RESTAuthorization;
 use Httpful\Http;
+use client\module\moduleUsers;
+use client\core\coreSession;
 
 abstract class AbstractHandler extends AbstractJsonSender {
 	private $userName;
@@ -51,7 +51,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
 		) ) );
-		$coreSession = new \coreSession();
+		$coreSession = new coreSession();
 		$this->userName = $coreSession->getAttribute( 'user_name' );
 		$this->userPassword = $coreSession->getAttribute( 'user_password' );
 	}
@@ -78,8 +78,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 				case ErrorCode::LOGGED_OUT :
 				case ErrorCode::CLIENT_CLOCK_OFF :
 					// FIXME: omg what a hack
-					require_once 'module/moduleUsers.php';
-					$moduleUsers = new \moduleUsers();
+					$moduleUsers = new moduleUsers();
 					$moduleUsers->logout();
 					header( "Location: " . $_SERVER ['PHP_SELF'] );
 					break;

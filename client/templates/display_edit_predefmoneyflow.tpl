@@ -2,14 +2,14 @@
        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 {if $CLOSE != 1}
-	<head><title>lalaMoneyflow: {if $ALL_DATA.predefmoneyflowid > 0}{#TEXT_49#}{else}{#TEXT_12#}{/if}</title>
+	<head><title>lalaMoneyflow: {if $PREDEFMONEYFLOWID > 0}{#TEXT_49#}{else}{#TEXT_12#}{/if}</title>
 {$HEADER}
 
 		<td align="center">
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action"     value="edit_predefmoneyflow">
 			<input type="hidden" name="realaction" value="save">
-			<input type="hidden" name="predefmoneyflowid"     value="{$ALL_DATA.predefmoneyflowid}">
+			<input type="hidden" name="predefmoneyflowid"     value="{$PREDEFMONEYFLOWID}">
 			<input type="hidden" name="REFERER"    value="{$ENV_REFERER}">
 			{section name=ERROR loop=$ERRORS}
 				<font color="#FF0000">{$ERRORS[ERROR]}</font><br>
@@ -23,14 +23,14 @@
 					<th>{#TEXT_206#}</th>
 				</tr>
 				<tr>
-					<td class="contrastbgcolornobr"><input class="contrastbgcolor" type="text" name="all_data[amount]" value="{$ALL_DATA.amount}" align="right" size="8"> {#CURRENCY#}</td>
-					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcp_contractpartnerid]" size=1>
+					<td class="contrastbgcolornobr"><input class="contrastbgcolor" type="text" name="all_data[amount]" value="{$ALL_DATA.amount}" align="right" size="8" {if $ALL_DATA.amount_error == 1}style="color:red"{/if}> {#CURRENCY#}</td>
+					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcp_contractpartnerid]" size="1" {if $ALL_DATA.contractpartner_error == 1}style="color:red"{/if}>
 					{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
 						<option {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $ALL_DATA.mcp_contractpartnerid}selected{/if} value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name|escape:htmlall}
 					{/section}
 					</select></td>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]" value="{$ALL_DATA.comment|escape:htmlall}" size="30"></td>
-					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcs_capitalsourceid]" size=1>
+					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcs_capitalsourceid]" size="1" {if $ALL_DATA.capitalsource_error == 1}style="color:red"{/if}>
 					{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
 						<option {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid == $ALL_DATA.mcs_capitalsourceid}selected{/if} value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}"> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment|escape:htmlall}
 					{/section}

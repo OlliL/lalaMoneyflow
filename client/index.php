@@ -1,5 +1,4 @@
 <?php
-use base\ErrorCode;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -25,35 +24,47 @@ use base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.74 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: index.php,v 1.75 2014/03/01 00:48:59 olivleh1 Exp $
 //
+namespace client;
+
+use base\ErrorCode;
+use client\core\coreSession;
+use client\module\moduleEvents;
+use client\module\moduleUsers;
+use client\module\moduleSettings;
+use client\module\moduleCapitalSources;
+use client\module\moduleContractPartners;
+use client\module\modulePreDefMoneyFlows;
+use client\module\moduleMoneyFlows;
+use client\module\moduleMonthlySettlement;
+use client\module\moduleReports;
+use client\module\moduleSearch;
+use client\module\moduleLanguages;
+use client\module\moduleGroups;
+use client\module\moduleCompare;
+use client\module\moduleFrontPage;
+use client\util\utilTimer;
+
 require_once 'include.php';
 require_once 'functions.php';
-require_once 'core/coreSession.php';
-require_once 'module/moduleEvents.php';
-require_once 'module/moduleSettings.php';
-require_once 'module/moduleUsers.php';
 
 if ($money_debug === true) {
-	require_once 'util/utilTimer.php';
 	$timer = new utilTimer();
 	$timer->mStart();
 }
 
 $action = $_POST ['action'] ? $_POST ['action'] : $_GET ['action'];
 
-function my_number_format($number) {
-	// to not change NULL to 0.00 - for example in display_add_moneyflow at the empty lines
-	if ($number !== null)
-		return number_format( $number, 2 );
-}
-
 $coreSession = new coreSession();
+$coreSession->start();
+
 $moduleEvents = new moduleEvents();
 $moduleUsers = new moduleUsers();
 $moduleSettings = new moduleSettings();
 
 $request_uri = $_SERVER ['REQUEST_URI'];
+$all_data = null;
 
 if ($action == 'logout') {
 
@@ -72,8 +83,8 @@ if ($is_logged_in == 2) {
 	if (empty( $_POST ['realaction'] ) || $_POST ['realaction'] != 'save') {
 		add_error( ErrorCode::PASSWORD_MUST_BE_CHANGED );
 	}
-	$realaction = $_REQUEST ['realaction'];
-	$all_data = $_REQUEST ['all_data'];
+	$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+	$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 	$display = $moduleSettings->display_personal_settings( $realaction, $all_data );
 
 	if ($_POST ['realaction'] == 'save' && ! is_array( $ERRORS ))
@@ -82,22 +93,22 @@ if ($is_logged_in == 2) {
 
 	/* user tries to login */
 
-	$realaction = $_REQUEST ['realaction'];
-	$name = $_REQUEST ['name'];
-	$password = $_REQUEST ['password'];
-	$stay_logged_in = $_REQUEST ['stay_logged_in'];
+	$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+	$name = array_key_exists( 'name', $_REQUEST ) ? $_REQUEST ['name'] : '';
+	$password = array_key_exists( 'password', $_REQUEST ) ? $_REQUEST ['password'] : '';
+	$stay_logged_in = array_key_exists( 'stay_logged_in', $_REQUEST ) ? $_REQUEST ['stay_logged_in'] : '';
 	$display = $moduleUsers->display_login_user( $realaction, $name, $password, $stay_logged_in, $request_uri );
 
 	if ($_POST ['request_uri'] && ! is_array( $ERRORS ))
 		header( "Location: " . $_POST ['request_uri'] );
 }
 
-if ($money_debug === true)
-	error_reporting( E_ALL );
+// if ($money_debug === true)
+// 	error_reporting( E_ALL );
 
 if ($is_logged_in == 0) {
 
-	define( GUI_DATE_FORMAT, $coreSession->getAttribute( 'date_format' ) );
+	define( 'GUI_DATE_FORMAT', $coreSession->getAttribute( 'date_format' ) );
 
 	$display = $moduleEvents->check_events();
 
@@ -105,42 +116,35 @@ if ($is_logged_in == 0) {
 		case 'list_capitalsources' :
 		case 'edit_capitalsource' :
 		case 'delete_capitalsource' :
-			require_once 'module/moduleCapitalSources.php';
 			$moduleCapitalSources = new moduleCapitalSources();
 			break;
 		case 'list_contractpartners' :
 		case 'edit_contractpartner' :
 		case 'delete_contractpartner' :
-			require_once 'module/moduleContractPartners.php';
 			$moduleContractPartners = new moduleContractPartners();
 			break;
 		case 'list_predefmoneyflows' :
 		case 'edit_predefmoneyflow' :
 		case 'delete_predefmoneyflow' :
-			require_once 'module/modulePreDefMoneyFlows.php';
 			$modulePreDefMoneyFlows = new modulePreDefMoneyFlows();
 			break;
 		case 'add_moneyflow' :
 		case 'edit_moneyflow' :
 		case 'delete_moneyflow' :
-			require_once 'module/moduleMoneyFlows.php';
 			$moduleMoneyFlows = new moduleMoneyFlows();
 			break;
 		case 'list_monthlysettlements' :
 		case 'edit_monthlysettlement' :
 		case 'delete_monthlysettlement' :
-			require_once 'module/moduleMonthlySettlement.php';
 			$moduleMonthlySettlement = new moduleMonthlySettlement();
 			break;
 		case 'list_reports' :
 		case 'plot_trends' :
 		case 'plot_graph' :
-			require_once 'module/moduleReports.php';
 			$moduleReports = new moduleReports();
 			break;
 		case 'search' :
 		case 'do_search' :
-			require_once 'module/moduleSearch.php';
 			$moduleSearch = new moduleSearch();
 			break;
 		case 'personal_settings' :
@@ -149,7 +153,6 @@ if ($is_logged_in == 0) {
 		case 'list_languages' :
 		case 'edit_language' :
 		case 'add_language' :
-			require_once 'module/moduleLanguages.php';
 			$moduleLanguages = new moduleLanguages();
 			break;
 		case 'list_users' :
@@ -160,17 +163,14 @@ if ($is_logged_in == 0) {
 		case 'list_groups' :
 		case 'edit_group' :
 		case 'delete_group' :
-			require_once 'module/moduleGroups.php';
 			$moduleGroups = new moduleGroups();
 			break;
 
 		case 'upfrm_cmp_data' :
 		case 'analyze_cmp_data' :
-			require_once 'module/moduleCompare.php';
 			$moduleCompare = new moduleCompare();
 			break;
 		default :
-			require_once 'module/moduleFrontPage.php';
 			$moduleFrontPage = new moduleFrontPage();
 			break;
 	}
@@ -178,64 +178,64 @@ if ($is_logged_in == 0) {
 	if (empty( $display ) && $moduleUsers->is_admin()) {
 		switch ($action) {
 			case 'system_settings' :
-				$realaction = $_REQUEST ['realaction'];
-				$all_data = $_REQUEST ['all_data'];
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = $moduleSettings->display_system_settings( $realaction, $all_data );
 				break;
 
 			/* languages */
 
 			case 'list_languages' :
-				$letter = $_REQUEST ['letter'];
+				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
 				$display = $moduleLanguages->display_list_languages( $letter );
 				break;
 			case 'edit_language' :
-				$realaction = $_REQUEST ['realaction'];
-				$id = $_REQUEST ['languageid'];
-				$all_data = $_REQUEST ['all_data'];
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$id = array_key_exists( 'languageid', $_REQUEST ) ? $_REQUEST ['languageid'] : '';
+				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = $moduleLanguages->display_edit_language( $realaction, $id, $all_data );
 				break;
 			case 'add_language' :
-				$realaction = $_REQUEST ['realaction'];
-				$all_data = $_REQUEST ['all_data'];
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = $moduleLanguages->display_add_language( $realaction, $all_data );
 				break;
 
 			/* users */
 
 			case 'list_users' :
-				$letter = $_REQUEST ['letter'];
+				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
 				$display = $moduleUsers->display_list_users( $letter );
 				break;
 			case 'edit_user' :
-				$realaction = $_REQUEST ['realaction'];
-				$id = $_REQUEST ['userid'];
-				$all_data = $_REQUEST ['all_data'];
-				$access_relation = $_REQUEST ['access_relation'];
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$id = array_key_exists( 'userid', $_REQUEST ) ? $_REQUEST ['userid'] : '';
+				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
+				$access_relation = array_key_exists( 'access_relation', $_REQUEST ) ? $_REQUEST ['access_relation'] : '';
 				$display = $moduleUsers->display_edit_user( $realaction, $id, $all_data, $access_relation );
 				break;
 			case 'delete_user' :
-				$realaction = $_REQUEST ['realaction'];
-				$id = $_REQUEST ['userid'];
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$id = array_key_exists( 'userid', $_REQUEST ) ? $_REQUEST ['userid'] : '';
 				$display = $moduleUsers->display_delete_user( $realaction, $id );
 				break;
 
 			/* groups */
 
 			case 'list_groups' :
-				$letter = $_REQUEST ['letter'];
+				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
 				$display = $moduleGroups->display_list_groups( $letter );
 				break;
 			case 'edit_group' :
-				$realaction = $_REQUEST ['realaction'];
-				$id = $_REQUEST ['groupid'];
-				$all_data = $_REQUEST ['all_data'];
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$id = array_key_exists( 'groupid', $_REQUEST ) ? $_REQUEST ['groupid'] : '';
+				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = $moduleGroups->display_edit_group( $realaction, $id, $all_data );
 				break;
 			case 'delete_group' :
-				$realaction = $_REQUEST ['realaction'];
-				$id = $_REQUEST ['groupid'];
-				$force = $_REQUEST ['force'];
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$id = array_key_exists( 'groupid', $_REQUEST ) ? $_REQUEST ['groupid'] : '';
+				$force = array_key_exists( 'force', $_REQUEST ) ? $_REQUEST ['force'] : '';
 				$display = $moduleGroups->display_delete_group( $realaction, $id, $force );
 				break;
 		}
@@ -243,8 +243,8 @@ if ($is_logged_in == 0) {
 
 	if (empty( $display )) {
 
-		if (is_array( $_REQUEST ['all_data'] )) {
-			$all_data = $_REQUEST ['all_data'];
+		if (array_key_exists( 'all_data', $_REQUEST ) && is_array( $_REQUEST ['all_data'] )) {
+			$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 			$all_data = convert_array_to_utf8( $all_data );
 		}
 
@@ -252,119 +252,119 @@ if ($is_logged_in == 0) {
 			/* capitalsources */
 
 			case 'list_capitalsources' :
-				$letter = $_REQUEST ['letter'];
+				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
 				$display = $moduleCapitalSources->display_list_capitalsources( $letter );
 				break;
 
 			case 'edit_capitalsource' :
-				$realaction = $_REQUEST ['realaction'];
-				$capitalsourceid = $_REQUEST ['capitalsourceid'] ? $_REQUEST ['capitalsourceid'] : 0;
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$capitalsourceid = array_key_exists( 'capitalsourceid', $_REQUEST ) ? $_REQUEST ['capitalsourceid'] : 0;
 				$display = $moduleCapitalSources->display_edit_capitalsource( $realaction, $capitalsourceid, $all_data );
 				break;
 
 			case 'delete_capitalsource' :
-				$realaction = $_REQUEST ['realaction'];
-				$capitalsourceid = $_REQUEST ['capitalsourceid'];
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$capitalsourceid = array_key_exists( 'capitalsourceid', $_REQUEST ) ? $_REQUEST ['capitalsourceid'] : '';
 				$display = $moduleCapitalSources->display_delete_capitalsource( $realaction, $capitalsourceid );
 				break;
 
 			/* contractpartners */
 
 			case 'list_contractpartners' :
-				$letter = $_REQUEST ['letter'];
+				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
 				$display = $moduleContractPartners->display_list_contractpartners( $letter );
 				break;
 
 			case 'edit_contractpartner' :
-				$realaction = $_REQUEST ['realaction'];
-				$contractpartnerid = $_REQUEST ['contractpartnerid'] ? $_REQUEST ['contractpartnerid'] : 0;
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$contractpartnerid = array_key_exists( 'contractpartnerid', $_REQUEST ) ? $_REQUEST ['contractpartnerid'] : 0;
 				$display = $moduleContractPartners->display_edit_contractpartner( $realaction, $contractpartnerid, $all_data );
 				break;
 
 			case 'delete_contractpartner' :
-				$realaction = $_REQUEST ['realaction'];
-				$id = $_REQUEST ['contractpartnerid'];
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$id = array_key_exists( 'contractpartnerid', $_REQUEST ) ? $_REQUEST ['contractpartnerid'] : '';
 				$display = $moduleContractPartners->display_delete_contractpartner( $realaction, $id );
 				break;
 
 			/* predefmoneyflows */
 
 			case 'list_predefmoneyflows' :
-				$letter = $_REQUEST ['letter'];
+				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
 				$display = $modulePreDefMoneyFlows->display_list_predefmoneyflows( $letter );
 				break;
 
 			case 'edit_predefmoneyflow' :
-				$realaction = $_REQUEST ['realaction'];
-				$id = $_REQUEST ['predefmoneyflowid'] ? $_REQUEST ['predefmoneyflowid'] : 0;
-				$all_data = $_REQUEST ['all_data'];
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$id = array_key_exists( 'predefmoneyflowid', $_REQUEST ) ? $_REQUEST ['predefmoneyflowid'] : 0;
+				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = $modulePreDefMoneyFlows->display_edit_predefmoneyflow( $realaction, $id, $all_data );
 				break;
 
 			case 'delete_predefmoneyflow' :
-				$realaction = $_REQUEST ['realaction'];
-				$id = $_REQUEST ['predefmoneyflowid'];
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$id = array_key_exists( 'predefmoneyflowid', $_REQUEST ) ? $_REQUEST ['predefmoneyflowid'] : '';
 				$display = $modulePreDefMoneyFlows->display_delete_predefmoneyflow( $realaction, $id );
 				break;
 
 			/* moneyflows */
 
 			case 'add_moneyflow' :
-				$realaction = $_REQUEST ['realaction'];
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$display = $moduleMoneyFlows->display_add_moneyflow( $realaction, $all_data );
 				break;
 			case 'edit_moneyflow' :
-				$realaction = $_REQUEST ['realaction'];
-				$id = $_REQUEST ['moneyflowid'];
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : '';
 				$display = $moduleMoneyFlows->display_edit_moneyflow( $realaction, $id, $all_data );
 				break;
 
 			case 'delete_moneyflow' :
-				$realaction = $_REQUEST ['realaction'];
-				$id = $_REQUEST ['moneyflowid'];
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : '';
 				$display = $moduleMoneyFlows->display_delete_moneyflow( $realaction, $id );
 				break;
 
 			/* monthlysettlements */
 
 			case 'list_monthlysettlements' :
-				$month = $_REQUEST ['monthlysettlements_month'];
-				$year = $_REQUEST ['monthlysettlements_year'];
+				$month = array_key_exists( 'monthlysettlements_month', $_REQUEST ) ? $_REQUEST ['monthlysettlements_month'] : '';
+				$year = array_key_exists( 'monthlysettlements_year', $_REQUEST ) ? $_REQUEST ['monthlysettlements_year'] : '';
 				$display = $moduleMonthlySettlement->display_list_monthlysettlements( $month, $year );
 				break;
 			case 'edit_monthlysettlement' :
-				$month = $_REQUEST ['monthlysettlements_month'];
-				$year = $_REQUEST ['monthlysettlements_year'];
-				$realaction = $_REQUEST ['realaction'];
-				$all_data = $_REQUEST ['all_data'];
+				$month = array_key_exists( 'monthlysettlements_month', $_REQUEST ) ? $_REQUEST ['monthlysettlements_month'] : '';
+				$year = array_key_exists( 'monthlysettlements_year', $_REQUEST ) ? $_REQUEST ['monthlysettlements_year'] : '';
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = $moduleMonthlySettlement->display_edit_monthlysettlement( $realaction, $month, $year, $all_data );
 				break;
 			case 'delete_monthlysettlement' :
-				$month = $_REQUEST ['monthlysettlements_month'];
-				$year = $_REQUEST ['monthlysettlements_year'];
-				$realaction = $_REQUEST ['realaction'];
+				$month = array_key_exists( 'monthlysettlements_month', $_REQUEST ) ? $_REQUEST ['monthlysettlements_month'] : '';
+				$year = array_key_exists( 'monthlysettlements_year', $_REQUEST ) ? $_REQUEST ['monthlysettlements_year'] : '';
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$display = $moduleMonthlySettlement->display_delete_monthlysettlement( $realaction, $month, $year );
 				break;
 
 			/* reports */
 
 			case 'list_reports' :
-				$month = $_REQUEST ['reports_month'];
-				$year = $_REQUEST ['reports_year'];
-				$sortby = $_REQUEST ['reports_sortby'];
-				$order = $_REQUEST ['reports_order'];
+				$month = array_key_exists( 'reports_month', $_REQUEST ) ? $_REQUEST ['reports_month'] : '';
+				$year = array_key_exists( 'reports_year', $_REQUEST ) ? $_REQUEST ['reports_year'] : '';
+				$sortby = array_key_exists( 'reports_sortby', $_REQUEST ) ? $_REQUEST ['reports_sortby'] : '';
+				$order = array_key_exists( 'reports_order', $_REQUEST ) ? $_REQUEST ['reports_order'] : '';
 				$display = $moduleReports->display_list_reports( $month, $year, $sortby, $order );
 				break;
 			case 'plot_trends' :
-				$all_data = $_REQUEST ['all_data'];
+				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = (ENABLE_JPGRAPH ? $moduleReports->display_plot_trends( $all_data ) : '');
 				break;
 			case 'plot_graph' :
-				$id = $_REQUEST ['id'];
-				$startmonth = $_REQUEST ['startmonth'];
-				$startyear = $_REQUEST ['startyear'];
-				$endmonth = $_REQUEST ['endmonth'];
-				$endyear = $_REQUEST ['endyear'];
+				$id = array_key_exists( 'id', $_REQUEST ) ? $_REQUEST ['id'] : '';
+				$startmonth = array_key_exists( 'startmonth', $_REQUEST ) ? $_REQUEST ['startmonth'] : '';
+				$startyear = array_key_exists( 'startyear', $_REQUEST ) ? $_REQUEST ['startyear'] : '';
+				$endmonth = array_key_exists( 'endmonth', $_REQUEST ) ? $_REQUEST ['endmonth'] : '';
+				$endyear = array_key_exists( 'endyear', $_REQUEST ) ? $_REQUEST ['endyear'] : '';
 				$display = (ENABLE_JPGRAPH ? $moduleReports->plot_graph( $id, $startmonth, $startyear, $endmonth, $endyear ) : '');
 				break;
 
@@ -374,25 +374,25 @@ if ($is_logged_in == 0) {
 				$display = $moduleSearch->display_search();
 				break;
 			case 'do_search' :
-				$searchstring = $_REQUEST ['searchstring'];
-				$contractpart = $_REQUEST ['contractpartner'];
-				$startdate = $_REQUEST ['startdate'];
-				$enddate = $_REQUEST ['enddate'];
-				$equal = $_REQUEST ['equal'];
-				$casesensitive = $_REQUEST ['casesensitive'];
-				$regexp = $_REQUEST ['regexp'];
-				$minus = $_REQUEST ['minus'];
-				$grouping1 = $_REQUEST ['grouping1'];
-				$grouping2 = $_REQUEST ['grouping2'];
-				$order = $_REQUEST ['order'];
+				$searchstring = array_key_exists( 'searchstring', $_REQUEST ) ? $_REQUEST ['searchstring'] : '';
+				$contractpart = array_key_exists( 'contractpartner', $_REQUEST ) ? $_REQUEST ['contractpartner'] : '';
+				$startdate = array_key_exists( 'startdate', $_REQUEST ) ? $_REQUEST ['startdate'] : '';
+				$enddate = array_key_exists( 'enddate', $_REQUEST ) ? $_REQUEST ['enddate'] : '';
+				$equal = array_key_exists( 'equal', $_REQUEST ) ? $_REQUEST ['equal'] : '';
+				$casesensitive = array_key_exists( 'casesensitive', $_REQUEST ) ? $_REQUEST ['casesensitive'] : '';
+				$regexp = array_key_exists( 'regexp', $_REQUEST ) ? $_REQUEST ['regexp'] : '';
+				$minus = array_key_exists( 'minus', $_REQUEST ) ? $_REQUEST ['minus'] : '';
+				$grouping1 = array_key_exists( 'grouping1', $_REQUEST ) ? $_REQUEST ['grouping1'] : '';
+				$grouping2 = array_key_exists( 'grouping2', $_REQUEST ) ? $_REQUEST ['grouping2'] : '';
+				$order = array_key_exists( 'order', $_REQUEST ) ? $_REQUEST ['order'] : '';
 				$display = $moduleSearch->do_search( $searchstring, $contractpart, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus, $grouping1, $grouping2, $order );
 				break;
 
 			/* settings */
 
 			case 'personal_settings' :
-				$realaction = $_REQUEST ['realaction'];
-				$all_data = $_REQUEST ['all_data'];
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = $moduleSettings->display_personal_settings( $realaction, $all_data );
 				break;
 
@@ -400,7 +400,7 @@ if ($is_logged_in == 0) {
 				$display = $moduleCompare->display_upload_form();
 				break;
 			case 'analyze_cmp_data' :
-				$all_data = $_REQUEST ['all_data'];
+				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$file = $_FILES ['file'];
 				$display = $moduleCompare->display_analyze_form( $file, $all_data );
 				break;

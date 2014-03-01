@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToPreDefMoneyflowTransportMapper.php,v 1.4 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: ArrayToPreDefMoneyflowTransportMapper.php,v 1.5 2014/03/01 00:48:59 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -37,13 +37,17 @@ class ArrayToPreDefMoneyflowTransportMapper extends AbstractArrayMapper {
 		$b = new PreDefMoneyflowTransport();
 		$b->setId( $a ['predefmoneyflowid'] );
 
-		$createdate = parent::convertClientDateToTransport( $a ['createdate'] );
-		if ($createdate)
-			$b->setCreateDate( $createdate );
+		if (array_key_exists( 'createdate', $a )) {
+			$createdate = parent::convertClientDateToTransport( $a ['createdate'] );
+			if ($createdate)
+				$b->setCreateDate( $createdate );
+		}
 
-		$lastUsed = parent::convertClientDateToTransport( $a ['last_used'] );
-		if ($lastUsed)
-			$b->setLastUsed( $lastUsed );
+		if (array_key_exists( 'lastUsed', $a )) {
+			$lastUsed = parent::convertClientDateToTransport( $a ['last_used'] );
+			if ($lastUsed)
+				$b->setLastUsed( $lastUsed );
+		}
 
 		$b->setAmount( $a ['amount'] );
 		$b->setCapitalsourceid( $a ['mcs_capitalsourceid'] );

@@ -24,7 +24,12 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: core.php,v 1.32 2014/02/23 16:53:20 olivleh1 Exp $
+// $Id: core.php,v 1.33 2014/03/01 00:48:59 olivleh1 Exp $
 //
-class core {
+namespace client\core;
+
+abstract class core {
+
+	protected function __construct() {
+	}
 }

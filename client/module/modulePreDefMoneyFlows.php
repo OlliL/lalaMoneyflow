@@ -24,16 +24,16 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.53 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.54 2014/03/01 00:48:59 olivleh1 Exp $
 //
+namespace client\module;
+
 use base\ErrorCode;
 use client\handler\PreDefMoneyflowControllerHandler;
 
-require_once 'module/module.php';
-
 class modulePreDefMoneyFlows extends module {
 
-	public final function modulePreDefMoneyFlows() {
+	public final function __construct() {
 		parent::__construct();
 	}
 
@@ -52,11 +52,14 @@ class modulePreDefMoneyFlows extends module {
 	}
 
 	public final function display_edit_predefmoneyflow($realaction, $predefmoneyflowid, $all_data) {
+		$close = 0;
 		switch ($realaction) {
 			case 'save' :
 				$data_is_valid = true;
 				$all_data ['predefmoneyflowid'] = $predefmoneyflowid;
-
+				$all_data ['amount_error'] = 0;
+				$all_data ['capitalsource_error'] = 0;
+				$all_data ['contractpartner_error'] = 0;
 				if (! fix_amount( $all_data ['amount'] )) {
 					add_error( ErrorCode::AMOUNT_IN_WRONG_FORMAT, array (
 							$all_data ['amount']
@@ -74,7 +77,7 @@ class modulePreDefMoneyFlows extends module {
 						$ret = PreDefMoneyflowControllerHandler::getInstance()->updatePreDefMoneyflow( $all_data );
 
 					if ($ret === true) {
-						$this->template->assign( 'CLOSE', 1 );
+						$close = 1;
 						break;
 					} else {
 						$capitalsource_values = $ret ['capitalsources'];
@@ -121,10 +124,22 @@ class modulePreDefMoneyFlows extends module {
 					$showCreatePreDefMoneyflow = PreDefMoneyflowControllerHandler::getInstance()->showCreatePreDefMoneyflow();
 					$capitalsource_values = $showCreatePreDefMoneyflow ['capitalsources'];
 					$contractpartner_values = $showCreatePreDefMoneyflow ['contractpartner'];
+					$all_data = array (
+							'amount' => null,
+							'mcp_contractpartnerid' => '',
+							'comment' => '',
+							'mcs_capitalsourceid' => '',
+							'once_a_month' => '',
+							'amount_error' => 0,
+							'contractpartner_error' => 0,
+							'capitalsource_error' => 0
+					);
 				}
 				break;
 		}
+		$this->template->assign( 'CLOSE', $close );
 		$this->template->assign( 'ALL_DATA', $all_data );
+		$this->template->assign( 'PREDEFMONEYFLOWID', $predefmoneyflowid );
 		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 		$this->template->assign( 'ERRORS', $this->get_errors() );

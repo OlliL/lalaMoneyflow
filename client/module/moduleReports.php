@@ -1,7 +1,4 @@
 <?php
-use client\handler\ReportControllerHandler;
-use client\handler\CapitalsourceControllerHandler;
-use Zend\Validator\File\Count;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -27,11 +24,12 @@ use Zend\Validator\File\Count;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.83 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.84 2014/03/01 00:48:59 olivleh1 Exp $
 //
+namespace client\module;
 
-require_once 'module/module.php';
-require_once 'core/coreText.php';
+use client\handler\ReportControllerHandler;
+use client\core\coreText;
 
 if (ENABLE_JPGRAPH) {
 	require_once 'jpgraph.php';
@@ -39,10 +37,11 @@ if (ENABLE_JPGRAPH) {
 }
 
 class moduleReports extends module {
+	private $coreText;
 
 	public final function __construct() {
 		parent::__construct();
-		$this->coreText = new coreText(parent::getGuiLanguage());
+		$this->coreText = new coreText( parent::getGuiLanguage() );
 	}
 
 	public final function display_list_reports($month, $year, $sortby, $order) {
@@ -64,6 +63,9 @@ class moduleReports extends module {
 		$prev_year = $listReports ['prev_year'];
 		$next_month = $listReports ['next_month'];
 		$next_year = $listReports ['next_year'];
+
+		$mms_exists = false;
+		$report = 0;
 
 		if (is_array( $allMonth )) {
 			foreach ( $allMonth as $key => $value ) {
@@ -193,10 +195,11 @@ class moduleReports extends module {
 				$this->template->assign( 'MON_CALCULATEDTURNOVER', $movement_calculated_month );
 				$this->template->assign( 'YEA_CALCULATEDTURNOVER', $movement_calculated_year );
 				$this->template->assign( 'MONTHLYSETTLEMENT_EXISTS', $mms_exists );
-				$this->template->assign( 'REPORT', 1 );
+				$report = 1;
 			}
 		}
 
+		$this->template->assign( 'REPORT', $report );
 		$this->template->assign( 'ALL_YEARS', $years );
 		$this->template->assign( 'ALL_MONTHS', $months );
 		$this->template->assign( 'SELECTED_MONTH', $month );

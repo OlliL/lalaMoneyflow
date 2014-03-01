@@ -1,7 +1,4 @@
 <?php
-use client\handler\CapitalsourceControllerHandler;
-use client\handler\MonthlySettlementControllerHandler;
-use base\ErrorCode;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -27,17 +24,21 @@ use base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.55 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.56 2014/03/01 00:48:59 olivleh1 Exp $
 //
+namespace client\module;
 
-require_once 'module/module.php';
-require_once 'core/coreText.php';
+use client\handler\CapitalsourceControllerHandler;
+use client\handler\MonthlySettlementControllerHandler;
+use base\ErrorCode;
+use client\core\coreText;
 
 class moduleMonthlySettlement extends module {
+	private $coreText;
 
-	public final function moduleMonthlySettlement() {
+	public final function __construct() {
 		parent::__construct();
-		$this->coreText = new coreText(parent::getGuiLanguage());
+		$this->coreText = new coreText( parent::getGuiLanguage() );
 	}
 
 	public final function display_list_monthlysettlements($month, $year) {
@@ -52,7 +53,7 @@ class moduleMonthlySettlement extends module {
 		$all_data = $showMonthlySettlementList ['monthly_settlements'];
 		$numberOfEditableSettlements = $showMonthlySettlementList ['numberOfEditableSettlements'];
 		$numberOfAddableSettlements = $showMonthlySettlementList ['numberOfAddableSettlements'];
-
+		$count_all_data = 0;
 		if (is_array( $allMonth )) {
 			foreach ( $allMonth as $key => $value ) {
 				$temp_array = array (
@@ -66,6 +67,7 @@ class moduleMonthlySettlement extends module {
 			}
 
 			if ($month > 0 && $year > 0 && is_array( $all_data )) {
+				$sumamount = 0;
 				foreach ( $all_data as $settlement ) {
 					$sumamount += $settlement ['amount'];
 				}
@@ -74,13 +76,14 @@ class moduleMonthlySettlement extends module {
 				$this->template->assign( 'MONTH', $monthArray );
 				$this->template->assign( 'YEAR', $year );
 				$this->template->assign( 'ALL_DATA', $all_data );
-				$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
+				$count_all_data = count( $all_data );
 			}
 		}
 		$this->template->assign( 'ALL_YEARS', $allYears );
 		$this->template->assign( 'ALL_MONTHS', $months );
 		$this->template->assign( 'SELECTED_MONTH', $month );
 		$this->template->assign( 'SELECTED_YEAR', $year );
+		$this->template->assign( 'COUNT_ALL_DATA', $count_all_data );
 		$this->template->assign( 'NUM_EDITABLE_SETTLEMENTS', $numberOfEditableSettlements );
 		$this->template->assign( 'NUM_ADDABLE_SETTLEMENTS', $numberOfAddableSettlements );
 
@@ -89,6 +92,8 @@ class moduleMonthlySettlement extends module {
 	}
 
 	public final function display_edit_monthlysettlement($realaction, $month, $year, $all_data) {
+		$close = 0;
+		$new = 0;
 		switch ($realaction) {
 			case 'save' :
 				$ret = true;
@@ -106,7 +111,7 @@ class moduleMonthlySettlement extends module {
 				if ($data_is_valid === true) {
 					$ret = MonthlySettlementControllerHandler::getInstance()->upsertMonthlySettlement( $all_data );
 					if ($ret === true) {
-						$this->template->assign( 'CLOSE', 1 );
+						$close = 1;
 					} else {
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
@@ -131,7 +136,7 @@ class moduleMonthlySettlement extends module {
 				$month = $monthlySettlementCreate ['month'];
 				$all_data_new = $monthlySettlementCreate ['monthly_settlements'];
 				if ($monthlySettlementCreate ['edit_mode'] == 0) {
-					$this->template->assign( 'NEW', 1 );
+					$new = 1;
 				}
 				foreach ( $all_data_new as $key => $data ) {
 					$all_data_new [$key] ['amount'] = sprintf( '%.02f', $data ['amount'] );
@@ -144,6 +149,8 @@ class moduleMonthlySettlement extends module {
 				'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month )
 		);
 
+		$this->template->assign( 'CLOSE', $close );
+		$this->template->assign( 'NEW', $new );
 		$this->template->assign( 'MONTH', $monthArray );
 		$this->template->assign( 'YEAR', $year );
 		$this->template->assign( 'ALL_DATA', $all_data_new );

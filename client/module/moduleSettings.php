@@ -1,7 +1,4 @@
 <?php
-use client\handler\SettingControllerHandler;
-use base\ErrorCode;
-use client\handler\UserControllerHandler;
 //
 // Copyright (c) 2006-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -27,15 +24,20 @@ use client\handler\UserControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSettings.php,v 1.29 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: moduleSettings.php,v 1.30 2014/03/01 00:48:59 olivleh1 Exp $
 //
-require_once 'module/module.php';
-require_once 'core/coreLanguages.php';
-require_once 'core/coreSession.php';
+namespace client\module;
+
+use client\handler\SettingControllerHandler;
+use base\ErrorCode;
+use client\core\coreLanguages;
+use client\core\coreSession;
 
 class moduleSettings extends module {
+	private $coreLanguages;
+	private $coreSession;
 
-	public final function moduleSettings() {
+	public final function __construct() {
 		parent::__construct();
 		$this->coreLanguages = new coreLanguages();
 		$this->coreSession = new coreSession();
@@ -100,8 +102,7 @@ class moduleSettings extends module {
 					$showDefaultSettings = SettingControllerHandler::getInstance()->showDefaultSettings();
 					if (is_array( $showDefaultSettings )) {
 						$dateformat = $showDefaultSettings ['dateformat'];
-						if (dateformat)
-							$all_data = array_merge( $showDefaultSettings, $this->convertDateFormatSetting( $dateformat ) );
+						$all_data = array_merge( $showDefaultSettings, $this->convertDateFormatSetting( $dateformat ) );
 					}
 				}
 				;

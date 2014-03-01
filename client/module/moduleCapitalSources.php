@@ -24,19 +24,20 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.48 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.49 2014/03/01 00:48:59 olivleh1 Exp $
 //
+namespace client\module;
 
 use base\ErrorCode;
 use client\handler\CapitalsourceControllerHandler;
-require_once 'module/module.php';
-require_once 'core/coreText.php';
+use client\core\coreText;
 
 class moduleCapitalSources extends module {
+	private $coreText;
 
 	public final function __construct() {
 		parent::__construct();
-		$this->coreText = new coreText(parent::getGuiLanguage());
+		$this->coreText = new coreText( parent::getGuiLanguage() );
 	}
 
 	public final function display_list_capitalsources($letter) {
@@ -63,6 +64,7 @@ class moduleCapitalSources extends module {
 	}
 
 	public final function display_edit_capitalsource($realaction, $capitalsourceid, $all_data) {
+		$close = 0;
 		if (! isset( $capitalsourceid ))
 			return;
 
@@ -92,7 +94,7 @@ class moduleCapitalSources extends module {
 						$ret = CapitalsourceControllerHandler::getInstance()->updateCapitalsource( $all_data );
 
 					if ($ret === true) {
-						$this->template->assign( 'CLOSE', 1 );
+						$close = 1;
 						break;
 					} else {
 						foreach ( $ret ['errors'] as $validationResult ) {
@@ -140,6 +142,7 @@ class moduleCapitalSources extends module {
 				break;
 		}
 
+		$this->template->assign( 'CLOSE', $close );
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'CAPITALSOURCEID', $capitalsourceid );
 		$this->template->assign( 'ERRORS', $this->get_errors() );

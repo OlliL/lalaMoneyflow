@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.28 2014/02/28 22:52:00 olivleh1 Exp $
+// $Id: include.php,v 1.29 2014/03/01 00:48:59 olivleh1 Exp $
 //
 
 // ########
@@ -51,10 +51,11 @@ const SERVERPREFIX = 'server/';
 
 // style how the timer information is printed out in debug mode (int 0-2)
 $confTimer = 2;
-
+ini_set( "log_errors", 1 );
+ini_set( "error_log", "/tmp/php-error-client.log" );
 // debug mode (boolean)
 $money_debug = false;
-// money_debug = true;
+$money_debug = true;
 
 // default year for "valid til" columns when creating a new dataset
 define( 'MAX_YEAR', '2999-12-31' );

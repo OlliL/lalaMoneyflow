@@ -2,14 +2,14 @@
        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 {if $CLOSE != 1}
-	<head><title>lalaMoneyflow: {if $ALL_DATA.contractpartnerid > 0}{#TEXT_46#}{else}{#TEXT_11#}{/if}</title>
+	<head><title>lalaMoneyflow: {if $CONTRACTPARTNERID > 0}{#TEXT_46#}{else}{#TEXT_11#}{/if}</title>
 {$HEADER}
 
 		<td align="center">
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action"            value="edit_contractpartner">
 			<input type="hidden" name="realaction"        value="save">
-			<input type="hidden" name="contractpartnerid" value="{$ALL_DATA.contractpartnerid}">
+			<input type="hidden" name="contractpartnerid" value="{$CONTRACTPARTNERID}">
 			<input type="hidden" name="REFERER"           value="{$ENV_REFERER}">
 			{section name=ERROR loop=$ERRORS}
 				<font color="#FF0000">{$ERRORS[ERROR]}</font><br>

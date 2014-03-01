@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowControllerHandler.php,v 1.6 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: MoneyflowControllerHandler.php,v 1.7 2014/03/01 00:48:59 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -215,7 +215,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 			} else {
 				$result ['errors'] = array ();
 			}
-			$result ['result'] == $updateMoneyflow->getResult();
+			$result ['result'] = $updateMoneyflow->getResult();
 		}
 		return $result;
 	}

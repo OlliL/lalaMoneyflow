@@ -1,7 +1,4 @@
 <?php
-use client\handler\SessionControllerHandler;
-use client\handler\UserControllerHandler;
-use base\ErrorCode;
 //
 // Copyright (c) 2006-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -27,15 +24,19 @@ use base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.47 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.48 2014/03/01 00:48:59 olivleh1 Exp $
 //
+namespace client\module;
 
-require_once 'module/module.php';
-require_once 'core/coreSession.php';
+use client\handler\SessionControllerHandler;
+use client\handler\UserControllerHandler;
+use base\ErrorCode;
+use client\core\coreSession;
 
 class moduleUsers extends module {
+	private $coreSession;
 
-	public final function moduleUsers() {
+	public final function __construct() {
 		parent::__construct();
 		$this->coreSession = new coreSession();
 	}
@@ -146,9 +147,12 @@ class moduleUsers extends module {
 	}
 
 	public final function display_edit_user($realaction, $userid, $all_data, $access_relation) {
+		$close = 0;
+		$access_relations = null;
 		switch ($realaction) {
 			case 'save' :
 				$all_data ['userid'] = $userid;
+				$access_relation ['validfrom_error'] = 0;
 				$valid_data = true;
 				if ($all_data ['password'] != $all_data ['password2']) {
 					add_error( ErrorCode::PASSWORD_NOT_MATCHING );
@@ -179,7 +183,7 @@ class moduleUsers extends module {
 					}
 
 					if ($ret === true) {
-						$this->template->assign( 'CLOSE', 1 );
+						$close = 1;
 					} else {
 						$access_relations = $ret ['access_relations'];
 						$groups = $ret ['groups'];
@@ -207,11 +211,19 @@ class moduleUsers extends module {
 					$all_data_pre = $showEditUser ['user'];
 					$access_relations = $showEditUser ['access_relations'];
 					$groups = $showEditUser ['groups'];
+					$access_relation ['validfrom_error'] = 0;
 				} else {
 					$showCreateUser = UserControllerHandler::getInstance()->showCreateUser( $userid );
 					$groups = $showCreateUser ['groups'];
-					$all_data_pre ['perm_login'] = 1;
-					$all_data_pre ['att_new'] = 1;
+					$all_data_pre = array (
+							'name' => '',
+							'password' => '',
+							'password2' => '',
+							'perm_login' => 1,
+							'perm_admin' => 0,
+							'att_new' => 1,
+							'ref_id' => ''
+					);
 				}
 				if (! is_array( $all_data )) {
 					$all_data = $all_data_pre;
@@ -236,8 +248,14 @@ class moduleUsers extends module {
 				$access_relation ['ref_id'] = $access_relations [0] ['ref_id'];
 				$access_relation ['validfrom'] = convert_date_to_gui( date( 'Y-m-d', time() + 86400 ) );
 			}
+		} else {
+			$access_relation = array (
+					'ref_id' => ''
+			);
 		}
 
+		$this->template->assign( 'CLOSE', $close );
+		$this->template->assign( 'USERID', $userid );
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'ACCESS_RELATION', $access_relation );
 		$this->template->assign( 'ACCESS_RELATIONS', $access_relations );

@@ -1,6 +1,4 @@
 <?php
-use base\ErrorCode;
-use client\handler\CompareDataControllerHandler;
 //
 // Copyright (c) 2007-2013 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -26,13 +24,16 @@ use client\handler\CompareDataControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.43 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.44 2014/03/01 00:48:59 olivleh1 Exp $
 //
-require_once 'module/module.php';
+namespace client\module;
+
+use base\ErrorCode;
+use client\handler\CompareDataControllerHandler;
 
 class moduleCompare extends module {
 
-	public final function moduleCompare() {
+	public final function __construct() {
 		parent::__construct();
 	}
 

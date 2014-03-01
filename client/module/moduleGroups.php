@@ -1,6 +1,4 @@
 <?php
-use client\handler\GroupControllerHandler;
-use base\ErrorCode;
 //
 // Copyright (c) 2006-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -26,14 +24,16 @@ use base\ErrorCode;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleGroups.php,v 1.9 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: moduleGroups.php,v 1.10 2014/03/01 00:48:59 olivleh1 Exp $
 //
+namespace client\module;
 
-require_once 'module/module.php';
+use client\handler\GroupControllerHandler;
+use base\ErrorCode;
 
 class moduleGroups extends module {
 
-	public final function moduleGroups() {
+	public final function __construct() {
 		parent::__construct();
 	}
 
@@ -51,6 +51,7 @@ class moduleGroups extends module {
 	}
 
 	public final function display_edit_group($realaction, $groupid, $all_data) {
+		$close = 0;
 		switch ($realaction) {
 			case 'save' :
 				$all_data ['groupid'] = $groupid;
@@ -60,7 +61,7 @@ class moduleGroups extends module {
 					$ret = GroupControllerHandler::getInstance()->updateGroup( $all_data );
 
 				if ($ret === true) {
-					$this->template->assign( 'CLOSE', 1 );
+					$close = 1;
 				} else {
 					foreach ( $ret ['errors'] as $validationResult ) {
 						$error = $validationResult ['error'];
@@ -79,11 +80,15 @@ class moduleGroups extends module {
 				if (! is_array( $all_data )) {
 					if ($groupid > 0) {
 						$all_data = GroupControllerHandler::getInstance()->showEditGroup( $groupid );
+					} else {
+						$all_data['name'] = '';
 					}
 				}
 				break;
 		}
 
+		$this->template->assign( 'CLOSE', $close );
+		$this->template->assign( 'GROUPID', $groupid );
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 

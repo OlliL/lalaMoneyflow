@@ -24,15 +24,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreSession.php,v 1.17 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: coreSession.php,v 1.18 2014/03/01 00:48:59 olivleh1 Exp $
 //
-use client\util\CallServerUtil;
-require_once 'core/core.php';
+namespace client\core;
 
 class coreSession extends core {
 
-	public final function coreSession() {
-		$this->start();
+	public final function __construct() {
+		parent::__construct();
 	}
 
 	public final function setAttribute($attribute, $value) {

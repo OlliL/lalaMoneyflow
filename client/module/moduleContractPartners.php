@@ -1,6 +1,4 @@
 <?php
-use base\ErrorCode;
-use client\handler\ContractpartnerControllerHandler;
 //
 // Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -26,12 +24,13 @@ use client\handler\ContractpartnerControllerHandler;
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.36 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.37 2014/03/01 00:48:59 olivleh1 Exp $
 //
+namespace client\module;
 
-require_once 'module/module.php';
+use base\ErrorCode;
+use client\handler\ContractpartnerControllerHandler;
 
-// core clean
 class moduleContractPartners extends module {
 
 	public final function __construct() {
@@ -52,6 +51,7 @@ class moduleContractPartners extends module {
 	}
 
 	public final function display_edit_contractpartner($realaction, $contractpartnerid, $all_data) {
+		$close = 0;
 		switch ($realaction) {
 			case 'save' :
 				$valid_data = true;
@@ -78,7 +78,7 @@ class moduleContractPartners extends module {
 						$ret = ContractpartnerControllerHandler::getInstance()->updateContractpartner( $all_data );
 
 					if ($ret === true) {
-						$this->template->assign( 'CLOSE', 1 );
+						$close = 1;
 					} else {
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
@@ -98,13 +98,24 @@ class moduleContractPartners extends module {
 					if ($contractpartnerid > 0) {
 						$all_data = ContractpartnerControllerHandler::getInstance()->showEditContractpartner( $contractpartnerid );
 					} else {
+						$all_data ['name'] = '';
+						$all_data ['street'] = '';
+						$all_data ['postcode'] = '';
+						$all_data ['town'] = '';
+						$all_data ['country'] = '';
 						$all_data ['validfrom'] = convert_date_to_gui( date( 'Y-m-d' ) );
 						$all_data ['validtil'] = convert_date_to_gui( MAX_YEAR );
+
+						$all_data ['name_error'] = 0;
+						$all_data ['validfrom_error'] = 0;
+						$all_data ['validtil_error'] = 0;
 					}
 				}
 				break;
 		}
 
+		$this->template->assign( 'CLOSE', $close );
+		$this->template->assign( 'CONTRACTPARTNERID', $contractpartnerid );
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 

@@ -24,18 +24,21 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.74 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: module.php,v 1.75 2014/03/01 00:48:59 olivleh1 Exp $
 //
-require_once 'Smarty.class.php';
-require_once 'core/coreText.php';
-require_once 'core/coreSession.php';
+namespace client\module;
 
-class module {
+use client\core\coreSession;
+use client\core\coreText;
+
+require_once 'Smarty.class.php';
+
+abstract class module {
 	protected $template;
 	private $coreSession;
 	private $guiLanguage;
 
-	public function __construct() {
+	protected function __construct() {
 		$this->coreSession = new coreSession();
 		$this->guiLanguage = $this->coreSession->getAttribute( 'gui_language' );
 
@@ -75,11 +78,12 @@ class module {
 
 	protected final function get_errors() {
 		global $ERRORS;
+		$result = array ();
 		if (is_array( $ERRORS )) {
-			$coreText = new coreText($this->guiLanguage);
+			$coreText = new coreText( $this->guiLanguage );
 			foreach ( $ERRORS as $error ) {
 				$error_text = $coreText->get_text( $error ['id'] );
-				if (is_array( $error ['arguments'] )) {
+				if (array_key_exists( 'arguments', $error ) && is_array( $error ['arguments'] )) {
 					foreach ( $error ['arguments'] as $id => $value ) {
 						$error_text = str_replace( 'A' . ($id + 1) . 'A', $value, $error_text );
 					}
@@ -110,7 +114,7 @@ class module {
 		$this->template->assign( 'REPORTS_YEAR', date( 'Y' ) );
 		$this->template->assign( 'REPORTS_MONTH', date( 'm' ) );
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
-		$this->template->assign( 'VERSION', '0.13.0' );
+		$this->template->assign( 'VERSION', '0.20.0' );
 		$this->template->assign( 'NO_NAVIGATION', $nonavi );
 		$coreSession = new coreSession();
 		$admin = $coreSession->getAttribute( 'perm_admin' );
@@ -119,7 +123,7 @@ class module {
 		} else {
 			$this->template->assign( 'IS_ADMIN', false );
 		}
-		$cache_id = $user ['userid'];
+		$cache_id = USERID;
 		$this->template->setCaching( true );
 		$header = $this->fetch_template( 'display_header.tpl', 'header_' . $this->guiLanguage . '_' . $admin . '_' . $nonavi . '_' . $cache_id );
 		$this->template->assign( 'HEADER', $header );

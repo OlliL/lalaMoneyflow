@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: UserControllerHandler.php,v 1.8 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: UserControllerHandler.php,v 1.9 2014/03/01 00:48:59 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -150,7 +150,7 @@ class UserControllerHandler extends AbstractHandler {
 			} else {
 				$result ['errors'] = array ();
 			}
-			$result ['result'] == $createUser->getResult();
+			$result ['result'] = $createUser->getResult();
 		}
 		return $result;
 	}
@@ -182,7 +182,7 @@ class UserControllerHandler extends AbstractHandler {
 			} else {
 				$result ['errors'] = array ();
 			}
-			$result ['result'] == $updateUser->getResult();
+			$result ['result'] = $updateUser->getResult();
 		}
 		return $result;
 	}
