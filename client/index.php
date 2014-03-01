@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.75 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: index.php,v 1.76 2014/03/01 17:09:59 olivleh1 Exp $
 //
 namespace client;
 
@@ -104,7 +104,7 @@ if ($is_logged_in == 2) {
 }
 
 // if ($money_debug === true)
-// 	error_reporting( E_ALL );
+// error_reporting( E_ALL );
 
 if ($is_logged_in == 0) {
 
@@ -243,6 +243,7 @@ if ($is_logged_in == 0) {
 
 	if (empty( $display )) {
 
+		// UTF8 needed for REST-server communication - german umlauts will generate errors otherwise (for example)
 		if (array_key_exists( 'all_data', $_REQUEST ) && is_array( $_REQUEST ['all_data'] )) {
 			$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 			$all_data = convert_array_to_utf8( $all_data );
@@ -297,7 +298,6 @@ if ($is_logged_in == 0) {
 			case 'edit_predefmoneyflow' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'predefmoneyflowid', $_REQUEST ) ? $_REQUEST ['predefmoneyflowid'] : 0;
-				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = $modulePreDefMoneyFlows->display_edit_predefmoneyflow( $realaction, $id, $all_data );
 				break;
 
@@ -336,7 +336,6 @@ if ($is_logged_in == 0) {
 				$month = array_key_exists( 'monthlysettlements_month', $_REQUEST ) ? $_REQUEST ['monthlysettlements_month'] : '';
 				$year = array_key_exists( 'monthlysettlements_year', $_REQUEST ) ? $_REQUEST ['monthlysettlements_year'] : '';
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
-				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = $moduleMonthlySettlement->display_edit_monthlysettlement( $realaction, $month, $year, $all_data );
 				break;
 			case 'delete_monthlysettlement' :
@@ -356,7 +355,6 @@ if ($is_logged_in == 0) {
 				$display = $moduleReports->display_list_reports( $month, $year, $sortby, $order );
 				break;
 			case 'plot_trends' :
-				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = (ENABLE_JPGRAPH ? $moduleReports->display_plot_trends( $all_data ) : '');
 				break;
 			case 'plot_graph' :
@@ -392,7 +390,6 @@ if ($is_logged_in == 0) {
 
 			case 'personal_settings' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
-				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = $moduleSettings->display_personal_settings( $realaction, $all_data );
 				break;
 
@@ -400,7 +397,6 @@ if ($is_logged_in == 0) {
 				$display = $moduleCompare->display_upload_form();
 				break;
 			case 'analyze_cmp_data' :
-				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$file = $_FILES ['file'];
 				$display = $moduleCompare->display_analyze_form( $file, $all_data );
 				break;
