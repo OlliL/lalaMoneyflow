@@ -24,17 +24,16 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreText.php,v 1.27 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: coreText.php,v 1.28 2014/03/01 19:32:34 olivleh1 Exp $
 //
 namespace client\core;
 
+use client\util\Environment;
 class coreText extends core {
 	private $inifile = null;
-	private $guiLanguage;
 
-	public final function __construct($guiLanguage) {
+	public final function __construct() {
 		parent::__construct();
-		$this->guiLanguage = $guiLanguage;
 	}
 
 	private final function getFileName($id) {
@@ -67,7 +66,7 @@ class coreText extends core {
 	}
 
 	public final function get_text($id) {
-		$inifile = $this->get_lang_data( $this->guiLanguage );
+		$inifile = $this->get_lang_data( Environment::getInstance()->getSettingGuiLanguage() );
 		return $inifile ['TEXT_' . $id];
 	}
 

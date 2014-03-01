@@ -24,23 +24,21 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSettings.php,v 1.30 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: moduleSettings.php,v 1.31 2014/03/01 19:32:34 olivleh1 Exp $
 //
 namespace client\module;
 
 use client\handler\SettingControllerHandler;
 use base\ErrorCode;
 use client\core\coreLanguages;
-use client\core\coreSession;
+use client\util\Environment;
 
 class moduleSettings extends module {
 	private $coreLanguages;
-	private $coreSession;
 
 	public final function __construct() {
 		parent::__construct();
 		$this->coreLanguages = new coreLanguages();
-		$this->coreSession = new coreSession();
 	}
 
 	public final function display_personal_settings($realaction, $all_data) {
@@ -59,10 +57,11 @@ class moduleSettings extends module {
 				if ($data_is_valid === true) {
 					$all_data ['dateformat'] = $all_data ['date_data1'] . $all_data ['date_delimiter1'] . $all_data ['date_data2'] . $all_data ['date_delimiter2'] . $all_data ['date_data3'];
 					SettingControllerHandler::getInstance()->updatePersonalSettings( $all_data );
-					$this->coreSession->setAttribute( 'date_format', $all_data ['dateformat'] );
-					$this->coreSession->setAttribute( 'gui_language', $all_data ['language'] );
-					parent::setGuiLanguage( $all_data ['language'] );
-					$this->coreSession->removeAttribute( 'att_new' );
+					Environment::getInstance()->setSettingDateFormat( $all_data ['dateformat'] );
+					Environment::getInstance()->setSettingGuiLanguage( $all_data ['language'] );
+					Environment::getInstance()->setGuiLanguage( $all_data ['language'] );
+					if ($all_data ['password'])
+						Environment::getInstance()->setUserAttNew( false );
 				}
 			default :
 				if (! is_array( $all_data )) {

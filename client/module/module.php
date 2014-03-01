@@ -24,23 +24,19 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.75 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: module.php,v 1.76 2014/03/01 19:32:34 olivleh1 Exp $
 //
 namespace client\module;
 
-use client\core\coreSession;
 use client\core\coreText;
+use client\util\Environment;
 
 require_once 'Smarty.class.php';
 
 abstract class module {
 	protected $template;
-	private $coreSession;
-	private $guiLanguage;
 
 	protected function __construct() {
-		$this->coreSession = new coreSession();
-		$this->guiLanguage = $this->coreSession->getAttribute( 'gui_language' );
 
 		$this->template = new \Smarty();
 		$this->template->registerPlugin( 'modifier', 'number_format', 'my_number_format' );
@@ -68,19 +64,11 @@ abstract class module {
 		}
 	}
 
-	protected final function setGuiLanguage($guiLanguage) {
-		$this->guiLanguage = $guiLanguage;
-	}
-
-	protected final function getGuiLanguage() {
-		return $this->guiLanguage;
-	}
-
 	protected final function get_errors() {
 		global $ERRORS;
 		$result = array ();
 		if (is_array( $ERRORS )) {
-			$coreText = new coreText( $this->guiLanguage );
+			$coreText = new coreText();
 			foreach ( $ERRORS as $error ) {
 				$error_text = $coreText->get_text( $error ['id'] );
 				if (array_key_exists( 'arguments', $error ) && is_array( $error ['arguments'] )) {
@@ -95,7 +83,7 @@ abstract class module {
 	}
 
 	private final function loadLanguageFile() {
-		$this->template->configLoad( 'locale/' . $this->guiLanguage . '.conf' );
+		$this->template->configLoad( 'locale/' . Environment::getInstance()->getSettingGuiLanguage() . '.conf' );
 	}
 
 	protected final function fetch_template($name, $cacheid = false) {
@@ -116,8 +104,7 @@ abstract class module {
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
 		$this->template->assign( 'VERSION', '0.20.0' );
 		$this->template->assign( 'NO_NAVIGATION', $nonavi );
-		$coreSession = new coreSession();
-		$admin = $coreSession->getAttribute( 'perm_admin' );
+		$admin = Environment::getInstance()->getUserPermAdmin();
 		if ($admin) {
 			$this->template->assign( 'IS_ADMIN', true );
 		} else {

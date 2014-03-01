@@ -24,24 +24,22 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleEvents.php,v 1.14 2014/03/01 17:30:21 olivleh1 Exp $
+// $Id: moduleEvents.php,v 1.15 2014/03/01 19:32:34 olivleh1 Exp $
 //
 namespace client\module;
 
 use client\handler\EventControllerHandler;
-use client\core\coreSession;
+use client\util\Environment;
 
 class moduleEvents extends module {
-	private $coreSession;
 
 	public final function __construct() {
 		parent::__construct();
-		$this->coreSession = new coreSession();
 	}
 
 	public final function check_events() {
-		if ($this->coreSession->getAttribute( 'events_shown' ) === false) {
-			$this->coreSession->setAttribute( 'events_shown', true );
+		if (Environment::getInstance()->getEventsShown() === false) {
+			Environment::getInstance()->setEventsShown( true );
 			$events = EventControllerHandler::getInstance()->showEventList();
 			if ($events ['mms_missing'] === true) {
 				$this->template->assign( 'MONTH', $events ['month'] );

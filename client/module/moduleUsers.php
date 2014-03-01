@@ -24,31 +24,28 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.50 2014/03/01 17:30:21 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.51 2014/03/01 19:32:34 olivleh1 Exp $
 //
 namespace client\module;
 
-use client\handler\SessionControllerHandler;
 use client\handler\UserControllerHandler;
 use base\ErrorCode;
-use client\core\coreSession;
+use client\util\Environment;
 
 class moduleUsers extends module {
-	private $coreSession;
 
 	public final function __construct() {
 		parent::__construct();
-		$this->coreSession = new coreSession();
 	}
 
 	public final function is_logged_in() {
-		$this->coreSession->start();
-		if (! $this->coreSession->getAttribute( 'users_id' )) {
+		$userId = Environment::getInstance()->getUserId();
+		if (! $userId) {
 			return 3;
 		} else {
-			define( USERID, $this->coreSession->getAttribute( 'users_id' ) );
+			define( USERID, $userId );
 
-			if ($this->coreSession->getAttribute( 'att_new' )) {
+			if (Environment::getInstance()->getUserAttNew()) {
 				return 2;
 			} else {
 				return 0;
@@ -56,31 +53,25 @@ class moduleUsers extends module {
 		}
 	}
 
-	public final function display_login_user($realaction, $name, $password, $stay_logged_in, $request_uri) {
+	public final function display_login_user($realaction, $name, $password, $request_uri) {
 		switch ($realaction) {
 			case 'login' :
-				if ($stay_logged_in == 'on') {
-					session_set_cookie_params( 5184000 );
-					session_cache_expire( 86400 );
-				}
-				$this->coreSession->restart();
 				if (empty( $name )) {
 					add_error( ErrorCode::USERNAME_IS_MANDATORY );
 				} elseif (empty( $password )) {
 					add_error( ErrorCode::PASSWORD_EMPTY );
 				}
 
-				$this->coreSession->setAttribute( 'user_name', $name );
-				$this->coreSession->setAttribute( 'user_password', sha1( $password ) );
-				$session = UserControllerHandler::getInstance()->getUserSettingsForStartup($name);
+				Environment::getInstance()->setUserName( $name );
+				Environment::getInstance()->setUserPassword( sha1( $password ) );
+				$session = UserControllerHandler::getInstance()->getUserSettingsForStartup( $name );
 				if ($session) {
-					$this->coreSession->setAttribute( 'users_id', $session ['mur_userid'] );
-					$this->coreSession->setAttribute( 'date_format', $session ['dateformat'] );
-					$this->coreSession->setAttribute( 'gui_language', $session ['displayed_language'] );
-					$this->coreSession->setAttribute( 'att_new', $session ['att_new'] );
-					$this->coreSession->setAttribute( 'perm_admin', $session ['perm_admin'] );
+					Environment::getInstance()->setUserId( $session ['mur_userid'] );
+					Environment::getInstance()->setSettingDateFormat( $session ['dateformat'] );
+					Environment::getInstance()->setSettingGuiLanguage( $session ['displayed_language'] );
+					Environment::getInstance()->setUserAttNew( $session ['att_new'] );
+					Environment::getInstance()->setUserPermAdmin( $session ['perm_admin'] );
 
-					$this->coreSession->start();
 					$loginok = 1;
 				}
 				break;
@@ -91,7 +82,7 @@ class moduleUsers extends module {
 		if ($loginok == 1) {
 			return;
 		} else {
-			parent::setGuiLanguage( LOGIN_FORM_LANGUAGE );
+			Environment::getInstance()->setSettingGuiLanguage( LOGIN_FORM_LANGUAGE );
 			$this->template->assign( 'NAME', $name );
 			$this->template->assign( 'STAY_LOGGED_IN', $stay_logged_in );
 			$this->template->assign( 'ERRORS', $this->get_errors() );
@@ -102,12 +93,13 @@ class moduleUsers extends module {
 	}
 
 	public final function logout() {
-		$this->coreSession->start();
-		$this->coreSession->destroy();
+		// destroy the existing session and start a new one (important as the app expectes always a running session)
+		session_destroy();
+		session_start();
 	}
 
 	public final function is_admin() {
-		$perm_admin = $this->coreSession->getAttribute( 'perm_admin' );
+		$perm_admin = Environment::getInstance()->getUserPermAdmin();
 		return $perm_admin ? true : false;
 	}
 

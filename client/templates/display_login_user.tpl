@@ -28,10 +28,6 @@
 					<th>{#TEXT_86#}</th>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="password" name="password" value="" size=10></td>
 				</tr>
-				<tr>
-					<th>{#TEXT_87#}</th>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="checkbox" name="stay_logged_in" {if $STAY_LOGGED_IN == "on"}checked{/if}></td>
-				</tr>
 			</table>
 			<br>
 			<input type="submit" value="{#TEXT_88#}">

@@ -25,22 +25,25 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractEnvironment.php,v 1.2 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: AbstractEnvironment.php,v 1.3 2014/03/01 19:32:34 olivleh1 Exp $
 //
 namespace base;
 
 abstract class AbstractEnvironment {
 	private static $instance;
-	private $environment = array ();
+	private $environment;
+	const BACKEND_ARRAY = 1;
+	const BACKEND_SESSION = 2;
 
 	private function __construct() {
 	}
 
-	public static function getInstance() {
+	protected static function getInstanceInternal($backend) {
 		if (! isset( self::$instance )) {
 			// $className = __CLASS__;
 			$className = get_called_class();
 			self::$instance = new $className();
+			self::$instance->setBackend( $backend );
 		}
 		return self::$instance;
 	}
@@ -53,11 +56,23 @@ abstract class AbstractEnvironment {
 		trigger_error( 'Deserialisation not supported', E_USER_ERROR );
 	}
 
-	public final function getValue($key) {
+	protected final function setBackend($backend) {
+		switch ($backend) {
+			case self::BACKEND_SESSION :
+				$this->environment = & $_SESSION;
+				break;
+			case self::BACKEND_ARRAY :
+			default :
+				$this->environment = array ();
+				break;
+		}
+	}
+
+	protected final function getValue($key) {
 		return $this->environment [$key];
 	}
 
-	public final function setValue($key, $value) {
+	protected final function setValue($key, $value) {
 		$this->environment [$key] = $value;
 	}
 }

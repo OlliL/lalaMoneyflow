@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractHandler.php,v 1.6 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.7 2014/03/01 19:32:34 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -40,7 +40,7 @@ use base\ErrorCode;
 use base\RESTAuthorization;
 use Httpful\Http;
 use client\module\moduleUsers;
-use client\core\coreSession;
+use client\util\Environment;
 
 abstract class AbstractHandler extends AbstractJsonSender {
 	private $userName;
@@ -51,9 +51,8 @@ abstract class AbstractHandler extends AbstractJsonSender {
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
 		) ) );
-		$coreSession = new coreSession();
-		$this->userName = $coreSession->getAttribute( 'user_name' );
-		$this->userPassword = $coreSession->getAttribute( 'user_password' );
+		$this->userName = Environment::getInstance()->getUserName();
+		$this->userPassword = Environment::getInstance()->getUserPassword();
 	}
 
 	abstract protected function getCategory();

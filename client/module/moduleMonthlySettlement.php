@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.56 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.57 2014/03/01 19:32:34 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -38,7 +38,7 @@ class moduleMonthlySettlement extends module {
 
 	public final function __construct() {
 		parent::__construct();
-		$this->coreText = new coreText( parent::getGuiLanguage() );
+		$this->coreText = new coreText();
 	}
 
 	public final function display_list_monthlysettlements($month, $year) {

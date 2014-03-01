@@ -24,12 +24,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.76 2014/03/01 17:09:59 olivleh1 Exp $
+// $Id: index.php,v 1.77 2014/03/01 19:32:34 olivleh1 Exp $
 //
 namespace client;
 
 use base\ErrorCode;
-use client\core\coreSession;
 use client\module\moduleEvents;
 use client\module\moduleUsers;
 use client\module\moduleSettings;
@@ -45,9 +44,12 @@ use client\module\moduleGroups;
 use client\module\moduleCompare;
 use client\module\moduleFrontPage;
 use client\util\utilTimer;
+use client\util\Environment;
 
 require_once 'include.php';
 require_once 'functions.php';
+
+session_start();
 
 if ($money_debug === true) {
 	$timer = new utilTimer();
@@ -55,9 +57,6 @@ if ($money_debug === true) {
 }
 
 $action = $_POST ['action'] ? $_POST ['action'] : $_GET ['action'];
-
-$coreSession = new coreSession();
-$coreSession->start();
 
 $moduleEvents = new moduleEvents();
 $moduleUsers = new moduleUsers();
@@ -96,8 +95,7 @@ if ($is_logged_in == 2) {
 	$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 	$name = array_key_exists( 'name', $_REQUEST ) ? $_REQUEST ['name'] : '';
 	$password = array_key_exists( 'password', $_REQUEST ) ? $_REQUEST ['password'] : '';
-	$stay_logged_in = array_key_exists( 'stay_logged_in', $_REQUEST ) ? $_REQUEST ['stay_logged_in'] : '';
-	$display = $moduleUsers->display_login_user( $realaction, $name, $password, $stay_logged_in, $request_uri );
+	$display = $moduleUsers->display_login_user( $realaction, $name, $password, $request_uri );
 
 	if ($_POST ['request_uri'] && ! is_array( $ERRORS ))
 		header( "Location: " . $_POST ['request_uri'] );
@@ -108,7 +106,7 @@ if ($is_logged_in == 2) {
 
 if ($is_logged_in == 0) {
 
-	define( 'GUI_DATE_FORMAT', $coreSession->getAttribute( 'date_format' ) );
+	define( 'GUI_DATE_FORMAT', Environment::getInstance()->getSettingDateFormat() );
 
 	$display = $moduleEvents->check_events();
 
