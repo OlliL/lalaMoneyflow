@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.30 2014/03/01 20:46:43 olivleh1 Exp $
+// $Id: include.php,v 1.31 2014/03/02 17:31:44 olivleh1 Exp $
 //
 
 // ########
@@ -51,8 +51,8 @@ const SERVERPREFIX = 'server/';
 
 // style how the timer information is printed out in debug mode (int 0-2)
 $confTimer = 2;
-ini_set( "log_errors", 1 );
-ini_set( "error_log", "/tmp/php-error-client.log" );
+// ini_set( "log_errors", 1 );
+// ini_set( "error_log", "/tmp/php-error-client.log" );
 // debug mode (boolean)
 $money_debug = false;
 $money_debug = true;
