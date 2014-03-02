@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToPreDefMoneyflowTransportMapper.php,v 1.6 2014/03/01 17:11:15 olivleh1 Exp $
+// $Id: ArrayToPreDefMoneyflowTransportMapper.php,v 1.7 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -36,19 +36,19 @@ class ArrayToPreDefMoneyflowTransportMapper extends AbstractArrayMapper {
 	public static function mapAToB(array $a) {
 		$b = new PreDefMoneyflowTransport();
 		$b->setId( $a ['predefmoneyflowid'] );
-
+		
 		if (array_key_exists( 'createdate', $a )) {
 			$createdate = parent::convertClientDateToTransport( $a ['createdate'] );
 			if ($createdate)
 				$b->setCreateDate( $createdate );
 		}
-
+		
 		if (array_key_exists( 'lastUsed', $a )) {
 			$lastUsed = parent::convertClientDateToTransport( $a ['last_used'] );
 			if ($lastUsed)
 				$b->setLastUsed( $lastUsed );
 		}
-
+		
 		$b->setAmount( $a ['amount'] );
 		$b->setCapitalsourceid( $a ['mcs_capitalsourceid'] );
 		$b->setContractpartnerid( $a ['mcp_contractpartnerid'] );
@@ -74,7 +74,7 @@ class ArrayToPreDefMoneyflowTransportMapper extends AbstractArrayMapper {
 		$a ['mpa_postingaccountid'] = $b->getPostingaccountid();
 		$a ['postingaccountname'] = $b->getPostingaccountname();
 		$a ['once_a_month'] = $b->getOnceAMonth();
-
+		
 		return $a;
 	}
 }

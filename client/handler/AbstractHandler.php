@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractHandler.php,v 1.8 2014/03/01 20:46:43 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.9 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -50,7 +50,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 	protected function __construct() {
 		parent::addMapper( 'client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 		Httpful::register( Mime::JSON, new JsonHandler( array (
-				'decode_as_array' => true
+				'decode_as_array' => true 
 		) ) );
 		$this->userName = Environment::getInstance()->getUserName();
 		$this->userPassword = Environment::getInstance()->getUserPassword();
@@ -110,13 +110,13 @@ abstract class AbstractHandler extends AbstractJsonSender {
 			default :
 				$contentType = null;
 		}
-
+		
 		$dateStr = gmdate( 'D, d M Y H:i:s' ) . ' GMT';
 		$authorization = RESTAuthorization::getRESTAuthorization( $this->userPassword, $httpVerb, $contentType, $url, $dateStr, $body, $this->userName );
-
+		
 		$headers = array (
 				'Date' => $dateStr,
-				'Authentication' => $authorization
+				'Authentication' => $authorization 
 		);
 		return $headers;
 	}
@@ -130,7 +130,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 			return self::handle_result( $response->body );
 		}
 	}
-
+	
 	// create
 	protected final function postJson($usecase, $json, $parameter = array()) {
 		$url = $this->getUrl( $usecase, $parameter );
@@ -141,7 +141,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 			return self::handle_result( $response->body );
 		}
 	}
-
+	
 	// update
 	protected final function putJson($usecase, $json, $parameter = array()) {
 		$url = $this->getUrl( $usecase, $parameter );

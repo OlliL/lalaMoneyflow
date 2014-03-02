@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataControllerHandler.php,v 1.8 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: CompareDataControllerHandler.php,v 1.9 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -59,7 +59,7 @@ class CompareDataControllerHandler extends AbstractHandler {
 		$response = parent::getJson( 'showCompareDataForm' );
 		if (is_array( $response )) {
 			$showCompareDataForm = JsonAutoMapper::mapAToB( $response, '\\api\\model\\comparedata' );
-
+			
 			if (is_array( $showCompareDataForm->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $showCompareDataForm->getCapitalsourceTransport() );
 			} else {
@@ -73,7 +73,7 @@ class CompareDataControllerHandler extends AbstractHandler {
 			$result ['selected_format'] = $showCompareDataForm->getSelectedDataFormat();
 			$result ['selected_capitalsource'] = $showCompareDataForm->getSelectedCapitalsourceId();
 		}
-
+		
 		return $result;
 	}
 
@@ -84,7 +84,7 @@ class CompareDataControllerHandler extends AbstractHandler {
 		$request->setFileContents( base64_encode( $compareData ['filecontents'] ) );
 		$request->setFormatId( $compareData ['format'] );
 		$request->setStartDate( DateUtil::convertClientDateToTransport( $compareData ['startdate'] ) );
-
+		
 		$response = parent::putJson( 'compareData', parent::json_encode_response( $request ) );
 		if (is_array( $response )) {
 			$compareDataResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\comparedata' );
@@ -130,7 +130,7 @@ class CompareDataControllerHandler extends AbstractHandler {
 			}
 			$result ['result'] = $compareDataResponse->getResult();
 		}
-
+		
 		return $result;
 	}
 }

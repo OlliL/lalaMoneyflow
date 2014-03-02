@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToMoneyflowSearchParamsTransportMapper.php,v 1.2 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: ArrayToMoneyflowSearchParamsTransportMapper.php,v 1.3 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -45,7 +45,7 @@ class ArrayToMoneyflowSearchParamsTransportMapper extends AbstractArrayMapper {
 		$b->setContractpartnerId( $a ['mcp_contractpartnerid'] );
 		$b->setGroupBy1( $a ['grouping1'] );
 		$b->setGroupBy2( $a ['grouping2'] );
-
+		
 		return $b;
 	}
 

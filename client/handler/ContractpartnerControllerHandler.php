@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerControllerHandler.php,v 1.7 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: ContractpartnerControllerHandler.php,v 1.8 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -54,7 +54,7 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 
 	public final function showContractpartnerList($restriction) {
 		$response = parent::getJson( 'showContractpartnerList', array (
-				utf8_encode( $restriction )
+				utf8_encode( $restriction ) 
 		) );
 		if (is_array( $response )) {
 			$listContractpartner = JsonAutoMapper::mapAToB( $response, '\\api\\model\\contractpartner' );
@@ -65,13 +65,13 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 			}
 			$result ['initials'] = $listContractpartner->getInitials();
 		}
-
+		
 		return $result;
 	}
 
 	public final function showEditContractpartner($id) {
 		$response = parent::getJson( 'showEditContractpartner', array (
-				$id
+				$id 
 		) );
 		if (is_array( $response )) {
 			$showEditContractpartner = JsonAutoMapper::mapAToB( $response, '\\api\\model\\contractpartner' );
@@ -82,7 +82,7 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 
 	public final function showDeleteContractpartner($id) {
 		$response = parent::getJson( 'showDeleteContractpartner', array (
-				$id
+				$id 
 		) );
 		if (is_array( $response )) {
 			$showDeleteContractpartner = JsonAutoMapper::mapAToB( $response, '\\api\\model\\contractpartner' );
@@ -93,7 +93,7 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 
 	public final function createContractpartner(array $contractpartner) {
 		$contractpartnerTransport = parent::map( $contractpartner, ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
-
+		
 		$request = new createContractpartnerRequest();
 		$request->setContractpartnerTransport( $contractpartnerTransport );
 		return parent::postJson( 'createContractpartner', parent::json_encode_response( $request ) );
@@ -101,7 +101,7 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 
 	public final function updateContractpartner(array $contractpartner) {
 		$contractpartnerTransport = parent::map( $contractpartner, ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
-
+		
 		$request = new updateContractpartnerRequest();
 		$request->setContractpartnerTransport( $contractpartnerTransport );
 		return parent::putJson( 'updateContractpartner', parent::json_encode_response( $request ) );
@@ -109,7 +109,7 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 
 	public final function deleteContractpartner($id) {
 		return parent::deleteJson( 'deleteContractpartnerById', array (
-				$id
+				$id 
 		) );
 	}
 }

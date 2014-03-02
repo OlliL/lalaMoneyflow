@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CapitalsourceTransport.php,v 1.4 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: CapitalsourceTransport.php,v 1.5 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace api\model\transport;
 
@@ -41,88 +41,71 @@ class CapitalsourceTransport {
 	public $validFrom;
 	public $groupUse;
 
-	public final function setId( $id )
-	{
+	public final function setId($id) {
 		$this->id = $id;
 	}
 
-	public final function setUserid( $userid )
-	{
+	public final function setUserid($userid) {
 		$this->userid = $userid;
 	}
 
-	public final function setType( $type )
-	{
+	public final function setType($type) {
 		$this->type = $type;
 	}
 
-	public final function setState( $state )
-	{
+	public final function setState($state) {
 		$this->state = $state;
 	}
 
-	public final function setAccountNumber( $accountNumber )
-	{
+	public final function setAccountNumber($accountNumber) {
 		$this->accountNumber = $accountNumber;
 	}
 
-	public final function setBankCode( $bankCode )
-	{
+	public final function setBankCode($bankCode) {
 		$this->bankCode = $bankCode;
 	}
 
-	public final function setComment( $comment )
-	{
+	public final function setComment($comment) {
 		$this->comment = $comment;
 	}
 
-	public final function setValidTil( $validTil )
-	{
+	public final function setValidTil($validTil) {
 		$this->validTil = $validTil;
 	}
 
-	public final function setValidFrom( $validFrom )
-	{
+	public final function setValidFrom($validFrom) {
 		$this->validFrom = $validFrom;
 	}
 
-	public final function setGroupUse( $groupUse )
-	{
+	public final function setGroupUse($groupUse) {
 		$this->groupUse = $groupUse;
 	}
 
-	public final function getId()
-	{
+	public final function getId() {
 		return $this->id;
 	}
 
-	public final function getUserid()
-	{
+	public final function getUserid() {
 		return $this->userid;
 	}
 
-	public final function getType()
-	{
+	public final function getType() {
 		return $this->type;
 	}
 
-	public final function getState()
-	{
+	public final function getState() {
 		return $this->state;
 	}
 
-	public final function getAccountNumber()
-	{
+	public final function getAccountNumber() {
 		return $this->accountNumber;
 	}
 
-	public final function getBankCode()
-	{
+	public final function getBankCode() {
 		return $this->bankCode;
 	}
 
-	public final function getComment()
-	{
+	public final function getComment() {
 		return $this->comment;
 	}
 
@@ -134,11 +117,9 @@ class CapitalsourceTransport {
 		return $this->validFrom;
 	}
 
-	public final function getGroupUse()
-	{
+	public final function getGroupUse() {
 		return $this->groupUse;
 	}
-
 }
 
 ?>

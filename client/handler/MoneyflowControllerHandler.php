@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowControllerHandler.php,v 1.7 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: MoneyflowControllerHandler.php,v 1.8 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -85,13 +85,13 @@ class MoneyflowControllerHandler extends AbstractHandler {
 			}
 			$result ['num_free_moneyflows'] = $addMoneyflow->getSettingNumberOfFreeMoneyflows();
 		}
-
+		
 		return $result;
 	}
 
 	public final function showEditMoneyflow($id) {
 		$response = parent::getJson( 'showEditMoneyflow', array (
-				$id
+				$id 
 		) );
 		if (is_array( $response )) {
 			$showEditMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
@@ -116,13 +116,13 @@ class MoneyflowControllerHandler extends AbstractHandler {
 				$result ['postingaccounts'] = array ();
 			}
 		}
-
+		
 		return $result;
 	}
 
 	public final function showDeleteMoneyflow($id) {
 		$response = parent::getJson( 'showDeleteMoneyflow', array (
-				$id
+				$id 
 		) );
 		if (is_array( $response )) {
 			$showDeleteMoneyflowResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
@@ -133,25 +133,25 @@ class MoneyflowControllerHandler extends AbstractHandler {
 
 	public final function createMoneyflows(array $moneyflows) {
 		$preDefMoneyflowIds = array ();
-
+		
 		foreach ( $moneyflows as $moneyflow ) {
 			if ($moneyflow ['predefmoneyflowid'] > 0) {
 				$preDefMoneyflowIds [] = $moneyflow ['predefmoneyflowid'];
 			}
 		}
 		$moneyflowTransport = parent::mapArray( $moneyflows, ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
-
+		
 		$request = new createMoneyflowsRequest();
 		$request->setMoneyflowTransport( $moneyflowTransport );
 		$request->setUsedPreDefMoneyflowIds( $preDefMoneyflowIds );
-
+		
 		$response = parent::postJson( 'createMoneyflows', parent::json_encode_response( $request ) );
-
+		
 		if ($response === true) {
 			$result = true;
 		} else if (is_array( $response )) {
 			$createMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
-
+			
 			if (is_array( $createMoneyflow->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $createMoneyflow->getCapitalsourceTransport() );
 			} else {
@@ -180,17 +180,17 @@ class MoneyflowControllerHandler extends AbstractHandler {
 			$result ['result'] = $createMoneyflow->getResult();
 			$result ['num_free_moneyflows'] = $createMoneyflow->getSettingNumberOfFreeMoneyflows();
 		}
-
+		
 		return $result;
 	}
 
 	public final function updateMoneyflow(array $moneyflow) {
 		$moneyflowTransport = parent::map( $moneyflow, ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
-
+		
 		$request = new updateMoneyflowRequest();
 		$request->setMoneyflowTransport( $moneyflowTransport );
 		$response = parent::putJson( 'updateMoneyflow', parent::json_encode_response( $request ) );
-
+		
 		if ($response === true) {
 			$result = true;
 		} else if (is_array( $response )) {
@@ -222,7 +222,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 
 	public final function deleteMoneyflow($id) {
 		return parent::deleteJson( 'deleteMoneyflowById', array (
-				$id
+				$id 
 		) );
 	}
 
@@ -241,11 +241,11 @@ class MoneyflowControllerHandler extends AbstractHandler {
 
 	public final function searchMoneyflows(array $params) {
 		$searchParamsTransport = parent::map( $params, ClientArrayMapperEnum::MONEYFLOWSEARCHPARAMS_TRANSPORT );
-
+		
 		$request = new searchMoneyflowsRequest();
 		$request->setMoneyflowSearchParamsTransport( $searchParamsTransport );
 		$response = parent::putJson( 'searchMoneyflows', parent::json_encode_response( $request ) );
-
+		
 		if (is_array( $response )) {
 			$searchMoneyflows = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
 			if (is_array( $searchMoneyflows->getMoneyflowSearchResultTransport() )) {

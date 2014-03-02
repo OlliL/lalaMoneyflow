@@ -32,10 +32,10 @@ class utilTimer {
 	function mPrintTime($timer = 0) {
 		global $iscached;
 		global $confTimer;
-
+		
 		if ($timer === 0)
 			$timer = $this->mGetTime();
-
+		
 		switch ($confTimer) {
 			case 2 :
 				printf( '<font color="#FF0000" style="font-family:verdana,sans-serif;font-size:9px;">elapsed: %03.6f seconds, %s', $timer, ' </font>' );

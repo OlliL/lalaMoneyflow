@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleLanguages.php,v 1.15 2014/03/01 19:32:34 olivleh1 Exp $
+// $Id: moduleLanguages.php,v 1.16 2014/03/02 23:42:20 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -44,11 +44,11 @@ class moduleLanguages extends module {
 	public final function display_list_languages($letter) {
 		$all_index_letters = $this->coreLanguages->get_all_index_letters();
 		$num_languages = $this->coreLanguages->count_all_data();
-
+		
 		if (empty( $letter )) {
 			$letter = 'all';
 		}
-
+		
 		if ($letter == 'all') {
 			$all_data = $this->coreLanguages->get_all_data();
 		} elseif (! empty( $letter )) {
@@ -56,11 +56,11 @@ class moduleLanguages extends module {
 		} else {
 			$all_data = array ();
 		}
-
+		
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
-
+		
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_languages.tpl' );
 	}
@@ -69,23 +69,23 @@ class moduleLanguages extends module {
 		if (! $id) {
 			return ' ';
 		}
-
+		
 		switch ($realaction) {
 			case 'save' :
-
+				
 				foreach ( $all_data as $textid => $data ) {
 					if ($data ['text'] != $data ['orig_text']) {
 						$this->coreText->update_text( $textid, $id, $data ['text'] );
 					}
 				}
-
+			
 			default :
 				$all_data = $this->coreText->get_lang_data( $id );
 				$lang = $this->coreLanguages->get_language_name( $id );
-
+				
 				$all_data_eng = $this->coreText->get_lang_data( 1 );
 				$lang_eng = $this->coreLanguages->get_language_name( 1 );
-
+				
 				$this->template->assign( 'LANGUAGEID', $id );
 				$this->template->assign( 'LANG', $lang );
 				$this->template->assign( 'LANG_ENG', $lang_eng );
@@ -93,9 +93,9 @@ class moduleLanguages extends module {
 				$this->template->assign( 'ALL_DATA_ENG', $all_data_eng );
 				break;
 		}
-
+		
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-
+		
 		$this->parse_header();
 		return $this->fetch_template( 'display_edit_language.tpl' );
 	}
@@ -103,22 +103,22 @@ class moduleLanguages extends module {
 	public final function display_add_language($realaction, $all_data) {
 		switch ($realaction) {
 			case 'save' :
-
+				
 				$languageId = $this->coreLanguages->add_language( $all_data ['language'] );
-
+				
 				if ($languageId > 0) {
 					$this->coreText->create_new_textfile( $all_data ['source'], $languageId );
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
-
+			
 			default :
 				break;
 		}
-
+		
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 		$this->template->assign( 'LANGUAGE_VALUES', $this->coreLanguages->get_all_data() );
-
+		
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_add_language.tpl' );
 	}

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: UserControllerHandler.php,v 1.10 2014/03/01 17:30:21 olivleh1 Exp $
+// $Id: UserControllerHandler.php,v 1.11 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -57,7 +57,7 @@ class UserControllerHandler extends AbstractHandler {
 
 	public final function getUserSettingsForStartup($name) {
 		$response = parent::getJson( 'getUserSettingsForStartup', array (
-				$name
+				$name 
 		) );
 		if (is_array( $response )) {
 			$getUserSettingsForStartup = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
@@ -66,14 +66,15 @@ class UserControllerHandler extends AbstractHandler {
 					'dateformat' => $getUserSettingsForStartup->getSettingDateFormat(),
 					'displayed_language' => $getUserSettingsForStartup->getSettingDisplayedLanguage(),
 					'att_new' => $getUserSettingsForStartup->getAttributeNew(),
-					'perm_admin' => $getUserSettingsForStartup->getPermissionAdmin()
+					'perm_admin' => $getUserSettingsForStartup->getPermissionAdmin() 
 			);
 		}
 		return $result;
 	}
+
 	public final function showUserList($restriction) {
 		$response = parent::getJson( 'showUserList', array (
-				utf8_encode( $restriction )
+				utf8_encode( $restriction ) 
 		) );
 		if (is_array( $response )) {
 			$listUsers = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
@@ -94,7 +95,7 @@ class UserControllerHandler extends AbstractHandler {
 			}
 			$result ['initials'] = $listUsers->getInitials();
 		}
-
+		
 		return $result;
 	}
 
@@ -113,7 +114,7 @@ class UserControllerHandler extends AbstractHandler {
 
 	public final function showEditUser($id) {
 		$response = parent::getJson( 'showEditUser', array (
-				$id
+				$id 
 		) );
 		if (is_array( $response )) {
 			$showEditUserResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
@@ -134,7 +135,7 @@ class UserControllerHandler extends AbstractHandler {
 
 	public final function showDeleteUser($id) {
 		$response = parent::getJson( 'showDeleteUser', array (
-				$id
+				$id 
 		) );
 		if (is_array( $response )) {
 			$showDeleteUserResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
@@ -146,12 +147,12 @@ class UserControllerHandler extends AbstractHandler {
 	public final function createUser(array $user, array $access_relation) {
 		$userTransport = parent::map( $user, ClientArrayMapperEnum::USER_TRANSPORT );
 		$accessRelationTransport = parent::map( $access_relation, ClientArrayMapperEnum::ACCESS_RELATION_TRANSPORT );
-
+		
 		$request = new createUserRequest();
 		$request->setUserTransport( $userTransport );
 		$request->setAccessRelationTransport( $accessRelationTransport );
 		$response = parent::postJson( 'createUser', parent::json_encode_response( $request ) );
-
+		
 		if ($response === true) {
 			$result = true;
 		} else if (is_array( $response )) {
@@ -174,7 +175,7 @@ class UserControllerHandler extends AbstractHandler {
 	public final function updateUser(array $user, array $access_relation) {
 		$userTransport = parent::map( $user, ClientArrayMapperEnum::USER_TRANSPORT );
 		$accessRelationTransport = parent::map( $access_relation, ClientArrayMapperEnum::ACCESS_RELATION_TRANSPORT );
-
+		
 		$request = new updateUserRequest();
 		$request->setUserTransport( $userTransport );
 		$request->setAccessRelationTransport( $accessRelationTransport );
@@ -205,7 +206,7 @@ class UserControllerHandler extends AbstractHandler {
 
 	public final function deleteUser($id) {
 		return parent::deleteJson( 'deleteUserById', array (
-				$id
+				$id 
 		) );
 	}
 }

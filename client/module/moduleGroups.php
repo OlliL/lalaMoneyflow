@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleGroups.php,v 1.11 2014/03/01 20:46:42 olivleh1 Exp $
+// $Id: moduleGroups.php,v 1.12 2014/03/02 23:42:20 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -41,11 +41,11 @@ class moduleGroups extends module {
 		$listGroups = GroupControllerHandler::getInstance()->showGroupList( $letter );
 		$all_index_letters = $listGroups ['initials'];
 		$all_data = $listGroups ['groups'];
-
+		
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
-
+		
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_groups.tpl' );
 	}
@@ -59,15 +59,15 @@ class moduleGroups extends module {
 					$ret = GroupControllerHandler::getInstance()->createGroup( $all_data );
 				else
 					$ret = GroupControllerHandler::getInstance()->updateGroup( $all_data );
-
+				
 				if ($ret === true) {
 					$close = 1;
 				} else {
 					foreach ( $ret ['errors'] as $validationResult ) {
 						$error = $validationResult ['error'];
-
+						
 						$this->add_error( $error );
-
+						
 						switch ($error) {
 							case ErrorCode::NAME_MUST_NOT_BE_EMPTY :
 							case ErrorCode::GROUP_WITH_SAME_NAME_ALREADY_EXISTS :
@@ -81,17 +81,17 @@ class moduleGroups extends module {
 					if ($groupid > 0) {
 						$all_data = GroupControllerHandler::getInstance()->showEditGroup( $groupid );
 					} else {
-						$all_data['name'] = '';
+						$all_data ['name'] = '';
 					}
 				}
 				break;
 		}
-
+		
 		$this->template->assign( 'CLOSE', $close );
 		$this->template->assign( 'GROUPID', $groupid );
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-
+		
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_group.tpl' );
 	}
@@ -112,9 +112,9 @@ class moduleGroups extends module {
 				}
 				break;
 		}
-
+		
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-
+		
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_group.tpl' );
 	}

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.31 2014/03/02 17:31:44 olivleh1 Exp $
+// $Id: include.php,v 1.32 2014/03/02 23:42:21 olivleh1 Exp $
 //
 
 // ########
@@ -36,7 +36,6 @@ const LOGIN_FORM_LANGUAGE = 1;
 
 // jpgraph is used for plotting trends
 define( 'ENABLE_JPGRAPH', true );
-
 const ENCODING = 'ISO-8859-15';
 const ROOTDIR = '/mnt/files/www/sites/olli.homeip.net/htdocs/moneyflow/';
 const HTTPFULSUBDIR = 'contrib/httpful/src/';
@@ -60,7 +59,6 @@ $money_debug = true;
 // default year for "valid til" columns when creating a new dataset
 define( 'MAX_YEAR', '2999-12-31' );
 
-
 function framework_autoload($className) {
 	$fname = str_replace( '\\', DIRECTORY_SEPARATOR, $className ) . '.php';
 	if (is_file( ROOTDIR . $fname )) {
@@ -72,6 +70,6 @@ function framework_autoload($className) {
 spl_autoload_register( 'framework_autoload' );
 
 // Do never change this! It is needed to generate GMT-UNIX Timestamps needed to communicate with the server!
-date_default_timezone_set('UTC');
+date_default_timezone_set( 'UTC' );
 
 ?>

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PostingAccountControllerHandler.php,v 1.5 2014/03/02 23:35:15 olivleh1 Exp $
+// $Id: PostingAccountControllerHandler.php,v 1.6 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -51,9 +51,10 @@ class PostingAccountControllerHandler extends AbstractHandler {
 	protected final function getCategory() {
 		return 'postingaccount';
 	}
+
 	public final function showPostingAccountList($restriction) {
 		$response = parent::getJson( 'showPostingAccountList', array (
-				utf8_encode( $restriction )
+				utf8_encode( $restriction ) 
 		) );
 		if (is_array( $response )) {
 			$listPostingAccounts = JsonAutoMapper::mapAToB( $response, '\\api\\model\\postingaccount' );
@@ -64,13 +65,13 @@ class PostingAccountControllerHandler extends AbstractHandler {
 			}
 			$result ['initials'] = $listPostingAccounts->getInitials();
 		}
-
+		
 		return $result;
 	}
 
 	public final function showEditPostingAccount($id) {
 		$response = parent::getJson( 'showEditPostingAccount', array (
-				$id
+				$id 
 		) );
 		if (is_array( $response )) {
 			$showEditPostingAccountResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\postingaccount' );
@@ -81,7 +82,7 @@ class PostingAccountControllerHandler extends AbstractHandler {
 
 	public final function showDeletePostingAccount($id) {
 		$response = parent::getJson( 'showDeletePostingAccount', array (
-				$id
+				$id 
 		) );
 		if (is_array( $response )) {
 			$showDeletePostingAccountResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\postingaccount' );
@@ -92,7 +93,7 @@ class PostingAccountControllerHandler extends AbstractHandler {
 
 	public final function createPostingAccount(array $postingAccount) {
 		$postingAccountTransport = parent::map( $postingAccount, ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
-
+		
 		$request = new createPostingAccountRequest();
 		$request->setPostingAccountTransport( $postingAccountTransport );
 		return parent::postJson( 'createPostingAccount', parent::json_encode_response( $request ) );
@@ -100,7 +101,7 @@ class PostingAccountControllerHandler extends AbstractHandler {
 
 	public final function updatePostingAccount(array $postingAccount) {
 		$postingAccountTransport = parent::map( $postingAccount, ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
-
+		
 		$request = new updatePostingAccountRequest();
 		$request->setPostingAccountTransport( $postingAccountTransport );
 		return parent::putJson( 'updatePostingAccount', parent::json_encode_response( $request ) );
@@ -108,9 +109,9 @@ class PostingAccountControllerHandler extends AbstractHandler {
 
 	public final function deletePostingAccount($id) {
 		return parent::deleteJson( 'deletePostingAccountById', array (
-				$id
+				$id 
 		) );
 	}
-	}
+}
 
 ?>

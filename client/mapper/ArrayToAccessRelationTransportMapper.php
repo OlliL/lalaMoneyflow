@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToAccessRelationTransportMapper.php,v 1.2 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: ArrayToAccessRelationTransportMapper.php,v 1.3 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -37,15 +37,15 @@ class ArrayToAccessRelationTransportMapper extends AbstractArrayMapper {
 		$b = new AccessRelationTransport();
 		$b->setId( $a ['id'] );
 		$b->setRefId( $a ['ref_id'] );
-
+		
 		$validfrom = parent::convertClientDateToTransport( $a ['validfrom'] );
 		if ($validfrom)
 			$b->setValidFrom( $validfrom );
-
+		
 		$validtil = parent::convertClientDateToTransport( $a ['validtil'] );
 		if ($validtil)
 			$b->setValidTil( $validtil );
-
+		
 		return $b;
 	}
 
@@ -55,7 +55,7 @@ class ArrayToAccessRelationTransportMapper extends AbstractArrayMapper {
 		$a ['validfrom'] = parent::convertTransportDateToClient( $b->getValidFrom() );
 		$a ['validtil'] = parent::convertTransportDateToClient( $b->getValidTil() );
 		$a ['validfrom_sort'] = $b->getValidfrom();
-
+		
 		return $a;
 	}
 }

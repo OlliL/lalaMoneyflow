@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.45 2014/03/01 20:46:42 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.46 2014/03/02 23:42:20 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -44,19 +44,19 @@ class moduleCompare extends module {
 		$capitalsource_values = $showCompareDataForm ['capitalsources'];
 		$selected_format = $showCompareDataForm ['selected_format'];
 		$selected_capitalsource = $showCompareDataForm ['selected_capitalsource'];
-
+		
 		if (count( $all_data ) === 0) {
 			$all_data ['startdate'] = $this->convertDateToGui( date( "Y-m-d", mktime( 0, 0, 0, date( 'm', time() ), 1, date( 'Y', time() ) ) ) );
 			$all_data ['enddate'] = $this->convertDateToGui( date( "Y-m-d", mktime( 0, 0, 0, date( 'm', time() ) + 1, 0, date( 'Y', time() ) ) ) );
 			$all_data ['format'] = $selected_format;
 			$all_data ['mcs_capitalsourceid'] = $selected_capitalsource;
 		}
-
+		
 		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 		$this->template->assign( 'FORMAT_VALUES', $format_values );
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-
+		
 		$this->parse_header();
 		return $this->fetch_template( 'display_upfrm_cmp_data.tpl' );
 	}
@@ -67,33 +67,33 @@ class moduleCompare extends module {
 		$endDate = $all_data ['enddate'];
 		$formatId = $all_data ['format'];
 		$capitalSourceId = $all_data ['mcs_capitalsourceid'];
-
+		
 		$valid_data = true;
-
+		
 		if (! $this->dateIsValid( $startDate )) {
 			$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-					Environment::getInstance()->getSettingDateFormat()
+					Environment::getInstance()->getSettingDateFormat() 
 			) );
 			$all_data ['startdate_error'] = 1;
 			$valid_data = false;
 		}
-
+		
 		if (! $this->dateIsValid( $endDate )) {
 			$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-					Environment::getInstance()->getSettingDateFormat()
+					Environment::getInstance()->getSettingDateFormat() 
 			) );
 			$all_data ['enddate_error'] = 1;
 			$valid_data = false;
 		}
-
+		
 		if (! $fileName) {
 			$this->add_error( ErrorCode::FILEUPLOAD_FAILED );
 			$valid_data = false;
 		}
-
+		
 		if ($valid_data === true) {
 			$all_data ['filecontents'] = file_get_contents( $fileName );
-
+			
 			$result = CompareDataControllerHandler::getInstance()->compareData( $all_data );
 			if (is_array( $result ['errors'] )) {
 				foreach ( $result ['errors'] as $validationResult ) {
@@ -103,22 +103,22 @@ class moduleCompare extends module {
 				}
 			}
 		}
-
+		
 		if ($valid_data === false) {
 			return $this->display_upload_form( $all_data );
 		}
-
+		
 		// set "owner" + remove private entries
 		$result ['matching'] = $this->setOwnerAndFilterPrivate( $result ['matching'] );
 		$result ['not_in_file'] = $this->setOwnerAndFilterPrivate( $result ['not_in_file'] );
 		$result ['wrong_source'] = $this->setOwnerAndFilterPrivate( $result ['wrong_source'] );
-
+		
 		$this->template->assign( 'MATCHING', $result ['matching'] );
 		$this->template->assign( 'NOT_IN_DB', $result ['not_in_db'] );
 		$this->template->assign( 'NOT_IN_FILE', $result ['not_in_file'] );
 		$this->template->assign( 'WRONG_SOURCE', $result ['wrong_source'] );
 		$this->template->assign( 'CAPITALSOURCECOMMENT', $result ['capitalsource'] ['comment'] );
-
+		
 		$this->parse_header();
 		return $this->fetch_template( 'display_analyze_cmp_data.tpl' );
 	}
@@ -127,7 +127,7 @@ class moduleCompare extends module {
 	 * This function removes all elements where the moneyflow is set to private and does not belong to the user.
 	 * Moneyflows which belong to the user also receive an additional flag indicating this.
 	 *
-	 * @param unknown $compareArray
+	 * @param unknown $compareArray        	
 	 * @return array
 	 */
 	private final function setOwnerAndFilterPrivate($compareArray) {

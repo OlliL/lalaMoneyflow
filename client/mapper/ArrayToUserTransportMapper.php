@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToUserTransportMapper.php,v 1.4 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: ArrayToUserTransportMapper.php,v 1.5 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -41,7 +41,7 @@ class ArrayToUserTransportMapper extends AbstractArrayMapper {
 		$b->setUserIsNew( $a ['att_new'] );
 		$b->setUserCanLogin( $a ['perm_login'] );
 		$b->setUserIsAdmin( $a ['perm_admin'] );
-
+		
 		return $b;
 	}
 
@@ -52,7 +52,7 @@ class ArrayToUserTransportMapper extends AbstractArrayMapper {
 		$a ['att_new'] = $b->getUserIsNew();
 		$a ['perm_login'] = $b->getUserCanLogin();
 		$a ['perm_admin'] = $b->getUserIsAdmin();
-
+		
 		return $a;
 	}
 }

@@ -25,10 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ValidationItemTransport.php,v 1.3 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: ValidationItemTransport.php,v 1.4 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace api\model\transport;
-
 
 class ValidationItemTransport {
 	public $key;

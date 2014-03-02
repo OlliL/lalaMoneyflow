@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: SettingControllerHandler.php,v 1.4 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: SettingControllerHandler.php,v 1.5 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -59,7 +59,7 @@ class SettingControllerHandler extends AbstractHandler {
 			$result ['numflows'] = $showDefaultSettingsResponse->getNumFreeMoneyflows();
 			$result ['dateformat'] = $showDefaultSettingsResponse->getDateFormat();
 		}
-
+		
 		return $result;
 	}
 
@@ -69,7 +69,7 @@ class SettingControllerHandler extends AbstractHandler {
 		$request->setLanguage( $settings ['language'] );
 		$request->setMaxRows( $settings ['maxrows'] );
 		$request->setNumFreeMoneyflows( $settings ['numflows'] );
-
+		
 		return parent::putJson( 'updateDefaultSettings', parent::json_encode_response( $request ) );
 	}
 
@@ -82,7 +82,7 @@ class SettingControllerHandler extends AbstractHandler {
 			$result ['numflows'] = $showPersonalSettingsResponse->getNumFreeMoneyflows();
 			$result ['dateformat'] = $showPersonalSettingsResponse->getDateFormat();
 		}
-
+		
 		return $result;
 	}
 
@@ -93,7 +93,7 @@ class SettingControllerHandler extends AbstractHandler {
 		$request->setMaxRows( $settings ['maxrows'] );
 		$request->setNumFreeMoneyflows( $settings ['numflows'] );
 		$request->setPassword( $settings ['password'] );
-
+		
 		return parent::putJson( 'updatePersonalSettings', parent::json_encode_response( $request ) );
 	}
 }

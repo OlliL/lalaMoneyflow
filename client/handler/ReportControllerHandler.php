@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportControllerHandler.php,v 1.10 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: ReportControllerHandler.php,v 1.11 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -60,7 +60,7 @@ class ReportControllerHandler extends AbstractHandler {
 	public final function listReports($year, $month) {
 		$response = parent::getJson( 'listReports', array (
 				$year,
-				$month
+				$month 
 		) );
 		if (is_array( $response )) {
 			$listReports = JsonAutoMapper::mapAToB( $response, '\\api\\model\\report' );
@@ -87,7 +87,7 @@ class ReportControllerHandler extends AbstractHandler {
 			$result ['next_month'] = $listReports->getNextMonth();
 			$result ['next_year'] = $listReports->getNextYear();
 		}
-
+		
 		return $result;
 	}
 
@@ -103,7 +103,7 @@ class ReportControllerHandler extends AbstractHandler {
 			}
 		}
 		$result ['selected_capitalsources'] = $showTrendsForm->getSettingTrendCapitalsourceId();
-
+		
 		return $result;
 	}
 
@@ -112,7 +112,7 @@ class ReportControllerHandler extends AbstractHandler {
 		$request->setCapitalsourceIds( $capitalsourceIds );
 		$request->setStartDate( $startdate->format( 'U' ) );
 		$request->setEndDate( $enddate->format( 'U' ) );
-
+		
 		$response = parent::putJson( 'showTrendsGraph', parent::json_encode_response( $request ) );
 		if (is_array( $response )) {
 			$showTrendsGraphResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\report' );
@@ -127,7 +127,7 @@ class ReportControllerHandler extends AbstractHandler {
 				$result ['calculated'] = array ();
 			}
 		}
-
+		
 		return $result;
 	}
 }

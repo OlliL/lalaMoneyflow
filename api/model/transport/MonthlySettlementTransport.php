@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MonthlySettlementTransport.php,v 1.3 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: MonthlySettlementTransport.php,v 1.4 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace api\model\transport;
 
@@ -66,6 +66,7 @@ class MonthlySettlementTransport {
 	public final function setCapitalsourcecomment($capitalsourcecomment) {
 		$this->capitalsourcecomment = $capitalsourcecomment;
 	}
+
 	public final function setCapitalsourcegroupuse($capitalsourcegroupuse) {
 		$this->capitalsourcegroupuse = $capitalsourcegroupuse;
 	}
@@ -97,6 +98,7 @@ class MonthlySettlementTransport {
 	public final function getCapitalsourcecomment() {
 		return $this->capitalsourcecomment;
 	}
+
 	public final function getCapitalsourcegroupuse() {
 		return $this->capitalsourcegroupuse;
 	}

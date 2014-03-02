@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: RESTAuthorization.php,v 1.2 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: RESTAuthorization.php,v 1.3 2014/03/02 23:42:22 olivleh1 Exp $
 //
 namespace base;
 
@@ -36,14 +36,14 @@ class RESTAuthorization {
 	/**
 	 * This function works basically as described in http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
 	 *
-	 * @param unknown $url
-	 * @param unknown $headers
-	 * @param unknown $body
-	 * @param unknown $ident
+	 * @param unknown $url        	
+	 * @param unknown $headers        	
+	 * @param unknown $body        	
+	 * @param unknown $ident        	
 	 */
 	public static final function getRESTAuthorization($secret, $httpVerb, $contentType, $url, $date, $body, $ident) {
 		$signUrl = strstr( substr( $url, strpos( $url, '//' ) + 2 ), '/' );
-
+		
 		$stringToSign = $httpVerb;
 		$stringToSign .= "\n";
 		if ($body != null)
@@ -56,7 +56,7 @@ class RESTAuthorization {
 		$stringToSign .= "\n";
 		$stringToSign .= "\n";
 		$stringToSign .= $signUrl;
-
+		
 		$authorization = self::$prefix . $ident . ':' . base64_encode( hash_hmac( 'sha1', utf8_encode( $stringToSign ), $secret ) );
 		return $authorization;
 	}

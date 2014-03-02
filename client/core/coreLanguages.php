@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreLanguages.php,v 1.20 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: coreLanguages.php,v 1.21 2014/03/02 23:42:20 olivleh1 Exp $
 //
 namespace client\core;
 
@@ -32,7 +32,7 @@ class coreLanguages extends core {
 	private $languageConf = 'locale/languages.conf';
 	private $columnNames = array (
 			'languageid',
-			'language'
+			'language' 
 	);
 
 	public final function __construct() {
@@ -85,7 +85,7 @@ class coreLanguages extends core {
 	public final function add_language($language) {
 		$cvsRows = $this->splitLanguagesFile();
 		$nextId = 0;
-
+		
 		$fp = fopen( $this->languageConf, 'w' );
 		if ($fp !== FALSE) {
 			foreach ( $cvsRows as $csvRow ) {
@@ -93,10 +93,10 @@ class coreLanguages extends core {
 				if ($nextId < $csvRow [0])
 					$nextId = $csvRow [0];
 			}
-
+			
 			fputcsv( $fp, array (
 					++ $nextId,
-					$language
+					$language 
 			) );
 			fclose( $fp );
 		}

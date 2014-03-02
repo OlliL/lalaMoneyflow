@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ErrorHandler.php,v 1.1 2014/03/01 20:46:43 olivleh1 Exp $
+// $Id: ErrorHandler.php,v 1.2 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\util;
 
@@ -35,11 +35,11 @@ class ErrorHandler {
 		if (is_array( $args )) {
 			self::$errors [] = array (
 					'id' => $id,
-					'arguments' => $args
+					'arguments' => $args 
 			);
 		} else {
 			self::$errors [] = array (
-					'id' => $id
+					'id' => $id 
 			);
 		}
 	}

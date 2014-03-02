@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToMoneyflowSearchResultTransportMapper.php,v 1.3 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: ArrayToMoneyflowSearchResultTransportMapper.php,v 1.4 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -45,7 +45,7 @@ class ArrayToMoneyflowSearchResultTransportMapper extends AbstractArrayMapper {
 			$a ['month'] = $b->getMonth();
 		if ($b->getContractpartnername())
 			$a ['name'] = $b->getContractpartnername();
-
+		
 		return $a;
 	}
 }

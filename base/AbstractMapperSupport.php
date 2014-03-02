@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractMapperSupport.php,v 1.9 2014/03/02 00:02:53 olivleh1 Exp $
+// $Id: AbstractMapperSupport.php,v 1.10 2014/03/02 23:42:22 olivleh1 Exp $
 //
 namespace base;
 
@@ -40,19 +40,19 @@ abstract class AbstractMapperSupport {
 			} elseif (array_key_exists( get_class( $obj ), $this->mapper )) {
 				$object = $this->mapper [get_class( $obj )];
 			}
-
+			
 			if ($object == null) {
 				throw new \Exception( 'Mapper for ' . get_class( $obj ) . ' not defined in ' . get_class( $this ) . '!' );
 			}
-
+			
 			$class = $object [0];
 			$method = $object [1];
 			$mapper = new $class();
-
+			
 			if (! is_object( $mapper )) {
 				throw new \Exception( 'Mapper for ' . get_class( $obj ) . ' cannot be instantiated!' );
 			}
-
+			
 			return $mapper->$method( $obj );
 		}
 	}
@@ -70,36 +70,36 @@ abstract class AbstractMapperSupport {
 			/* if the source is an array which has to be mapped */
 			$this->mapper [$arrayTypeA] = array (
 					$class,
-					'mapAToB'
+					'mapAToB' 
 			);
 		} else {
 			/* if the source is an object */
 			$a = new \ReflectionParameter( array (
 					$class,
-					'mapAToB'
+					'mapAToB' 
 			), 0 );
-
+			
 			$this->mapper [$a->getClass()->name] = array (
 					$class,
-					'mapAToB'
+					'mapAToB' 
 			);
 		}
-
+		
 		if ($arrayTypeB) {
 			/* if the target is an array which has to be mapped */
 			$this->mapper [$arrayTypeB] = array (
 					$class,
-					'mapBToA'
+					'mapBToA' 
 			);
 		} else {
 			/* if the target is an object */
 			$b = new \ReflectionParameter( array (
 					$class,
-					'mapBToA'
+					'mapBToA' 
 			), 0 );
 			$this->mapper [$b->getClass()->name] = array (
 					$class,
-					'mapBToA'
+					'mapBToA' 
 			);
 		}
 	}

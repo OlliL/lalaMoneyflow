@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.86 2014/03/01 20:46:42 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.87 2014/03/02 23:42:20 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -47,7 +47,7 @@ class moduleReports extends module {
 	public final function display_list_reports($month, $year, $sortby, $order) {
 		if (! $year)
 			$year = date( 'Y' );
-
+		
 		$listReports = ReportControllerHandler::getInstance()->listReports( $year, $month );
 		$years = $listReports ['allYears'];
 		$allMonth = $listReports ['allMonth'];
@@ -63,26 +63,26 @@ class moduleReports extends module {
 		$prev_year = $listReports ['prev_year'];
 		$next_month = $listReports ['next_month'];
 		$next_year = $listReports ['next_year'];
-
+		
 		$mms_exists = false;
 		$report = 0;
-
+		
 		if (is_array( $allMonth )) {
 			foreach ( $allMonth as $key => $value ) {
 				$months [] = array (
 						'nummeric' => sprintf( '%02d', $value ),
-						'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $value )
+						'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $value ) 
 				);
 			}
 		}
-
+		
 		if ($month > 0 && $year > 0) {
 			$lastamount = 0;
 			$fixamount = 0;
 			$movement_calculated_month = 0;
 			$calcamount = 0;
 			$i = 0;
-
+			
 			switch ($order) {
 				case 'DESC' :
 					$neworder = 'ASC';
@@ -97,9 +97,9 @@ class moduleReports extends module {
 					$multisort_order = SORT_DESC;
 					$neworder = 'ASC';
 			}
-
+			
 			if ($_all_moneyflow_data) {
-
+				
 				switch ($sortby) {
 					case 'capitalsources_comment' :
 						$sortby_int = 'capitalsourcecomment';
@@ -129,7 +129,7 @@ class moduleReports extends module {
 					default :
 						$sortby_int = '';
 				}
-
+				
 				if ($sortby_int != '') {
 					foreach ( $_all_moneyflow_data as $key => $value ) {
 						$sortKey1 [$key] = strtolower( $value [$sortby_int] );
@@ -137,12 +137,12 @@ class moduleReports extends module {
 						$sortKey3 [$key] = $value ['invoicedate'];
 						$sortKey4 [$key] = $value ['moneyflowid'];
 					}
-
+					
 					array_multisort( $sortKey1, $multisort_order, $sortKey2, SORT_ASC, $sortKey3, SORT_ASC, $sortKey4, SORT_ASC, $_all_moneyflow_data );
 				}
-
+				
 				$all_moneyflow_data = $_all_moneyflow_data;
-
+				
 				foreach ( $all_moneyflow_data as $key => $value ) {
 					$all_moneyflow_data [$key] ['contractpartnername'] = htmlentities( $value ['contractpartnername'], ENT_COMPAT | ENT_HTML401 );
 					$all_moneyflow_data [$key] ['capitalsourcecomment'] = htmlentities( $value ['capitalsourcecomment'], ENT_COMPAT | ENT_HTML401 );
@@ -154,7 +154,7 @@ class moduleReports extends module {
 						$all_moneyflow_data [$key] ['owner'] = false;
 					}
 				}
-
+				
 				if (is_array( $turnover_capitalsources )) {
 					foreach ( $turnover_capitalsources as $key => $turnover_capitalsource ) {
 						$turnover_capitalsources [$key] ['typecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_TYPE', $turnover_capitalsource ['type'] );
@@ -168,21 +168,21 @@ class moduleReports extends module {
 						}
 					}
 				}
-
+				
 				$month_array = array (
 						'nummeric' => sprintf( '%02d', $month ),
-						'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month )
+						'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month ) 
 				);
-
+				
 				$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
-
+				
 				$this->template->assign( 'PREV_MONTH', $prev_month );
 				$this->template->assign( 'PREV_YEAR', $prev_year );
 				$this->template->assign( 'PREV_LINK', $prev_link );
 				$this->template->assign( 'NEXT_MONTH', $next_month );
 				$this->template->assign( 'NEXT_YEAR', $next_year );
 				$this->template->assign( 'NEXT_LINK', $next_link );
-
+				
 				$this->template->assign( 'MONTH', $month_array );
 				$this->template->assign( 'SORTBY', $sortby );
 				$this->template->assign( 'NEWORDER', $neworder );
@@ -198,13 +198,13 @@ class moduleReports extends module {
 				$report = 1;
 			}
 		}
-
+		
 		$this->template->assign( 'REPORT', $report );
 		$this->template->assign( 'ALL_YEARS', $years );
 		$this->template->assign( 'ALL_MONTHS', $months );
 		$this->template->assign( 'SELECTED_MONTH', $month );
 		$this->template->assign( 'SELECTED_YEAR', $year );
-
+		
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_reports.tpl' );
 	}
@@ -216,7 +216,7 @@ class moduleReports extends module {
 		}
 		$years = $showTrendsForm ['allYears'];
 		$this->template->assign( 'ALL_YEARS', $years );
-
+		
 		if (is_array( $all_data ) && isset( $all_data ['mcs_capitalsourceid'] )) {
 			$this->template->assign( 'PLOT_GRAPH', 1 );
 		} else {
@@ -229,9 +229,9 @@ class moduleReports extends module {
 			$all_data ['endmonth'] = 12;
 			$this->template->assign( 'PLOT_GRAPH', 0 );
 		}
-
+		
 		$this->template->assign( 'ALL_DATA', $all_data );
-
+		
 		$this->parse_header();
 		return $this->fetch_template( 'display_plot_trends.tpl' );
 	}
@@ -240,13 +240,13 @@ class moduleReports extends module {
 		$startdate = new \DateTime( $startyear . "-" . $startmonth . "-01" );
 		$enddate = new \DateTime( $endyear . "-" . $endmonth . "-01" );
 		$showTrendsGraph = ReportControllerHandler::getInstance()->showTrendsGraph( $all_capitalsources_ids, $startdate, $enddate );
-
+		
 		$graph_comment = $this->coreText->get_graph( 168 );
 		$graph_from = $this->coreText->get_graph( 169 );
 		$graph_until = $this->coreText->get_graph( 170 );
 		$graph_xaxis = $this->coreText->get_graph( 171 );
 		$graph_yaxis = $this->coreText->get_graph( 172 );
-
+		
 		$i = 0;
 		if (is_array( $showTrendsGraph ['settled'] )) {
 			foreach ( $showTrendsGraph ['settled'] as $settledAmount ) {
@@ -256,7 +256,7 @@ class moduleReports extends module {
 				$i ++;
 			}
 		}
-
+		
 		if (is_array( $showTrendsGraph ['calculated'] )) {
 			$last_amount = $monthly_data [$i - 1];
 			$monthly2_data [$i - 1] = $last_amount;
@@ -268,7 +268,7 @@ class moduleReports extends module {
 		} else {
 			$monthly2_data = NULL;
 		}
-
+		
 		$graph = new \Graph( 700, 400 );
 		$graph->SetMargin( 50, 20, 40, 35 );
 		$graph->SetScale( "intlin" );
@@ -276,21 +276,21 @@ class moduleReports extends module {
 		$graph->SetFrame( true, array (
 				0,
 				0,
-				0
+				0 
 		), 0 );
-
+		
 		$txt = new \Text( $graph_comment . "\n" . $graph_from . $monthly_x [0] . $graph_until . end( $monthly_x ) );
 		$txt->SetFont( FF_FONT1, FS_BOLD );
 		$txt->Center( 0, 700 );
 		$txt->ParagraphAlign( 'center' );
 		$graph->AddText( $txt );
-
+		
 		$p1 = new \LinePlot( $monthly_data );
 		$p1->SetWeight( 1 );
 		$p1->SetFillGradient( '#E6E6FA', '#B0C4DE' );
 		$p1->mark->SetType( MARK_STAR );
 		$graph->Add( $p1 );
-
+		
 		if (is_array( $monthly2_data )) {
 			$p2 = new \LinePlot( $monthly2_data );
 			$p2->SetWeight( 1 );
@@ -298,20 +298,20 @@ class moduleReports extends module {
 			$p2->mark->SetType( MARK_STAR );
 			$graph->Add( $p2 );
 		}
-
+		
 		$graph->xaxis->title->Set( $graph_xaxis );
 		$graph->xaxis->SetTitleMargin( 10 );
 		$graph->xaxis->SetTickLabels( $monthly_x );
 		$graph->xaxis->SetFont( FF_FONT0 );
 		$graph->xaxis->title->SetFont( FF_FONT1, FS_BOLD );
-
+		
 		$graph->yaxis->title->Set( $graph_yaxis );
 		$graph->yaxis->SetTitleMargin( 35 );
 		$graph->yaxis->SetFont( FF_FONT0 );
 		$graph->yaxis->title->SetFont( FF_FONT1, FS_BOLD );
-
+		
 		$graph->xgrid->Show();
-
+		
 		$graph->Stroke();
 	}
 }

@@ -24,11 +24,12 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreText.php,v 1.28 2014/03/01 19:32:34 olivleh1 Exp $
+// $Id: coreText.php,v 1.29 2014/03/02 23:42:20 olivleh1 Exp $
 //
 namespace client\core;
 
 use client\util\Environment;
+
 class coreText extends core {
 	private $inifile = null;
 
@@ -89,17 +90,17 @@ class coreText extends core {
 						9 => 163,
 						10 => 164,
 						11 => 165,
-						12 => 166
+						12 => 166 
 				);
 			case 'CAPITALSOURCE_TYPE' :
 				return array (
 						1 => 173,
-						2 => 174
+						2 => 174 
 				);
 			case 'CAPITALSOURCE_STATE' :
 				return array (
 						1 => 175,
-						2 => 176
+						2 => 176 
 				);
 		}
 	}
@@ -110,7 +111,7 @@ class coreText extends core {
 			foreach ( $ids as $key => $id ) {
 				$retval [] = array (
 						'value' => $key,
-						'text' => $this->get_text( $id )
+						'text' => $this->get_text( $id ) 
 				);
 			}
 		}

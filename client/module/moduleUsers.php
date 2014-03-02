@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.52 2014/03/01 20:46:42 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.53 2014/03/02 23:42:20 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -44,7 +44,7 @@ class moduleUsers extends module {
 			return 3;
 		} else {
 			define( USERID, $userId );
-
+			
 			if (Environment::getInstance()->getUserAttNew()) {
 				return 2;
 			} else {
@@ -61,7 +61,7 @@ class moduleUsers extends module {
 				} elseif (empty( $password )) {
 					$this->add_error( ErrorCode::PASSWORD_EMPTY );
 				}
-
+				
 				Environment::getInstance()->setUserName( $name );
 				Environment::getInstance()->setUserPassword( sha1( $password ) );
 				$session = UserControllerHandler::getInstance()->getUserSettingsForStartup( $name );
@@ -71,14 +71,14 @@ class moduleUsers extends module {
 					Environment::getInstance()->setSettingGuiLanguage( $session ['displayed_language'] );
 					Environment::getInstance()->setUserAttNew( $session ['att_new'] );
 					Environment::getInstance()->setUserPermAdmin( $session ['perm_admin'] );
-
+					
 					$loginok = 1;
 				}
 				break;
 			default :
 				break;
 		}
-
+		
 		if ($loginok == 1) {
 			return;
 		} else {
@@ -109,7 +109,7 @@ class moduleUsers extends module {
 		$all_data = $listUsers ['users'];
 		$access_relations = $listUsers ['access_relations'];
 		$groups = $listUsers ['groups'];
-
+		
 		foreach ( $all_data as $key => $user ) {
 			$userid = $user ['userid'];
 			$groupid = null;
@@ -128,11 +128,11 @@ class moduleUsers extends module {
 				}
 			}
 		}
-
+		
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
-
+		
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_users.tpl' );
 	}
@@ -157,13 +157,13 @@ class moduleUsers extends module {
 				if ($userid > 0) {
 					if (! $this->dateIsValid( $access_relation ['validfrom'] )) {
 						$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-								Environment::getInstance()->getSettingDateFormat()
+								Environment::getInstance()->getSettingDateFormat() 
 						) );
 						$access_relation ['validfrom_error'] = 1;
 						$valid_data = false;
 					}
 				}
-
+				
 				if ($valid_data == true) {
 					if ($userid == 0) {
 						$access_relation ['validfrom'] = $this->convertDateToGui( date( 'Y-m-d' ) );
@@ -172,7 +172,7 @@ class moduleUsers extends module {
 						$access_relation ['id'] = $userid;
 						$ret = UserControllerHandler::getInstance()->updateUser( $all_data, $access_relation );
 					}
-
+					
 					if ($ret === true) {
 						$close = 1;
 					} else {
@@ -180,9 +180,9 @@ class moduleUsers extends module {
 						$groups = $ret ['groups'];
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
-
+							
 							$this->add_error( $error );
-
+							
 							switch ($error) {
 								case ErrorCode::NAME_MUST_NOT_BE_EMPTY :
 								case ErrorCode::USER_WITH_SAME_NAME_ALREADY_EXISTS :
@@ -213,7 +213,7 @@ class moduleUsers extends module {
 							'perm_login' => 1,
 							'perm_admin' => 0,
 							'att_new' => 1,
-							'ref_id' => ''
+							'ref_id' => '' 
 					);
 				}
 				if (! is_array( $all_data )) {
@@ -221,30 +221,30 @@ class moduleUsers extends module {
 				}
 				break;
 		}
-
+		
 		if (is_array( $groups ) && is_array( $access_relations )) {
 			foreach ( $groups as $group ) {
 				$groupById [$group ['groupid']] = $group ['name'];
 			}
-
+			
 			foreach ( $access_relations as $key => $relation ) {
 				$access_relations [$key] ['name'] = $groupById [$relation ['ref_id']];
 				$sort [$key] = $relation ['validfrom_sort'];
 			}
-
+			
 			if (is_array( $sort ))
 				array_multisort( $sort, SORT_DESC, $access_relations );
-
+			
 			if (! is_array( $access_relation ) || ! array_key_exists( 'ref_id', $access_relation )) {
 				$access_relation ['ref_id'] = $access_relations [0] ['ref_id'];
 				$access_relation ['validfrom'] = $this->convertDateToGui( date( 'Y-m-d', time() + 86400 ) );
 			}
 		} else {
 			$access_relation = array (
-					'ref_id' => ''
+					'ref_id' => '' 
 			);
 		}
-
+		
 		$this->template->assign( 'CLOSE', $close );
 		$this->template->assign( 'USERID', $userid );
 		$this->template->assign( 'ALL_DATA', $all_data );
@@ -252,7 +252,7 @@ class moduleUsers extends module {
 		$this->template->assign( 'ACCESS_RELATIONS', $access_relations );
 		$this->template->assign( 'GROUPS', $groups );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-
+		
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_user.tpl' );
 	}
@@ -273,9 +273,9 @@ class moduleUsers extends module {
 				}
 				break;
 		}
-
+		
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-
+		
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_user.tpl' );
 	}

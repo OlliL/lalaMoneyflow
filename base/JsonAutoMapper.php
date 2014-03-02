@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: JsonAutoMapper.php,v 1.7 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: JsonAutoMapper.php,v 1.8 2014/03/02 23:42:22 olivleh1 Exp $
 //
 namespace base;
 
@@ -57,24 +57,24 @@ class JsonAutoMapper {
 			// hinting of the responsive setter of the current object and then recall
 			// map() to map this sub-object to the type-hinted object and finally set the
 			// mapped result
-
+			
 			// Single Transport-Object in the Response-Object
 			if (is_array( $property ) && array_values( $property ) !== $property) {
 				$setter = 'set' . ucfirst( $key );
-
+				
 				$method = new \ReflectionParameter( array (
 						$b,
-						$setter
+						$setter 
 				), 0 );
 				$newclass = new \ReflectionClass( $method->getClass()->name );
 				$b->$setter( self::map( $property, $newclass, '\\api\\model\\transport' ) );
 			} else if ($property != NULL || $property === 0) {
 				$setter = 'set' . ucfirst( $key );
-
+				
 				// A List ob Transport-Objects in the Response-Object
 				if ($key != ( string ) ( int ) $key && is_array( $property ) && is_array( reset( $property ) )) {
 					$b->$setter( self::mapAToB( array (
-							ucfirst( $key ) => $property
+							ucfirst( $key ) => $property 
 					), '\\api\\model\\transport' ) );
 				} else {
 					// regular array (list), or scalar value - just call the setter

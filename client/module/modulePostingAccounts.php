@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePostingAccounts.php,v 1.1 2014/03/02 23:35:15 olivleh1 Exp $
+// $Id: modulePostingAccounts.php,v 1.2 2014/03/02 23:42:20 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -41,11 +41,11 @@ class modulePostingAccounts extends module {
 		$listPostingAccounts = PostingAccountControllerHandler::getInstance()->showPostingAccountList( $letter );
 		$all_index_letters = $listPostingAccounts ['initials'];
 		$all_data = $listPostingAccounts ['postingAccounts'];
-
+		
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
-
+		
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_postingaccounts.tpl' );
 	}
@@ -59,15 +59,15 @@ class modulePostingAccounts extends module {
 					$ret = PostingAccountControllerHandler::getInstance()->createPostingAccount( $all_data );
 				else
 					$ret = PostingAccountControllerHandler::getInstance()->updatePostingAccount( $all_data );
-
+				
 				if ($ret === true) {
 					$close = 1;
 				} else {
 					foreach ( $ret ['errors'] as $validationResult ) {
 						$error = $validationResult ['error'];
-
+						
 						$this->add_error( $error );
-
+						
 						switch ($error) {
 							case ErrorCode::NAME_MUST_NOT_BE_EMPTY :
 							case ErrorCode::POSTINGACCOUNT_WITH_SAME_NAME_ALREADY_EXISTS :
@@ -81,17 +81,17 @@ class modulePostingAccounts extends module {
 					if ($postingaccountid > 0) {
 						$all_data = PostingAccountControllerHandler::getInstance()->showEditPostingAccount( $postingaccountid );
 					} else {
-						$all_data['name'] = '';
+						$all_data ['name'] = '';
 					}
 				}
 				break;
 		}
-
+		
 		$this->template->assign( 'CLOSE', $close );
 		$this->template->assign( 'POSTINGACCOUNTID', $postingaccountid );
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-
+		
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_postingaccount.tpl' );
 	}
@@ -112,9 +112,9 @@ class modulePostingAccounts extends module {
 				}
 				break;
 		}
-
+		
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-
+		
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_postingaccount.tpl' );
 	}

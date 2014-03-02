@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CapitalsourceControllerHandler.php,v 1.9 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: CapitalsourceControllerHandler.php,v 1.10 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -54,7 +54,7 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 
 	public final function showCapitalsourceList($restriction) {
 		$response = parent::getJson( 'showCapitalsourceList', array (
-				utf8_encode( $restriction )
+				utf8_encode( $restriction ) 
 		) );
 		if (is_array( $response )) {
 			$listCapitalsources = JsonAutoMapper::mapAToB( $response, '\\api\\model\\capitalsource' );
@@ -65,13 +65,13 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 			}
 			$result ['initials'] = $listCapitalsources->getInitials();
 		}
-
+		
 		return $result;
 	}
 
 	public final function showEditCapitalsource($id) {
 		$response = parent::getJson( showEditCapitalsource, array (
-				$id
+				$id 
 		) );
 		if (is_array( $response )) {
 			$showEditCapitalsourceResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\capitalsource' );
@@ -82,7 +82,7 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 
 	public final function showDeleteCapitalsource($id) {
 		$response = parent::getJson( 'showDeleteCapitalsource', array (
-				$id
+				$id 
 		) );
 		if (is_array( $response )) {
 			$showDeleteCapitalsourceResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\capitalsource' );
@@ -93,7 +93,7 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 
 	public final function createCapitalsource(array $capitalsource) {
 		$capitalsourceTransport = parent::map( $capitalsource, ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
-
+		
 		$request = new createCapitalsourceRequest();
 		$request->setCapitalsourceTransport( $capitalsourceTransport );
 		return parent::postJson( 'createCapitalsource', parent::json_encode_response( $request ) );
@@ -101,7 +101,7 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 
 	public final function updateCapitalsource(array $capitalsource) {
 		$capitalsourceTransport = parent::map( $capitalsource, ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
-
+		
 		$request = new updateCapitalsourceRequest();
 		$request->setCapitalsourceTransport( $capitalsourceTransport );
 		return parent::putJson( 'updateCapitalsource', parent::json_encode_response( $request ) );
@@ -109,7 +109,7 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 
 	public final function deleteCapitalsource($id) {
 		return parent::deleteJson( 'deleteCapitalsourceById', array (
-				$id
+				$id 
 		) );
 	}
 }

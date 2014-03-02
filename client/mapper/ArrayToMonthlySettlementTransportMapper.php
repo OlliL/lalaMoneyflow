@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToMonthlySettlementTransportMapper.php,v 1.3 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: ArrayToMonthlySettlementTransportMapper.php,v 1.4 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -51,8 +51,8 @@ class ArrayToMonthlySettlementTransportMapper extends AbstractArrayMapper {
 		$a ['month'] = $b->getMonth();
 		$a ['mcs_capitalsourceid'] = $b->getCapitalsourceid();
 		$a ['capitalsourcecomment'] = $b->getCapitalsourcecomment();
-		$a ['capitalsourcegroupuse'] = $b->getCapitalsourcegroupuse();  //FIXME: delete?
-
+		$a ['capitalsourcegroupuse'] = $b->getCapitalsourcegroupuse(); // FIXME: delete?
+		
 		return $a;
 	}
 }

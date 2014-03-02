@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: GroupControllerHandler.php,v 1.4 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: GroupControllerHandler.php,v 1.5 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -54,7 +54,7 @@ class GroupControllerHandler extends AbstractHandler {
 
 	public final function showGroupList($restriction) {
 		$response = parent::getJson( 'showGroupList', array (
-				utf8_encode( $restriction )
+				utf8_encode( $restriction ) 
 		) );
 		if (is_array( $response )) {
 			$listGroups = JsonAutoMapper::mapAToB( $response, '\\api\\model\\group' );
@@ -65,13 +65,13 @@ class GroupControllerHandler extends AbstractHandler {
 			}
 			$result ['initials'] = $listGroups->getInitials();
 		}
-
+		
 		return $result;
 	}
 
 	public final function showEditGroup($id) {
 		$response = parent::getJson( 'showEditGroup', array (
-				$id
+				$id 
 		) );
 		if (is_array( $response )) {
 			$showEditGroupResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\group' );
@@ -82,7 +82,7 @@ class GroupControllerHandler extends AbstractHandler {
 
 	public final function showDeleteGroup($id) {
 		$response = parent::getJson( 'showDeleteGroup', array (
-				$id
+				$id 
 		) );
 		if (is_array( $response )) {
 			$showDeleteGroupResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\group' );
@@ -93,7 +93,7 @@ class GroupControllerHandler extends AbstractHandler {
 
 	public final function createGroup(array $group) {
 		$groupTransport = parent::map( $group, ClientArrayMapperEnum::GROUP_TRANSPORT );
-
+		
 		$request = new createGroupRequest();
 		$request->setGroupTransport( $groupTransport );
 		return parent::postJson( 'createGroup', parent::json_encode_response( $request ) );
@@ -101,7 +101,7 @@ class GroupControllerHandler extends AbstractHandler {
 
 	public final function updateGroup(array $group) {
 		$groupTransport = parent::map( $group, ClientArrayMapperEnum::GROUP_TRANSPORT );
-
+		
 		$request = new updateGroupRequest();
 		$request->setGroupTransport( $groupTransport );
 		return parent::putJson( 'updateGroup', parent::json_encode_response( $request ) );
@@ -109,7 +109,7 @@ class GroupControllerHandler extends AbstractHandler {
 
 	public final function deleteGroup($id) {
 		return parent::deleteJson( 'deleteGroupById', array (
-				$id
+				$id 
 		) );
 	}
 }

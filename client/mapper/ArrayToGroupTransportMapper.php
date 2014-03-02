@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToGroupTransportMapper.php,v 1.2 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: ArrayToGroupTransportMapper.php,v 1.3 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -37,14 +37,14 @@ class ArrayToGroupTransportMapper extends AbstractArrayMapper {
 		$b = new GroupTransport();
 		$b->setId( $a ['groupid'] );
 		$b->setName( $a ['name'] );
-
+		
 		return $b;
 	}
 
 	public static function mapBToA(GroupTransport $b) {
 		$a ['groupid'] = $b->getId();
 		$a ['name'] = $b->getName();
-
+		
 		return $a;
 	}
 }

@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToMoneyflowTransportMapper.php,v 1.5 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: ArrayToMoneyflowTransportMapper.php,v 1.6 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -36,15 +36,15 @@ class ArrayToMoneyflowTransportMapper extends AbstractArrayMapper {
 	public static function mapAToB(array $a) {
 		$b = new MoneyflowTransport();
 		$b->setId( $a ['moneyflowid'] );
-
+		
 		$bookingdate = parent::convertClientDateToTransport( $a ['bookingdate'] );
 		if ($bookingdate)
 			$b->setBookingDate( $bookingdate );
-
+		
 		$invoicedate = parent::convertClientDateToTransport( $a ['invoicedate'] );
 		if ($invoicedate)
 			$b->setInvoiceDate( $invoicedate );
-
+		
 		$b->setAmount( $a ['amount'] );
 		$b->setCapitalsourceid( $a ['mcs_capitalsourceid'] );
 		$b->setContractpartnerid( $a ['mcp_contractpartnerid'] );
@@ -68,7 +68,7 @@ class ArrayToMoneyflowTransportMapper extends AbstractArrayMapper {
 		$a ['mpa_postingaccountid'] = $b->getPostingaccountid();
 		$a ['postingaccountname'] = $b->getPostingaccountname();
 		$a ['private'] = $b->getPrivate();
-
+		
 		return $a;
 	}
 }

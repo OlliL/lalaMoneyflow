@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToContractpartnerTransportMapper.php,v 1.5 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: ArrayToContractpartnerTransportMapper.php,v 1.6 2014/03/02 23:42:21 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -44,11 +44,11 @@ class ArrayToContractpartnerTransportMapper extends AbstractArrayMapper {
 		$validfrom = parent::convertClientDateToTransport( $a ['validfrom'] );
 		if ($validfrom)
 			$b->setValidFrom( $validfrom );
-
+		
 		$validtil = parent::convertClientDateToTransport( $a ['validtil'] );
 		if ($validtil)
 			$b->setValidTil( $validtil );
-
+		
 		return $b;
 	}
 
@@ -62,7 +62,7 @@ class ArrayToContractpartnerTransportMapper extends AbstractArrayMapper {
 		$a ['mur_userid'] = $b->getUserid();
 		$a ['validfrom'] = parent::convertTransportDateToClient( $b->getValidFrom() );
 		$a ['validtil'] = parent::convertTransportDateToClient( $b->getValidTil() );
-
+		
 		return $a;
 	}
 }

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSearch.php,v 1.34 2014/03/01 20:46:42 olivleh1 Exp $
+// $Id: moduleSearch.php,v 1.35 2014/03/02 23:42:20 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -48,7 +48,7 @@ class moduleSearch extends module {
 		$this->template->assign( 'SEARCHPARAMS', $searchparams );
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-
+		
 		$this->parse_header();
 		return $this->fetch_template( 'display_search.tpl' );
 	}
@@ -62,7 +62,7 @@ class moduleSearch extends module {
 			$searchparams ['regexp'] = 1;
 		if ($minus)
 			$searchparams ['minus'] = 1;
-
+		
 		$searchparams ['mcp_contractpartnerid'] = $contractpartner;
 		$searchparams ['pattern'] = stripslashes( $searchstring );
 		$searchparams ['startdate'] = $startdate;
@@ -70,34 +70,34 @@ class moduleSearch extends module {
 		$searchparams ['grouping1'] = $grouping1;
 		$searchparams ['grouping2'] = $grouping2;
 		$searchparams ['order'] = $order;
-
+		
 		$data_is_valid = true;
-
+		
 		if (! empty( $startdate )) {
 			if (! $this->dateIsValid( $startdate )) {
 				$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-						Environment::getInstance()->getSettingDateFormat()
+						Environment::getInstance()->getSettingDateFormat() 
 				) );
 				$searchparams ['startdate_error'] = 1;
 				$data_is_valid = false;
 			}
 		}
-
+		
 		if (! empty( $enddate )) {
 			if (! $this->dateIsValid( $enddate )) {
 				$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-						Environment::getInstance()->getSettingDateFormat()
+						Environment::getInstance()->getSettingDateFormat() 
 				) );
 				$searchparams ['enddate_error'] = 1;
 				$data_is_valid = false;
 			}
 		}
-
+		
 		if ($data_is_valid) {
-
+			
 			$searchMoneyflows = MoneyflowControllerHandler::getInstance()->searchMoneyflows( $searchparams );
 			$contractpartner_values = $searchMoneyflows ['contractpartner'];
-
+			
 			if ($searchMoneyflows ['result'] == false) {
 				$data_is_valid = false;
 				foreach ( $searchMoneyflows ['errors'] as $validationResult ) {
@@ -105,7 +105,7 @@ class moduleSearch extends module {
 					$this->add_error( $error );
 				}
 			}
-
+			
 			if ($data_is_valid) {
 				$results = $searchMoneyflows ['search_results'];
 				if (is_array( $results ) && count( $results ) > 0) {
@@ -151,11 +151,11 @@ class moduleSearch extends module {
 							array_multisort( $sortKey, $sortOrder, $results );
 						}
 					}
-
+					
 					foreach ( array_keys( $results [0] ) as $column ) {
 						$columns [$column] = 1;
 					}
-
+					
 					$this->template->assign( 'SEARCH_DONE', 1 );
 					$this->template->assign( 'COLUMNS', $columns );
 					$this->template->assign( 'RESULTS', $results );
@@ -163,15 +163,15 @@ class moduleSearch extends module {
 					$this->add_error( ErrorCode::NO_DATA_FOUND );
 				}
 			}
-
+			
 			$this->template->assign( 'SEARCHPARAMS', $searchparams );
 			$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 			$this->template->assign( 'ERRORS', $this->get_errors() );
-
+			
 			$this->parse_header();
 			return $this->fetch_template( 'display_search.tpl' );
 		}
-
+		
 		return $this->display_search( $searchparams );
 	}
 }
