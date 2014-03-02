@@ -1,3 +1,12 @@
+Setting up Eclipse:
+
+- download Eclipse Keppler
+- "Help" -> "Install new Software..." "PHP Development Toolkit (PDT)" Location: http://download.eclipse.org/tools/pdt/updates/3.2-nightly
+- New "PHP Project" -> (x) "Create Project at existing location"
+- "Team" -> "CVS" -> [Files and Folders] => ( ) "Convert Text files to use platform ending"
+- "General" -> "Workspace" -> "New Text file line delimiter" [Unix]
+- "General" -> "Editors" -> "Text Editors" -> "Displayed tab width" -> 8
+- "PHP" -> "Editor" -> "Save Actions" -> [x] "Remove Trailing Whitespaces"
 Requirements:
 - PHP 5.5.x
 	- Extension: curl

@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,27 +25,28 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToPostingAccountTransportMapper.php,v 1.5 2014/03/02 23:35:15 olivleh1 Exp $
+// $Id: showPostingAccountListResponse.php,v 1.1 2014/03/02 23:35:15 olivleh1 Exp $
 //
-namespace client\mapper;
+namespace api\model\postingaccount;
 
-use api\model\transport\PostingAccountTransport;
+class showPostingAccountListResponse {
+	public $postingAccountTransport;
+	public $initials;
 
-class ArrayToPostingAccountTransportMapper extends AbstractArrayMapper {
-
-	public static function mapAToB(array $a) {
-		$b = new PostingAccountTransport();
-		$b->setId( $a ['postingaccountid'] );
-		$b->setName( $a ['name'] );
-
-		return $b;
+	public final function getPostingAccountTransport() {
+		return $this->postingAccountTransport;
 	}
 
-	public static function mapBToA(PostingAccountTransport $b) {
-		$a ['postingaccountid'] = $b->getId();
-		$a ['name'] = $b->getName();
+	public final function setPostingAccountTransport(array $postingAccountTransport) {
+		$this->postingAccountTransport = $postingAccountTransport;
+	}
 
-		return $a;
+	public final function getInitials() {
+		return $this->initials;
+	}
+
+	public final function setInitials(array $initials) {
+		$this->initials = $initials;
 	}
 }
 

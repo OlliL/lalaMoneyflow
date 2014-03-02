@@ -25,21 +25,16 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PostingAccountTransport.php,v 1.3 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: PostingAccountTransport.php,v 1.4 2014/03/02 23:35:15 olivleh1 Exp $
 //
 namespace api\model\transport;
 
 class PostingAccountTransport {
 	public $id;
-	public $userid;
 	public $name;
 
 	public final function setId($id) {
 		$this->id = $id;
-	}
-
-	public final function setUserid($userid) {
-		$this->userid = $userid;
 	}
 
 	public final function setName($name) {
@@ -48,10 +43,6 @@ class PostingAccountTransport {
 
 	public final function getId() {
 		return $this->id;
-	}
-
-	public final function getUserid() {
-		return $this->userid;
 	}
 
 	public final function getName() {

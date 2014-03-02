@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.78 2014/03/01 20:46:43 olivleh1 Exp $
+// $Id: index.php,v 1.79 2014/03/02 23:35:15 olivleh1 Exp $
 //
 namespace client;
 
@@ -46,6 +46,7 @@ use client\module\moduleFrontPage;
 use client\util\utilTimer;
 use client\util\Environment;
 use client\util\ErrorHandler;
+use client\module\modulePostingAccounts;
 
 require_once 'include.php';
 
@@ -174,6 +175,12 @@ if ($is_logged_in == 0) {
 			$moduleGroups = new moduleGroups();
 			break;
 
+		case 'list_postingaccounts' :
+		case 'edit_postingaccount' :
+		case 'delete_postingaccount' :
+			$modulePostingAccounts = new modulePostingAccounts();
+			break;
+
 		case 'upfrm_cmp_data' :
 		case 'analyze_cmp_data' :
 			$moduleCompare = new moduleCompare();
@@ -246,6 +253,25 @@ if ($is_logged_in == 0) {
 				$force = array_key_exists( 'force', $_REQUEST ) ? $_REQUEST ['force'] : '';
 				$display = $moduleGroups->display_delete_group( $realaction, $id, $force );
 				break;
+
+			/* postingaccounts */
+
+			case 'list_postingaccounts' :
+				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
+				$display = $modulePostingAccounts->display_list_postingaccounts( $letter );
+				break;
+			case 'edit_postingaccount' :
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$id = array_key_exists( 'postingaccountid', $_REQUEST ) ? $_REQUEST ['postingaccountid'] : 0;
+				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
+				$display = $modulePostingAccounts->display_edit_postingaccount( $realaction, $id, $all_data );
+				break;
+			case 'delete_postingaccount' :
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$id = array_key_exists( 'postingaccountid', $_REQUEST ) ? $_REQUEST ['postingaccountid'] : '';
+				$force = array_key_exists( 'force', $_REQUEST ) ? $_REQUEST ['force'] : '';
+				$display = $modulePostingAccounts->display_delete_postingaccount( $realaction, $id, $force );
+				break;
 		}
 	}
 
@@ -254,7 +280,7 @@ if ($is_logged_in == 0) {
 		// UTF8 needed for REST-server communication - german umlauts will generate errors otherwise (for example)
 		if (array_key_exists( 'all_data', $_REQUEST ) && is_array( $_REQUEST ['all_data'] )) {
 			$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
-			$all_data = convert_array_to_utf8($all_data);
+			$all_data = convert_array_to_utf8( $all_data );
 		}
 
 		switch ($action) {
