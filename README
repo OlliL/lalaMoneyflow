@@ -9,10 +9,13 @@ Requirements:
 - MySQL 5.x
 - Caching:
 	- Yac (https://github.com/laruence/yac/)
-	- PHP Extension msgpack
+	- PECL Extension msgpack
 	  OR
-	- memcached Server + PHP Extension memcached (with igbinary support)
-	- igbinary
+	- memcached Server + PECL Extension memcached
+	- optional: PECL igbinary Extension for faster access
+	  OR
+	- redis Server + PECL Extension redis
+	- optional: PECL igbinary Extension for faster access
 - Smarty (http://www.smarty.net/)
 - JpGraph (http://jpgraph.net/)
 - PECL spl_types

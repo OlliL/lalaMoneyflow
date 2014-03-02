@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: EventControllerHandler.php,v 1.4 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: EventControllerHandler.php,v 1.5 2014/03/02 00:02:53 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -57,6 +57,7 @@ class EventControllerHandler extends AbstractHandler {
 			$result ['mms_missing'] = $showEventList->isMonthlySettlementMissing();
 			$result ['month'] = $showEventList->getMonthlySettlementMonth();
 			$result ['year'] = $showEventList->getMonthlySettlementYear();
+			$result ['numberOfAddableSettlements'] = $showEventList->getMonthlySettlementNumberOfAddableSettlements();
 		}
 		return $result;
 	}

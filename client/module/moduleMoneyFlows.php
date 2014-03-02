@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.84 2014/03/01 20:46:42 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.85 2014/03/02 00:02:54 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -97,6 +97,7 @@ class moduleMoneyFlows extends module {
 
 							switch ($error) {
 								case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
+								case ErrorCode::BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT:
 									$all_data ['bookingdate_error'] = 1;
 									break;
 								case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
@@ -223,6 +224,7 @@ class moduleMoneyFlows extends module {
 
 							switch ($error) {
 								case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
+								case ErrorCode::BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT:
 									$all_data [$key] ['bookingdate_error'] = 1;
 									break;
 								case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :

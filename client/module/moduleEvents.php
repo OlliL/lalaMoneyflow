@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleEvents.php,v 1.15 2014/03/01 19:32:34 olivleh1 Exp $
+// $Id: moduleEvents.php,v 1.16 2014/03/02 00:02:54 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -38,12 +38,13 @@ class moduleEvents extends module {
 	}
 
 	public final function check_events() {
-		if (Environment::getInstance()->getEventsShown() === false) {
+		if (!Environment::getInstance()->getEventsShown()) {
 			Environment::getInstance()->setEventsShown( true );
 			$events = EventControllerHandler::getInstance()->showEventList();
-			if ($events ['mms_missing'] === true) {
+			if ($events ['mms_missing'] === true && $events ['numberOfAddableSettlements'] > 0) {
 				$this->template->assign( 'MONTH', $events ['month'] );
 				$this->template->assign( 'YEAR', $events ['year'] );
+				$this->template->assign( 'NUM_ADDABLE_SETTLEMENTS', $events ['numberOfAddableSettlements'] );
 
 				$this->parse_header( 1 );
 				return $this->fetch_template( 'display_event_monthlysettlement.tpl' );

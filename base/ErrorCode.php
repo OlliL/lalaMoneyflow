@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ErrorCode.php,v 1.21 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: ErrorCode.php,v 1.22 2014/03/02 00:02:53 olivleh1 Exp $
 //
 namespace base;
 
@@ -83,6 +83,7 @@ class ErrorCode extends \SplEnum {
 	const GROUP_MUST_BE_SPECIFIED = 243;
 	const VALIDFROM_EARLIER_THAN_TOMORROW = 244;
 	const CLIENT_CLOCK_OFF = 245;
+	const BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT = 246;
 }
 
 ?>

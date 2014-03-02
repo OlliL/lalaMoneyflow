@@ -1,10 +1,7 @@
-- all BOs should get an Accessor object
-
 - consider creating an "AbstractMoneyflow" -> Moneyflow / PreDefMoneyflow....
 
 further thoughts:
    - consider Conductor handling for showEdit*... -> edit* -> Error -> re-use the showEdit functionality
-   - maybe extra Validator Classes with insert/update/delete relevant validations and not in the Service
    - centralize all cachenames
 
 ###########################################################################################################################
@@ -15,29 +12,13 @@ What is currently missing:
 
 ###########################################################################################################################
 
-Bugs detected so far:
-   - predefmoneyflows: edit moneyflow with out-of-daterange capitalsource - do not allow to save it!
-   - when a new month start and after the login the settlement question is raised - the new window should open in the
-     correct size (height = NUM_SOURCES * 35+something)
-   - moneyflows for capitalsources which are not allowed for the user must not be possible (verify this with RESTClient,
-     the Client does not allow it already)
-   - MonthlySettlements - create for a far month in the future - check if the propper capitalsources are selected. All capitalsources
-     which are valid with at least one day in this month have to be selected (valid only at the beginning, only at the end for example)
-     check this.....
-   - when reassigning a user from group a to group b ask:
-      - also copy capitalsources?
-   - no moneyflows must be createable before the current group assignment was valid
-     (no moneyflows for the previous group after the group assignment changed)
-
-
 New Installation
+   - check dependencies on an empty VM
+   - provide a "check my setup" php which checks if all dependencies are there and also checks DB installation and so on...
    - check that after the first logon, on a clean DB, the password has to be changed first
-   - "No monthly settlement for the previous month exists. Do you want to create it now?" - it makes no sense without a capitalsource
-   - assume for new capitalsources always "0" as the previous month settlement
    - Trend does not work - maybe because no settlement done yet?
 
 - evaluate:
-  - Redis / Predis
   - Doctrine + Serializer
   - PHPUnit
     -> PHP_CodeCoverage needed
