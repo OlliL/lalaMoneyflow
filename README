@@ -44,3 +44,10 @@ Installation:
 - create a new group
 - assign the user to the new group via SQL
 - add posting accounts via SQL
+
+
+To run the PHPUnit Tests in server/
+- install PHP DOM Extension
+- then:
+	- cd server
+	- ../contrib/phpunit.phar tests

@@ -1,8 +1,8 @@
+- PHPUnit: start writing service tests
+- PHPDoc: document the services, then the controller, then the DAOs, and maybe the BOs
 - consider creating an "AbstractMoneyflow" -> Moneyflow / PreDefMoneyflow....
-
-further thoughts:
-   - consider Conductor handling for showEdit*... -> edit* -> Error -> re-use the showEdit functionality
-   - centralize all cachenames
+- consider Conductor handling for showEdit*... -> edit* -> Error -> re-use the showEdit functionality
+- centralize all cachenames
 
 ###########################################################################################################################
 
@@ -12,18 +12,11 @@ What is currently missing:
 
 ###########################################################################################################################
 
-New Installation
+Fresh Installation Bugs:
    - check dependencies on an empty VM
    - provide a "check my setup" php which checks if all dependencies are there and also checks DB installation and so on...
    - check that after the first logon, on a clean DB, the password has to be changed first
    - Trend does not work - maybe because no settlement done yet?
-
-- evaluate:
-  - Doctrine + Serializer
-  - PHPUnit
-    -> PHP_CodeCoverage needed
-    -> Xdebug needed (drops performance heavily)
-    ---> not sure if OK
 
 some far time in the future:
 
