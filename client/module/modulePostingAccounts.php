@@ -24,12 +24,17 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePostingAccounts.php,v 1.2 2014/03/02 23:42:20 olivleh1 Exp $
+// $Id: modulePostingAccounts.php,v 1.3 2014/03/03 01:21:59 olivleh1 Exp $
 //
 namespace client\module;
 
 use client\handler\PostingAccountControllerHandler;
 use base\ErrorCode;
+
+if (ENABLE_JPGRAPH) {
+	require_once 'jpgraph.php';
+	require_once 'jpgraph_bar.php';
+}
 
 class modulePostingAccounts extends module {
 
@@ -41,11 +46,11 @@ class modulePostingAccounts extends module {
 		$listPostingAccounts = PostingAccountControllerHandler::getInstance()->showPostingAccountList( $letter );
 		$all_index_letters = $listPostingAccounts ['initials'];
 		$all_data = $listPostingAccounts ['postingAccounts'];
-		
+
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
-		
+
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_postingaccounts.tpl' );
 	}
@@ -59,15 +64,15 @@ class modulePostingAccounts extends module {
 					$ret = PostingAccountControllerHandler::getInstance()->createPostingAccount( $all_data );
 				else
 					$ret = PostingAccountControllerHandler::getInstance()->updatePostingAccount( $all_data );
-				
+
 				if ($ret === true) {
 					$close = 1;
 				} else {
 					foreach ( $ret ['errors'] as $validationResult ) {
 						$error = $validationResult ['error'];
-						
+
 						$this->add_error( $error );
-						
+
 						switch ($error) {
 							case ErrorCode::NAME_MUST_NOT_BE_EMPTY :
 							case ErrorCode::POSTINGACCOUNT_WITH_SAME_NAME_ALREADY_EXISTS :
@@ -86,12 +91,12 @@ class modulePostingAccounts extends module {
 				}
 				break;
 		}
-		
+
 		$this->template->assign( 'CLOSE', $close );
 		$this->template->assign( 'POSTINGACCOUNTID', $postingaccountid );
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_postingaccount.tpl' );
 	}
@@ -112,11 +117,79 @@ class modulePostingAccounts extends module {
 				}
 				break;
 		}
-		
+
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_postingaccount.tpl' );
+	}
+
+	private function randomColor() {
+		$possibilities = array (
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				"A",
+				"B",
+				"C",
+				"D"
+		);
+		shuffle( $possibilities );
+		$color = "#";
+		for($i = 1; $i <= 6; $i ++) {
+			$color .= $possibilities [rand( 0, 14 )];
+		}
+		return $color;
+	}
+
+	public final function plot_postingAccounts($yearFrom, $yearTil) {
+		$plotPostingAccounts = PostingAccountControllerHandler::getInstance()->plotPostingAccounts( $yearFrom, $yearTil );
+		$postingAccounts = $plotPostingAccounts ['postingAccounts'];
+		$all_data = $plotPostingAccounts ['data'];
+		foreach ( $postingAccounts as $key => $postingAccount ) {
+			$postingAccountKeys [$postingAccount ['postingaccountid']] = $key;
+			$postingAccountNames [] = utf8_decode( $postingAccount ['name'] );
+		}
+		foreach ( $all_data as $data ) {
+			if ($data ['postingaccountid'] == 18)
+				continue;
+			$year = date( 'Y', $data ['date_ts'] );
+			$account_key = $postingAccountKeys [$data ['postingaccountid']];
+			$plot_data [$year] [$account_key] += $data ['amount'];
+		}
+
+		foreach ( $plot_data as $data ) {
+			$plot = new \BarPlot( $data );
+			$plot->SetColor( "white" );
+			$plot->SetFillColor( $this->randomColor() );
+			$plots [] = $plot;
+		}
+		// Create the graph. These two calls are always required
+		$graph = new \Graph( 900, 900 );
+		$graph->SetScale( "textlin" );
+		$graph->Set90AndMargin( 50, 40, 40, 40 );
+
+		$graph->ygrid->SetFill( false );
+
+		$graph->xaxis->SetTickLabels( $postingAccountNames );
+
+		$graph->yaxis->HideLine( false );
+		$graph->yaxis->HideTicks( false, false );
+
+
+		$gbplot = new \GroupBarPlot( $plots );
+		// ...and add it to the graPH
+		$graph->Add( $gbplot );
+		$graph->title->Set( "Bar Plots" );
+
+		// Display the graph
+		$graph->Stroke();
 	}
 }
 ?>

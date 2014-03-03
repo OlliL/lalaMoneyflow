@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PostingAccountControllerHandler.php,v 1.6 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: PostingAccountControllerHandler.php,v 1.7 2014/03/03 01:22:00 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -32,6 +32,7 @@ use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\postingaccount\createPostingAccountRequest;
 use api\model\postingaccount\updatePostingAccountRequest;
+use api\model\postingaccount\plotPostingAccountsResponse;
 
 class PostingAccountControllerHandler extends AbstractHandler {
 	private static $instance;
@@ -39,6 +40,7 @@ class PostingAccountControllerHandler extends AbstractHandler {
 	protected function __construct() {
 		parent::__construct();
 		parent::addMapper( 'client\mapper\ArrayToPostingAccountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToPostingAccountAmountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNTAMOUNT_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -54,7 +56,7 @@ class PostingAccountControllerHandler extends AbstractHandler {
 
 	public final function showPostingAccountList($restriction) {
 		$response = parent::getJson( 'showPostingAccountList', array (
-				utf8_encode( $restriction ) 
+				utf8_encode( $restriction )
 		) );
 		if (is_array( $response )) {
 			$listPostingAccounts = JsonAutoMapper::mapAToB( $response, '\\api\\model\\postingaccount' );
@@ -65,13 +67,13 @@ class PostingAccountControllerHandler extends AbstractHandler {
 			}
 			$result ['initials'] = $listPostingAccounts->getInitials();
 		}
-		
+
 		return $result;
 	}
 
 	public final function showEditPostingAccount($id) {
 		$response = parent::getJson( 'showEditPostingAccount', array (
-				$id 
+				$id
 		) );
 		if (is_array( $response )) {
 			$showEditPostingAccountResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\postingaccount' );
@@ -82,7 +84,7 @@ class PostingAccountControllerHandler extends AbstractHandler {
 
 	public final function showDeletePostingAccount($id) {
 		$response = parent::getJson( 'showDeletePostingAccount', array (
-				$id 
+				$id
 		) );
 		if (is_array( $response )) {
 			$showDeletePostingAccountResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\postingaccount' );
@@ -93,7 +95,7 @@ class PostingAccountControllerHandler extends AbstractHandler {
 
 	public final function createPostingAccount(array $postingAccount) {
 		$postingAccountTransport = parent::map( $postingAccount, ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
-		
+
 		$request = new createPostingAccountRequest();
 		$request->setPostingAccountTransport( $postingAccountTransport );
 		return parent::postJson( 'createPostingAccount', parent::json_encode_response( $request ) );
@@ -101,7 +103,7 @@ class PostingAccountControllerHandler extends AbstractHandler {
 
 	public final function updatePostingAccount(array $postingAccount) {
 		$postingAccountTransport = parent::map( $postingAccount, ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
-		
+
 		$request = new updatePostingAccountRequest();
 		$request->setPostingAccountTransport( $postingAccountTransport );
 		return parent::putJson( 'updatePostingAccount', parent::json_encode_response( $request ) );
@@ -109,8 +111,25 @@ class PostingAccountControllerHandler extends AbstractHandler {
 
 	public final function deletePostingAccount($id) {
 		return parent::deleteJson( 'deletePostingAccountById', array (
-				$id 
+				$id
 		) );
+	}
+
+	public final function plotPostingAccounts($yearFrom, $yearTil) {
+		$response = parent::getJson( 'plotPostingAccounts', array (
+				$yearFrom,
+				$yearTil
+		) );
+		if (is_array( $response )) {
+			$plotPostingAccountsResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\postingaccount' );
+			$result ['data'] = parent::mapArray( $plotPostingAccountsResponse->getPostingAccountAmountTransport() );
+			if (is_array( $plotPostingAccountsResponse->getPostingAccountTransport() )) {
+				$result ['postingAccounts'] = parent::mapArray( $plotPostingAccountsResponse->getPostingAccountTransport() );
+			} else {
+				$result ['postingAccounts'] = array ();
+			}
+		}
+		return $result;
 	}
 }
 

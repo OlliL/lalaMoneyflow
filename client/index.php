@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.80 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: index.php,v 1.81 2014/03/03 01:22:00 olivleh1 Exp $
 //
 namespace client;
 
@@ -58,7 +58,7 @@ function convert_array_to_utf8($arr) {
 			$arr [$key] = utf8_encode( $value );
 		}
 	}
-	
+
 	return $arr;
 }
 
@@ -79,9 +79,9 @@ $request_uri = $_SERVER ['REQUEST_URI'];
 $all_data = null;
 
 if ($action == 'logout') {
-	
+
 	/* user tries to logout */
-	
+
 	$moduleUsers->logout();
 	$request_uri = $_SERVER ['PHP_SELF'];
 }
@@ -89,27 +89,27 @@ if ($action == 'logout') {
 $is_logged_in = $moduleUsers->is_logged_in();
 
 if ($is_logged_in == 2) {
-	
+
 	/* user is new and must change his password */
-	
+
 	if (empty( $_POST ['realaction'] ) || $_POST ['realaction'] != 'save') {
 		ErrorHandler::addError( ErrorCode::PASSWORD_MUST_BE_CHANGED );
 	}
 	$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 	$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 	$display = $moduleSettings->display_personal_settings( $realaction, $all_data );
-	
+
 	if ($_POST ['realaction'] == 'save' && ! is_array( $ERRORS ))
 		header( "Location: " . $_SERVER ['PHP_SELF'] );
 } elseif ($action == 'login_user' || $is_logged_in != 0) {
-	
+
 	/* user tries to login */
-	
+
 	$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 	$name = array_key_exists( 'name', $_REQUEST ) ? $_REQUEST ['name'] : '';
 	$password = array_key_exists( 'password', $_REQUEST ) ? $_REQUEST ['password'] : '';
 	$display = $moduleUsers->display_login_user( $realaction, $name, $password, $request_uri );
-	
+
 	if ($_POST ['request_uri'] && ! is_array( $ERRORS ))
 		header( "Location: " . $_POST ['request_uri'] );
 }
@@ -118,9 +118,9 @@ if ($is_logged_in == 2) {
 // error_reporting( E_ALL );
 
 if ($is_logged_in == 0) {
-	
+
 	$display = $moduleEvents->check_events();
-	
+
 	switch ($action) {
 		case 'list_capitalsources' :
 		case 'edit_capitalsource' :
@@ -168,19 +168,20 @@ if ($is_logged_in == 0) {
 		case 'edit_user' :
 		case 'delete_user' :
 			break;
-		
+
 		case 'list_groups' :
 		case 'edit_group' :
 		case 'delete_group' :
 			$moduleGroups = new moduleGroups();
 			break;
-		
+
 		case 'list_postingaccounts' :
 		case 'edit_postingaccount' :
 		case 'delete_postingaccount' :
+		case 'plot_postingaccounts' :
 			$modulePostingAccounts = new modulePostingAccounts();
 			break;
-		
+
 		case 'upfrm_cmp_data' :
 		case 'analyze_cmp_data' :
 			$moduleCompare = new moduleCompare();
@@ -189,7 +190,7 @@ if ($is_logged_in == 0) {
 			$moduleFrontPage = new moduleFrontPage();
 			break;
 	}
-	
+
 	if (empty( $display ) && $moduleUsers->is_admin()) {
 		switch ($action) {
 			case 'system_settings' :
@@ -197,9 +198,9 @@ if ($is_logged_in == 0) {
 				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = $moduleSettings->display_system_settings( $realaction, $all_data );
 				break;
-			
+
 			/* languages */
-			
+
 			case 'list_languages' :
 				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
 				$display = $moduleLanguages->display_list_languages( $letter );
@@ -215,9 +216,9 @@ if ($is_logged_in == 0) {
 				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = $moduleLanguages->display_add_language( $realaction, $all_data );
 				break;
-			
+
 			/* users */
-			
+
 			case 'list_users' :
 				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
 				$display = $moduleUsers->display_list_users( $letter );
@@ -234,9 +235,9 @@ if ($is_logged_in == 0) {
 				$id = array_key_exists( 'userid', $_REQUEST ) ? $_REQUEST ['userid'] : '';
 				$display = $moduleUsers->display_delete_user( $realaction, $id );
 				break;
-			
+
 			/* groups */
-			
+
 			case 'list_groups' :
 				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
 				$display = $moduleGroups->display_list_groups( $letter );
@@ -253,9 +254,9 @@ if ($is_logged_in == 0) {
 				$force = array_key_exists( 'force', $_REQUEST ) ? $_REQUEST ['force'] : '';
 				$display = $moduleGroups->display_delete_group( $realaction, $id, $force );
 				break;
-			
+
 			/* postingaccounts */
-			
+
 			case 'list_postingaccounts' :
 				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
 				$display = $modulePostingAccounts->display_list_postingaccounts( $letter );
@@ -274,75 +275,75 @@ if ($is_logged_in == 0) {
 				break;
 		}
 	}
-	
+
 	if (empty( $display )) {
-		
+
 		// UTF8 needed for REST-server communication - german umlauts will generate errors otherwise (for example)
 		if (array_key_exists( 'all_data', $_REQUEST ) && is_array( $_REQUEST ['all_data'] )) {
 			$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 			$all_data = convert_array_to_utf8( $all_data );
 		}
-		
+
 		switch ($action) {
 			/* capitalsources */
-			
+
 			case 'list_capitalsources' :
 				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
 				$display = $moduleCapitalSources->display_list_capitalsources( $letter );
 				break;
-			
+
 			case 'edit_capitalsource' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$capitalsourceid = array_key_exists( 'capitalsourceid', $_REQUEST ) ? $_REQUEST ['capitalsourceid'] : 0;
 				$display = $moduleCapitalSources->display_edit_capitalsource( $realaction, $capitalsourceid, $all_data );
 				break;
-			
+
 			case 'delete_capitalsource' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$capitalsourceid = array_key_exists( 'capitalsourceid', $_REQUEST ) ? $_REQUEST ['capitalsourceid'] : '';
 				$display = $moduleCapitalSources->display_delete_capitalsource( $realaction, $capitalsourceid );
 				break;
-			
+
 			/* contractpartners */
-			
+
 			case 'list_contractpartners' :
 				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
 				$display = $moduleContractPartners->display_list_contractpartners( $letter );
 				break;
-			
+
 			case 'edit_contractpartner' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$contractpartnerid = array_key_exists( 'contractpartnerid', $_REQUEST ) ? $_REQUEST ['contractpartnerid'] : 0;
 				$display = $moduleContractPartners->display_edit_contractpartner( $realaction, $contractpartnerid, $all_data );
 				break;
-			
+
 			case 'delete_contractpartner' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'contractpartnerid', $_REQUEST ) ? $_REQUEST ['contractpartnerid'] : '';
 				$display = $moduleContractPartners->display_delete_contractpartner( $realaction, $id );
 				break;
-			
+
 			/* predefmoneyflows */
-			
+
 			case 'list_predefmoneyflows' :
 				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
 				$display = $modulePreDefMoneyFlows->display_list_predefmoneyflows( $letter );
 				break;
-			
+
 			case 'edit_predefmoneyflow' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'predefmoneyflowid', $_REQUEST ) ? $_REQUEST ['predefmoneyflowid'] : 0;
 				$display = $modulePreDefMoneyFlows->display_edit_predefmoneyflow( $realaction, $id, $all_data );
 				break;
-			
+
 			case 'delete_predefmoneyflow' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'predefmoneyflowid', $_REQUEST ) ? $_REQUEST ['predefmoneyflowid'] : '';
 				$display = $modulePreDefMoneyFlows->display_delete_predefmoneyflow( $realaction, $id );
 				break;
-			
+
 			/* moneyflows */
-			
+
 			case 'add_moneyflow' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$display = $moduleMoneyFlows->display_add_moneyflow( $realaction, $all_data );
@@ -352,15 +353,15 @@ if ($is_logged_in == 0) {
 				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : '';
 				$display = $moduleMoneyFlows->display_edit_moneyflow( $realaction, $id, $all_data );
 				break;
-			
+
 			case 'delete_moneyflow' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : '';
 				$display = $moduleMoneyFlows->display_delete_moneyflow( $realaction, $id );
 				break;
-			
+
 			/* monthlysettlements */
-			
+
 			case 'list_monthlysettlements' :
 				$month = array_key_exists( 'monthlysettlements_month', $_REQUEST ) ? $_REQUEST ['monthlysettlements_month'] : '';
 				$year = array_key_exists( 'monthlysettlements_year', $_REQUEST ) ? $_REQUEST ['monthlysettlements_year'] : '';
@@ -378,9 +379,9 @@ if ($is_logged_in == 0) {
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$display = $moduleMonthlySettlement->display_delete_monthlysettlement( $realaction, $month, $year );
 				break;
-			
+
 			/* reports */
-			
+
 			case 'list_reports' :
 				$month = array_key_exists( 'reports_month', $_REQUEST ) ? $_REQUEST ['reports_month'] : '';
 				$year = array_key_exists( 'reports_year', $_REQUEST ) ? $_REQUEST ['reports_year'] : '';
@@ -399,9 +400,9 @@ if ($is_logged_in == 0) {
 				$endyear = array_key_exists( 'endyear', $_REQUEST ) ? $_REQUEST ['endyear'] : '';
 				$display = (ENABLE_JPGRAPH ? $moduleReports->plot_graph( $id, $startmonth, $startyear, $endmonth, $endyear ) : '');
 				break;
-			
+
 			/* search */
-			
+
 			case 'search' :
 				$display = $moduleSearch->display_search();
 				break;
@@ -419,14 +420,14 @@ if ($is_logged_in == 0) {
 				$order = array_key_exists( 'order', $_REQUEST ) ? $_REQUEST ['order'] : '';
 				$display = $moduleSearch->do_search( $searchstring, $contractpart, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus, $grouping1, $grouping2, $order );
 				break;
-			
+
 			/* settings */
-			
+
 			case 'personal_settings' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$display = $moduleSettings->display_personal_settings( $realaction, $all_data );
 				break;
-			
+
 			case 'upfrm_cmp_data' :
 				$display = $moduleCompare->display_upload_form();
 				break;
@@ -434,7 +435,13 @@ if ($is_logged_in == 0) {
 				$file = $_FILES ['file'];
 				$display = $moduleCompare->display_analyze_form( $file, $all_data );
 				break;
-			
+
+			/* postingaccounts */
+
+			case 'plot_postingaccounts' :
+				$display = $modulePostingAccounts->plot_postingaccounts(2010,2014);
+				break;
+
 			default :
 				$display = $moduleFrontPage->display_main();
 				break;

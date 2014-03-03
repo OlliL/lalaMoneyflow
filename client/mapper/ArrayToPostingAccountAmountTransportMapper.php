@@ -25,19 +25,30 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: getAllMoneyflowsGroupedByYearMonthPostingAccountResponse.php,v 1.3 2014/02/28 22:19:46 olivleh1 Exp $
+// $Id: ArrayToPostingAccountAmountTransportMapper.php,v 1.1 2014/03/03 01:22:00 olivleh1 Exp $
 //
-namespace api\model\moneyflow;
+namespace client\mapper;
 
-class getAllMoneyflowsGroupedByYearMonthPostingAccountResponse {
-	public $postingAccountAmountTransport;
+use api\model\transport\PostingAccountAmountTransport;
 
-	public final function getPostingAccountAmountTransport() {
-		return $this->postingAccountAmountTransport;
+class ArrayToPostingAccountAmountTransportMapper extends AbstractArrayMapper {
+
+	public static function mapAToB(array $a) {
+		$b = new PostingAccountAmountTransport();
+		$b->setDate( $a ['date_ts'] );
+		$b->setAmount( $a ['amount'] );
+		$b->setPostingaccountid( $a ['postingaccountid'] );
+
+		return $b;
 	}
 
-	public final function setPostingAccountAmountTransport(array $postingAccountAmountTransport) {
-		$this->postingAccountAmountTransport = $postingAccountAmountTransport;
+	public static function mapBToA(PostingAccountAmountTransport $b) {
+		$a ['date_ts'] = $b->getDate();
+		$a ['amount'] = $b->getAmount();
+		$a ['postingaccountid'] = $b->getPostingaccountid();
+		$a ['postingaccountname'] = $b->getPostingaccountname();
+
+		return $a;
 	}
 }
 

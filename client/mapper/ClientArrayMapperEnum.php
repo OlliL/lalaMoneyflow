@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ClientArrayMapperEnum.php,v 1.18 2014/02/28 22:19:48 olivleh1 Exp $
+// $Id: ClientArrayMapperEnum.php,v 1.19 2014/03/03 01:22:00 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -38,6 +38,7 @@ class ClientArrayMapperEnum {
 	const GROUP_TRANSPORT = 'ClientGroupTransport';
 	const ACCESS_RELATION_TRANSPORT = 'ClientAccessRelationTransport';
 	const POSTINGACCOUNT_TRANSPORT = 'PostingAccountTransport';
+	const POSTINGACCOUNTAMOUNT_TRANSPORT = 'PostingAccountAmountTransport';
 	const VALIDATIONITEM_TRANSPORT = 'ClientValidationItemTransport';
 	const COMPAREDATAFORMAT_TRANSPORT = 'CompareDataFormatTransport';
 	const COMPAREDATADATASET_TRANSPORT = 'CompareDataDatasetTransport';
