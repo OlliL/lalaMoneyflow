@@ -16,18 +16,9 @@
 						<th>{#TEXT_69#}</th>
 						<td class="contrastbgcolor">
 							<select class="contrastbgcolor" name="all_data[startmonth]" size=1>
-								<option value="1"  {if 1 == $ALL_DATA.startmonth}selected{/if}>Jan</option>
-								<option value="2"  {if 2 == $ALL_DATA.startmonth}selected{/if}>Feb</option>
-								<option value="3"  {if 3 == $ALL_DATA.startmonth}selected{/if}>Mar</option>
-								<option value="4"  {if 4 == $ALL_DATA.startmonth}selected{/if}>Apr</option>
-								<option value="5"  {if 5 == $ALL_DATA.startmonth}selected{/if}>May</option>
-								<option value="6"  {if 6 == $ALL_DATA.startmonth}selected{/if}>Jun</option>
-								<option value="7"  {if 7 == $ALL_DATA.startmonth}selected{/if}>Jul</option>
-								<option value="8"  {if 8 == $ALL_DATA.startmonth}selected{/if}>Aug</option>
-								<option value="9"  {if 9 == $ALL_DATA.startmonth}selected{/if}>Sep</option>
-								<option value="10" {if 10 == $ALL_DATA.startmonth}selected{/if}>Oct</option>
-								<option value="11" {if 11 == $ALL_DATA.startmonth}selected{/if}>Nov</option>
-								<option value="12" {if 12 == $ALL_DATA.startmonth}selected{/if}>Dec</option>
+		 					{section name=MONTH loop=$MONTHS}
+								<option value="{$MONTHS[MONTH].value}" {if $MONTHS[MONTH].value == $ALL_DATA.startmonth}selected{/if}> {$MONTHS[MONTH].text}
+							{/section}
 							</select>
 							<select class="contrastbgcolor" name="all_data[startyear]" size=1>
 							{section name=YEAR loop=$ALL_YEARS}
@@ -40,18 +31,9 @@
 						<th>{#TEXT_70#}</th>
 						<td class="contrastbgcolor">
 							<select class="contrastbgcolor" name="all_data[endmonth]" size=1>
-								<option value="1"  {if 1 == $ALL_DATA.endmonth}selected{/if}>Jan</option>
-								<option value="2"  {if 2 == $ALL_DATA.endmonth}selected{/if}>Feb</option>
-								<option value="3"  {if 3 == $ALL_DATA.endmonth}selected{/if}>Mar</option>
-								<option value="4"  {if 4 == $ALL_DATA.endmonth}selected{/if}>Apr</option>
-								<option value="5"  {if 5 == $ALL_DATA.endmonth}selected{/if}>May</option>
-								<option value="6"  {if 6 == $ALL_DATA.endmonth}selected{/if}>Jun</option>
-								<option value="7"  {if 7 == $ALL_DATA.endmonth}selected{/if}>Jul</option>
-								<option value="8"  {if 8 == $ALL_DATA.endmonth}selected{/if}>Aug</option>
-								<option value="9"  {if 9 == $ALL_DATA.endmonth}selected{/if}>Sep</option>
-								<option value="10" {if 10 == $ALL_DATA.endmonth}selected{/if}>Oct</option>
-								<option value="11" {if 11 == $ALL_DATA.endmonth}selected{/if}>Nov</option>
-								<option value="12" {if 12 == $ALL_DATA.endmonth}selected{/if}>Dec</option>
+		 					{section name=MONTH loop=$MONTHS}
+								<option value="{$MONTHS[MONTH].value}" {if $MONTHS[MONTH].value == $ALL_DATA.endmonth}selected{/if}> {$MONTHS[MONTH].text}
+							{/section}
 							</select>
 							<select class="contrastbgcolor" name="all_data[endyear]" size=1>
 								{section name=YEAR loop=$ALL_YEARS}

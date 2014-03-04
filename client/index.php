@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.81 2014/03/03 01:22:00 olivleh1 Exp $
+// $Id: index.php,v 1.82 2014/03/04 21:33:55 olivleh1 Exp $
 //
 namespace client;
 
@@ -150,6 +150,8 @@ if ($is_logged_in == 0) {
 		case 'list_reports' :
 		case 'plot_trends' :
 		case 'plot_graph' :
+		case 'show_reporting_form' :
+		case 'plot_report' :
 			$moduleReports = new moduleReports();
 			break;
 		case 'search' :
@@ -389,6 +391,21 @@ if ($is_logged_in == 0) {
 				$order = array_key_exists( 'reports_order', $_REQUEST ) ? $_REQUEST ['reports_order'] : '';
 				$display = $moduleReports->display_list_reports( $month, $year, $sortby, $order );
 				break;
+			case 'show_reporting_form' :
+				$display = $moduleReports->show_reporting_form();
+				break;
+			case 'plot_report' :
+				$timemode = $_POST ['timemode'];
+				$accountmode = $_POST ['timemode'];
+				$year = $_POST ['year'];
+				$month_month = $_POST ['month_month'];
+				$year_month = $_POST ['year_month'];
+				$yearfrom = $_POST ['yearfrom'];
+				$yeartil = $_POST ['yeartil'];
+				$single_account = $_POST ['single_account'];
+				$multiple_accounts = $_POST ['multiple_accounts'];
+				$display = $moduleReports->plot_report($timemode,$accountmode,$year,$month_month,$year_month,$yearfrom,$yeartil,$single_account,$multiple_accounts);
+				break;
 			case 'plot_trends' :
 				$display = (ENABLE_JPGRAPH ? $moduleReports->display_plot_trends( $all_data ) : '');
 				break;
@@ -439,7 +456,7 @@ if ($is_logged_in == 0) {
 			/* postingaccounts */
 
 			case 'plot_postingaccounts' :
-				$display = $modulePostingAccounts->plot_postingaccounts(2010,2014);
+				$display = $modulePostingAccounts->plot_postingaccounts( 2010, 2014 );
 				break;
 
 			default :

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.88 2014/03/03 01:21:59 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.89 2014/03/04 21:33:55 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -230,6 +230,8 @@ class moduleReports extends module {
 			$this->template->assign( 'PLOT_GRAPH', 0 );
 		}
 
+		$months = $this->coreText->get_domain_data( 'MONTHS' );
+		$this->template->assign( 'MONTHS', $months );
 		$this->template->assign( 'ALL_DATA', $all_data );
 
 		$this->parse_header();
@@ -313,6 +315,38 @@ class moduleReports extends module {
 		$graph->xgrid->Show();
 
 		$graph->Stroke();
+	}
+
+	public final function show_reporting_form() {
+		$months = $this->coreText->get_domain_data( 'MONTHS' );
+		$years = array (
+				2003,
+				2004,
+				2005,
+				2006,
+				2007,
+				2008,
+				2009,
+				2010,
+				2011,
+				2012,
+				2013,
+				2014
+		);
+
+		$postingaccount_values[0] = array("postingaccountid"=>0,name=>"KFZ-Kostigen sonstige");
+		$postingaccount_values[1] = array("postingaccountid"=>1,name=>"Hugo");
+
+		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
+		$this->template->assign( 'MONTHS', $months );
+		$this->template->assign( 'YEARS', $years );
+
+		$this->parse_header();
+		return $this->fetch_template( 'display_show_reporting_form.tpl' );
+	}
+
+	public final function plot_report($timemode, $accountmode, $year, $month_month, $year_month, $yearfrom, $yeartil, $single_account, $multiple_accounts) {
+		var_dump( $timemode, $accountmode, $year, $month_month, $year_month, $yearfrom, $yeartil, $single_account, $multiple_accounts );
 	}
 }
 

@@ -24,6 +24,7 @@
 					<a href="{$ENV_INDEX_PHP}?action=list_reports">{#TEXT_5#}</a><br>
 {if $ENABLE_JPGRAPH }
 					<a href="{$ENV_INDEX_PHP}?action=plot_trends">{#TEXT_6#}</a><br>
+					<a href="{$ENV_INDEX_PHP}?action=show_reporting_form">{#TEXT_254#}</a><br>
 {/if}
 					<br>
 					<a href="{$ENV_INDEX_PHP}?action=search">{#TEXT_7#}</a><br>
