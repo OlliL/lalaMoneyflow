@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: UserControllerHandler.php,v 1.11 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: UserControllerHandler.php,v 1.12 2014/03/07 20:41:36 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -32,6 +32,13 @@ use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\user\createUserRequest;
 use api\model\user\updateUserRequest;
+use api\model\user\getUserSettingsForStartupResponse;
+use api\model\user\showUserListResponse;
+use api\model\user\showCreateUserResponse;
+use api\model\user\showEditUserResponse;
+use api\model\user\showDeleteUserResponse;
+use api\model\user\createUserResponse;
+use api\model\user\updateUserResponse;
 
 class UserControllerHandler extends AbstractHandler {
 	private static $instance;
@@ -56,90 +63,61 @@ class UserControllerHandler extends AbstractHandler {
 	}
 
 	public final function getUserSettingsForStartup($name) {
-		$response = parent::getJson( 'getUserSettingsForStartup', array (
-				$name 
+		$response = parent::getJson( __FUNCTION__, array (
+				$name
 		) );
-		if (is_array( $response )) {
-			$getUserSettingsForStartup = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
+		if ($response instanceof getUserSettingsForStartupResponse) {
 			$result = array (
-					'mur_userid' => $getUserSettingsForStartup->getUserid(),
-					'dateformat' => $getUserSettingsForStartup->getSettingDateFormat(),
-					'displayed_language' => $getUserSettingsForStartup->getSettingDisplayedLanguage(),
-					'att_new' => $getUserSettingsForStartup->getAttributeNew(),
-					'perm_admin' => $getUserSettingsForStartup->getPermissionAdmin() 
+					'mur_userid' => $response->getUserid(),
+					'dateformat' => $response->getSettingDateFormat(),
+					'displayed_language' => $response->getSettingDisplayedLanguage(),
+					'att_new' => $response->getAttributeNew(),
+					'perm_admin' => $response->getPermissionAdmin()
 			);
 		}
 		return $result;
 	}
 
 	public final function showUserList($restriction) {
-		$response = parent::getJson( 'showUserList', array (
-				utf8_encode( $restriction ) 
+		$response = parent::getJson( __FUNCTION__, array (
+				utf8_encode( $restriction )
 		) );
-		if (is_array( $response )) {
-			$listUsers = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
-			if (is_array( $listUsers->getUserTransport() )) {
-				$result ['users'] = parent::mapArray( $listUsers->getUserTransport() );
-			} else {
-				$result ['users'] = array ();
-			}
-			if (is_array( $listUsers->getAccessRelationTransport() )) {
-				$result ['access_relations'] = parent::mapArray( $listUsers->getAccessRelationTransport() );
-			} else {
-				$result ['access_relations'] = array ();
-			}
-			if (is_array( $listUsers->getGroupTransport() )) {
-				$result ['groups'] = parent::mapArray( $listUsers->getGroupTransport() );
-			} else {
-				$result ['groups'] = array ();
-			}
-			$result ['initials'] = $listUsers->getInitials();
+		if ($response instanceof showUserListResponse) {
+			$result ['users'] = parent::mapArrayNullable( $response->getUserTransport() );
+			$result ['access_relations'] = parent::mapArrayNullable( $response->getAccessRelationTransport() );
+			$result ['groups'] = parent::mapArrayNullable( $response->getGroupTransport() );
+			$result ['initials'] = $response->getInitials();
 		}
-		
+
 		return $result;
 	}
 
 	public final function showCreateUser($id) {
-		$response = parent::getJson( 'showCreateUser' );
-		if (is_array( $response )) {
-			$showCreateUserResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
-			if (is_array( $showCreateUserResponse->getGroupTransport() )) {
-				$result ['groups'] = parent::mapArray( $showCreateUserResponse->getGroupTransport() );
-			} else {
-				$result ['groups'] = array ();
-			}
+		$response = parent::getJson( __FUNCTION__ );
+		if ($response instanceof showCreateUserResponse) {
+			$result ['groups'] = parent::mapArrayNullable( $response->getGroupTransport() );
 		}
 		return $result;
 	}
 
 	public final function showEditUser($id) {
-		$response = parent::getJson( 'showEditUser', array (
-				$id 
+		$response = parent::getJson( __FUNCTION__, array (
+				$id
 		) );
-		if (is_array( $response )) {
-			$showEditUserResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
-			$result ['user'] = parent::map( $showEditUserResponse->getUserTransport() );
-			if (is_array( $showEditUserResponse->getAccessRelationTransport() )) {
-				$result ['access_relations'] = parent::mapArray( $showEditUserResponse->getAccessRelationTransport() );
-			} else {
-				$result ['access_relations'] = array ();
-			}
-			if (is_array( $showEditUserResponse->getGroupTransport() )) {
-				$result ['groups'] = parent::mapArray( $showEditUserResponse->getGroupTransport() );
-			} else {
-				$result ['groups'] = array ();
-			}
+		if ($response instanceof showEditUserResponse) {
+			$result ['user'] = parent::map( $response->getUserTransport() );
+			$result ['access_relations'] = parent::mapArrayNullable( $response->getAccessRelationTransport() );
+			$result ['groups'] = parent::mapArrayNullable( $response->getGroupTransport() );
 		}
 		return $result;
 	}
 
 	public final function showDeleteUser($id) {
-		$response = parent::getJson( 'showDeleteUser', array (
-				$id 
+		$response = parent::getJson( __FUNCTION__, array (
+				$id
 		) );
-		if (is_array( $response )) {
-			$showDeleteUserResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
-			$result = parent::map( $showDeleteUserResponse->getUserTransport() );
+		if ($response instanceof showDeleteUserResponse) {
+			$result = parent::map( $response->getUserTransport() );
 		}
 		return $result;
 	}
@@ -147,27 +125,18 @@ class UserControllerHandler extends AbstractHandler {
 	public final function createUser(array $user, array $access_relation) {
 		$userTransport = parent::map( $user, ClientArrayMapperEnum::USER_TRANSPORT );
 		$accessRelationTransport = parent::map( $access_relation, ClientArrayMapperEnum::ACCESS_RELATION_TRANSPORT );
-		
+
 		$request = new createUserRequest();
 		$request->setUserTransport( $userTransport );
 		$request->setAccessRelationTransport( $accessRelationTransport );
-		$response = parent::postJson( 'createUser', parent::json_encode_response( $request ) );
-		
+		$response = parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
+
 		if ($response === true) {
 			$result = true;
-		} else if (is_array( $response )) {
-			$createUser = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
-			if (is_array( $createUser->getGroupTransport() )) {
-				$result ['groups'] = parent::mapArray( $createUser->getGroupTransport() );
-			} else {
-				$result ['groups'] = array ();
-			}
-			if (is_array( $createUser->getValidationItemTransport() )) {
-				$result ['errors'] = $response ['createUserResponse'] ['validationItemTransport'];
-			} else {
-				$result ['errors'] = array ();
-			}
-			$result ['result'] = $createUser->getResult();
+		} else if ($response instanceof createUserResponse) {
+			$result ['groups'] = parent::mapArrayNullable( $response->getGroupTransport() );
+			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
+			$result ['result'] = $response->getResult();
 		}
 		return $result;
 	}
@@ -175,38 +144,26 @@ class UserControllerHandler extends AbstractHandler {
 	public final function updateUser(array $user, array $access_relation) {
 		$userTransport = parent::map( $user, ClientArrayMapperEnum::USER_TRANSPORT );
 		$accessRelationTransport = parent::map( $access_relation, ClientArrayMapperEnum::ACCESS_RELATION_TRANSPORT );
-		
+
 		$request = new updateUserRequest();
 		$request->setUserTransport( $userTransport );
 		$request->setAccessRelationTransport( $accessRelationTransport );
-		$response = parent::putJson( 'updateUser', parent::json_encode_response( $request ) );
+		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 		if ($response === true) {
 			$result = true;
-		} else if (is_array( $response )) {
-			$updateUser = JsonAutoMapper::mapAToB( $response, '\\api\\model\\user' );
-			if (is_array( $updateUser->getAccessRelationTransport() )) {
-				$result ['access_relations'] = parent::mapArray( $updateUser->getAccessRelationTransport() );
-			} else {
-				$result ['access_relations'] = array ();
-			}
-			if (is_array( $updateUser->getGroupTransport() )) {
-				$result ['groups'] = parent::mapArray( $updateUser->getGroupTransport() );
-			} else {
-				$result ['groups'] = array ();
-			}
-			if (is_array( $updateUser->getValidationItemTransport() )) {
-				$result ['errors'] = $response ['updateUserResponse'] ['validationItemTransport'];
-			} else {
-				$result ['errors'] = array ();
-			}
-			$result ['result'] = $updateUser->getResult();
+		} else if ($response instanceof updateUserResponse) {
+			$result ['access_relations'] = parent::mapArrayNullable( $response->getAccessRelationTransport() );
+			$result ['groups'] = parent::mapArrayNullable( $response->getGroupTransport() );
+			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
+			$result ['result'] = $response->getResult();
 		}
+
 		return $result;
 	}
 
-	public final function deleteUser($id) {
-		return parent::deleteJson( 'deleteUserById', array (
-				$id 
+	public final function deleteUserById($id) {
+		return parent::deleteJson( __FUNCTION__, array (
+				$id
 		) );
 	}
 }

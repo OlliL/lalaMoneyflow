@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PreDefMoneyflowControllerHandler.php,v 1.8 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: PreDefMoneyflowControllerHandler.php,v 1.9 2014/03/07 20:41:36 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -32,6 +32,12 @@ use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\predefmoneyflow\updatePreDefMoneyflowRequest;
 use api\model\predefmoneyflow\createPreDefMoneyflowRequest;
+use api\model\predefmoneyflow\showPreDefMoneyflowListResponse;
+use api\model\predefmoneyflow\showEditPreDefMoneyflowResponse;
+use api\model\predefmoneyflow\showCreatePreDefMoneyflowResponse;
+use api\model\predefmoneyflow\showDeletePreDefMoneyflowResponse;
+use api\model\predefmoneyflow\createPreDefMoneyflowResponse;
+use api\model\predefmoneyflow\updatePreDefMoneyflowResponse;
 
 class PreDefMoneyflowControllerHandler extends AbstractHandler {
 	private static $instance;
@@ -56,163 +62,93 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 	}
 
 	public final function showPreDefMoneyflowList($restriction) {
-		$response = parent::getJson( 'showPreDefMoneyflowList', array (
-				utf8_encode( $restriction ) 
+		$response = parent::getJson( __FUNCTION__, array (
+				utf8_encode( $restriction )
 		) );
-		if (is_array( $response )) {
-			$listPreDefMoneyflows = JsonAutoMapper::mapAToB( $response, '\\api\\model\\predefmoneyflow' );
-			if (is_array( $listPreDefMoneyflows->getPreDefMoneyflowTransport() )) {
-				$result ['predefmoneyflows'] = parent::mapArray( $listPreDefMoneyflows->getPreDefMoneyflowTransport() );
-			} else {
-				$result ['predefmoneyflows'] = array ();
-			}
-			$result ['initials'] = $listPreDefMoneyflows->getInitials();
+		if ($response instanceof showPreDefMoneyflowListResponse) {
+			$result ['predefmoneyflows'] = parent::mapArrayNullable( $response->getPreDefMoneyflowTransport() );
+			$result ['initials'] = $response->getInitials();
 		}
-		
+
 		return $result;
 	}
 
 	public final function showEditPreDefMoneyflow($id) {
-		$response = parent::getJson( 'showEditPreDefMoneyflow', array (
-				$id 
+		$response = parent::getJson( __FUNCTION__, array (
+				$id
 		) );
-		if (is_array( $response )) {
-			$showEditPreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\predefmoneyflow' );
-			if (is_array( $showEditPreDefMoneyflow->getCapitalsourceTransport() )) {
-				$result ['capitalsources'] = parent::mapArray( $showEditPreDefMoneyflow->getCapitalsourceTransport() );
-			} else {
-				$result ['capitalsources'] = array ();
-			}
-			if (is_array( $showEditPreDefMoneyflow->getContractpartnerTransport() )) {
-				$result ['contractpartner'] = parent::mapArray( $showEditPreDefMoneyflow->getContractpartnerTransport() );
-			} else {
-				$result ['contractpartner'] = array ();
-			}
-			if ($showEditPreDefMoneyflow->getPreDefMoneyflowTransport()) {
-				$result ['predefmoneyflow'] = parent::map( $showEditPreDefMoneyflow->getPreDefMoneyflowTransport() );
-			} else {
-				$result ['predefmoneyflow'] = array ();
-			}
-			if (is_array( $showEditPreDefMoneyflow->getPostingAccountTransport() )) {
-				$result ['postingaccounts'] = parent::mapArray( $showEditPreDefMoneyflow->getPostingAccountTransport() );
-			} else {
-				$result ['postingaccounts'] = array ();
-			}
+		if ($response instanceof showEditPreDefMoneyflowResponse) {
+			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
+			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
+			$result ['predefmoneyflow'] = parent::map( $response->getPreDefMoneyflowTransport() );
+			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
 		}
-		
+
 		return $result;
 	}
 
 	public final function showCreatePreDefMoneyflow() {
-		$response = parent::getJson( 'showCreatePreDefMoneyflow' );
-		if (is_array( $response )) {
-			$showCreatePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\predefmoneyflow' );
-			if (is_array( $showCreatePreDefMoneyflow->getCapitalsourceTransport() )) {
-				$result ['capitalsources'] = parent::mapArray( $showCreatePreDefMoneyflow->getCapitalsourceTransport() );
-			} else {
-				$result ['capitalsources'] = array ();
-			}
-			if (is_array( $showCreatePreDefMoneyflow->getContractpartnerTransport() )) {
-				$result ['contractpartner'] = parent::mapArray( $showCreatePreDefMoneyflow->getContractpartnerTransport() );
-			} else {
-				$result ['contractpartner'] = array ();
-			}
-			if (is_array( $showCreatePreDefMoneyflow->getPostingAccountTransport() )) {
-				$result ['postingaccounts'] = parent::mapArray( $showCreatePreDefMoneyflow->getPostingAccountTransport() );
-			} else {
-				$result ['postingaccounts'] = array ();
-			}
+		$response = parent::getJson( __FUNCTION__ );
+		if ($response instanceof showCreatePreDefMoneyflowResponse) {
+			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
+			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
+			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
 		}
-		
+
 		return $result;
 	}
 
 	public final function showDeletePreDefMoneyflow($id) {
-		$response = parent::getJson( 'showDeletePreDefMoneyflow', array (
-				$id 
+		$response = parent::getJson( __FUNCTION__, array (
+				$id
 		) );
-		if (is_array( $response )) {
-			$showDeletePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\predefmoneyflow' );
-			$result = parent::map( $showDeletePreDefMoneyflow->getPreDefMoneyflowTransport() );
+		if ($response instanceof showDeletePreDefMoneyflowResponse) {
+			$result = parent::map( $response->getPreDefMoneyflowTransport() );
 		}
 		return $result;
 	}
 
 	public final function createPreDefMoneyflow(array $preDefMoneyflow) {
 		$preDefMoneyflowTransport = parent::map( $preDefMoneyflow, ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
-		
+
 		$request = new createPreDefMoneyflowRequest();
 		$request->setPreDefMoneyflowTransport( $preDefMoneyflowTransport );
-		$response = parent::postJson( 'createPreDefMoneyflow', parent::json_encode_response( $request ) );
-		
+		$response = parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
+
 		if ($response === true) {
 			$result = true;
-		} else if (is_array( $response )) {
-			$reatePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\predefmoneyflow' );
-			if (is_array( $reatePreDefMoneyflow->getCapitalsourceTransport() )) {
-				$result ['capitalsources'] = parent::mapArray( $reatePreDefMoneyflow->getCapitalsourceTransport() );
-			} else {
-				$result ['capitalsources'] = array ();
-			}
-			if (is_array( $reatePreDefMoneyflow->getContractpartnerTransport() )) {
-				$result ['contractpartner'] = parent::mapArray( $reatePreDefMoneyflow->getContractpartnerTransport() );
-			} else {
-				$result ['contractpartner'] = array ();
-			}
-			if (is_array( $reatePreDefMoneyflow->getPostingAccountTransport() )) {
-				$result ['postingaccounts'] = parent::mapArray( $reatePreDefMoneyflow->getPostingAccountTransport() );
-			} else {
-				$result ['postingaccounts'] = array ();
-			}
-			if (is_array( $reatePreDefMoneyflow->getValidationItemTransport() )) {
-				$result ['errors'] = $response ['createPreDefMoneyflowResponse'] ['validationItemTransport'];
-			} else {
-				$result ['errors'] = array ();
-			}
-			$result ['result'] = $reatePreDefMoneyflow->getResult();
+		} else if ($response instanceof createPreDefMoneyflowResponse) {
+			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
+			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
+			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
+			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
+			$result ['result'] = $response->getResult();
 		}
 		return $result;
 	}
 
 	public final function updatePreDefMoneyflow(array $preDefMoneyflow) {
 		$preDefMoneyflowTransport = parent::map( $preDefMoneyflow, ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
-		
+
 		$request = new updatePreDefMoneyflowRequest();
 		$request->setPreDefMoneyflowTransport( $preDefMoneyflowTransport );
-		$response = parent::putJson( 'updatePreDefMoneyflow', parent::json_encode_response( $request ) );
-		
+		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
+
 		if ($response === true) {
 			$result = true;
-		} else if (is_array( $response )) {
-			$updatePreDefMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\predefmoneyflow' );
-			if (is_array( $updatePreDefMoneyflow->getCapitalsourceTransport() )) {
-				$result ['capitalsources'] = parent::mapArray( $updatePreDefMoneyflow->getCapitalsourceTransport() );
-			} else {
-				$result ['capitalsources'] = array ();
-			}
-			if (is_array( $updatePreDefMoneyflow->getContractpartnerTransport() )) {
-				$result ['contractpartner'] = parent::mapArray( $updatePreDefMoneyflow->getContractpartnerTransport() );
-			} else {
-				$result ['contractpartner'] = array ();
-			}
-			if (is_array( $updatePreDefMoneyflow->getPostingAccountTransport() )) {
-				$result ['postingaccounts'] = parent::mapArray( $updatePreDefMoneyflow->getPostingAccountTransport() );
-			} else {
-				$result ['postingaccounts'] = array ();
-			}
-			if (is_array( $updatePreDefMoneyflow->getValidationItemTransport() )) {
-				$result ['errors'] = $response ['updatePreDefMoneyflowResponse'] ['validationItemTransport'];
-			} else {
-				$result ['errors'] = array ();
-			}
-			$result ['result'] = $updatePreDefMoneyflow->getResult();
+		} else if ($response instanceof updatePreDefMoneyflowResponse) {
+			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
+			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
+			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
+			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
+			$result ['result'] = $response->getResult();
 		}
 		return $result;
 	}
 
 	public final function deletePreDefMoneyflow($id) {
-		return parent::deleteJson( 'deletePreDefMoneyflow', array (
-				$id 
+		return parent::deleteJson( __FUNCTION__, array (
+				$id
 		) );
 	}
 }

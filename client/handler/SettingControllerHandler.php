@@ -24,13 +24,15 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: SettingControllerHandler.php,v 1.5 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: SettingControllerHandler.php,v 1.6 2014/03/07 20:41:36 olivleh1 Exp $
 //
 namespace client\handler;
 
 use base\JsonAutoMapper;
 use api\model\setting\updateDefaultSettingsRequest;
 use api\model\setting\updatePersonalSettingsRequest;
+use api\model\setting\showDefaultSettingsResponse;
+use api\model\setting\showPersonalSettingsResponse;
 
 class SettingControllerHandler extends AbstractHandler {
 	private static $instance;
@@ -51,15 +53,14 @@ class SettingControllerHandler extends AbstractHandler {
 	}
 
 	public final function showDefaultSettings() {
-		$response = parent::getJson( 'showDefaultSettings' );
-		if (is_array( $response )) {
-			$showDefaultSettingsResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\setting' );
-			$result ['maxrows'] = $showDefaultSettingsResponse->getMaxRows();
-			$result ['language'] = $showDefaultSettingsResponse->getLanguage();
-			$result ['numflows'] = $showDefaultSettingsResponse->getNumFreeMoneyflows();
-			$result ['dateformat'] = $showDefaultSettingsResponse->getDateFormat();
+		$response = parent::getJson( __FUNCTION__ );
+		if ($response instanceof showDefaultSettingsResponse) {
+			$result ['maxrows'] = $response->getMaxRows();
+			$result ['language'] = $response->getLanguage();
+			$result ['numflows'] = $response->getNumFreeMoneyflows();
+			$result ['dateformat'] = $response->getDateFormat();
 		}
-		
+
 		return $result;
 	}
 
@@ -69,20 +70,19 @@ class SettingControllerHandler extends AbstractHandler {
 		$request->setLanguage( $settings ['language'] );
 		$request->setMaxRows( $settings ['maxrows'] );
 		$request->setNumFreeMoneyflows( $settings ['numflows'] );
-		
-		return parent::putJson( 'updateDefaultSettings', parent::json_encode_response( $request ) );
+
+		return parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 
 	public final function showPersonalSettings() {
-		$response = parent::getJson( 'showPersonalSettings' );
-		if (is_array( $response )) {
-			$showPersonalSettingsResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\setting' );
-			$result ['maxrows'] = $showPersonalSettingsResponse->getMaxRows();
-			$result ['language'] = $showPersonalSettingsResponse->getLanguage();
-			$result ['numflows'] = $showPersonalSettingsResponse->getNumFreeMoneyflows();
-			$result ['dateformat'] = $showPersonalSettingsResponse->getDateFormat();
+		$response = parent::getJson( __FUNCTION__ );
+		if ($response instanceof showPersonalSettingsResponse) {
+			$result ['maxrows'] = $response->getMaxRows();
+			$result ['language'] = $response->getLanguage();
+			$result ['numflows'] = $response->getNumFreeMoneyflows();
+			$result ['dateformat'] = $response->getDateFormat();
 		}
-		
+
 		return $result;
 	}
 
@@ -93,8 +93,8 @@ class SettingControllerHandler extends AbstractHandler {
 		$request->setMaxRows( $settings ['maxrows'] );
 		$request->setNumFreeMoneyflows( $settings ['numflows'] );
 		$request->setPassword( $settings ['password'] );
-		
-		return parent::putJson( 'updatePersonalSettings', parent::json_encode_response( $request ) );
+
+		return parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 }
 

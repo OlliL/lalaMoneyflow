@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowControllerHandler.php,v 1.8 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: MoneyflowControllerHandler.php,v 1.9 2014/03/07 20:41:36 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -33,6 +33,13 @@ use base\JsonAutoMapper;
 use api\model\moneyflow\updateMoneyflowRequest;
 use api\model\moneyflow\createMoneyflowsRequest;
 use api\model\moneyflow\searchMoneyflowsRequest;
+use api\model\moneyflow\showAddMoneyflowsResponse;
+use api\model\moneyflow\showEditMoneyflowResponse;
+use api\model\moneyflow\showDeleteMoneyflowResponse;
+use api\model\moneyflow\createMoneyflowsResponse;
+use api\model\moneyflow\updateMoneyflowResponse;
+use api\model\moneyflow\showSearchMoneyflowFormResponse;
+use api\model\moneyflow\searchMoneyflowsResponse;
 
 class MoneyflowControllerHandler extends AbstractHandler {
 	private static $instance;
@@ -60,178 +67,107 @@ class MoneyflowControllerHandler extends AbstractHandler {
 	}
 
 	public final function showAddMoneyflows() {
-		$response = parent::getJson( 'showAddMoneyflows' );
-		if (is_array( $response )) {
-			$addMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
-			if (is_array( $addMoneyflow->getCapitalsourceTransport() )) {
-				$result ['capitalsources'] = parent::mapArray( $addMoneyflow->getCapitalsourceTransport() );
-			} else {
-				$result ['capitalsources'] = array ();
-			}
-			if (is_array( $addMoneyflow->getContractpartnerTransport() )) {
-				$result ['contractpartner'] = parent::mapArray( $addMoneyflow->getContractpartnerTransport() );
-			} else {
-				$result ['contractpartner'] = array ();
-			}
-			if (is_array( $addMoneyflow->getPreDefMoneyflowTransport() )) {
-				$result ['predefmoneyflows'] = parent::mapArray( $addMoneyflow->getPreDefMoneyflowTransport() );
-			} else {
-				$result ['predefmoneyflows'] = array ();
-			}
-			if (is_array( $addMoneyflow->getPostingAccountTransport() )) {
-				$result ['postingaccounts'] = parent::mapArray( $addMoneyflow->getPostingAccountTransport() );
-			} else {
-				$result ['postingaccounts'] = array ();
-			}
-			$result ['num_free_moneyflows'] = $addMoneyflow->getSettingNumberOfFreeMoneyflows();
+		$response = parent::getJson( __FUNCTION__ );
+		if ($response instanceof showAddMoneyflowsResponse) {
+			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
+			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
+			$result ['predefmoneyflows'] = parent::mapArrayNullable( $response->getPreDefMoneyflowTransport() );
+			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
+			$result ['num_free_moneyflows'] = $response->getSettingNumberOfFreeMoneyflows();
 		}
-		
+
 		return $result;
 	}
 
 	public final function showEditMoneyflow($id) {
-		$response = parent::getJson( 'showEditMoneyflow', array (
-				$id 
+		$response = parent::getJson( __FUNCTION__, array (
+				$id
 		) );
-		if (is_array( $response )) {
-			$showEditMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
-			if (is_array( $showEditMoneyflow->getCapitalsourceTransport() )) {
-				$result ['capitalsources'] = parent::mapArray( $showEditMoneyflow->getCapitalsourceTransport() );
-			} else {
-				$result ['capitalsources'] = array ();
-			}
-			if (is_array( $showEditMoneyflow->getContractpartnerTransport() )) {
-				$result ['contractpartner'] = parent::mapArray( $showEditMoneyflow->getContractpartnerTransport() );
-			} else {
-				$result ['contractpartner'] = array ();
-			}
-			if ($showEditMoneyflow->getMoneyflowTransport()) {
-				$result ['moneyflow'] = parent::map( $showEditMoneyflow->getMoneyflowTransport() );
+		if ($response instanceof showEditMoneyflowResponse) {
+			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
+			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
+			if ($response->getMoneyflowTransport()) {
+				$result ['moneyflow'] = parent::map( $response->getMoneyflowTransport() );
 			} else {
 				$result ['moneyflow'] = array ();
 			}
-			if (is_array( $showEditMoneyflow->getPostingAccountTransport() )) {
-				$result ['postingaccounts'] = parent::mapArray( $showEditMoneyflow->getPostingAccountTransport() );
-			} else {
-				$result ['postingaccounts'] = array ();
-			}
+			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
 		}
-		
+
 		return $result;
 	}
 
 	public final function showDeleteMoneyflow($id) {
-		$response = parent::getJson( 'showDeleteMoneyflow', array (
-				$id 
+		$response = parent::getJson( __FUNCTION__, array (
+				$id
 		) );
-		if (is_array( $response )) {
-			$showDeleteMoneyflowResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
-			$result = parent::map( $showDeleteMoneyflowResponse->getMoneyflowTransport() );
+		if ($response instanceof showDeleteMoneyflowResponse) {
+			$result = parent::map( $response->getMoneyflowTransport() );
 		}
 		return $result;
 	}
 
 	public final function createMoneyflows(array $moneyflows) {
 		$preDefMoneyflowIds = array ();
-		
+
 		foreach ( $moneyflows as $moneyflow ) {
 			if ($moneyflow ['predefmoneyflowid'] > 0) {
 				$preDefMoneyflowIds [] = $moneyflow ['predefmoneyflowid'];
 			}
 		}
 		$moneyflowTransport = parent::mapArray( $moneyflows, ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
-		
+
 		$request = new createMoneyflowsRequest();
 		$request->setMoneyflowTransport( $moneyflowTransport );
 		$request->setUsedPreDefMoneyflowIds( $preDefMoneyflowIds );
-		
-		$response = parent::postJson( 'createMoneyflows', parent::json_encode_response( $request ) );
-		
+
+		$response = parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
+
 		if ($response === true) {
 			$result = true;
-		} else if (is_array( $response )) {
-			$createMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
-			
-			if (is_array( $createMoneyflow->getCapitalsourceTransport() )) {
-				$result ['capitalsources'] = parent::mapArray( $createMoneyflow->getCapitalsourceTransport() );
-			} else {
-				$result ['capitalsources'] = array ();
-			}
-			if (is_array( $createMoneyflow->getContractpartnerTransport() )) {
-				$result ['contractpartner'] = parent::mapArray( $createMoneyflow->getContractpartnerTransport() );
-			} else {
-				$result ['contractpartner'] = array ();
-			}
-			if (is_array( $createMoneyflow->getPreDefMoneyflowTransport() )) {
-				$result ['predefmoneyflows'] = parent::mapArray( $createMoneyflow->getPreDefMoneyflowTransport() );
-			} else {
-				$result ['predefmoneyflows'] = array ();
-			}
-			if (is_array( $createMoneyflow->getPostingAccountTransport() )) {
-				$result ['postingaccounts'] = parent::mapArray( $createMoneyflow->getPostingAccountTransport() );
-			} else {
-				$result ['postingaccounts'] = array ();
-			}
-			if (is_array( $createMoneyflow->getValidationItemTransport() )) {
-				$result ['errors'] = $response ['createMoneyflowsResponse'] ['validationItemTransport'];
-			} else {
-				$result ['errors'] = array ();
-			}
-			$result ['result'] = $createMoneyflow->getResult();
-			$result ['num_free_moneyflows'] = $createMoneyflow->getSettingNumberOfFreeMoneyflows();
+		} else if ($response instanceof createMoneyflowsResponse) {
+			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
+			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
+			$result ['predefmoneyflows'] = parent::mapArrayNullable( $response->getPreDefMoneyflowTransport() );
+			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
+			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
+			$result ['result'] = $response->getResult();
+			$result ['num_free_moneyflows'] = $response->getSettingNumberOfFreeMoneyflows();
 		}
-		
+
 		return $result;
 	}
 
 	public final function updateMoneyflow(array $moneyflow) {
 		$moneyflowTransport = parent::map( $moneyflow, ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
-		
+
 		$request = new updateMoneyflowRequest();
 		$request->setMoneyflowTransport( $moneyflowTransport );
-		$response = parent::putJson( 'updateMoneyflow', parent::json_encode_response( $request ) );
-		
+		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
+
 		if ($response === true) {
 			$result = true;
-		} else if (is_array( $response )) {
-			$updateMoneyflow = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
-			if (is_array( $updateMoneyflow->getCapitalsourceTransport() )) {
-				$result ['capitalsources'] = parent::mapArray( $updateMoneyflow->getCapitalsourceTransport() );
-			} else {
-				$result ['capitalsources'] = array ();
-			}
-			if (is_array( $updateMoneyflow->getContractpartnerTransport() )) {
-				$result ['contractpartner'] = parent::mapArray( $updateMoneyflow->getContractpartnerTransport() );
-			} else {
-				$result ['contractpartner'] = array ();
-			}
-			if (is_array( $updateMoneyflow->getPostingAccountTransport() )) {
-				$result ['postingaccounts'] = parent::mapArray( $updateMoneyflow->getPostingAccountTransport() );
-			} else {
-				$result ['postingaccounts'] = array ();
-			}
-			if (is_array( $updateMoneyflow->getValidationItemTransport() )) {
-				$result ['errors'] = $response ['updateMoneyflowResponse'] ['validationItemTransport'];
-			} else {
-				$result ['errors'] = array ();
-			}
-			$result ['result'] = $updateMoneyflow->getResult();
+		} else if ($response instanceof updateMoneyflowResponse) {
+			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
+			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
+			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
+			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
+			$result ['result'] = $response->getResult();
 		}
 		return $result;
 	}
 
-	public final function deleteMoneyflow($id) {
-		return parent::deleteJson( 'deleteMoneyflowById', array (
-				$id 
+	public final function deleteMoneyflowById($id) {
+		return parent::deleteJson( __FUNCTION__, array (
+				$id
 		) );
 	}
 
-	public final function showSearchMoneyflow() {
-		$response = parent::getJson( 'showSearchMoneyflowForm' );
-		if (is_array( $response )) {
-			$showSearchMoneyflowResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
-			if (is_array( $showSearchMoneyflowResponse->getContractpartnerTransport() )) {
-				$result = parent::mapArray( $showSearchMoneyflowResponse->getContractpartnerTransport() );
+	public final function showSearchMoneyflowForm() {
+		$response = parent::getJson( __FUNCTION__ );
+		if ($response instanceof showSearchMoneyflowFormResponse) {
+			if (is_array( $response->getContractpartnerTransport() )) {
+				$result = parent::mapArray( $response->getContractpartnerTransport() );
 			} else {
 				$result = '';
 			}
@@ -241,29 +177,16 @@ class MoneyflowControllerHandler extends AbstractHandler {
 
 	public final function searchMoneyflows(array $params) {
 		$searchParamsTransport = parent::map( $params, ClientArrayMapperEnum::MONEYFLOWSEARCHPARAMS_TRANSPORT );
-		
+
 		$request = new searchMoneyflowsRequest();
 		$request->setMoneyflowSearchParamsTransport( $searchParamsTransport );
-		$response = parent::putJson( 'searchMoneyflows', parent::json_encode_response( $request ) );
-		
-		if (is_array( $response )) {
-			$searchMoneyflows = JsonAutoMapper::mapAToB( $response, '\\api\\model\\moneyflow' );
-			if (is_array( $searchMoneyflows->getMoneyflowSearchResultTransport() )) {
-				$result ['search_results'] = parent::mapArray( $searchMoneyflows->getMoneyflowSearchResultTransport() );
-			} else {
-				$result ['search_results'] = '';
-			}
-			if (is_array( $searchMoneyflows->getContractpartnerTransport() )) {
-				$result ['contractpartner'] = parent::mapArray( $searchMoneyflows->getContractpartnerTransport() );
-			} else {
-				$result ['contractpartner'] = '';
-			}
-			if (is_array( $searchMoneyflows->getValidationItemTransport() )) {
-				$result ['errors'] = $response ['searchMoneyflowsResponse'] ['validationItemTransport'];
-			} else {
-				$result ['errors'] = array ();
-			}
-			$result ['result'] = $searchMoneyflows->getResult();
+		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
+
+		if ($response instanceof searchMoneyflowsResponse) {
+			$result ['search_results'] = parent::mapArrayNullable( $response->getMoneyflowSearchResultTransport() );
+			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
+			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
+			$result ['result'] = $response->getResult();
 		}
 		return $result;
 	}

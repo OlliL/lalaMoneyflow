@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: GroupControllerHandler.php,v 1.5 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: GroupControllerHandler.php,v 1.6 2014/03/07 20:41:36 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -32,6 +32,9 @@ use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\group\updateGroupRequest;
 use api\model\group\createGroupRequest;
+use api\model\group\showGroupListResponse;
+use api\model\group\showEditGroupResponse;
+use api\model\group\showDeleteGroupResponse;
 
 class GroupControllerHandler extends AbstractHandler {
 	private static $instance;
@@ -53,63 +56,56 @@ class GroupControllerHandler extends AbstractHandler {
 	}
 
 	public final function showGroupList($restriction) {
-		$response = parent::getJson( 'showGroupList', array (
-				utf8_encode( $restriction ) 
+		$response = parent::getJson( __FUNCTION__, array (
+				utf8_encode( $restriction )
 		) );
-		if (is_array( $response )) {
-			$listGroups = JsonAutoMapper::mapAToB( $response, '\\api\\model\\group' );
-			if (is_array( $listGroups->getGroupTransport() )) {
-				$result ['groups'] = parent::mapArray( $listGroups->getGroupTransport() );
-			} else {
-				$result ['groups'] = array ();
-			}
-			$result ['initials'] = $listGroups->getInitials();
+		if ($response instanceof showGroupListResponse) {
+			$result ['groups'] = parent::mapArrayNullable( $response->getGroupTransport() );
+			$result ['initials'] = $response->getInitials();
 		}
-		
+
 		return $result;
 	}
 
 	public final function showEditGroup($id) {
-		$response = parent::getJson( 'showEditGroup', array (
-				$id 
+		$response = parent::getJson( __FUNCTION__, array (
+				$id
 		) );
-		if (is_array( $response )) {
-			$showEditGroupResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\group' );
-			$result = parent::map( $showEditGroupResponse->getGroupTransport() );
+		if ($response instanceof showEditGroupResponse) {
+			$result = parent::map( $response->getGroupTransport() );
 		}
 		return $result;
 	}
 
 	public final function showDeleteGroup($id) {
-		$response = parent::getJson( 'showDeleteGroup', array (
-				$id 
+		$response = parent::getJson( __FUNCTION__, array (
+				$id
 		) );
-		if (is_array( $response )) {
-			$showDeleteGroupResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\group' );
-			$result = parent::map( $showDeleteGroupResponse->getGroupTransport() );
+		if ($response instanceof showDeleteGroupResponse) {
+			$result = parent::map( $response->getGroupTransport() );
 		}
 		return $result;
 	}
 
 	public final function createGroup(array $group) {
 		$groupTransport = parent::map( $group, ClientArrayMapperEnum::GROUP_TRANSPORT );
-		
+
 		$request = new createGroupRequest();
 		$request->setGroupTransport( $groupTransport );
-		return parent::postJson( 'createGroup', parent::json_encode_response( $request ) );
+		return parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 
 	public final function updateGroup(array $group) {
 		$groupTransport = parent::map( $group, ClientArrayMapperEnum::GROUP_TRANSPORT );
-		
+
 		$request = new updateGroupRequest();
 		$request->setGroupTransport( $groupTransport );
-		return parent::putJson( 'updateGroup', parent::json_encode_response( $request ) );
+		return parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 
-	public final function deleteGroup($id) {
-		return parent::deleteJson( 'deleteGroupById', array (
-				$id 
+	public final function deleteGroupById($id) {
+		return parent::deleteJson( __FUNCTION__, array (
+				$id
 		) );
 	}
 }

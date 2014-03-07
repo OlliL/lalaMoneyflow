@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataControllerHandler.php,v 1.9 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: CompareDataControllerHandler.php,v 1.10 2014/03/07 20:41:36 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -32,6 +32,8 @@ use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use client\util\DateUtil;
 use api\model\comparedata\compareDataRequest;
+use api\model\comparedata\showCompareDataFormResponse;
+use api\model\comparedata\compareDataResponse;
 
 class CompareDataControllerHandler extends AbstractHandler {
 	private static $instance;
@@ -56,24 +58,22 @@ class CompareDataControllerHandler extends AbstractHandler {
 	}
 
 	public final function showCompareDataForm() {
-		$response = parent::getJson( 'showCompareDataForm' );
-		if (is_array( $response )) {
-			$showCompareDataForm = JsonAutoMapper::mapAToB( $response, '\\api\\model\\comparedata' );
-			
-			if (is_array( $showCompareDataForm->getCapitalsourceTransport() )) {
-				$result ['capitalsources'] = parent::mapArray( $showCompareDataForm->getCapitalsourceTransport() );
+		$response = parent::getJson( __FUNCTION__ );
+		if ($response instanceof showCompareDataFormResponse) {
+			if (is_array( $response->getCapitalsourceTransport() )) {
+				$result ['capitalsources'] = parent::mapArray( $response->getCapitalsourceTransport() );
 			} else {
 				$result ['capitalsources'] = array ();
 			}
-			if (is_array( $showCompareDataForm->getCompareDataFormatTransport() )) {
-				$result ['comparedataformats'] = parent::mapArray( $showCompareDataForm->getCompareDataFormatTransport() );
+			if (is_array( $response->getCompareDataFormatTransport() )) {
+				$result ['comparedataformats'] = parent::mapArray( $response->getCompareDataFormatTransport() );
 			} else {
 				$result ['comparedataformats'] = array ();
 			}
-			$result ['selected_format'] = $showCompareDataForm->getSelectedDataFormat();
-			$result ['selected_capitalsource'] = $showCompareDataForm->getSelectedCapitalsourceId();
+			$result ['selected_format'] = $response->getSelectedDataFormat();
+			$result ['selected_capitalsource'] = $response->getSelectedCapitalsourceId();
 		}
-		
+
 		return $result;
 	}
 
@@ -84,53 +84,48 @@ class CompareDataControllerHandler extends AbstractHandler {
 		$request->setFileContents( base64_encode( $compareData ['filecontents'] ) );
 		$request->setFormatId( $compareData ['format'] );
 		$request->setStartDate( DateUtil::convertClientDateToTransport( $compareData ['startdate'] ) );
-		
-		$response = parent::putJson( 'compareData', parent::json_encode_response( $request ) );
-		if (is_array( $response )) {
-			$compareDataResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\comparedata' );
-			if (is_array( $compareDataResponse->getCompareDataMatchingTransport() )) {
-				foreach ( $compareDataResponse->getCompareDataMatchingTransport() as $key => $compareDataMatchingTransport ) {
+
+		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
+		if ($response instanceof compareDataResponse) {
+			if (is_array( $response->getCompareDataMatchingTransport() )) {
+				foreach ( $response->getCompareDataMatchingTransport() as $key => $compareDataMatchingTransport ) {
 					$result ['matching'] [$key] ['moneyflow'] = parent::map( $compareDataMatchingTransport->getMoneyflowTransport() );
 					$result ['matching'] [$key] ['file'] = parent::map( $compareDataMatchingTransport->getCompareDataDatasetTransport() );
 				}
 			} else {
 				$result ['matching'] = array ();
 			}
-			if (is_array( $compareDataResponse->getCompareDataNotInDatabaseTransport() )) {
-				foreach ( $compareDataResponse->getCompareDataNotInDatabaseTransport() as $key => $compareDataNotInDatabaseTransport ) {
+			if (is_array( $response->getCompareDataNotInDatabaseTransport() )) {
+				foreach ( $response->getCompareDataNotInDatabaseTransport() as $key => $compareDataNotInDatabaseTransport ) {
 					$result ['not_in_db'] [$key] ['file'] = parent::map( $compareDataNotInDatabaseTransport->getCompareDataDatasetTransport() );
 				}
 			} else {
 				$result ['not_in_db'] = array ();
 			}
-			if (is_array( $compareDataResponse->getCompareDataNotInFileTransport() )) {
-				foreach ( $compareDataResponse->getCompareDataNotInFileTransport() as $key => $compareDataNotInFileTransport ) {
+			if (is_array( $response->getCompareDataNotInFileTransport() )) {
+				foreach ( $response->getCompareDataNotInFileTransport() as $key => $compareDataNotInFileTransport ) {
 					$result ['not_in_file'] [$key] ['moneyflow'] = parent::map( $compareDataNotInFileTransport->getMoneyflowTransport() );
 				}
 			} else {
 				$result ['not_in_file'] = array ();
 			}
-			if (is_array( $compareDataResponse->getCompareDataWrongCapitalsourceTransport() )) {
-				foreach ( $compareDataResponse->getCompareDataWrongCapitalsourceTransport() as $key => $compareDataWrongCapitalsourceTransport ) {
+			if (is_array( $response->getCompareDataWrongCapitalsourceTransport() )) {
+				foreach ( $response->getCompareDataWrongCapitalsourceTransport() as $key => $compareDataWrongCapitalsourceTransport ) {
 					$result ['wrong_source'] [$key] ['moneyflow'] = parent::map( $compareDataWrongCapitalsourceTransport->getMoneyflowTransport() );
 					$result ['wrong_source'] [$key] ['file'] = parent::map( $compareDataWrongCapitalsourceTransport->getCompareDataDatasetTransport() );
 				}
 			} else {
 				$result ['wrong_source'] = array ();
 			}
-			if ($compareDataResponse->getCapitalsourceTransport() instanceof CapitalsourceTransport) {
-				$result ['capitalsource'] = parent::map( $compareDataResponse->getCapitalsourceTransport() );
+			if ($response->getCapitalsourceTransport() instanceof CapitalsourceTransport) {
+				$result ['capitalsource'] = parent::map( $response->getCapitalsourceTransport() );
 			} else {
 				$result ['capitalsource'] = array ();
 			}
-			if (is_array( $compareDataResponse->getValidationItemTransport() )) {
-				$result ['errors'] = $response ['compareDataResponse'] ['validationItemTransport'];
-			} else {
-				$result ['errors'] = array ();
-			}
-			$result ['result'] = $compareDataResponse->getResult();
+			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
+			$result ['result'] = $response->getResult();
 		}
-		
+
 		return $result;
 	}
 }

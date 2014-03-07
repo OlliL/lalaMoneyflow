@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractHandler.php,v 1.9 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.10 2014/03/07 20:41:36 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -50,13 +50,21 @@ abstract class AbstractHandler extends AbstractJsonSender {
 	protected function __construct() {
 		parent::addMapper( 'client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 		Httpful::register( Mime::JSON, new JsonHandler( array (
-				'decode_as_array' => true 
+				'decode_as_array' => true
 		) ) );
 		$this->userName = Environment::getInstance()->getUserName();
 		$this->userPassword = Environment::getInstance()->getUserPassword();
 	}
 
 	abstract protected function getCategory();
+
+	protected function getJsonRoot() {
+		return '\\api\\model\\' . $this->getCategory();
+	}
+
+	protected function mapJson($json) {
+		return JsonAutoMapper::mapAToB( $json, $this->getJsonRoot() );
+	}
 
 	private final function handle_result($result) {
 		if (! is_array( $result )) {
@@ -66,7 +74,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 		} else if (array_key_exists( 'validationResponse', $result )) {
 			$validationResponse = JsonAutoMapper::mapAToB( $result, '\\api\\model\\validation' );
 			$validation ['is_valid'] = $validationResponse->getResult();
-			$validation ['errors'] = parent::mapArray( $validationResponse->getValidationItemTransport(), ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
+			$validation ['errors'] = parent::mapArray( $validationResponse->getValidationItemTransport() );
 			return ($validation);
 		} else if (array_key_exists( 'error', $result )) {
 			if ($result ['error'] ['code'] < 0) {
@@ -85,7 +93,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 			}
 			return false;
 		}
-		return $result;
+		return self::mapJson($result);
 	}
 
 	private final function getUrl($usecase, $parameter) {
@@ -110,13 +118,13 @@ abstract class AbstractHandler extends AbstractJsonSender {
 			default :
 				$contentType = null;
 		}
-		
+
 		$dateStr = gmdate( 'D, d M Y H:i:s' ) . ' GMT';
 		$authorization = RESTAuthorization::getRESTAuthorization( $this->userPassword, $httpVerb, $contentType, $url, $dateStr, $body, $this->userName );
-		
+
 		$headers = array (
 				'Date' => $dateStr,
-				'Authentication' => $authorization 
+				'Authentication' => $authorization
 		);
 		return $headers;
 	}
@@ -130,7 +138,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 			return self::handle_result( $response->body );
 		}
 	}
-	
+
 	// create
 	protected final function postJson($usecase, $json, $parameter = array()) {
 		$url = $this->getUrl( $usecase, $parameter );
@@ -141,7 +149,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 			return self::handle_result( $response->body );
 		}
 	}
-	
+
 	// update
 	protected final function putJson($usecase, $json, $parameter = array()) {
 		$url = $this->getUrl( $usecase, $parameter );

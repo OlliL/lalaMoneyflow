@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.52 2014/03/02 23:42:20 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.53 2014/03/07 20:41:36 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -43,10 +43,10 @@ class moduleCapitalSources extends module {
 
 	public final function display_list_capitalsources($letter) {
 		$listCapitalsources = CapitalsourceControllerHandler::getInstance()->showCapitalsourceList( $letter );
-		
+
 		$all_index_letters = $listCapitalsources ['initials'];
 		$all_data = $listCapitalsources ['capitalsources'];
-		
+
 		foreach ( $all_data as $key => $data ) {
 			$all_data [$key] ['statecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_STATE', $data ['state'] );
 			$all_data [$key] ['typecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_TYPE', $data ['type'] );
@@ -59,7 +59,7 @@ class moduleCapitalSources extends module {
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
-		
+
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_capitalsources.tpl' );
 	}
@@ -68,41 +68,41 @@ class moduleCapitalSources extends module {
 		$close = 0;
 		if (! isset( $capitalsourceid ))
 			return;
-		
+
 		switch ($realaction) {
 			case 'save' :
 				$valid_data = true;
 				$all_data ['capitalsourceid'] = $capitalsourceid;
 				if (! $this->dateIsValid( $all_data ['validfrom'] )) {
 					$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-							Environment::getInstance()->getSettingDateFormat() 
+							Environment::getInstance()->getSettingDateFormat()
 					) );
 					$all_data ['validfrom_error'] = 1;
 					$valid_data = false;
 				}
 				if (! $this->dateIsValid( $all_data ['validtil'] )) {
 					$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-							Environment::getInstance()->getSettingDateFormat() 
+							Environment::getInstance()->getSettingDateFormat()
 					) );
 					$all_data ['validtil_error'] = 1;
 					$valid_data = false;
 				}
-				
+
 				if ($valid_data === true) {
 					if ($capitalsourceid == 0)
 						$ret = CapitalsourceControllerHandler::getInstance()->createCapitalsource( $all_data );
 					else
 						$ret = CapitalsourceControllerHandler::getInstance()->updateCapitalsource( $all_data );
-					
+
 					if ($ret === true) {
 						$close = 1;
 						break;
 					} else {
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
-							
+
 							$this->add_error( $error );
-							
+
 							switch ($error) {
 								case ErrorCode::VALIDFROM_AFTER_VALIDTIL :
 									$all_data ['validfrom_error'] = 1;
@@ -137,17 +137,17 @@ class moduleCapitalSources extends module {
 				}
 				$type_values = $this->coreText->get_domain_data( 'CAPITALSOURCE_TYPE' );
 				$state_values = $this->coreText->get_domain_data( 'CAPITALSOURCE_STATE' );
-				
+
 				$this->template->assign( 'TYPE_VALUES', $type_values );
 				$this->template->assign( 'STATE_VALUES', $state_values );
 				break;
 		}
-		
+
 		$this->template->assign( 'CLOSE', $close );
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'CAPITALSOURCEID', $capitalsourceid );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_capitalsource.tpl' );
 	}
@@ -155,7 +155,7 @@ class moduleCapitalSources extends module {
 	public final function display_delete_capitalsource($realaction, $capitalsourceid) {
 		switch ($realaction) {
 			case 'yes' :
-				if (CapitalsourceControllerHandler::getInstance()->deleteCapitalsource( $capitalsourceid )) {
+				if (CapitalsourceControllerHandler::getInstance()->deleteCapitalsourceById( $capitalsourceid )) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
@@ -170,9 +170,9 @@ class moduleCapitalSources extends module {
 				}
 				break;
 		}
-		
+
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_capitalsource.tpl' );
 	}

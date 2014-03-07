@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportControllerHandler.php,v 1.11 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: ReportControllerHandler.php,v 1.12 2014/03/07 20:41:36 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -32,6 +32,10 @@ use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\report\showTrendsGraphRequest;
 use client\util\DateUtil;
+use api\model\report\listReportsResponse;
+use api\model\report\showReportingFormResponse;
+use api\model\report\showTrendsFormResponse;
+use api\model\report\showTrendsGraphResponse;
 
 class ReportControllerHandler extends AbstractHandler {
 	private static $instance;
@@ -44,6 +48,7 @@ class ReportControllerHandler extends AbstractHandler {
 		parent::addMapper( 'client\mapper\ArrayToReportTurnoverCapitalsourceTransportMapper', ClientArrayMapperEnum::REPORTTURNOVERCAPITALSOURCE_TRANSPORT );
 		parent::addMapper( 'client\mapper\ArrayToTrendsCalculatedTransportMapper', ClientArrayMapperEnum::TRENDSCALCULATED_TRANSPORT );
 		parent::addMapper( 'client\mapper\ArrayToTrendsSettledTransportMapper', ClientArrayMapperEnum::TRENDSSETTLED_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToPostingAccountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -60,50 +65,46 @@ class ReportControllerHandler extends AbstractHandler {
 	public final function listReports($year, $month) {
 		$response = parent::getJson( 'listReports', array (
 				$year,
-				$month 
+				$month
 		) );
-		if (is_array( $response )) {
-			$listReports = JsonAutoMapper::mapAToB( $response, '\\api\\model\\report' );
-			if (is_array( $listReports->getMoneyflowTransport() )) {
-				$result ['moneyflows'] = parent::mapArray( $listReports->getMoneyflowTransport() );
-			} else {
-				$result ['moneyflows'] = '';
-			}
-			if (is_array( $listReports->getReportTurnoverCapitalsourceTransport() )) {
-				$result ['turnover_capitalsources'] = parent::mapArray( $listReports->getReportTurnoverCapitalsourceTransport() );
-			} else {
-				$result ['turnover_capitalsources'] = '';
-			}
-			$result ['allYears'] = $listReports->getAllYears();
-			$result ['allMonth'] = $listReports->getAllMonth();
-			$result ['year'] = $listReports->getYear();
-			$result ['month'] = $listReports->getMonth();
-			$result ['firstamount'] = $listReports->getAmountBeginOfYear();
-			$result ['calculated_yearly_turnover'] = $listReports->getTurnoverEndOfYearCalculated();
-			$result ['prev_link'] = $listReports->getPreviousMonthHasMoneyflows();
-			$result ['next_link'] = $listReports->getNextMonthHasMoneyflows();
-			$result ['prev_month'] = $listReports->getPreviousMonth();
-			$result ['prev_year'] = $listReports->getPreviousYear();
-			$result ['next_month'] = $listReports->getNextMonth();
-			$result ['next_year'] = $listReports->getNextYear();
+		if ($response instanceof listReportsResponse) {
+			$result ['moneyflows'] = parent::mapArrayNullable( $response->getMoneyflowTransport() );
+			$result ['turnover_capitalsources'] = parent::mapArrayNullable( $response->getReportTurnoverCapitalsourceTransport() );
+			$result ['allYears'] = $response->getAllYears();
+			$result ['allMonth'] = $response->getAllMonth();
+			$result ['year'] = $response->getYear();
+			$result ['month'] = $response->getMonth();
+			$result ['firstamount'] = $response->getAmountBeginOfYear();
+			$result ['calculated_yearly_turnover'] = $response->getTurnoverEndOfYearCalculated();
+			$result ['prev_link'] = $response->getPreviousMonthHasMoneyflows();
+			$result ['next_link'] = $response->getNextMonthHasMoneyflows();
+			$result ['prev_month'] = $response->getPreviousMonth();
+			$result ['prev_year'] = $response->getPreviousYear();
+			$result ['next_month'] = $response->getNextMonth();
+			$result ['next_year'] = $response->getNextYear();
 		}
-		
+
+		return $result;
+	}
+
+	public final function showReportingForm() {
+		$response = parent::getJson( __FUNCTION__ );
+		if ($response instanceof showReportingFormResponse) {
+			$result ['allYears'] = $response->getAllYears();
+			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
+		}
+
 		return $result;
 	}
 
 	public final function showTrendsForm() {
-		$response = parent::getJson( 'showTrendsForm' );
-		if (is_array( $response )) {
-			$showTrendsForm = JsonAutoMapper::mapAToB( $response, '\\api\\model\\report' );
-			$result ['allYears'] = $showTrendsForm->getAllYears();
-			if (is_array( $showTrendsForm->getCapitalsourceTransport() )) {
-				$result ['capitalsources'] = parent::mapArray( $showTrendsForm->getCapitalsourceTransport() );
-			} else {
-				$result ['capitalsources'] = array ();
-			}
+		$response = parent::getJson( __FUNCTION__ );
+		if ($response instanceof showTrendsFormResponse) {
+			$result ['allYears'] = $response->getAllYears();
+			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
 		}
-		$result ['selected_capitalsources'] = $showTrendsForm->getSettingTrendCapitalsourceId();
-		
+		$result ['selected_capitalsources'] = $response->getSettingTrendCapitalsourceId();
+
 		return $result;
 	}
 
@@ -112,22 +113,13 @@ class ReportControllerHandler extends AbstractHandler {
 		$request->setCapitalsourceIds( $capitalsourceIds );
 		$request->setStartDate( $startdate->format( 'U' ) );
 		$request->setEndDate( $enddate->format( 'U' ) );
-		
-		$response = parent::putJson( 'showTrendsGraph', parent::json_encode_response( $request ) );
-		if (is_array( $response )) {
-			$showTrendsGraphResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\report' );
-			if (is_array( $showTrendsGraphResponse->getTrendsSettledTransport() )) {
-				$result ['settled'] = parent::mapArray( $showTrendsGraphResponse->getTrendsSettledTransport() );
-			} else {
-				$result ['settled'] = array ();
-			}
-			if (is_array( $showTrendsGraphResponse->getTrendsCalculatedTransport() )) {
-				$result ['calculated'] = parent::mapArray( $showTrendsGraphResponse->getTrendsCalculatedTransport() );
-			} else {
-				$result ['calculated'] = array ();
-			}
+
+		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
+		if ($response instanceof showTrendsGraphResponse) {
+			$result ['settled'] = parent::mapArrayNullable( $response->getTrendsSettledTransport() );
+			$result ['calculated'] = parent::mapArrayNullable( $response->getTrendsCalculatedTransport() );
 		}
-		
+
 		return $result;
 	}
 }

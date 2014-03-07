@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.86 2014/03/02 23:42:20 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.87 2014/03/07 20:41:36 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -41,34 +41,34 @@ class moduleMoneyFlows extends module {
 	public final function display_edit_moneyflow($realaction, $id, $all_data) {
 		if (empty( $id ))
 			return;
-		
+
 		$orig_amount = $all_data ['amount'];
-		
+
 		switch ($realaction) {
 			case 'save' :
 				$valid_data = true;
 				$all_data ['moneyflowid'] = $id;
-				
+
 				if (! $this->fix_amount( $all_data ['amount'] )) {
 					$all_data ['amount_error'] = 1;
 					$valid_data = false;
 				}
-				
+
 				if (! $this->dateIsValid( $all_data ['bookingdate'] )) {
 					$this->add_error( ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT, array (
-							Environment::getInstance()->getSettingDateFormat() 
+							Environment::getInstance()->getSettingDateFormat()
 					) );
 					$all_data ['bookingdate_error'] = 1;
 					$valid_data = false;
 				}
 				if (! $this->dateIsValid( $all_data ['invoicedate'] )) {
 					$this->add_error( ErrorCode::INVOICEDATE_IN_WRONG_FORMAT, array (
-							Environment::getInstance()->getSettingDateFormat() 
+							Environment::getInstance()->getSettingDateFormat()
 					) );
 					$all_data ['invoicedate_error'] = 1;
 					$valid_data = false;
 				}
-				
+
 				if ($valid_data === true) {
 					$ret = MoneyflowControllerHandler::getInstance()->updateMoneyflow( $all_data );
 					if ($ret === true) {
@@ -79,22 +79,22 @@ class moduleMoneyFlows extends module {
 						$postingaccount_values = $ret ['postingaccounts'];
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
-							
+
 							switch ($error) {
 								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
 									$this->add_error( $error, array (
-											$orig_amount 
+											$orig_amount
 									) );
 									break;
 								case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
 									$this->add_error( $error, array (
-											Environment::getInstance()->getSettingDateFormat() 
+											Environment::getInstance()->getSettingDateFormat()
 									) );
 									break;
 								default :
 									$this->add_error( $error );
 							}
-							
+
 							switch ($error) {
 								case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
 								case ErrorCode::BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT :
@@ -133,17 +133,17 @@ class moduleMoneyFlows extends module {
 				if ($realaction != "save") {
 					$all_data = $all_data_pre;
 				}
-				
+
 				break;
 		}
-		
+
 		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'MONEYFLOWID', $id );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_moneyflow.tpl' );
 	}
@@ -155,7 +155,7 @@ class moduleMoneyFlows extends module {
 				$nothing_checked = true;
 				foreach ( $all_data as $id => $value ) {
 					if ($value ['checked'] == 1) {
-						
+
 						if (! $this->fix_amount( $value ['amount'] )) {
 							$all_data [$id] ['amount_error'] = 1;
 							$data_is_valid = false;
@@ -164,40 +164,40 @@ class moduleMoneyFlows extends module {
 						if (! empty( $value ['invoicedate'] )) {
 							if (! $this->dateIsValid( $value ['invoicedate'] )) {
 								$this->add_error( ErrorCode::INVOICEDATE_IN_WRONG_FORMAT, array (
-										Environment::getInstance()->getSettingDateFormat() 
+										Environment::getInstance()->getSettingDateFormat()
 								) );
 								$all_data [$id] ['invoicedate_error'] = 1;
 							}
 						}
-						
+
 						if (! $this->dateIsValid( $value ['bookingdate'] )) {
 							$this->add_error( ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT, array (
-									Environment::getInstance()->getSettingDateFormat() 
+									Environment::getInstance()->getSettingDateFormat()
 							) );
 							$all_data [$id] ['bookingdate_error'] = 1;
 							$data_is_valid = false;
 						}
 						$add_data [] = array_merge( $value, array (
-								'moneyflowid' => $id 
+								'moneyflowid' => $id
 						) );
 					}
 				}
-				
+
 				if ($nothing_checked) {
 					$this->add_error( ErrorCode::NOTHING_MARKED_TO_ADD );
 					$data_is_valid = false;
 				}
-				
+
 				if ($data_is_valid) {
-					
+
 					$createMoneyflows = MoneyflowControllerHandler::getInstance()->createMoneyflows( $add_data );
 					$capitalsource_values = $createMoneyflows ['capitalsources'];
-					
+
 					$contractpartner_values = $createMoneyflows ['contractpartner'];
 					$postingaccount_values = $createMoneyflows ['postingaccounts'];
-					
+
 					$numflows = $createMoneyflows ['num_free_moneyflows'];
-					
+
 					$result = $createMoneyflows ['result'];
 					if ($result === true) {
 						$all_data_pre = $createMoneyflows ['predefmoneyflows'];
@@ -206,22 +206,22 @@ class moduleMoneyFlows extends module {
 						foreach ( $createMoneyflows ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
 							$key = $validationResult ['key'];
-							
+
 							switch ($error) {
 								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
 									$this->add_error( $error, array (
-											$all_data [$key] ['amount'] 
+											$all_data [$key] ['amount']
 									) );
 									break;
 								case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
 									$this->add_error( $error, array (
-											Environment::getInstance()->getSettingDateFormat() 
+											Environment::getInstance()->getSettingDateFormat()
 									) );
 									break;
 								default :
 									$this->add_error( $error );
 							}
-							
+
 							switch ($error) {
 								case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
 								case ErrorCode::BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT :
@@ -256,28 +256,28 @@ class moduleMoneyFlows extends module {
 				}
 			default :
 				if ($realaction === 'save' && $data_is_valid == true || $realaction != 'save') {
-					
+
 					if ($realaction !== 'save') {
 						$addMoneyflow = MoneyflowControllerHandler::getInstance()->showAddMoneyflows();
 						$capitalsource_values = $addMoneyflow ['capitalsources'];
-						
+
 						$contractpartner_values = $addMoneyflow ['contractpartner'];
 						$postingaccount_values = $addMoneyflow ['postingaccounts'];
 						$all_data_pre = $addMoneyflow ['predefmoneyflows'];
 						$numflows = $addMoneyflow ['num_free_moneyflows'];
 					}
-					
+
 					// clean the array before filling it.
 					$all_data = array ();
 					$date = $this->convertDateToGui( date( 'Y-m-d' ) );
-					
+
 					for($i = $numflows; $i > 0; $i --) {
 						$all_data [$numflows - $i] = array (
 								'predefmoneyflowid' => ($numflows - $i + 1) * - 1,
-								'bookingdate' => $date 
+								'bookingdate' => $date
 						);
 					}
-					
+
 					if (is_array( $all_data_pre )) {
 						$i = $numflows;
 						foreach ( $all_data_pre as $value ) {
@@ -289,13 +289,13 @@ class moduleMoneyFlows extends module {
 				}
 				break;
 		}
-		
+
 		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
 		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header();
 		return $this->fetch_template( 'display_add_moneyflow.tpl' );
 	}
@@ -303,7 +303,7 @@ class moduleMoneyFlows extends module {
 	public final function display_delete_moneyflow($realaction, $id) {
 		switch ($realaction) {
 			case 'yes' :
-				if (MoneyflowControllerHandler::getInstance()->deleteMoneyflow( $id )) {
+				if (MoneyflowControllerHandler::getInstance()->deleteMoneyflowById( $id )) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
@@ -314,9 +314,9 @@ class moduleMoneyFlows extends module {
 				}
 				break;
 		}
-		
+
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_moneyflow.tpl' );
 	}

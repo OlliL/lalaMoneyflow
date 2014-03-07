@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.39 2014/03/02 23:42:20 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.40 2014/03/07 20:41:36 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -42,11 +42,11 @@ class moduleContractPartners extends module {
 		$listContractpartner = ContractpartnerControllerHandler::getInstance()->showContractpartnerList( $letter );
 		$all_index_letters = $listContractpartner ['initials'];
 		$all_data = $listContractpartner ['contractpartner'];
-		
+
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
-		
+
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_contractpartners.tpl' );
 	}
@@ -59,33 +59,33 @@ class moduleContractPartners extends module {
 				$all_data ['contractpartnerid'] = $contractpartnerid;
 				if (! $this->dateIsValid( $all_data ['validfrom'] )) {
 					$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-							Environment::getInstance()->getSettingDateFormat() 
+							Environment::getInstance()->getSettingDateFormat()
 					) );
 					$all_data ['validfrom_error'] = 1;
 					$valid_data = false;
 				}
 				if (! $this->dateIsValid( $all_data ['validtil'] )) {
 					$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-							Environment::getInstance()->getSettingDateFormat() 
+							Environment::getInstance()->getSettingDateFormat()
 					) );
 					$all_data ['validtil_error'] = 1;
 					$valid_data = false;
 				}
 				if ($valid_data === true) {
-					
+
 					if ($contractpartnerid == 0)
 						$ret = ContractpartnerControllerHandler::getInstance()->createContractpartner( $all_data );
 					else
 						$ret = ContractpartnerControllerHandler::getInstance()->updateContractpartner( $all_data );
-					
+
 					if ($ret === true) {
 						$close = 1;
 					} else {
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
-							
+
 							$this->add_error( $error );
-							
+
 							switch ($error) {
 								case ErrorCode::NAME_ALREADY_EXISTS :
 									$all_data ['name_error'] = 1;
@@ -106,7 +106,7 @@ class moduleContractPartners extends module {
 						$all_data ['country'] = '';
 						$all_data ['validfrom'] = $this->convertDateToGui( date( 'Y-m-d' ) );
 						$all_data ['validtil'] = $this->convertDateToGui( MAX_YEAR );
-						
+
 						$all_data ['name_error'] = 0;
 						$all_data ['validfrom_error'] = 0;
 						$all_data ['validtil_error'] = 0;
@@ -114,12 +114,12 @@ class moduleContractPartners extends module {
 				}
 				break;
 		}
-		
+
 		$this->template->assign( 'CLOSE', $close );
 		$this->template->assign( 'CONTRACTPARTNERID', $contractpartnerid );
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_contractpartner.tpl' );
 	}
@@ -127,7 +127,7 @@ class moduleContractPartners extends module {
 	public final function display_delete_contractpartner($realaction, $contractpartnerid) {
 		switch ($realaction) {
 			case 'yes' :
-				if (ContractpartnerControllerHandler::getInstance()->deleteContractpartner( $contractpartnerid )) {
+				if (ContractpartnerControllerHandler::getInstance()->deleteContractpartnerById( $contractpartnerid )) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
@@ -140,9 +140,9 @@ class moduleContractPartners extends module {
 				}
 				break;
 		}
-		
+
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_contractpartner.tpl' );
 	}

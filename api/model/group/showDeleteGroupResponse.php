@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -24,42 +25,21 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: EventControllerHandler.php,v 1.6 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: showDeleteGroupResponse.php,v 1.1 2014/03/07 20:41:36 olivleh1 Exp $
 //
-namespace client\handler;
+namespace api\model\group;
 
-use client\mapper\ClientArrayMapperEnum;
-use base\JsonAutoMapper;
-use api\model\event\showEventListResponse;
+use api\model\transport\GroupTransport;
 
-class EventControllerHandler extends AbstractHandler {
-	private static $instance;
+class showDeleteGroupResponse {
+	public $groupTransport;
 
-	protected function __construct() {
-		parent::__construct();
-		parent::addMapper( 'client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
+	public final function getGroupTransport() {
+		return $this->groupTransport;
 	}
 
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			self::$instance = new EventControllerHandler();
-		}
-		return self::$instance;
-	}
-
-	protected final function getCategory() {
-		return 'event';
-	}
-
-	public final function showEventList() {
-		$response = parent::getJson( __FUNCTION__ );
-		if ($response instanceof showEventListResponse) {
-			$result ['mms_missing'] = $response->isMonthlySettlementMissing();
-			$result ['month'] = $response->getMonthlySettlementMonth();
-			$result ['year'] = $response->getMonthlySettlementYear();
-			$result ['numberOfAddableSettlements'] = $response->getMonthlySettlementNumberOfAddableSettlements();
-		}
-		return $result;
+	public final function setGroupTransport(GroupTransport $groupTransport) {
+		$this->groupTransport = $groupTransport;
 	}
 }
 

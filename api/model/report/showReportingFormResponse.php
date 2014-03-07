@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,42 +25,28 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: EventControllerHandler.php,v 1.6 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: showReportingFormResponse.php,v 1.1 2014/03/07 20:41:36 olivleh1 Exp $
 //
-namespace client\handler;
+namespace api\model\report;
 
-use client\mapper\ClientArrayMapperEnum;
-use base\JsonAutoMapper;
-use api\model\event\showEventListResponse;
+class showReportingFormResponse {
+	public $allYears;
+	public $postingAccountTransport;
 
-class EventControllerHandler extends AbstractHandler {
-	private static $instance;
-
-	protected function __construct() {
-		parent::__construct();
-		parent::addMapper( 'client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
+	public final function getAllYears() {
+		return $this->allYears;
 	}
 
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			self::$instance = new EventControllerHandler();
-		}
-		return self::$instance;
+	public final function setAllYears(array $allYears) {
+		$this->allYears = $allYears;
 	}
 
-	protected final function getCategory() {
-		return 'event';
+	public final function setPostingAccountTransport(array $postingAccountTransport) {
+		$this->postingAccountTransport = $postingAccountTransport;
 	}
 
-	public final function showEventList() {
-		$response = parent::getJson( __FUNCTION__ );
-		if ($response instanceof showEventListResponse) {
-			$result ['mms_missing'] = $response->isMonthlySettlementMissing();
-			$result ['month'] = $response->getMonthlySettlementMonth();
-			$result ['year'] = $response->getMonthlySettlementYear();
-			$result ['numberOfAddableSettlements'] = $response->getMonthlySettlementNumberOfAddableSettlements();
-		}
-		return $result;
+	public final function getPostingAccountTransport() {
+		return $this->postingAccountTransport;
 	}
 }
 

@@ -24,13 +24,16 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MonthlySettlementControllerHandler.php,v 1.7 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: MonthlySettlementControllerHandler.php,v 1.8 2014/03/07 20:41:36 olivleh1 Exp $
 //
 namespace client\handler;
 
 use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\monthlysettlement\upsertMonthlySettlementRequest;
+use api\model\monthlysettlement\showMonthlySettlementListResponse;
+use api\model\monthlysettlement\showMonthlySettlementCreateResponse;
+use api\model\monthlysettlement\showMonthlySettlementDeleteResponse;
 
 class MonthlySettlementControllerHandler extends AbstractHandler {
 	private static $instance;
@@ -52,78 +55,63 @@ class MonthlySettlementControllerHandler extends AbstractHandler {
 	}
 
 	public final function showMonthlySettlementList($year, $month) {
-		$response = parent::getJson( 'showMonthlySettlementList', array (
+		$response = parent::getJson( __FUNCTION__, array (
 				$year,
-				$month 
+				$month
 		) );
-		if (is_array( $response )) {
-			$showMonthlySettlementList = JsonAutoMapper::mapAToB( $response, '\\api\\model\\monthlysettlement' );
-			if (is_array( $showMonthlySettlementList->getMonthlySettlementTransport() )) {
-				$result ['monthly_settlements'] = parent::mapArray( $showMonthlySettlementList->getMonthlySettlementTransport() );
-			} else {
-				$result ['monthly_settlements'] = '';
-			}
-			$result ['allYears'] = $showMonthlySettlementList->getAllYears();
-			$result ['allMonth'] = $showMonthlySettlementList->getAllMonth();
-			$result ['year'] = $showMonthlySettlementList->getYear();
-			$result ['month'] = $showMonthlySettlementList->getMonth();
-			$result ['numberOfEditableSettlements'] = $showMonthlySettlementList->getNumberOfEditableSettlements();
-			$result ['numberOfAddableSettlements'] = $showMonthlySettlementList->getNumberOfAddableSettlements();
+		if ($response instanceof showMonthlySettlementListResponse) {
+			$result ['monthly_settlements'] = parent::mapArrayNullable( $response->getMonthlySettlementTransport() );
+			$result ['allYears'] = $response->getAllYears();
+			$result ['allMonth'] = $response->getAllMonth();
+			$result ['year'] = $response->getYear();
+			$result ['month'] = $response->getMonth();
+			$result ['numberOfEditableSettlements'] = $response->getNumberOfEditableSettlements();
+			$result ['numberOfAddableSettlements'] = $response->getNumberOfAddableSettlements();
 		}
-		
+
 		return $result;
 	}
 
 	public final function showMonthlySettlementCreate($year, $month) {
-		$response = parent::getJson( 'showMonthlySettlementCreate', array (
+		$response = parent::getJson( __FUNCTION__, array (
 				$year,
-				$month 
+				$month
 		) );
-		if (is_array( $response )) {
-			$showMonthlySettlementCreate = JsonAutoMapper::mapAToB( $response, '\\api\\model\\monthlysettlement' );
-			if (is_array( $showMonthlySettlementCreate->getMonthlySettlementTransport() )) {
-				$result ['monthly_settlements'] = parent::mapArray( $showMonthlySettlementCreate->getMonthlySettlementTransport() );
-			} else {
-				$result ['monthly_settlements'] = '';
-			}
-			$result ['year'] = $showMonthlySettlementCreate->getYear();
-			$result ['month'] = $showMonthlySettlementCreate->getMonth();
-			$result ['edit_mode'] = $showMonthlySettlementCreate->getEditMode();
+		if ($response instanceof showMonthlySettlementCreateResponse) {
+			$result ['monthly_settlements'] = parent::mapArrayNullable( $response->getMonthlySettlementTransport() );
+			$result ['year'] = $response->getYear();
+			$result ['month'] = $response->getMonth();
+			$result ['edit_mode'] = $response->getEditMode();
 		}
-		
+
 		return $result;
 	}
 
 	public final function showMonthlySettlementDelete($year, $month) {
-		$response = parent::getJson( 'showMonthlySettlementDelete', array (
+		$response = parent::getJson( __FUNCTION__, array (
 				$year,
-				$month 
+				$month
 		) );
-		if (is_array( $response )) {
-			$showMonthlySettlementDelete = JsonAutoMapper::mapAToB( $response, '\\api\\model\\monthlysettlement' );
-			if (is_array( $showMonthlySettlementDelete->getMonthlySettlementTransport() )) {
-				$result ['monthly_settlements'] = parent::mapArray( $showMonthlySettlementDelete->getMonthlySettlementTransport() );
-			} else {
-				$result ['monthly_settlements'] = '';
-			}
+		if ($response instanceof showMonthlySettlementDeleteResponse) {
+			$result ['monthly_settlements'] = parent::mapArrayNullable( $response->getMonthlySettlementTransport() );
 		}
-		
+
 		return $result;
 	}
 
 	public final function upsertMonthlySettlement(array $monthlySettlement) {
 		$monthlySettlementTransport = parent::mapArray( $monthlySettlement, ClientArrayMapperEnum::MONTHLYSETTLEMENT_TRANSPORT );
-		
+
 		$request = new upsertMonthlySettlementRequest();
 		$request->setMonthlySettlementTransport( $monthlySettlementTransport );
-		
-		return parent::postJson( 'upsertMonthlySettlement', parent::json_encode_response( $request ) );
+
+		return parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 
 	public final function deleteMonthlySettlement($year, $month) {
-		return parent::deleteJson( 'deleteMonthlySettlement', array (
+		return parent::deleteJson( __FUNCTION__, array (
 				$year,
-				$month 
+				$month
 		) );
 	}
 }

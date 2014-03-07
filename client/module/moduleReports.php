@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.89 2014/03/04 21:33:55 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.90 2014/03/07 20:41:36 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -318,24 +318,11 @@ class moduleReports extends module {
 	}
 
 	public final function show_reporting_form() {
-		$months = $this->coreText->get_domain_data( 'MONTHS' );
-		$years = array (
-				2003,
-				2004,
-				2005,
-				2006,
-				2007,
-				2008,
-				2009,
-				2010,
-				2011,
-				2012,
-				2013,
-				2014
-		);
+		$showReportingFormResponse = ReportControllerHandler::getInstance()->showReportingForm();
 
-		$postingaccount_values[0] = array("postingaccountid"=>0,name=>"KFZ-Kostigen sonstige");
-		$postingaccount_values[1] = array("postingaccountid"=>1,name=>"Hugo");
+		$years = $showReportingFormResponse ['allYears'];
+		$months = $this->coreText->get_domain_data( 'MONTHS' );
+		$postingaccount_values = $showReportingFormResponse ['postingaccounts'];
 
 		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template->assign( 'MONTHS', $months );

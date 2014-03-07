@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CapitalsourceControllerHandler.php,v 1.10 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: CapitalsourceControllerHandler.php,v 1.11 2014/03/07 20:41:36 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -32,6 +32,9 @@ use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\capitalsource\updateCapitalsourceRequest;
 use api\model\capitalsource\createCapitalsourceRequest;
+use api\model\capitalsource\showCapitalsourceListResponse;
+use api\model\capitalsource\showEditCapitalsourceResponse;
+use api\model\capitalsource\showDeleteCapitalsourceResponse;
 
 class CapitalsourceControllerHandler extends AbstractHandler {
 	private static $instance;
@@ -53,63 +56,56 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 	}
 
 	public final function showCapitalsourceList($restriction) {
-		$response = parent::getJson( 'showCapitalsourceList', array (
-				utf8_encode( $restriction ) 
+		$response = parent::getJson( __FUNCTION__, array (
+				utf8_encode( $restriction )
 		) );
-		if (is_array( $response )) {
-			$listCapitalsources = JsonAutoMapper::mapAToB( $response, '\\api\\model\\capitalsource' );
-			if (is_array( $listCapitalsources->getCapitalsourceTransport() )) {
-				$result ['capitalsources'] = parent::mapArray( $listCapitalsources->getCapitalsourceTransport() );
-			} else {
-				$result ['capitalsources'] = array ();
-			}
-			$result ['initials'] = $listCapitalsources->getInitials();
+		if ($response instanceof showCapitalsourceListResponse) {
+			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
+			$result ['initials'] = $response->getInitials();
 		}
-		
+
 		return $result;
 	}
 
 	public final function showEditCapitalsource($id) {
 		$response = parent::getJson( showEditCapitalsource, array (
-				$id 
+				$id
 		) );
-		if (is_array( $response )) {
-			$showEditCapitalsourceResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\capitalsource' );
-			$result = parent::map( $showEditCapitalsourceResponse->getCapitalsourceTransport() );
+		if ($response instanceof showEditCapitalsourceResponse) {
+			$result = parent::map( $response->getCapitalsourceTransport() );
 		}
 		return $result;
 	}
 
 	public final function showDeleteCapitalsource($id) {
-		$response = parent::getJson( 'showDeleteCapitalsource', array (
-				$id 
+		$response = parent::getJson( __FUNCTION__, array (
+				$id
 		) );
-		if (is_array( $response )) {
-			$showDeleteCapitalsourceResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\capitalsource' );
-			$result = parent::map( $showDeleteCapitalsourceResponse->getCapitalsourceTransport() );
+		if ($response instanceof showDeleteCapitalsourceResponse) {
+			$result = parent::map( $response->getCapitalsourceTransport() );
 		}
 		return $result;
 	}
 
 	public final function createCapitalsource(array $capitalsource) {
 		$capitalsourceTransport = parent::map( $capitalsource, ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
-		
+
 		$request = new createCapitalsourceRequest();
 		$request->setCapitalsourceTransport( $capitalsourceTransport );
-		return parent::postJson( 'createCapitalsource', parent::json_encode_response( $request ) );
+		return parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 
 	public final function updateCapitalsource(array $capitalsource) {
 		$capitalsourceTransport = parent::map( $capitalsource, ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
-		
+
 		$request = new updateCapitalsourceRequest();
 		$request->setCapitalsourceTransport( $capitalsourceTransport );
-		return parent::putJson( 'updateCapitalsource', parent::json_encode_response( $request ) );
+		return parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 
-	public final function deleteCapitalsource($id) {
-		return parent::deleteJson( 'deleteCapitalsourceById', array (
-				$id 
+	public final function deleteCapitalsourceById($id) {
+		return parent::deleteJson( __FUNCTION__, array (
+				$id
 		) );
 	}
 }

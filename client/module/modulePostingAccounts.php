@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePostingAccounts.php,v 1.3 2014/03/03 01:21:59 olivleh1 Exp $
+// $Id: modulePostingAccounts.php,v 1.4 2014/03/07 20:41:36 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -104,7 +104,7 @@ class modulePostingAccounts extends module {
 	public final function display_delete_postingAccount($realaction, $postingaccountid, $force) {
 		switch ($realaction) {
 			case 'yes' :
-				if (PostingAccountControllerHandler::getInstance()->deletePostingAccount( $postingaccountid )) {
+				if (PostingAccountControllerHandler::getInstance()->deletePostingAccountById( $postingaccountid )) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}

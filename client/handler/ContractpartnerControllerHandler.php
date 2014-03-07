@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerControllerHandler.php,v 1.8 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: ContractpartnerControllerHandler.php,v 1.9 2014/03/07 20:41:36 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -32,6 +32,9 @@ use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\contractpartner\updateContractpartnerRequest;
 use api\model\contractpartner\createContractpartnerRequest;
+use api\model\contractpartner\showContractpartnerListResponse;
+use api\model\contractpartner\showEditContractpartnerResponse;
+use api\model\contractpartner\showDeleteContractpartnerResponse;
 
 class ContractpartnerControllerHandler extends AbstractHandler {
 	private static $instance;
@@ -53,63 +56,56 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 	}
 
 	public final function showContractpartnerList($restriction) {
-		$response = parent::getJson( 'showContractpartnerList', array (
-				utf8_encode( $restriction ) 
+		$response = parent::getJson( __FUNCTION__, array (
+				utf8_encode( $restriction )
 		) );
-		if (is_array( $response )) {
-			$listContractpartner = JsonAutoMapper::mapAToB( $response, '\\api\\model\\contractpartner' );
-			if (is_array( $listContractpartner->getContractpartnerTransport() )) {
-				$result ['contractpartner'] = parent::mapArray( $listContractpartner->getContractpartnerTransport() );
-			} else {
-				$result ['contractpartner'] = array ();
-			}
-			$result ['initials'] = $listContractpartner->getInitials();
+		if ($response instanceof showContractpartnerListResponse) {
+			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
+			$result ['initials'] = $response->getInitials();
 		}
-		
+
 		return $result;
 	}
 
 	public final function showEditContractpartner($id) {
-		$response = parent::getJson( 'showEditContractpartner', array (
-				$id 
+		$response = parent::getJson( __FUNCTION__, array (
+				$id
 		) );
-		if (is_array( $response )) {
-			$showEditContractpartner = JsonAutoMapper::mapAToB( $response, '\\api\\model\\contractpartner' );
-			$result = parent::map( $showEditContractpartner->getContractpartnerTransport() );
+		if ($response instanceof showEditContractpartnerResponse) {
+			$result = parent::map( $response->getContractpartnerTransport() );
 		}
 		return $result;
 	}
 
 	public final function showDeleteContractpartner($id) {
-		$response = parent::getJson( 'showDeleteContractpartner', array (
-				$id 
+		$response = parent::getJson( __FUNCTION__, array (
+				$id
 		) );
-		if (is_array( $response )) {
-			$showDeleteContractpartner = JsonAutoMapper::mapAToB( $response, '\\api\\model\\contractpartner' );
-			$result = parent::map( $showDeleteContractpartner->getContractpartnerTransport() );
+		if ($response instanceof showDeleteContractpartnerResponse) {
+			$result = parent::map( $response->getContractpartnerTransport() );
 		}
 		return $result;
 	}
 
 	public final function createContractpartner(array $contractpartner) {
 		$contractpartnerTransport = parent::map( $contractpartner, ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
-		
+
 		$request = new createContractpartnerRequest();
 		$request->setContractpartnerTransport( $contractpartnerTransport );
-		return parent::postJson( 'createContractpartner', parent::json_encode_response( $request ) );
+		return parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 
 	public final function updateContractpartner(array $contractpartner) {
 		$contractpartnerTransport = parent::map( $contractpartner, ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
-		
+
 		$request = new updateContractpartnerRequest();
 		$request->setContractpartnerTransport( $contractpartnerTransport );
-		return parent::putJson( 'updateContractpartner', parent::json_encode_response( $request ) );
+		return parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 
 	public final function deleteContractpartner($id) {
-		return parent::deleteJson( 'deleteContractpartnerById', array (
-				$id 
+		return parent::deleteJson( __FUNCTION__, array (
+				$id
 		) );
 	}
 }

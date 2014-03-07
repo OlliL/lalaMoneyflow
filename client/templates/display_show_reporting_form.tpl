@@ -47,13 +47,14 @@
 	
 	    for (i = 0; i < listelement.length; i++) {
 	        arrTexts[i] = listelement.options[i].text;
+	        arrValues[i] = listelement.options[i].value;
 	    }
 	
 	    arrTexts.sort();
 	
 	    for (i = 0; i < listelement.length; i++) {
 	        listelement.options[i].text = arrTexts[i];
-	        listelement.options[i].value = arrTexts[i];
+	        listelement.options[i].value = arrValues[i];
 	    }
 	}
 	

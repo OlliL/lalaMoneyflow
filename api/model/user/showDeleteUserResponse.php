@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -24,42 +25,39 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: EventControllerHandler.php,v 1.6 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: showDeleteUserResponse.php,v 1.1 2014/03/07 20:41:36 olivleh1 Exp $
 //
-namespace client\handler;
+namespace api\model\user;
 
-use client\mapper\ClientArrayMapperEnum;
-use base\JsonAutoMapper;
-use api\model\event\showEventListResponse;
+use api\model\transport\UserTransport;
 
-class EventControllerHandler extends AbstractHandler {
-	private static $instance;
+class showDeleteUserResponse {
+	public $userTransport;
+	public $accessRelationTransport;
+	public $groupTransport;
 
-	protected function __construct() {
-		parent::__construct();
-		parent::addMapper( 'client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
+	public final function getUserTransport() {
+		return $this->userTransport;
 	}
 
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			self::$instance = new EventControllerHandler();
-		}
-		return self::$instance;
+	public final function setUserTransport(UserTransport $userTransport) {
+		$this->userTransport = $userTransport;
 	}
 
-	protected final function getCategory() {
-		return 'event';
+	public final function getGroupTransport() {
+		return $this->groupTransport;
 	}
 
-	public final function showEventList() {
-		$response = parent::getJson( __FUNCTION__ );
-		if ($response instanceof showEventListResponse) {
-			$result ['mms_missing'] = $response->isMonthlySettlementMissing();
-			$result ['month'] = $response->getMonthlySettlementMonth();
-			$result ['year'] = $response->getMonthlySettlementYear();
-			$result ['numberOfAddableSettlements'] = $response->getMonthlySettlementNumberOfAddableSettlements();
-		}
-		return $result;
+	public final function setAccessRelationTransport(array $accessRelationTransport) {
+		$this->accessRelationTransport = $accessRelationTransport;
+	}
+
+	public final function setGroupTransport(array $groupTransport) {
+		$this->groupTransport = $groupTransport;
+	}
+
+	public final function getAccessRelationTransport() {
+		return $this->accessRelationTransport;
 	}
 }
 

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PostingAccountControllerHandler.php,v 1.7 2014/03/03 01:22:00 olivleh1 Exp $
+// $Id: PostingAccountControllerHandler.php,v 1.8 2014/03/07 20:41:36 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -33,6 +33,9 @@ use base\JsonAutoMapper;
 use api\model\postingaccount\createPostingAccountRequest;
 use api\model\postingaccount\updatePostingAccountRequest;
 use api\model\postingaccount\plotPostingAccountsResponse;
+use api\model\postingaccount\showPostingAccountListResponse;
+use api\model\postingaccount\showEditPostingAccountResponse;
+use api\model\postingaccount\showDeletePostingAccountResponse;
 
 class PostingAccountControllerHandler extends AbstractHandler {
 	private static $instance;
@@ -55,40 +58,33 @@ class PostingAccountControllerHandler extends AbstractHandler {
 	}
 
 	public final function showPostingAccountList($restriction) {
-		$response = parent::getJson( 'showPostingAccountList', array (
+		$response = parent::getJson( __FUNCTION__, array (
 				utf8_encode( $restriction )
 		) );
-		if (is_array( $response )) {
-			$listPostingAccounts = JsonAutoMapper::mapAToB( $response, '\\api\\model\\postingaccount' );
-			if (is_array( $listPostingAccounts->getPostingAccountTransport() )) {
-				$result ['postingAccounts'] = parent::mapArray( $listPostingAccounts->getPostingAccountTransport() );
-			} else {
-				$result ['postingAccounts'] = array ();
-			}
-			$result ['initials'] = $listPostingAccounts->getInitials();
+		if ($response instanceof showPostingAccountListResponse) {
+			$result ['postingAccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
+			$result ['initials'] = $response->getInitials();
 		}
 
 		return $result;
 	}
 
 	public final function showEditPostingAccount($id) {
-		$response = parent::getJson( 'showEditPostingAccount', array (
+		$response = parent::getJson( __FUNCTION__, array (
 				$id
 		) );
-		if (is_array( $response )) {
-			$showEditPostingAccountResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\postingaccount' );
-			$result = parent::map( $showEditPostingAccountResponse->getPostingAccountTransport() );
+		if ($response instanceof showEditPostingAccountResponse) {
+			$result = parent::map( $response->getPostingAccountTransport() );
 		}
 		return $result;
 	}
 
 	public final function showDeletePostingAccount($id) {
-		$response = parent::getJson( 'showDeletePostingAccount', array (
+		$response = parent::getJson( __FUNCTION__, array (
 				$id
 		) );
-		if (is_array( $response )) {
-			$showDeletePostingAccountResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\postingaccount' );
-			$result = parent::map( $showDeletePostingAccountResponse->getPostingAccountTransport() );
+		if ($response instanceof showDeletePostingAccountResponse) {
+			$result = parent::map( $response->getPostingAccountTransport() );
 		}
 		return $result;
 	}
@@ -98,7 +94,7 @@ class PostingAccountControllerHandler extends AbstractHandler {
 
 		$request = new createPostingAccountRequest();
 		$request->setPostingAccountTransport( $postingAccountTransport );
-		return parent::postJson( 'createPostingAccount', parent::json_encode_response( $request ) );
+		return parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 
 	public final function updatePostingAccount(array $postingAccount) {
@@ -106,28 +102,23 @@ class PostingAccountControllerHandler extends AbstractHandler {
 
 		$request = new updatePostingAccountRequest();
 		$request->setPostingAccountTransport( $postingAccountTransport );
-		return parent::putJson( 'updatePostingAccount', parent::json_encode_response( $request ) );
+		return parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 
-	public final function deletePostingAccount($id) {
-		return parent::deleteJson( 'deletePostingAccountById', array (
+	public final function deletePostingAccountById($id) {
+		return parent::deleteJson( __FUNCTION__, array (
 				$id
 		) );
 	}
 
 	public final function plotPostingAccounts($yearFrom, $yearTil) {
-		$response = parent::getJson( 'plotPostingAccounts', array (
+		$response = parent::getJson( __FUNCTION__, array (
 				$yearFrom,
 				$yearTil
 		) );
-		if (is_array( $response )) {
-			$plotPostingAccountsResponse = JsonAutoMapper::mapAToB( $response, '\\api\\model\\postingaccount' );
-			$result ['data'] = parent::mapArray( $plotPostingAccountsResponse->getPostingAccountAmountTransport() );
-			if (is_array( $plotPostingAccountsResponse->getPostingAccountTransport() )) {
-				$result ['postingAccounts'] = parent::mapArray( $plotPostingAccountsResponse->getPostingAccountTransport() );
-			} else {
-				$result ['postingAccounts'] = array ();
-			}
+		if ($response instanceof plotPostingAccountsResponse) {
+			$result ['data'] = parent::mapArray( $response->getPostingAccountAmountTransport() );
+			$result ['postingAccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
 		}
 		return $result;
 	}
