@@ -25,12 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ErrorCode.php,v 1.23 2014/03/02 23:35:15 olivleh1 Exp $
+// $Id: ErrorCode.php,v 1.24 2014/03/08 18:02:37 olivleh1 Exp $
 //
 namespace base;
 
-class ErrorCode extends \SplEnum {
-	const __default = self::UNKNOWN;
+class ErrorCode {
 	const UNKNOWN = 0;
 	const CAPITALSOURCE_STILL_REFERENCED = 120;
 	const CAPITALSOURCE_IN_USE_PERIOD = 121;
