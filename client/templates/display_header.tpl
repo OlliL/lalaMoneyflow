@@ -17,6 +17,8 @@
 {if $NO_NAVIGATION == 0}
 				<td valign="top" width="100"><div class="nobr">
 <p style="font-size:11px;color:darkblue;font-weight:bold;text-align:center">lalaMoneyflow<br>{$VERSION}</p><br>
+					<a href="{$ENV_INDEX_PHP}?action=add_moneyflow">{#TEXT_8#}</a><br>
+					<br>
 					<a href="{$ENV_INDEX_PHP}?action=list_capitalsources">{#TEXT_1#}</a><br>
 					<a href="{$ENV_INDEX_PHP}?action=list_contractpartners">{#TEXT_2#}</a><br>
 					<a href="{$ENV_INDEX_PHP}?action=list_predefmoneyflows">{#TEXT_3#}</a><br>
@@ -26,9 +28,7 @@
 					<a href="{$ENV_INDEX_PHP}?action=plot_trends">{#TEXT_6#}</a><br>
 					<a href="{$ENV_INDEX_PHP}?action=show_reporting_form">{#TEXT_254#}</a><br>
 {/if}
-					<br>
 					<a href="{$ENV_INDEX_PHP}?action=search">{#TEXT_7#}</a><br>
-					<a href="{$ENV_INDEX_PHP}?action=add_moneyflow">{#TEXT_8#}</a><br>
 					<a href="{$ENV_INDEX_PHP}?action=upfrm_cmp_data">{#TEXT_187#}</a><br>
 					<br>
 					<b>{#TEXT_14#}</b><br>

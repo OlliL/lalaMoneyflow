@@ -25,12 +25,13 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showSearchMoneyflowFormResponse.php,v 1.2 2014/02/28 22:19:46 olivleh1 Exp $
+// $Id: showSearchMoneyflowFormResponse.php,v 1.3 2014/03/08 17:23:04 olivleh1 Exp $
 //
 namespace api\model\moneyflow;
 
 class showSearchMoneyflowFormResponse {
 	public $contractpartnerTransport;
+	public $postingAccountTransport;
 
 	public final function getContractpartnerTransport() {
 		return $this->contractpartnerTransport;
@@ -38,6 +39,14 @@ class showSearchMoneyflowFormResponse {
 
 	public final function setContractpartnerTransport(array $contractpartnerTransport) {
 		$this->contractpartnerTransport = $contractpartnerTransport;
+	}
+
+	public final function setPostingAccountTransport(array $postingAccountTransport) {
+		$this->postingAccountTransport = $postingAccountTransport;
+	}
+
+	public final function getPostingAccountTransport() {
+		return $this->postingAccountTransport;
 	}
 }
 

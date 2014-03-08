@@ -1,4 +1,3 @@
-- enhance search to also search by posting account
 - State + Type of Capitalsource must become Enums
 - replace USERID by Environment::getInstance()->getUserId() in the client
 - modify the mapper framework.

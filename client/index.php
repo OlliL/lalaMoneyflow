@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.84 2014/03/08 16:46:23 olivleh1 Exp $
+// $Id: index.php,v 1.85 2014/03/08 17:23:04 olivleh1 Exp $
 //
 namespace client;
 
@@ -426,7 +426,8 @@ if ($is_logged_in == 0) {
 				break;
 			case 'do_search' :
 				$searchstring = array_key_exists( 'searchstring', $_REQUEST ) ? $_REQUEST ['searchstring'] : '';
-				$contractpart = array_key_exists( 'contractpartner', $_REQUEST ) ? $_REQUEST ['contractpartner'] : '';
+				$contractpartner = array_key_exists( 'contractpartner', $_REQUEST ) ? $_REQUEST ['contractpartner'] : '';
+				$postingaccount = array_key_exists( 'postingaccount', $_REQUEST ) ? $_REQUEST ['postingaccount'] : '';
 				$startdate = array_key_exists( 'startdate', $_REQUEST ) ? $_REQUEST ['startdate'] : '';
 				$enddate = array_key_exists( 'enddate', $_REQUEST ) ? $_REQUEST ['enddate'] : '';
 				$equal = array_key_exists( 'equal', $_REQUEST ) ? $_REQUEST ['equal'] : '';
@@ -436,7 +437,7 @@ if ($is_logged_in == 0) {
 				$grouping1 = array_key_exists( 'grouping1', $_REQUEST ) ? $_REQUEST ['grouping1'] : '';
 				$grouping2 = array_key_exists( 'grouping2', $_REQUEST ) ? $_REQUEST ['grouping2'] : '';
 				$order = array_key_exists( 'order', $_REQUEST ) ? $_REQUEST ['order'] : '';
-				$display = $moduleSearch->do_search( $searchstring, $contractpart, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus, $grouping1, $grouping2, $order );
+				$display = $moduleSearch->do_search( $searchstring, $contractpartner, $postingaccount, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus, $grouping1, $grouping2, $order );
 				break;
 
 			/* settings */

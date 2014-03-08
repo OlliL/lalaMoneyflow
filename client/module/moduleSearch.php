@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSearch.php,v 1.36 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: moduleSearch.php,v 1.37 2014/03/08 17:23:04 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -39,7 +39,10 @@ class moduleSearch extends module {
 	}
 
 	public final function display_search($searchparams = null) {
-		$contractpartner_values = MoneyflowControllerHandler::getInstance()->showSearchMoneyflowForm();
+		$showSearchMoneyflowForm = MoneyflowControllerHandler::getInstance()->showSearchMoneyflowForm();
+		$contractpartner_values = $showSearchMoneyflowForm ['contractpartner'];
+		$postingaccount_values = $showSearchMoneyflowForm ['postingaccounts'];
+
 		if (empty( $searchparams )) {
 			$searchparams ['grouping1'] = 'year';
 			$searchparams ['grouping2'] = 'month';
@@ -47,13 +50,14 @@ class moduleSearch extends module {
 		}
 		$this->template->assign( 'SEARCHPARAMS', $searchparams );
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
+		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_search.tpl' );
 	}
 
-	public final function do_search($searchstring, $contractpartner, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus, $grouping1, $grouping2, $order) {
+	public final function do_search($searchstring, $contractpartner, $postingaccount, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus, $grouping1, $grouping2, $order) {
 		if ($equal)
 			$searchparams ['equal'] = 1;
 		if ($casesensitive)
@@ -64,6 +68,7 @@ class moduleSearch extends module {
 			$searchparams ['minus'] = 1;
 
 		$searchparams ['mcp_contractpartnerid'] = $contractpartner;
+		$searchparams ['mpa_postingaccountid'] = $postingaccount;
 		$searchparams ['pattern'] = stripslashes( $searchstring );
 		$searchparams ['startdate'] = $startdate;
 		$searchparams ['enddate'] = $enddate;
@@ -97,6 +102,7 @@ class moduleSearch extends module {
 
 			$searchMoneyflows = MoneyflowControllerHandler::getInstance()->searchMoneyflows( $searchparams );
 			$contractpartner_values = $searchMoneyflows ['contractpartner'];
+			$postingaccount_values = $searchMoneyflows ['postingaccounts'];
 
 			if ($searchMoneyflows ['result'] == false) {
 				$data_is_valid = false;
@@ -166,6 +172,7 @@ class moduleSearch extends module {
 
 			$this->template->assign( 'SEARCHPARAMS', $searchparams );
 			$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
+			$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 			$this->template->assign( 'ERRORS', $this->get_errors() );
 
 			$this->parse_header();

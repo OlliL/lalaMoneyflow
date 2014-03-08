@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowControllerHandler.php,v 1.9 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: MoneyflowControllerHandler.php,v 1.10 2014/03/08 17:23:04 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -166,11 +166,9 @@ class MoneyflowControllerHandler extends AbstractHandler {
 	public final function showSearchMoneyflowForm() {
 		$response = parent::getJson( __FUNCTION__ );
 		if ($response instanceof showSearchMoneyflowFormResponse) {
-			if (is_array( $response->getContractpartnerTransport() )) {
-				$result = parent::mapArray( $response->getContractpartnerTransport() );
-			} else {
-				$result = '';
-			}
+			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
+			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
+
 		}
 		return $result;
 	}
@@ -185,6 +183,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		if ($response instanceof searchMoneyflowsResponse) {
 			$result ['search_results'] = parent::mapArrayNullable( $response->getMoneyflowSearchResultTransport() );
 			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
+			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
 			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
 			$result ['result'] = $response->getResult();
 		}

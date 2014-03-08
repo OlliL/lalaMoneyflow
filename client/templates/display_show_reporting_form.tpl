@@ -205,7 +205,7 @@ div.multiple_accounts {
                            <div id="account" style="position: relative;">
                               &nbsp;
                               <div id="single_account">
-                                 <select class="contrastbgcolor" size="1" name="single_account">
+                                 <select class="contrastbgcolor" size="1" name="account">
 					{section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
 						<option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}"> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name|escape:htmlall}</option>
 					{/section}

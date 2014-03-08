@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowSearchParamsTransport.php,v 1.2 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: MoneyflowSearchParamsTransport.php,v 1.3 2014/03/08 17:23:04 olivleh1 Exp $
 //
 namespace api\model\transport;
 
@@ -38,6 +38,7 @@ class MoneyflowSearchParamsTransport {
 	public $featureCaseSensitive;
 	public $featureOnlyMinusAmounts;
 	public $contractpartnerId;
+	public $postingAccountId;
 	public $groupBy1;
 	public $groupBy2;
 	public $orderBy;
@@ -128,6 +129,14 @@ class MoneyflowSearchParamsTransport {
 
 	public final function getOrderBy() {
 		return $this->orderBy;
+	}
+
+	public final function setPostingAccountId($postingAccountId) {
+		$this->postingAccountId = $postingAccountId;
+	}
+
+	public final function getPostingAccountId() {
+		return $this->postingAccountId;
 	}
 }
 

@@ -20,12 +20,25 @@
 				</tr>
 				<tr>
 					<th align="right">{#TEXT_2#}</th>
-					<td class="contrastbgcolor"><select class="contrastbgcolor" name="contractpartner" size=1>
-					<option value=""> </option>
-					{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
-						<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"  {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $SEARCHPARAMS.mcp_contractpartnerid}selected{/if}> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name|escape:htmlall}
-					{/section}
-					</select></td>
+					<td class="contrastbgcolor">
+						<select class="contrastbgcolor" name="contractpartner" size=1>
+							<option value=""> </option>
+							{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
+								<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"  {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $SEARCHPARAMS.mcp_contractpartnerid}selected{/if}> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name|escape:htmlall}
+							{/section}
+						</select>
+					</td>
+				</tr>
+				<tr>
+		                        <th align="right">{#TEXT_232#}</th>
+					<td class="contrastbgcolor">
+                                 		<select class="contrastbgcolor" name="postingaccount" size="1">
+							<option value=""> </option>
+							{section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
+								<option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}" {if $POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid == $SEARCHPARAMS.mpa_postingaccountid}selected{/if}> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name|escape:htmlall}</option>
+							{/section}
+                                 		</select>
+					</td>
 				</tr>
 				<tr>
 					<th align="right">{#TEXT_73#}</th>
