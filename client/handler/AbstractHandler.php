@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractHandler.php,v 1.11 2014/03/08 21:56:51 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.12 2014/03/08 22:06:46 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -124,7 +124,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 
 		$headers = array (
 				'Date' => $dateStr,
-				'Authentication' => $authorization
+				RESTAuthorization::$header => $authorization
 		);
 		return $headers;
 	}
