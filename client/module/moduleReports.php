@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.91 2014/03/08 00:24:14 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.92 2014/03/08 00:36:56 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -326,9 +326,14 @@ class moduleReports extends module {
 		$months = $this->coreText->get_domain_data( 'MONTHS' );
 		$postingaccount_values = $showReportingFormResponse ['postingaccounts'];
 
+		$this->template->assign( 'CURRENT_MONTH', date('n') );
+		$this->template->assign( 'CURRENT_YEAR', date('Y') );
+
 		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template->assign( 'MONTHS', $months );
 		$this->template->assign( 'YEARS', $years );
+
+
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_show_reporting_form.tpl' );

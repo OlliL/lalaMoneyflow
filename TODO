@@ -1,3 +1,4 @@
+- persist the selected and deselected posting accounts on the reporting screen
 - replace USERID by Environment::getInstance()->getUserId() in the client
 - modify the mapper framework.
   - analyze the mapAToB and mapBToA methods about the arguments the force

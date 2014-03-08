@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PostingAccountControllerHandler.php,v 1.8 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: PostingAccountControllerHandler.php,v 1.9 2014/03/08 00:36:56 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -109,18 +109,6 @@ class PostingAccountControllerHandler extends AbstractHandler {
 		return parent::deleteJson( __FUNCTION__, array (
 				$id
 		) );
-	}
-
-	public final function plotPostingAccounts($yearFrom, $yearTil) {
-		$response = parent::getJson( __FUNCTION__, array (
-				$yearFrom,
-				$yearTil
-		) );
-		if ($response instanceof plotPostingAccountsResponse) {
-			$result ['data'] = parent::mapArray( $response->getPostingAccountAmountTransport() );
-			$result ['postingAccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
-		}
-		return $result;
 	}
 }
 

@@ -137,7 +137,7 @@ div.multiple_accounts {
                            <select class="contrastbgcolor" size="1" name="timemode" id="timemode"
                               onchange="timemode_func();">
                               <option value="1">1 {#TEXT_57#}</option>
-                              <option value="2">1 {#TEXT_56#}</option>
+                              <option value="2" selected>1 {#TEXT_56#}</option>
                               <option value="3">{#TEXT_257#}</option>
                            </select>
                         </td>
@@ -147,7 +147,7 @@ div.multiple_accounts {
                            <select class="contrastbgcolor" size="1" name="accountmode" id="accountmode"
                               onchange="accountmode_func();">
                               <option value="1">1 {#TEXT_232#}</option>
-                              <option value="2">{#TEXT_258#}</option>
+                              <option value="2" selected>{#TEXT_258#}</option>
                            </select>
                         </td>
                      </tr>
@@ -164,19 +164,19 @@ div.multiple_accounts {
                               <div id="year_data">
                                  <select class="contrastbgcolor" size="1" name="year">
  					{section name=YEAR loop=$YEARS}
-						<option value="{$YEARS[YEAR]}"> {$YEARS[YEAR]}
+						<option value="{$YEARS[YEAR]}" {if $YEARS[YEAR] == $CURRENT_YEAR}selected{/if}> {$YEARS[YEAR]}
 					{/section}
                                  </select>
                               </div>
                               <div id="month_data">
                                  <select class="contrastbgcolor" size="1" name="month_month">
  					{section name=MONTH loop=$MONTHS}
-						<option value="{$MONTHS[MONTH].value}"> {$MONTHS[MONTH].text}
+						<option value="{$MONTHS[MONTH].value}" {if $MONTHS[MONTH].value == $CURRENT_MONTH}selected{/if}> {$MONTHS[MONTH].text}
 					{/section}
                                  </select>
                                  <select class="contrastbgcolor" size="1" name="year_month">
  					{section name=YEAR loop=$YEARS}
-						<option value="{$YEARS[YEAR]}"> {$YEARS[YEAR]}
+						<option value="{$YEARS[YEAR]}" {if $YEARS[YEAR] == $CURRENT_YEAR}selected{/if}> {$YEARS[YEAR]}
 					{/section}
                                  </select>
                               </div>
@@ -189,7 +189,7 @@ div.multiple_accounts {
                                  - 
                                  <select class="contrastbgcolor" size="1" name="yeartil">
  					{section name=YEAR loop=$YEARS}
-						<option value="{$YEARS[YEAR]}"> {$YEARS[YEAR]}
+						<option value="{$YEARS[YEAR]}" {if $YEARS[YEAR] == $CURRENT_YEAR}selected{/if}> {$YEARS[YEAR]}
 					{/section}
                                  </select>
                               </div>

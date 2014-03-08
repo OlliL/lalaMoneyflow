@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePostingAccounts.php,v 1.4 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: modulePostingAccounts.php,v 1.5 2014/03/08 00:36:56 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -122,74 +122,6 @@ class modulePostingAccounts extends module {
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_postingaccount.tpl' );
-	}
-
-	private function randomColor() {
-		$possibilities = array (
-				1,
-				2,
-				3,
-				4,
-				5,
-				6,
-				7,
-				8,
-				9,
-				"A",
-				"B",
-				"C",
-				"D"
-		);
-		shuffle( $possibilities );
-		$color = "#";
-		for($i = 1; $i <= 6; $i ++) {
-			$color .= $possibilities [rand( 0, 14 )];
-		}
-		return $color;
-	}
-
-	public final function plot_postingAccounts($yearFrom, $yearTil) {
-		$plotPostingAccounts = PostingAccountControllerHandler::getInstance()->plotPostingAccounts( $yearFrom, $yearTil );
-		$postingAccounts = $plotPostingAccounts ['postingAccounts'];
-		$all_data = $plotPostingAccounts ['data'];
-		foreach ( $postingAccounts as $key => $postingAccount ) {
-			$postingAccountKeys [$postingAccount ['postingaccountid']] = $key;
-			$postingAccountNames [] = utf8_decode( $postingAccount ['name'] );
-		}
-		foreach ( $all_data as $data ) {
-			if ($data ['postingaccountid'] == 18)
-				continue;
-			$year = date( 'Y', $data ['date_ts'] );
-			$account_key = $postingAccountKeys [$data ['postingaccountid']];
-			$plot_data [$year] [$account_key] += $data ['amount'];
-		}
-
-		foreach ( $plot_data as $data ) {
-			$plot = new \BarPlot( $data );
-			$plot->SetColor( "white" );
-			$plot->SetFillColor( $this->randomColor() );
-			$plots [] = $plot;
-		}
-		// Create the graph. These two calls are always required
-		$graph = new \Graph( 900, 900 );
-		$graph->SetScale( "textlin" );
-		$graph->Set90AndMargin( 50, 40, 40, 40 );
-
-		$graph->ygrid->SetFill( false );
-
-		$graph->xaxis->SetTickLabels( $postingAccountNames );
-
-		$graph->yaxis->HideLine( false );
-		$graph->yaxis->HideTicks( false, false );
-
-
-		$gbplot = new \GroupBarPlot( $plots );
-		// ...and add it to the graPH
-		$graph->Add( $gbplot );
-		$graph->title->Set( "Bar Plots" );
-
-		// Display the graph
-		$graph->Stroke();
 	}
 }
 ?>
