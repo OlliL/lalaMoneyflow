@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportControllerHandler.php,v 1.12 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: ReportControllerHandler.php,v 1.13 2014/03/08 00:24:13 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -36,6 +36,10 @@ use api\model\report\listReportsResponse;
 use api\model\report\showReportingFormResponse;
 use api\model\report\showTrendsFormResponse;
 use api\model\report\showTrendsGraphResponse;
+use api\model\report\showYearlyReportGraphRequest;
+use api\model\report\showMonthlyReportGraphRequest;
+use api\model\report\showYearlyReportGraphResponse;
+use api\model\report\showMonthlyReportGraphResponse;
 
 class ReportControllerHandler extends AbstractHandler {
 	private static $instance;
@@ -49,6 +53,7 @@ class ReportControllerHandler extends AbstractHandler {
 		parent::addMapper( 'client\mapper\ArrayToTrendsCalculatedTransportMapper', ClientArrayMapperEnum::TRENDSCALCULATED_TRANSPORT );
 		parent::addMapper( 'client\mapper\ArrayToTrendsSettledTransportMapper', ClientArrayMapperEnum::TRENDSSETTLED_TRANSPORT );
 		parent::addMapper( 'client\mapper\ArrayToPostingAccountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
+		parent::addMapper( 'client\mapper\ArrayToPostingAccountAmountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNTAMOUNT_TRANSPORT );
 	}
 
 	public static function getInstance() {
@@ -120,6 +125,34 @@ class ReportControllerHandler extends AbstractHandler {
 			$result ['calculated'] = parent::mapArrayNullable( $response->getTrendsCalculatedTransport() );
 		}
 
+		return $result;
+	}
+
+	public final function showYearlyReportGraph($postingAccountIds, $startdate, $enddate) {
+		$request = new showYearlyReportGraphRequest();
+		$request->setPostingAccountIds( $postingAccountIds );
+		$request->setStartDate( $startdate->format( 'U' ) );
+		$request->setEndDate( $enddate->format( 'U' ) );
+
+		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
+		if ($response instanceof showYearlyReportGraphResponse) {
+			$result ['data'] = parent::mapArrayNullable( $response->getPostingAccountAmountTransport() );
+			$result ['postingAccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
+		}
+		return $result;
+	}
+
+	public final function showMonthlyReportGraph($postingAccountIds, $startdate, $enddate) {
+		$request = new showMonthlyReportGraphRequest();
+		$request->setPostingAccountIds( $postingAccountIds );
+		$request->setStartDate( $startdate->format( 'U' ) );
+		$request->setEndDate( $enddate->format( 'U' ) );
+
+		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
+		if ($response instanceof showMonthlyReportGraphResponse) {
+			$result ['data'] = parent::mapArrayNullable( $response->getPostingAccountAmountTransport() );
+			$result ['postingAccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
+		}
 		return $result;
 	}
 }

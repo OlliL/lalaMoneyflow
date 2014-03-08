@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.90 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.91 2014/03/08 00:24:14 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -33,6 +33,8 @@ use client\core\coreText;
 
 if (ENABLE_JPGRAPH) {
 	require_once 'jpgraph.php';
+	require_once 'jpgraph_bar.php';
+	require_once 'jpgraph_pie.php';
 	require_once 'jpgraph_line.php';
 }
 
@@ -332,8 +334,201 @@ class moduleReports extends module {
 		return $this->fetch_template( 'display_show_reporting_form.tpl' );
 	}
 
+	private final function randomColor() {
+		$possibilities = array (
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				"A",
+				"B",
+				"C",
+				"D"
+		);
+		shuffle( $possibilities );
+		$color = "#";
+		for($i = 1; $i <= 6; $i ++) {
+			$color .= $possibilities [rand( 0, 14 )];
+		}
+		return $color;
+	}
+
 	public final function plot_report($timemode, $accountmode, $year, $month_month, $year_month, $yearfrom, $yeartil, $single_account, $multiple_accounts) {
-		var_dump( $timemode, $accountmode, $year, $month_month, $year_month, $yearfrom, $yeartil, $single_account, $multiple_accounts );
+		$perMonthReport = false;
+		$perYearReport = false;
+		$barPlot = false;
+		$piePlot = false;
+		$horizontalBarPlot = false;
+		switch ($timemode) {
+			case 1 :
+				$startdate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $year . '-01-01 00:00:00' );
+				$enddate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $year . '-12-31 00:00:00' );
+				$perMonthReport = true;
+				$barPlot = true;
+				$title = $year;
+				break;
+			case 2 :
+				$startdate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $year_month . '-' . $month_month . '-01 00:00:00' );
+				$enddate = clone $startdate;
+				$enddate->modify( 'last day of this month' );
+				$perMonthReport = true;
+				$piePlot = true;
+				$title = $this->coreText->get_domain_meaning( 'MONTHS', $month_month ) . ' ' . $year_month;
+				break;
+			case 3 :
+				$startdate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $yearfrom . '-01-01 00:00:00' );
+				$enddate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $yeartil . '-12-31 00:00:00' );
+				$perYearReport = true;
+				$barPlot = true;
+				$title = $yearfrom . ' - ' . $yeartil;
+				break;
+		}
+
+		$postingaccounts = array ();
+		switch ($accountmode) {
+			case 1 :
+				$postingaccounts [] = $single_account;
+				break;
+			case 2 :
+				$postingaccounts = $multiple_accounts;
+				if ($barPlot) {
+					$horizontalBarPlot = true;
+					$barPlot = false;
+				}
+				break;
+		}
+
+		if ($perMonthReport) {
+			$report = ReportControllerHandler::getInstance()->showMonthlyReportGraph( $postingaccounts, $startdate, $enddate );
+		} elseif ($perYearReport) {
+			$report = ReportControllerHandler::getInstance()->showYearlyReportGraph( $postingaccounts, $startdate, $enddate );
+		}
+
+		$postingAccounts = $report ['postingAccounts'];
+		$all_data = $report ['data'];
+
+		if (is_array( $all_data ) && count( $all_data ) > 0) {
+			foreach ( $all_data as $data ) {
+				$postingAccountUsed [$data ['postingaccountid']] = true;
+			}
+
+			$i = 0;
+			foreach ( $postingAccounts as $key => $postingAccount ) {
+				if ($postingAccountUsed [$postingAccount ['postingaccountid']] === true) {
+					$postingAccountKeys [$postingAccount ['postingaccountid']] = $i;
+					$postingAccountNames [] = utf8_decode( $postingAccount ['name'] );
+					$i ++;
+				}
+			}
+			foreach ( $all_data as $data ) {
+				if ($perMonthReport) {
+					$key = html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', date( 'n', $data ['date_ts'] ) ), ENT_COMPAT | ENT_HTML401, ENCODING );
+				} else {
+					$key = date( 'Y', $data ['date_ts'] );
+				}
+				$account_key = $postingAccountKeys [$data ['postingaccountid']];
+				$plot_data [$key] [$account_key] += $data ['amount'] * - 1;
+			}
+
+			foreach ( $plot_data as $key => $data ) {
+				foreach ( $postingAccountKeys as $postingAccountKey ) {
+					if (! array_key_exists( $postingAccountKey, $data ))
+						$plot_data [$key] [$postingAccountKey] = 0;
+				}
+			}
+
+			if ($horizontalBarPlot) {
+				$this->plotHorizontalBarPlot( $plot_data, $postingAccountNames, $title );
+			} elseif ($barPlot) {
+				$this->plotBarPlot( $plot_data, $postingAccountNames, $title );
+			} elseif ($piePlot) {
+				$this->plotPiePlot( $plot_data, $postingAccountNames, $title );
+			}
+		} else {
+			$this->parse_header( 1 );
+			return $this->fetch_template( 'display_show_reporting_plot_no_data.tpl' );
+		}
+	}
+
+	private final function plotHorizontalBarPlot($plot_data, $postingAccountNames, $title) {
+		foreach ( $plot_data as $key => $data ) {
+			$plot = new \BarPlot( $data );
+			$plot->SetColor( "white" );
+			$plot->SetFillColor( $this->randomColor() );
+			$plot->setLegend( $key );
+			$plots [] = $plot;
+		}
+		// Create the graph. These two calls are always required
+		$graph = new \Graph( 1000, count( $postingAccountNames ) * 30 + count( $postingAccountNames ) * count( $plot_data ) * 5 + 100 );
+		$graph->SetScale( "textlin" );
+		$graph->Set90AndMargin( 200, 30, 40, 40 );
+
+		$graph->ygrid->SetFill( false );
+
+		$graph->xaxis->SetTickLabels( $postingAccountNames );
+		$graph->xaxis->SetPos( "min" );
+
+		$graph->yaxis->HideLine( false );
+		$graph->yaxis->HideTicks( false, false );
+
+		$gbplot = new \GroupBarPlot( $plots );
+		// ...and add it to the graph
+
+		$graph->Add( $gbplot );
+		$graph->title->Set( $title );
+		$graph->Stroke();
+	}
+
+	private final function plotBarPlot($plot_data, $postingAccountNames, $title) {
+		foreach ( $plot_data as $key => $data ) {
+			$plot = new \BarPlot( $data );
+			$plot->SetColor( "white" );
+			$plot->SetFillColor( $this->randomColor() );
+			$plot->setLegend( $key );
+			$plots [] = $plot;
+		}
+
+		$graph = new \Graph( 1000, 600 );
+		$graph->SetScale( "textlin" );
+
+		$graph->ygrid->SetFill( false );
+		$graph->xaxis->SetTickLabels( $postingAccountNames );
+
+		$gbplot = new \GroupBarPlot( $plots );
+
+		$graph->Add( $gbplot );
+		$graph->legend->SetFrameWeight( 1 );
+		$graph->legend->SetColumns( 6 );
+		$graph->legend->SetColor( '#4E4E4E', '#00A78A' );
+		$graph->legend->SetPos( 0.5, 0.98, 'center', 'bottom' );
+		$graph->title->Set( $title );
+		$graph->Stroke();
+	}
+
+	private final function plotPiePlot($plot_data, $postingAccountNames, $title) {
+		$data = array_shift( $plot_data );
+		ksort( $data );
+
+		$p1 = new \PiePlot( $data );
+		$p1->SetCenter( 0.5, 0.5 );
+		$p1->SetSize( 0.4 );
+		$p1->SetGuideLines( true, false, true );
+		$p1->SetLabels( $postingAccountNames );
+		$p1->SetLabelPos( 1 );
+		$p1->SetLabelType( PIE_VALUE_PER );
+		$p1->value->Show();
+		$p1->value->SetColor( 'darkgray' );
+
+		$graph = new \PieGraph( 1000, 800 );
+
+		$graph->Add( $p1 );
+		$graph->title->Set( $title );
+		$graph->Stroke();
 	}
 }
 

@@ -42,28 +42,30 @@
 	}
 	
 	function sortlist(list) {
-	    var listelement = document.getElementById(list);
-	    arrTexts = new Array();
-	
-	    for (i = 0; i < listelement.length; i++) {
-	        arrTexts[i] = listelement.options[i].text;
-	        arrValues[i] = listelement.options[i].value;
+	    var elem = document.getElementById(list);
+	    var tmpAry = [];
+
+	    for (var i=0;i<elem.options.length;i++)
+	        tmpAry.push(elem.options[i]);
+
+	    tmpAry.sort(function(a,b){ return (a.text.toUpperCase() < b.text.toUpperCase())?-1:1; });
+
+	    while (elem.options.length > 0)
+                elem.options[0] = null;
+
+	    for (var i=0;i<tmpAry.length;i++) {
+	        elem.options[i] = tmpAry[i];
 	    }
-	
-	    arrTexts.sort();
-	
-	    for (i = 0; i < listelement.length; i++) {
-	        listelement.options[i].text = arrTexts[i];
-	        listelement.options[i].value = arrValues[i];
-	    }
+
+	    return;
 	}
-	
+
 	function move(from, to) {
 	    /* add selected item to the 'to' selectbox */
 	    for (i = 0; i < document.getElementById(from).length; i++) {
 	        if (document.getElementById(from).options[i].selected == true) {
 	            document.getElementById(to).options[document.getElementById(to).length] = new Option(
-	                document.getElementById(from).options[i].text);
+	                document.getElementById(from).options[i].text, document.getElementById(from).options[i].value );
 	        }
 	    }
 	
@@ -81,6 +83,16 @@
 	        document.getElementById("accounts_yes").options[i].selected = true;
 	    }
 	}
+	
+	
+	function submitform(f) {
+            markAllAccounts();
+            var url = "";     
+            win = window.open(url, 'new_window', "width=1024,height=900,status=no,resizable=yes,scrollbars=yes,menubar=no,toolbar=no,location=0");
+           document.forms[f].submit();
+        }
+
+
 </script>
 <style type="text/css">
 #year_caption,#month_caption,#timeframe_caption,#year_data,#month_data,#timeframe_data,#single_account,#multiple_accounts
@@ -116,7 +128,7 @@ div.multiple_accounts {
 {$HEADER}
             <td align="center" valign="top">
                <h1>{#TEXT_254#}</h1>
-               <form action="{$ENV_INDEX_PHP}" method="POST" target="_blank" onsubmit="markAllAccounts();"> 
+               <form action="{$ENV_INDEX_PHP}" method="POST" target="new_window" name="reporting" onsubmit="submitform('reporting');"> 
                   <input type="hidden" name="action" value="plot_report">
                   <table border="0">
                      <tr>
@@ -124,9 +136,9 @@ div.multiple_accounts {
                         <td class="contrastbgcolor">
                            <select class="contrastbgcolor" size="1" name="timemode" id="timemode"
                               onchange="timemode_func();">
-                              <option>1 {#TEXT_57#}</option>
-                              <option>1 {#TEXT_56#}</option>
-                              <option>{#TEXT_257#}</option>
+                              <option value="1">1 {#TEXT_57#}</option>
+                              <option value="2">1 {#TEXT_56#}</option>
+                              <option value="3">{#TEXT_257#}</option>
                            </select>
                         </td>
                      </tr>
@@ -134,8 +146,8 @@ div.multiple_accounts {
                         <td class="contrastbgcolor">
                            <select class="contrastbgcolor" size="1" name="accountmode" id="accountmode"
                               onchange="accountmode_func();">
-                              <option>1 {#TEXT_232#}</option>
-                              <option>{#TEXT_258#}</option>
+                              <option value="1">1 {#TEXT_232#}</option>
+                              <option value="2">{#TEXT_258#}</option>
                            </select>
                         </td>
                      </tr>

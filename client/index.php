@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.82 2014/03/04 21:33:55 olivleh1 Exp $
+// $Id: index.php,v 1.83 2014/03/08 00:24:14 olivleh1 Exp $
 //
 namespace client;
 
@@ -396,7 +396,7 @@ if ($is_logged_in == 0) {
 				break;
 			case 'plot_report' :
 				$timemode = $_POST ['timemode'];
-				$accountmode = $_POST ['timemode'];
+				$accountmode = $_POST ['accountmode'];
 				$year = $_POST ['year'];
 				$month_month = $_POST ['month_month'];
 				$year_month = $_POST ['year_month'];
