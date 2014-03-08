@@ -25,13 +25,13 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showEditMoneyflowResponse.php,v 1.3 2014/02/28 22:19:46 olivleh1 Exp $
+// $Id: showEditMoneyflowResponse.php,v 1.4 2014/03/08 23:18:28 olivleh1 Exp $
 //
 namespace api\model\moneyflow;
 
 use api\model\transport\MoneyflowTransport;
 
-class showEditMoneyflowResponse {
+class showEditMoneyflowResponse implements IshowEditMoneyflowsResponse {
 	public $moneyflowTransport;
 	public $capitalsourceTransport;
 	public $contractpartnerTransport;

@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractMapperSupport.php,v 1.13 2014/03/08 22:03:24 olivleh1 Exp $
+// $Id: AbstractMapperSupport.php,v 1.14 2014/03/08 23:18:28 olivleh1 Exp $
 //
 namespace base;
 
@@ -84,10 +84,12 @@ abstract class AbstractMapperSupport {
 	}
 
 	protected function mapArray(array $aArray, $targetObject = null) {
-		$mapper = $this->getMapper( array_values( $aArray )[0], $targetObject );
 		$result = array ();
-		foreach ( $aArray as $a ) {
-			$result [] = self::executeMapper( $mapper, $a );
+		if (count( $aArray ) > 0) {
+			$mapper = $this->getMapper( array_values( $aArray )[0], $targetObject );
+			foreach ( $aArray as $a ) {
+				$result [] = self::executeMapper( $mapper, $a );
+			}
 		}
 		return $result;
 	}

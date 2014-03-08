@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,32 +25,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: updateUserResponse.php,v 1.4 2014/03/08 23:18:27 olivleh1 Exp $
+// $Id: IshowCreateUserResponse.php,v 1.1 2014/03/08 23:18:27 olivleh1 Exp $
 //
 namespace api\model\user;
 
-use api\model\transport\UserTransport;
-use api\model\validation\validationResponse;
+interface IshowCreateUserResponse {
 
-class updateUserResponse extends validationResponse implements IshowEditUserResponse {
-	public $accessRelationTransport;
-	public $groupTransport;
+	public function getGroupTransport();
 
-	public final function getGroupTransport() {
-		return $this->groupTransport;
-	}
-
-	public final function setAccessRelationTransport(array $accessRelationTransport) {
-		$this->accessRelationTransport = $accessRelationTransport;
-	}
-
-	public final function setGroupTransport(array $groupTransport) {
-		$this->groupTransport = $groupTransport;
-	}
-
-	public final function getAccessRelationTransport() {
-		return $this->accessRelationTransport;
-	}
+	public function setGroupTransport(array $groupTransport);
 }
-
 ?>

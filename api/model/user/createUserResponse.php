@@ -25,14 +25,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: createUserResponse.php,v 1.2 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: createUserResponse.php,v 1.3 2014/03/08 23:18:27 olivleh1 Exp $
 //
 namespace api\model\user;
 
 use api\model\transport\UserTransport;
 use api\model\validation\validationResponse;
 
-class createUserResponse extends validationResponse {
+class createUserResponse extends validationResponse implements IshowCreateUserResponse {
 	public $groupTransport;
 
 	public final function getGroupTransport() {

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.55 2014/03/08 22:12:58 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.56 2014/03/08 23:18:28 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -43,7 +43,7 @@ class moduleUsers extends module {
 		if (! $userId) {
 			return 3;
 		} else {
-			Environment::getInstance()->setUserId($userId);
+			Environment::getInstance()->setUserId( $userId );
 
 			if (Environment::getInstance()->getUserAttNew()) {
 				return 2;
@@ -222,6 +222,7 @@ class moduleUsers extends module {
 				break;
 		}
 
+		// edit user
 		if (is_array( $groups ) && is_array( $access_relations )) {
 			foreach ( $groups as $group ) {
 				$groupById [$group ['groupid']] = $group ['name'];
@@ -240,9 +241,11 @@ class moduleUsers extends module {
 				$access_relation ['validfrom'] = $this->convertDateToGui( date( 'Y-m-d', time() + 86400 ) );
 			}
 		} else {
-			$access_relation = array (
-					'ref_id' => ''
-			);
+			// create user
+			if (! is_array( $access_relation ))
+				$access_relation = array (
+						'ref_id' => ''
+				);
 		}
 
 		$this->template->assign( 'CLOSE', $close );

@@ -1,7 +1,6 @@
 <?php
-
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,32 +24,30 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: updateUserResponse.php,v 1.4 2014/03/08 23:18:27 olivleh1 Exp $
+// $Id: IshowAddMoneyflowsResponse.php,v 1.1 2014/03/08 23:18:28 olivleh1 Exp $
 //
-namespace api\model\user;
+namespace api\model\moneyflow;
 
-use api\model\transport\UserTransport;
-use api\model\validation\validationResponse;
+interface IshowAddMoneyflowsResponse {
 
-class updateUserResponse extends validationResponse implements IshowEditUserResponse {
-	public $accessRelationTransport;
-	public $groupTransport;
+	public function getPreDefMoneyflowTransport();
 
-	public final function getGroupTransport() {
-		return $this->groupTransport;
-	}
+	public function setPreDefMoneyflowTransport(array $preDefMoneyflowTransport);
 
-	public final function setAccessRelationTransport(array $accessRelationTransport) {
-		$this->accessRelationTransport = $accessRelationTransport;
-	}
+	public function getCapitalsourceTransport();
 
-	public final function setGroupTransport(array $groupTransport) {
-		$this->groupTransport = $groupTransport;
-	}
+	public function setCapitalsourceTransport(array $capitalsourceTransport);
 
-	public final function getAccessRelationTransport() {
-		return $this->accessRelationTransport;
-	}
+	public function getContractpartnerTransport();
+
+	public function setContractpartnerTransport(array $contractpartnerTransport);
+
+	public function getPostingAccountTransport();
+
+	public function setPostingAccountTransport(array $postingAccountTransport);
+
+	public function setSettingNumberOfFreeMoneyflows($settingNumberOfFreeMoneyflows);
+
+	public function getSettingNumberOfFreeMoneyflows();
 }
-
 ?>

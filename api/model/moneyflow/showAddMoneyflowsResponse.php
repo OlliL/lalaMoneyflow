@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showAddMoneyflowsResponse.php,v 1.5 2014/02/28 22:19:46 olivleh1 Exp $
+// $Id: showAddMoneyflowsResponse.php,v 1.6 2014/03/08 23:18:28 olivleh1 Exp $
 //
 namespace api\model\moneyflow;
 
-class showAddMoneyflowsResponse {
+class showAddMoneyflowsResponse implements IshowAddMoneyflowsResponse {
 	public $preDefMoneyflowTransport;
 	public $capitalsourceTransport;
 	public $contractpartnerTransport;

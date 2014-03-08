@@ -25,49 +25,23 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showEditPreDefMoneyflowResponse.php,v 1.5 2014/03/08 23:18:28 olivleh1 Exp $
+// $Id: IshowEditPreDefMoneyflowResponse.php,v 1.1 2014/03/08 23:18:28 olivleh1 Exp $
 //
 namespace api\model\predefmoneyflow;
 
-use api\model\transport\PreDefMoneyflowTransport;
+interface IshowEditPreDefMoneyflowResponse {
 
-class showEditPreDefMoneyflowResponse implements IshowEditPreDefMoneyflowResponse {
-	public $preDefMoneyflowTransport;
-	public $capitalsourceTransport;
-	public $contractpartnerTransport;
-	public $postingAccountTransport;
+	public function getCapitalsourceTransport();
 
-	public final function getPreDefMoneyflowTransport() {
-		return $this->preDefMoneyflowTransport;
-	}
+	public function setCapitalsourceTransport(array $capitalsourceTransport);
 
-	public final function setPreDefMoneyflowTransport(PreDefMoneyflowTransport $preDefMoneyflowTransport) {
-		$this->preDefMoneyflowTransport = $preDefMoneyflowTransport;
-	}
+	public function getContractpartnerTransport();
 
-	public final function getCapitalsourceTransport() {
-		return $this->capitalsourceTransport;
-	}
+	public function setContractpartnerTransport(array $contractpartnerTransport);
 
-	public final function setCapitalsourceTransport(array $capitalsourceTransport) {
-		$this->capitalsourceTransport = $capitalsourceTransport;
-	}
+	public function getPostingAccountTransport();
 
-	public final function getContractpartnerTransport() {
-		return $this->contractpartnerTransport;
-	}
-
-	public final function setContractpartnerTransport(array $contractpartnerTransport) {
-		$this->contractpartnerTransport = $contractpartnerTransport;
-	}
-
-	public final function getPostingAccountTransport() {
-		return $this->postingAccountTransport;
-	}
-
-	public final function setPostingAccountTransport(array $postingAccountTransport) {
-		$this->postingAccountTransport = $postingAccountTransport;
-	}
+	public function setPostingAccountTransport(array $postingAccountTransport);
 }
 
 ?>

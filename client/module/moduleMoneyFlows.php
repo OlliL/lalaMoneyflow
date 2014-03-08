@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.87 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.88 2014/03/08 23:18:28 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -192,7 +192,6 @@ class moduleMoneyFlows extends module {
 
 					$createMoneyflows = MoneyflowControllerHandler::getInstance()->createMoneyflows( $add_data );
 					$capitalsource_values = $createMoneyflows ['capitalsources'];
-
 					$contractpartner_values = $createMoneyflows ['contractpartner'];
 					$postingaccount_values = $createMoneyflows ['postingaccounts'];
 
