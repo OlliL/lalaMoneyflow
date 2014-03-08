@@ -24,12 +24,13 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.93 2014/03/08 16:46:23 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.94 2014/03/08 22:12:59 olivleh1 Exp $
 //
 namespace client\module;
 
 use client\handler\ReportControllerHandler;
 use client\core\coreText;
+use client\util\Environment;
 
 if (ENABLE_JPGRAPH) {
 	require_once 'jpgraph.php';
@@ -150,7 +151,7 @@ class moduleReports extends module {
 					$all_moneyflow_data [$key] ['capitalsourcecomment'] = htmlentities( $value ['capitalsourcecomment'], ENT_COMPAT | ENT_HTML401 );
 					$all_moneyflow_data [$key] ['postingaccountname'] = htmlentities( $value ['postingaccountname'], ENT_COMPAT | ENT_HTML401 );
 					$all_moneyflow_data [$key] ['comment'] = htmlentities( $value ['comment'], ENT_COMPAT | ENT_HTML401 );
-					if ($all_moneyflow_data [$key] ['mur_userid'] == USERID) {
+					if ($all_moneyflow_data [$key] ['mur_userid'] == Environment::getInstance()->getUserId()) {
 						$all_moneyflow_data [$key] ['owner'] = true;
 					} else {
 						$all_moneyflow_data [$key] ['owner'] = false;

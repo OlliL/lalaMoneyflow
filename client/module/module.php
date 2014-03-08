@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.78 2014/03/02 23:42:20 olivleh1 Exp $
+// $Id: module.php,v 1.79 2014/03/08 22:12:59 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -44,13 +44,13 @@ abstract class module {
 		$this->template->registerPlugin( 'modifier', 'number_format', 'client\util\SmartyPlugin::my_number_format' );
 		$this->template->assign( 'ENV_INDEX_PHP', 'index.php' );
 		$this->template->setCompileCheck( \Smarty::COMPILECHECK_OFF );
-		
+
 		if (! empty( $_SERVER ['HTTP_REFERER'] )) {
 			$http_referer = $_SERVER ['HTTP_REFERER'];
 		} else {
 			$http_referer = '';
 		}
-		
+
 		if (! empty( $_POST ['REFERER'] )) {
 			$referer = $_POST ['REFERER'];
 		} elseif (! empty( $_GET ['REFERER'] )) {
@@ -58,7 +58,7 @@ abstract class module {
 		} else {
 			$referer = '';
 		}
-		
+
 		if ((! empty( $_POST ['sr'] ) && $_POST ['sr'] == 1) || (! empty( $_GET ['sr'] ) && $_GET ['sr'] == 1)) {
 			$this->template->assign( 'ENV_REFERER', htmlentities( $http_referer ) );
 		} else {
@@ -112,11 +112,11 @@ abstract class module {
 		} else {
 			$this->template->assign( 'IS_ADMIN', false );
 		}
-		$cache_id = USERID;
+		$cache_id = Environment::getInstance()->getUserId();
 		$this->template->setCaching( true );
 		$header = $this->fetch_template( 'display_header.tpl', 'header_' . $this->guiLanguage . '_' . $admin . '_' . $nonavi . '_' . $cache_id );
 		$this->template->assign( 'HEADER', $header );
-		
+
 		$footer = $this->fetch_template( 'display_footer.tpl', 'footer_' . $this->guiLanguage . '_' . $cache_id );
 		$this->template->assign( 'FOOTER', $footer );
 		$this->template->setCaching( false );
@@ -124,7 +124,7 @@ abstract class module {
 
 	protected final function fix_amount(&$amount) {
 		$return = true;
-		
+
 		if (preg_match( '/^-{0,1}[0-9]*([\.][0-9][0-9][0-9]){0,}([,][0-9]{1,2}){0,1}$/', $amount )) {
 			$amount = str_replace( '.', '', $amount );
 			$amount = str_replace( ',', '.', $amount );
@@ -132,11 +132,11 @@ abstract class module {
 			$amount = str_replace( ',', '', $amount );
 		} else {
 			$this->add_error( ErrorCode::AMOUNT_IN_WRONG_FORMAT, array (
-					$amount 
+					$amount
 			) );
 			$return = false;
 		}
-		
+
 		return $return;
 	}
 

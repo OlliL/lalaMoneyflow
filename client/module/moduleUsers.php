@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.54 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.55 2014/03/08 22:12:58 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -43,7 +43,7 @@ class moduleUsers extends module {
 		if (! $userId) {
 			return 3;
 		} else {
-			define( USERID, $userId );
+			Environment::getInstance()->setUserId($userId);
 
 			if (Environment::getInstance()->getUserAttNew()) {
 				return 2;

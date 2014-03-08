@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.53 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.54 2014/03/08 22:12:58 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -50,7 +50,7 @@ class moduleCapitalSources extends module {
 		foreach ( $all_data as $key => $data ) {
 			$all_data [$key] ['statecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_STATE', $data ['state'] );
 			$all_data [$key] ['typecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_TYPE', $data ['type'] );
-			if ($data ['mur_userid'] == USERID) {
+			if ($data ['mur_userid'] == Environment::getInstance()->getUserId()) {
 				$all_data [$key] ['owner'] = true;
 			} else {
 				$all_data [$key] ['owner'] = false;
