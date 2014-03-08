@@ -25,20 +25,27 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractMapperSupport.php,v 1.11 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: AbstractMapperSupport.php,v 1.12 2014/03/08 21:56:52 olivleh1 Exp $
 //
 namespace base;
+
+use api\model\transport\ValidationItemTransport;
+use client\mapper\ArrayToCapitalsourceTransportMapper;
 
 abstract class AbstractMapperSupport {
 	private $mapper;
 
-	protected function map($obj, $arrayType = null) {
+	private final function getMapper($obj, $targetObject = null) {
 		if ($obj) {
 			$object = null;
-			if ($arrayType) {
-				$object = $this->mapper [$arrayType];
+			if (is_array( $obj ) && $targetObject !== null) {
+				$object = $this->mapper ['array'] [$targetObject];
 			} elseif (array_key_exists( get_class( $obj ), $this->mapper )) {
-				$object = $this->mapper [get_class( $obj )];
+				$mapperArray = array_values( $this->mapper [get_class( $obj )] );
+				if (count( $mapperArray ) == 1)
+					$object = $mapperArray [0];
+				elseif (count( $mapperArray ) > 1 && $targetObject !== null)
+					$object = $this->mapper [get_class( $obj )] [$targetObject];
 			}
 
 			if ($object == null) {
@@ -53,61 +60,66 @@ abstract class AbstractMapperSupport {
 				throw new \Exception( 'Mapper for ' . get_class( $obj ) . ' cannot be instantiated!' );
 			}
 
-			return $mapper->$method( $obj );
+			return array (
+					$mapper,
+					$method
+			);
 		}
 	}
 
-	protected function mapArrayNullable($aArray, $arrayType = null) {
-		if (! is_array( $aArray ))
-			return array();
-		return $this->mapArray( $aArray, $arrayType );
+	private final function executeMapper($mapper, $obj) {
+		return call_user_func( $mapper, $obj );
 	}
 
-	protected function mapArray(array $aArray, $arrayType = null) {
+	protected function map($obj, $targetObject = null) {
+		$mapper = $this->getMapper( $obj, $targetObject );
+		return $this->executeMapper( $mapper, $obj );
+	}
+
+	protected function mapArrayNullable($aArray, $targetObject = null) {
+		if (! is_array( $aArray ))
+			return array ();
+		return $this->mapArray( $aArray, $targetObject );
+	}
+
+	protected function mapArray(array $aArray, $targetObject = null) {
+		$mapper = $this->getMapper( array_values( $aArray )[0], $targetObject );
 		$result = array ();
 		foreach ( $aArray as $a ) {
-			$result [] = self::map( $a, $arrayType );
+			$result [] = self::executeMapper( $mapper, $a );
 		}
 		return $result;
 	}
 
-	protected function addMapper($class, $arrayTypeA = null, $arrayTypeB = null) {
-		if ($arrayTypeA) {
-			/* if the source is an array which has to be mapped */
-			$this->mapper [$arrayTypeA] = array (
-					$class,
-					'mapAToB'
-			);
-		} else {
-			/* if the source is an object */
-			$a = new \ReflectionParameter( array (
-					$class,
-					'mapAToB'
-			), 0 );
+	protected function addMapper($class) {
+		$a = new \ReflectionParameter( array (
+				$class,
+				'mapAToB'
+		), 0 );
+		$b = new \ReflectionParameter( array (
+				$class,
+				'mapBToA'
+		), 0 );
 
-			$this->mapper [$a->getClass()->name] = array (
-					$class,
-					'mapAToB'
-			);
+		if ($a->isArray()) {
+			$aName = 'array';
+		} else {
+			$aName = $a->getClass()->name;
+		}
+		if ($b->isArray()) {
+			$bName = 'array';
+		} else {
+			$bName = $b->getClass()->name;
 		}
 
-		if ($arrayTypeB) {
-			/* if the target is an array which has to be mapped */
-			$this->mapper [$arrayTypeB] = array (
-					$class,
-					'mapBToA'
-			);
-		} else {
-			/* if the target is an object */
-			$b = new \ReflectionParameter( array (
-					$class,
-					'mapBToA'
-			), 0 );
-			$this->mapper [$b->getClass()->name] = array (
-					$class,
-					'mapBToA'
-			);
-		}
+		$this->mapper [$aName] [$bName] = array (
+				$class,
+				'mapAToB'
+		);
+		$this->mapper [$bName] [$aName] = array (
+				$class,
+				'mapBToA'
+		);
 	}
 }
 

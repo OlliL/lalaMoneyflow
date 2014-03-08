@@ -24,24 +24,25 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: GroupControllerHandler.php,v 1.6 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: GroupControllerHandler.php,v 1.7 2014/03/08 21:56:51 olivleh1 Exp $
 //
 namespace client\handler;
 
-use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\group\updateGroupRequest;
 use api\model\group\createGroupRequest;
 use api\model\group\showGroupListResponse;
 use api\model\group\showEditGroupResponse;
 use api\model\group\showDeleteGroupResponse;
+use client\mapper\ArrayToGroupTransportMapper;
+use api\model\transport\GroupTransport;
 
 class GroupControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'client\mapper\ArrayToGroupTransportMapper', ClientArrayMapperEnum::GROUP_TRANSPORT );
+		parent::addMapper( ArrayToGroupTransportMapper::getClass() );
 	}
 
 	public static function getInstance() {
@@ -88,7 +89,7 @@ class GroupControllerHandler extends AbstractHandler {
 	}
 
 	public final function createGroup(array $group) {
-		$groupTransport = parent::map( $group, ClientArrayMapperEnum::GROUP_TRANSPORT );
+		$groupTransport = parent::map( $group, GroupTransport::getClass() );
 
 		$request = new createGroupRequest();
 		$request->setGroupTransport( $groupTransport );
@@ -96,7 +97,7 @@ class GroupControllerHandler extends AbstractHandler {
 	}
 
 	public final function updateGroup(array $group) {
-		$groupTransport = parent::map( $group, ClientArrayMapperEnum::GROUP_TRANSPORT );
+		$groupTransport = parent::map( $group, GroupTransport::getClass() );
 
 		$request = new updateGroupRequest();
 		$request->setGroupTransport( $groupTransport );

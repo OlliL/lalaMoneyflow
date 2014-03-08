@@ -1,10 +1,4 @@
 - replace USERID by Environment::getInstance()->getUserId() in the client
-- modify the mapper framework.
-  - analyze the mapAToB and mapBToA methods about the arguments the force
-  - create mapper arrays for both directions
-  - when map, always specify the target.
-  - with the given source and the specified target, the mapper can be always located
-  ---> the Enums can be deleted
 
 - PHPUnit: start writing service tests
 - PHPDoc: document the services, then the controller, then the DAOs, and maybe the BOs

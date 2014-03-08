@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataWrongCapitalsourceTransport.php,v 1.2 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: CompareDataWrongCapitalsourceTransport.php,v 1.3 2014/03/08 21:56:51 olivleh1 Exp $
 //
 namespace api\model\transport;
 
-class CompareDataWrongCapitalsourceTransport {
+class CompareDataWrongCapitalsourceTransport extends AbstractTransport {
 	public $moneyflowTransport;
 	public $compareDataDatasetTransport;
 

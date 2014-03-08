@@ -24,11 +24,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowControllerHandler.php,v 1.10 2014/03/08 17:23:04 olivleh1 Exp $
+// $Id: MoneyflowControllerHandler.php,v 1.11 2014/03/08 21:56:51 olivleh1 Exp $
 //
 namespace client\handler;
 
-use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\moneyflow\updateMoneyflowRequest;
 use api\model\moneyflow\createMoneyflowsRequest;
@@ -40,19 +39,28 @@ use api\model\moneyflow\createMoneyflowsResponse;
 use api\model\moneyflow\updateMoneyflowResponse;
 use api\model\moneyflow\showSearchMoneyflowFormResponse;
 use api\model\moneyflow\searchMoneyflowsResponse;
+use client\mapper\ArrayToCapitalsourceTransportMapper;
+use client\mapper\ArrayToContractpartnerTransportMapper;
+use client\mapper\ArrayToMoneyflowTransportMapper;
+use client\mapper\ArrayToPreDefMoneyflowTransportMapper;
+use client\mapper\ArrayToPostingAccountTransportMapper;
+use client\mapper\ArrayToMoneyflowSearchParamsTransportMapper;
+use client\mapper\ArrayToMoneyflowSearchResultTransportMapper;
+use api\model\transport\MoneyflowTransport;
+use api\model\transport\MoneyflowSearchParamsTransport;
 
 class MoneyflowControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToContractpartnerTransportMapper', ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToPreDefMoneyflowTransportMapper', ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToPostingAccountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToMoneyflowSearchParamsTransportMapper', ClientArrayMapperEnum::MONEYFLOWSEARCHPARAMS_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToMoneyflowSearchResultTransportMapper', ClientArrayMapperEnum::MONEYFLOWSEARCHRESULT_TRANSPORT );
+		parent::addMapper( ArrayToCapitalsourceTransportMapper::getClass() );
+		parent::addMapper( ArrayToContractpartnerTransportMapper::getClass() );
+		parent::addMapper( ArrayToMoneyflowTransportMapper::getClass() );
+		parent::addMapper( ArrayToPreDefMoneyflowTransportMapper::getClass() );
+		parent::addMapper( ArrayToPostingAccountTransportMapper::getClass() );
+		parent::addMapper( ArrayToMoneyflowSearchParamsTransportMapper::getClass() );
+		parent::addMapper( ArrayToMoneyflowSearchResultTransportMapper::getClass() );
 	}
 
 	public static function getInstance() {
@@ -115,7 +123,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 				$preDefMoneyflowIds [] = $moneyflow ['predefmoneyflowid'];
 			}
 		}
-		$moneyflowTransport = parent::mapArray( $moneyflows, ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
+		$moneyflowTransport = parent::mapArray( $moneyflows, MoneyflowTransport::getClass() );
 
 		$request = new createMoneyflowsRequest();
 		$request->setMoneyflowTransport( $moneyflowTransport );
@@ -139,7 +147,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 	}
 
 	public final function updateMoneyflow(array $moneyflow) {
-		$moneyflowTransport = parent::map( $moneyflow, ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
+		$moneyflowTransport = parent::map( $moneyflow, MoneyflowTransport::getClass() );
 
 		$request = new updateMoneyflowRequest();
 		$request->setMoneyflowTransport( $moneyflowTransport );
@@ -168,13 +176,12 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		if ($response instanceof showSearchMoneyflowFormResponse) {
 			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
 			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
-
 		}
 		return $result;
 	}
 
 	public final function searchMoneyflows(array $params) {
-		$searchParamsTransport = parent::map( $params, ClientArrayMapperEnum::MONEYFLOWSEARCHPARAMS_TRANSPORT );
+		$searchParamsTransport = parent::map( $params, MoneyflowSearchParamsTransport::getClass() );
 
 		$request = new searchMoneyflowsRequest();
 		$request->setMoneyflowSearchParamsTransport( $searchParamsTransport );

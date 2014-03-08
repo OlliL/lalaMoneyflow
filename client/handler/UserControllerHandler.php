@@ -24,11 +24,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: UserControllerHandler.php,v 1.12 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: UserControllerHandler.php,v 1.13 2014/03/08 21:56:51 olivleh1 Exp $
 //
 namespace client\handler;
 
-use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\user\createUserRequest;
 use api\model\user\updateUserRequest;
@@ -39,16 +38,22 @@ use api\model\user\showEditUserResponse;
 use api\model\user\showDeleteUserResponse;
 use api\model\user\createUserResponse;
 use api\model\user\updateUserResponse;
+use api\model\transport\ValidationItemTransport;
+use client\mapper\ArrayToUserTransportMapper;
+use api\model\transport\UserTransport;
+use client\mapper\ArrayToGroupTransportMapper;
+use client\mapper\ArrayToAccessRelationTransportMapper;
+use api\model\transport\GroupTransport;
+use api\model\transport\AccessRelationTransport;
 
 class UserControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToUserTransportMapper', ClientArrayMapperEnum::USER_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToGroupTransportMapper', ClientArrayMapperEnum::GROUP_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToAccessRelationTransportMapper', ClientArrayMapperEnum::ACCESS_RELATION_TRANSPORT );
+		parent::addMapper( ArrayToUserTransportMapper::getClass() );
+		parent::addMapper( ArrayToGroupTransportMapper::getClass() );
+		parent::addMapper( ArrayToAccessRelationTransportMapper::getClass() );
 	}
 
 	public static function getInstance() {
@@ -123,8 +128,8 @@ class UserControllerHandler extends AbstractHandler {
 	}
 
 	public final function createUser(array $user, array $access_relation) {
-		$userTransport = parent::map( $user, ClientArrayMapperEnum::USER_TRANSPORT );
-		$accessRelationTransport = parent::map( $access_relation, ClientArrayMapperEnum::ACCESS_RELATION_TRANSPORT );
+		$userTransport = parent::map( $user, UserTransport::getClass() );
+		$accessRelationTransport = parent::map( $access_relation, AccessRelationTransport::getClass() );
 
 		$request = new createUserRequest();
 		$request->setUserTransport( $userTransport );
@@ -142,8 +147,8 @@ class UserControllerHandler extends AbstractHandler {
 	}
 
 	public final function updateUser(array $user, array $access_relation) {
-		$userTransport = parent::map( $user, ClientArrayMapperEnum::USER_TRANSPORT );
-		$accessRelationTransport = parent::map( $access_relation, ClientArrayMapperEnum::ACCESS_RELATION_TRANSPORT );
+		$userTransport = parent::map( $user, UserTransport::getClass() );
+		$accessRelationTransport = parent::map( $access_relation, AccessRelationTransport::getClass() );
 
 		$request = new updateUserRequest();
 		$request->setUserTransport( $userTransport );

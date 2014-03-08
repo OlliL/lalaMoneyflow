@@ -24,26 +24,29 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataControllerHandler.php,v 1.10 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: CompareDataControllerHandler.php,v 1.11 2014/03/08 21:56:51 olivleh1 Exp $
 //
 namespace client\handler;
 
-use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use client\util\DateUtil;
 use api\model\comparedata\compareDataRequest;
 use api\model\comparedata\showCompareDataFormResponse;
 use api\model\comparedata\compareDataResponse;
+use client\mapper\ArrayToCompareDataFormatTransportMapper;
+use client\mapper\ArrayToCompareDataDatasetTransportMapper;
+use client\mapper\ArrayToCapitalsourceTransportMapper;
+use client\mapper\ArrayToMoneyflowTransportMapper;
 
 class CompareDataControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'client\mapper\ArrayToCompareDataFormatTransportMapper', ClientArrayMapperEnum::COMPAREDATAFORMAT_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToCompareDataDatasetTransportMapper', ClientArrayMapperEnum::COMPAREDATADATASET_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
+		parent::addMapper( ArrayToCompareDataFormatTransportMapper::getClass() );
+		parent::addMapper( ArrayToCompareDataDatasetTransportMapper::getClass() );
+		parent::addMapper( ArrayToCapitalsourceTransportMapper::getClass() );
+		parent::addMapper( ArrayToMoneyflowTransportMapper::getClass() );
 	}
 
 	public static function getInstance() {

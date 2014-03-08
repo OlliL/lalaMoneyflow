@@ -24,11 +24,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportControllerHandler.php,v 1.14 2014/03/08 16:46:22 olivleh1 Exp $
+// $Id: ReportControllerHandler.php,v 1.15 2014/03/08 21:56:51 olivleh1 Exp $
 //
 namespace client\handler;
 
-use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\report\showTrendsGraphRequest;
 use client\util\DateUtil;
@@ -40,20 +39,26 @@ use api\model\report\showYearlyReportGraphRequest;
 use api\model\report\showMonthlyReportGraphRequest;
 use api\model\report\showYearlyReportGraphResponse;
 use api\model\report\showMonthlyReportGraphResponse;
+use client\mapper\ArrayToCapitalsourceTransportMapper;
+use client\mapper\ArrayToMoneyflowTransportMapper;
+use client\mapper\ArrayToReportTurnoverCapitalsourceTransportMapper;
+use client\mapper\ArrayToTrendsCalculatedTransportMapper;
+use client\mapper\ArrayToTrendsSettledTransportMapper;
+use client\mapper\ArrayToPostingAccountTransportMapper;
+use client\mapper\ArrayToPostingAccountAmountTransportMapper;
 
 class ReportControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToMoneyflowTransportMapper', ClientArrayMapperEnum::MONEYFLOW_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToReportTurnoverCapitalsourceTransportMapper', ClientArrayMapperEnum::REPORTTURNOVERCAPITALSOURCE_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToTrendsCalculatedTransportMapper', ClientArrayMapperEnum::TRENDSCALCULATED_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToTrendsSettledTransportMapper', ClientArrayMapperEnum::TRENDSSETTLED_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToPostingAccountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToPostingAccountAmountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNTAMOUNT_TRANSPORT );
+		parent::addMapper( ArrayToCapitalsourceTransportMapper::getClass() );
+		parent::addMapper( ArrayToMoneyflowTransportMapper::getClass() );
+		parent::addMapper( ArrayToReportTurnoverCapitalsourceTransportMapper::getClass() );
+		parent::addMapper( ArrayToTrendsCalculatedTransportMapper::getClass() );
+		parent::addMapper( ArrayToTrendsSettledTransportMapper::getClass() );
+		parent::addMapper( ArrayToPostingAccountTransportMapper::getClass() );
+		parent::addMapper( ArrayToPostingAccountAmountTransportMapper::getClass() );
 	}
 
 	public static function getInstance() {

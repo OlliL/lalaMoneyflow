@@ -24,11 +24,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PreDefMoneyflowControllerHandler.php,v 1.9 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: PreDefMoneyflowControllerHandler.php,v 1.10 2014/03/08 21:56:51 olivleh1 Exp $
 //
 namespace client\handler;
 
-use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\predefmoneyflow\updatePreDefMoneyflowRequest;
 use api\model\predefmoneyflow\createPreDefMoneyflowRequest;
@@ -38,16 +37,21 @@ use api\model\predefmoneyflow\showCreatePreDefMoneyflowResponse;
 use api\model\predefmoneyflow\showDeletePreDefMoneyflowResponse;
 use api\model\predefmoneyflow\createPreDefMoneyflowResponse;
 use api\model\predefmoneyflow\updatePreDefMoneyflowResponse;
+use client\mapper\ArrayToCapitalsourceTransportMapper;
+use client\mapper\ArrayToContractpartnerTransportMapper;
+use client\mapper\ArrayToPostingAccountTransportMapper;
+use client\mapper\ArrayToPreDefMoneyflowTransportMapper;
+use api\model\transport\PreDefMoneyflowTransport;
 
 class PreDefMoneyflowControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToContractpartnerTransportMapper', ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToPostingAccountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToPreDefMoneyflowTransportMapper', ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
+		parent::addMapper( ArrayToCapitalsourceTransportMapper::getClass() );
+		parent::addMapper( ArrayToContractpartnerTransportMapper::getClass() );
+		parent::addMapper( ArrayToPostingAccountTransportMapper::getClass() );
+		parent::addMapper( ArrayToPreDefMoneyflowTransportMapper::getClass() );
 	}
 
 	public static function getInstance() {
@@ -109,7 +113,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 	}
 
 	public final function createPreDefMoneyflow(array $preDefMoneyflow) {
-		$preDefMoneyflowTransport = parent::map( $preDefMoneyflow, ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
+		$preDefMoneyflowTransport = parent::map( $preDefMoneyflow, PreDefMoneyflowTransport::getClass() );
 
 		$request = new createPreDefMoneyflowRequest();
 		$request->setPreDefMoneyflowTransport( $preDefMoneyflowTransport );
@@ -128,7 +132,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 	}
 
 	public final function updatePreDefMoneyflow(array $preDefMoneyflow) {
-		$preDefMoneyflowTransport = parent::map( $preDefMoneyflow, ClientArrayMapperEnum::PREDEFMONEYFLOW_TRANSPORT );
+		$preDefMoneyflowTransport = parent::map( $preDefMoneyflow, PreDefMoneyflowTransport::getClass() );
 
 		$request = new updatePreDefMoneyflowRequest();
 		$request->setPreDefMoneyflowTransport( $preDefMoneyflowTransport );

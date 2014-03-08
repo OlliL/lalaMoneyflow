@@ -24,11 +24,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PostingAccountControllerHandler.php,v 1.9 2014/03/08 00:36:56 olivleh1 Exp $
+// $Id: PostingAccountControllerHandler.php,v 1.10 2014/03/08 21:56:51 olivleh1 Exp $
 //
 namespace client\handler;
 
-use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\postingaccount\createPostingAccountRequest;
 use api\model\postingaccount\updatePostingAccountRequest;
@@ -36,14 +35,17 @@ use api\model\postingaccount\plotPostingAccountsResponse;
 use api\model\postingaccount\showPostingAccountListResponse;
 use api\model\postingaccount\showEditPostingAccountResponse;
 use api\model\postingaccount\showDeletePostingAccountResponse;
+use client\mapper\ArrayToPostingAccountTransportMapper;
+use client\mapper\ArrayToPostingAccountAmountTransportMapper;
+use api\model\transport\PostingAccountTransport;
 
 class PostingAccountControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'client\mapper\ArrayToPostingAccountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
-		parent::addMapper( 'client\mapper\ArrayToPostingAccountAmountTransportMapper', ClientArrayMapperEnum::POSTINGACCOUNTAMOUNT_TRANSPORT );
+		parent::addMapper( ArrayToPostingAccountTransportMapper::getClass() );
+		parent::addMapper( ArrayToPostingAccountAmountTransportMapper::getClass() );
 	}
 
 	public static function getInstance() {
@@ -90,7 +92,7 @@ class PostingAccountControllerHandler extends AbstractHandler {
 	}
 
 	public final function createPostingAccount(array $postingAccount) {
-		$postingAccountTransport = parent::map( $postingAccount, ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
+		$postingAccountTransport = parent::map( $postingAccount, PostingAccountTransport::getClass() );
 
 		$request = new createPostingAccountRequest();
 		$request->setPostingAccountTransport( $postingAccountTransport );
@@ -98,7 +100,7 @@ class PostingAccountControllerHandler extends AbstractHandler {
 	}
 
 	public final function updatePostingAccount(array $postingAccount) {
-		$postingAccountTransport = parent::map( $postingAccount, ClientArrayMapperEnum::POSTINGACCOUNT_TRANSPORT );
+		$postingAccountTransport = parent::map( $postingAccount, PostingAccountTransport::getClass() );
 
 		$request = new updatePostingAccountRequest();
 		$request->setPostingAccountTransport( $postingAccountTransport );

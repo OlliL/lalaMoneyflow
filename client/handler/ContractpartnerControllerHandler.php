@@ -24,24 +24,25 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerControllerHandler.php,v 1.9 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: ContractpartnerControllerHandler.php,v 1.10 2014/03/08 21:56:51 olivleh1 Exp $
 //
 namespace client\handler;
 
-use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\contractpartner\updateContractpartnerRequest;
 use api\model\contractpartner\createContractpartnerRequest;
 use api\model\contractpartner\showContractpartnerListResponse;
 use api\model\contractpartner\showEditContractpartnerResponse;
 use api\model\contractpartner\showDeleteContractpartnerResponse;
+use client\mapper\ArrayToContractpartnerTransportMapper;
+use api\model\transport\ContractpartnerTransport;
 
 class ContractpartnerControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'client\mapper\ArrayToContractpartnerTransportMapper', ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
+		parent::addMapper( ArrayToContractpartnerTransportMapper::getClass() );
 	}
 
 	public static function getInstance() {
@@ -88,7 +89,7 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 	}
 
 	public final function createContractpartner(array $contractpartner) {
-		$contractpartnerTransport = parent::map( $contractpartner, ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
+		$contractpartnerTransport = parent::map( $contractpartner, ContractpartnerTransport::getClass() );
 
 		$request = new createContractpartnerRequest();
 		$request->setContractpartnerTransport( $contractpartnerTransport );
@@ -96,7 +97,7 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 	}
 
 	public final function updateContractpartner(array $contractpartner) {
-		$contractpartnerTransport = parent::map( $contractpartner, ClientArrayMapperEnum::CONTRACTPARTNER_TRANSPORT );
+		$contractpartnerTransport = parent::map( $contractpartner, ContractpartnerTransport::getClass() );
 
 		$request = new updateContractpartnerRequest();
 		$request->setContractpartnerTransport( $contractpartnerTransport );

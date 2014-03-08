@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractHandler.php,v 1.10 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.11 2014/03/08 21:56:51 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -34,7 +34,6 @@ use \Httpful\Httpful;
 use \Httpful\Mime;
 use \Httpful\Handlers\JsonHandler;
 use base\AbstractJsonSender;
-use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use base\ErrorCode;
 use base\RESTAuthorization;
@@ -42,13 +41,14 @@ use Httpful\Http;
 use client\module\moduleUsers;
 use client\util\Environment;
 use client\util\ErrorHandler;
+use client\mapper\ArrayToValidationItemTransportMapper;
 
 abstract class AbstractHandler extends AbstractJsonSender {
 	private $userName;
 	private $userPassword;
 
 	protected function __construct() {
-		parent::addMapper( 'client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
+		parent::addMapper( ArrayToValidationItemTransportMapper::getClass() );
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
 		) ) );
@@ -93,7 +93,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 			}
 			return false;
 		}
-		return self::mapJson($result);
+		return self::mapJson( $result );
 	}
 
 	private final function getUrl($usecase, $parameter) {

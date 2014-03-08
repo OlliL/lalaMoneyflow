@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PostingAccountTransport.php,v 1.4 2014/03/02 23:35:15 olivleh1 Exp $
+// $Id: PostingAccountTransport.php,v 1.5 2014/03/08 21:56:51 olivleh1 Exp $
 //
 namespace api\model\transport;
 
-class PostingAccountTransport {
+class PostingAccountTransport extends AbstractTransport {
 	public $id;
 	public $name;
 

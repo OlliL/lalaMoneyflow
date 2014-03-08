@@ -24,11 +24,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: EventControllerHandler.php,v 1.6 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: EventControllerHandler.php,v 1.7 2014/03/08 21:56:51 olivleh1 Exp $
 //
 namespace client\handler;
 
-use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\event\showEventListResponse;
 
@@ -37,7 +36,6 @@ class EventControllerHandler extends AbstractHandler {
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'client\mapper\ArrayToValidationItemTransportMapper', ClientArrayMapperEnum::VALIDATIONITEM_TRANSPORT );
 	}
 
 	public static function getInstance() {

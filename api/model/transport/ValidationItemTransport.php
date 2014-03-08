@@ -25,11 +25,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ValidationItemTransport.php,v 1.4 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: ValidationItemTransport.php,v 1.5 2014/03/08 21:56:51 olivleh1 Exp $
 //
 namespace api\model\transport;
 
-class ValidationItemTransport {
+class ValidationItemTransport extends AbstractTransport {
 	public $key;
 	public $error;
 

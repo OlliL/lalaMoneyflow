@@ -24,24 +24,25 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CapitalsourceControllerHandler.php,v 1.11 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: CapitalsourceControllerHandler.php,v 1.12 2014/03/08 21:56:51 olivleh1 Exp $
 //
 namespace client\handler;
 
-use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\capitalsource\updateCapitalsourceRequest;
 use api\model\capitalsource\createCapitalsourceRequest;
 use api\model\capitalsource\showCapitalsourceListResponse;
 use api\model\capitalsource\showEditCapitalsourceResponse;
 use api\model\capitalsource\showDeleteCapitalsourceResponse;
+use client\mapper\ArrayToCapitalsourceTransportMapper;
+use api\model\transport\CapitalsourceTransport;
 
 class CapitalsourceControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'client\mapper\ArrayToCapitalsourceTransportMapper', ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
+		parent::addMapper( ArrayToCapitalsourceTransportMapper::getClass() );
 	}
 
 	public static function getInstance() {
@@ -88,7 +89,7 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 	}
 
 	public final function createCapitalsource(array $capitalsource) {
-		$capitalsourceTransport = parent::map( $capitalsource, ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
+		$capitalsourceTransport = parent::map( $capitalsource, CapitalsourceTransport::getClass() );
 
 		$request = new createCapitalsourceRequest();
 		$request->setCapitalsourceTransport( $capitalsourceTransport );
@@ -96,7 +97,7 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 	}
 
 	public final function updateCapitalsource(array $capitalsource) {
-		$capitalsourceTransport = parent::map( $capitalsource, ClientArrayMapperEnum::CAPITALSOURCE_TRANSPORT );
+		$capitalsourceTransport = parent::map( $capitalsource, CapitalsourceTransport::getClass() );
 
 		$request = new updateCapitalsourceRequest();
 		$request->setCapitalsourceTransport( $capitalsourceTransport );

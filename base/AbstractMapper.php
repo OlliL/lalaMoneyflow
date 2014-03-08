@@ -25,46 +25,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AccessRelationTransport.php,v 1.3 2014/03/08 21:56:51 olivleh1 Exp $
+// $Id: AbstractMapper.php,v 1.1 2014/03/08 21:56:52 olivleh1 Exp $
 //
-namespace api\model\transport;
+namespace base;
 
-class AccessRelationTransport extends AbstractTransport {
-	public $id;
-	public $refId;
-	public $validfrom;
-	public $validtil;
+abstract class AbstractMapper {
 
-	public final function setId($id) {
-		$this->id = $id;
-	}
-
-	public final function setRefId($refId) {
-		$this->refId = $refId;
-	}
-
-	public final function setValidfrom($validfrom) {
-		$this->validfrom = $validfrom;
-	}
-
-	public final function setValidtil($validtil) {
-		$this->validtil = $validtil;
-	}
-
-	public final function getId() {
-		return $this->id;
-	}
-
-	public final function getRefId() {
-		return $this->refId;
-	}
-
-	public final function getValidfrom() {
-		return $this->validfrom;
-	}
-
-	public final function getValidtil() {
-		return $this->validtil;
+	public static final function getClass() {
+		return get_called_class();
 	}
 }
 

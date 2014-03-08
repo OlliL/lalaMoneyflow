@@ -25,13 +25,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractArrayMapper.php,v 1.8 2014/03/01 00:48:59 olivleh1 Exp $
+// $Id: AbstractArrayMapper.php,v 1.9 2014/03/08 21:56:52 olivleh1 Exp $
 //
 namespace client\mapper;
 
 use client\util\DateUtil;
+use base\AbstractMapper;
 
-abstract class AbstractArrayMapper {
+abstract class AbstractArrayMapper extends AbstractMapper{
 
 	protected static final function convertClientDateToTransport($clientDate) {
 		return DateUtil::convertClientDateToTransport( $clientDate );

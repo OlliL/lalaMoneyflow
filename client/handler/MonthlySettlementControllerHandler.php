@@ -24,23 +24,24 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MonthlySettlementControllerHandler.php,v 1.8 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: MonthlySettlementControllerHandler.php,v 1.9 2014/03/08 21:56:51 olivleh1 Exp $
 //
 namespace client\handler;
 
-use client\mapper\ClientArrayMapperEnum;
 use base\JsonAutoMapper;
 use api\model\monthlysettlement\upsertMonthlySettlementRequest;
 use api\model\monthlysettlement\showMonthlySettlementListResponse;
 use api\model\monthlysettlement\showMonthlySettlementCreateResponse;
 use api\model\monthlysettlement\showMonthlySettlementDeleteResponse;
+use client\mapper\ArrayToMonthlySettlementTransportMapper;
+use api\model\transport\MonthlySettlementTransport;
 
 class MonthlySettlementControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
-		parent::addMapper( 'client\mapper\ArrayToMonthlySettlementTransportMapper', ClientArrayMapperEnum::MONTHLYSETTLEMENT_TRANSPORT );
+		parent::addMapper( ArrayToMonthlySettlementTransportMapper::getClass() );
 	}
 
 	public static function getInstance() {
@@ -100,7 +101,7 @@ class MonthlySettlementControllerHandler extends AbstractHandler {
 	}
 
 	public final function upsertMonthlySettlement(array $monthlySettlement) {
-		$monthlySettlementTransport = parent::mapArray( $monthlySettlement, ClientArrayMapperEnum::MONTHLYSETTLEMENT_TRANSPORT );
+		$monthlySettlementTransport = parent::mapArray( $monthlySettlement, MonthlySettlementTransport::getClass() );
 
 		$request = new upsertMonthlySettlementRequest();
 		$request->setMonthlySettlementTransport( $monthlySettlementTransport );
