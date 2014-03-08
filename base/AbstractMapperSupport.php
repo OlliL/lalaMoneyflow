@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractMapperSupport.php,v 1.12 2014/03/08 21:56:52 olivleh1 Exp $
+// $Id: AbstractMapperSupport.php,v 1.13 2014/03/08 22:03:24 olivleh1 Exp $
 //
 namespace base;
 
@@ -68,7 +68,8 @@ abstract class AbstractMapperSupport {
 	}
 
 	private final function executeMapper($mapper, $obj) {
-		return call_user_func( $mapper, $obj );
+		if ($mapper)
+			return call_user_func( $mapper, $obj );
 	}
 
 	protected function map($obj, $targetObject = null) {
