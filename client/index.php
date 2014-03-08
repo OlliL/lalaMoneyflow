@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.83 2014/03/08 00:24:14 olivleh1 Exp $
+// $Id: index.php,v 1.84 2014/03/08 16:46:23 olivleh1 Exp $
 //
 namespace client;
 
@@ -402,9 +402,10 @@ if ($is_logged_in == 0) {
 				$year_month = $_POST ['year_month'];
 				$yearfrom = $_POST ['yearfrom'];
 				$yeartil = $_POST ['yeartil'];
-				$single_account = $_POST ['single_account'];
-				$multiple_accounts = $_POST ['multiple_accounts'];
-				$display = $moduleReports->plot_report($timemode,$accountmode,$year,$month_month,$year_month,$yearfrom,$yeartil,$single_account,$multiple_accounts);
+				$account = $_POST ['account'];
+				$accounts_yes = $_POST ['accounts_yes'];
+				$accounts_no = $_POST ['accounts_no'];
+				$display = $moduleReports->plot_report( $timemode, $accountmode, $year, $month_month, $year_month, $yearfrom, $yeartil, $account, $accounts_yes, $accounts_no );
 				break;
 			case 'plot_trends' :
 				$display = (ENABLE_JPGRAPH ? $moduleReports->display_plot_trends( $all_data ) : '');

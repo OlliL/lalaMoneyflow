@@ -60,10 +60,10 @@
 	    return;
 	}
 
-	function move(from, to) {
+	function move(from, to, all) {
 	    /* add selected item to the 'to' selectbox */
 	    for (i = 0; i < document.getElementById(from).length; i++) {
-	        if (document.getElementById(from).options[i].selected == true) {
+	        if (all || document.getElementById(from).options[i].selected == true) {
 	            document.getElementById(to).options[document.getElementById(to).length] = new Option(
 	                document.getElementById(from).options[i].text, document.getElementById(from).options[i].value );
 	        }
@@ -71,25 +71,28 @@
 	
 	    /* remove selected item from the 'from' selectbox */
 	    for (i = (document.getElementById(from).length - 1); i >= 0; i--) {
-	        if (document.getElementById(from).options[i].selected == true) {
+	        if (all || document.getElementById(from).options[i].selected == true) {
 	            document.getElementById(from).options[i] = null;
 	        }
 	    }
 	    sortlist(to);
 	}
 	
-	function markAllAccounts() {
+	function markAllAccounts(select) {
 	    for (i = 0; i < document.getElementById("accounts_yes").length; i++) {
-	        document.getElementById("accounts_yes").options[i].selected = true;
+	        document.getElementById("accounts_yes").options[i].selected = select;
+	    }
+	    for (i = 0; i < document.getElementById("accounts_no").length; i++) {
+	        document.getElementById("accounts_no").options[i].selected = select;
 	    }
 	}
 	
 	
 	function submitform(f) {
-            markAllAccounts();
+            markAllAccounts(true);
             var url = "";     
             win = window.open(url, 'new_window', "width=1024,height=900,status=no,resizable=yes,scrollbars=yes,menubar=no,toolbar=no,location=0");
-           document.forms[f].submit();
+            document.forms[f].submit();
         }
 
 
@@ -128,7 +131,7 @@ div.multiple_accounts {
 {$HEADER}
             <td align="center" valign="top">
                <h1>{#TEXT_254#}</h1>
-               <form action="{$ENV_INDEX_PHP}" method="POST" target="new_window" name="reporting" onsubmit="submitform('reporting');"> 
+               <form action="{$ENV_INDEX_PHP}" method="POST" target="new_window" name="reporting" onsubmit="submitform('reporting');markAllAccounts(false);return false; "> 
                   <input type="hidden" name="action" value="plot_report">
                   <table border="0">
                      <tr>
@@ -214,20 +217,27 @@ div.multiple_accounts {
                                     <tr>
                                        <td align="center">
                                           <select class="contrastbgcolor" size="10" id="accounts_yes"
-                                             name="multiple_accounts[]" multiple
+                                             name="accounts_yes[]" multiple
                                              style="width:20em;min-height:15em">
-						{section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
-							<option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}"> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name|escape:htmlall}</option>
+						{section name=ACCOUNT loop=$ACCOUNTS_YES}
+							<option value="{$ACCOUNTS_YES[ACCOUNT].postingaccountid}"> {$ACCOUNTS_YES[ACCOUNT].name|escape:htmlall}</option>
 						{/section}
                                           </select>
                                        </td>
-                                       <td align="center"><input type="button"
-                                          onClick="move('accounts_yes','accounts_no')" value=" >> "><br>
-                                          <input type="button"
-                                             onClick="move('accounts_no','accounts_yes')" value=" << ">
+                                       <td align="center">
+                                          <input type="button" onClick="move('accounts_yes','accounts_no', true)" value=" >> "><br>
+                                          <input type="button" onClick="move('accounts_yes','accounts_no', false)" value=" > "><br><br>
+                                          <input type="button" onClick="move('accounts_no','accounts_yes', false)" value=" < "><br>
+                                          <input type="button" onClick="move('accounts_no','accounts_yes', true)" value=" << "><br>
                                        </td>
-                                       <td align="center"><select class="contrastbgcolor" size="10" id="accounts_no"
-                                          multiple style="width:20em;min-height:15em"> </select></td>
+                                       <td align="center">
+                                          <select class="contrastbgcolor" size="10" id="accounts_no"
+                                             name="accounts_no[]" multiple 
+                                             style="width:20em;min-height:15em">
+						{section name=ACCOUNT loop=$ACCOUNTS_NO}
+							<option value="{$ACCOUNTS_NO[ACCOUNT].postingaccountid}"> {$ACCOUNTS_NO[ACCOUNT].name|escape:htmlall}</option>
+						{/section}
+                                          </select></td>
                                     </tr>
                                  </table>
                               </div>

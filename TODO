@@ -1,5 +1,5 @@
+- enhance search to also search by posting account
 - State + Type of Capitalsource must become Enums
-- persist the selected and deselected posting accounts on the reporting screen
 - replace USERID by Environment::getInstance()->getUserId() in the client
 - modify the mapper framework.
   - analyze the mapAToB and mapBToA methods about the arguments the force

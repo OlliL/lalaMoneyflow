@@ -25,13 +25,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showReportingFormResponse.php,v 1.1 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: showReportingFormResponse.php,v 1.2 2014/03/08 16:46:23 olivleh1 Exp $
 //
 namespace api\model\report;
 
 class showReportingFormResponse {
 	public $allYears;
 	public $postingAccountTransport;
+	public $postingAccountIdsNo;
 
 	public final function getAllYears() {
 		return $this->allYears;
@@ -47,6 +48,14 @@ class showReportingFormResponse {
 
 	public final function getPostingAccountTransport() {
 		return $this->postingAccountTransport;
+	}
+
+	public final function setPostingAccountIdsNo(array $postingAccountIdsNo) {
+		$this->postingAccountIdsNo = $postingAccountIdsNo;
+	}
+
+	public final function getPostingAccountIdsNo() {
+		return $this->postingAccountIdsNo;
 	}
 }
 

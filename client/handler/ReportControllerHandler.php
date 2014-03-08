@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportControllerHandler.php,v 1.13 2014/03/08 00:24:13 olivleh1 Exp $
+// $Id: ReportControllerHandler.php,v 1.14 2014/03/08 16:46:22 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -97,6 +97,7 @@ class ReportControllerHandler extends AbstractHandler {
 		if ($response instanceof showReportingFormResponse) {
 			$result ['allYears'] = $response->getAllYears();
 			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
+			$result ['accounts_no'] = $response->getPostingAccountIdsNo();
 		}
 
 		return $result;
@@ -128,9 +129,10 @@ class ReportControllerHandler extends AbstractHandler {
 		return $result;
 	}
 
-	public final function showYearlyReportGraph($postingAccountIds, $startdate, $enddate) {
+	public final function showYearlyReportGraph($postingAccountIdsYes, $postingAccountIdsNo, $startdate, $enddate) {
 		$request = new showYearlyReportGraphRequest();
-		$request->setPostingAccountIds( $postingAccountIds );
+		$request->setPostingAccountIdsYes( $postingAccountIdsYes );
+		$request->setPostingAccountIdsNo( $postingAccountIdsNo );
 		$request->setStartDate( $startdate->format( 'U' ) );
 		$request->setEndDate( $enddate->format( 'U' ) );
 
@@ -142,9 +144,10 @@ class ReportControllerHandler extends AbstractHandler {
 		return $result;
 	}
 
-	public final function showMonthlyReportGraph($postingAccountIds, $startdate, $enddate) {
+	public final function showMonthlyReportGraph($postingAccountIdsYes, $postingAccountIdsNo, $startdate, $enddate) {
 		$request = new showMonthlyReportGraphRequest();
-		$request->setPostingAccountIds( $postingAccountIds );
+		$request->setPostingAccountIdsYes( $postingAccountIdsYes );
+		$request->setPostingAccountIdsNo( $postingAccountIdsNo );
 		$request->setStartDate( $startdate->format( 'U' ) );
 		$request->setEndDate( $enddate->format( 'U' ) );
 

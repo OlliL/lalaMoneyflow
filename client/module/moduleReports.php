@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.92 2014/03/08 00:36:56 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.93 2014/03/08 16:46:23 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -325,15 +325,24 @@ class moduleReports extends module {
 		$years = $showReportingFormResponse ['allYears'];
 		$months = $this->coreText->get_domain_data( 'MONTHS' );
 		$postingaccount_values = $showReportingFormResponse ['postingaccounts'];
+		$accounts_no_settings = $showReportingFormResponse ['accounts_no'];
 
-		$this->template->assign( 'CURRENT_MONTH', date('n') );
-		$this->template->assign( 'CURRENT_YEAR', date('Y') );
+		foreach ( $postingaccount_values as $postingaccount ) {
+			if (is_array( $accounts_no_settings ) && in_array( $postingaccount ['postingaccountid'], $accounts_no_settings )) {
+				$accounts_no [] = $postingaccount;
+			} else {
+				$accounts_yes [] = $postingaccount;
+			}
+		}
+
+		$this->template->assign( 'CURRENT_MONTH', date( 'n' ) );
+		$this->template->assign( 'CURRENT_YEAR', date( 'Y' ) );
 
 		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
+		$this->template->assign( 'ACCOUNTS_YES', $accounts_yes );
+		$this->template->assign( 'ACCOUNTS_NO', $accounts_no );
 		$this->template->assign( 'MONTHS', $months );
 		$this->template->assign( 'YEARS', $years );
-
-
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_show_reporting_form.tpl' );
@@ -363,7 +372,7 @@ class moduleReports extends module {
 		return $color;
 	}
 
-	public final function plot_report($timemode, $accountmode, $year, $month_month, $year_month, $yearfrom, $yeartil, $single_account, $multiple_accounts) {
+	public final function plot_report($timemode, $accountmode, $year, $month_month, $year_month, $yearfrom, $yeartil, $account, $accounts_yes, $accounts_no) {
 		$perMonthReport = false;
 		$perYearReport = false;
 		$barPlot = false;
@@ -383,7 +392,7 @@ class moduleReports extends module {
 				$enddate->modify( 'last day of this month' );
 				$perMonthReport = true;
 				$piePlot = true;
-				$title = $this->coreText->get_domain_meaning( 'MONTHS', $month_month ) . ' ' . $year_month;
+				$title = html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $month_month ), ENT_COMPAT | ENT_HTML401, ENCODING ) . ' ' . $year_month;
 				break;
 			case 3 :
 				$startdate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $yearfrom . '-01-01 00:00:00' );
@@ -397,10 +406,16 @@ class moduleReports extends module {
 		$postingaccounts = array ();
 		switch ($accountmode) {
 			case 1 :
-				$postingaccounts [] = $single_account;
+				$accounts_yes = array (
+						$account
+				);
+				$accounts_no = array ();
 				break;
 			case 2 :
-				$postingaccounts = $multiple_accounts;
+				if (! is_array( $accounts_no ))
+					$accounts_no = array ();
+				if (! is_array( $accounts_yes ))
+					$accounts_yes = array ();
 				if ($barPlot) {
 					$horizontalBarPlot = true;
 					$barPlot = false;
@@ -409,9 +424,9 @@ class moduleReports extends module {
 		}
 
 		if ($perMonthReport) {
-			$report = ReportControllerHandler::getInstance()->showMonthlyReportGraph( $postingaccounts, $startdate, $enddate );
+			$report = ReportControllerHandler::getInstance()->showMonthlyReportGraph( $accounts_yes, $accounts_no, $startdate, $enddate );
 		} elseif ($perYearReport) {
-			$report = ReportControllerHandler::getInstance()->showYearlyReportGraph( $postingaccounts, $startdate, $enddate );
+			$report = ReportControllerHandler::getInstance()->showYearlyReportGraph( $accounts_yes, $accounts_no, $startdate, $enddate );
 		}
 
 		$postingAccounts = $report ['postingAccounts'];

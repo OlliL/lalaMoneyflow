@@ -25,21 +25,30 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showMonthlyReportGraphRequest.php,v 1.1 2014/03/08 00:24:13 olivleh1 Exp $
+// $Id: showMonthlyReportGraphRequest.php,v 1.2 2014/03/08 16:46:23 olivleh1 Exp $
 //
 namespace api\model\report;
 
 class showMonthlyReportGraphRequest {
-	public $postingAccountIds;
+	public $postingAccountIdsYes;
+	public $postingAccountIdsNo;
 	public $startDate;
 	public $endDate;
 
-	public final function setPostingAccountIds(array $postingAccountIds) {
-		$this->postingAccountIds = $postingAccountIds;
+	public final function setPostingAccountIdsYes(array $postingAccountIdsYes) {
+		$this->postingAccountIdsYes = $postingAccountIdsYes;
 	}
 
-	public final function getPostingAccountIds() {
-		return $this->postingAccountIds;
+	public final function getPostingAccountIdsYes() {
+		return $this->postingAccountIdsYes;
+	}
+
+	public final function setPostingAccountIdsNo(array $postingAccountIdsNo) {
+		$this->postingAccountIdsNo = $postingAccountIdsNo;
+	}
+
+	public final function getPostingAccountIdsNo() {
+		return $this->postingAccountIdsNo;
 	}
 
 	public final function setStartDate($startDate) {
