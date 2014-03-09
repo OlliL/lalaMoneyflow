@@ -98,7 +98,13 @@ $errors += check_class( 'Graph', '<a href="http://jpgraph.net/">JpGraph</a>' );
 print_result( $errors, 0 );
 
 print_headline( 'Checking client/include.php' );
+include 'client/include.php';
+echo ROOTDIR.'<br>';
+define('ROOTDIR','foo');
+echo ROOTDIR.'<br>';
 print_headline( 'Checking server/include.php' );
+include 'server/include.php';
+echo server\ROOTDIR;
 print_headline( 'Checking MySQL DB' );
 
 ?>

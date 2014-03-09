@@ -24,30 +24,27 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.32 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: include.php,v 1.33 2014/03/09 21:01:18 olivleh1 Exp $
 //
 
 // ########
 // user defined variables
 // ########
-
-// defines which language is used to display the login screen
-const LOGIN_FORM_LANGUAGE = 1;
-
-// jpgraph is used for plotting trends
-define( 'ENABLE_JPGRAPH', true );
-const ENCODING = 'ISO-8859-15';
 const ROOTDIR = '/mnt/files/www/sites/olli.homeip.net/htdocs/moneyflow/';
-const HTTPFULSUBDIR = 'contrib/httpful/src/';
-
 // How to Reach the REST-Server
 const URLPREFIX = 'http://127.0.0.1/moneyflow/';
-const SERVERPREFIX = 'server/';
+// defines which language is used to display the login screen
+const LOGIN_FORM_LANGUAGE = 1;
 
 // ########
 // more or less system defined stuff following
 // ########
 
+// jpgraph is used for plotting trends
+define( 'ENABLE_JPGRAPH', true );
+const HTTPFULSUBDIR = 'contrib/httpful/src/';
+const ENCODING = 'ISO-8859-15';
+const SERVERPREFIX = 'server/';
 // style how the timer information is printed out in debug mode (int 0-2)
 $confTimer = 2;
 // ini_set( "log_errors", 1 );
@@ -59,7 +56,7 @@ $money_debug = true;
 // default year for "valid til" columns when creating a new dataset
 define( 'MAX_YEAR', '2999-12-31' );
 
-function framework_autoload($className) {
+function framework_autoload_client($className) {
 	$fname = str_replace( '\\', DIRECTORY_SEPARATOR, $className ) . '.php';
 	if (is_file( ROOTDIR . $fname )) {
 		require (ROOTDIR . $fname);
@@ -67,7 +64,7 @@ function framework_autoload($className) {
 		require (ROOTDIR . HTTPFULSUBDIR . $fname);
 	}
 }
-spl_autoload_register( 'framework_autoload' );
+spl_autoload_register( 'framework_autoload_client' );
 
 // Do never change this! It is needed to generate GMT-UNIX Timestamps needed to communicate with the server!
 date_default_timezone_set( 'UTC' );
