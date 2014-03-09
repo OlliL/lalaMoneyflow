@@ -32,6 +32,7 @@ function Go(x)
 			<table border="0" cellpadding=5>
 				<tr>
 					<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_monthlysettlement&amp;sr=1','_blank','width=500,height={$ADD_WIN_HEIGHT}')">{#TEXT_29#}</a></td>
+				{if {$ALL_YEARS|@count} gt 0}
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="monthlysettlements_year" size=1 onchange="Go(this.form.monthlysettlements_year.options[this.form.monthlysettlements_year.options.selectedIndex].value)">
 					{section name=YEAR loop=$ALL_YEARS}
 						<option {if $ALL_YEARS[YEAR] == $SELECTED_YEAR}selected{/if} value="{$ENV_INDEX_PHP}?action=list_monthlysettlements&amp;monthlysettlements_year={$ALL_YEARS[YEAR]}"> {$ALL_YEARS[YEAR]}
@@ -46,6 +47,7 @@ function Go(x)
 							{/if}
 						</td>
 					{/section}
+				{/if}
 				</tr>
 			</table>
 			</form>

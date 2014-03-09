@@ -26,9 +26,7 @@ Requirements:
 	- Extension: mbstring
 	- Extension: ctype
 	- Extension: gd (for jpgraph)
-
-?	- Extension: libxml
-?	- Extension: ? I guess I forgot some.....
+	- Extension: simplexml (for data comparision)
 
 - Caching:
 	- Yac (https://github.com/laruence/yac/)
@@ -46,7 +44,7 @@ Requirements:
 
 - JpGraph 3.x (http://jpgraph.net/)
 
-?- PECL spl_types
+- PECL SQL_Types 0.4.0 (or higher) (for the XML SEPA Parser - data comparision)
 
 
 

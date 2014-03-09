@@ -29,6 +29,7 @@ function Go(x)
 		<td align="center" valign="top">
 			<form action="#" method="get">
 			<h1>{#TEXT_5#}</h1>
+			{if {$ALL_YEARS|@count} gt 0}
 			<table border="0" cellpadding=5>
 				<tr>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="reports_year" size=1 onchange="Go(this.form.reports_year.options[this.form.reports_year.options.selectedIndex].value)">
@@ -47,6 +48,9 @@ function Go(x)
 					{/section}
 				</tr>
 			</table>
+			{else}
+				<font color="#FF0000">{#TEXT_261#}</font>
+			{/if}
 			</form>
 {if $REPORT eq 1}
 			<br>

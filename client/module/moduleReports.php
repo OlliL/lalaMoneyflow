@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.95 2014/03/09 12:06:11 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.96 2014/03/09 18:39:42 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -256,13 +256,16 @@ class moduleReports extends module {
 		$graph_yaxis = $this->coreText->get_graph( 172 );
 
 		$i = 0;
-		if (is_array( $showTrendsGraph ['settled'] )) {
+		if (is_array( $showTrendsGraph ['settled'] ) && count( $showTrendsGraph ['settled'] ) > 0) {
 			foreach ( $showTrendsGraph ['settled'] as $settledAmount ) {
 				$monthly_data [$i] = $settledAmount ['amount'];
 				$monthly2_data [$i] = NULL;
 				$monthly_x [$i] = sprintf( "%02s/%02s", $settledAmount ['month'], substr( $settledAmount ['year'], 2 ) );
 				$i ++;
 			}
+		} else {
+			$monthly_data [$i] = 0;
+			$i ++;
 		}
 
 		if (is_array( $showTrendsGraph ['calculated'] )) {

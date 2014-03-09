@@ -1,7 +1,5 @@
+- no capitalsources valid when creating a monthlysettlement at that month -> message and no "save" button...
 - creating a cash capitalsource forces accoutnumber and bankcode....
-- test login with not existing user
-- creating a group with a name already existing (user for example) triggers SQL error message
-- move mysqldump/mysqlext to server/ (consider README adjustment)
 - PHPUnit: start writing service tests
 - PHPDoc: document the services, then the controller, then the DAOs, and maybe the BOs
 
