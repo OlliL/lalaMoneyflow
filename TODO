@@ -2,15 +2,5 @@
 - creating a cash capitalsource forces accoutnumber and bankcode....
 - PHPUnit: start writing service tests
 - PHPDoc: document the services, then the controller, then the DAOs, and maybe the BOs
-
-Fresh Installation Bugs:
-   - check dependencies on an empty VM
-   - provide a "check my setup" php which checks if all dependencies are there and also checks DB installation and so on...
-   - check that after the first logon, on a clean DB, the password has to be changed first
-   - Trend does not work - maybe because no settlement done yet?
-
-some far time in the future:
-
-- 666. Redo the Webclient MVC like
-- put the available countries into the db and have them selectable when handling contractual partners instead of 
-  having it free editable -> multi-language support? mhhhhh.....
+- provide a "check my setup" php which checks if all dependencies are there and also checks DB installation and so on...
+- distinguish between client and server dependencies
