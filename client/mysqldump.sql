@@ -31,7 +31,7 @@ CREATE TABLE access (
   perm_login tinyint(1) unsigned NOT NULL,
   perm_admin tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (id),
-  UNIQUE KEY mac_i_01 (`name`)
+  UNIQUE KEY mac_i_01 (`name`,att_user)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='mac';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -341,7 +341,7 @@ CREATE TABLE cmp_data_formats (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-03-09 12:54:31
+-- Dump completed on 2014-03-09 19:36:24
 INSERT INTO cmp_data_formats VALUES (1,'Postbank Direkt','/^Datum	Wertstellung	Art/','	',1,5,7,4,'DD.MM.YYYY',',','.',6,3,'/^(Überweisung|Dauerauftrag)/');
 INSERT INTO cmp_data_formats VALUES (2,'Sparda Bank','/^Buchungstag	Wertstellungstag	Verwendungszweck/','	',1,NULL,4,3,'DD.MM.YYYY',',','.',NULL,NULL,NULL);
 INSERT INTO cmp_data_formats VALUES (3,'Postbank Online','/^\"Buchungstag\";\"Wertstellung\";\"Umsatzart\"/',';',1,6,7,4,'DD.MM.YYYY',',','.',5,3,'/^(Gutschrift|Gehalt)/');
