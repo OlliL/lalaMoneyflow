@@ -1,16 +1,6 @@
-Setting up Eclipse:
-
-- download Eclipse Keppler
-- "Help" -> "Install new Software..." "PHP Development Toolkit (PDT)" Location: http://download.eclipse.org/tools/pdt/updates/3.2-nightly
-- New "PHP Project" -> (x) "Create Project at existing location"
-- "Team" -> "CVS" -> [Files and Folders] => ( ) "Convert Text files to use platform ending"
-- "General" -> "Workspace" -> "New Text file line delimiter" [Unix]
-- "General" -> "Editors" -> "Text Editors" -> "Displayed tab width" -> 8
-- "PHP" -> "Editor" -> "Save Actions" -> [x] "Remove Trailing Whitespaces"
-
-
-
 Requirements:
+=============
+
 - Apache 2.2
 	- with "AllowOverride FileInfo" for the moneyflow directory
 
@@ -31,11 +21,11 @@ Requirements:
 - Caching:
 	- Yac (https://github.com/laruence/yac/)
 	- PECL Extension msgpack
-	  OR
+   OR
 	- memcached Server + PECL Extension memcached
 	- optional: PECL igbinary Extension for faster access
 	- consider configuring memcached to use Unix sockets for better performance
-	  OR
+   OR
 	- redis Server + PECL Extension redis
 	- optional: PECL igbinary Extension for faster access
 	- consider configuring redis to use Unix sockets for better performance
@@ -49,28 +39,27 @@ Requirements:
 
 
 Installation:
+=============
+
 - create a MySQL DB
 	e.g.		create database moneyflow;
 - create a MySQL user to be used by moneyflow (SELECT, INSERT, UPDATE, DELETE privileges are sufficient)
 	e.g.		GRANT SELECT,INSERT,UPDATE,DELETE ON moneyflow.* TO moneyflow@localhost IDENTIFIED BY 'moneyflow' WITH GRANT OPTION; 
-- edit server/include.php and client/include.php
-  - change DATASOURCE
-  - change ROOTDIR
-  ( - change URL )
-  ( - set APPID to a unique number If you run multiple installations, it has to be always a different number! unique!! )
+- change DATASOURCE in server/include.php
+ - change ROOTDIR in server/include.php, client/include.php
 - execute mysqldump.sql
-	mysql -u root -p<password> -h <dbhost> <dbname> < client/mysqldump.sql
+	mysql -u root -p<password> -h <dbhost> <dbname> < server/mysqldump.sql
 - execute mysqlext.sql
-	mysql -u root -p<password> -h <dbhost> <dbname> < client/mysqlext.sql
-- make sure the following directories and files are writable by apache-user (probably 'www'):
-	rest/client/locale
-	rest/client/locale/*.conf
-	rest/client/templates_c
-	rest/client/cache
+	mysql -u root -p<password> -h <dbhost> <dbname> < server/mysqlext.sql
+- make sure the following directories and files are writable by apache-user (most likely 'www'):
+	client/locale
+	client/locale/*.conf
+	client/templates_c
+	client/cache
 - log in as admin (password admin)
 - change the password
 - create a new group
-- create a new user, assign the user to the new group
+- create a new user with admin privileges, assign the user to the new group
 - create capitalsources
 - create contractpartner
 - create postingt accounts (your user needs to have the right "admin")
@@ -79,8 +68,22 @@ Installation:
 
 
 
-To run the PHPUnit Tests in server/
+To run the PHPUnit Tests in server:
+===================================
 - install PHP DOM Extension
 - then:
 	- cd server
 	- ../contrib/phpunit.phar tests
+	
+	
+Setting up Eclipse:
+===================
+- download Eclipse Keppler
+- "Help" -> "Install new Software..." "PHP Development Toolkit (PDT)" Location: http://download.eclipse.org/tools/pdt/updates/3.2-nightly
+- New "PHP Project" -> (x) "Create Project at existing location"
+- "Team" -> "CVS" -> [Files and Folders] => ( ) "Convert Text files to use platform ending"
+- "General" -> "Workspace" -> "New Text file line delimiter" [Unix]
+- "General" -> "Editors" -> "Text Editors" -> "Displayed tab width" -> 8
+- "PHP" -> "Editor" -> "Save Actions" -> [x] "Remove Trailing Whitespaces"
+
+	
