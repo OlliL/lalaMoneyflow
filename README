@@ -24,9 +24,11 @@ Requirements:
 	- Extension: PDO_MYSQL
 	- Extension: json
 	- Extension: mbstring
+	- Extension: ctype
+	- Extension: gd (for jpgraph)
 
-	- Extension: libxml
-	- Extension: ? I guess I forgot some.....
+?	- Extension: libxml
+?	- Extension: ? I guess I forgot some.....
 
 - Caching:
 	- Yac (https://github.com/laruence/yac/)
@@ -42,9 +44,9 @@ Requirements:
 
 - Smarty 3.x (http://www.smarty.net/)
 
-- JpGraph (http://jpgraph.net/)
+- JpGraph 3.x (http://jpgraph.net/)
 
-- PECL spl_types
+?- PECL spl_types
 
 
 
@@ -69,10 +71,14 @@ Installation:
 	rest/client/cache
 - log in as admin (password admin)
 - change the password
-- create a new user
 - create a new group
-- assign the user to the new group via SQL
-- add posting accounts via SQL
+- create a new user, assign the user to the new group
+- create capitalsources
+- create contractpartner
+- create postingt accounts (your user needs to have the right "admin")
+
+
+
 
 
 To run the PHPUnit Tests in server/

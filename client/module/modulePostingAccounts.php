@@ -24,17 +24,12 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePostingAccounts.php,v 1.5 2014/03/08 00:36:56 olivleh1 Exp $
+// $Id: modulePostingAccounts.php,v 1.6 2014/03/09 12:06:11 olivleh1 Exp $
 //
 namespace client\module;
 
 use client\handler\PostingAccountControllerHandler;
 use base\ErrorCode;
-
-if (ENABLE_JPGRAPH) {
-	require_once 'jpgraph.php';
-	require_once 'jpgraph_bar.php';
-}
 
 class modulePostingAccounts extends module {
 

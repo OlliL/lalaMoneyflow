@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.94 2014/03/08 22:12:59 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.95 2014/03/09 12:06:11 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -158,7 +158,7 @@ class moduleReports extends module {
 					}
 				}
 
-				if (is_array( $turnover_capitalsources )) {
+				if (is_array( $turnover_capitalsources ) && count( $turnover_capitalsources ) > 0) {
 					foreach ( $turnover_capitalsources as $key => $turnover_capitalsource ) {
 						$turnover_capitalsources [$key] ['typecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_TYPE', $turnover_capitalsource ['type'] );
 						$turnover_capitalsources [$key] ['statecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_STATE', $turnover_capitalsource ['state'] );
@@ -170,6 +170,9 @@ class moduleReports extends module {
 							$mms_exists = true;
 						}
 					}
+				} else {
+					// logic in the template needs this if it is empty
+					$turnover_capitalsources = '';
 				}
 
 				$month_array = array (
