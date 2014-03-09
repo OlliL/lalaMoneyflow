@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSettings.php,v 1.33 2014/03/02 23:42:20 olivleh1 Exp $
+// $Id: moduleSettings.php,v 1.34 2014/03/09 11:53:53 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -53,32 +53,33 @@ class moduleSettings extends module {
 					$this->add_error( ErrorCode::PASSWORD_NOT_MATCHING );
 					$data_is_valid = false;
 				}
-				
+
 				if ($data_is_valid === true) {
 					$all_data ['dateformat'] = $all_data ['date_data1'] . $all_data ['date_delimiter1'] . $all_data ['date_data2'] . $all_data ['date_delimiter2'] . $all_data ['date_data3'];
 					SettingControllerHandler::getInstance()->updatePersonalSettings( $all_data );
 					Environment::getInstance()->setSettingDateFormat( $all_data ['dateformat'] );
 					Environment::getInstance()->setSettingGuiLanguage( $all_data ['language'] );
-					Environment::getInstance()->setGuiLanguage( $all_data ['language'] );
-					if ($all_data ['password'])
+					if ($all_data ['password']) {
 						Environment::getInstance()->setUserAttNew( false );
+						Environment::getInstance()->setUserPassword( sha1( $all_data ['password'] ) );
+					}
 				}
 			default :
 				if (! is_array( $all_data )) {
-					
+
 					$showPersonalSettings = SettingControllerHandler::getInstance()->showPersonalSettings();
 					$all_data = array_merge( $showPersonalSettings, $this->convertDateFormatSetting( $showPersonalSettings ['dateformat'] ) );
 				}
 				;
 				break;
 		}
-		
+
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'LANGUAGE_VALUES', $this->coreLanguages->get_all_data() );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header();
-		
+
 		return $this->fetch_template( 'display_personal_settings.tpl' );
 	}
 
@@ -90,14 +91,14 @@ class moduleSettings extends module {
 					$data_is_valid = false;
 					$this->add_error( ErrorCode::INVALID_DATE_FORMAT_CHOOSEN );
 				}
-				
+
 				if ($data_is_valid === true) {
 					$all_data ['dateformat'] = $all_data ['date_data1'] . $all_data ['date_delimiter1'] . $all_data ['date_data2'] . $all_data ['date_delimiter2'] . $all_data ['date_data3'];
 					SettingControllerHandler::getInstance()->updateDefaultSettings( $all_data );
 				}
 			default :
 				if (! is_array( $all_data )) {
-					
+
 					$showDefaultSettings = SettingControllerHandler::getInstance()->showDefaultSettings();
 					if (is_array( $showDefaultSettings )) {
 						$dateformat = $showDefaultSettings ['dateformat'];
@@ -107,13 +108,13 @@ class moduleSettings extends module {
 				;
 				break;
 		}
-		
+
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'LANGUAGE_VALUES', $this->coreLanguages->get_all_data() );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header();
-		
+
 		return $this->fetch_template( 'display_system_settings.tpl' );
 	}
 
@@ -121,23 +122,23 @@ class moduleSettings extends module {
 		$patterns [0] = '/YYYY/';
 		$patterns [1] = '/MM/';
 		$patterns [2] = '/DD/';
-		
+
 		$replacements [0] = '';
 		$replacements [1] = '';
 		$replacements [2] = '';
-		
+
 		$delimiter = preg_replace( $patterns, $replacements, $dateformat );
-		
+
 		$ret ['date_delimiter1'] = substr( $delimiter, 0, 1 );
 		$ret ['date_delimiter2'] = substr( $delimiter, 1, 1 );
-		
+
 		$pos_delimiter1 = strpos( $dateformat, $ret ['date_delimiter1'] );
 		$pos_delimiter2 = strpos( substr( $dateformat, $pos_delimiter1 + 1 ), $ret ['date_delimiter2'] ) + $pos_delimiter1 + 1;
-		
+
 		$ret ['date_data1'] = substr( $dateformat, 0, $pos_delimiter1 );
 		$ret ['date_data2'] = substr( $dateformat, $pos_delimiter1 + 1, $pos_delimiter2 - $pos_delimiter1 - 1 );
 		$ret ['date_data3'] = substr( $dateformat, $pos_delimiter2 + 1 );
-		
+
 		return $ret;
 	}
 }

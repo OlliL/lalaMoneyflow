@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.79 2014/03/08 22:12:59 olivleh1 Exp $
+// $Id: module.php,v 1.80 2014/03/09 11:53:53 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -113,11 +113,12 @@ abstract class module {
 			$this->template->assign( 'IS_ADMIN', false );
 		}
 		$cache_id = Environment::getInstance()->getUserId();
+		$language = Environment::getInstance()->getSettingGuiLanguage();
 		$this->template->setCaching( true );
-		$header = $this->fetch_template( 'display_header.tpl', 'header_' . $this->guiLanguage . '_' . $admin . '_' . $nonavi . '_' . $cache_id );
+		$header = $this->fetch_template( 'display_header.tpl', 'header_' . $language . '_' . $admin . '_' . $nonavi . '_' . $cache_id );
 		$this->template->assign( 'HEADER', $header );
 
-		$footer = $this->fetch_template( 'display_footer.tpl', 'footer_' . $this->guiLanguage . '_' . $cache_id );
+		$footer = $this->fetch_template( 'display_footer.tpl', 'footer_' . $language . '_' . $cache_id );
 		$this->template->assign( 'FOOTER', $footer );
 		$this->template->setCaching( false );
 	}

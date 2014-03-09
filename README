@@ -7,46 +7,66 @@ Setting up Eclipse:
 - "General" -> "Workspace" -> "New Text file line delimiter" [Unix]
 - "General" -> "Editors" -> "Text Editors" -> "Displayed tab width" -> 8
 - "PHP" -> "Editor" -> "Save Actions" -> [x] "Remove Trailing Whitespaces"
+
+
+
 Requirements:
+- Apache 2.2
+	- with "AllowOverride FileInfo" for the moneyflow directory
+
+- MySQL 5.1 or higher
+	
 - PHP 5.5.x
-	- Extension: curl
-	- Extension: json
-	- Extension: libxml
-	- Extension: pdo_mysql
 	- Extension: session
+	- Extension: hash
+	- Extension: xml
+	- Extension: curl
+	- Extension: PDO_MYSQL
+	- Extension: json
+	- Extension: mbstring
+
+	- Extension: libxml
 	- Extension: ? I guess I forgot some.....
-- MySQL 5.x
+
 - Caching:
 	- Yac (https://github.com/laruence/yac/)
 	- PECL Extension msgpack
 	  OR
 	- memcached Server + PECL Extension memcached
 	- optional: PECL igbinary Extension for faster access
+	- consider configuring memcached to use Unix sockets for better performance
 	  OR
 	- redis Server + PECL Extension redis
 	- optional: PECL igbinary Extension for faster access
-- Smarty (http://www.smarty.net/)
+	- consider configuring redis to use Unix sockets for better performance
+
+- Smarty 3.x (http://www.smarty.net/)
+
 - JpGraph (http://jpgraph.net/)
+
 - PECL spl_types
 
 
 
 Installation:
-- create a DB user and a DB
-- grant INSERT, UPDATE, DELETE, SELECT to the created DB to this user
-- edit include.php and rest/client/include.php
-  - change DB credentials
-  - change paths
-  - change URL
-  - set APPID to a unique number in each file. If you run multiple
-    installations, it has to be always a different number! unique!!
+- create a MySQL DB
+	e.g.		create database moneyflow;
+- create a MySQL user to be used by moneyflow (SELECT, INSERT, UPDATE, DELETE privileges are sufficient)
+	e.g.		GRANT SELECT,INSERT,UPDATE,DELETE ON moneyflow.* TO moneyflow@localhost IDENTIFIED BY 'moneyflow' WITH GRANT OPTION; 
+- edit server/include.php and client/include.php
+  - change DATASOURCE
+  - change ROOTDIR
+  ( - change URL )
+  ( - set APPID to a unique number If you run multiple installations, it has to be always a different number! unique!! )
 - execute mysqldump.sql
-	mysql -u <user> -p<password> -h <dbhost> <dbname> < mysqldump.sql
+	mysql -u root -p<password> -h <dbhost> <dbname> < client/mysqldump.sql
 - execute mysqlext.sql
-	mysql -u <user> -p<password> -h <dbhost> <dbname> < mysqlext.sql
+	mysql -u root -p<password> -h <dbhost> <dbname> < client/mysqlext.sql
 - make sure the following directories and files are writable by apache-user (probably 'www'):
 	rest/client/locale
 	rest/client/locale/*.conf
+	rest/client/templates_c
+	rest/client/cache
 - log in as admin (password admin)
 - change the password
 - create a new user
