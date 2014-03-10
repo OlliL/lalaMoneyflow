@@ -24,17 +24,20 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreText.php,v 1.29 2014/03/02 23:42:20 olivleh1 Exp $
+// $Id: coreText.php,v 1.30 2014/03/10 20:02:40 olivleh1 Exp $
 //
 namespace client\core;
 
 use client\util\Environment;
+use base\Configuration;
 
 class coreText extends core {
 	private $inifile = null;
+	private $encoding = null;
 
 	public final function __construct() {
 		parent::__construct();
+		$this->encoding = Configuration::getInstance()->getProperty( 'encoding' );
 	}
 
 	private final function getFileName($id) {
@@ -56,7 +59,7 @@ class coreText extends core {
 		$lines = file( $this->getFileName( $languageid ) );
 		foreach ( $lines as $key => $line ) {
 			if (strpos( $line, $id . ' = ' ) === 0) {
-				$lines [$key] = sprintf( "%s = '%s'\n", $id, htmlentities( $text, ENT_COMPAT | ENT_HTML401, ENCODING ) );
+				$lines [$key] = sprintf( "%s = '%s'\n", $id, htmlentities( $text, ENT_COMPAT | ENT_HTML401, $this->encoding ) );
 			}
 		}
 		file_put_contents( $this->getFileName( $languageid ), $lines );
@@ -72,7 +75,7 @@ class coreText extends core {
 	}
 
 	public final function get_graph($id) {
-		return html_entity_decode( $this->get_text( $id ), ENT_COMPAT | ENT_HTML401, ENCODING );
+		return html_entity_decode( $this->get_text( $id ), ENT_COMPAT | ENT_HTML401, $this->encoding );
 	}
 
 	private final function getDomain($domain) {
@@ -90,17 +93,17 @@ class coreText extends core {
 						9 => 163,
 						10 => 164,
 						11 => 165,
-						12 => 166 
+						12 => 166
 				);
 			case 'CAPITALSOURCE_TYPE' :
 				return array (
 						1 => 173,
-						2 => 174 
+						2 => 174
 				);
 			case 'CAPITALSOURCE_STATE' :
 				return array (
 						1 => 175,
-						2 => 176 
+						2 => 176
 				);
 		}
 	}
@@ -111,7 +114,7 @@ class coreText extends core {
 			foreach ( $ids as $key => $id ) {
 				$retval [] = array (
 						'value' => $key,
-						'text' => $this->get_text( $id ) 
+						'text' => $this->get_text( $id )
 				);
 			}
 		}

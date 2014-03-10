@@ -1,0 +1,4 @@
+<Files client.properties>
+	Order Allow,Deny
+	Deny from all
+</Files>

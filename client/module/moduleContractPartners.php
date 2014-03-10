@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.40 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.41 2014/03/10 20:02:40 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -105,7 +105,7 @@ class moduleContractPartners extends module {
 						$all_data ['town'] = '';
 						$all_data ['country'] = '';
 						$all_data ['validfrom'] = $this->convertDateToGui( date( 'Y-m-d' ) );
-						$all_data ['validtil'] = $this->convertDateToGui( MAX_YEAR );
+						$all_data ['validtil'] = $this->convertDateToGui( Configuration::getInstance()->getProperty('max_year') );
 
 						$all_data ['name_error'] = 0;
 						$all_data ['validfrom_error'] = 0;

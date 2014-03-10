@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.54 2014/03/08 22:12:58 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.55 2014/03/10 20:02:40 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -32,6 +32,7 @@ use base\ErrorCode;
 use client\handler\CapitalsourceControllerHandler;
 use client\core\coreText;
 use client\util\Environment;
+use base\Configuration;
 
 class moduleCapitalSources extends module {
 	private $coreText;
@@ -132,7 +133,7 @@ class moduleCapitalSources extends module {
 						}
 					} else {
 						$all_data ['validfrom'] = $this->convertDateToGui( date( 'Y-m-d' ) );
-						$all_data ['validtil'] = $this->convertDateToGui( MAX_YEAR );
+						$all_data ['validtil'] = $this->convertDateToGui( Configuration::getInstance()->getProperty('max_year') );
 					}
 				}
 				$type_values = $this->coreText->get_domain_data( 'CAPITALSOURCE_TYPE' );

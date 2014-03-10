@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.85 2014/03/08 17:23:04 olivleh1 Exp $
+// $Id: index.php,v 1.86 2014/03/10 20:02:40 olivleh1 Exp $
 //
 namespace client;
 
@@ -47,6 +47,7 @@ use client\util\utilTimer;
 use client\util\Environment;
 use client\util\ErrorHandler;
 use client\module\modulePostingAccounts;
+use base\Configuration;
 
 require_once 'include.php';
 
@@ -68,6 +69,8 @@ if ($money_debug === true) {
 	$timer = new utilTimer();
 	$timer->mStart();
 }
+
+Configuration::getInstance()->readConfig( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'client.properties' );
 
 $action = $_POST ['action'] ? $_POST ['action'] : $_GET ['action'];
 

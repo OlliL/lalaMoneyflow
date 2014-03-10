@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.96 2014/03/09 18:39:42 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.97 2014/03/10 20:02:40 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -385,6 +385,8 @@ class moduleReports extends module {
 		$barPlot = false;
 		$piePlot = false;
 		$horizontalBarPlot = false;
+		$encoding = Configuration::getInstance()->getProperty( 'encoding' );
+
 		switch ($timemode) {
 			case 1 :
 				$startdate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $year . '-01-01 00:00:00' );
@@ -399,7 +401,7 @@ class moduleReports extends module {
 				$enddate->modify( 'last day of this month' );
 				$perMonthReport = true;
 				$piePlot = true;
-				$title = html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $month_month ), ENT_COMPAT | ENT_HTML401, ENCODING ) . ' ' . $year_month;
+				$title = html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $month_month ), ENT_COMPAT | ENT_HTML401, $encoding ) . ' ' . $year_month;
 				break;
 			case 3 :
 				$startdate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $yearfrom . '-01-01 00:00:00' );
@@ -454,7 +456,7 @@ class moduleReports extends module {
 			}
 			foreach ( $all_data as $data ) {
 				if ($perMonthReport) {
-					$key = html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', date( 'n', $data ['date_ts'] ) ), ENT_COMPAT | ENT_HTML401, ENCODING );
+					$key = html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', date( 'n', $data ['date_ts'] ) ), ENT_COMPAT | ENT_HTML401, $encoding );
 				} else {
 					$key = date( 'Y', $data ['date_ts'] );
 				}

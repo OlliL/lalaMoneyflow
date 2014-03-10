@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,27 +25,44 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.34 2014/03/10 20:02:40 olivleh1 Exp $
+// $Id: Configuration.php,v 1.1 2014/03/10 20:02:40 olivleh1 Exp $
 //
+namespace base;
 
-//
-// ATTENTION: you should leave this file unmodified!
-//
-define( 'ROOTDIR', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR );
-define( 'HTTPFULDIR', ROOTDIR . 'contrib/httpful/src/' );
-define( 'ENABLE_JPGRAPH', true );
+class Configuration {
+	private static $instance;
+	private $configurationHolder;
 
-function framework_autoload_client($className) {
-	$fname = str_replace( '\\', DIRECTORY_SEPARATOR, $className ) . '.php';
-	if (is_file( ROOTDIR . $fname )) {
-		require (ROOTDIR . $fname);
-	} else if (is_file( HTTPFULDIR . $fname )) {
-		require (HTTPFULDIR . $fname);
+	private function __construct() {
+	}
+
+	public static function getInstance() {
+		if (! isset( self::$instance )) {
+			$className = __CLASS__;
+			self::$instance = new $className();
+		}
+		return self::$instance;
+	}
+
+	public final function __clone() {
+		trigger_error( 'Cloning not supported', E_USER_ERROR );
+	}
+
+	public final function __wakeup() {
+		trigger_error( 'Deserialisation not supported', E_USER_ERROR );
+	}
+
+	public final function readConfig($filename) {
+		$this->configurationHolder = parse_ini_file($filename,true);
+	}
+
+	public function getProperty($key, $section=null) {
+		error_log($key.'-'.$section);
+		if($section === null) {
+			return $this->configurationHolder[$key];
+		} else {
+			return $this->configurationHolder[$section][$key];
+		}
 	}
 }
-spl_autoload_register( 'framework_autoload_client' );
-
-// Do never change this! It is needed to generate GMT-UNIX Timestamps needed to communicate with the server!
-date_default_timezone_set( 'UTC' );
-
 ?>

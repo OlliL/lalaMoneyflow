@@ -106,7 +106,8 @@ print_headline( 'Checking server/include.php' );
 include 'server/include.php';
 echo server\ROOTDIR;
 print_headline( 'Checking MySQL DB' );
-
+// check that property files can not be accessed! (.htaccess in place)
+// implement a heartbeat w/o auth in the rest server to check Slim
 ?>
 </table>
 </body>

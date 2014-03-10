@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractHandler.php,v 1.12 2014/03/08 22:06:46 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.13 2014/03/10 20:02:40 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -42,6 +42,7 @@ use client\module\moduleUsers;
 use client\util\Environment;
 use client\util\ErrorHandler;
 use client\mapper\ArrayToValidationItemTransportMapper;
+use base\Configuration;
 
 abstract class AbstractHandler extends AbstractJsonSender {
 	private $userName;
@@ -97,7 +98,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 	}
 
 	private final function getUrl($usecase, $parameter) {
-		$url = URLPREFIX . SERVERPREFIX;
+		$url = Configuration::getInstance()->getProperty('serverurl');
 		$url .= $this->getCategory();
 		$url .= '/';
 		$url .= $usecase;
