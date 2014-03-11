@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.57 2014/03/10 20:02:40 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.58 2014/03/11 05:45:16 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -83,7 +83,7 @@ class moduleUsers extends module {
 		if ($loginok == 1) {
 			return;
 		} else {
-			Environment::getInstance()->setSettingGuiLanguage( Configuration::getInstance()->getProperty( 'langcuage_login' ) );
+			Environment::getInstance()->setSettingGuiLanguage( Configuration::getInstance()->getProperty( 'language_login' ) );
 			$this->template->assign( 'NAME', $name );
 			$this->template->assign( 'STAY_LOGGED_IN', $stay_logged_in );
 			$this->template->assign( 'ERRORS', $this->get_errors() );
