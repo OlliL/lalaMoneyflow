@@ -47,6 +47,8 @@ function Go(month,year)
 			{#TEXT_57#}
 			<input class="contrastbgcolor" type="text" name="monthlysettlements_year" value="{$YEAR}" size="4" onchange="Go(this.form.monthlysettlements_month.options[this.form.monthlysettlements_month.options.selectedIndex].value,this.form.monthlysettlements_year.value)">
 			<input type="hidden" name="REFERER" value="{$ENV_REFERER}">
+			<br><br>
+			{if $COUNT_ALL_DATA gt 0}
 			<table border=0 width="350" cellpadding=2>
 				<tr>
 					<th>{#TEXT_19#}</th>
@@ -68,6 +70,9 @@ function Go(month,year)
 			</table>
 			<br>
 			<input type="submit" value="{#TEXT_22#}" onClick="this.form.realaction.value = 'save'">
+			{else}
+			<font color="#FF0000">{#TEXT_262#}</font><br><br>
+			{/if}
 			<input type="button" value="{#TEXT_23#}" onclick="javascript:void self.close();">
 		</form>
 		</td>

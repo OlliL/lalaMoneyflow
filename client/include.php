@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.34 2014/03/10 20:02:40 olivleh1 Exp $
+// $Id: include.php,v 1.35 2014/03/12 20:46:36 olivleh1 Exp $
 //
 
 //
@@ -32,9 +32,8 @@
 //
 define( 'ROOTDIR', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR );
 define( 'HTTPFULDIR', ROOTDIR . 'contrib/httpful/src/' );
-define( 'ENABLE_JPGRAPH', true );
 
-function framework_autoload_client($className) {
+function framework_autoload($className) {
 	$fname = str_replace( '\\', DIRECTORY_SEPARATOR, $className ) . '.php';
 	if (is_file( ROOTDIR . $fname )) {
 		require (ROOTDIR . $fname);
@@ -42,9 +41,11 @@ function framework_autoload_client($className) {
 		require (HTTPFULDIR . $fname);
 	}
 }
-spl_autoload_register( 'framework_autoload_client' );
+spl_autoload_register( 'framework_autoload' );
 
 // Do never change this! It is needed to generate GMT-UNIX Timestamps needed to communicate with the server!
 date_default_timezone_set( 'UTC' );
+
+define( 'ENABLE_JPGRAPH', true );
 
 ?>
