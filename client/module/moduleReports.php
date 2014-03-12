@@ -24,13 +24,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.97 2014/03/10 20:02:40 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.98 2014/03/12 21:00:30 olivleh1 Exp $
 //
 namespace client\module;
 
 use client\handler\ReportControllerHandler;
 use client\core\coreText;
 use client\util\Environment;
+use base\Configuration;
 
 if (ENABLE_JPGRAPH) {
 	require_once 'jpgraph.php';
