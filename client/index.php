@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.87 2014/03/13 17:30:01 olivleh1 Exp $
+// $Id: index.php,v 1.88 2014/03/13 21:36:43 olivleh1 Exp $
 //
 namespace client;
 
@@ -50,18 +50,6 @@ use client\module\modulePostingAccounts;
 use base\Configuration;
 
 require_once 'include.php';
-
-function convert_array_to_utf8($arr) {
-	foreach ( $arr as $key => $value ) {
-		if (is_array( $value )) {
-			$arr [$key] = convert_array_to_utf8( $value );
-		} else if (! mb_check_encoding( $value, 'UTF-8' )) {
-			$arr [$key] = utf8_encode( $value );
-		}
-	}
-
-	return $arr;
-}
 
 session_start();
 if ($money_debug > 0) {
@@ -116,9 +104,12 @@ if ($is_logged_in == 2) {
 }
 
 // if ($money_debug === true)
-// error_reporting( E_ALL );
+error_reporting( E_ALL );
 
 if ($is_logged_in == 0) {
+
+	if (array_key_exists( 'all_data', $_REQUEST ) && is_array( $_REQUEST ['all_data'] ))
+		$all_data = $_REQUEST ['all_data'];
 
 	$display = $moduleEvents->check_events();
 
@@ -281,12 +272,6 @@ if ($is_logged_in == 0) {
 
 	if (empty( $display )) {
 
-		// UTF8 needed for REST-server communication - german umlauts will generate errors otherwise (for example)
-		if (array_key_exists( 'all_data', $_REQUEST ) && is_array( $_REQUEST ['all_data'] )) {
-			$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
-			$all_data = convert_array_to_utf8( $all_data );
-		}
-
 		switch ($action) {
 			/* capitalsources */
 
@@ -302,6 +287,7 @@ if ($is_logged_in == 0) {
 				break;
 
 			case 'delete_capitalsource' :
+
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$capitalsourceid = array_key_exists( 'capitalsourceid', $_REQUEST ) ? $_REQUEST ['capitalsourceid'] : '';
 				$display = $moduleCapitalSources->display_delete_capitalsource( $realaction, $capitalsourceid );
@@ -310,17 +296,20 @@ if ($is_logged_in == 0) {
 			/* contractpartners */
 
 			case 'list_contractpartners' :
+
 				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
 				$display = $moduleContractPartners->display_list_contractpartners( $letter );
 				break;
 
 			case 'edit_contractpartner' :
+
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$contractpartnerid = array_key_exists( 'contractpartnerid', $_REQUEST ) ? $_REQUEST ['contractpartnerid'] : 0;
 				$display = $moduleContractPartners->display_edit_contractpartner( $realaction, $contractpartnerid, $all_data );
 				break;
 
 			case 'delete_contractpartner' :
+
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'contractpartnerid', $_REQUEST ) ? $_REQUEST ['contractpartnerid'] : '';
 				$display = $moduleContractPartners->display_delete_contractpartner( $realaction, $id );
@@ -329,17 +318,20 @@ if ($is_logged_in == 0) {
 			/* predefmoneyflows */
 
 			case 'list_predefmoneyflows' :
+
 				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
 				$display = $modulePreDefMoneyFlows->display_list_predefmoneyflows( $letter );
 				break;
 
 			case 'edit_predefmoneyflow' :
+
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'predefmoneyflowid', $_REQUEST ) ? $_REQUEST ['predefmoneyflowid'] : 0;
 				$display = $modulePreDefMoneyFlows->display_edit_predefmoneyflow( $realaction, $id, $all_data );
 				break;
 
 			case 'delete_predefmoneyflow' :
+
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'predefmoneyflowid', $_REQUEST ) ? $_REQUEST ['predefmoneyflowid'] : '';
 				$display = $modulePreDefMoneyFlows->display_delete_predefmoneyflow( $realaction, $id );
@@ -348,16 +340,19 @@ if ($is_logged_in == 0) {
 			/* moneyflows */
 
 			case 'add_moneyflow' :
+
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$display = $moduleMoneyFlows->display_add_moneyflow( $realaction, $all_data );
 				break;
 			case 'edit_moneyflow' :
+
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : '';
 				$display = $moduleMoneyFlows->display_edit_moneyflow( $realaction, $id, $all_data );
 				break;
 
 			case 'delete_moneyflow' :
+
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : '';
 				$display = $moduleMoneyFlows->display_delete_moneyflow( $realaction, $id );
@@ -366,17 +361,20 @@ if ($is_logged_in == 0) {
 			/* monthlysettlements */
 
 			case 'list_monthlysettlements' :
+
 				$month = array_key_exists( 'monthlysettlements_month', $_REQUEST ) ? $_REQUEST ['monthlysettlements_month'] : '';
 				$year = array_key_exists( 'monthlysettlements_year', $_REQUEST ) ? $_REQUEST ['monthlysettlements_year'] : '';
 				$display = $moduleMonthlySettlement->display_list_monthlysettlements( $month, $year );
 				break;
 			case 'edit_monthlysettlement' :
+
 				$month = array_key_exists( 'monthlysettlements_month', $_REQUEST ) ? $_REQUEST ['monthlysettlements_month'] : '';
 				$year = array_key_exists( 'monthlysettlements_year', $_REQUEST ) ? $_REQUEST ['monthlysettlements_year'] : '';
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$display = $moduleMonthlySettlement->display_edit_monthlysettlement( $realaction, $month, $year, $all_data );
 				break;
 			case 'delete_monthlysettlement' :
+
 				$month = array_key_exists( 'monthlysettlements_month', $_REQUEST ) ? $_REQUEST ['monthlysettlements_month'] : '';
 				$year = array_key_exists( 'monthlysettlements_year', $_REQUEST ) ? $_REQUEST ['monthlysettlements_year'] : '';
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
@@ -386,6 +384,7 @@ if ($is_logged_in == 0) {
 			/* reports */
 
 			case 'list_reports' :
+
 				$month = array_key_exists( 'reports_month', $_REQUEST ) ? $_REQUEST ['reports_month'] : '';
 				$year = array_key_exists( 'reports_year', $_REQUEST ) ? $_REQUEST ['reports_year'] : '';
 				$sortby = array_key_exists( 'reports_sortby', $_REQUEST ) ? $_REQUEST ['reports_sortby'] : '';
@@ -393,25 +392,29 @@ if ($is_logged_in == 0) {
 				$display = $moduleReports->display_list_reports( $month, $year, $sortby, $order );
 				break;
 			case 'show_reporting_form' :
+
 				$display = $moduleReports->show_reporting_form();
 				break;
 			case 'plot_report' :
-				$timemode = $_POST ['timemode'];
-				$accountmode = $_POST ['accountmode'];
-				$year = $_POST ['year'];
-				$month_month = $_POST ['month_month'];
-				$year_month = $_POST ['year_month'];
-				$yearfrom = $_POST ['yearfrom'];
-				$yeartil = $_POST ['yeartil'];
-				$account = $_POST ['account'];
-				$accounts_yes = $_POST ['accounts_yes'];
-				$accounts_no = $_POST ['accounts_no'];
+
+				$timemode = array_key_exists( 'timemode', $_POST ) ? $_POST ['timemode'] : '';
+				$accountmode = array_key_exists( 'accountmode', $_POST ) ? $_POST ['accountmode'] : '';
+				$year = array_key_exists( 'year', $_POST ) ? $_POST ['year'] : '';
+				$month_month = array_key_exists( 'month_month', $_POST ) ? $_POST ['month_month'] : '';
+				$year_month = array_key_exists( 'year_month', $_POST ) ? $_POST ['year_month'] : '';
+				$yearfrom = array_key_exists( 'yearfrom', $_POST ) ? $_POST ['yearfrom'] : '';
+				$yeartil = array_key_exists( 'yeartil', $_POST ) ? $_POST ['yeartil'] : '';
+				$account = array_key_exists( 'account', $_POST ) ? $_POST ['account'] : '';
+				$accounts_yes = array_key_exists( 'accounts_yes', $_POST ) ? $_POST ['accounts_yes'] : '';
+				$accounts_no = array_key_exists( 'accounts_no', $_POST ) ? $_POST ['accounts_no'] : '';
 				$display = $moduleReports->plot_report( $timemode, $accountmode, $year, $month_month, $year_month, $yearfrom, $yeartil, $account, $accounts_yes, $accounts_no );
 				break;
 			case 'plot_trends' :
+
 				$display = (ENABLE_JPGRAPH ? $moduleReports->display_plot_trends( $all_data ) : '');
 				break;
 			case 'plot_graph' :
+
 				$id = array_key_exists( 'id', $_REQUEST ) ? $_REQUEST ['id'] : '';
 				$startmonth = array_key_exists( 'startmonth', $_REQUEST ) ? $_REQUEST ['startmonth'] : '';
 				$startyear = array_key_exists( 'startyear', $_REQUEST ) ? $_REQUEST ['startyear'] : '';
@@ -423,9 +426,11 @@ if ($is_logged_in == 0) {
 			/* search */
 
 			case 'search' :
+
 				$display = $moduleSearch->display_search();
 				break;
 			case 'do_search' :
+
 				$searchstring = array_key_exists( 'searchstring', $_REQUEST ) ? $_REQUEST ['searchstring'] : '';
 				$contractpartner = array_key_exists( 'contractpartner', $_REQUEST ) ? $_REQUEST ['contractpartner'] : '';
 				$postingaccount = array_key_exists( 'postingaccount', $_REQUEST ) ? $_REQUEST ['postingaccount'] : '';
@@ -444,14 +449,17 @@ if ($is_logged_in == 0) {
 			/* settings */
 
 			case 'personal_settings' :
+
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$display = $moduleSettings->display_personal_settings( $realaction, $all_data );
 				break;
 
 			case 'upfrm_cmp_data' :
+
 				$display = $moduleCompare->display_upload_form();
 				break;
 			case 'analyze_cmp_data' :
+
 				$file = $_FILES ['file'];
 				$display = $moduleCompare->display_analyze_form( $file, $all_data );
 				break;
@@ -459,17 +467,23 @@ if ($is_logged_in == 0) {
 			/* postingaccounts */
 
 			case 'plot_postingaccounts' :
+
 				$display = $modulePostingAccounts->plot_postingaccounts( 2010, 2014 );
 				break;
 
 			default :
+
 				$display = $moduleFrontPage->display_main();
 				break;
 		}
 	}
 }
-echo $display;
+if ($display) {
+	header('Content-Type:text/html; charset=UTF-8');
+	echo $display;
+}
 if ($money_debug > 0) {
 	$timer->mPrintTime();
 }
+
 ?>

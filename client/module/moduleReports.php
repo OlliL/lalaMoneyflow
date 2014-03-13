@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.98 2014/03/12 21:00:30 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.99 2014/03/13 21:36:43 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -291,7 +291,7 @@ class moduleReports extends module {
 				0
 		), 0 );
 
-		$txt = new \Text( $graph_comment . $graph_from . $monthly_x [0] . $graph_until . end( $monthly_x ) );
+		$txt = new \Text( $graph_comment . ' ' . $graph_from . $monthly_x [0] . $graph_until . end( $monthly_x ) );
 		$txt->SetFont( FF_FONT1, FS_BOLD );
 		$txt->Center( 0, 900 );
 		$txt->ParagraphAlign( 'center' );
@@ -375,7 +375,7 @@ class moduleReports extends module {
 		shuffle( $possibilities );
 		$color = "#";
 		for($i = 1; $i <= 6; $i ++) {
-			$color .= $possibilities [rand( 0, 14 )];
+			$color .= $possibilities [rand( 0, 12 )];
 		}
 		return $color;
 	}
@@ -442,6 +442,7 @@ class moduleReports extends module {
 		$postingAccounts = $report ['postingAccounts'];
 		$all_data = $report ['data'];
 
+		$plot_data = array ();
 		if (is_array( $all_data ) && count( $all_data ) > 0) {
 			foreach ( $all_data as $data ) {
 				$postingAccountUsed [$data ['postingaccountid']] = true;
@@ -449,7 +450,7 @@ class moduleReports extends module {
 
 			$i = 0;
 			foreach ( $postingAccounts as $key => $postingAccount ) {
-				if ($postingAccountUsed [$postingAccount ['postingaccountid']] === true) {
+				if (array_key_exists( $postingAccount ['postingaccountid'], $postingAccountUsed )) {
 					$postingAccountKeys [$postingAccount ['postingaccountid']] = $i;
 					$postingAccountNames [] = utf8_decode( $postingAccount ['name'] );
 					$i ++;
@@ -462,6 +463,8 @@ class moduleReports extends module {
 					$key = date( 'Y', $data ['date_ts'] );
 				}
 				$account_key = $postingAccountKeys [$data ['postingaccountid']];
+				if (! array_key_exists( $key, $plot_data ) || ! array_key_exists( $account_key, $plot_data [$key] ))
+					$plot_data [$key] [$account_key] = 0;
 				$plot_data [$key] [$account_key] += $data ['amount'] * - 1;
 			}
 

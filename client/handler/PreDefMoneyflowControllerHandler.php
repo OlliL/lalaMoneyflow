@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PreDefMoneyflowControllerHandler.php,v 1.10 2014/03/08 21:56:51 olivleh1 Exp $
+// $Id: PreDefMoneyflowControllerHandler.php,v 1.11 2014/03/13 21:36:42 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -67,7 +67,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 
 	public final function showPreDefMoneyflowList($restriction) {
 		$response = parent::getJson( __FUNCTION__, array (
-				utf8_encode( $restriction )
+				$restriction
 		) );
 		if ($response instanceof showPreDefMoneyflowListResponse) {
 			$result ['predefmoneyflows'] = parent::mapArrayNullable( $response->getPreDefMoneyflowTransport() );

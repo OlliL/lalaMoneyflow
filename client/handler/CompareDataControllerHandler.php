@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataControllerHandler.php,v 1.11 2014/03/08 21:56:51 olivleh1 Exp $
+// $Id: CompareDataControllerHandler.php,v 1.12 2014/03/13 21:36:42 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -37,6 +37,7 @@ use client\mapper\ArrayToCompareDataFormatTransportMapper;
 use client\mapper\ArrayToCompareDataDatasetTransportMapper;
 use client\mapper\ArrayToCapitalsourceTransportMapper;
 use client\mapper\ArrayToMoneyflowTransportMapper;
+use api\model\transport\CapitalsourceTransport;
 
 class CompareDataControllerHandler extends AbstractHandler {
 	private static $instance;

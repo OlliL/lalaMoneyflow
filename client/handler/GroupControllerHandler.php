@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: GroupControllerHandler.php,v 1.7 2014/03/08 21:56:51 olivleh1 Exp $
+// $Id: GroupControllerHandler.php,v 1.8 2014/03/13 21:36:42 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -58,7 +58,7 @@ class GroupControllerHandler extends AbstractHandler {
 
 	public final function showGroupList($restriction) {
 		$response = parent::getJson( __FUNCTION__, array (
-				utf8_encode( $restriction )
+				$restriction
 		) );
 		if ($response instanceof showGroupListResponse) {
 			$result ['groups'] = parent::mapArrayNullable( $response->getGroupTransport() );

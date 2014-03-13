@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: UserControllerHandler.php,v 1.13 2014/03/08 21:56:51 olivleh1 Exp $
+// $Id: UserControllerHandler.php,v 1.14 2014/03/13 21:36:42 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -85,7 +85,7 @@ class UserControllerHandler extends AbstractHandler {
 
 	public final function showUserList($restriction) {
 		$response = parent::getJson( __FUNCTION__, array (
-				utf8_encode( $restriction )
+				$restriction
 		) );
 		if ($response instanceof showUserListResponse) {
 			$result ['users'] = parent::mapArrayNullable( $response->getUserTransport() );

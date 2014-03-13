@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.88 2014/03/08 23:18:28 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.89 2014/03/13 21:36:43 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -154,7 +154,7 @@ class moduleMoneyFlows extends module {
 				$data_is_valid = true;
 				$nothing_checked = true;
 				foreach ( $all_data as $id => $value ) {
-					if ($value ['checked'] == 1) {
+					if (array_key_exists( 'checked', $value ) && $value ['checked'] == 1) {
 
 						if (! $this->fix_amount( $value ['amount'] )) {
 							$all_data [$id] ['amount_error'] = 1;

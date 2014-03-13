@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.80 2014/03/09 11:53:53 olivleh1 Exp $
+// $Id: module.php,v 1.81 2014/03/13 21:36:43 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -41,6 +41,8 @@ abstract class module {
 
 	protected function __construct() {
 		$this->template = new \Smarty();
+		$this->template->error_unassigned = false;
+		$this->template->error_reporting = E_ERROR;
 		$this->template->registerPlugin( 'modifier', 'number_format', 'client\util\SmartyPlugin::my_number_format' );
 		$this->template->assign( 'ENV_INDEX_PHP', 'index.php' );
 		$this->template->setCompileCheck( \Smarty::COMPILECHECK_OFF );

@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToMoneyflowTransportMapper.php,v 1.6 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: ArrayToMoneyflowTransportMapper.php,v 1.7 2014/03/13 21:36:43 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -36,21 +36,22 @@ class ArrayToMoneyflowTransportMapper extends AbstractArrayMapper {
 	public static function mapAToB(array $a) {
 		$b = new MoneyflowTransport();
 		$b->setId( $a ['moneyflowid'] );
-		
+
 		$bookingdate = parent::convertClientDateToTransport( $a ['bookingdate'] );
 		if ($bookingdate)
 			$b->setBookingDate( $bookingdate );
-		
+
 		$invoicedate = parent::convertClientDateToTransport( $a ['invoicedate'] );
 		if ($invoicedate)
 			$b->setInvoiceDate( $invoicedate );
-		
+
 		$b->setAmount( $a ['amount'] );
 		$b->setCapitalsourceid( $a ['mcs_capitalsourceid'] );
 		$b->setContractpartnerid( $a ['mcp_contractpartnerid'] );
 		$b->setComment( $a ['comment'] );
 		$b->setPostingaccountid( $a ['mpa_postingaccountid'] );
-		$b->setPrivate( $a ['private'] );
+		if (array_key_exists( 'private', $a ))
+			$b->setPrivate( $a ['private'] );
 		return $b;
 	}
 
@@ -68,7 +69,7 @@ class ArrayToMoneyflowTransportMapper extends AbstractArrayMapper {
 		$a ['mpa_postingaccountid'] = $b->getPostingaccountid();
 		$a ['postingaccountname'] = $b->getPostingaccountname();
 		$a ['private'] = $b->getPrivate();
-		
+
 		return $a;
 	}
 }

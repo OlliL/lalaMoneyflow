@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.47 2014/03/08 22:12:58 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.48 2014/03/13 21:36:43 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -131,6 +131,7 @@ class moduleCompare extends module {
 	 * @return array
 	 */
 	private final function setOwnerAndFilterPrivate($compareArray) {
+		$newArray = array();
 		foreach ( $compareArray as $key => $matching ) {
 			if ($matching ['moneyflow'] ['mur_userid'] == Environment::getInstance()->getUserId() || $matching ['moneyflow'] ['private'] == 0) {
 				if ($matching ['moneyflow'] ['mur_userid'] == Environment::getInstance()->getUserId())

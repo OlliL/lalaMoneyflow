@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSearch.php,v 1.37 2014/03/08 17:23:04 olivleh1 Exp $
+// $Id: moduleSearch.php,v 1.38 2014/03/13 21:36:43 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -60,12 +60,20 @@ class moduleSearch extends module {
 	public final function do_search($searchstring, $contractpartner, $postingaccount, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus, $grouping1, $grouping2, $order) {
 		if ($equal)
 			$searchparams ['equal'] = 1;
+		else
+			$searchparams ['equal'] = 0;
 		if ($casesensitive)
 			$searchparams ['casesensitive'] = 1;
+		else
+			$searchparams ['casesensitive'] = 0;
 		if ($regexp)
 			$searchparams ['regexp'] = 1;
+		else
+			$searchparams ['regexp'] = 0;
 		if ($minus)
 			$searchparams ['minus'] = 1;
+		else
+			$searchparams ['minus'] = 0;
 
 		$searchparams ['mcp_contractpartnerid'] = $contractpartner;
 		$searchparams ['mpa_postingaccountid'] = $postingaccount;
