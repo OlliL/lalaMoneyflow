@@ -205,7 +205,7 @@ if (! $db_selected) {
 }
 
 $cache = Configuration::getInstance()->getProperty( 'driver', 'CACHE' );
-if (($cache != 'REDIS' && $cache != 'MEMCACHED' && $cache != 'YAC' && $cache != 'NOOP') || ($cache == 'REDIS' && $redis_extension == false) || ($cache == 'MEMCACHED' && $memcached_extension == false) || ($cache == 'YAC' && $yac_extension == false)) {
+if (($cache != 'REDIS' && $cache != 'ARRAY' && $cache != 'MEMCACHED' && $cache != 'YAC' && $cache != 'NOOP') || ($cache == 'REDIS' && $redis_extension == false) || ($cache == 'MEMCACHED' && $memcached_extension == false) || ($cache == 'YAC' && $yac_extension == false)) {
 	echo_row( 'checking Property "CACHE:driver"', 'not OK', false );
 	$errors ++;
 } else {

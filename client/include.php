@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.35 2014/03/12 20:46:36 olivleh1 Exp $
+// $Id: include.php,v 1.36 2014/03/13 17:30:01 olivleh1 Exp $
 //
 
 //
@@ -47,5 +47,5 @@ spl_autoload_register( 'framework_autoload' );
 date_default_timezone_set( 'UTC' );
 
 define( 'ENABLE_JPGRAPH', true );
-
+$money_debug=2;
 ?>

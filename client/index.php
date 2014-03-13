@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.86 2014/03/10 20:02:40 olivleh1 Exp $
+// $Id: index.php,v 1.87 2014/03/13 17:30:01 olivleh1 Exp $
 //
 namespace client;
 
@@ -64,10 +64,8 @@ function convert_array_to_utf8($arr) {
 }
 
 session_start();
-
-if ($money_debug === true) {
-	$timer = new utilTimer();
-	$timer->mStart();
+if ($money_debug > 0) {
+	$timer = new utilTimer( $money_debug );
 }
 
 Configuration::getInstance()->readConfig( dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'client.properties' );
@@ -471,8 +469,7 @@ if ($is_logged_in == 0) {
 	}
 }
 echo $display;
-if ($money_debug === true) {
-	echo "overall: ";
+if ($money_debug > 0) {
 	$timer->mPrintTime();
 }
 ?>
