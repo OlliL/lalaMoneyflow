@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: Configuration.php,v 1.1 2014/03/10 20:02:40 olivleh1 Exp $
+// $Id: Configuration.php,v 1.2 2014/03/13 16:53:25 olivleh1 Exp $
 //
 namespace base;
 
@@ -57,7 +57,6 @@ class Configuration {
 	}
 
 	public function getProperty($key, $section=null) {
-		error_log($key.'-'.$section);
 		if($section === null) {
 			return $this->configurationHolder[$key];
 		} else {
