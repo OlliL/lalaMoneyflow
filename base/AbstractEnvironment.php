@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractEnvironment.php,v 1.3 2014/03/01 19:32:34 olivleh1 Exp $
+// $Id: AbstractEnvironment.php,v 1.4 2014/03/14 06:01:26 olivleh1 Exp $
 //
 namespace base;
 
@@ -69,7 +69,8 @@ abstract class AbstractEnvironment {
 	}
 
 	protected final function getValue($key) {
-		return $this->environment [$key];
+		if (array_key_exists( $key, $this->environment ))
+			return $this->environment [$key];
 	}
 
 	protected final function setValue($key, $value) {
