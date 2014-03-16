@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.58 2014/03/11 05:45:16 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.59 2014/03/16 12:00:36 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -44,8 +44,6 @@ class moduleUsers extends module {
 		if (! $userId) {
 			return 3;
 		} else {
-			Environment::getInstance()->setUserId( $userId );
-
 			if (Environment::getInstance()->getUserAttNew()) {
 				return 2;
 			} else {
@@ -55,6 +53,7 @@ class moduleUsers extends module {
 	}
 
 	public final function display_login_user($realaction, $name, $password, $request_uri) {
+		$loginok = 0;
 		switch ($realaction) {
 			case 'login' :
 				if (empty( $name )) {

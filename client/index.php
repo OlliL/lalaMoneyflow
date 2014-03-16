@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.88 2014/03/13 21:36:43 olivleh1 Exp $
+// $Id: index.php,v 1.89 2014/03/16 12:00:36 olivleh1 Exp $
 //
 namespace client;
 
@@ -88,7 +88,7 @@ if ($is_logged_in == 2) {
 	$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 	$display = $moduleSettings->display_personal_settings( $realaction, $all_data );
 
-	if ($_POST ['realaction'] == 'save' && ! is_array( $ERRORS ))
+	if ($_POST ['realaction'] == 'save' && ! is_array( ErrorHandler::getErrors() ))
 		header( "Location: " . $_SERVER ['PHP_SELF'] );
 } elseif ($action == 'login_user' || $is_logged_in != 0) {
 
@@ -99,7 +99,7 @@ if ($is_logged_in == 2) {
 	$password = array_key_exists( 'password', $_REQUEST ) ? $_REQUEST ['password'] : '';
 	$display = $moduleUsers->display_login_user( $realaction, $name, $password, $request_uri );
 
-	if ($_POST ['request_uri'] && ! is_array( $ERRORS ))
+	if ($_POST ['request_uri'] && ! $display)
 		header( "Location: " . $_POST ['request_uri'] );
 }
 

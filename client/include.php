@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.36 2014/03/13 17:30:01 olivleh1 Exp $
+// $Id: include.php,v 1.37 2014/03/16 12:00:36 olivleh1 Exp $
 //
 
 //
@@ -45,6 +45,8 @@ spl_autoload_register( 'framework_autoload' );
 
 // Do never change this! It is needed to generate GMT-UNIX Timestamps needed to communicate with the server!
 date_default_timezone_set( 'UTC' );
+ini_set( "log_errors", 1 );
+ini_set( "error_log", "/tmp/php-error-client.log" );
 
 define( 'ENABLE_JPGRAPH', true );
 $money_debug=2;
