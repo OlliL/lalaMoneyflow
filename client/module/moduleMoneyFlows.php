@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.89 2014/03/13 21:36:43 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.90 2014/03/20 17:38:35 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -39,6 +39,7 @@ class moduleMoneyFlows extends module {
 	}
 
 	public final function display_edit_moneyflow($realaction, $id, $all_data) {
+		$close = 0;
 		if (empty( $id ))
 			return;
 
@@ -72,6 +73,8 @@ class moduleMoneyFlows extends module {
 				if ($valid_data === true) {
 					$ret = MoneyflowControllerHandler::getInstance()->updateMoneyflow( $all_data );
 					if ($ret === true) {
+						$close = 1;
+						break;
 						$this->template->assign( 'CLOSE', 1 );
 					} else {
 						$capitalsource_values = $ret ['capitalsources'];
@@ -137,12 +140,15 @@ class moduleMoneyFlows extends module {
 				break;
 		}
 
-		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
-		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'MONEYFLOWID', $id );
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template->assign( 'CLOSE', $close );
+		if ($close === 0) {
+			$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
+			$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
+			$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
+			$this->template->assign( 'ALL_DATA', $all_data );
+			$this->template->assign( 'MONEYFLOWID', $id );
+			$this->template->assign( 'ERRORS', $this->get_errors() );
+		}
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_moneyflow.tpl' );

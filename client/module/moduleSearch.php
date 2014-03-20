@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSearch.php,v 1.38 2014/03/13 21:36:43 olivleh1 Exp $
+// $Id: moduleSearch.php,v 1.39 2014/03/20 17:38:35 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -135,16 +135,21 @@ class moduleSearch extends module {
 							} else {
 								$sortOrder2 = SORT_ASC;
 							}
+
 							foreach ( $results as $key => $result ) {
 								if ($grouping1 == 'contractpartner') {
 									$sortKey1 [$key] = strtolower( $result ['name'] );
-								} else {
+								} elseif ($grouping1) {
 									$sortKey1 [$key] = $result [$grouping1];
+								} else {
+									$sortKey1 [$key] = 1;
 								}
 								if ($grouping2 == 'contractpartner') {
 									$sortKey2 [$key] = strtolower( $result ['name'] );
-								} else {
+								} elseif ($grouping2) {
 									$sortKey2 [$key] = $result [$grouping2];
+								} else {
+									$sortKey2 [$key] = 1;
 								}
 							}
 							array_multisort( $sortKey1, $sortOrder1, $sortKey2, $sortOrder2, $results );

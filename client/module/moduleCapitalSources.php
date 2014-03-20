@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.55 2014/03/10 20:02:40 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.56 2014/03/20 17:40:10 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -133,7 +133,7 @@ class moduleCapitalSources extends module {
 						}
 					} else {
 						$all_data ['validfrom'] = $this->convertDateToGui( date( 'Y-m-d' ) );
-						$all_data ['validtil'] = $this->convertDateToGui( Configuration::getInstance()->getProperty('max_year') );
+						$all_data ['validtil'] = $this->convertDateToGui( Configuration::getInstance()->getProperty( 'max_year' ) );
 					}
 				}
 				$type_values = $this->coreText->get_domain_data( 'CAPITALSOURCE_TYPE' );
@@ -145,10 +145,11 @@ class moduleCapitalSources extends module {
 		}
 
 		$this->template->assign( 'CLOSE', $close );
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'CAPITALSOURCEID', $capitalsourceid );
-		$this->template->assign( 'ERRORS', $this->get_errors() );
-
+		if ($close == 0) {
+			$this->template->assign( 'ALL_DATA', $all_data );
+			$this->template->assign( 'CAPITALSOURCEID', $capitalsourceid );
+			$this->template->assign( 'ERRORS', $this->get_errors() );
+		}
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_capitalsource.tpl' );
 	}

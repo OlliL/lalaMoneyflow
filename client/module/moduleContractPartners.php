@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.42 2014/03/14 06:01:26 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.43 2014/03/20 17:40:10 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -106,7 +106,7 @@ class moduleContractPartners extends module {
 						$all_data ['town'] = '';
 						$all_data ['country'] = '';
 						$all_data ['validfrom'] = $this->convertDateToGui( date( 'Y-m-d' ) );
-						$all_data ['validtil'] = $this->convertDateToGui( Configuration::getInstance()->getProperty('max_year') );
+						$all_data ['validtil'] = $this->convertDateToGui( Configuration::getInstance()->getProperty( 'max_year' ) );
 
 						$all_data ['name_error'] = 0;
 						$all_data ['validfrom_error'] = 0;
@@ -117,10 +117,11 @@ class moduleContractPartners extends module {
 		}
 
 		$this->template->assign( 'CLOSE', $close );
-		$this->template->assign( 'CONTRACTPARTNERID', $contractpartnerid );
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'ERRORS', $this->get_errors() );
-
+		if ($close == 0) {
+			$this->template->assign( 'CONTRACTPARTNERID', $contractpartnerid );
+			$this->template->assign( 'ALL_DATA', $all_data );
+			$this->template->assign( 'ERRORS', $this->get_errors() );
+		}
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_contractpartner.tpl' );
 	}

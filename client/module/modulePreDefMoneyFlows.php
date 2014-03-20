@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.57 2014/03/02 23:42:20 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.58 2014/03/20 17:38:35 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -39,14 +39,14 @@ class modulePreDefMoneyFlows extends module {
 
 	public final function display_list_predefmoneyflows($letter) {
 		$listPreDefMoneyflows = PreDefMoneyflowControllerHandler::getInstance()->showPreDefMoneyflowList( $letter );
-		
+
 		$all_index_letters = $listPreDefMoneyflows ['initials'];
 		$all_data = $listPreDefMoneyflows ['predefmoneyflows'];
-		
+
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
-		
+
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_predefmoneyflows.tpl' );
 	}
@@ -62,20 +62,20 @@ class modulePreDefMoneyFlows extends module {
 				$all_data ['contractpartner_error'] = 0;
 				if (! $this->fix_amount( $all_data ['amount'] )) {
 					$this->add_error( ErrorCode::AMOUNT_IN_WRONG_FORMAT, array (
-							$all_data ['amount'] 
+							$all_data ['amount']
 					) );
 					break;
 					$all_data ['amount_error'] = 1;
 					$valid_data = false;
 				}
-				
+
 				if ($data_is_valid) {
-					
+
 					if ($predefmoneyflowid == 0)
 						$ret = PreDefMoneyflowControllerHandler::getInstance()->createPreDefMoneyflow( $all_data );
 					else
 						$ret = PreDefMoneyflowControllerHandler::getInstance()->updatePreDefMoneyflow( $all_data );
-					
+
 					if ($ret === true) {
 						$close = 1;
 						break;
@@ -85,17 +85,17 @@ class modulePreDefMoneyFlows extends module {
 						$postingaccount_values = $ret ['postingaccounts'];
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
-							
+
 							switch ($error) {
 								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
 									$this->add_error( $error, array (
-											$all_data ['amount'] 
+											$all_data ['amount']
 									) );
 									break;
 								default :
 									$this->add_error( $error );
 							}
-							
+
 							switch ($error) {
 								case ErrorCode::CAPITALSOURCE_DOES_NOT_EXIST :
 								case ErrorCode::CAPITALSOURCE_IS_NOT_SET :
@@ -135,19 +135,21 @@ class modulePreDefMoneyFlows extends module {
 							'once_a_month' => '',
 							'amount_error' => 0,
 							'contractpartner_error' => 0,
-							'capitalsource_error' => 0 
+							'capitalsource_error' => 0
 					);
 				}
 				break;
 		}
 		$this->template->assign( 'CLOSE', $close );
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'PREDEFMONEYFLOWID', $predefmoneyflowid );
-		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
-		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
-		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+		if ($close === 0) {
+			$this->template->assign( 'ALL_DATA', $all_data );
+			$this->template->assign( 'PREDEFMONEYFLOWID', $predefmoneyflowid );
+			$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
+			$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
+			$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
+			$this->template->assign( 'ERRORS', $this->get_errors() );
+		}
+
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_predefmoneyflow.tpl' );
 	}
@@ -164,9 +166,9 @@ class modulePreDefMoneyFlows extends module {
 				$this->template->assign( 'ALL_DATA', $all_data );
 				break;
 		}
-		
+
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_predefmoneyflow.tpl' );
 	}

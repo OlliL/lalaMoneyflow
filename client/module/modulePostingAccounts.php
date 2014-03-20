@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePostingAccounts.php,v 1.6 2014/03/09 12:06:11 olivleh1 Exp $
+// $Id: modulePostingAccounts.php,v 1.7 2014/03/20 17:40:10 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -88,10 +88,11 @@ class modulePostingAccounts extends module {
 		}
 
 		$this->template->assign( 'CLOSE', $close );
-		$this->template->assign( 'POSTINGACCOUNTID', $postingaccountid );
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'ERRORS', $this->get_errors() );
-
+		if ($close == 0) {
+			$this->template->assign( 'POSTINGACCOUNTID', $postingaccountid );
+			$this->template->assign( 'ALL_DATA', $all_data );
+			$this->template->assign( 'ERRORS', $this->get_errors() );
+		}
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_postingaccount.tpl' );
 	}
