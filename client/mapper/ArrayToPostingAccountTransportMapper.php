@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToPostingAccountTransportMapper.php,v 1.6 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: ArrayToPostingAccountTransportMapper.php,v 1.7 2014/03/31 15:15:42 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -35,16 +35,17 @@ class ArrayToPostingAccountTransportMapper extends AbstractArrayMapper {
 
 	public static function mapAToB(array $a) {
 		$b = new PostingAccountTransport();
-		$b->setId( $a ['postingaccountid'] );
+		if (array_key_exists( 'postingaccountid', $a ))
+			$b->setId( $a ['postingaccountid'] );
 		$b->setName( $a ['name'] );
-		
+
 		return $b;
 	}
 
 	public static function mapBToA(PostingAccountTransport $b) {
 		$a ['postingaccountid'] = $b->getId();
 		$a ['name'] = $b->getName();
-		
+
 		return $a;
 	}
 }

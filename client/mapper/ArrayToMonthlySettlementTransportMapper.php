@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToMonthlySettlementTransportMapper.php,v 1.4 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: ArrayToMonthlySettlementTransportMapper.php,v 1.5 2014/03/31 15:15:42 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -35,6 +35,7 @@ class ArrayToMonthlySettlementTransportMapper extends AbstractArrayMapper {
 
 	public static function mapAToB(array $a) {
 		$b = new MonthlySettlementTransport();
+		if (array_key_exists( 'monthlysettlementid', $a ))
 		$b->setId( $a ['monthlysettlementid'] );
 		$b->setAmount( $a ['amount'] );
 		$b->setYear( $a ['year'] );
@@ -52,7 +53,7 @@ class ArrayToMonthlySettlementTransportMapper extends AbstractArrayMapper {
 		$a ['mcs_capitalsourceid'] = $b->getCapitalsourceid();
 		$a ['capitalsourcecomment'] = $b->getCapitalsourcecomment();
 		$a ['capitalsourcegroupuse'] = $b->getCapitalsourcegroupuse(); // FIXME: delete?
-		
+
 		return $a;
 	}
 }

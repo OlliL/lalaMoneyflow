@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToCapitalsourceTransportMapper.php,v 1.6 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: ArrayToCapitalsourceTransportMapper.php,v 1.7 2014/03/31 15:15:42 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -35,22 +35,23 @@ class ArrayToCapitalsourceTransportMapper extends AbstractArrayMapper {
 
 	public static function mapAToB(array $a) {
 		$b = new CapitalsourceTransport();
-		$b->setId( $a ['capitalsourceid'] );
+		if (array_key_exists( 'capitalsourceid', $a ))
+			$b->setId( $a ['capitalsourceid'] );
 		$b->setAccountNumber( $a ['accountnumber'] );
 		$b->setBankCode( $a ['bankcode'] );
 		$b->setComment( $a ['comment'] );
 		$b->setGroupUse( $a ['att_group_use'] );
 		$b->setState( $a ['state'] );
 		$b->setType( $a ['type'] );
-		
+
 		$validfrom = parent::convertClientDateToTransport( $a ['validfrom'] );
 		if ($validfrom)
 			$b->setValidFrom( $validfrom );
-		
+
 		$validtil = parent::convertClientDateToTransport( $a ['validtil'] );
 		if ($validtil)
 			$b->setValidTil( $validtil );
-		
+
 		return $b;
 	}
 
@@ -65,7 +66,7 @@ class ArrayToCapitalsourceTransportMapper extends AbstractArrayMapper {
 		$a ['validfrom'] = parent::convertTransportDateToClient( $b->getValidFrom() );
 		$a ['validtil'] = parent::convertTransportDateToClient( $b->getValidTil() );
 		$a ['mur_userid'] = $b->getUserid();
-		
+
 		return $a;
 	}
 }

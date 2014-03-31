@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToContractpartnerTransportMapper.php,v 1.6 2014/03/02 23:42:21 olivleh1 Exp $
+// $Id: ArrayToContractpartnerTransportMapper.php,v 1.7 2014/03/31 15:15:42 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -35,7 +35,8 @@ class ArrayToContractpartnerTransportMapper extends AbstractArrayMapper {
 
 	public static function mapAToB(array $a) {
 		$b = new ContractpartnerTransport();
-		$b->setId( $a ['contractpartnerid'] );
+		if (array_key_exists( 'contractpartnerid', $a ))
+			$b->setId( $a ['contractpartnerid'] );
 		$b->setCountry( $a ['country'] );
 		$b->setName( $a ['name'] );
 		$b->setPostcode( $a ['postcode'] );
@@ -44,11 +45,11 @@ class ArrayToContractpartnerTransportMapper extends AbstractArrayMapper {
 		$validfrom = parent::convertClientDateToTransport( $a ['validfrom'] );
 		if ($validfrom)
 			$b->setValidFrom( $validfrom );
-		
+
 		$validtil = parent::convertClientDateToTransport( $a ['validtil'] );
 		if ($validtil)
 			$b->setValidTil( $validtil );
-		
+
 		return $b;
 	}
 
@@ -62,7 +63,7 @@ class ArrayToContractpartnerTransportMapper extends AbstractArrayMapper {
 		$a ['mur_userid'] = $b->getUserid();
 		$a ['validfrom'] = parent::convertTransportDateToClient( $b->getValidFrom() );
 		$a ['validtil'] = parent::convertTransportDateToClient( $b->getValidTil() );
-		
+
 		return $a;
 	}
 }
