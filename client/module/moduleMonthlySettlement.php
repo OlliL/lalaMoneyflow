@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.59 2014/03/02 23:42:20 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.60 2014/04/14 18:34:38 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -44,7 +44,7 @@ class moduleMonthlySettlement extends module {
 	public final function display_list_monthlysettlements($month, $year) {
 		if (! $year)
 			$year = date( 'Y' );
-		
+
 		$showMonthlySettlementList = MonthlySettlementControllerHandler::getInstance()->showMonthlySettlementList( $year, $month );
 		$allYears = $showMonthlySettlementList ['allYears'];
 		$allMonth = $showMonthlySettlementList ['allMonth'];
@@ -58,20 +58,20 @@ class moduleMonthlySettlement extends module {
 			foreach ( $allMonth as $key => $value ) {
 				$temp_array = array (
 						'nummeric' => sprintf( '%02d', $value ),
-						'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $value ) 
+						'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $value )
 				);
 				$months [] = $temp_array;
 				if (( int ) $month === ( int ) $value) {
 					$monthArray = $temp_array;
 				}
 			}
-			
+
 			if ($month > 0 && $year > 0 && is_array( $all_data )) {
 				$sumamount = 0;
 				foreach ( $all_data as $settlement ) {
 					$sumamount += $settlement ['amount'];
 				}
-				
+
 				$this->template->assign( 'SUMAMOUNT', $sumamount );
 				$this->template->assign( 'MONTH', $monthArray );
 				$this->template->assign( 'YEAR', $year );
@@ -86,7 +86,7 @@ class moduleMonthlySettlement extends module {
 		$this->template->assign( 'COUNT_ALL_DATA', $count_all_data );
 		$this->template->assign( 'NUM_EDITABLE_SETTLEMENTS', $numberOfEditableSettlements );
 		$this->template->assign( 'NUM_ADDABLE_SETTLEMENTS', $numberOfAddableSettlements );
-		
+
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_monthlysettlements.tpl' );
 	}
@@ -98,16 +98,16 @@ class moduleMonthlySettlement extends module {
 			case 'save' :
 				$ret = true;
 				$data_is_valid = true;
-				
+
 				foreach ( $all_data as $id => $value ) {
 					if (is_array( $value )) {
-						if (! $this->fix_amount( $value ['amount'] )) {
+						if (! $this->fix_amount( $all_data[$id] ['amount'] )) {
 							$all_data [$id] ['amount_error'] = 1;
 							$data_is_valid = false;
 						}
 					}
 				}
-				
+
 				if ($data_is_valid === true) {
 					$ret = MonthlySettlementControllerHandler::getInstance()->upsertMonthlySettlement( $all_data );
 					if ($ret === true) {
@@ -115,9 +115,9 @@ class moduleMonthlySettlement extends module {
 					} else {
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
-							
+
 							$this->add_error( $error );
-							
+
 							switch ($error) {
 								// case ErrorCode::NAME_ALREADY_EXISTS :
 								// $all_data ['name_error'] = 1;
@@ -126,10 +126,10 @@ class moduleMonthlySettlement extends module {
 						}
 					}
 				}
-				
+
 				$all_data_new = $all_data;
 				break;
-			
+
 			default :
 				$monthlySettlementCreate = MonthlySettlementControllerHandler::getInstance()->showMonthlySettlementCreate( $year, $month );
 				$year = $monthlySettlementCreate ['year'];
@@ -143,12 +143,12 @@ class moduleMonthlySettlement extends module {
 				}
 				break;
 		}
-		
+
 		$monthArray = array (
 				'nummeric' => sprintf( '%02d', $month ),
-				'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month ) 
+				'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month )
 		);
-		
+
 		$this->template->assign( 'CLOSE', $close );
 		$this->template->assign( 'NEW', $new );
 		$this->template->assign( 'MONTH', $monthArray );
@@ -157,7 +157,7 @@ class moduleMonthlySettlement extends module {
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data_new ) );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_monthlysettlement.tpl' );
 	}
@@ -171,7 +171,7 @@ class moduleMonthlySettlement extends module {
 						break;
 					}
 				default :
-					
+
 					$showMonthlySettlementDelete = MonthlySettlementControllerHandler::getInstance()->showMonthlySettlementDelete( $year, $month );
 					$all_data = $showMonthlySettlementDelete ['monthly_settlements'];
 					if (is_array( $all_data )) {
@@ -179,10 +179,10 @@ class moduleMonthlySettlement extends module {
 							$sumamount += $settlement ['amount'];
 						}
 					}
-					
+
 					$monthArray = array (
 							'nummeric' => sprintf( '%02d', $month ),
-							'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month ) 
+							'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month )
 					);
 					$this->template->assign( 'SUMAMOUNT', $sumamount );
 					$this->template->assign( 'MONTH', $monthArray );
@@ -192,7 +192,7 @@ class moduleMonthlySettlement extends module {
 			}
 		}
 		$this->template->assign( 'ERRORS', $this->get_errors() );
-		
+
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_monthlysettlement.tpl' );
 	}
