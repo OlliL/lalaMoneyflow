@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.43 2014/03/20 17:40:10 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.44 2014/04/20 09:10:38 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -39,12 +39,22 @@ class moduleContractPartners extends module {
 		parent::__construct();
 	}
 
+	private final function sort_contractpartner($contractpartner_values){
+		foreach ( $contractpartner_values as $key => $value ) {
+			$sortKey1 [$key] = strtolower( $value ['name'] );
+		}
+
+		array_multisort( $sortKey1, SORT_ASC,  $contractpartner_values );
+
+		return $contractpartner_values;
+	}
+
 	public final function display_list_contractpartners($letter) {
 		$listContractpartner = ContractpartnerControllerHandler::getInstance()->showContractpartnerList( $letter );
 		$all_index_letters = $listContractpartner ['initials'];
 		$all_data = $listContractpartner ['contractpartner'];
 
-		$this->template->assign( 'ALL_DATA', $all_data );
+		$this->template->assign( 'ALL_DATA', $this->sort_contractpartner($all_data) );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 

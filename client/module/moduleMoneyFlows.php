@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.90 2014/03/20 17:38:35 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.91 2014/04/20 09:10:38 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -36,6 +36,16 @@ class moduleMoneyFlows extends module {
 
 	public final function __construct() {
 		parent::__construct();
+	}
+
+	private final function sort_contractpartner($contractpartner_values){
+		foreach ( $contractpartner_values as $key => $value ) {
+			$sortKey1 [$key] = strtolower( $value ['name'] );
+		}
+
+		array_multisort( $sortKey1, SORT_ASC,  $contractpartner_values );
+
+		return $contractpartner_values;
 	}
 
 	public final function display_edit_moneyflow($realaction, $id, $all_data) {
@@ -143,7 +153,7 @@ class moduleMoneyFlows extends module {
 		$this->template->assign( 'CLOSE', $close );
 		if ($close === 0) {
 			$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-			$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
+			$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner($contractpartner_values) );
 			$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 			$this->template->assign( 'ALL_DATA', $all_data );
 			$this->template->assign( 'MONEYFLOWID', $id );
@@ -295,8 +305,9 @@ class moduleMoneyFlows extends module {
 				break;
 		}
 
+
 		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
+		$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner($contractpartner_values) );
 		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
