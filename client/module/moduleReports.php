@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.99 2014/03/13 21:36:43 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.100 2014/05/10 08:21:18 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -273,7 +273,7 @@ class moduleReports extends module {
 			$last_amount = $monthly_data [$i - 1];
 			$monthly2_data [$i - 1] = $last_amount;
 			foreach ( $showTrendsGraph ['calculated'] as $calculatedAmount ) {
-				$monthly2_data [$i] += $calculatedAmount ['amount'];
+				$monthly2_data [$i] = $calculatedAmount ['amount'];
 				$monthly_x [$i] = sprintf( "%02s/%02s", $calculatedAmount ['month'], substr( $calculatedAmount ['year'], 2 ) );
 				$i ++;
 			}
