@@ -148,13 +148,21 @@ function Go(x)
 						<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].comment}</td>
 						<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].lastamount < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].lastamount|number_format} {#CURRENCY#}</font></td>
 						{if $MONTHLYSETTLEMENT_EXISTS == true}
-						<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].fixamount  < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].fixamount|number_format} {#CURRENCY#}</font></td>
+							<td align="right" class="contrastbgcolor">
+							{if $SUMMARY_DATA[DATA].fixamount}
+								<font {if $SUMMARY_DATA[DATA].fixamount  < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].fixamount|number_format} {#CURRENCY#}</font>
+							{/if}
+							</td>
 						{/if}
 						<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].calcamount < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].calcamount|number_format} {#CURRENCY#}</font></td>
 						{if $MONTHLYSETTLEMENT_EXISTS == true}
-						{math equation="x - y" x=$SUMMARY_DATA[DATA].fixamount y=$SUMMARY_DATA[DATA].calcamount assign=CAPITALSOURCE_DIFFERENCE}
+							<td align="right" class="contrastbgcolor">
+							{if $SUMMARY_DATA[DATA].fixamount}
+								{math equation="x - y" x=$SUMMARY_DATA[DATA].fixamount y=$SUMMARY_DATA[DATA].calcamount assign=CAPITALSOURCE_DIFFERENCE}
 						
-						<td align="right" class="contrastbgcolor"><font {if $CAPITALSOURCE_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$CAPITALSOURCE_DIFFERENCE|number_format} {#CURRENCY#}</font></td>
+								<font {if $CAPITALSOURCE_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$CAPITALSOURCE_DIFFERENCE|number_format} {#CURRENCY#}</font>
+							{/if}
+							</td>
 						{/if}
 					</tr>
 				{/section}
