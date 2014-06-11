@@ -201,16 +201,24 @@ class Request
         $result = curl_exec($this->_ch);
 
         if ($result === false) {
-            $this->_error(curl_error($this->_ch));
+            if ($curlErrorNumber = curl_errno($this->_ch)) {
+                $curlErrorString = curl_error($this->_ch);
+                $this->_error($curlErrorString);
+                throw new ConnectionErrorException('Unable to connect: ' . $curlErrorNumber . ' ' . $curlErrorString);
+            }
+
+            $this->_error('Unable to connect.');
             throw new ConnectionErrorException('Unable to connect.');
         }
 
         $info = curl_getinfo($this->_ch);
 
-        //Remove the "HTTP/1.0 200 Connection established" string
-        if ($this->hasProxy() && false !== stripos($result, "HTTP/1.0 200 Connection established\r\n\r\n")) {
-            $result = str_ireplace("HTTP/1.0 200 Connection established\r\n\r\n", '', $result);
+        // Remove the "HTTP/1.x 200 Connection established" string and any other headers added by proxy
+        $proxy_regex = "/HTTP\/1\.[01] 200 Connection established.*?\r\n\r\n/s";
+        if ($this->hasProxy() && preg_match($proxy_regex, $result)) {
+            $result = preg_replace($proxy_regex, '', $result);
         }
+
         $response = explode("\r\n\r\n", $result, 2 + $info['redirect_count']);
 
         $body = array_pop($response);
@@ -282,7 +290,8 @@ class Request
     /**
      * @return is this request setup for client side cert?
      */
-    public function hasClientSideCert() {
+    public function hasClientSideCert()
+    {
         return isset($this->client_cert) && isset($this->client_key);
     }
 
@@ -313,7 +322,8 @@ class Request
      * Set the body of the request
      * @return Request this
      * @param mixed $payload
-     * @param string $mimeType
+     * @param string $mimeType currently, sets the sends AND expects mime type although this
+     *    behavior may change in the next minor release (as it is a potential breaking change).
      */
     public function body($payload, $mimeType = null)
     {
@@ -335,7 +345,7 @@ class Request
     {
         if (empty($mime)) return $this;
         $this->content_type = $this->expected_type = Mime::getFullMime($mime);
-        if($this->isUpload()) {
+        if ($this->isUpload()) {
             $this->neverSerializePayload();
         }
         return $this;
@@ -380,11 +390,15 @@ class Request
         return $this->expects($mime);
     }
 
-    public function attach($files) {
+    public function attach($files)
+    {
         foreach ($files as $key => $file) {
-            $this->payload[$key] = "@{$file}";
+            if (function_exists('curl_file_create')) {
+                $this->payload[$key] = curl_file_create($file);
+            } else {
+                $this->payload[$key] = "@{$file}";
+            }
         }
-
         $this->sendsType(Mime::UPLOAD);
         return $this;
     }
@@ -397,7 +411,7 @@ class Request
     {
         if (empty($mime)) return $this;
         $this->content_type  = Mime::getFullMime($mime);
-        if($this->isUpload()) {
+        if ($this->isUpload()) {
             $this->neverSerializePayload();
         }
         return $this;
@@ -441,9 +455,10 @@ class Request
      * @param string $auth_username Authentication username. Default null
      * @param string $auth_password Authentication password. Default null
      */
-    public function useProxy($proxy_host, $proxy_port = 80, $auth_type = null, $auth_username = null, $auth_password = null){
+    public function useProxy($proxy_host, $proxy_port = 80, $auth_type = null, $auth_username = null, $auth_password = null)
+    {
         $this->addOnCurlOption(CURLOPT_PROXY, "{$proxy_host}:{$proxy_port}");
-        if(in_array($auth_type, array(CURLAUTH_BASIC,CURLAUTH_NTLM)) ){
+        if (in_array($auth_type, array(CURLAUTH_BASIC,CURLAUTH_NTLM))) {
             $this->addOnCurlOption(CURLOPT_PROXYAUTH, $auth_type)
                 ->addOnCurlOption(CURLOPT_PROXYUSERPWD, "{$auth_username}:{$auth_password}");
         }
@@ -453,7 +468,8 @@ class Request
     /**
      * @return is this request setup for using proxy?
      */
-    public function hasProxy(){
+    public function hasProxy()
+    {
         return isset($this->additional_curl_opts[CURLOPT_PROXY]) && is_string($this->additional_curl_opts[CURLOPT_PROXY]);
     }
 
@@ -819,7 +835,7 @@ class Request
         if (isset($this->payload)) {
             $this->serialized_payload = $this->_serializePayload($this->payload);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $this->serialized_payload);
-            if(!$this->isUpload()) {
+            if (!$this->isUpload()) {
                 $this->headers['Content-Length'] =
                     $this->_determineLength($this->serialized_payload);
             }
