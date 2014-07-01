@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSearch.php,v 1.39 2014/03/20 17:38:35 olivleh1 Exp $
+// $Id: moduleSearch.php,v 1.40 2014/07/01 12:55:13 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -38,6 +38,16 @@ class moduleSearch extends module {
 		parent::__construct();
 	}
 
+	private final function sort_contractpartner($contractpartner_values){
+		foreach ( $contractpartner_values as $key => $value ) {
+			$sortKey1 [$key] = strtolower( $value ['name'] );
+		}
+
+		array_multisort( $sortKey1, SORT_ASC,  $contractpartner_values );
+
+		return $contractpartner_values;
+	}
+
 	public final function display_search($searchparams = null) {
 		$showSearchMoneyflowForm = MoneyflowControllerHandler::getInstance()->showSearchMoneyflowForm();
 		$contractpartner_values = $showSearchMoneyflowForm ['contractpartner'];
@@ -49,7 +59,7 @@ class moduleSearch extends module {
 			$searchparams ['order'] = 'grouping';
 		}
 		$this->template->assign( 'SEARCHPARAMS', $searchparams );
-		$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
+		$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner($contractpartner_values) );
 		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
@@ -184,7 +194,7 @@ class moduleSearch extends module {
 			}
 
 			$this->template->assign( 'SEARCHPARAMS', $searchparams );
-			$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
+			$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner($contractpartner_values) );
 			$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 			$this->template->assign( 'ERRORS', $this->get_errors() );
 
