@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CapitalsourceControllerHandler.php,v 1.13 2014/03/13 21:36:42 olivleh1 Exp $
+// $Id: CapitalsourceControllerHandler.php,v 1.14 2014/08/09 07:09:13 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -69,7 +69,7 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 	}
 
 	public final function showEditCapitalsource($id) {
-		$response = parent::getJson( showEditCapitalsource, array (
+		$response = parent::getJson( __FUNCTION__, array (
 				$id
 		) );
 		if ($response instanceof showEditCapitalsourceResponse) {
