@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.59 2014/03/16 12:00:36 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.60 2014/09/13 09:12:42 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -140,6 +140,8 @@ class moduleUsers extends module {
 	public final function display_edit_user($realaction, $userid, $all_data, $access_relation) {
 		$close = 0;
 		$access_relations = null;
+		$groups = null;
+
 		switch ($realaction) {
 			case 'save' :
 				$all_data ['userid'] = $userid;

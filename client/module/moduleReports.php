@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.100 2014/05/10 08:21:18 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.101 2014/09/13 09:12:42 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -334,6 +334,9 @@ class moduleReports extends module {
 		$months = $this->coreText->get_domain_data( 'MONTHS' );
 		$postingaccount_values = $showReportingFormResponse ['postingaccounts'];
 		$accounts_no_settings = $showReportingFormResponse ['accounts_no'];
+
+		$accounts_no = array();
+		$accounts_yes = array();
 
 		foreach ( $postingaccount_values as $postingaccount ) {
 			if (is_array( $accounts_no_settings ) && in_array( $postingaccount ['postingaccountid'], $accounts_no_settings )) {
