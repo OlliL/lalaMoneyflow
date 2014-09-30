@@ -149,7 +149,7 @@ function Go(x)
 						<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].lastamount < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].lastamount|number_format} {#CURRENCY#}</font></td>
 						{if $MONTHLYSETTLEMENT_EXISTS == true}
 							<td align="right" class="contrastbgcolor">
-							{if $SUMMARY_DATA[DATA].fixamount}
+							{if array_key_exists('fixamount',$SUMMARY_DATA[DATA])}
 								<font {if $SUMMARY_DATA[DATA].fixamount  < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].fixamount|number_format} {#CURRENCY#}</font>
 							{/if}
 							</td>
@@ -157,7 +157,7 @@ function Go(x)
 						<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].calcamount < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].calcamount|number_format} {#CURRENCY#}</font></td>
 						{if $MONTHLYSETTLEMENT_EXISTS == true}
 							<td align="right" class="contrastbgcolor">
-							{if $SUMMARY_DATA[DATA].fixamount}
+							{if array_key_exists('fixamount',$SUMMARY_DATA[DATA])}
 								{math equation="x - y" x=$SUMMARY_DATA[DATA].fixamount y=$SUMMARY_DATA[DATA].calcamount assign=CAPITALSOURCE_DIFFERENCE}
 						
 								<font {if $CAPITALSOURCE_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$CAPITALSOURCE_DIFFERENCE|number_format} {#CURRENCY#}</font>
