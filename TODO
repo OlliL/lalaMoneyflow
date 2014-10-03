@@ -1,3 +1,22 @@
+- create a new entity to store IBAN/BIC data for each contractpartner
+- add functionality to add, modify, delete this data
+
+- create a new entity "HBCI import"
+- add the functionality to check on each login if data is there for the accounts the user has access to
+- if data is there - display it and let the user do the following things:
+  - add booking account information (maybe also make a "preselection" maintainable per contract partner
+  - add comment
+  - dropdownbox "contractpartner" with preselection if IBAN is in the system
+  - checkbox "save IBAN to selected contractpartner"
+  - [Import] button
+  - [Skip] button
+ 
+ -  create a new REST interface where lalaMoneyflowHBCI can push its HBCI data to which will fill the new "HBCI import" entity
+ 
+ 
+ 
+
+
 - create predefined-moneyflows out of moneyflows in the reports-view
 - schedule predefined moneyflows (automatically create every .... )
 
