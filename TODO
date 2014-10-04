@@ -1,5 +1,4 @@
-- create a new entity to store IBAN/BIC data for each contractpartner
-- add functionality to add, modify, delete this data
+- add functionality to add, modify, delete contractpartneraccounts
 
 - create a new entity "HBCI import"
 - add the functionality to check on each login if data is there for the accounts the user has access to

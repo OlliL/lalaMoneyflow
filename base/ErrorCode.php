@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ErrorCode.php,v 1.24 2014/03/08 18:02:37 olivleh1 Exp $
+// $Id: ErrorCode.php,v 1.25 2014/10/04 22:46:45 olivleh1 Exp $
 //
 namespace base;
 
@@ -62,8 +62,6 @@ class ErrorCode {
 	const ATTENTION = 204;
 	const GROUP_IN_USE = 211;
 	const NAME_MUST_NOT_BE_EMPTY = 218;
-	const ACCOUNT_NUMBER_NOT_A_NUMBER = 225;
-	const BANK_CODE_NOT_A_NUMBER = 226;
 	const ACCOUNT_NUMBER_TO_LONG = 227;
 	const BANK_CODE_TO_LONG = 228;
 	const VALIDFROM_AFTER_VALIDTIL = 229;
