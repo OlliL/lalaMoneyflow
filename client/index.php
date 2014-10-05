@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.89 2014/03/16 12:00:36 olivleh1 Exp $
+// $Id: index.php,v 1.90 2014/10/05 14:12:53 olivleh1 Exp $
 //
 namespace client;
 
@@ -34,6 +34,7 @@ use client\module\moduleUsers;
 use client\module\moduleSettings;
 use client\module\moduleCapitalSources;
 use client\module\moduleContractPartners;
+use client\module\moduleContractPartnerAccounts;
 use client\module\modulePreDefMoneyFlows;
 use client\module\moduleMoneyFlows;
 use client\module\moduleMonthlySettlement;
@@ -123,6 +124,11 @@ if ($is_logged_in == 0) {
 		case 'edit_contractpartner' :
 		case 'delete_contractpartner' :
 			$moduleContractPartners = new moduleContractPartners();
+			break;
+		case 'list_contractpartneraccounts' :
+		case 'edit_contractpartneraccount' :
+		case 'delete_contractpartneraccount' :
+			$moduleContractPartnerAccounts = new moduleContractPartnerAccounts();
 			break;
 		case 'list_predefmoneyflows' :
 		case 'edit_predefmoneyflow' :
@@ -315,6 +321,28 @@ if ($is_logged_in == 0) {
 				$display = $moduleContractPartners->display_delete_contractpartner( $realaction, $id );
 				break;
 
+			/* contractpartneraccounts */
+
+			case 'list_contractpartneraccounts' :
+
+				$contractpartnerid = array_key_exists( 'contractpartnerid', $_REQUEST ) ? $_REQUEST ['contractpartnerid'] : '';
+				$display = $moduleContractPartnerAccounts->display_list_contractpartneraccounts( $contractpartnerid );
+				break;
+
+			case 'edit_contractpartneraccount' :
+
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$contractpartneraccountid = array_key_exists( 'contractpartneraccountid', $_REQUEST ) ? $_REQUEST ['contractpartneraccountid'] : 0;
+				$display = $moduleContractPartnerAccounts->display_edit_contractpartneraccount( $realaction, $contractpartneraccountid, $all_data );
+				break;
+
+			case 'delete_contractpartneraccount' :
+
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$contractpartneraccountid = array_key_exists( 'contractpartneraccountid', $_REQUEST ) ? $_REQUEST ['contractpartneraccountid'] : '';
+				$display = $moduleContractPartnerAccounts->display_delete_contractpartneraccount( $realaction, $contractpartneraccountid );
+				break;
+
 			/* predefmoneyflows */
 
 			case 'list_predefmoneyflows' :
@@ -479,7 +507,7 @@ if ($is_logged_in == 0) {
 	}
 }
 if ($display) {
-	header('Content-Type:text/html; charset=UTF-8');
+	header( 'Content-Type:text/html; charset=UTF-8' );
 	echo $display;
 }
 if ($money_debug > 0) {

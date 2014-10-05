@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.56 2014/03/20 17:40:10 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.57 2014/10/05 14:12:53 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -112,11 +112,9 @@ class moduleCapitalSources extends module {
 								case ErrorCode::NAME_ALREADY_EXISTS :
 									$all_data ['comment_error'] = 1;
 									break;
-								case ErrorCode::BANK_CODE_NOT_A_NUMBER :
 								case ErrorCode::BANK_CODE_TO_LONG :
 									$all_data ['bankcode_error'] = 1;
 									break;
-								case ErrorCode::ACCOUNT_NUMBER_NOT_A_NUMBER :
 								case ErrorCode::ACCOUNT_NUMBER_TO_LONG :
 									$all_data ['accountnumber_error'] = 1;
 									break;

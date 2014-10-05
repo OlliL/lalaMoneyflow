@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.45 2014/06/01 13:02:20 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.46 2014/10/05 14:12:53 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -140,7 +140,7 @@ class moduleContractPartners extends module {
 	public final function display_delete_contractpartner($realaction, $contractpartnerid) {
 		switch ($realaction) {
 			case 'yes' :
-				if (ContractpartnerControllerHandler::getInstance()->deleteContractpartnerById( $contractpartnerid )) {
+				if (ContractpartnerControllerHandler::getInstance()->deleteContractpartner( $contractpartnerid )) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;
 				}
