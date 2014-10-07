@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CapitalsourceControllerHandler.php,v 1.14 2014/08/09 07:09:13 olivleh1 Exp $
+// $Id: CapitalsourceControllerHandler.php,v 1.15 2014/10/07 18:54:33 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -60,6 +60,7 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$restriction
 		) );
+		$result = null;
 		if ($response instanceof showCapitalsourceListResponse) {
 			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
 			$result ['initials'] = $response->getInitials();
@@ -72,6 +73,7 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$id
 		) );
+		$result = null;
 		if ($response instanceof showEditCapitalsourceResponse) {
 			$result = parent::map( $response->getCapitalsourceTransport() );
 		}
@@ -82,6 +84,7 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$id
 		) );
+		$result = null;
 		if ($response instanceof showDeleteCapitalsourceResponse) {
 			$result = parent::map( $response->getCapitalsourceTransport() );
 		}

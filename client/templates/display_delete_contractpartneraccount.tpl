@@ -13,7 +13,7 @@
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action"            value="delete_contractpartneraccount">
 			<input type="hidden" name="realaction"        value="yes">
-			<input type="hidden" name="contractpartnerid" value="{$ALL_DATA.contractpartneraccountid}">
+			<input type="hidden" name="contractpartneraccountid" value="{$ALL_DATA.contractpartneraccountid}">
 			<input type="hidden" name="REFERER"           value="{$ENV_REFERER}">
 			<table border=0>
 				<tr>

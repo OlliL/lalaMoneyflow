@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportControllerHandler.php,v 1.15 2014/03/08 21:56:51 olivleh1 Exp $
+// $Id: ReportControllerHandler.php,v 1.16 2014/10/07 18:54:33 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -77,6 +77,7 @@ class ReportControllerHandler extends AbstractHandler {
 				$year,
 				$month
 		) );
+		$result = null;
 		if ($response instanceof listReportsResponse) {
 			$result ['moneyflows'] = parent::mapArrayNullable( $response->getMoneyflowTransport() );
 			$result ['turnover_capitalsources'] = parent::mapArrayNullable( $response->getReportTurnoverCapitalsourceTransport() );
@@ -99,6 +100,7 @@ class ReportControllerHandler extends AbstractHandler {
 
 	public final function showReportingForm() {
 		$response = parent::getJson( __FUNCTION__ );
+		$result = null;
 		if ($response instanceof showReportingFormResponse) {
 			$result ['allYears'] = $response->getAllYears();
 			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
@@ -110,6 +112,7 @@ class ReportControllerHandler extends AbstractHandler {
 
 	public final function showTrendsForm() {
 		$response = parent::getJson( __FUNCTION__ );
+		$result = null;
 		if ($response instanceof showTrendsFormResponse) {
 			$result ['allYears'] = $response->getAllYears();
 			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
@@ -126,6 +129,7 @@ class ReportControllerHandler extends AbstractHandler {
 		$request->setEndDate( $enddate->format( 'U' ) );
 
 		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
+		$result = null;
 		if ($response instanceof showTrendsGraphResponse) {
 			$result ['settled'] = parent::mapArrayNullable( $response->getTrendsSettledTransport() );
 			$result ['calculated'] = parent::mapArrayNullable( $response->getTrendsCalculatedTransport() );
@@ -142,6 +146,7 @@ class ReportControllerHandler extends AbstractHandler {
 		$request->setEndDate( $enddate->format( 'U' ) );
 
 		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
+		$result = null;
 		if ($response instanceof showYearlyReportGraphResponse) {
 			$result ['data'] = parent::mapArrayNullable( $response->getPostingAccountAmountTransport() );
 			$result ['postingAccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
@@ -157,6 +162,7 @@ class ReportControllerHandler extends AbstractHandler {
 		$request->setEndDate( $enddate->format( 'U' ) );
 
 		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
+		$result = null;
 		if ($response instanceof showMonthlyReportGraphResponse) {
 			$result ['data'] = parent::mapArrayNullable( $response->getPostingAccountAmountTransport() );
 			$result ['postingAccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );

@@ -10,6 +10,7 @@
 			<input type="hidden" name="action"                   value="edit_contractpartneraccount">
 			<input type="hidden" name="realaction"               value="save">
 			<input type="hidden" name="contractpartneraccountid" value="{$CONTRACTPARTNERACCOUNTID}">
+			<input type="hidden" name="contractpartnerid"        value="{$CONTRACTPARTNERID}">
 			<input type="hidden" name="REFERER"                  value="{$ENV_REFERER}">
 			{section name=ERROR loop=$ERRORS}
 				<font color="#FF0000">{$ERRORS[ERROR]}</font><br>

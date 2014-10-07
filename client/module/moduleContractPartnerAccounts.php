@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartnerAccounts.php,v 1.1 2014/10/05 14:12:53 olivleh1 Exp $
+// $Id: moduleContractPartnerAccounts.php,v 1.2 2014/10/07 18:54:33 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -39,29 +39,27 @@ class moduleContractPartnerAccounts extends module {
 		parent::__construct();
 	}
 
-	public final function display_list_contractpartneraccounts($letter) {
-		$listContractpartnerAccounts = ContractpartnerAccountControllerHandler::getInstance()->showContractpartnerAccountList();
-		$listContractpartnerAccounts ['contractpartner'] ['name'] = 'test';
-		$listContractpartnerAccounts ['contractpartneraccounts'] [0] ['contractpartneraccountid'] = 0;
-		$listContractpartnerAccounts ['contractpartneraccounts'] [0] ['accountnumber'] = 'DE12345678901234567890123456789012';
-		$listContractpartnerAccounts ['contractpartneraccounts'] [0] ['bankcode'] = 'DE0123456789';
-		$contractpartner = $listContractpartnerAccounts ['contractpartner'];
-		$all_data = $listContractpartnerAccounts ['contractpartneraccounts'];
+	public final function display_list_contractpartneraccounts($contractpartnerid) {
+		$listContractpartnerAccounts = ContractpartnerAccountControllerHandler::getInstance()->showContractpartnerAccountList($contractpartnerid);
+		$contractpartnername = $listContractpartnerAccounts['contractpartnername'];
+		$all_data = $listContractpartnerAccounts['contractpartneraccount'];
 
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
-		$this->template->assign( 'CONTRACTPARTNER_NAME', $contractpartner ['name'] );
+		$this->template->assign( 'CONTRACTPARTNERID', $contractpartnerid);
+		$this->template->assign( 'CONTRACTPARTNER_NAME', $contractpartnername );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_list_contractpartneraccounts.tpl' );
 	}
 
-	public final function display_edit_contractpartneraccount($realaction, $contractpartneraccountid, $all_data) {
+	public final function display_edit_contractpartneraccount($realaction, $contractpartneraccountid, $contractpartnerid, $all_data) {
 		$close = 0;
 		switch ($realaction) {
 			case 'save' :
 				$valid_data = true;
 				$all_data ['contractpartneraccountid'] = $contractpartneraccountid;
+				$all_data ['mcp_contractpartnerid'] = $contractpartnerid;
 
 				if ($contractpartneraccountid == 0)
 					$ret = ContractpartnerAccountControllerHandler::getInstance()->createContractpartnerAccount( $all_data );
@@ -89,7 +87,7 @@ class moduleContractPartnerAccounts extends module {
 			default :
 				if (! is_array( $all_data )) {
 					if ($contractpartneraccountid > 0) {
-						$all_data = ContractpartnerControllerAccountHandler::getInstance()->showEditContractpartnerAccount( $contractpartneraccountid );
+						$all_data = ContractpartnerAccountControllerHandler::getInstance()->showEditContractpartnerAccount( $contractpartneraccountid );
 					}
 				}
 				break;
@@ -98,6 +96,7 @@ class moduleContractPartnerAccounts extends module {
 		$this->template->assign( 'CLOSE', $close );
 		if ($close == 0) {
 			$this->template->assign( 'CONTRACTPARTNERACCOUNTID', $contractpartneraccountid );
+			$this->template->assign( 'CONTRACTPARTNERID', $contractpartnerid );
 			$this->template->assign( 'ALL_DATA', $all_data );
 			$this->template->assign( 'ERRORS', $this->get_errors() );
 		}
@@ -108,6 +107,7 @@ class moduleContractPartnerAccounts extends module {
 	public final function display_delete_contractpartneraccount($realaction, $contractpartneraccountid) {
 		switch ($realaction) {
 			case 'yes' :
+				$contractpartneraccountid;
 				if (ContractpartnerAccountControllerHandler::getInstance()->deleteContractpartnerAccount( $contractpartneraccountid )) {
 					$this->template->assign( 'CLOSE', 1 );
 					break;

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSearch.php,v 1.40 2014/07/01 12:55:13 olivleh1 Exp $
+// $Id: moduleSearch.php,v 1.41 2014/10/07 18:54:33 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -176,7 +176,6 @@ class moduleSearch extends module {
 									$sortKey [$key] = $result [$order];
 								}
 							}
-							var_dump( $order );
 							array_multisort( $sortKey, $sortOrder, $results );
 						}
 					}

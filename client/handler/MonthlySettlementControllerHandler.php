@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MonthlySettlementControllerHandler.php,v 1.9 2014/03/08 21:56:51 olivleh1 Exp $
+// $Id: MonthlySettlementControllerHandler.php,v 1.10 2014/10/07 18:54:32 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -60,6 +60,7 @@ class MonthlySettlementControllerHandler extends AbstractHandler {
 				$year,
 				$month
 		) );
+		$result = null;
 		if ($response instanceof showMonthlySettlementListResponse) {
 			$result ['monthly_settlements'] = parent::mapArrayNullable( $response->getMonthlySettlementTransport() );
 			$result ['allYears'] = $response->getAllYears();
@@ -78,6 +79,7 @@ class MonthlySettlementControllerHandler extends AbstractHandler {
 				$year,
 				$month
 		) );
+		$result = null;
 		if ($response instanceof showMonthlySettlementCreateResponse) {
 			$result ['monthly_settlements'] = parent::mapArrayNullable( $response->getMonthlySettlementTransport() );
 			$result ['year'] = $response->getYear();
@@ -93,6 +95,7 @@ class MonthlySettlementControllerHandler extends AbstractHandler {
 				$year,
 				$month
 		) );
+		$result = null;
 		if ($response instanceof showMonthlySettlementDeleteResponse) {
 			$result ['monthly_settlements'] = parent::mapArrayNullable( $response->getMonthlySettlementTransport() );
 		}

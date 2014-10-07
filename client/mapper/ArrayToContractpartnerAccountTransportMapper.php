@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToContractpartnerAccountTransportMapper.php,v 1.1 2014/10/05 14:12:53 olivleh1 Exp $
+// $Id: ArrayToContractpartnerAccountTransportMapper.php,v 1.2 2014/10/07 18:54:33 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -37,6 +37,7 @@ class ArrayToContractpartnerAccountTransportMapper extends AbstractArrayMapper {
 		$b = new ContractpartnerAccountTransport();
 		if (array_key_exists( 'contractpartneraccountid', $a ))
 			$b->setId( $a ['contractpartneraccountid'] );
+		$b->setContractpartnerid($a['mcp_contractpartnerid']);
 		$b->setAccountNumber( $a ['accountnumber'] );
 		$b->setBankCode( $a ['bankcode'] );
 
@@ -46,7 +47,6 @@ class ArrayToContractpartnerAccountTransportMapper extends AbstractArrayMapper {
 	public static function mapBToA(ContractpartnerAccountTransport $b) {
 		$a ['contractpartneraccountid'] = $b->getId();
 		$a ['mcp_contractpartnerid'] = $b->getContractpartnerid();
-		$a ['contractpartnername'] = $b->getContractpartnername();
 		$a ['accountnumber'] = $b->getAccountNumber();
 		$a ['bankcode'] = $b->getBankCode();
 

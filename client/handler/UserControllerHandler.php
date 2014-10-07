@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: UserControllerHandler.php,v 1.14 2014/03/13 21:36:42 olivleh1 Exp $
+// $Id: UserControllerHandler.php,v 1.15 2014/10/07 18:54:33 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -71,6 +71,7 @@ class UserControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$name
 		) );
+		$result = null;
 		if ($response instanceof getUserSettingsForStartupResponse) {
 			$result = array (
 					'mur_userid' => $response->getUserid(),
@@ -87,6 +88,7 @@ class UserControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$restriction
 		) );
+		$result = null;
 		if ($response instanceof showUserListResponse) {
 			$result ['users'] = parent::mapArrayNullable( $response->getUserTransport() );
 			$result ['access_relations'] = parent::mapArrayNullable( $response->getAccessRelationTransport() );
@@ -99,6 +101,7 @@ class UserControllerHandler extends AbstractHandler {
 
 	public final function showCreateUser($id) {
 		$response = parent::getJson( __FUNCTION__ );
+		$result = null;
 		if ($response instanceof showCreateUserResponse) {
 			$result ['groups'] = parent::mapArrayNullable( $response->getGroupTransport() );
 		}
@@ -109,6 +112,7 @@ class UserControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$id
 		) );
+		$result = null;
 		if ($response instanceof showEditUserResponse) {
 			$result ['user'] = parent::map( $response->getUserTransport() );
 			$result ['access_relations'] = parent::mapArrayNullable( $response->getAccessRelationTransport() );
@@ -121,6 +125,7 @@ class UserControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$id
 		) );
+		$result = null;
 		if ($response instanceof showDeleteUserResponse) {
 			$result = parent::map( $response->getUserTransport() );
 		}
@@ -136,6 +141,7 @@ class UserControllerHandler extends AbstractHandler {
 		$request->setAccessRelationTransport( $accessRelationTransport );
 		$response = parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
 
+		$result = null;
 		if ($response === true) {
 			$result = true;
 		} else if ($response instanceof createUserResponse) {
@@ -154,6 +160,8 @@ class UserControllerHandler extends AbstractHandler {
 		$request->setUserTransport( $userTransport );
 		$request->setAccessRelationTransport( $accessRelationTransport );
 		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
+
+		$result = null;
 		if ($response === true) {
 			$result = true;
 		} else if ($response instanceof updateUserResponse) {

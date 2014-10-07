@@ -1,4 +1,3 @@
-- add functionality to add, modify, delete contractpartneraccounts
 
 - create a new entity "HBCI import"
 - add the functionality to check on each login if data is there for the accounts the user has access to
@@ -10,8 +9,10 @@
   - [Import] button
   - [Skip] button
  
- -  create a new REST interface where lalaMoneyflowHBCI can push its HBCI data to which will fill the new "HBCI import" entity
- 
+-  create a new REST interface where lalaMoneyflowHBCI can push its HBCI data to which will fill the new "HBCI import" entity
+
+- add a "default posting account" to contractpartners so a preselection can be possible when chosing a
+  contractpartner on creating a moneyflow or processing hbci import data (automatically or manual) 
  
  
 

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: EventControllerHandler.php,v 1.7 2014/03/08 21:56:51 olivleh1 Exp $
+// $Id: EventControllerHandler.php,v 1.8 2014/10/07 18:54:33 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -51,6 +51,7 @@ class EventControllerHandler extends AbstractHandler {
 
 	public final function showEventList() {
 		$response = parent::getJson( __FUNCTION__ );
+		$result = null;
 		if ($response instanceof showEventListResponse) {
 			$result ['mms_missing'] = $response->isMonthlySettlementMissing();
 			$result ['month'] = $response->getMonthlySettlementMonth();

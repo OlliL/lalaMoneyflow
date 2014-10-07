@@ -25,51 +25,21 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerAccountTransport.php,v 1.2 2014/10/07 18:54:33 olivleh1 Exp $
+// $Id: showEditContractpartnerAccountResponse.php,v 1.1 2014/10/07 18:54:33 olivleh1 Exp $
 //
-namespace api\model\transport;
+namespace api\model\contractpartneraccount;
 
-class ContractpartnerAccountTransport extends AbstractTransport {
-	public $id;
-	public $contractpartnerid;
-	public $accountNumber;
-	public $bankCode;
+use api\model\transport\ContractpartnerAccountTransport;
 
-	public final function setId($id) {
-		$this->id = $id;
+class showEditContractpartnerAccountResponse {
+	public $contractpartnerAccountTransport;
+
+	public final function getContractpartnerAccountTransport() {
+		return $this->contractpartnerAccountTransport;
 	}
 
-	public final function setUserid($userid) {
-		$this->userid = $userid;
-	}
-
-	public final function setContractpartnerid($contractpartnerid) {
-		$this->contractpartnerid = $contractpartnerid;
-	}
-
-	public final function setAccountNumber($accountNumber) {
-		$this->accountNumber = $accountNumber;
-	}
-
-	public final function setBankCode($bankCode) {
-		$this->bankCode = $bankCode;
-	}
-
-	public final function getId() {
-		return $this->id;
-	}
-
-	public final function getContractpartnerid() {
-		return $this->contractpartnerid;
-	}
-
-
-	public final function getAccountNumber() {
-		return $this->accountNumber;
-	}
-
-	public final function getBankCode() {
-		return $this->bankCode;
+	public final function setContractpartnerAccountTransport(ContractpartnerAccountTransport $contractpartnerAccountTransport) {
+		$this->contractpartnerAccountTransport = $contractpartnerAccountTransport;
 	}
 }
 

@@ -24,13 +24,18 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerAccountControllerHandler.php,v 1.1 2014/10/05 14:12:53 olivleh1 Exp $
+// $Id: ContractpartnerAccountControllerHandler.php,v 1.2 2014/10/07 18:54:33 olivleh1 Exp $
 //
 namespace client\handler;
 
 use base\JsonAutoMapper;
 use client\mapper\ArrayToContractpartnerAccountTransportMapper;
 use api\model\transport\ContractpartnerAccountTransport;
+use api\model\contractpartneraccount\createContractpartnerAccountRequest;
+use api\model\contractpartneraccount\showContractpartnerAccountListResponse;
+use api\model\contractpartneraccount\showDeleteContractpartnerAccountResponse;
+use api\model\contractpartneraccount\showEditContractpartnerAccountResponse;
+use api\model\contractpartneraccount\updateContractpartnerAccountRequest;
 
 class ContractpartnerAccountControllerHandler extends AbstractHandler {
 	private static $instance;
@@ -51,58 +56,62 @@ class ContractpartnerAccountControllerHandler extends AbstractHandler {
 		return 'contractpartneraccount';
 	}
 
-	public final function showContractpartnerAccountList() {
-		// $response = parent::getJson( __FUNCTION__, array (
-		// $restriction
-		// ) );
-		// if ($response instanceof showContractpartnerListResponse) {
-		// $result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
-		// $result ['initials'] = $response->getInitials();
-		// }
+	public final function showContractpartnerAccountList($contractpartnerId) {
+		$response = parent::getJson( __FUNCTION__, array (
+				$contractpartnerId
+		) );
 
-		// return $result;
+		$result = null;
+		if ($response instanceof showContractpartnerAccountListResponse) {
+			$result ['contractpartneraccount'] = parent::mapArrayNullable( $response->getContractpartnerAccountTransport() );
+			$result ['contractpartnername'] = $response->getContractpartnerName();
+		}
+
+		return $result;
 	}
 
 	public final function showEditContractpartnerAccount($id) {
-		// $response = parent::getJson( __FUNCTION__, array (
-		// $id
-		// ) );
-		// if ($response instanceof showEditContractpartnerResponse) {
-		// $result = parent::map( $response->getContractpartnerTransport() );
-		// }
-		// return $result;
+		$response = parent::getJson( __FUNCTION__, array (
+				$id
+		) );
+		$result = null;
+		if ($response instanceof showEditContractpartnerAccountResponse) {
+			$result = parent::map( $response->getContractpartnerAccountTransport() );
+		}
+		return $result;
 	}
 
 	public final function showDeleteContractpartnerAccount($id) {
-		// $response = parent::getJson( __FUNCTION__, array (
-		// $id
-		// ) );
-		// if ($response instanceof showDeleteContractpartnerResponse) {
-		// $result = parent::map( $response->getContractpartnerTransport() );
-		// }
-		// return $result;
+		$response = parent::getJson( __FUNCTION__, array (
+				$id
+		) );
+		$result = null;
+		if ($response instanceof showDeleteContractpartnerAccountResponse) {
+			$result = parent::map( $response->getContractpartnerAccountTransport() );
+		}
+		return $result;
 	}
 
-	public final function createContractpartnerAccount(array $contractpartner) {
-		// $contractpartnerTransport = parent::map( $contractpartner, ContractpartnerTransport::getClass() );
+	public final function createContractpartnerAccount(array $contractpartnerAccount) {
+		$contractpartnerAccountTransport = parent::map( $contractpartnerAccount, ContractpartnerAccountTransport::getClass() );
 
-		// $request = new createContractpartnerRequest();
-		// $request->setContractpartnerTransport( $contractpartnerTransport );
-		// return parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
+		$request = new createContractpartnerAccountRequest();
+		$request->setContractpartnerAccountTransport( $contractpartnerAccountTransport );
+		return parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 
 	public final function updateContractpartnerAccount(array $contractpartner) {
-		// $contractpartnerTransport = parent::map( $contractpartner, ContractpartnerTransport::getClass() );
+		$contractpartnerAccountTransport = parent::map( $contractpartner, ContractpartnerAccountTransport::getClass() );
 
-		// $request = new updateContractpartnerRequest();
-		// $request->setContractpartnerTransport( $contractpartnerTransport );
-		// return parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
+		$request = new updateContractpartnerAccountRequest();
+		$request->setContractpartnerAccountTransport( $contractpartnerAccountTransport );
+		return parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 
 	public final function deleteContractpartnerAccount($id) {
-		// return parent::deleteJson( __FUNCTION__, array (
-		// $id
-		// ) );
+		return parent::deleteJson( __FUNCTION__, array (
+				$id
+		) );
 	}
 }
 

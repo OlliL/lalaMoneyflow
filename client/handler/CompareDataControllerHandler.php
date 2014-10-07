@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataControllerHandler.php,v 1.12 2014/03/13 21:36:42 olivleh1 Exp $
+// $Id: CompareDataControllerHandler.php,v 1.13 2014/10/07 18:54:33 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -63,6 +63,7 @@ class CompareDataControllerHandler extends AbstractHandler {
 
 	public final function showCompareDataForm() {
 		$response = parent::getJson( __FUNCTION__ );
+		$result = null;
 		if ($response instanceof showCompareDataFormResponse) {
 			if (is_array( $response->getCapitalsourceTransport() )) {
 				$result ['capitalsources'] = parent::mapArray( $response->getCapitalsourceTransport() );
@@ -90,6 +91,7 @@ class CompareDataControllerHandler extends AbstractHandler {
 		$request->setStartDate( DateUtil::convertClientDateToTransport( $compareData ['startdate'] ) );
 
 		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
+		$result = null;
 		if ($response instanceof compareDataResponse) {
 			if (is_array( $response->getCompareDataMatchingTransport() )) {
 				foreach ( $response->getCompareDataMatchingTransport() as $key => $compareDataMatchingTransport ) {

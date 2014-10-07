@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowControllerHandler.php,v 1.11 2014/03/08 21:56:51 olivleh1 Exp $
+// $Id: MoneyflowControllerHandler.php,v 1.12 2014/10/07 18:54:33 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -76,6 +76,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 
 	public final function showAddMoneyflows() {
 		$response = parent::getJson( __FUNCTION__ );
+		$result = null;
 		if ($response instanceof showAddMoneyflowsResponse) {
 			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
 			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
@@ -91,6 +92,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$id
 		) );
+		$result = null;
 		if ($response instanceof showEditMoneyflowResponse) {
 			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
 			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
@@ -109,6 +111,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$id
 		) );
+		$result = null;
 		if ($response instanceof showDeleteMoneyflowResponse) {
 			$result = parent::map( $response->getMoneyflowTransport() );
 		}
@@ -131,6 +134,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 
 		$response = parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
 
+		$result = null;
 		if ($response === true) {
 			$result = true;
 		} else if ($response instanceof createMoneyflowsResponse) {
@@ -153,6 +157,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		$request->setMoneyflowTransport( $moneyflowTransport );
 		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 
+		$result = null;
 		if ($response === true) {
 			$result = true;
 		} else if ($response instanceof updateMoneyflowResponse) {
@@ -173,6 +178,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 
 	public final function showSearchMoneyflowForm() {
 		$response = parent::getJson( __FUNCTION__ );
+		$result = null;
 		if ($response instanceof showSearchMoneyflowFormResponse) {
 			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
 			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
@@ -187,6 +193,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		$request->setMoneyflowSearchParamsTransport( $searchParamsTransport );
 		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 
+		$result = null;
 		if ($response instanceof searchMoneyflowsResponse) {
 			$result ['search_results'] = parent::mapArrayNullable( $response->getMoneyflowSearchResultTransport() );
 			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: GroupControllerHandler.php,v 1.8 2014/03/13 21:36:42 olivleh1 Exp $
+// $Id: GroupControllerHandler.php,v 1.9 2014/10/07 18:54:33 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -60,6 +60,7 @@ class GroupControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$restriction
 		) );
+		$result = null;
 		if ($response instanceof showGroupListResponse) {
 			$result ['groups'] = parent::mapArrayNullable( $response->getGroupTransport() );
 			$result ['initials'] = $response->getInitials();
@@ -72,6 +73,7 @@ class GroupControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$id
 		) );
+		$result = null;
 		if ($response instanceof showEditGroupResponse) {
 			$result = parent::map( $response->getGroupTransport() );
 		}
@@ -82,6 +84,7 @@ class GroupControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$id
 		) );
+		$result = null;
 		if ($response instanceof showDeleteGroupResponse) {
 			$result = parent::map( $response->getGroupTransport() );
 		}

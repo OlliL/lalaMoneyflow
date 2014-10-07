@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.90 2014/10/05 14:12:53 olivleh1 Exp $
+// $Id: index.php,v 1.91 2014/10/07 18:54:33 olivleh1 Exp $
 //
 namespace client;
 
@@ -332,8 +332,9 @@ if ($is_logged_in == 0) {
 			case 'edit_contractpartneraccount' :
 
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$contractpartnerid = array_key_exists( 'contractpartnerid', $_REQUEST ) ? $_REQUEST ['contractpartnerid'] : '';
 				$contractpartneraccountid = array_key_exists( 'contractpartneraccountid', $_REQUEST ) ? $_REQUEST ['contractpartneraccountid'] : 0;
-				$display = $moduleContractPartnerAccounts->display_edit_contractpartneraccount( $realaction, $contractpartneraccountid, $all_data );
+				$display = $moduleContractPartnerAccounts->display_edit_contractpartneraccount( $realaction, $contractpartneraccountid, $contractpartnerid, $all_data );
 				break;
 
 			case 'delete_contractpartneraccount' :

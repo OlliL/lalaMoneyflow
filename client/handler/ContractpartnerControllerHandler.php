@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerControllerHandler.php,v 1.11 2014/03/13 21:36:42 olivleh1 Exp $
+// $Id: ContractpartnerControllerHandler.php,v 1.12 2014/10/07 18:54:33 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -60,6 +60,7 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$restriction
 		) );
+		$result = null;
 		if ($response instanceof showContractpartnerListResponse) {
 			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
 			$result ['initials'] = $response->getInitials();
@@ -72,6 +73,7 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$id
 		) );
+		$result = null;
 		if ($response instanceof showEditContractpartnerResponse) {
 			$result = parent::map( $response->getContractpartnerTransport() );
 		}
@@ -82,6 +84,7 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$id
 		) );
+		$result = null;
 		if ($response instanceof showDeleteContractpartnerResponse) {
 			$result = parent::map( $response->getContractpartnerTransport() );
 		}

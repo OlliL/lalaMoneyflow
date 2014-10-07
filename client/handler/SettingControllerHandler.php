@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: SettingControllerHandler.php,v 1.6 2014/03/07 20:41:36 olivleh1 Exp $
+// $Id: SettingControllerHandler.php,v 1.7 2014/10/07 18:54:33 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -54,6 +54,7 @@ class SettingControllerHandler extends AbstractHandler {
 
 	public final function showDefaultSettings() {
 		$response = parent::getJson( __FUNCTION__ );
+		$result = null;
 		if ($response instanceof showDefaultSettingsResponse) {
 			$result ['maxrows'] = $response->getMaxRows();
 			$result ['language'] = $response->getLanguage();
@@ -76,6 +77,7 @@ class SettingControllerHandler extends AbstractHandler {
 
 	public final function showPersonalSettings() {
 		$response = parent::getJson( __FUNCTION__ );
+		$result = null;
 		if ($response instanceof showPersonalSettingsResponse) {
 			$result ['maxrows'] = $response->getMaxRows();
 			$result ['language'] = $response->getLanguage();

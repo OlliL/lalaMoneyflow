@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PreDefMoneyflowControllerHandler.php,v 1.11 2014/03/13 21:36:42 olivleh1 Exp $
+// $Id: PreDefMoneyflowControllerHandler.php,v 1.12 2014/10/07 18:54:33 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -69,6 +69,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$restriction
 		) );
+		$result = null;
 		if ($response instanceof showPreDefMoneyflowListResponse) {
 			$result ['predefmoneyflows'] = parent::mapArrayNullable( $response->getPreDefMoneyflowTransport() );
 			$result ['initials'] = $response->getInitials();
@@ -81,6 +82,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$id
 		) );
+		$result = null;
 		if ($response instanceof showEditPreDefMoneyflowResponse) {
 			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
 			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
@@ -93,6 +95,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 
 	public final function showCreatePreDefMoneyflow() {
 		$response = parent::getJson( __FUNCTION__ );
+		$result = null;
 		if ($response instanceof showCreatePreDefMoneyflowResponse) {
 			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
 			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
@@ -106,6 +109,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__, array (
 				$id
 		) );
+		$result = null;
 		if ($response instanceof showDeletePreDefMoneyflowResponse) {
 			$result = parent::map( $response->getPreDefMoneyflowTransport() );
 		}
@@ -119,6 +123,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 		$request->setPreDefMoneyflowTransport( $preDefMoneyflowTransport );
 		$response = parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
 
+		$result = null;
 		if ($response === true) {
 			$result = true;
 		} else if ($response instanceof createPreDefMoneyflowResponse) {
@@ -138,6 +143,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 		$request->setPreDefMoneyflowTransport( $preDefMoneyflowTransport );
 		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 
+		$result = null;
 		if ($response === true) {
 			$result = true;
 		} else if ($response instanceof updatePreDefMoneyflowResponse) {
