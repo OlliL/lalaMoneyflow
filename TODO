@@ -1,8 +1,7 @@
 
-- create a new entity "HBCI import"
-- add the functionality to check on each login if data is there for the accounts the user has access to
+- add the functionality to check on each login if imported moneyflow data exists for the accounts the user has access to
 - if data is there - display it and let the user do the following things:
-  - add booking account information (maybe also make a "preselection" maintainable per contract partner
+  - add booking account information
   - add comment
   - dropdownbox "contractpartner" with preselection if IBAN is in the system
   - checkbox "save IBAN to selected contractpartner"
