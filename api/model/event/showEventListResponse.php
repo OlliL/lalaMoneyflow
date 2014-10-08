@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showEventListResponse.php,v 1.3 2014/03/02 00:02:54 olivleh1 Exp $
+// $Id: showEventListResponse.php,v 1.4 2014/10/08 19:58:23 olivleh1 Exp $
 //
 namespace api\model\event;
 
@@ -34,6 +34,7 @@ class showEventListResponse {
 	public $monthlySettlementMonth;
 	public $monthlySettlementYear;
 	public $monthlySettlementNumberOfAddableSettlements;
+	public $numberOfImportedMoneyflows;
 
 	public final function setMonthlySettlementMissing($monthlySettlementMissing) {
 		$this->monthlySettlementMissing = $monthlySettlementMissing;
@@ -65,6 +66,14 @@ class showEventListResponse {
 
 	public final function getMonthlySettlementNumberOfAddableSettlements() {
 		return $this->monthlySettlementNumberOfAddableSettlements;
+	}
+
+	public final function getNumberOfImportedMoneyflows() {
+		return $this->numberOfImportedMoneyflows;
+	}
+
+	public final function setNumberOfImportedMoneyflows($numberOfImportedMoneyflows) {
+		$this->numberOfImportedMoneyflows = $numberOfImportedMoneyflows;
 	}
 }
 

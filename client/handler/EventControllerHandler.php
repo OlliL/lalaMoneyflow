@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: EventControllerHandler.php,v 1.8 2014/10/07 18:54:33 olivleh1 Exp $
+// $Id: EventControllerHandler.php,v 1.9 2014/10/08 19:58:23 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -57,6 +57,7 @@ class EventControllerHandler extends AbstractHandler {
 			$result ['month'] = $response->getMonthlySettlementMonth();
 			$result ['year'] = $response->getMonthlySettlementYear();
 			$result ['numberOfAddableSettlements'] = $response->getMonthlySettlementNumberOfAddableSettlements();
+			$result ['numberOfImportedMoneyflows'] = $response->getNumberOfImportedMoneyflows();
 		}
 		return $result;
 	}

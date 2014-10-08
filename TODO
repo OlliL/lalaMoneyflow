@@ -7,6 +7,7 @@
   - checkbox "save IBAN to selected contractpartner"
   - [Import] button
   - [Skip] button
+  - prevent double inserting the same movement because of 2 people getting the same event/dialog and processing it
  
 -  create a new REST interface where lalaMoneyflowHBCI can push its HBCI data to which will fill the new "HBCI import" entity
 

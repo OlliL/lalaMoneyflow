@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleEvents.php,v 1.17 2014/03/02 23:42:20 olivleh1 Exp $
+// $Id: moduleEvents.php,v 1.18 2014/10/08 19:58:23 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -45,10 +45,11 @@ class moduleEvents extends module {
 				$this->template->assign( 'MONTH', $events ['month'] );
 				$this->template->assign( 'YEAR', $events ['year'] );
 				$this->template->assign( 'NUM_ADDABLE_SETTLEMENTS', $events ['numberOfAddableSettlements'] );
-				
+
 				$this->parse_header( 1 );
 				return $this->fetch_template( 'display_event_monthlysettlement.tpl' );
 			}
+			// echo $events['numberOfImportedMoneyflows'];
 		}
 	}
 }
