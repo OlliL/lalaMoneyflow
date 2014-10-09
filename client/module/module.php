@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.81 2014/03/13 21:36:43 olivleh1 Exp $
+// $Id: module.php,v 1.82 2014/10/09 18:28:32 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -153,6 +153,18 @@ abstract class module {
 
 	protected final function convertDateToGui($date) {
 		return DateUtil::convertStringDateToClient( $date );
+	}
+
+
+	protected final function sort_contractpartner($contractpartner_values) {
+		if (is_array( $contractpartner_values ) && count($contractpartner_values) > 0 ) {
+			foreach ( $contractpartner_values as $key => $value ) {
+				$sortKey1 [$key] = strtolower( $value ['name'] );
+			}
+
+			array_multisort( $sortKey1, SORT_ASC, $contractpartner_values );
+		}
+		return $contractpartner_values;
 	}
 }
 ?>

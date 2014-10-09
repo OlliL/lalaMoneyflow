@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.91 2014/10/07 18:54:33 olivleh1 Exp $
+// $Id: index.php,v 1.92 2014/10/09 18:28:32 olivleh1 Exp $
 //
 namespace client;
 
@@ -37,6 +37,7 @@ use client\module\moduleContractPartners;
 use client\module\moduleContractPartnerAccounts;
 use client\module\modulePreDefMoneyFlows;
 use client\module\moduleMoneyFlows;
+use client\module\moduleImportedMoneyFlows;
 use client\module\moduleMonthlySettlement;
 use client\module\moduleReports;
 use client\module\moduleSearch;
@@ -139,6 +140,9 @@ if ($is_logged_in == 0) {
 		case 'edit_moneyflow' :
 		case 'delete_moneyflow' :
 			$moduleMoneyFlows = new moduleMoneyFlows();
+			break;
+		case 'add_importedmoneyflows' :
+			$moduleImportedMoneyFlows = new moduleImportedMoneyFlows();
 			break;
 		case 'list_monthlysettlements' :
 		case 'edit_monthlysettlement' :
@@ -385,6 +389,14 @@ if ($is_logged_in == 0) {
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : '';
 				$display = $moduleMoneyFlows->display_delete_moneyflow( $realaction, $id );
+				break;
+
+			/* imported moneyflows */
+
+			case 'add_importedmoneyflows' :
+
+				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+				$display = $moduleImportedMoneyFlows->display_add_importedmoneyflow( $realaction, $all_data );
 				break;
 
 			/* monthlysettlements */

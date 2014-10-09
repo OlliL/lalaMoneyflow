@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSearch.php,v 1.41 2014/10/07 18:54:33 olivleh1 Exp $
+// $Id: moduleSearch.php,v 1.42 2014/10/09 18:28:32 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -36,16 +36,6 @@ class moduleSearch extends module {
 
 	public final function __construct() {
 		parent::__construct();
-	}
-
-	private final function sort_contractpartner($contractpartner_values){
-		foreach ( $contractpartner_values as $key => $value ) {
-			$sortKey1 [$key] = strtolower( $value ['name'] );
-		}
-
-		array_multisort( $sortKey1, SORT_ASC,  $contractpartner_values );
-
-		return $contractpartner_values;
 	}
 
 	public final function display_search($searchparams = null) {

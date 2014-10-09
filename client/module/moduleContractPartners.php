@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.46 2014/10/05 14:12:53 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.47 2014/10/09 18:28:32 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -37,17 +37,6 @@ class moduleContractPartners extends module {
 
 	public final function __construct() {
 		parent::__construct();
-	}
-
-	private final function sort_contractpartner($contractpartner_values) {
-		if (is_array( $contractpartner_values ) && count($contractpartner_values) > 0 ) {
-			foreach ( $contractpartner_values as $key => $value ) {
-				$sortKey1 [$key] = strtolower( $value ['name'] );
-			}
-
-			array_multisort( $sortKey1, SORT_ASC, $contractpartner_values );
-		}
-		return $contractpartner_values;
 	}
 
 	public final function display_list_contractpartners($letter) {

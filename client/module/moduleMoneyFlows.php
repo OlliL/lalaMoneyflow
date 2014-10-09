@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.91 2014/04/20 09:10:38 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.92 2014/10/09 18:28:32 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -36,16 +36,6 @@ class moduleMoneyFlows extends module {
 
 	public final function __construct() {
 		parent::__construct();
-	}
-
-	private final function sort_contractpartner($contractpartner_values){
-		foreach ( $contractpartner_values as $key => $value ) {
-			$sortKey1 [$key] = strtolower( $value ['name'] );
-		}
-
-		array_multisort( $sortKey1, SORT_ASC,  $contractpartner_values );
-
-		return $contractpartner_values;
 	}
 
 	public final function display_edit_moneyflow($realaction, $id, $all_data) {
