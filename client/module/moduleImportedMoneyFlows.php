@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleImportedMoneyFlows.php,v 1.1 2014/10/09 18:28:32 olivleh1 Exp $
+// $Id: moduleImportedMoneyFlows.php,v 1.2 2014/10/10 19:10:14 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -41,6 +41,7 @@ class moduleImportedMoneyFlows extends module {
 		$capitalsource_values = $addMoneyflow ['capitalsources'];
 		$contractpartner_values = $addMoneyflow ['contractpartner'];
 		$postingaccount_values = $addMoneyflow ['postingaccounts'];
+		$all_data = $addMoneyflow['importedmoneyflows'];
 
 		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );

@@ -24,19 +24,25 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ImportedMoneyflowControllerHandler.php,v 1.1 2014/10/09 18:28:32 olivleh1 Exp $
+// $Id: ImportedMoneyflowControllerHandler.php,v 1.2 2014/10/10 19:10:14 olivleh1 Exp $
 //
 namespace client\handler;
 
 use base\JsonAutoMapper;
-use api\model\moneyflow\showAddImportedMoneyflowsResponse;
 use client\mapper\ArrayToImportedMoneyflowTransportMapper;
+use api\model\importedmoneyflow\showAddImportedMoneyflowsResponse;
+use client\mapper\ArrayToCapitalsourceTransportMapper;
+use client\mapper\ArrayToContractpartnerTransportMapper;
+use client\mapper\ArrayToPostingAccountTransportMapper;
 
 class ImportedMoneyflowControllerHandler extends AbstractHandler {
 	private static $instance;
 
 	protected function __construct() {
 		parent::__construct();
+		parent::addMapper( ArrayToCapitalsourceTransportMapper::getClass() );
+		parent::addMapper( ArrayToContractpartnerTransportMapper::getClass() );
+		parent::addMapper( ArrayToPostingAccountTransportMapper::getClass() );
 		parent::addMapper( ArrayToImportedMoneyflowTransportMapper::getClass() );
 	}
 
@@ -59,6 +65,7 @@ class ImportedMoneyflowControllerHandler extends AbstractHandler {
 			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
 			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
 			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
+			$result ['importedmoneyflows'] = parent::mapArrayNullable( $response->getImportedMoneyflowTransport() );
 		}
 
 		return $result;

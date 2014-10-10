@@ -25,118 +25,55 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ImportedMoneyflowTransport.php,v 1.1 2014/10/09 18:28:32 olivleh1 Exp $
+// $Id: ImportedMoneyflowTransport.php,v 1.2 2014/10/10 19:10:13 olivleh1 Exp $
 //
 namespace api\model\transport;
 
-class ImportedMoneyflowTransport extends AbstractTransport {
-	public $id;
-	public $bookingdate;
-	public $invoicedate;
-	public $amount;
-	public $capitalsourceid;
-	public $capitalsourcecomment;
-	public $contractpartnerid;
-	public $contractpartnername;
-	public $comment;
-	public $private;
-	public $postingaccountid;
-	public $postingaccountname;
+class ImportedMoneyflowTransport extends MoneyflowTransport {
+	public $accountNumber;
+	public $bankCode;
+	public $externalid;
+	public $name;
+	public $usage;
 
-	public final function setId($id) {
-		$this->id = $id;
+	public final function getAccountNumber() {
+		return $this->accountNumber;
 	}
 
-	public final function setBookingdate($bookingdate) {
-		$this->bookingdate = $bookingdate;
+	public final function getBankCode() {
+		return $this->bankCode;
 	}
 
-	public final function setInvoicedate($invoicedate) {
-		$this->invoicedate = $invoicedate;
+	public final function setAccountNumber($accountNumber) {
+		$this->accountNumber = $accountNumber;
 	}
 
-	public final function setAmount($amount) {
-		$this->amount = $amount;
+	public final function setBankCode($bankCode) {
+		$this->bankCode = $bankCode;
 	}
 
-	public final function setCapitalsourceid($capitalsourceid) {
-		$this->capitalsourceid = $capitalsourceid;
+	public final function setExternalid($externalid) {
+		$this->externalid = $externalid;
 	}
 
-	public final function setCapitalsourcecomment($capitalsourcecomment) {
-		$this->capitalsourcecomment = $capitalsourcecomment;
+	public final function getExternalid() {
+		return $this->externalid;
 	}
 
-	public final function setContractpartnerid($contractpartnerid) {
-		$this->contractpartnerid = $contractpartnerid;
+	public final function setName($name) {
+		$this->name = $name;
 	}
 
-	public final function setContractpartnername($contractpartnername) {
-		$this->contractpartnername = $contractpartnername;
+	public final function getName() {
+		return $this->name;
 	}
 
-	public final function setComment($comment) {
-		$this->comment = $comment;
+	public final function setUsage($usage) {
+		$this->usage = $usage;
 	}
 
-	public final function setPrivate($private) {
-		$this->private = $private;
-	}
-
-	public final function getId() {
-		return $this->id;
-	}
-
-	public final function getBookingdate() {
-		return $this->bookingdate;
-	}
-
-	public final function getInvoicedate() {
-		return $this->invoicedate;
-	}
-
-	public final function getAmount() {
-		return $this->amount;
-	}
-
-	public final function getCapitalsourceid() {
-		return $this->capitalsourceid;
-	}
-
-	public final function getCapitalsourcecomment() {
-		return $this->capitalsourcecomment;
-	}
-
-	public final function getContractpartnerid() {
-		return $this->contractpartnerid;
-	}
-
-	public final function getContractpartnername() {
-		return $this->contractpartnername;
-	}
-
-	public final function getComment() {
-		return $this->comment;
-	}
-
-	public final function getPrivate() {
-		return $this->private;
-	}
-
-	public final function setPostingaccountid($postingaccountid) {
-		$this->postingaccountid = $postingaccountid;
-	}
-
-	public final function setPostingaccountname($postingaccountname) {
-		$this->postingaccountname = $postingaccountname;
-	}
-
-	public final function getPostingaccountid() {
-		return $this->postingaccountid;
-	}
-
-	public final function getPostingaccountname() {
-		return $this->postingaccountname;
+	public final function getUsage() {
+		return $this->usage;
 	}
 }
 

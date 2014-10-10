@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showAddImportedMoneyflowsResponse.php,v 1.1 2014/10/09 18:28:32 olivleh1 Exp $
+// $Id: showAddImportedMoneyflowsResponse.php,v 1.2 2014/10/10 19:10:13 olivleh1 Exp $
 //
 namespace api\model\importedmoneyflow;
 
@@ -34,7 +34,6 @@ class showAddImportedMoneyflowsResponse implements IshowAddImportedMoneyflowsRes
 	public $capitalsourceTransport;
 	public $contractpartnerTransport;
 	public $postingAccountTransport;
-	public $settingNumberOfFreeMoneyflows;
 
 	public final function getImportedMoneyflowTransport() {
 		return $this->importedMoneyflowTransport;
@@ -68,13 +67,6 @@ class showAddImportedMoneyflowsResponse implements IshowAddImportedMoneyflowsRes
 		$this->postingAccountTransport = $postingAccountTransport;
 	}
 
-	public final function setSettingNumberOfFreeMoneyflows($settingNumberOfFreeMoneyflows) {
-		$this->settingNumberOfFreeMoneyflows = $settingNumberOfFreeMoneyflows;
-	}
-
-	public final function getSettingNumberOfFreeMoneyflows() {
-		return $this->settingNumberOfFreeMoneyflows;
-	}
 }
 
 ?>

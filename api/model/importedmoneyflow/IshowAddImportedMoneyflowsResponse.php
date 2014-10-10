@@ -24,11 +24,15 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: IshowAddImportedMoneyflowsResponse.php,v 1.1 2014/10/09 18:28:32 olivleh1 Exp $
+// $Id: IshowAddImportedMoneyflowsResponse.php,v 1.2 2014/10/10 19:10:13 olivleh1 Exp $
 //
 namespace api\model\importedmoneyflow;
 
 interface IshowAddImportedMoneyflowsResponse {
+
+	public function getImportedMoneyflowTransport();
+
+	public function setImportedMoneyflowTransport(array $importedMoneyflowTransport);
 
 	public function getCapitalsourceTransport();
 

@@ -15,7 +15,7 @@
   contractpartner on creating a moneyflow or processing hbci import data (automatically or manual) 
  
  
-
+- make sure only A-Z and 0-9 can be used for bankcodes and accountnumbers
 
 - create predefined-moneyflows out of moneyflows in the reports-view
 - schedule predefined moneyflows (automatically create every .... )

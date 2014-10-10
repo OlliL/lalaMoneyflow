@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToImportedMoneyflowTransportMapper.php,v 1.1 2014/10/09 18:28:32 olivleh1 Exp $
+// $Id: ArrayToImportedMoneyflowTransportMapper.php,v 1.2 2014/10/10 19:10:14 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -34,8 +34,8 @@ use api\model\transport\ImportedMoneyflowTransport;
 class ArrayToImportedMoneyflowTransportMapper extends AbstractArrayMapper {
 
 	public static function mapAToB(array $a) {
-		$b = new ImportedMoneyflowTransport();
-		$b->setId( $a ['moneyflowid'] );
+		$b = new MoneyflowTransport();
+		$b->setId( $a ['importedmoneyflowid'] );
 
 		$bookingdate = parent::convertClientDateToTransport( $a ['bookingdate'] );
 		if ($bookingdate)
@@ -52,10 +52,18 @@ class ArrayToImportedMoneyflowTransportMapper extends AbstractArrayMapper {
 		$b->setPostingaccountid( $a ['mpa_postingaccountid'] );
 		if (array_key_exists( 'private', $a ))
 			$b->setPrivate( $a ['private'] );
+
+		$b->setAccountNumber( $a ['accountnumber'] );
+		$b->setBankCode( $a ['bankcode'] );
+		$b->setExternalId( $a ['externalid'] );
+		$b->setName( $a ['name'] );
+		$b->setUsage( $a ['usage'] );
+
 		return $b;
 	}
 
 	public static function mapBToA(ImportedMoneyflowTransport $b) {
+		$a ['mur_userid'] = $b->getUserid();
 		$a ['importedmoneyflowid'] = $b->getId();
 		$a ['bookingdate'] = parent::convertTransportDateToClient( $b->getBookingDate() );
 		$a ['invoicedate'] = parent::convertTransportDateToClient( $b->getInvoiceDate() );
@@ -68,6 +76,12 @@ class ArrayToImportedMoneyflowTransportMapper extends AbstractArrayMapper {
 		$a ['mpa_postingaccountid'] = $b->getPostingaccountid();
 		$a ['postingaccountname'] = $b->getPostingaccountname();
 		$a ['private'] = $b->getPrivate();
+
+		$a ['accountnumber'] = $b->getAccountNumber();
+		$a ['bankcode'] = $b->getBankCode();
+		$a ['externalid'] = $b->getExternalId();
+		$a ['name'] = $b->getName();
+		$a ['usage'] = $b->getUsage();
 
 		return $a;
 	}
