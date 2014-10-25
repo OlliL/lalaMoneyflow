@@ -10,12 +10,15 @@
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br>
 		{/section}
 		<br>
-		<form action="{$ENV_INDEX_PHP}?action=add_moneyflow" method="POST" name="addmoney">
-			<input type="hidden" name="action" value="add_moneyflow">
+		<form action="{$ENV_INDEX_PHP}?action=add_importedmoneyflows" method="POST" name="addmoney">
+			<input type="hidden" name="action" value="add_importedmoneyflows">
+			<input type="hidden" name="realaction" value="save">
 			<table border=0>
 				{assign var=elements value="1"}
 				{section name=DATA loop=$ALL_DATA}
 				<tr>
+					<th>{#TEXT_271#}</th>
+					<th>{#TEXT_37#}</th>
 					<th>&nbsp;</th>
 					<th>{#TEXT_209#}</th>
 					<th>{#TEXT_16#}</th>
@@ -27,7 +30,10 @@
 					<th>{#TEXT_19#}</th>
 				</tr>
 					<tr>
-						<td class="contrastbgcolor"><input class="contrastbgcolor" type="checkbox" name="all_data[{$smarty.section.DATA.index}][checked]" value=1 {if $ALL_DATA[DATA].checked == 1}checked{/if}></td>
+						<td class="contrastbgcolor">
+						<input type="hidden" name="all_data[{$smarty.section.DATA.index}][importedmoneyflowid]" value="{$ALL_DATA[DATA].importedmoneyflowid}">
+						<input class="contrastbgcolor" type="radio" name="all_data[{$smarty.section.DATA.index}][action]" value=1 {if $ALL_DATA[DATA].action == 1}checked{/if}></td>
+						<td class="contrastbgcolor"><input class="contrastbgcolor" type="radio" name="all_data[{$smarty.section.DATA.index}][action]" value=2 {if $ALL_DATA[DATA].action == 2}checked{/if}></td>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="checkbox" name="all_data[{$smarty.section.DATA.index}][private]" value=1 {if $ALL_DATA[DATA].private == 1}checked{/if}></td>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][bookingdate]" value="{$ALL_DATA[DATA].bookingdate}" size=9 {if $ALL_DATA[DATA].bookingdate_error == 1}style="color:red"{/if}></td>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][invoicedate]" value="{$ALL_DATA[DATA].invoicedate}" size=9 {if $ALL_DATA[DATA].invoicedate_error == 1}style="color:red"{/if}></td>
@@ -75,7 +81,6 @@
 				{/section}
 			</table>
 			<br>
-			<input type="hidden" name="realaction" value="save">
 			<input type="submit" value="{#TEXT_22#}">
 		</form>
 		</td>

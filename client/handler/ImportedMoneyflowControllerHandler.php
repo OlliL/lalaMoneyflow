@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ImportedMoneyflowControllerHandler.php,v 1.2 2014/10/10 19:10:14 olivleh1 Exp $
+// $Id: ImportedMoneyflowControllerHandler.php,v 1.3 2014/10/25 15:17:59 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -69,6 +69,11 @@ class ImportedMoneyflowControllerHandler extends AbstractHandler {
 		}
 
 		return $result;
+	}
+	public final function deleteImportedMoneyflowById($id) {
+		return parent::deleteJson( __FUNCTION__, array (
+				$id
+		) );
 	}
 }
 
