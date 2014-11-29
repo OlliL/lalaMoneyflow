@@ -1,3 +1,7 @@
+Bug:
+- Auswertung Buchungskonto "Lohn/Gehalt" und "Zinserträge" mit Kriterien "mehrere Jahre", "1 Buchungskonto", 2003 - 2014 falsch -> es werden nur negative Buchungen berücksichtigt....
+
+- Wenn man ein falsches Rechnungsdatum angibt, wird trotzdem gebucht mit buchungsdatum = rechnungsdatum aber auch mit fehlermeldung?!
 
 - add the functionality to check on each login if imported moneyflow data exists for the accounts the user has access to
 - if data is there - display it and let the user do the following things:
