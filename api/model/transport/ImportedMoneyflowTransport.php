@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ImportedMoneyflowTransport.php,v 1.2 2014/10/10 19:10:13 olivleh1 Exp $
+// $Id: ImportedMoneyflowTransport.php,v 1.3 2015/02/06 22:43:22 olivleh1 Exp $
 //
 namespace api\model\transport;
 
@@ -35,6 +35,8 @@ class ImportedMoneyflowTransport extends MoneyflowTransport {
 	public $externalid;
 	public $name;
 	public $usage;
+	public $accountNumberCapitalsource;
+	public $bankCodeCapitalsource;
 
 	public final function getAccountNumber() {
 		return $this->accountNumber;
@@ -75,6 +77,23 @@ class ImportedMoneyflowTransport extends MoneyflowTransport {
 	public final function getUsage() {
 		return $this->usage;
 	}
+
+	public final function getAccountNumberCapitalsource() {
+		return $this->accountNumberCapitalsource;
+	}
+
+	public final function getBankCodeCapitalsource() {
+		return $this->bankCodeCapitalsource;
+	}
+
+	public final function setAccountNumberCapitalsource($accountNumberCapitalsource) {
+		$this->accountNumberCapitalsource = $accountNumberCapitalsource;
+	}
+
+	public final function setBankCodeCapitalsource($bankCodeCapitalsource) {
+		$this->bankCodeCapitalsource = $bankCodeCapitalsource;
+	}
+
 }
 
 ?>

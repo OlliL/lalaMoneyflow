@@ -19,7 +19,7 @@
 				<tr>
 					<th>{#TEXT_271#}</th>
 					<th>{#TEXT_37#}</th>
-					<th>&nbsp;</th>
+					<!--<th>&nbsp;</th>-->
 					<th>{#TEXT_209#}</th>
 					<th>{#TEXT_16#}</th>
 					<th>{#TEXT_17#}</th>
