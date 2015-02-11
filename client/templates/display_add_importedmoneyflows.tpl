@@ -66,13 +66,13 @@
 							<tr>
 								<td width="80">&nbsp;</td>
 								<th width="30"  align="right">{#TEXT_32#}</th>
-								<td width="140" class="contrastbgcolor">{$ALL_DATA[DATA].accountnumber|escape:htmlall}</td>
+								<td width="140" class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][accountnumber]" value="{$ALL_DATA[DATA].accountnumber|escape:htmlall}">{$ALL_DATA[DATA].accountnumber|escape:htmlall}</td>
 								<th width="25"  align="right">{#TEXT_33#}</th>
-								<td width="80"  class="contrastbgcolor">{$ALL_DATA[DATA].bankcode|escape:htmlall}</td>
+								<td width="80"  class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][bankcode]" value="{$ALL_DATA[DATA].bankcode|escape:htmlall}">{$ALL_DATA[DATA].bankcode|escape:htmlall}</td>
 								<th width="110" align="right">{#TEXT_269#}</th>
-								<td width="150" class="contrastbgcolor">{$ALL_DATA[DATA].name|escape:htmlall}</td>
+								<td width="150" class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][name]" value="{$ALL_DATA[DATA].name|escape:htmlall}">{$ALL_DATA[DATA].name|escape:htmlall}</td>
 								<th width="110" align="right">{#TEXT_270#}</th>
-								<td width="190" class="contrastbgcolor">{$ALL_DATA[DATA].usage|escape:htmlall|nl2br}</td>
+								<td width="190" class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][usage]" value="{$ALL_DATA[DATA].usage|escape:htmlall}">{$ALL_DATA[DATA].usage|escape:htmlall|nl2br}</td>
 							</tr>
 							</table>
 						</td>

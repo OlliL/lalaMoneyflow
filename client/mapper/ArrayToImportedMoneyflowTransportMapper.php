@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToImportedMoneyflowTransportMapper.php,v 1.2 2014/10/10 19:10:14 olivleh1 Exp $
+// $Id: ArrayToImportedMoneyflowTransportMapper.php,v 1.3 2015/02/11 22:18:33 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -34,7 +34,7 @@ use api\model\transport\ImportedMoneyflowTransport;
 class ArrayToImportedMoneyflowTransportMapper extends AbstractArrayMapper {
 
 	public static function mapAToB(array $a) {
-		$b = new MoneyflowTransport();
+		$b = new ImportedMoneyflowTransport();
 		$b->setId( $a ['importedmoneyflowid'] );
 
 		$bookingdate = parent::convertClientDateToTransport( $a ['bookingdate'] );
@@ -55,7 +55,6 @@ class ArrayToImportedMoneyflowTransportMapper extends AbstractArrayMapper {
 
 		$b->setAccountNumber( $a ['accountnumber'] );
 		$b->setBankCode( $a ['bankcode'] );
-		$b->setExternalId( $a ['externalid'] );
 		$b->setName( $a ['name'] );
 		$b->setUsage( $a ['usage'] );
 
@@ -79,7 +78,6 @@ class ArrayToImportedMoneyflowTransportMapper extends AbstractArrayMapper {
 
 		$a ['accountnumber'] = $b->getAccountNumber();
 		$a ['bankcode'] = $b->getBankCode();
-		$a ['externalid'] = $b->getExternalId();
 		$a ['name'] = $b->getName();
 		$a ['usage'] = $b->getUsage();
 

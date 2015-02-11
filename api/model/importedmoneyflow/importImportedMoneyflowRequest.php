@@ -25,20 +25,20 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: createImportedMoneyflowRequest.php,v 1.2 2015/02/11 22:18:33 olivleh1 Exp $
+// $Id: importImportedMoneyflowRequest.php,v 1.1 2015/02/11 22:18:33 olivleh1 Exp $
 //
 namespace api\model\importedmoneyflow;
 
 use api\model\transport\ImportedMoneyflowTransport;
 
-class createImportedMoneyflowRequest {
+class importImportedMoneyflowRequest {
 	public $importedMoneyflowTransport;
 
 	public final function getImportedMoneyflowTransport() {
 		return $this->importedMoneyflowTransport;
 	}
 
-	public final function setImportedMoneyflowTransport(ImportedMoneyflowTransport $importedMoneyflowTransport) {
+	public final function setImportedMoneyflowTransport(array $importedMoneyflowTransport) {
 		$this->importedMoneyflowTransport = $importedMoneyflowTransport;
 	}
 }

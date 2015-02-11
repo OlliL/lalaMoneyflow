@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ImportedMoneyflowControllerHandler.php,v 1.3 2014/10/25 15:17:59 olivleh1 Exp $
+// $Id: ImportedMoneyflowControllerHandler.php,v 1.4 2015/02/11 22:18:33 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -34,6 +34,8 @@ use api\model\importedmoneyflow\showAddImportedMoneyflowsResponse;
 use client\mapper\ArrayToCapitalsourceTransportMapper;
 use client\mapper\ArrayToContractpartnerTransportMapper;
 use client\mapper\ArrayToPostingAccountTransportMapper;
+use api\model\transport\ImportedMoneyflowTransport;
+use api\model\importedmoneyflow\importImportedMoneyflowRequest;
 
 class ImportedMoneyflowControllerHandler extends AbstractHandler {
 	private static $instance;
@@ -70,10 +72,19 @@ class ImportedMoneyflowControllerHandler extends AbstractHandler {
 
 		return $result;
 	}
+
 	public final function deleteImportedMoneyflowById($id) {
 		return parent::deleteJson( __FUNCTION__, array (
 				$id
 		) );
+	}
+
+	public final function importImportedMoneyflows(array $imported_moneyflow) {
+		$importedMoneyflowTransport = parent::mapArray( $imported_moneyflow, ImportedMoneyflowTransport::getClass() );
+
+		$request = new importImportedMoneyflowRequest();
+		$request->setImportedMoneyflowTransport( $importedMoneyflowTransport );
+		return parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 }
 

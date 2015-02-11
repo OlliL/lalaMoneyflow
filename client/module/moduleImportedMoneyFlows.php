@@ -24,11 +24,12 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleImportedMoneyFlows.php,v 1.3 2014/10/25 15:17:58 olivleh1 Exp $
+// $Id: moduleImportedMoneyFlows.php,v 1.4 2015/02/11 22:18:33 olivleh1 Exp $
 //
 namespace client\module;
 
 use client\handler\ImportedMoneyflowControllerHandler;
+use base\ErrorCode;
 
 class moduleImportedMoneyFlows extends module {
 
@@ -88,12 +89,9 @@ class moduleImportedMoneyFlows extends module {
 						}
 					}
 					if (is_array( $add_data )) {
-						$createMoneyflows = ImportedMoneyflowControllerHandler::getInstance()->addImportedMoneyflows( $add_data );
+						$createMoneyflows = ImportedMoneyflowControllerHandler::getInstance()->importImportedMoneyflows( $add_data );
 
-						$result = $createMoneyflows ['result'];
-						if ($result === true) {
-							$all_data_pre = $createMoneyflows ['predefmoneyflows'];
-						} else {
+						if ($createMoneyflows !== true) {
 							$data_is_valid = false;
 							foreach ( $createMoneyflows ['errors'] as $validationResult ) {
 								$error = $validationResult ['error'];

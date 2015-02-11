@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractMapperSupport.php,v 1.14 2014/03/08 23:18:28 olivleh1 Exp $
+// $Id: AbstractMapperSupport.php,v 1.15 2015/02/11 22:18:33 olivleh1 Exp $
 //
 namespace base;
 
@@ -40,12 +40,23 @@ abstract class AbstractMapperSupport {
 			$object = null;
 			if (is_array( $obj ) && $targetObject !== null) {
 				$object = $this->mapper ['array'] [$targetObject];
-			} elseif (array_key_exists( get_class( $obj ), $this->mapper )) {
-				$mapperArray = array_values( $this->mapper [get_class( $obj )] );
-				if (count( $mapperArray ) == 1)
-					$object = $mapperArray [0];
-				elseif (count( $mapperArray ) > 1 && $targetObject !== null)
-					$object = $this->mapper [get_class( $obj )] [$targetObject];
+			} else {
+
+				if (array_key_exists( get_class( $obj ), $this->mapper )) {
+					$mapperArray = array_values( $this->mapper [get_class( $obj )] );
+				} elseif (array_key_exists( get_parent_class( $obj ), $this->mapper )) {
+					$mapperArray = array_values( $this->mapper [get_parent_class( $obj )] );
+				} else {
+					$mapperArray = null;
+				}
+
+				if ($mapperArray != null) {
+					if (count( $mapperArray ) == 1)
+
+						$object = $mapperArray [0];
+					elseif (count( $mapperArray ) > 1 && $targetObject !== null)
+						$object = $this->mapper [get_class( $obj )] [$targetObject];
+				}
 			}
 
 			if ($object == null) {
