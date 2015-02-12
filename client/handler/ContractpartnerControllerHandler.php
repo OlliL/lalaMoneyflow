@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerControllerHandler.php,v 1.12 2014/10/07 18:54:33 olivleh1 Exp $
+// $Id: ContractpartnerControllerHandler.php,v 1.13 2015/02/12 23:03:38 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -36,6 +36,8 @@ use api\model\contractpartner\showEditContractpartnerResponse;
 use api\model\contractpartner\showDeleteContractpartnerResponse;
 use client\mapper\ArrayToContractpartnerTransportMapper;
 use api\model\transport\ContractpartnerTransport;
+use api\model\contractpartner\showCreateContractpartnerResponse;
+use client\mapper\ArrayToPostingAccountTransportMapper;
 
 class ContractpartnerControllerHandler extends AbstractHandler {
 	private static $instance;
@@ -43,6 +45,7 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 	protected function __construct() {
 		parent::__construct();
 		parent::addMapper( ArrayToContractpartnerTransportMapper::getClass() );
+		parent::addMapper( ArrayToPostingAccountTransportMapper::getClass() );
 	}
 
 	public static function getInstance() {
@@ -69,13 +72,23 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 		return $result;
 	}
 
+	public final function showCreateContractpartner() {
+		$response = parent::getJson( __FUNCTION__ );
+		$result = null;
+		if ($response instanceof showCreateContractpartnerResponse) {
+			$result = parent::mapArray($response->getPostingAccountTransport());;
+		}
+		return $result;
+	}
+
 	public final function showEditContractpartner($id) {
 		$response = parent::getJson( __FUNCTION__, array (
 				$id
 		) );
 		$result = null;
 		if ($response instanceof showEditContractpartnerResponse) {
-			$result = parent::map( $response->getContractpartnerTransport() );
+			$result['contractpartner'] = parent::map( $response->getContractpartnerTransport() );
+			$result['postingAccounts'] = parent::mapArray($response->getPostingAccountTransport());
 		}
 		return $result;
 	}

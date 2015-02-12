@@ -15,7 +15,7 @@
 			<input type="hidden" name="realaction"        value="yes">
 			<input type="hidden" name="contractpartnerid" value="{$ALL_DATA.contractpartnerid}">
 			<input type="hidden" name="REFERER"           value="{$ENV_REFERER}">
-			<table border=0 width=600>
+			<table border=0 width=800>
 				<tr>
 					<th width="150">{#TEXT_41#}</th>
 					<th width="200">{#TEXT_42#}</th>
@@ -24,6 +24,8 @@
 					<th width="100">{#TEXT_45#}</th>
 					<th width="60" >{#TEXT_34#}</th>
 					<th width="60" >{#TEXT_35#}</th>
+					<th width="100">{#TEXT_272#}</th>
+					<th width="100">{#TEXT_232#}</th>
 				</tr>
 				<tr>
 					<td class="contrastbgcolor">{$ALL_DATA.name|escape:htmlall}</td>
@@ -33,6 +35,8 @@
 					<td class="contrastbgcolor">{$ALL_DATA.country|escape:htmlall}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.validfrom}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.validtil}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.moneyflow_comment}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.mpa_postingaccountname}</td>
 				</tr>
 			</table>
 			<input type="submit" value="{#TEXT_25#}">

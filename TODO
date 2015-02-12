@@ -1,53 +1,13 @@
 update contractpartners set validtil='2014-12-31' where contractpartnerid in (select mcp_contractpartnerid from (select max(bookingdate) max_bookingdate,mcp_contractpartnerid from moneyflows where mcp_contractpartnerid in (select contractpartnerid from contractpartners where now() between validfrom and validtil) group by mcp_contractpartnerid) a where max_bookingdate < date_sub(now(), interval 600 day));
 
+- when processing an imported moneyflow where "other" is also a capitalsource of the user, also add a counter booking
+  automatically to this capitalsource (like -1000 EUR capitalsource 1 if a moneyflow "+1000 EUR" for capitalsource 2
+  was imported).
 
-Bug:
-- Auswertung Buchungskonto "Lohn/Gehalt" und "Zinserträge" mit Kriterien "mehrere Jahre", "1 Buchungskonto", 2003 - 2014 falsch -> es werden nur negative Buchungen berücksichtigt....
-
-- Wenn man ein falsches Rechnungsdatum angibt, wird trotzdem gebucht mit buchungsdatum = rechnungsdatum aber auch mit fehlermeldung?!
-
-- add the functionality to check on each login if imported moneyflow data exists for the accounts the user has access to
-- if data is there - display it and let the user do the following things:
-  - add booking account information
-  - add comment
-  - dropdownbox "contractpartner" with preselection if IBAN is in the system
-  - checkbox "save IBAN to selected contractpartner"
-  - [Import] button
-  - [Skip] button
-  - prevent double inserting the same movement because of 2 people getting the same event/dialog and processing it
- 
--  create a new REST interface where lalaMoneyflowHBCI can push its HBCI data to which will fill the new "HBCI import" entity
-
-- add a "default posting account" to contractpartners so a preselection can be possible when chosing a
-  contractpartner on creating a moneyflow or processing hbci import data (automatically or manual) 
- 
- 
-- make sure only A-Z and 0-9 can be used for bankcodes and accountnumbers
-
-- create predefined-moneyflows out of moneyflows in the reports-view
-- schedule predefined moneyflows (automatically create every .... )
-
+- when adding a booking manually which gets imported later, try to match it and mark it as "to be deleted" or something like that....
 
 - PHPUnit: start writing service tests
 - PHPDoc: document the services, then the controller, then the DAOs, and maybe the BOs
 - check.php: distinguish between client and server dependencies
 - sorting - small letters after big letters (Contract partners dropdown) is bad....
 - check if chache engine works (not just if it is installed, e.g. redis server is started up...)
-
-
-ALTER DATABASE moneyflow CHARACTER SET utf8 COLLATE utf8_bin;
-ALTER TABLE access                CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;
-ALTER TABLE access_flattened      CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;
-ALTER TABLE access_relation       CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;
-ALTER TABLE capitalsources        CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;
-ALTER TABLE cmp_data_formats      CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;
-ALTER TABLE contractpartners      CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;
-ALTER TABLE imp_data              CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;
-ALTER TABLE imp_mapping_partner   CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;
-ALTER TABLE imp_mapping_source    CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;
-ALTER TABLE moneyflows            CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;
-ALTER TABLE monthlysettlements    CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;
-ALTER TABLE postingaccounts       CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;
-ALTER TABLE predefmoneyflows      CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;
-ALTER TABLE protocol              CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;
-ALTER TABLE settings              CONVERT TO CHARACTER SET utf8 COLLATE utf8_bin;

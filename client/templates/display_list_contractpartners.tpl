@@ -22,6 +22,8 @@
 						<th width="100">{#TEXT_45#}</th>
 						<th width="60" >{#TEXT_34#}</th>
 						<th width="60" >{#TEXT_35#}</th>
+						<th width="100">{#TEXT_272#}</th>
+						<th width="100">{#TEXT_232#}</th>
 					</tr>
 					{section name=DATA loop=$ALL_DATA}
 						<tr>
@@ -32,8 +34,10 @@
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].country|escape:htmlall}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].validfrom}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].validtil}</td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_contractpartner&amp;contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&amp;sr=1','_blank','width=800,height=120')">{#TEXT_37#}</a></td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&amp;contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&amp;sr=1','_blank','width=800,height=120')">{#TEXT_36#}</a></td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].moneyflow_comment}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].mpa_postingaccountname}</td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_contractpartner&amp;contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&amp;sr=1','_blank','width=1000,height=120')">{#TEXT_37#}</a></td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&amp;contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&amp;sr=1','_blank','width=1000,height=120')">{#TEXT_36#}</a></td>
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=list_contractpartneraccounts&amp;contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&amp;sr=1','_blank','width=500,height=350')">{#TEXT_263#}</a></td>
 						</tr>
 					{/section}

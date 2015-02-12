@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.92 2014/10/09 18:28:32 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.93 2015/02/12 23:03:37 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -143,7 +143,7 @@ class moduleMoneyFlows extends module {
 		$this->template->assign( 'CLOSE', $close );
 		if ($close === 0) {
 			$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-			$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner($contractpartner_values) );
+			$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
 			$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 			$this->template->assign( 'ALL_DATA', $all_data );
 			$this->template->assign( 'MONEYFLOWID', $id );
@@ -159,7 +159,11 @@ class moduleMoneyFlows extends module {
 			case 'save' :
 				$data_is_valid = true;
 				$nothing_checked = true;
+				$numflows = 0;
 				foreach ( $all_data as $id => $value ) {
+					if ($value['predefmoneyflowid'] < 0)
+						$numflows ++;
+
 					if (array_key_exists( 'checked', $value ) && $value ['checked'] == 1) {
 
 						if (! $this->fix_amount( $value ['amount'] )) {
@@ -173,6 +177,7 @@ class moduleMoneyFlows extends module {
 										Environment::getInstance()->getSettingDateFormat()
 								) );
 								$all_data [$id] ['invoicedate_error'] = 1;
+								$data_is_valid = false;
 							}
 						}
 
@@ -295,11 +300,11 @@ class moduleMoneyFlows extends module {
 				break;
 		}
 
-
 		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-		$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner($contractpartner_values) );
+		$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
 		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template->assign( 'ALL_DATA', $all_data );
+		$this->template->assign( 'NUMFLOWS', $numflows );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header();

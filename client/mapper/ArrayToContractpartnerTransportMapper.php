@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToContractpartnerTransportMapper.php,v 1.7 2014/03/31 15:15:42 olivleh1 Exp $
+// $Id: ArrayToContractpartnerTransportMapper.php,v 1.8 2015/02/12 23:03:38 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -49,7 +49,8 @@ class ArrayToContractpartnerTransportMapper extends AbstractArrayMapper {
 		$validtil = parent::convertClientDateToTransport( $a ['validtil'] );
 		if ($validtil)
 			$b->setValidTil( $validtil );
-
+		$b->setMoneyflowComment( $a ['moneyflow_comment'] );
+		$b->setPostingAccountId( $a ['mpa_postingaccountid'] );
 		return $b;
 	}
 
@@ -63,6 +64,9 @@ class ArrayToContractpartnerTransportMapper extends AbstractArrayMapper {
 		$a ['mur_userid'] = $b->getUserid();
 		$a ['validfrom'] = parent::convertTransportDateToClient( $b->getValidFrom() );
 		$a ['validtil'] = parent::convertTransportDateToClient( $b->getValidTil() );
+		$a ['mpa_postingaccountid'] = $b->getPostingAccountId();
+		$a ['mpa_postingaccountname'] = $b->getPostingAccountName();
+		$a ['moneyflow_comment'] = $b->getMoneyflowComment();
 
 		return $a;
 	}

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleImportedMoneyFlows.php,v 1.4 2015/02/11 22:18:33 olivleh1 Exp $
+// $Id: moduleImportedMoneyFlows.php,v 1.5 2015/02/12 23:03:37 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -154,6 +154,7 @@ class moduleImportedMoneyFlows extends module {
 		$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
 		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template->assign( 'ALL_DATA', $all_data );
+		$this->template->assign( 'NUMFLOWS', count( $all_data ) );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header();

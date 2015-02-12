@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.47 2014/10/09 18:28:32 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.48 2015/02/12 23:03:37 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -98,8 +98,12 @@ class moduleContractPartners extends module {
 			default :
 				if (! is_array( $all_data )) {
 					if ($contractpartnerid > 0) {
-						$all_data = ContractpartnerControllerHandler::getInstance()->showEditContractpartner( $contractpartnerid );
+						$showEditContractpartner = ContractpartnerControllerHandler::getInstance()->showEditContractpartner( $contractpartnerid );
+						$all_data = $showEditContractpartner ['contractpartner'];
+						$posting_accounts = $showEditContractpartner ['postingAccounts'];
 					} else {
+						$posting_accounts = ContractpartnerControllerHandler::getInstance()->showCreateContractpartner();
+
 						$all_data ['name'] = '';
 						$all_data ['street'] = '';
 						$all_data ['postcode'] = '';
@@ -119,6 +123,7 @@ class moduleContractPartners extends module {
 		$this->template->assign( 'CLOSE', $close );
 		if ($close == 0) {
 			$this->template->assign( 'CONTRACTPARTNERID', $contractpartnerid );
+			$this->template->assign( 'POSTINGACCOUNT_VALUES', $posting_accounts );
 			$this->template->assign( 'ALL_DATA', $all_data );
 			$this->template->assign( 'ERRORS', $this->get_errors() );
 		}

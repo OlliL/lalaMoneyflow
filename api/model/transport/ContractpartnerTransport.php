@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerTransport.php,v 1.5 2014/03/08 21:56:51 olivleh1 Exp $
+// $Id: ContractpartnerTransport.php,v 1.6 2015/02/12 23:03:38 olivleh1 Exp $
 //
 namespace api\model\transport;
 
@@ -39,6 +39,9 @@ class ContractpartnerTransport extends AbstractTransport {
 	public $validTil;
 	public $validFrom;
 	public $country;
+	public $moneyflowComment;
+	public $postingAccountName;
+	public $postingAccountId;
 
 	public final function setId($id) {
 		$this->id = $id;
@@ -110,6 +113,30 @@ class ContractpartnerTransport extends AbstractTransport {
 
 	public final function getValidFrom() {
 		return $this->validFrom;
+	}
+
+	public final function getMoneyflowComment() {
+		return $this->moneyflowComment;
+	}
+
+	public final function setMoneyflowComment($moneyflowComment) {
+		$this->moneyflowComment = $moneyflowComment;
+	}
+
+	public final function getPostingAccountId() {
+		return $this->postingAccountId;
+	}
+
+	public final function setPostingAccountId($postingAccountId) {
+		$this->postingAccountId = $postingAccountId;
+	}
+
+	public final function getPostingAccountName() {
+		return $this->postingAccountName;
+	}
+
+	public final function setPostingAccountName($postingAccountName) {
+		$this->postingAccountName = $postingAccountName;
 	}
 }
 

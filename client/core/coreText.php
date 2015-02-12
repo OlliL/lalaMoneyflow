@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreText.php,v 1.30 2014/03/10 20:02:40 olivleh1 Exp $
+// $Id: coreText.php,v 1.31 2015/02/12 23:03:38 olivleh1 Exp $
 //
 namespace client\core;
 
@@ -45,7 +45,7 @@ class coreText extends core {
 	}
 
 	private final function getTextfile($id) {
-		if ($this->inifile === null || $this->inifile [$id] === null)
+		if ($this->inifile === null || ! array_key_exists( $id, $this->inifile ))
 			$this->inifile [$id] = parse_ini_file( $this->getFileName( $id ) );
 		return $this->inifile [$id];
 	}

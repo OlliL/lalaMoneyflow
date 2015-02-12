@@ -25,23 +25,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showEditContractpartnerResponse.php,v 1.4 2015/02/12 23:03:38 olivleh1 Exp $
+// $Id: showCreateContractpartnerResponse.php,v 1.1 2015/02/12 23:03:38 olivleh1 Exp $
 //
 namespace api\model\contractpartner;
 
 use api\model\transport\ContractpartnerTransport;
 
-class showEditContractpartnerResponse {
-	public $contractpartnerTransport;
+class showCreateContractpartnerResponse {
 	public $postingAccountTransport;
-
-	public final function getContractpartnerTransport() {
-		return $this->contractpartnerTransport;
-	}
-
-	public final function setContractpartnerTransport(ContractpartnerTransport $contractpartnerTransport) {
-		$this->contractpartnerTransport = $contractpartnerTransport;
-	}
 
 	public final function getPostingAccountTransport() {
 		return $this->postingAccountTransport;

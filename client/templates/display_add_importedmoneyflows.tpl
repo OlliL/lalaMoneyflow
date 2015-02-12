@@ -39,7 +39,7 @@
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][invoicedate]" value="{$ALL_DATA[DATA].invoicedate}" size=9 {if $ALL_DATA[DATA].invoicedate_error == 1}style="color:red"{/if}></td>
 						<td class="contrastbgcolor" nowrap><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][amount]" value="{$ALL_DATA[DATA].amount|number_format}" size=6 style="text-align:right{if $ALL_DATA[DATA].amount_error == 1};color:red{/if}"> {#CURRENCY#}</td>
 
-						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[{$smarty.section.DATA.index}][mcp_contractpartnerid]" size=1 style="width:130px{if $ALL_DATA[DATA].contractpartner_error == 1};color:red{/if}">
+						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[{$smarty.section.DATA.index}][mcp_contractpartnerid]" size=1 style="width:130px{if $ALL_DATA[DATA].contractpartner_error == 1};color:red{/if}" onchange="initContractpartner({$elements}+8)">
 						{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
 							<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}" {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $ALL_DATA[DATA].mcp_contractpartnerid}selected{/if} > {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name|escape:htmlall}</option>
 						{/section}
@@ -59,6 +59,7 @@
 							<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}" {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid == $ALL_DATA[DATA].mcs_capitalsourceid}selected{/if} > {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment|escape:htmlall}</option>
 						{/section}
 						</select></td>
+						{assign var="elements" value="`$elements+11`"}
 					</tr>
 					<tr>
 						<td colspan="9">
@@ -79,6 +80,45 @@
 					</tr>
 					<tr><td colspan="9"><hr></td></tr>
 				{/section}
+{literal}
+<script language="JavaScript">
+  var comment = new Array();
+  var postingAccount = new Array();
+{/literal}
+{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
+   comment['{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}'] = '{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].moneyflow_comment}';
+   postingAccount['{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}'] = '{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].mpa_postingaccountid}';
+{/section}
+  var numflows = {$NUMFLOWS}
+{literal}
+
+  var elementId = 1;
+  for(var i=1 ; i <= numflows ; i ++) {
+    initContractpartner(elementId + 8);
+    elementId+=10;
+  }
+  
+  function selectItemByValue(element, value) {
+    if (value !== undefined && value !== null) {
+      var length = element.options.length;
+      for (var i = 0; i < length; i++) {
+        if (element.options[i].value === value) {
+          element.selectedIndex = i;
+          return;
+        }
+      }
+    }
+  }
+  
+  function initContractpartner(elementId) {
+    var e = document.addmoney.elements[elementId];
+    var contractpartnerId = e.options[e.selectedIndex].value;
+  
+    document.addmoney.elements[elementId+1].value=comment[contractpartnerId];
+    selectItemByValue( document.addmoney.elements[elementId+2], postingAccount[contractpartnerId] );
+  }
+</script>
+{/literal}
 			</table>
 			<br>
 			<input type="submit" value="{#TEXT_22#}">
