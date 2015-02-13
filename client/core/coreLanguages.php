@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2006-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2006-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreLanguages.php,v 1.21 2014/03/02 23:42:20 olivleh1 Exp $
+// $Id: coreLanguages.php,v 1.22 2015/02/13 00:03:42 olivleh1 Exp $
 //
 namespace client\core;
 

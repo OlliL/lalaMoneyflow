@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2007-2013 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2007-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.48 2014/03/13 21:36:43 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.49 2015/02/13 00:03:37 olivleh1 Exp $
 //
 namespace client\module;
 

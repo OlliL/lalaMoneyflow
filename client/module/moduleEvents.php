@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2009-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2009-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleEvents.php,v 1.19 2015/02/12 23:03:37 olivleh1 Exp $
+// $Id: moduleEvents.php,v 1.20 2015/02/13 00:03:37 olivleh1 Exp $
 //
 namespace client\module;
 

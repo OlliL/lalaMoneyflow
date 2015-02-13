@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerAccountControllerHandler.php,v 1.2 2014/10/07 18:54:33 olivleh1 Exp $
+// $Id: ContractpartnerAccountControllerHandler.php,v 1.3 2015/02/13 00:03:38 olivleh1 Exp $
 //
 namespace client\handler;
 

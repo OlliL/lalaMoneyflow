@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2013-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractMapperSupport.php,v 1.15 2015/02/11 22:18:33 olivleh1 Exp $
+// $Id: AbstractMapperSupport.php,v 1.16 2015/02/13 00:03:42 olivleh1 Exp $
 //
 namespace base;
 

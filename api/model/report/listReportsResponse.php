@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: listReportsResponse.php,v 1.7 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: listReportsResponse.php,v 1.8 2015/02/13 00:03:40 olivleh1 Exp $
 //
 namespace api\model\report;
 

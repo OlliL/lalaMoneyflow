@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2006-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2006-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: SmartyPlugin.php,v 1.1 2014/03/01 20:46:43 olivleh1 Exp $
+// $Id: SmartyPlugin.php,v 1.2 2015/02/13 00:03:41 olivleh1 Exp $
 //
 namespace client\util;
 

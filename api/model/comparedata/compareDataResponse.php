@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: compareDataResponse.php,v 1.5 2014/03/02 23:42:22 olivleh1 Exp $
+// $Id: compareDataResponse.php,v 1.6 2015/02/13 00:03:42 olivleh1 Exp $
 //
 namespace api\model\comparedata;
 

@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2005-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2005-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: utilTimer.php,v 1.7 2014/03/13 17:30:01 olivleh1 Exp $
+// $Id: utilTimer.php,v 1.8 2015/02/13 00:03:41 olivleh1 Exp $
 //
 namespace client\util;
 

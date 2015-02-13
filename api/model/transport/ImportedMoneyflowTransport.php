@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2013-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ImportedMoneyflowTransport.php,v 1.3 2015/02/06 22:43:22 olivleh1 Exp $
+// $Id: ImportedMoneyflowTransport.php,v 1.4 2015/02/13 00:03:39 olivleh1 Exp $
 //
 namespace api\model\transport;
 

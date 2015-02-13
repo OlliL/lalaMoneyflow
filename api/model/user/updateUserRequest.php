@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013-2014 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2013-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: updateUserRequest.php,v 1.4 2014/02/28 22:19:47 olivleh1 Exp $
+// $Id: updateUserRequest.php,v 1.5 2015/02/13 00:03:38 olivleh1 Exp $
 //
 namespace api\model\user;
 
