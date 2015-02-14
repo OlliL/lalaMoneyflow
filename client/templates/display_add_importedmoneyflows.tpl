@@ -6,6 +6,7 @@
 
 		<td align="center" valign="top">
 		<h1>{#TEXT_268#}</h1>
+{if $NUMFLOWS > 0}
 		{section name=ERROR loop=$ERRORS}
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br>
 		{/section}
@@ -32,8 +33,8 @@
 					<tr>
 						<td class="contrastbgcolor">
 						<input type="hidden" name="all_data[{$smarty.section.DATA.index}][importedmoneyflowid]" value="{$ALL_DATA[DATA].importedmoneyflowid}">
-						<input class="contrastbgcolor" type="radio" name="all_data[{$smarty.section.DATA.index}][action]" value=1 {if $ALL_DATA[DATA].action == 1}checked{/if}></td>
-						<td class="contrastbgcolor"><input class="contrastbgcolor" type="radio" name="all_data[{$smarty.section.DATA.index}][action]" value=2 {if $ALL_DATA[DATA].action == 2}checked{/if}></td>
+						<input class="contrastbgcolor" type="radio" name="all_data[{$smarty.section.DATA.index}][action]" value=1 {if $ALL_DATA[DATA].action == 1}checked{/if} onchange="changeColor({$elements})"></td>
+						<td class="contrastbgcolor"><input class="contrastbgcolor" type="radio" name="all_data[{$smarty.section.DATA.index}][action]" value=2 {if $ALL_DATA[DATA].action == 2}checked{/if} onchange="changeColor({$elements})"></td>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="checkbox" name="all_data[{$smarty.section.DATA.index}][private]" value=1 {if $ALL_DATA[DATA].private == 1}checked{/if}></td>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][bookingdate]" value="{$ALL_DATA[DATA].bookingdate}" size=9 {if $ALL_DATA[DATA].bookingdate_error == 1}style="color:red"{/if}></td>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][invoicedate]" value="{$ALL_DATA[DATA].invoicedate}" size=9 {if $ALL_DATA[DATA].invoicedate_error == 1}style="color:red"{/if}></td>
@@ -59,7 +60,6 @@
 							<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}" {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid == $ALL_DATA[DATA].mcs_capitalsourceid}selected{/if} > {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment|escape:htmlall}</option>
 						{/section}
 						</select></td>
-						{assign var="elements" value="`$elements+11`"}
 					</tr>
 					<tr>
 						<td colspan="9">
@@ -79,6 +79,7 @@
 						</td>
 					</tr>
 					<tr><td colspan="9"><hr></td></tr>
+					{assign var="elements" value="`$elements+15`"}
 				{/section}
 {literal}
 <script language="JavaScript">
@@ -95,7 +96,8 @@
   var elementId = 1;
   for(var i=1 ; i <= numflows ; i ++) {
     initContractpartner(elementId + 8);
-    elementId+=10;
+    changeColor(elementId);
+    elementId+=15;
   }
   
   function selectItemByValue(element, value) {
@@ -113,9 +115,33 @@
   function initContractpartner(elementId) {
     var e = document.addmoney.elements[elementId];
     var contractpartnerId = e.options[e.selectedIndex].value;
-  
+
     document.addmoney.elements[elementId+1].value=comment[contractpartnerId];
     selectItemByValue( document.addmoney.elements[elementId+2], postingAccount[contractpartnerId] );
+  }
+  
+  function changeColor(elementId) {
+    if( document.addmoney.elements[elementId+2].checked ) {
+      var color="#00FF00";
+    } else if (document.addmoney.elements[elementId+3].checked ) {
+      var color="#FF0000";
+    }
+    
+    var flowRow = Math.floor(elementId/15)*5+1;
+    var col = document.addmoney.getElementsByTagName("tr");
+    var cells = col[flowRow].cells;
+    
+    for( i = 0 ; i < cells.length ; i++ ) {
+      cells[i].style.backgroundColor = color;
+    }
+
+    document.addmoney.elements[elementId+5].style.backgroundColor=color;
+    document.addmoney.elements[elementId+6].style.backgroundColor=color;
+    document.addmoney.elements[elementId+7].style.backgroundColor=color;
+    document.addmoney.elements[elementId+8].style.backgroundColor=color;
+    document.addmoney.elements[elementId+9].style.backgroundColor=color;
+    document.addmoney.elements[elementId+10].style.backgroundColor=color;
+    document.addmoney.elements[elementId+11].style.backgroundColor=color;
   }
 </script>
 {/literal}
@@ -123,5 +149,6 @@
 			<br>
 			<input type="submit" value="{#TEXT_22#}">
 		</form>
+{/if}
 		</td>
 {$FOOTER}

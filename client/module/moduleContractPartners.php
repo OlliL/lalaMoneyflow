@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.49 2015/02/13 00:03:37 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.50 2015/02/14 23:45:32 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -116,6 +116,8 @@ class moduleContractPartners extends module {
 						$all_data ['validfrom_error'] = 0;
 						$all_data ['validtil_error'] = 0;
 					}
+				} elseif ($close === 0) {
+					$posting_accounts = ContractpartnerControllerHandler::getInstance()->showCreateContractpartner();
 				}
 				break;
 		}

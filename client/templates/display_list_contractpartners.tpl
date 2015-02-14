@@ -10,7 +10,7 @@
 			{section name=LETTER loop=$ALL_INDEX_LETTERS}
 				<a href="{$ENV_INDEX_PHP}?action=list_contractpartners&amp;letter={$ALL_INDEX_LETTERS[LETTER]|escape:htmlall}">{$ALL_INDEX_LETTERS[LETTER]|escape:htmlall}</a> 
 			{/section}
-			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&amp;sr=1','_blank','width=800,height=120')">{#TEXT_29#}</a> 
+			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&amp;sr=1','_blank','width=1000,height=120')">{#TEXT_29#}</a> 
 			{if $COUNT_ALL_DATA > 0}
 				<br><br>
 				<table border=0>
@@ -36,7 +36,7 @@
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].validtil}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].moneyflow_comment}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].mpa_postingaccountname}</td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_contractpartner&amp;contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&amp;sr=1','_blank','width=1000,height=120')">{#TEXT_37#}</a></td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_contractpartner&amp;contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&amp;sr=1','_blank','width=1000,height=150')">{#TEXT_37#}</a></td>
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&amp;contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&amp;sr=1','_blank','width=1000,height=120')">{#TEXT_36#}</a></td>
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=list_contractpartneraccounts&amp;contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&amp;sr=1','_blank','width=500,height=350')">{#TEXT_263#}</a></td>
 						</tr>

@@ -1,5 +1,9 @@
 update contractpartners set validtil='2014-12-31' where contractpartnerid in (select mcp_contractpartnerid from (select max(bookingdate) max_bookingdate,mcp_contractpartnerid from moneyflows where mcp_contractpartnerid in (select contractpartnerid from contractpartners where now() between validfrom and validtil) group by mcp_contractpartnerid) a where max_bookingdate < date_sub(now(), interval 600 day));
 
+Bugs:
+- when importing all Moneyflows, the last imported moneyflow is not deleted and still there but it was imported
+- when changing the contract partner in the 2nd (and later) imported moneyflows, the setitng of comment/booking account does no longer work
+
 - when a booking was added manually and the same booking gets imported later, try to match it and mark it as "to be deleted" or something like that....
 
 - PHPUnit: start writing service tests
