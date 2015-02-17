@@ -17,12 +17,12 @@
 					<tr>
 						<th width="200">{#TEXT_21#}</th>
 						<th width="80" >{#TEXT_30#}</th>
-						<th width="80" >{#TEXT_31#}</th>
+						<th width="40" >{#TEXT_31#}</th>
 						<th width="100">{#TEXT_32#}</th>
 						<th width="100">{#TEXT_33#}</th>
 						<th width="60" >{#TEXT_34#}</th>
 						<th width="60" >{#TEXT_35#}</th>
-						<th width="60" >{#TEXT_210#}</th>
+						<th width="50" >{#TEXT_210#}</th>
 					</tr>
 					{section name=DATA loop=$ALL_DATA}
 						<tr>
@@ -33,7 +33,7 @@
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].bankcode}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].validfrom}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].validtil}</td>
-							<td class="contrastbgcolor"><b>{if $ALL_DATA[DATA].att_group_use == 1}<font color="green">{#TEXT_25#}{else}<font color="red">{#TEXT_26#}{/if}</font></b></td>
+							<td class="contrastbgcolor" align="center"><b>{if $ALL_DATA[DATA].att_group_use == 1}<font color="green">{#TEXT_25#}{else}<font color="red">{#TEXT_26#}{/if}</font></b></td>
 							{if $ALL_DATA[DATA].owner == true }
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&amp;capitalsourceid={$ALL_DATA[DATA].capitalsourceid}&amp;sr=1','_blank','width=800,height=120')">{#TEXT_36#}</a></td>
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_capitalsource&amp;capitalsourceid={$ALL_DATA[DATA].capitalsourceid}&amp;sr=1','_blank','width=800,height=120')">{#TEXT_37#}</a></td>
