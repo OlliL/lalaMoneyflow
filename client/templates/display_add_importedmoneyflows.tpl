@@ -94,7 +94,7 @@
 {literal}
 
   var elementId = 1;
-  for(var i=1 ; i <= numflows ; i ++) {
+  for(var a=1 ; a <= numflows ; a ++) {
     initContractpartner(elementId + 8);
     changeColor(elementId);
     elementId+=15;
