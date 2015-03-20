@@ -24,7 +24,7 @@
 					<th>{#TEXT_206#}</th>
 				</tr>
 				<tr>
-					<td class="contrastbgcolornobr"><input class="contrastbgcolor" type="text" name="all_data[amount]" value="{$ALL_DATA.amount|number_format}" align="right" size="8" style="{if $ALL_DATA.amount_error == 1}color:red;{/if}text-align:right"> {#CURRENCY#}</td>
+					<td class="contrastbgcolornobr"><input class="contrastbgcolor" type="text" name="all_data[amount]" value="{$ALL_DATA.amount}" align="right" size="8" style="{if $ALL_DATA.amount_error == 1}color:red;{/if}text-align:right"> {#CURRENCY#}</td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcp_contractpartnerid]" size="1" {if $ALL_DATA.contractpartner_error == 1}style="color:red"{/if}>
 					{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
 						<option {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $ALL_DATA.mcp_contractpartnerid}selected{/if} value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name|escape:htmlall}

@@ -103,7 +103,7 @@ function Go(x)
 				<tr>
 					<td></td>
 					<td align="right">&sum;</td>
-					<td align="right" class="contrastbgcolor"><font {if $MON_CALCULATEDTURNOVER < 0}color="red"{else}color="black"{/if}><u>{$MON_CALCULATEDTURNOVER|number_format} {#CURRENCY#}</u></font></td>
+					<td align="right" class="contrastbgcolor"><font {if $MOVEMENT < 0}color="red"{else}color="black"{/if}><u>{$MOVEMENT|number_format} {#CURRENCY#}</u></font></td>
 			</table>
 			<table width="830" border=0>
 				<tr>

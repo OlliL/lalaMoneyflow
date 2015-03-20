@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.102 2015/02/13 00:03:37 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.103 2015/03/20 12:39:46 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -147,6 +147,7 @@ class moduleReports extends module {
 
 				$all_moneyflow_data = $_all_moneyflow_data;
 
+				$movement = 0;
 				foreach ( $all_moneyflow_data as $key => $value ) {
 					$all_moneyflow_data [$key] ['contractpartnername'] = htmlentities( $value ['contractpartnername'], ENT_COMPAT | ENT_HTML401 );
 					$all_moneyflow_data [$key] ['capitalsourcecomment'] = htmlentities( $value ['capitalsourcecomment'], ENT_COMPAT | ENT_HTML401 );
@@ -157,6 +158,7 @@ class moduleReports extends module {
 					} else {
 						$all_moneyflow_data [$key] ['owner'] = false;
 					}
+					$movement += $value['amount'];
 				}
 
 				if (is_array( $turnover_capitalsources ) && count( $turnover_capitalsources ) > 0) {
@@ -201,6 +203,7 @@ class moduleReports extends module {
 				$this->template->assign( 'MON_CALCAMOUNT', $calcamount );
 				$this->template->assign( 'MON_CALCULATEDTURNOVER', $movement_calculated_month );
 				$this->template->assign( 'YEA_CALCULATEDTURNOVER', $movement_calculated_year );
+				$this->template->assign( 'MOVEMENT', $movement );
 				$this->template->assign( 'MONTHLYSETTLEMENT_EXISTS', $mms_exists );
 				$report = 1;
 			}
@@ -335,8 +338,8 @@ class moduleReports extends module {
 		$postingaccount_values = $showReportingFormResponse ['postingaccounts'];
 		$accounts_no_settings = $showReportingFormResponse ['accounts_no'];
 
-		$accounts_no = array();
-		$accounts_yes = array();
+		$accounts_no = array ();
+		$accounts_yes = array ();
 
 		foreach ( $postingaccount_values as $postingaccount ) {
 			if (is_array( $accounts_no_settings ) && in_array( $postingaccount ['postingaccountid'], $accounts_no_settings )) {

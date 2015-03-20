@@ -2,7 +2,7 @@ update contractpartners set validtil='2014-12-31' where contractpartnerid in (se
 
 Bugs:
 - when importing all Moneyflows, the last imported moneyflow is not deleted and still there but it was imported
-- when changing the contract partner in the 2nd (and later) imported moneyflows, the setitng of comment/booking account does no longer work
+- when setting the contractpartner, the (imported) moneyflow comment which was set before manually is overwritten. same with bookingaccouns
 
 - when a booking was added manually and the same booking gets imported later, try to match it and mark it as "to be deleted" or something like that....
 
