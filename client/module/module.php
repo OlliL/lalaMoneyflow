@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.83 2015/02/13 00:03:37 olivleh1 Exp $
+// $Id: module.php,v 1.84 2015/03/25 21:08:46 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -106,7 +106,7 @@ abstract class module {
 		$this->template->assign( 'REPORTS_YEAR', date( 'Y' ) );
 		$this->template->assign( 'REPORTS_MONTH', date( 'm' ) );
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
-		$this->template->assign( 'VERSION', '0.20.0' );
+		$this->template->assign( 'VERSION', '0.21.0' );
 		$this->template->assign( 'NO_NAVIGATION', $nonavi );
 		$admin = Environment::getInstance()->getUserPermAdmin();
 		if ($admin) {
@@ -155,11 +155,11 @@ abstract class module {
 		return DateUtil::convertStringDateToClient( $date );
 	}
 
-
 	protected final function sort_contractpartner($contractpartner_values) {
-		if (is_array( $contractpartner_values ) && count($contractpartner_values) > 0 ) {
+		$transliterator = \Transliterator::createFromRules( ':: NFD; :: [:Nonspacing Mark:] Remove; :: NFC;', \Transliterator::FORWARD );
+		if (is_array( $contractpartner_values ) && count( $contractpartner_values ) > 0) {
 			foreach ( $contractpartner_values as $key => $value ) {
-				$sortKey1 [$key] = strtolower( $value ['name'] );
+				$sortKey1 [$key] = strtolower( $transliterator->transliterate( $value ['name'] ) );
 			}
 
 			array_multisort( $sortKey1, SORT_ASC, $contractpartner_values );

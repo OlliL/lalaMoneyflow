@@ -100,6 +100,7 @@ $errors += check_extension( 'ctype' );
 $errors += check_extension( 'gd' );
 $errors += check_extension( 'simplexml' );
 $errors += check_extension( 'SPL_Types' );
+$errors += check_Extension( 'intl' );
 print_result( $errors, 0 );
 
 print_headline( 'Checking existing Cache Frameworks (minimum 1 needed)' );

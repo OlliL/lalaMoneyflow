@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.103 2015/03/20 12:39:46 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.105 2015/03/25 21:11:36 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -81,10 +81,6 @@ class moduleReports extends module {
 		}
 
 		if ($month > 0 && $year > 0) {
-			$lastamount = 0;
-			$fixamount = 0;
-			$movement_calculated_month = 0;
-			$calcamount = 0;
 			$i = 0;
 
 			switch ($order) {
@@ -158,19 +154,55 @@ class moduleReports extends module {
 					} else {
 						$all_moneyflow_data [$key] ['owner'] = false;
 					}
-					$movement += $value['amount'];
+					if ($value ['capitalsourcetype'] == 1 || $value ['capitalsourcetype'] == 2)
+						$movement += $value ['amount'];
 				}
 
+				$assets_turnover_capitalsources = null;
+				$assets_lastamount = 0;
+				$assets_fixamount = 0;
+				$assets_movement_calculated_month = 0;
+				$assets_calcamount = 0;
+				$assets_counter = 0;
+
+				$liabilities_turnover_capitalsources = null;
+				$liabilities_lastamount = 0;
+				$liabilities_fixamount = 0;
+				$liabilities_calcamount = 0;
+				$liabilities_counter = 0;
+
 				if (is_array( $turnover_capitalsources ) && count( $turnover_capitalsources ) > 0) {
-					foreach ( $turnover_capitalsources as $key => $turnover_capitalsource ) {
-						$turnover_capitalsources [$key] ['typecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_TYPE', $turnover_capitalsource ['type'] );
-						$turnover_capitalsources [$key] ['statecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_STATE', $turnover_capitalsource ['state'] );
-						$movement_calculated_month += $turnover_capitalsource ['calcamount'] - $turnover_capitalsource ['lastamount'];
-						$calcamount += $turnover_capitalsource ['calcamount'];
-						$lastamount += $turnover_capitalsource ['lastamount'];
-						if (array_key_exists( 'fixamount', $turnover_capitalsource )) {
-							$fixamount += $turnover_capitalsource ['fixamount'];
-							$mms_exists = true;
+					$assets_turnover_capitalsources = array ();
+					$liabilities_turnover_capitalsources = array ();
+					foreach ( $turnover_capitalsources as $turnover_capitalsource ) {
+						switch ($turnover_capitalsource ['type']) {
+							case 1 :
+							case 2 :
+								$assets_turnover_capitalsources [$assets_counter] = $turnover_capitalsource;
+								$assets_turnover_capitalsources [$assets_counter] ['typecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_TYPE', $turnover_capitalsource ['type'] );
+								$assets_turnover_capitalsources [$assets_counter] ['statecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_STATE', $turnover_capitalsource ['state'] );
+								$assets_movement_calculated_month += $turnover_capitalsource ['calcamount'] - $turnover_capitalsource ['lastamount'];
+								$assets_calcamount += $turnover_capitalsource ['calcamount'];
+								$assets_lastamount += $turnover_capitalsource ['lastamount'];
+								if (array_key_exists( 'fixamount', $turnover_capitalsource )) {
+									$assets_fixamount += $turnover_capitalsource ['fixamount'];
+									$mms_exists = true;
+								}
+								$assets_counter ++;
+								break;
+							case 3 :
+							case 4 :
+								$liabilities_turnover_capitalsources [$liabilities_counter] = $turnover_capitalsource;
+								$liabilities_turnover_capitalsources [$liabilities_counter] ['typecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_TYPE', $turnover_capitalsource ['type'] );
+								$liabilities_turnover_capitalsources [$liabilities_counter] ['statecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_STATE', $turnover_capitalsource ['state'] );
+								$liabilities_calcamount += $turnover_capitalsource ['calcamount'];
+								$liabilities_lastamount += $turnover_capitalsource ['lastamount'];
+								if (array_key_exists( 'fixamount', $turnover_capitalsource )) {
+									$liabilities_fixamount += $turnover_capitalsource ['fixamount'];
+									$mms_exists = true;
+								}
+								$liabilities_counter ++;
+								break;
 						}
 					}
 				} else {
@@ -196,13 +228,22 @@ class moduleReports extends module {
 				$this->template->assign( 'SORTBY', $sortby );
 				$this->template->assign( 'NEWORDER', $neworder );
 				$this->template->assign( 'ORDER', $order );
-				$this->template->assign( 'SUMMARY_DATA', $turnover_capitalsources );
-				$this->template->assign( 'LASTAMOUNT', $lastamount );
+
+				// Assets
+				$this->template->assign( 'SUMMARY_DATA', $assets_turnover_capitalsources );
+				$this->template->assign( 'LASTAMOUNT', $assets_lastamount );
+				$this->template->assign( 'FIXAMOUNT', $assets_fixamount );
+				$this->template->assign( 'MON_CALCAMOUNT', $assets_calcamount );
+				$this->template->assign( 'MON_CALCULATEDTURNOVER', $assets_movement_calculated_month );
 				$this->template->assign( 'FIRSTAMOUNT', $firstamount );
-				$this->template->assign( 'FIXAMOUNT', $fixamount );
-				$this->template->assign( 'MON_CALCAMOUNT', $calcamount );
-				$this->template->assign( 'MON_CALCULATEDTURNOVER', $movement_calculated_month );
 				$this->template->assign( 'YEA_CALCULATEDTURNOVER', $movement_calculated_year );
+
+				// Liabilites
+				$this->template->assign( 'LIABILITIES_SUMMARY_DATA', $liabilities_turnover_capitalsources );
+				$this->template->assign( 'LIABILITIES_LASTAMOUNT', $liabilities_lastamount );
+				$this->template->assign( 'LIABILITIES_FIXAMOUNT', $liabilities_fixamount );
+				$this->template->assign( 'LIABILITIES_MON_CALCAMOUNT', $liabilities_calcamount );
+
 				$this->template->assign( 'MOVEMENT', $movement );
 				$this->template->assign( 'MONTHLYSETTLEMENT_EXISTS', $mms_exists );
 				$report = 1;

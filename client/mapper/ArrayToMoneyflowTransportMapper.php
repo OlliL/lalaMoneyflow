@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToMoneyflowTransportMapper.php,v 1.8 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: ArrayToMoneyflowTransportMapper.php,v 1.9 2015/03/25 21:08:46 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -63,6 +63,7 @@ class ArrayToMoneyflowTransportMapper extends AbstractArrayMapper {
 		$a ['amount'] = $b->getAmount();
 		$a ['mcs_capitalsourceid'] = $b->getCapitalsourceid();
 		$a ['capitalsourcecomment'] = $b->getCapitalsourcecomment();
+		$a ['capitalsourcetype'] = $b->getCapitalsourcetype();
 		$a ['mcp_contractpartnerid'] = $b->getContractpartnerid();
 		$a ['contractpartnername'] = $b->getContractpartnername();
 		$a ['comment'] = $b->getComment();

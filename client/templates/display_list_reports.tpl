@@ -124,95 +124,162 @@ function Go(x)
 				</tr>
 			</table>
 			<br>
-			{if $SUMMARY_DATA != ''}
+			{if ( $SUMMARY_DATA != '' || $LIABILITIES_SUMMARY_DATA != '' ) }
 			<hr align="center" width="830">
 			<h1>{#TEXT_68#}</h1>
 			<table border=0 cellpadding=2>
 				<tr>
-					<th>{#TEXT_30#}</th>
-					<th>{#TEXT_31#}</th>
-					<th>{#TEXT_21#}</th>
-					<th width="80">{#TEXT_62#}</th>
-					{if $MONTHLYSETTLEMENT_EXISTS == true}
-					<th width="80">{#TEXT_63#}</th>
-					{/if}
-					<th width="80">{#TEXT_64#}</th>
-					{if $MONTHLYSETTLEMENT_EXISTS == true}
-					<th width="80">{#TEXT_65#}</th>
-					{/if}
+					<th><h2>{#TEXT_280#}</h2></th>
+					<th><h2>{#TEXT_281#}</h2></th>
 				</tr>
-				{section name=DATA loop=$SUMMARY_DATA}
-					<tr>
-						<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].typecomment}</td>
-						<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].statecomment}</td>
-						<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].comment}</td>
-						<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].lastamount < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].lastamount|number_format} {#CURRENCY#}</font></td>
-						{if $MONTHLYSETTLEMENT_EXISTS == true}
-							<td align="right" class="contrastbgcolor">
-							{if array_key_exists('fixamount',$SUMMARY_DATA[DATA])}
-								<font {if $SUMMARY_DATA[DATA].fixamount  < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].fixamount|number_format} {#CURRENCY#}</font>
+				<tr>
+				<td valign="top" align="center">
+						<table border=0 cellpadding=2>
+							<tr>
+								<th>{#TEXT_30#}</th>
+								<th>{#TEXT_31#}</th>
+								<th>{#TEXT_21#}</th>
+								<th width="80">{#TEXT_62#}</th>
+								{if $MONTHLYSETTLEMENT_EXISTS == true}
+								<th width="80">{#TEXT_63#}</th>
+								{/if}
+								<th width="80">{#TEXT_64#}</th>
+								{if $MONTHLYSETTLEMENT_EXISTS == true}
+								<th width="80">{#TEXT_65#}</th>
+								{/if}
+							</tr>
+							{section name=DATA loop=$SUMMARY_DATA}
+								<tr>
+									<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].typecomment}</td>
+									<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].statecomment}</td>
+									<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].comment}</td>
+									<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].lastamount < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].lastamount|number_format} {#CURRENCY#}</font></td>
+									{if $MONTHLYSETTLEMENT_EXISTS == true}
+										<td align="right" class="contrastbgcolor">
+										{if array_key_exists('fixamount',$SUMMARY_DATA[DATA])}
+											<font {if $SUMMARY_DATA[DATA].fixamount  < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].fixamount|number_format} {#CURRENCY#}</font>
+										{/if}
+										</td>
+									{/if}
+									<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].calcamount < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].calcamount|number_format} {#CURRENCY#}</font></td>
+									{if $MONTHLYSETTLEMENT_EXISTS == true}
+										<td align="right" class="contrastbgcolor">
+										{if array_key_exists('fixamount',$SUMMARY_DATA[DATA])}
+											{math equation="x - y" x=$SUMMARY_DATA[DATA].fixamount y=$SUMMARY_DATA[DATA].calcamount assign=CAPITALSOURCE_DIFFERENCE}
+									
+											<font {if $CAPITALSOURCE_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$CAPITALSOURCE_DIFFERENCE|number_format} {#CURRENCY#}</font>
+										{/if}
+										</td>
+									{/if}
+								</tr>
+							{/section}
+								<tr>
+									<td></td>
+									<td></td>
+									<td align="right">&sum;</td>
+									<td align="right" class="contrastbgcolor"><font {if $LASTAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$LASTAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									{if $MONTHLYSETTLEMENT_EXISTS == true}
+									<td align="right" class="contrastbgcolor"><font {if $FIXAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$FIXAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									{/if}
+									<td align="right" class="contrastbgcolor"><font {if $MON_CALCAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$MON_CALCAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									{if $MONTHLYSETTLEMENT_EXISTS == true}
+									{math equation="x - y" x=$FIXAMOUNT y=$MON_CALCAMOUNT assign=MON_DIFFERENCE}
+									<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{else}color="black"{/if}><u>{$MON_DIFFERENCE|number_format} {#CURRENCY#}</u></font></td>
+									{/if}
+								</tr>
+						</table>
+						<br>
+						<table border=0 cellpadding=2>
+							<tr>
+								<th></th>
+								<th>{#TEXT_56#}</th>
+								<th>{#TEXT_57#}</th>
+							</tr>
+							{if !$FIRSTAMOUNT}{assign var="FIRSTAMOUNT" value="0"}{/if}
+							{if $MONTHLYSETTLEMENT_EXISTS == true}
+							<tr>
+								<th align="right">{#TEXT_66#}</th>
+								{math equation="y-x" x=$LASTAMOUNT y=$FIXAMOUNT assign=MON_FIXEDTURNOVER}
+								<td align="right" class="contrastbgcolor"><font {if $MON_FIXEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$MON_FIXEDTURNOVER|number_format} {#CURRENCY#}</font></td>
+								{math equation="y-x" x=$FIRSTAMOUNT y=$FIXAMOUNT assign=YEA_FIXEDTURNOVER}
+								<td align="right" class="contrastbgcolor"><font {if $YEA_FIXEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$YEA_FIXEDTURNOVER|number_format} {#CURRENCY#}</font></td>
+							</tr>
 							{/if}
-							</td>
-						{/if}
-						<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].calcamount < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].calcamount|number_format} {#CURRENCY#}</font></td>
-						{if $MONTHLYSETTLEMENT_EXISTS == true}
-							<td align="right" class="contrastbgcolor">
-							{if array_key_exists('fixamount',$SUMMARY_DATA[DATA])}
-								{math equation="x - y" x=$SUMMARY_DATA[DATA].fixamount y=$SUMMARY_DATA[DATA].calcamount assign=CAPITALSOURCE_DIFFERENCE}
-						
-								<font {if $CAPITALSOURCE_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$CAPITALSOURCE_DIFFERENCE|number_format} {#CURRENCY#}</font>
+							<tr>
+								<th align="right">{#TEXT_67#}</th>
+								<td align="right" class="contrastbgcolor"><font {if $MON_CALCULATEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$MON_CALCULATEDTURNOVER|number_format} {#CURRENCY#}</font></td>
+								<td align="right" class="contrastbgcolor"><font {if $YEA_CALCULATEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$YEA_CALCULATEDTURNOVER|number_format} {#CURRENCY#}</font></td>
+							</tr>
+							{if $MONTHLYSETTLEMENT_EXISTS == true}
+							<tr>
+								<th align="right">{#TEXT_65#}</th>
+								<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$MON_DIFFERENCE|number_format} {#CURRENCY#}</font></td>
+								{math equation="x - y" x=$YEA_FIXEDTURNOVER y=$YEA_CALCULATEDTURNOVER assign=YEA_DIFFERENCE}
+								<td align="right" class="contrastbgcolor"><font {if $YEA_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$YEA_DIFFERENCE|number_format} {#CURRENCY#}</font></td>
+							</tr>
 							{/if}
-							</td>
-						{/if}
-					</tr>
-				{/section}
-					<tr>
-						<td></td>
-						<td></td>
-						<td align="right">&sum;</td>
-						<td align="right" class="contrastbgcolor"><font {if $LASTAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$LASTAMOUNT|number_format} {#CURRENCY#}</u></font></td>
-						{if $MONTHLYSETTLEMENT_EXISTS == true}
-						<td align="right" class="contrastbgcolor"><font {if $FIXAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$FIXAMOUNT|number_format} {#CURRENCY#}</u></font></td>
-						{/if}
-						<td align="right" class="contrastbgcolor"><font {if $MON_CALCAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$MON_CALCAMOUNT|number_format} {#CURRENCY#}</u></font></td>
-						{if $MONTHLYSETTLEMENT_EXISTS == true}
-						{math equation="x - y" x=$FIXAMOUNT y=$MON_CALCAMOUNT assign=MON_DIFFERENCE}
-						<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{else}color="black"{/if}><u>{$MON_DIFFERENCE|number_format} {#CURRENCY#}</u></font></td>
-						{/if}
-					</tr>
-			</table>
-			<br>
-			<table border=0 cellpadding=2>
-				<tr>
-					<th></th>
-					<th>{#TEXT_56#}</th>
-					<th>{#TEXT_57#}</th>
+						</table>
+					</td>
+					<td valign="top" align="center">
+						<table border=0 cellpadding=2>
+							<tr>
+								<th>{#TEXT_30#}</th>
+								<th>{#TEXT_31#}</th>
+								<th>{#TEXT_21#}</th>
+								<th width="80">{#TEXT_62#}</th>
+								{if $MONTHLYSETTLEMENT_EXISTS == true}
+								<th width="80">{#TEXT_63#}</th>
+								{/if}
+								<th width="80">{#TEXT_64#}</th>
+								{if $MONTHLYSETTLEMENT_EXISTS == true}
+								<th width="80">{#TEXT_65#}</th>
+								{/if}
+							</tr>
+							{section name=DATA loop=$LIABILITIES_SUMMARY_DATA}
+								<tr>
+									<td class="contrastbgcolor">{$LIABILITIES_SUMMARY_DATA[DATA].typecomment}</td>
+									<td class="contrastbgcolor">{$LIABILITIES_SUMMARY_DATA[DATA].statecomment}</td>
+									<td class="contrastbgcolor">{$LIABILITIES_SUMMARY_DATA[DATA].comment}</td>
+									<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].lastamount < 0}color="red"{else}color="black"{/if}>{$LIABILITIES_SUMMARY_DATA[DATA].lastamount|number_format} {#CURRENCY#}</font></td>
+									{if $MONTHLYSETTLEMENT_EXISTS == true}
+										<td align="right" class="contrastbgcolor">
+										{if array_key_exists('fixamount',$LIABILITIES_SUMMARY_DATA[DATA])}
+											<font {if $LIABILITIES_SUMMARY_DATA[DATA].fixamount  < 0}color="red"{else}color="black"{/if}>{$LIABILITIES_SUMMARY_DATA[DATA].fixamount|number_format} {#CURRENCY#}</font>
+										{/if}
+										</td>
+									{/if}
+									<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].calcamount < 0}color="red"{else}color="black"{/if}>{$LIABILITIES_SUMMARY_DATA[DATA].calcamount|number_format} {#CURRENCY#}</font></td>
+									{if $MONTHLYSETTLEMENT_EXISTS == true}
+										<td align="right" class="contrastbgcolor">
+										{if array_key_exists('fixamount',$LIABILITIES_SUMMARY_DATA[DATA])}
+											{math equation="x - y" x=$LIABILITIES_SUMMARY_DATA[DATA].fixamount y=$SUMMARY_DATA[DATA].calcamount assign=CAPITALSOURCE_DIFFERENCE}
+									
+											<font {if $CAPITALSOURCE_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$CAPITALSOURCE_DIFFERENCE|number_format} {#CURRENCY#}</font>
+										{/if}
+										</td>
+									{/if}
+								</tr>
+							{/section}
+								<tr>
+									<td></td>
+									<td></td>
+									<td align="right">&sum;</td>
+									<td align="right" class="contrastbgcolor"><font {if $LIABILITIES_LASTAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$LIABILITIES_LASTAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									{if $MONTHLYSETTLEMENT_EXISTS == true}
+									<td align="right" class="contrastbgcolor"><font {if $LIABILITIES_FIXAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$LIABILITIES_FIXAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									{/if}
+									<td align="right" class="contrastbgcolor"><font {if $LIABILITIES_MON_CALCAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$LIABILITIES_MON_CALCAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									{if $MONTHLYSETTLEMENT_EXISTS == true}
+									{math equation="x - y" x=$FIXAMOUNT y=$MON_CALCAMOUNT assign=MON_DIFFERENCE}
+									<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{else}color="black"{/if}><u>{$MON_DIFFERENCE|number_format} {#CURRENCY#}</u></font></td>
+									{/if}
+								</tr>
+						</table>
+					</td>
 				</tr>
-				{if !$FIRSTAMOUNT}{assign var="FIRSTAMOUNT" value="0"}{/if}
-				{if $MONTHLYSETTLEMENT_EXISTS == true}
-				<tr>
-					<th align="right">{#TEXT_66#}</th>
-					{math equation="y-x" x=$LASTAMOUNT y=$FIXAMOUNT assign=MON_FIXEDTURNOVER}
-					<td align="right" class="contrastbgcolor"><font {if $MON_FIXEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$MON_FIXEDTURNOVER|number_format} {#CURRENCY#}</font></td>
-					{math equation="y-x" x=$FIRSTAMOUNT y=$FIXAMOUNT assign=YEA_FIXEDTURNOVER}
-					<td align="right" class="contrastbgcolor"><font {if $YEA_FIXEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$YEA_FIXEDTURNOVER|number_format} {#CURRENCY#}</font></td>
-				</tr>
-				{/if}
-				<tr>
-					<th align="right">{#TEXT_67#}</th>
-					<td align="right" class="contrastbgcolor"><font {if $MON_CALCULATEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$MON_CALCULATEDTURNOVER|number_format} {#CURRENCY#}</font></td>
-					<td align="right" class="contrastbgcolor"><font {if $YEA_CALCULATEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$YEA_CALCULATEDTURNOVER|number_format} {#CURRENCY#}</font></td>
-				</tr>
-				{if $MONTHLYSETTLEMENT_EXISTS == true}
-				<tr>
-					<th align="right">{#TEXT_65#}</th>
-					<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$MON_DIFFERENCE|number_format} {#CURRENCY#}</font></td>
-					{math equation="x - y" x=$YEA_FIXEDTURNOVER y=$YEA_CALCULATEDTURNOVER assign=YEA_DIFFERENCE}
-					<td align="right" class="contrastbgcolor"><font {if $YEA_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$YEA_DIFFERENCE|number_format} {#CURRENCY#}</font></td>
-				</tr>
-				{/if}
 			</table>
 			{/if}
+
 {/if}
 		</td>
 {$FOOTER}
