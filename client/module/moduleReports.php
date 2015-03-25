@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.105 2015/03/25 21:11:36 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.104 2015/03/25 21:08:46 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -158,22 +158,20 @@ class moduleReports extends module {
 						$movement += $value ['amount'];
 				}
 
-				$assets_turnover_capitalsources = null;
+				$assets_turnover_capitalsources = array ();
 				$assets_lastamount = 0;
 				$assets_fixamount = 0;
 				$assets_movement_calculated_month = 0;
 				$assets_calcamount = 0;
 				$assets_counter = 0;
 
-				$liabilities_turnover_capitalsources = null;
+				$liabilities_turnover_capitalsources = array ();
 				$liabilities_lastamount = 0;
 				$liabilities_fixamount = 0;
 				$liabilities_calcamount = 0;
 				$liabilities_counter = 0;
 
 				if (is_array( $turnover_capitalsources ) && count( $turnover_capitalsources ) > 0) {
-					$assets_turnover_capitalsources = array ();
-					$liabilities_turnover_capitalsources = array ();
 					foreach ( $turnover_capitalsources as $turnover_capitalsource ) {
 						switch ($turnover_capitalsource ['type']) {
 							case 1 :
