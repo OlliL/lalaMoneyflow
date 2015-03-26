@@ -72,6 +72,33 @@ Httpful highly encourages sending in pull requests.  When submitting a pull requ
 
 # Changelog
 
+## 0.2.19
+
+ - FEATURE Before send hook [PR #164](https://github.com/nategood/httpful/pull/164)
+ - MINOR More descriptive connection exceptions [PR #166](https://github.com/nategood/httpful/pull/166)
+
+## 0.2.18
+
+ - FIX [PR #149](https://github.com/nategood/httpful/pull/149)
+ - FIX [PR #150](https://github.com/nategood/httpful/pull/150)
+ - FIX [PR #156](https://github.com/nategood/httpful/pull/156)
+
+## 0.2.17
+
+ - FEATURE [PR #144](https://github.com/nategood/httpful/pull/144) Adds additional parameter to the Response class to specify additional meta data about the request/response (e.g. number of redirect).
+
+## 0.2.16
+
+ - FEATURE Added support for whenError to define a custom callback to be fired upon error. Useful for logging or overriding the default error_log behavior.
+
+## 0.2.15
+
+ - FEATURE [I #131](https://github.com/nategood/httpful/pull/131) Support for SOCKS proxy
+
+## 0.2.14
+
+ - FEATURE [I #138](https://github.com/nategood/httpful/pull/138) Added alternative option for XML request construction. In the next major release this will likely supplant the older version.
+
 ## 0.2.13
 
  - REFACTOR [I #121](https://github.com/nategood/httpful/pull/121) Throw more descriptive exception on curl errors

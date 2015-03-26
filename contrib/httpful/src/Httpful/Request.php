@@ -44,6 +44,7 @@ class Request
            $payload,
            $parse_callback,
            $error_callback,
+           $send_callback,
            $follow_redirects        = false,
            $max_redirects           = self::MAX_REDIRECTS_DEFAULT,
            $payload_serializers     = array();
@@ -152,7 +153,7 @@ class Request
     /**
      * Specify a HTTP timeout
      * @return Request $this
-     * @param |int $timeout seconds to timeout the HTTP call
+     * @param float|int $timeout seconds to timeout the HTTP call
      */
     public function timeout($timeout)
     {
@@ -204,11 +205,11 @@ class Request
             if ($curlErrorNumber = curl_errno($this->_ch)) {
                 $curlErrorString = curl_error($this->_ch);
                 $this->_error($curlErrorString);
-                throw new ConnectionErrorException('Unable to connect: ' . $curlErrorNumber . ' ' . $curlErrorString);
+                throw new ConnectionErrorException('Unable to connect to "'.$this->uri.'": ' . $curlErrorNumber . ' ' . $curlErrorString);
             }
 
-            $this->_error('Unable to connect.');
-            throw new ConnectionErrorException('Unable to connect.');
+            $this->_error('Unable to connect to "'.$this->uri.'".');
+            throw new ConnectionErrorException('Unable to connect to "'.$this->uri.'".');
         }
 
         $info = curl_getinfo($this->_ch);
@@ -226,7 +227,7 @@ class Request
 
         curl_close($this->_ch);
 
-        return new Response($body, $headers, $this);
+        return new Response($body, $headers, $this, $info);
     }
     public function sendIt()
     {
@@ -392,11 +393,13 @@ class Request
 
     public function attach($files)
     {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
         foreach ($files as $key => $file) {
+            $mimeType = finfo_file($finfo, $file);
             if (function_exists('curl_file_create')) {
-                $this->payload[$key] = curl_file_create($file);
+                $this->payload[$key] = curl_file_create($file, $mimeType);
             } else {
-                $this->payload[$key] = "@{$file}";
+                $this->payload[$key] = '@' . $file . ';type=' . $mimeType;
             }
         }
         $this->sendsType(Mime::UPLOAD);
@@ -455,14 +458,35 @@ class Request
      * @param string $auth_username Authentication username. Default null
      * @param string $auth_password Authentication password. Default null
      */
-    public function useProxy($proxy_host, $proxy_port = 80, $auth_type = null, $auth_username = null, $auth_password = null)
+    public function useProxy($proxy_host, $proxy_port = 80, $auth_type = null, $auth_username = null, $auth_password = null, $proxy_type = Proxy::HTTP)
     {
         $this->addOnCurlOption(CURLOPT_PROXY, "{$proxy_host}:{$proxy_port}");
+        $this->addOnCurlOption(CURLOPT_PROXYTYPE, $proxy_type);
         if (in_array($auth_type, array(CURLAUTH_BASIC,CURLAUTH_NTLM))) {
             $this->addOnCurlOption(CURLOPT_PROXYAUTH, $auth_type)
                 ->addOnCurlOption(CURLOPT_PROXYUSERPWD, "{$auth_username}:{$auth_password}");
         }
         return $this;
+    }
+
+    /**
+     * Shortcut for useProxy to configure SOCKS 4 proxy
+     * @see Request::useProxy
+     * @return Request
+     */
+    public function useSocks4Proxy($proxy_host, $proxy_port = 80, $auth_type = null, $auth_username = null, $auth_password = null)
+    {
+        return $this->useProxy($proxy_host, $proxy_port, $auth_type, $auth_username, $auth_password, Proxy::SOCKS4);
+    }
+
+    /**
+     * Shortcut for useProxy to configure SOCKS 5 proxy
+     * @see Request::useProxy
+     * @return Request
+     */
+    public function useSocks5Proxy($proxy_host, $proxy_port = 80, $auth_type = null, $auth_username = null, $auth_password = null)
+    {
+        return $this->useProxy($proxy_host, $proxy_port, $auth_type, $auth_username, $auth_password, Proxy::SOCKS5);
     }
 
     /**
@@ -549,7 +573,7 @@ class Request
      * here just as a convenience in very specific cases.
      * The preferred "readable" way would be to leverage
      * the support for custom header methods.
-     * @return Response $this
+     * @return Request $this
      * @param array $headers
      */
     public function addHeaders(array $headers)
@@ -611,6 +635,30 @@ class Request
     public function parseResponsesWith(\Closure $callback)
     {
         return $this->parseWith($callback);
+    }
+
+    /**
+     * Callback called to handle HTTP errors. When nothing is set, defaults
+     * to logging via `error_log`
+     * @return Request
+     * @param \Closure $callback (string $error)
+     */
+    public function whenError(\Closure $callback)
+    {
+        $this->error_callback = $callback;
+        return $this;
+    }
+
+    /**
+     * Callback invoked after payload has been serialized but before
+     * the request has been built.
+     * @return Request this
+     * @param \Closure $callback (Request $request)
+     */
+    public function beforeSend(\Closure $callback)
+    {
+        $this->send_callback = $callback;
+        return $this;
     }
 
     /**
@@ -744,9 +792,13 @@ class Request
 
     private function _error($error)
     {
-        // Default actions write to error log
-        // TODO add in support for various Loggers
-        error_log($error);
+        // TODO add in support for various Loggers that follow
+        // PSR 3 https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
+        if (isset($this->error_callback)) {
+            $this->error_callback->__invoke($error);
+        } else {
+            error_log($error);
+        }
     }
 
     /**
@@ -786,6 +838,14 @@ class Request
         if (!isset($this->uri))
             throw new \Exception('Attempting to send a request before defining a URI endpoint.');
 
+        if (isset($this->payload)) {
+            $this->serialized_payload = $this->_serializePayload($this->payload);
+        }
+
+        if (isset($this->send_callback)) {
+            call_user_func($this->send_callback, $this);
+        }
+
         $ch = curl_init($this->uri);
 
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method);
@@ -814,7 +874,11 @@ class Request
         }
 
         if ($this->hasTimeout()) {
-            curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
+            if (defined('CURLOPT_TIMEOUT_MS')) {
+                curl_setopt($ch, CURLOPT_TIMEOUT_MS, $this->timeout * 1000);
+            } else {
+                curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
+            }
         }
 
         if ($this->follow_redirects) {
@@ -833,7 +897,6 @@ class Request
         // https://github.com/nategood/httpful/issues/84
         // set Content-Length to the size of the payload if present
         if (isset($this->payload)) {
-            $this->serialized_payload = $this->_serializePayload($this->payload);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $this->serialized_payload);
             if (!$this->isUpload()) {
                 $this->headers['Content-Length'] =
