@@ -129,10 +129,15 @@ function Go(x)
 			<h1>{#TEXT_68#}</h1>
 			<table border=0 cellpadding=2>
 				<tr>
+				{if $SUMMARY_DATA != ''}
 					<th><h2>{#TEXT_280#}</h2></th>
+				{/if}
+				{if $LIABILITIES_SUMMARY_DATA != ''}
 					<th><h2>{#TEXT_281#}</h2></th>
+				{/if}
 				</tr>
 				<tr>
+				{if $SUMMARY_DATA != ''}
 				<td valign="top" align="center">
 						<table border=0 cellpadding=2>
 							<tr>
@@ -220,6 +225,8 @@ function Go(x)
 							{/if}
 						</table>
 					</td>
+				{/if}
+				{if $LIABILITIES_SUMMARY_DATA != ''}
 					<td valign="top" align="center">
 						<table border=0 cellpadding=2>
 							<tr>
@@ -276,6 +283,7 @@ function Go(x)
 								</tr>
 						</table>
 					</td>
+				{/if}
 				</tr>
 			</table>
 			{/if}

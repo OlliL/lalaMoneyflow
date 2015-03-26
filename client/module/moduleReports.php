@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.104 2015/03/25 21:08:46 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.106 2015/03/26 20:46:43 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -154,18 +154,17 @@ class moduleReports extends module {
 					} else {
 						$all_moneyflow_data [$key] ['owner'] = false;
 					}
-					if ($value ['capitalsourcetype'] == 1 || $value ['capitalsourcetype'] == 2)
-						$movement += $value ['amount'];
+					$movement += $value ['amount'];
 				}
 
-				$assets_turnover_capitalsources = array ();
+				$assets_turnover_capitalsources = null;
 				$assets_lastamount = 0;
 				$assets_fixamount = 0;
 				$assets_movement_calculated_month = 0;
 				$assets_calcamount = 0;
 				$assets_counter = 0;
 
-				$liabilities_turnover_capitalsources = array ();
+				$liabilities_turnover_capitalsources = null;
 				$liabilities_lastamount = 0;
 				$liabilities_fixamount = 0;
 				$liabilities_calcamount = 0;

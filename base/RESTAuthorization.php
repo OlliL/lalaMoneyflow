@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: RESTAuthorization.php,v 1.5 2015/02/13 00:03:42 olivleh1 Exp $
+// $Id: RESTAuthorization.php,v 1.6 2015/03/26 20:46:44 olivleh1 Exp $
 //
 namespace base;
 
@@ -34,7 +34,7 @@ class RESTAuthorization {
 	public static $header = 'Authentication';
 
 	/**
-	 * This function works basically as described in http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html
+	 * This function works basically as described in <a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html">"Signing and Authenticating REST Requests"</a>
 	 *
 	 * @param unknown $url
 	 * @param unknown $headers

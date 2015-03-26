@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.84 2015/03/25 21:08:46 olivleh1 Exp $
+// $Id: module.php,v 1.85 2015/03/26 20:47:05 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -106,7 +106,7 @@ abstract class module {
 		$this->template->assign( 'REPORTS_YEAR', date( 'Y' ) );
 		$this->template->assign( 'REPORTS_MONTH', date( 'm' ) );
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
-		$this->template->assign( 'VERSION', '0.21.0' );
+		$this->template->assign( 'VERSION', '0.21.1' );
 		$this->template->assign( 'NO_NAVIGATION', $nonavi );
 		$admin = Environment::getInstance()->getUserPermAdmin();
 		if ($admin) {
