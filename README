@@ -78,10 +78,12 @@ To run the PHPUnit Tests in server:
 	
 Setting up Eclipse:
 ===================
-- download Eclipse Keppler
-- "Help" -> "Install new Software..." "PHP Development Toolkit (PDT)" Location: http://download.eclipse.org/tools/pdt/updates/3.2-nightly
+- download Eclipse Mars
+- "Help" -> "Install new Software..." "PHP Development Toolkit (PDT)" Location: http://download.eclipse.org/tools/pdt/updates/3.5-nightly
 - New "PHP Project" -> (x) "Create Project at existing location"
 - "Team" -> "CVS" -> [Files and Folders] => ( ) "Convert Text files to use platform ending"
+- "Team" -> "CVS" -> "Label Decorations" -> [Icon Decorations] -> [x] Outgoing changes 
+- "Team" -> "CVS" -> "Ext connection method" -> (o) Use another connection method to connect -> "extssh"
 - "General" -> "Workspace" -> "New Text file line delimiter" [Unix]
 - "General" -> "Editors" -> "Text Editors" -> "Displayed tab width" -> 8
 - "PHP" -> "Editor" -> "Save Actions" -> [x] "Remove Trailing Whitespaces"
