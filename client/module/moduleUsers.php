@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.61 2015/02/13 00:03:37 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.62 2015/03/27 20:37:39 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -178,7 +178,9 @@ class moduleUsers extends module {
 					if ($ret === true) {
 						$close = 1;
 					} else {
-						$access_relations = $ret ['access_relations'];
+						if ($userid > 0) {
+							$access_relations = $ret ['access_relations'];
+						}
 						$groups = $ret ['groups'];
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];

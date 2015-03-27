@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToAccessRelationTransportMapper.php,v 1.5 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: ArrayToAccessRelationTransportMapper.php,v 1.6 2015/03/27 20:37:39 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -35,7 +35,8 @@ class ArrayToAccessRelationTransportMapper extends AbstractArrayMapper {
 
 	public static function mapAToB(array $a) {
 		$b = new AccessRelationTransport();
-		$b->setId( $a ['id'] );
+		if (array_key_exists( 'id', $a ))
+			$b->setId( $a ['id'] );
 		$b->setRefId( $a ['ref_id'] );
 
 		$validfrom = parent::convertClientDateToTransport( $a ['validfrom'] );
