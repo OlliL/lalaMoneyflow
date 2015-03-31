@@ -259,7 +259,7 @@ function Go(x)
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
 										<td align="right" class="contrastbgcolor">
 										{if array_key_exists('fixamount',$LIABILITIES_SUMMARY_DATA[DATA])}
-											{math equation="x - y" x=$LIABILITIES_SUMMARY_DATA[DATA].fixamount y=$SUMMARY_DATA[DATA].calcamount assign=CAPITALSOURCE_DIFFERENCE}
+											{math equation="x - y" x=$LIABILITIES_SUMMARY_DATA[DATA].fixamount y=$LIABILITIES_SUMMARY_DATA[DATA].calcamount assign=CAPITALSOURCE_DIFFERENCE}
 									
 											<font {if $CAPITALSOURCE_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$CAPITALSOURCE_DIFFERENCE|number_format} {#CURRENCY#}</font>
 										{/if}
@@ -277,7 +277,7 @@ function Go(x)
 									{/if}
 									<td align="right" class="contrastbgcolor"><font {if $LIABILITIES_MON_CALCAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$LIABILITIES_MON_CALCAMOUNT|number_format} {#CURRENCY#}</u></font></td>
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
-									{math equation="x - y" x=$FIXAMOUNT y=$MON_CALCAMOUNT assign=MON_DIFFERENCE}
+									{math equation="x - y" x=$LIABILITIES_FIXAMOUNT y=$LIABILITIES_MON_CALCAMOUNT assign=MON_DIFFERENCE}
 									<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{else}color="black"{/if}><u>{$MON_DIFFERENCE|number_format} {#CURRENCY#}</u></font></td>
 									{/if}
 								</tr>
