@@ -1,9 +1,10 @@
 feature requests:
+- create counter bookings only for capitalsources which are not imported automatically (no hbci interface available) -> "importable" flag -> also check it on import (no other sources may be imported)
 - when a booking was added manually and the same booking gets imported later, try to match it and mark it as "to be deleted" or something like that....
 
 Bugs:
 - when importing all Moneyflows, the last imported moneyflow is not deleted and still there but it was imported
-- when setting the contractpartner, the (imported) moneyflow comment which was set before manually is overwritten. same with bookingaccouns
+- when setting the contractpartner, the (imported) moneyflow comment which was set before manually is overwritten. same with bookingaccounts
 
 lower prio TODOs:
 - PHPUnit: start writing service tests
