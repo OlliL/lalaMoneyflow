@@ -24,6 +24,8 @@
 					<th width="100">{#TEXT_33#}</th>
 					<th width="60" >{#TEXT_34#}</th>
 					<th width="60" >{#TEXT_35#}</th>
+					<th width="50" >{#TEXT_210#}</th>
+					<th width="50" >{#TEXT_282#}</th>
 				</tr>
 				<tr>
 					<td class="contrastbgcolor">{$ALL_DATA.comment|escape:htmlall}</td>

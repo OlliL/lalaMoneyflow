@@ -24,6 +24,7 @@
 					<th>{#TEXT_34#}</th>
 					<th>{#TEXT_35#}</th>
 					<th>{#TEXT_210#}</th>
+					<th>{#TEXT_282#}</th>
 				</tr>
 				<tr>
 					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]"       value="{$ALL_DATA.comment|escape:htmlall}" {if $ALL_DATA.comment_error == 1}style="color:red"{/if}></td>
@@ -45,6 +46,12 @@
 						<select class="contrastbgcolor" name="all_data[att_group_use]" size=1>
 							<option value=0 {if $ALL_DATA.att_group_use == 0}selected{/if} > {#TEXT_26#}
 							<option value=1 {if $ALL_DATA.att_group_use == 1}selected{/if} > {#TEXT_25#}
+						</select>
+					</td>
+					<td class="contrastbgcolor">
+						<select class="contrastbgcolor" name="all_data[import_allowed]" size=1>
+							<option value=0 {if $ALL_DATA.import_allowed == 0}selected{/if} > {#TEXT_26#}
+							<option value=1 {if $ALL_DATA.import_allowed == 1}selected{/if} > {#TEXT_25#}
 						</select>
 					</td>
 				</tr>

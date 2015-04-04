@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CapitalsourceTransport.php,v 1.7 2015/02/13 00:03:39 olivleh1 Exp $
+// $Id: CapitalsourceTransport.php,v 1.8 2015/04/04 22:03:41 olivleh1 Exp $
 //
 namespace api\model\transport;
 
@@ -40,6 +40,7 @@ class CapitalsourceTransport extends AbstractTransport {
 	public $validTil;
 	public $validFrom;
 	public $groupUse;
+	public $importAllowed;
 
 	public final function setId($id) {
 		$this->id = $id;
@@ -81,6 +82,10 @@ class CapitalsourceTransport extends AbstractTransport {
 		$this->groupUse = $groupUse;
 	}
 
+	public final function setImportallowed($importAllowed) {
+		$this->importAllowed = $importAllowed;
+	}
+
 	public final function getId() {
 		return $this->id;
 	}
@@ -119,6 +124,10 @@ class CapitalsourceTransport extends AbstractTransport {
 
 	public final function getGroupUse() {
 		return $this->groupUse;
+	}
+
+	public final function getImportallowed() {
+		return $this->importAllowed;
 	}
 }
 
