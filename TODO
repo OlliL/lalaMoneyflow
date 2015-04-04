@@ -1,6 +1,15 @@
 feature requests:
 - when a booking was added manually and the same booking gets imported later, try to match it and mark it as "to be deleted" or something like that....
 
+- import monthly settlements:
+  - change the add-monthly-settlement form to also support "complete monthly settlement"
+    - display two parts. upper part: not existing monthly settlements
+    - lower part: existing (imported) monthly settlements
+  - when clicking on "add" don't show the first next month without any monthly settlement but the next month with not a complete set of settlements
+  - when logging in, do not check if for the previous month a settlement was created but if a complete set of settlements exists
+  - add a REST resource which can import monthly settlements by accountnumber/bankcode of a capitalsource
+
+
 Bugs:
 - when importing all Moneyflows, the last imported moneyflow is not deleted and still there but it was imported
 - when setting the contractpartner, the (imported) moneyflow comment which was set before manually is overwritten. same with bookingaccounts
