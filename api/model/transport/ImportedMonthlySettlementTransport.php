@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2014-2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,34 +25,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ImportedMoneyflowTransport.php,v 1.5 2015/04/05 18:52:39 olivleh1 Exp $
+// $Id: ImportedMonthlySettlementTransport.php,v 1.1 2015/04/05 18:52:39 olivleh1 Exp $
 //
 namespace api\model\transport;
 
-class ImportedMoneyflowTransport extends MoneyflowTransport {
-	public $accountNumber;
-	public $bankCode;
+class ImportedMonthlySettlementTransport extends MonthlySettlementTransport {
 	public $externalid;
-	public $name;
-	public $usage;
 	public $accountNumberCapitalsource;
 	public $bankCodeCapitalsource;
-
-	public final function getAccountNumber() {
-		return $this->accountNumber;
-	}
-
-	public final function getBankCode() {
-		return $this->bankCode;
-	}
-
-	public final function setAccountNumber($accountNumber) {
-		$this->accountNumber = $accountNumber;
-	}
-
-	public final function setBankCode($bankCode) {
-		$this->bankCode = $bankCode;
-	}
 
 	public final function setExternalid($externalid) {
 		$this->externalid = $externalid;
@@ -60,22 +40,6 @@ class ImportedMoneyflowTransport extends MoneyflowTransport {
 
 	public final function getExternalid() {
 		return $this->externalid;
-	}
-
-	public final function setName($name) {
-		$this->name = $name;
-	}
-
-	public final function getName() {
-		return $this->name;
-	}
-
-	public final function setUsage($usage) {
-		$this->usage = $usage;
-	}
-
-	public final function getUsage() {
-		return $this->usage;
 	}
 
 	public final function getAccountNumberCapitalsource() {
@@ -93,7 +57,6 @@ class ImportedMoneyflowTransport extends MoneyflowTransport {
 	public final function setBankCodeCapitalsource($bankCodeCapitalsource) {
 		$this->bankCodeCapitalsource = $bankCodeCapitalsource;
 	}
-
 }
 
 ?>
