@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractJsonSender.php,v 1.10 2015/02/13 00:03:42 olivleh1 Exp $
+// $Id: AbstractJsonSender.php,v 1.11 2015/04/23 19:32:30 olivleh1 Exp $
 //
 namespace base;
 
@@ -34,7 +34,7 @@ class AbstractJsonSender extends AbstractMapperSupport {
 	protected function json_encode_response($response) {
 		$class = get_class( $response );
 		$classArray = explode( '\\', $class );
-		return '{"' . array_pop( $classArray ) . '":' . json_encode( get_object_vars( $response ), JSON_NUMERIC_CHECK ) . '}';
+		return '{"' . array_pop( $classArray ) . '":' . json_encode( get_object_vars( $response ) ) . '}';
 	}
 
 	protected function json_encode($obj) {
@@ -50,7 +50,7 @@ class AbstractJsonSender extends AbstractMapperSupport {
 		}
 		if (is_string( $class )) {
 			$classArray = explode( '\\', $class );
-			
+
 			if ((is_array( $obj ) && count( $obj ) > 0)) {
 				return '{"' . array_pop( $classArray ) . '":' . json_encode( parent::mapArray( $obj ) ) . '}';
 			} else if ($obj != NULL) {
