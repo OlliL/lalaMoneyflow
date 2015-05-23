@@ -34,7 +34,7 @@
 					<br>
 					<b>{#TEXT_14#}</b><br>
 					<a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$REPORTS_MONTH}&amp;reports_year={$REPORTS_YEAR}">{#TEXT_9#} {$REPORTS_YEAR}-{$REPORTS_MONTH}</a><br>
-					<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&amp;sr=1','_blank','width=800,height=120')">{#TEXT_10#}</a><br>
+					<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&amp;sr=1','_blank','width=1000,height=120')">{#TEXT_10#}</a><br>
 					<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&amp;sr=1','_blank','width=1000,height=120')">{#TEXT_11#}</a><br>
 					<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_predefmoneyflow&amp;sr=1','_blank','width=920,height=120')">{#TEXT_12#}</a><br>
 					</div>

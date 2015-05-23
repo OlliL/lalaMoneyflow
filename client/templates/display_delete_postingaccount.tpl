@@ -9,7 +9,7 @@
 		{section name=ERROR loop=$ERRORS}
 			<font color="#FF0000">{$ERRORS[ERROR]}</font><br>
 		{/section}
-		<u>{#TEXT_216#}</u><br><br>
+		<u>{#TEXT_248#}</u><br><br>
 		<form action="{$ENV_INDEX_PHP}" method="POST">
 			<input type="hidden" name="action"     value="delete_postingaccount">
 			<input type="hidden" name="realaction" value="yes">
