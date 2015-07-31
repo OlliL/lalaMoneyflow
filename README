@@ -6,7 +6,7 @@ Requirements:
 
 - MySQL 5.1 or higher
 	
-- PHP 5.5.x
+- PHP 5.5.x or higher
 	- Extension: session
 	- Extension: hash
 	- Extension: xml
