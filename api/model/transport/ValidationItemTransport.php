@@ -25,13 +25,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ValidationItemTransport.php,v 1.6 2015/02/13 00:03:39 olivleh1 Exp $
+// $Id: ValidationItemTransport.php,v 1.7 2015/07/31 23:29:45 olivleh1 Exp $
 //
 namespace api\model\transport;
 
 class ValidationItemTransport extends AbstractTransport {
 	public $key;
 	public $error;
+	public $variableArray;
 
 	public final function setKey($key) {
 		$this->key = $key;
@@ -41,12 +42,20 @@ class ValidationItemTransport extends AbstractTransport {
 		$this->error = $error;
 	}
 
+	public final function setVariableArray(array $variableArray) {
+		$this->variableArray = $variableArray;
+	}
+
 	public final function getKey() {
 		return $this->key;
 	}
 
 	public final function getError() {
 		return $this->error;
+	}
+
+	public final function getVariableArray() {
+		return $this->variableArray;
 	}
 }
 

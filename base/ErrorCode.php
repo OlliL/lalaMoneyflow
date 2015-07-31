@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ErrorCode.php,v 1.28 2015/04/04 22:03:41 olivleh1 Exp $
+// $Id: ErrorCode.php,v 1.29 2015/07/31 23:29:45 olivleh1 Exp $
 //
 namespace base;
 
@@ -89,6 +89,7 @@ class ErrorCode {
 	const BANK_CODE_CONTAINS_ILLEGAL_CHARS = 277;
 	const CAPITALSOURCE_IMPORT_NOT_ALLOWED = 283;
 	const CAPITALSOURCE_NOT_FOUND = 284;
+	const ACCOUNT_ALREADY_ASSIGNED_TO_OTHER_PARTNER = 286;
 }
 
 ?>

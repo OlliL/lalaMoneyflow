@@ -116,7 +116,9 @@
     var e = document.addmoney.elements[elementId];
     var contractpartnerId = e.options[e.selectedIndex].value;
 
-    document.addmoney.elements[elementId+1].value=comment[contractpartnerId];
+    if(document.addmoney.elements[elementId+1].value == "") {
+      document.addmoney.elements[elementId+1].value=comment[contractpartnerId];
+    }
     selectItemByValue( document.addmoney.elements[elementId+2], postingAccount[contractpartnerId] );
   }
   
@@ -149,6 +151,9 @@
 			<br>
 			<input type="submit" value="{#TEXT_22#}">
 		</form>
+{else}
+<br>
+<p align="center">{#TEXT_285#}</p>
 {/if}
 		</td>
 {$FOOTER}

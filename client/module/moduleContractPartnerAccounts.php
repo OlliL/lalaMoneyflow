@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartnerAccounts.php,v 1.3 2015/02/13 00:03:37 olivleh1 Exp $
+// $Id: moduleContractPartnerAccounts.php,v 1.4 2015/07/31 23:29:44 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -71,8 +71,9 @@ class moduleContractPartnerAccounts extends module {
 				} else {
 					foreach ( $ret ['errors'] as $validationResult ) {
 						$error = $validationResult ['error'];
+						$variableArray = $validationResult ['variable_array'];
 
-						$this->add_error( $error );
+						$this->add_error( $error, $variableArray );
 
 						switch ($error) {
 							case ErrorCode::BANK_CODE_TO_LONG :

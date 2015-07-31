@@ -103,7 +103,9 @@
     var e = document.addmoney.elements[elementId];
     var contractpartnerId = e.options[e.selectedIndex].value;
   
-    document.addmoney.elements[elementId+1].value=comment[contractpartnerId];
+    if(document.addmoney.elements[elementId+1].value == "") {
+      document.addmoney.elements[elementId+1].value=comment[contractpartnerId];
+    }
     selectItemByValue( document.addmoney.elements[elementId+2], postingAccount[contractpartnerId] );
   }
 </script>

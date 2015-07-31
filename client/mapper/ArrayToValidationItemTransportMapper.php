@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToValidationItemTransportMapper.php,v 1.6 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: ArrayToValidationItemTransportMapper.php,v 1.7 2015/07/31 23:29:45 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -37,12 +37,15 @@ class ArrayToValidationItemTransportMapper extends AbstractArrayMapper {
 		$b = new ValidationItemTransport();
 		$b->setKey( $a ['key'] );
 		$b->setError( $a ['error'] );
+		if ($a ['variable_array'])
+			$g->setVariableArray( $a ['variable_array'] );
 		return $b;
 	}
 
 	public static function mapBToA(ValidationItemTransport $b) {
 		$a ['key'] = $b->getKey();
 		$a ['error'] = $b->getError();
+		$a ['variable_array'] = $b->getVariableArray();
 		return $a;
 	}
 }
