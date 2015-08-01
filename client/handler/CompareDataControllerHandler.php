@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataControllerHandler.php,v 1.14 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: CompareDataControllerHandler.php,v 1.15 2015/08/01 00:19:23 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -38,23 +38,17 @@ use client\mapper\ArrayToCompareDataDatasetTransportMapper;
 use client\mapper\ArrayToCapitalsourceTransportMapper;
 use client\mapper\ArrayToMoneyflowTransportMapper;
 use api\model\transport\CapitalsourceTransport;
+use base\Singleton;
 
 class CompareDataControllerHandler extends AbstractHandler {
-	private static $instance;
+	use Singleton;
 
-	protected function __construct() {
-		parent::__construct();
+	protected function init() {
+		parent::init();
 		parent::addMapper( ArrayToCompareDataFormatTransportMapper::getClass() );
 		parent::addMapper( ArrayToCompareDataDatasetTransportMapper::getClass() );
 		parent::addMapper( ArrayToCapitalsourceTransportMapper::getClass() );
 		parent::addMapper( ArrayToMoneyflowTransportMapper::getClass() );
-	}
-
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			self::$instance = new CompareDataControllerHandler();
-		}
-		return self::$instance;
 	}
 
 	protected final function getCategory() {

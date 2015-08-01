@@ -24,25 +24,19 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: EventControllerHandler.php,v 1.10 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: EventControllerHandler.php,v 1.11 2015/08/01 00:19:23 olivleh1 Exp $
 //
 namespace client\handler;
 
 use base\JsonAutoMapper;
 use api\model\event\showEventListResponse;
+use base\Singleton;
 
 class EventControllerHandler extends AbstractHandler {
-	private static $instance;
+	use Singleton;
 
-	protected function __construct() {
-		parent::__construct();
-	}
-
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			self::$instance = new EventControllerHandler();
-		}
-		return self::$instance;
+	protected function init() {
+		parent::init();
 	}
 
 	protected final function getCategory() {

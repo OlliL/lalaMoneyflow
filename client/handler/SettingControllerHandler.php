@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: SettingControllerHandler.php,v 1.8 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: SettingControllerHandler.php,v 1.9 2015/08/01 00:19:23 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -33,19 +33,13 @@ use api\model\setting\updateDefaultSettingsRequest;
 use api\model\setting\updatePersonalSettingsRequest;
 use api\model\setting\showDefaultSettingsResponse;
 use api\model\setting\showPersonalSettingsResponse;
+use base\Singleton;
 
 class SettingControllerHandler extends AbstractHandler {
-	private static $instance;
+	use Singleton;
 
-	protected function __construct() {
-		parent::__construct();
-	}
-
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			self::$instance = new SettingControllerHandler();
-		}
-		return self::$instance;
+	protected function init() {
+		parent::init();
 	}
 
 	protected final function getCategory() {

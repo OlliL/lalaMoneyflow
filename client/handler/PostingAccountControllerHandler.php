@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PostingAccountControllerHandler.php,v 1.13 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: PostingAccountControllerHandler.php,v 1.14 2015/08/01 00:19:23 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -38,21 +38,15 @@ use api\model\postingaccount\showDeletePostingAccountResponse;
 use client\mapper\ArrayToPostingAccountTransportMapper;
 use client\mapper\ArrayToPostingAccountAmountTransportMapper;
 use api\model\transport\PostingAccountTransport;
+use base\Singleton;
 
 class PostingAccountControllerHandler extends AbstractHandler {
-	private static $instance;
+	use Singleton;
 
-	protected function __construct() {
-		parent::__construct();
+	protected function init() {
+		parent::init();
 		parent::addMapper( ArrayToPostingAccountTransportMapper::getClass() );
 		parent::addMapper( ArrayToPostingAccountAmountTransportMapper::getClass() );
-	}
-
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			self::$instance = new PostingAccountControllerHandler();
-		}
-		return self::$instance;
 	}
 
 	protected final function getCategory() {

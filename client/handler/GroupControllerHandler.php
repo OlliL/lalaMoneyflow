@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: GroupControllerHandler.php,v 1.10 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: GroupControllerHandler.php,v 1.11 2015/08/01 00:19:23 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -36,20 +36,14 @@ use api\model\group\showEditGroupResponse;
 use api\model\group\showDeleteGroupResponse;
 use client\mapper\ArrayToGroupTransportMapper;
 use api\model\transport\GroupTransport;
+use base\Singleton;
 
 class GroupControllerHandler extends AbstractHandler {
-	private static $instance;
+	use Singleton;
 
-	protected function __construct() {
-		parent::__construct();
+	protected function init() {
+		parent::init();
 		parent::addMapper( ArrayToGroupTransportMapper::getClass() );
-	}
-
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			self::$instance = new GroupControllerHandler();
-		}
-		return self::$instance;
 	}
 
 	protected final function getCategory() {

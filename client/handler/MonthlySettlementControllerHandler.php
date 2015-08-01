@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MonthlySettlementControllerHandler.php,v 1.11 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: MonthlySettlementControllerHandler.php,v 1.12 2015/08/01 00:19:23 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -35,20 +35,14 @@ use api\model\monthlysettlement\showMonthlySettlementCreateResponse;
 use api\model\monthlysettlement\showMonthlySettlementDeleteResponse;
 use client\mapper\ArrayToMonthlySettlementTransportMapper;
 use api\model\transport\MonthlySettlementTransport;
+use base\Singleton;
 
 class MonthlySettlementControllerHandler extends AbstractHandler {
-	private static $instance;
+	use Singleton;
 
-	protected function __construct() {
-		parent::__construct();
+	protected function init() {
+		parent::init();
 		parent::addMapper( ArrayToMonthlySettlementTransportMapper::getClass() );
-	}
-
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			self::$instance = new MonthlySettlementControllerHandler();
-		}
-		return self::$instance;
 	}
 
 	protected final function getCategory() {

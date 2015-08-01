@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CapitalsourceControllerHandler.php,v 1.16 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: CapitalsourceControllerHandler.php,v 1.17 2015/08/01 00:19:23 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -36,20 +36,14 @@ use api\model\capitalsource\showEditCapitalsourceResponse;
 use api\model\capitalsource\showDeleteCapitalsourceResponse;
 use client\mapper\ArrayToCapitalsourceTransportMapper;
 use api\model\transport\CapitalsourceTransport;
+use base\Singleton;
 
 class CapitalsourceControllerHandler extends AbstractHandler {
-	private static $instance;
+	use Singleton;
 
-	protected function __construct() {
-		parent::__construct();
+	protected function init() {
+		parent::init();
 		parent::addMapper( ArrayToCapitalsourceTransportMapper::getClass() );
-	}
-
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			self::$instance = new CapitalsourceControllerHandler();
-		}
-		return self::$instance;
 	}
 
 	protected final function getCategory() {

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerAccountControllerHandler.php,v 1.3 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: ContractpartnerAccountControllerHandler.php,v 1.4 2015/08/01 00:19:23 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -36,20 +36,14 @@ use api\model\contractpartneraccount\showContractpartnerAccountListResponse;
 use api\model\contractpartneraccount\showDeleteContractpartnerAccountResponse;
 use api\model\contractpartneraccount\showEditContractpartnerAccountResponse;
 use api\model\contractpartneraccount\updateContractpartnerAccountRequest;
+use base\Singleton;
 
 class ContractpartnerAccountControllerHandler extends AbstractHandler {
-	private static $instance;
+	use Singleton;
 
-	protected function __construct() {
-		parent::__construct();
+	protected function init() {
+		parent::init();
 		parent::addMapper( ArrayToContractpartnerAccountTransportMapper::getClass() );
-	}
-
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			self::$instance = new ContractpartnerAccountControllerHandler();
-		}
-		return self::$instance;
 	}
 
 	protected final function getCategory() {

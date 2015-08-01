@@ -1,7 +1,6 @@
 <?php
-
 //
-// Copyright (c) 2013-2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,27 +24,27 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: Configuration.php,v 1.4 2015/08/01 00:19:23 olivleh1 Exp $
+// $Id: Singleton.php,v 1.1 2015/08/01 00:19:23 olivleh1 Exp $
 //
 namespace base;
 
-class Configuration {
-	use Singleton;
-	private $configurationHolder;
+trait Singleton {
+	protected static $instance;
 
-	private function __construct() {
+	final public static function getInstance() {
+		return isset( static::$instance ) ? static::$instance : static::$instance = new static();
 	}
 
-	public final function readConfig($filename) {
-		$this->configurationHolder = parse_ini_file($filename,true);
+	final private function __construct() {
+		$this->init();
 	}
 
-	public function getProperty($key, $section=null) {
-		if($section === null) {
-			return $this->configurationHolder[$key];
-		} else {
-			return $this->configurationHolder[$section][$key];
-		}
+	protected function init() {
+	}
+
+	final private function __wakeup() {
+	}
+
+	final private function __clone() {
 	}
 }
-?>

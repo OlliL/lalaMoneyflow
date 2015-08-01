@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowControllerHandler.php,v 1.13 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: MoneyflowControllerHandler.php,v 1.14 2015/08/01 00:19:23 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -48,12 +48,13 @@ use client\mapper\ArrayToMoneyflowSearchParamsTransportMapper;
 use client\mapper\ArrayToMoneyflowSearchResultTransportMapper;
 use api\model\transport\MoneyflowTransport;
 use api\model\transport\MoneyflowSearchParamsTransport;
+use base\Singleton;
 
 class MoneyflowControllerHandler extends AbstractHandler {
-	private static $instance;
+	use Singleton;
 
-	protected function __construct() {
-		parent::__construct();
+	protected function init() {
+		parent::init();
 		parent::addMapper( ArrayToCapitalsourceTransportMapper::getClass() );
 		parent::addMapper( ArrayToContractpartnerTransportMapper::getClass() );
 		parent::addMapper( ArrayToMoneyflowTransportMapper::getClass() );
@@ -61,13 +62,6 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		parent::addMapper( ArrayToPostingAccountTransportMapper::getClass() );
 		parent::addMapper( ArrayToMoneyflowSearchParamsTransportMapper::getClass() );
 		parent::addMapper( ArrayToMoneyflowSearchResultTransportMapper::getClass() );
-	}
-
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			self::$instance = new MoneyflowControllerHandler();
-		}
-		return self::$instance;
 	}
 
 	protected final function getCategory() {

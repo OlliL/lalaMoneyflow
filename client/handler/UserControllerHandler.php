@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: UserControllerHandler.php,v 1.16 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: UserControllerHandler.php,v 1.17 2015/08/01 00:19:23 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -45,22 +45,16 @@ use client\mapper\ArrayToGroupTransportMapper;
 use client\mapper\ArrayToAccessRelationTransportMapper;
 use api\model\transport\GroupTransport;
 use api\model\transport\AccessRelationTransport;
+use base\Singleton;
 
 class UserControllerHandler extends AbstractHandler {
-	private static $instance;
+	use Singleton;
 
-	protected function __construct() {
-		parent::__construct();
+	protected function init() {
+		parent::init();
 		parent::addMapper( ArrayToUserTransportMapper::getClass() );
 		parent::addMapper( ArrayToGroupTransportMapper::getClass() );
 		parent::addMapper( ArrayToAccessRelationTransportMapper::getClass() );
-	}
-
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			self::$instance = new UserControllerHandler();
-		}
-		return self::$instance;
 	}
 
 	protected final function getCategory() {

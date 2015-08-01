@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerControllerHandler.php,v 1.14 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: ContractpartnerControllerHandler.php,v 1.15 2015/08/01 00:19:23 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -38,21 +38,15 @@ use client\mapper\ArrayToContractpartnerTransportMapper;
 use api\model\transport\ContractpartnerTransport;
 use api\model\contractpartner\showCreateContractpartnerResponse;
 use client\mapper\ArrayToPostingAccountTransportMapper;
+use base\Singleton;
 
 class ContractpartnerControllerHandler extends AbstractHandler {
-	private static $instance;
+	use Singleton;
 
-	protected function __construct() {
-		parent::__construct();
+	protected function init() {
+		parent::init();
 		parent::addMapper( ArrayToContractpartnerTransportMapper::getClass() );
 		parent::addMapper( ArrayToPostingAccountTransportMapper::getClass() );
-	}
-
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			self::$instance = new ContractpartnerControllerHandler();
-		}
-		return self::$instance;
 	}
 
 	protected final function getCategory() {
@@ -76,7 +70,8 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__ );
 		$result = null;
 		if ($response instanceof showCreateContractpartnerResponse) {
-			$result = parent::mapArray($response->getPostingAccountTransport());;
+			$result = parent::mapArray( $response->getPostingAccountTransport() );
+			;
 		}
 		return $result;
 	}
@@ -87,8 +82,8 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 		) );
 		$result = null;
 		if ($response instanceof showEditContractpartnerResponse) {
-			$result['contractpartner'] = parent::map( $response->getContractpartnerTransport() );
-			$result['postingAccounts'] = parent::mapArray($response->getPostingAccountTransport());
+			$result ['contractpartner'] = parent::map( $response->getContractpartnerTransport() );
+			$result ['postingAccounts'] = parent::mapArray( $response->getPostingAccountTransport() );
 		}
 		return $result;
 	}

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ImportedMoneyflowControllerHandler.php,v 1.5 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: ImportedMoneyflowControllerHandler.php,v 1.6 2015/08/01 00:19:23 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -36,24 +36,17 @@ use client\mapper\ArrayToContractpartnerTransportMapper;
 use client\mapper\ArrayToPostingAccountTransportMapper;
 use api\model\transport\ImportedMoneyflowTransport;
 use api\model\importedmoneyflow\importImportedMoneyflowRequest;
+use base\Singleton;
 
 class ImportedMoneyflowControllerHandler extends AbstractHandler {
-	private static $instance;
+	use Singleton;
 
-	protected function __construct() {
-		parent::__construct();
+	protected function init() {
+		parent::init();
 		parent::addMapper( ArrayToCapitalsourceTransportMapper::getClass() );
 		parent::addMapper( ArrayToContractpartnerTransportMapper::getClass() );
 		parent::addMapper( ArrayToPostingAccountTransportMapper::getClass() );
 		parent::addMapper( ArrayToImportedMoneyflowTransportMapper::getClass() );
-	}
-
-	public static function getInstance() {
-		if (! isset( self::$instance )) {
-			$className = __CLASS__;
-			self::$instance = new $className();
-		}
-		return self::$instance;
 	}
 
 	protected final function getCategory() {

@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractHandler.php,v 1.14 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.15 2015/08/01 00:19:23 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -48,7 +48,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 	private $userName;
 	private $userPassword;
 
-	protected function __construct() {
+	protected function init() {
 		parent::addMapper( ArrayToValidationItemTransportMapper::getClass() );
 		Httpful::register( Mime::JSON, new JsonHandler( array (
 				'decode_as_array' => true
