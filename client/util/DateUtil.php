@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: DateUtil.php,v 1.6 2015/02/13 00:03:41 olivleh1 Exp $
+// $Id: DateUtil.php,v 1.7 2015/08/06 18:33:04 olivleh1 Exp $
 //
 namespace client\util;
 
@@ -37,11 +37,11 @@ class DateUtil {
 			$patterns [0] = 'YYYY';
 			$patterns [1] = 'MM';
 			$patterns [2] = 'DD';
-			
+
 			$replacements [0] = 'Y';
 			$replacements [1] = 'm';
 			$replacements [2] = 'd';
-			
+
 			self::$clientDateFormat = str_replace( $patterns, $replacements, Environment::getInstance()->getSettingDateFormat() );
 		}
 		return self::$clientDateFormat;
@@ -50,49 +50,48 @@ class DateUtil {
 	public static final function convertClientDateToTransport($clientDate) {
 		if (empty( $clientDate ))
 			return null;
-		
+
 		$format = self::getClientDateFormat();
 		$parsedDate = date_parse_from_format( $format, $clientDate );
-		
+
 		if ($parsedDate ['warning_count'] > 0)
 			return null;
-		
+
 		$modelDate = \DateTime::createFromFormat( $format, $clientDate );
 		if ($modelDate) {
 			$modelDate->setTime( 0, 0, 0 );
-			
+
 			return $modelDate->getTimestamp();
 		}
 	}
 
 	public static final function convertTransportDateToClient($transportDate) {
 		$format = self::getClientDateFormat();
-		$clientDate = new \DateTime();
-		$clientDate->setTimestamp( $transportDate );
+		$clientDate = new \DateTime("@$transportDate");
 		return $clientDate->format( $format );
 	}
 
 	public static final function convertStringDateToClient($date) {
 		if (empty( $date ))
 			return false;
-		
+
 		$date_array = strptime( $date, '%Y-%m-%d' );
-		
+
 		$patterns [0] = '/YYYY/';
 		$patterns [1] = '/MM/';
 		$patterns [2] = '/DD/';
-		
+
 		$replacements [0] = ($date_array ['tm_year'] + 1900);
 		$replacements [1] = sprintf( '%02d', ($date_array ['tm_mon'] + 1) );
 		$replacements [2] = sprintf( '%02d', $date_array ['tm_mday'] );
-		
+
 		return preg_replace( $patterns, $replacements, Environment::getInstance()->getSettingDateFormat() );
 	}
 
 	public static final function validateStringDate($date) {
 		if (empty( $date ))
 			return false;
-		
+
 		$format = self::getClientDateFormat();
 		$dateTime = \DateTime::createFromFormat( $format, $date );
 		if ($dateTime && $dateTime->format( $format ) == $date) {
