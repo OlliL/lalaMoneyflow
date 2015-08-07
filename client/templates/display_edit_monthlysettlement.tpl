@@ -64,7 +64,14 @@ function Go(month,year)
 							<input type="hidden" name="all_data[{$smarty.section.DATA.index}][capitalsourcecomment]" value="{$ALL_DATA[DATA].capitalsourcecomment|escape:htmlall}">
 						{$ALL_DATA[DATA].capitalsourcecomment|escape:htmlall}
 						</td>
-						<td class="contrastbgcolor" align="right"><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][amount]" value="{$ALL_DATA[DATA].amount}" style="text-align:right{if $ALL_DATA[DATA].amount_error == 1};color:red{/if}" size=8 align="right"> {#CURRENCY#}</td>
+						<td class="contrastbgcolor" align="right">
+							{if $ALL_DATA[DATA].imported == 1}
+							<input type="hidden" name="all_data[{$smarty.section.DATA.index}][amount]" value="{$ALL_DATA[DATA].amount}">{$ALL_DATA[DATA].amount}
+							{else}
+							<input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][amount]" value="{$ALL_DATA[DATA].amount}" style="text-align:right{if $ALL_DATA[DATA].amount_error == 1};color:red{/if}" size=8 align="right">
+							{/if}
+							{#CURRENCY#}
+						</td>
 					</tr>
 				{/section}
 			</table>

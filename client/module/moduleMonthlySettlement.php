@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.61 2015/02/13 00:03:37 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.62 2015/08/07 23:00:53 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -66,7 +66,7 @@ class moduleMonthlySettlement extends module {
 				}
 			}
 
-			if ($month > 0 && $year > 0 && is_array( $all_data )) {
+			if ($month > 0 && $year > 0 && is_array( $all_data ) && count( $all_data ) > 0) {
 				$sumamount = 0;
 				foreach ( $all_data as $settlement ) {
 					$sumamount += $settlement ['amount'];
@@ -101,7 +101,7 @@ class moduleMonthlySettlement extends module {
 
 				foreach ( $all_data as $id => $value ) {
 					if (is_array( $value )) {
-						if (! $this->fix_amount( $all_data[$id] ['amount'] )) {
+						if (! $this->fix_amount( $all_data [$id] ['amount'] )) {
 							$all_data [$id] ['amount_error'] = 1;
 							$data_is_valid = false;
 						}
@@ -135,12 +135,20 @@ class moduleMonthlySettlement extends module {
 				$year = $monthlySettlementCreate ['year'];
 				$month = $monthlySettlementCreate ['month'];
 				$all_data_new = $monthlySettlementCreate ['monthly_settlements'];
+				$all_data_imported = $monthlySettlementCreate ['monthly_settlements_imported'];
+				foreach ( $all_data_imported as $imported ) {
+					$imported ['imported'] = 1;
+					$all_data_new [] = $imported;
+				}
+
 				if ($monthlySettlementCreate ['edit_mode'] == 0) {
 					$new = 1;
 				}
 				foreach ( $all_data_new as $key => $data ) {
 					$all_data_new [$key] ['amount'] = sprintf( '%.02f', $data ['amount'] );
+					$sort [$key] = sprintf( "%d%20d", $data ['mur_userid'], $data ['mcs_capitalsourceid'] );
 				}
+				array_multisort( $sort, SORT_ASC, $all_data_new );
 				break;
 		}
 
@@ -153,6 +161,7 @@ class moduleMonthlySettlement extends module {
 		$this->template->assign( 'NEW', $new );
 		$this->template->assign( 'MONTH', $monthArray );
 		$this->template->assign( 'YEAR', $year );
+		$this->template->assign( 'ALL_DATA', $all_data_new );
 		$this->template->assign( 'ALL_DATA', $all_data_new );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data_new ) );
 		$this->template->assign( 'ERRORS', $this->get_errors() );
@@ -174,6 +183,7 @@ class moduleMonthlySettlement extends module {
 
 					$showMonthlySettlementDelete = MonthlySettlementControllerHandler::getInstance()->showMonthlySettlementDelete( $year, $month );
 					$all_data = $showMonthlySettlementDelete ['monthly_settlements'];
+					$sumamount = 0;
 					if (is_array( $all_data )) {
 						foreach ( $all_data as $settlement ) {
 							$sumamount += $settlement ['amount'];

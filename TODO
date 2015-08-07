@@ -1,20 +1,25 @@
-feature requests:
+#####################
+# feature requests
+#####################
+
 - when a booking was added manually and the same booking gets imported later, try to match it and mark it as "to be deleted" or something like that....
 
-- import monthly settlements:
-  - change the add-monthly-settlement form to also support "complete monthly settlement"
-    - display two parts. upper part: not existing monthly settlements
-    - lower part: existing (imported) monthly settlements
-  - when clicking on "add" don't show the first next month without any monthly settlement but the next month with not a complete set of settlements
-  - when logging in, do not check if for the previous month a settlement was created but if a complete set of settlements exists
-  - add a REST resource which can import monthly settlements by accountnumber/bankcode of a capitalsource
 
+#####################
+# lower prio TODOs
+#####################
 
-lower prio TODOs:
+- import current account balance(?)
+- show the last run time of lalaMoneyflowHBCI for each capitalsource (to see if an error occured)
+
 - PHPUnit: start writing service tests
 - PHPDoc: document the services, then the controller, then the DAOs, and maybe the BOs
 - check.php: distinguish between client and server dependencies
 - check if chache engine works (not just if it is installed, e.g. redis server is started up...)
 
-assorted:
+
+#####################
+# assorted
+#####################
+
 - update contractpartners set validtil='2014-12-31' where contractpartnerid in (select mcp_contractpartnerid from (select max(bookingdate) max_bookingdate,mcp_contractpartnerid from moneyflows where mcp_contractpartnerid in (select contractpartnerid from contractpartners where now() between validfrom and validtil) group by mcp_contractpartnerid) a where max_bookingdate < date_sub(now(), interval 600 day));

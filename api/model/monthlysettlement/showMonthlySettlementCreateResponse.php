@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showMonthlySettlementCreateResponse.php,v 1.3 2015/02/13 00:03:42 olivleh1 Exp $
+// $Id: showMonthlySettlementCreateResponse.php,v 1.4 2015/08/07 23:00:53 olivleh1 Exp $
 //
 namespace api\model\monthlysettlement;
 
@@ -33,6 +33,7 @@ class showMonthlySettlementCreateResponse {
 	public $month;
 	public $editMode;
 	public $monthlySettlementTransport;
+	public $importedMonthlySettlementTransport;
 
 	public final function getYear() {
 		return $this->year;
@@ -56,6 +57,14 @@ class showMonthlySettlementCreateResponse {
 
 	public final function setMonthlySettlementTransport(array $monthlySettlementTransport) {
 		$this->monthlySettlementTransport = $monthlySettlementTransport;
+	}
+
+	public final function getImportedMonthlySettlementTransport() {
+		return $this->importedMonthlySettlementTransport;
+	}
+
+	public final function setImportedMonthlySettlementTransport(array $importedMonthlySettlementTransport) {
+		$this->importedMonthlySettlementTransport = $importedMonthlySettlementTransport;
 	}
 
 	public final function getEditMode() {
