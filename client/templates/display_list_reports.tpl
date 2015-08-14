@@ -151,6 +151,9 @@ function Go(x)
 								<th width="80">{#TEXT_64#}</th>
 								{if $MONTHLYSETTLEMENT_EXISTS == true}
 								<th width="80">{#TEXT_65#}</th>
+								{else}
+								<th width="80">{#TEXT_288#}</th>
+								<th width="80">{#TEXT_289#}</th>
 								{/if}
 							</tr>
 							{section name=DATA loop=$SUMMARY_DATA}
@@ -175,6 +178,17 @@ function Go(x)
 											<font {if $CAPITALSOURCE_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$CAPITALSOURCE_DIFFERENCE|number_format} {#CURRENCY#}</font>
 										{/if}
 										</td>
+									{else}
+										<td align="right" class="contrastbgcolor">
+										<font {if $SUMMARY_DATA[DATA].amount_current  < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].amount_current|number_format} {#CURRENCY#}</font>
+										</td>
+										<td align="right" class="contrastbgcolor">
+										{if array_key_exists('amount_current_state',$SUMMARY_DATA[DATA])}
+											{$SUMMARY_DATA[DATA].amount_current_state}
+										{else}
+											{#TEXT_290#}
+										{/if}
+										</td>
 									{/if}
 								</tr>
 							{/section}
@@ -190,6 +204,8 @@ function Go(x)
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
 									{math equation="x - y" x=$FIXAMOUNT y=$MON_CALCAMOUNT assign=MON_DIFFERENCE}
 									<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{else}color="black"{/if}><u>{$MON_DIFFERENCE|number_format} {#CURRENCY#}</u></font></td>
+									{else}
+									<td align="right" class="contrastbgcolor"><font {if $CURRENTAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$CURRENTAMOUNT|number_format} {#CURRENCY#}</u></font></td>
 									{/if}
 								</tr>
 						</table>
@@ -240,6 +256,9 @@ function Go(x)
 								<th width="80">{#TEXT_64#}</th>
 								{if $MONTHLYSETTLEMENT_EXISTS == true}
 								<th width="80">{#TEXT_65#}</th>
+								{else}
+								<th width="80">{#TEXT_288#}</th>
+								<th width="80">{#TEXT_289#}</th>
 								{/if}
 							</tr>
 							{section name=DATA loop=$LIABILITIES_SUMMARY_DATA}
@@ -264,6 +283,17 @@ function Go(x)
 											<font {if $CAPITALSOURCE_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$CAPITALSOURCE_DIFFERENCE|number_format} {#CURRENCY#}</font>
 										{/if}
 										</td>
+									{else}
+										<td align="right" class="contrastbgcolor">
+										<font {if $LIABILITIES_SUMMARY_DATA[DATA].amount_current  < 0}color="red"{else}color="black"{/if}>{$LIABILITIES_SUMMARY_DATA[DATA].amount_current|number_format} {#CURRENCY#}</font>
+										</td>
+										<td align="right" class="contrastbgcolor">
+										{if array_key_exists('amount_current_state',$LIABILITIES_SUMMARY_DATA[DATA])}
+											{$LIABILITIES_SUMMARY_DATA[DATA].amount_current_state}
+										{else}
+											{#TEXT_290#}
+										{/if}
+										</td>
 									{/if}
 								</tr>
 							{/section}
@@ -279,6 +309,8 @@ function Go(x)
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
 									{math equation="x - y" x=$LIABILITIES_FIXAMOUNT y=$LIABILITIES_MON_CALCAMOUNT assign=MON_DIFFERENCE}
 									<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{else}color="black"{/if}><u>{$MON_DIFFERENCE|number_format} {#CURRENCY#}</u></font></td>
+									{else}
+									<td align="right" class="contrastbgcolor"><font {if $LIABILITIES_CURRENTAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$LIABILITIES_CURRENTAMOUNT|number_format} {#CURRENCY#}</u></font></td>
 									{/if}
 								</tr>
 						</table>

@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportTurnoverCapitalsourceTransport.php,v 1.4 2015/02/13 00:03:39 olivleh1 Exp $
+// $Id: ReportTurnoverCapitalsourceTransport.php,v 1.5 2015/08/14 22:07:44 olivleh1 Exp $
 //
 namespace api\model\transport;
 
@@ -36,6 +36,8 @@ class ReportTurnoverCapitalsourceTransport extends AbstractTransport {
 	public $amountBeginOfMonthFixed;
 	public $amountEndOfMonthFixed;
 	public $amountEndOfMonthCalculated;
+	public $amountCurrent;
+	public $amountCurrentState;
 
 	public final function setCapitalsourceType($capitalsourceType) {
 		$this->capitalsourceType = $capitalsourceType;
@@ -83,6 +85,22 @@ class ReportTurnoverCapitalsourceTransport extends AbstractTransport {
 
 	public final function getAmountEndOfMonthCalculated() {
 		return $this->amountEndOfMonthCalculated;
+	}
+
+	public final function setAmountCurrent($amountCurrent) {
+		$this->amountCurrent = $amountCurrent;
+	}
+
+	public final function getAmountCurrent() {
+		return $this->amountCurrent;
+	}
+
+	public final function setAmountCurrentState($amountCurrentState) {
+		$this->amountCurrentState = $amountCurrentState;
+	}
+
+	public final function getAmountCurrentState() {
+		return $this->amountCurrentState;
 	}
 }
 

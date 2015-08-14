@@ -4,19 +4,12 @@
 
 - when a booking was added manually and the same booking gets imported later, try to match it and mark it as "to be deleted" or something like that....
 
-- mark a capitalsource as "show current balance in the navigation pane"
-- then show the current calculated balance, or the imported one if there is one.
--- maybe it is better to make it a user seeting (i might want to see other sources then other group members)
--- how should it work in general
---- right now header is cached (1 hour) -> ok can be easly fixed -> disable cache
---- but then on every page the current balances have to be sent as well to display them in the header-pane....... heavy stuff
-
+- import current balance via lalaMoneyflowHBCI - also store the "last update" time for each capitalsource
+- display both on the current month report
 
 #####################
 # lower prio TODOs
 #####################
-
-- show the last run time of lalaMoneyflowHBCI for each capitalsource (to see if an error occured)
 
 - PHPUnit: start writing service tests
 - PHPDoc: document the services, then the controller, then the DAOs, and maybe the BOs

@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ArrayToReportTurnoverCapitalsourceTransportMapper.php,v 1.4 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: ArrayToReportTurnoverCapitalsourceTransportMapper.php,v 1.5 2015/08/14 22:07:43 olivleh1 Exp $
 //
 namespace client\mapper;
 
@@ -44,7 +44,11 @@ class ArrayToReportTurnoverCapitalsourceTransportMapper extends AbstractArrayMap
 			$a ['fixamount'] = $b->getAmountEndOfMonthFixed();
 		$a ['lastamount'] = $b->getAmountBeginOfMonthFixed();
 		$a ['calcamount'] = $b->getAmountEndOfMonthCalculated();
-		
+		if ($b->getAmountCurrent() !== NULL)
+			$a ['amount_current'] = $b->getAmountCurrent();
+		if ($b->getAmountCurrentState() !== NULL)
+			$a ['amount_current_state'] = $b->getAmountCurrentState();
+
 		return $a;
 	}
 }

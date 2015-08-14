@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.106 2015/03/26 20:46:43 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.107 2015/08/14 22:07:44 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -39,7 +39,6 @@ if (ENABLE_JPGRAPH) {
 	require_once 'jpgraph_pie.php';
 	require_once 'jpgraph_line.php';
 }
-
 class moduleReports extends module {
 	private $coreText;
 
@@ -162,12 +161,14 @@ class moduleReports extends module {
 				$assets_fixamount = 0;
 				$assets_movement_calculated_month = 0;
 				$assets_calcamount = 0;
+				$assets_currentamount = 0;
 				$assets_counter = 0;
 
 				$liabilities_turnover_capitalsources = null;
 				$liabilities_lastamount = 0;
 				$liabilities_fixamount = 0;
 				$liabilities_calcamount = 0;
+				$liabilities_currentamount = 0;
 				$liabilities_counter = 0;
 
 				if (is_array( $turnover_capitalsources ) && count( $turnover_capitalsources ) > 0) {
@@ -181,6 +182,8 @@ class moduleReports extends module {
 								$assets_movement_calculated_month += $turnover_capitalsource ['calcamount'] - $turnover_capitalsource ['lastamount'];
 								$assets_calcamount += $turnover_capitalsource ['calcamount'];
 								$assets_lastamount += $turnover_capitalsource ['lastamount'];
+								if (array_key_exists( 'amount_current', $turnover_capitalsource ))
+									$assets_currentamount += $turnover_capitalsource ['amount_current'];
 								if (array_key_exists( 'fixamount', $turnover_capitalsource )) {
 									$assets_fixamount += $turnover_capitalsource ['fixamount'];
 									$mms_exists = true;
@@ -194,6 +197,8 @@ class moduleReports extends module {
 								$liabilities_turnover_capitalsources [$liabilities_counter] ['statecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_STATE', $turnover_capitalsource ['state'] );
 								$liabilities_calcamount += $turnover_capitalsource ['calcamount'];
 								$liabilities_lastamount += $turnover_capitalsource ['lastamount'];
+								if (array_key_exists( 'amount_current', $turnover_capitalsource ))
+									$liabilities_currentamount += $turnover_capitalsource ['amount_current'];
 								if (array_key_exists( 'fixamount', $turnover_capitalsource )) {
 									$liabilities_fixamount += $turnover_capitalsource ['fixamount'];
 									$mms_exists = true;
@@ -230,6 +235,7 @@ class moduleReports extends module {
 				$this->template->assign( 'SUMMARY_DATA', $assets_turnover_capitalsources );
 				$this->template->assign( 'LASTAMOUNT', $assets_lastamount );
 				$this->template->assign( 'FIXAMOUNT', $assets_fixamount );
+				$this->template->assign( 'CURRENTAMOUNT', $assets_currentamount );
 				$this->template->assign( 'MON_CALCAMOUNT', $assets_calcamount );
 				$this->template->assign( 'MON_CALCULATEDTURNOVER', $assets_movement_calculated_month );
 				$this->template->assign( 'FIRSTAMOUNT', $firstamount );
@@ -239,6 +245,7 @@ class moduleReports extends module {
 				$this->template->assign( 'LIABILITIES_SUMMARY_DATA', $liabilities_turnover_capitalsources );
 				$this->template->assign( 'LIABILITIES_LASTAMOUNT', $liabilities_lastamount );
 				$this->template->assign( 'LIABILITIES_FIXAMOUNT', $liabilities_fixamount );
+				$this->template->assign( 'LIABILITIES_CURRENTAMOUNT', $liabilities_currentamount );
 				$this->template->assign( 'LIABILITIES_MON_CALCAMOUNT', $liabilities_calcamount );
 
 				$this->template->assign( 'MOVEMENT', $movement );
