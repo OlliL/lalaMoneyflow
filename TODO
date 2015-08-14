@@ -6,6 +6,11 @@
 
 - mark a capitalsource as "show current balance in the navigation pane"
 - then show the current calculated balance, or the imported one if there is one.
+-- maybe it is better to make it a user seeting (i might want to see other sources then other group members)
+-- how should it work in general
+--- right now header is cached (1 hour) -> ok can be easly fixed -> disable cache
+--- but then on every page the current balances have to be sent as well to display them in the header-pane....... heavy stuff
+
 
 - when listing capitalsources, add an option to only show currently valid ones (drop down box with saving in DB)
 - when listing contractpartners, add an option to only show currently valid ones (drop down box with saving in DB)
