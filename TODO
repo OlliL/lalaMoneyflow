@@ -4,12 +4,17 @@
 
 - when a booking was added manually and the same booking gets imported later, try to match it and mark it as "to be deleted" or something like that....
 
+- mark a capitalsource as "show current balance in the navigation pane"
+- then show the current calculated balance, or the imported one if there is one.
+
+- when listing capitalsources, add an option to only show currently valid ones (drop down box with saving in DB)
+- when listing contractpartners, add an option to only show currently valid ones (drop down box with saving in DB)
+
 
 #####################
 # lower prio TODOs
 #####################
 
-- import current account balance(?)
 - show the last run time of lalaMoneyflowHBCI for each capitalsource (to see if an error occured)
 
 - PHPUnit: start writing service tests
