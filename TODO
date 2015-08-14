@@ -12,10 +12,6 @@
 --- but then on every page the current balances have to be sent as well to display them in the header-pane....... heavy stuff
 
 
-- when listing capitalsources, add an option to only show currently valid ones (drop down box with saving in DB)
-- when listing contractpartners, add an option to only show currently valid ones (drop down box with saving in DB)
-
-
 #####################
 # lower prio TODOs
 #####################

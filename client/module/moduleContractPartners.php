@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.50 2015/02/14 23:45:32 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.51 2015/08/14 21:02:55 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -39,14 +39,17 @@ class moduleContractPartners extends module {
 		parent::__construct();
 	}
 
-	public final function display_list_contractpartners($letter) {
-		$listContractpartner = ContractpartnerControllerHandler::getInstance()->showContractpartnerList( $letter );
+	public final function display_list_contractpartners($letter, $currently_valid) {
+		$listContractpartner = ContractpartnerControllerHandler::getInstance()->showContractpartnerList( $letter, $currently_valid );
 		$all_index_letters = $listContractpartner ['initials'];
 		$all_data = $listContractpartner ['contractpartner'];
+		$currently_valid = $listContractpartner ['currently_valid'];
 
 		$this->template->assign( 'ALL_DATA', $this->sort_contractpartner( $all_data ) );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
+		$this->template->assign( 'LETTER', $letter );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
+		$this->template->assign( 'CURRENTLY_VALID', $currently_valid);
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_contractpartners.tpl' );

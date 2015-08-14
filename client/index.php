@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.93 2015/02/13 00:03:41 olivleh1 Exp $
+// $Id: index.php,v 1.94 2015/08/14 21:02:55 olivleh1 Exp $
 //
 namespace client;
 
@@ -287,7 +287,8 @@ if ($is_logged_in == 0) {
 
 			case 'list_capitalsources' :
 				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
-				$display = $moduleCapitalSources->display_list_capitalsources( $letter );
+				$currently_valid = array_key_exists( 'currently_valid', $_REQUEST ) ? $_REQUEST ['currently_valid'] : null;
+				$display = $moduleCapitalSources->display_list_capitalsources( $letter, $currently_valid );
 				break;
 
 			case 'edit_capitalsource' :
@@ -308,7 +309,8 @@ if ($is_logged_in == 0) {
 			case 'list_contractpartners' :
 
 				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
-				$display = $moduleContractPartners->display_list_contractpartners( $letter );
+				$currently_valid = array_key_exists( 'currently_valid', $_REQUEST ) ? $_REQUEST ['currently_valid'] : null;
+				$display = $moduleContractPartners->display_list_contractpartners( $letter, $currently_valid );
 				break;
 
 			case 'edit_contractpartner' :

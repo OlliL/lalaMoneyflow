@@ -25,13 +25,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showCapitalsourceListResponse.php,v 1.4 2015/02/13 00:03:40 olivleh1 Exp $
+// $Id: showCapitalsourceListResponse.php,v 1.5 2015/08/14 21:02:55 olivleh1 Exp $
 //
 namespace api\model\capitalsource;
 
 class showCapitalsourceListResponse {
 	public $capitalsourceTransport;
 	public $initials;
+	public $currentlyValid;
 
 	public final function getCapitalsourceTransport() {
 		return $this->capitalsourceTransport;
@@ -47,6 +48,14 @@ class showCapitalsourceListResponse {
 
 	public final function setInitials(array $initials) {
 		$this->initials = $initials;
+	}
+
+	public final function getCurrentlyValid() {
+		return $this->currentlyValid;
+	}
+
+	public final function setCurrentlyValid($currentlyValid) {
+		$this->currentlyValid = $currentlyValid;
 	}
 }
 

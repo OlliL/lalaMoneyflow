@@ -2,15 +2,41 @@
        "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head><title>lalaMoneyflow: {#TEXT_1#}</title>
+{literal}
+<script language="JavaScript">
+	function mySubmit() {
+		if(document.validForm.currently_valid_checkbox.checked) {
+			document.validForm.currently_valid.value = "1";
+		} else {
+			document.validForm.currently_valid.value = "0";
+		}
+		document.validForm.submit();
+	}
+</script>
+{/literal}
 {$HEADER}
 
 		<td align="center" valign="top">
 			<h1>{#TEXT_1#}</h1>
-			<a href="{$ENV_INDEX_PHP}?action=list_capitalsources&amp;letter=all">{#TEXT_28#}</a>
+			{if $LETTER eq "all" || ($LETTER eq null && $COUNT_ALL_DATA > 0)}
+				{#TEXT_28#}
+			{else}
+				<a href="{$ENV_INDEX_PHP}?action=list_capitalsources&amp;letter=all">{#TEXT_28#}</a>
+			{/if}
 			{section name=LETTER loop=$ALL_INDEX_LETTERS}
-				<a href="{$ENV_INDEX_PHP}?action=list_capitalsources&amp;letter={$ALL_INDEX_LETTERS[LETTER]|escape:htmlall}">{$ALL_INDEX_LETTERS[LETTER]|escape:htmlall}</a>
+				{if $LETTER eq $ALL_INDEX_LETTERS[LETTER]}
+					{$LETTER}
+				{else}
+					<a href="{$ENV_INDEX_PHP}?action=list_capitalsources&amp;letter={$ALL_INDEX_LETTERS[LETTER]|escape:htmlall}">{$ALL_INDEX_LETTERS[LETTER]|escape:htmlall}</a>
+				{/if}
 			{/section}
 			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&amp;sr=1','_blank','width=1000,height=120')">{#TEXT_29#}</a>
+			<form action="{$ENV_INDEX_PHP}" method="GET" name="validForm">
+				<input type="hidden"   name="action"                   value="list_capitalsources">
+				<input type="hidden"   name="letter"                   value="{$LETTER}"          >		
+				<input type="hidden"   name="currently_valid"          value="{$CURRENTLY_VALID}" >		
+				<input type="checkbox" name="currently_valid_checkbox" onchange="mySubmit()" {if $CURRENTLY_VALID eq true}checked{/if}> {#TEXT_287#}</input>
+			</form>
 			{if $COUNT_ALL_DATA > 0}
 				<br><br>
 				<table border=0>

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCapitalSources.php,v 1.58 2015/02/13 00:03:37 olivleh1 Exp $
+// $Id: moduleCapitalSources.php,v 1.59 2015/08/14 21:02:55 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -42,11 +42,12 @@ class moduleCapitalSources extends module {
 		$this->coreText = new coreText();
 	}
 
-	public final function display_list_capitalsources($letter) {
-		$listCapitalsources = CapitalsourceControllerHandler::getInstance()->showCapitalsourceList( $letter );
+	public final function display_list_capitalsources($letter, $currently_valid) {
+		$listCapitalsources = CapitalsourceControllerHandler::getInstance()->showCapitalsourceList( $letter, $currently_valid );
 
 		$all_index_letters = $listCapitalsources ['initials'];
 		$all_data = $listCapitalsources ['capitalsources'];
+		$currently_valid = $listCapitalsources ['currently_valid'];
 
 		foreach ( $all_data as $key => $data ) {
 			$all_data [$key] ['statecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_STATE', $data ['state'] );
@@ -59,7 +60,9 @@ class moduleCapitalSources extends module {
 		}
 		$this->template->assign( 'ALL_DATA', $all_data );
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
+		$this->template->assign( 'LETTER', $letter );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
+		$this->template->assign( 'CURRENTLY_VALID', $currently_valid);
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_capitalsources.tpl' );
