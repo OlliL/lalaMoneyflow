@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractHandler.php,v 1.15 2015/08/01 00:19:23 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.16 2015/08/15 22:32:14 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -98,14 +98,14 @@ abstract class AbstractHandler extends AbstractJsonSender {
 	}
 
 	private final function getUrl($usecase, $parameter) {
-		$url = Configuration::getInstance()->getProperty('serverurl');
+		$url = Configuration::getInstance()->getProperty( 'serverurl' );
 		$url .= $this->getCategory();
 		$url .= '/';
 		$url .= $usecase;
 		if (is_array( $parameter ) && count( $parameter ) > 0) {
-			$parameterStr = implode( '/', $parameter );
-			$url .= '/';
-			$url .= $parameterStr;
+			foreach ( $parameter as $param ) {
+				$url .= '/' . rawurlencode( $param );
+			}
 		}
 		return $url;
 	}
