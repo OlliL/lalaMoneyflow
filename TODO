@@ -4,8 +4,6 @@
 
 - when a booking was added manually and the same booking gets imported later, try to match it and mark it as "to be deleted" or something like that....
 
-- import current balance via lalaMoneyflowHBCI - also store the "last update" time for each capitalsource
-- display both on the current month report
 
 #####################
 # lower prio TODOs
