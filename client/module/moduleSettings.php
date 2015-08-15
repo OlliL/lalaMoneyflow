@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSettings.php,v 1.35 2015/02/13 00:03:37 olivleh1 Exp $
+// $Id: moduleSettings.php,v 1.36 2015/08/15 22:47:47 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -52,6 +52,10 @@ class moduleSettings extends module {
 				if ($all_data ['password'] != $all_data ['password2']) {
 					$this->add_error( ErrorCode::PASSWORD_NOT_MATCHING );
 					$data_is_valid = false;
+				}
+				if (strstr( $all_data ['password'], "/" ) != false) {
+					$this->add_error( ErrorCode::PASSWORD_MUST_NOT_CONTAIN_SLASHES );
+					$valid_data = false;
 				}
 
 				if ($data_is_valid === true) {

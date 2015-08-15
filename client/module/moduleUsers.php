@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.62 2015/03/27 20:37:39 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.63 2015/08/15 22:47:47 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -60,19 +60,23 @@ class moduleUsers extends module {
 					$this->add_error( ErrorCode::USERNAME_IS_MANDATORY );
 				} elseif (empty( $password )) {
 					$this->add_error( ErrorCode::PASSWORD_EMPTY );
-				}
+				} elseif (strstr( $name, "/" ) != false) {
+					$this->add_error( ErrorCode::USERNAME_MUST_NOT_CONTAIN_SLASHES );
+				} elseif (strstr( $password, "/" ) != false) {
+					$this->add_error( ErrorCode::PASSWORD_MUST_NOT_CONTAIN_SLASHES );
+				} else {
+					Environment::getInstance()->setUserName( $name );
+					Environment::getInstance()->setUserPassword( sha1( $password ) );
+					$session = UserControllerHandler::getInstance()->getUserSettingsForStartup( $name );
+					if ($session) {
+						Environment::getInstance()->setUserId( $session ['mur_userid'] );
+						Environment::getInstance()->setSettingDateFormat( $session ['dateformat'] );
+						Environment::getInstance()->setSettingGuiLanguage( $session ['displayed_language'] );
+						Environment::getInstance()->setUserAttNew( $session ['att_new'] );
+						Environment::getInstance()->setUserPermAdmin( $session ['perm_admin'] );
 
-				Environment::getInstance()->setUserName( $name );
-				Environment::getInstance()->setUserPassword( sha1( $password ) );
-				$session = UserControllerHandler::getInstance()->getUserSettingsForStartup( $name );
-				if ($session) {
-					Environment::getInstance()->setUserId( $session ['mur_userid'] );
-					Environment::getInstance()->setSettingDateFormat( $session ['dateformat'] );
-					Environment::getInstance()->setSettingGuiLanguage( $session ['displayed_language'] );
-					Environment::getInstance()->setUserAttNew( $session ['att_new'] );
-					Environment::getInstance()->setUserPermAdmin( $session ['perm_admin'] );
-
-					$loginok = 1;
+						$loginok = 1;
+					}
 				}
 				break;
 			default :
@@ -155,6 +159,10 @@ class moduleUsers extends module {
 						$this->add_error( ErrorCode::PASSWORD_EMPTY );
 						$valid_data = false;
 					}
+				}
+				if (strstr( $all_data ['password'], "/" ) != false) {
+					$this->add_error( ErrorCode::PASSWORD_MUST_NOT_CONTAIN_SLASHES );
+					$valid_data = false;
 				}
 				if ($userid > 0) {
 					if (! $this->dateIsValid( $access_relation ['validfrom'] )) {
