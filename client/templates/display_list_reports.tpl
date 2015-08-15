@@ -153,7 +153,7 @@ function Go(x)
 								<th width="80">{#TEXT_65#}</th>
 								{else}
 								<th width="80">{#TEXT_288#}</th>
-								<th width="80">{#TEXT_289#}</th>
+								<th width="110">{#TEXT_289#}</th>
 								{/if}
 							</tr>
 							{section name=DATA loop=$SUMMARY_DATA}
@@ -258,7 +258,7 @@ function Go(x)
 								<th width="80">{#TEXT_65#}</th>
 								{else}
 								<th width="80">{#TEXT_288#}</th>
-								<th width="80">{#TEXT_289#}</th>
+								<th width="110">{#TEXT_289#}</th>
 								{/if}
 							</tr>
 							{section name=DATA loop=$LIABILITIES_SUMMARY_DATA}

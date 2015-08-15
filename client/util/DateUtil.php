@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: DateUtil.php,v 1.7 2015/08/06 18:33:04 olivleh1 Exp $
+// $Id: DateUtil.php,v 1.8 2015/08/15 20:49:31 olivleh1 Exp $
 //
 namespace client\util;
 
@@ -67,6 +67,12 @@ class DateUtil {
 
 	public static final function convertTransportDateToClient($transportDate) {
 		$format = self::getClientDateFormat();
+		$clientDate = new \DateTime("@$transportDate");
+		return $clientDate->format( $format );
+	}
+
+	public static final function convertTransportTimestampToClient($transportDate) {
+		$format = self::getClientDateFormat()."  H:i:s";
 		$clientDate = new \DateTime("@$transportDate");
 		return $clientDate->format( $format );
 	}
