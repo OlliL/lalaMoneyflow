@@ -28,6 +28,7 @@ td {
 	<br>
 	<table width="600" align="center">
 <?php
+include "base/Singleton.php";
 include "base/Configuration.php";
 use base\Configuration;
 
