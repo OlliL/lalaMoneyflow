@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.62 2015/08/07 23:00:53 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.63 2015/08/20 11:25:48 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -54,6 +54,8 @@ class moduleMonthlySettlement extends module {
 		$numberOfEditableSettlements = $showMonthlySettlementList ['numberOfEditableSettlements'];
 		$numberOfAddableSettlements = $showMonthlySettlementList ['numberOfAddableSettlements'];
 		$count_all_data = 0;
+		$months = array();
+
 		if (is_array( $allMonth )) {
 			foreach ( $allMonth as $key => $value ) {
 				$temp_array = array (
@@ -144,11 +146,13 @@ class moduleMonthlySettlement extends module {
 				if ($monthlySettlementCreate ['edit_mode'] == 0) {
 					$new = 1;
 				}
+				if(is_array($all_data_new) && count($all_data_new) > 0) {
 				foreach ( $all_data_new as $key => $data ) {
 					$all_data_new [$key] ['amount'] = sprintf( '%.02f', $data ['amount'] );
 					$sort [$key] = sprintf( "%d%20d", $data ['mur_userid'], $data ['mcs_capitalsourceid'] );
 				}
 				array_multisort( $sort, SORT_ASC, $all_data_new );
+				}
 				break;
 		}
 

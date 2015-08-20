@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.107 2015/08/14 22:07:44 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.108 2015/08/20 11:25:48 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -69,6 +69,7 @@ class moduleReports extends module {
 
 		$mms_exists = false;
 		$report = 0;
+		$months = array();
 
 		if (is_array( $allMonth )) {
 			foreach ( $allMonth as $key => $value ) {
@@ -438,6 +439,7 @@ class moduleReports extends module {
 		$piePlot = false;
 		$horizontalBarPlot = false;
 		$encoding = Configuration::getInstance()->getProperty( 'encoding' );
+		$title="";
 
 		switch ($timemode) {
 			case 1 :
@@ -448,12 +450,14 @@ class moduleReports extends module {
 				$title = $year;
 				break;
 			case 2 :
+				if($year_month && $month_month) {
 				$startdate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $year_month . '-' . $month_month . '-01 00:00:00' );
 				$enddate = clone $startdate;
 				$enddate->modify( 'last day of this month' );
 				$perMonthReport = true;
 				$piePlot = true;
 				$title = html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $month_month ), ENT_COMPAT | ENT_HTML401, $encoding ) . ' ' . $year_month;
+				}
 				break;
 			case 3 :
 				$startdate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $yearfrom . '-01-01 00:00:00' );
@@ -483,15 +487,19 @@ class moduleReports extends module {
 				}
 				break;
 		}
-
+	
+		$report = array();
 		if ($perMonthReport) {
 			$report = ReportControllerHandler::getInstance()->showMonthlyReportGraph( $accounts_yes, $accounts_no, $startdate, $enddate );
 		} elseif ($perYearReport) {
 			$report = ReportControllerHandler::getInstance()->showYearlyReportGraph( $accounts_yes, $accounts_no, $startdate, $enddate );
 		}
-
+		if(is_array($report) && array_key_exists('postingAccounts',$report)) {
 		$postingAccounts = $report ['postingAccounts'];
 		$all_data = $report ['data'];
+		} else {
+		$all_data = array();
+		}
 
 		$plot_data = array ();
 		if (is_array( $all_data ) && count( $all_data ) > 0) {

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.49 2015/02/13 00:03:37 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.50 2015/08/20 11:25:48 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -66,9 +66,15 @@ class moduleCompare extends module {
 		$startDate = $all_data ['startdate'];
 		$endDate = $all_data ['enddate'];
 		$formatId = $all_data ['format'];
-		$capitalSourceId = $all_data ['mcs_capitalsourceid'];
 
 		$valid_data = true;
+
+		if(! array_key_exists('mcs_capitalsourceid',$all_data) ) {
+			$this->add_error( ErrorCode::CAPITALSOURCE_IS_NOT_SET );
+			$valid_data = false;
+		} else {
+			$capitalSourceId = $all_data ['mcs_capitalsourceid'];
+		}
 
 		if (! $this->dateIsValid( $startDate )) {
 			$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
