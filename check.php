@@ -28,6 +28,7 @@ td {
 	<br>
 	<table width="600" align="center">
 <?php
+
 include "base/Singleton.php";
 include "base/Configuration.php";
 use base\Configuration;
@@ -162,7 +163,7 @@ if (count( $http_response_header ) == 0) {
 } elseif (strpos( $http_response_header [0], '404' ) > 0) {
 	echo_row( 'checking Property "serverurl"', 'Path "' . $parsed_url ['path'] . '" on <br> Server "' . $parsed_url ['host'] . '" <br> not found', false );
 	$errors ++;
-} elseif (strpos( $http_response_header [0], '200' ) > 0 && $result == 'OK ') {
+} elseif (strpos( $http_response_header [0], '200' ) > 0 && $result == 'OK') {
 	echo_row( 'checking Property "serverurl"', 'OK', true );
 } else {
 	echo_row( 'checking Property "serverurl"', 'not OK', false );
@@ -289,7 +290,7 @@ $errors = 0;
 $url = $serverurl . 'heartbeat';
 $http_response_header = array ();
 $result = @file_get_contents( $url, false, $context );
-if ($result == 'OK ') {
+if ($result == 'OK') {
 	echo_row( 'checking RewriteRule in .htaccess', 'OK', true );
 } else {
 	echo_row( 'checking RewriteRule in .htaccess', 'not OK', false );
