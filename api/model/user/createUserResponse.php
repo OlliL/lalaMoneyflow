@@ -25,11 +25,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: createUserResponse.php,v 1.4 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: createUserResponse.php,v 1.5 2015/08/25 17:29:00 olivleh1 Exp $
 //
 namespace api\model\user;
 
-use api\model\transport\UserTransport;
 use api\model\validation\validationResponse;
 
 class createUserResponse extends validationResponse implements IshowCreateUserResponse {
