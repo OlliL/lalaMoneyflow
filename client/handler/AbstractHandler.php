@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractHandler.php,v 1.17 2015/08/22 00:43:00 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.18 2015/08/28 17:13:33 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -98,9 +98,14 @@ abstract class AbstractHandler extends AbstractJsonSender {
 	}
 
 	private final function getUrl($usecase, $parameter) {
-		$url = Configuration::getInstance()->getProperty( 'serverurl' );
-		// $url="http://kartoffel.salatschuessel.net:8080/";
-		// $url="http://bomba.salatschuessel.net:8080/";
+		if ($this->getCategory() == "user") {
+#			$url = "http://kartoffel.salatschuessel.net:8080/moneyflow/";
+			// $url="http://bomba.salatschuessel.net:8080/";
+			$url = Configuration::getInstance()->getProperty( 'serverurl' );
+		} else {
+			$url = Configuration::getInstance()->getProperty( 'serverurl' );
+		}
+		#$url = "http://laladev.org/moneyflow/server/";
 		$url .= $this->getCategory();
 		$url .= '/';
 		$url .= $usecase;
@@ -126,7 +131,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 		$authorization = RESTAuthorization::getRESTAuthorization( $this->userPassword, $httpVerb, $contentType, $url, $dateStr, $body, $this->userName );
 
 		$headers = array (
-				'Date' => $dateStr,
+				'Requestdate' => $dateStr,
 				RESTAuthorization::$header => $authorization
 		);
 		return $headers;
@@ -135,6 +140,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 	protected final function getJson($usecase, $parameter = array()) {
 		$url = $this->getUrl( $usecase, $parameter );
 		$response = Request::get( $url )->withoutStrictSsl()->addHeaders( $this->getHeaders( Http::GET, $url ) )->send();
+		error_log( $response );
 		if ($response->code == 204) {
 			return false;
 		} else {
