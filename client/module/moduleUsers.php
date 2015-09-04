@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleUsers.php,v 1.63 2015/08/15 22:47:47 olivleh1 Exp $
+// $Id: moduleUsers.php,v 1.64 2015/09/04 10:44:21 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -190,19 +190,21 @@ class moduleUsers extends module {
 							$access_relations = $ret ['access_relations'];
 						}
 						$groups = $ret ['groups'];
-						foreach ( $ret ['errors'] as $validationResult ) {
-							$error = $validationResult ['error'];
+						if (is_array( $ret ) && in_array( 'errors', $ret )) {
+							foreach ( $ret ['errors'] as $validationResult ) {
+								$error = $validationResult ['error'];
 
-							$this->add_error( $error );
+								$this->add_error( $error );
 
-							switch ($error) {
-								case ErrorCode::NAME_MUST_NOT_BE_EMPTY :
-								case ErrorCode::USER_WITH_SAME_NAME_ALREADY_EXISTS :
-									$all_data ['name_error'] = 1;
-									break;
-								case ErrorCode::VALIDFROM_EARLIER_THAN_TOMORROW :
-									$access_relation ['validfrom_error'] = 1;
-									break;
+								switch ($error) {
+									case ErrorCode::NAME_MUST_NOT_BE_EMPTY :
+									case ErrorCode::USER_WITH_SAME_NAME_ALREADY_EXISTS :
+										$all_data ['name_error'] = 1;
+										break;
+									case ErrorCode::VALIDFROM_EARLIER_THAN_TOMORROW :
+										$access_relation ['validfrom_error'] = 1;
+										break;
+								}
 							}
 						}
 					}
@@ -235,11 +237,11 @@ class moduleUsers extends module {
 		}
 
 		// edit user
-		if (is_array( $groups ) && is_array( $access_relations )) {
+		if (is_array( $groups ) && is_array( $access_relations ) && count( $access_relations ) > 0) {
 			foreach ( $groups as $group ) {
 				$groupById [$group ['groupid']] = $group ['name'];
 			}
-
+			$sort = null;
 			foreach ( $access_relations as $key => $relation ) {
 				$access_relations [$key] ['name'] = $groupById [$relation ['ref_id']];
 				$sort [$key] = $relation ['validfrom_sort'];

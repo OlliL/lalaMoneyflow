@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractHandler.php,v 1.18 2015/08/28 17:13:33 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.19 2015/09/04 10:44:21 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -98,8 +98,8 @@ abstract class AbstractHandler extends AbstractJsonSender {
 	}
 
 	private final function getUrl($usecase, $parameter) {
-		if ($this->getCategory() == "user") {
-#			$url = "http://kartoffel.salatschuessel.net:8080/moneyflow/";
+		if ($this->getCategory() == "setting") {
+			$url = "http://kartoffel.salatschuessel.net:8080/moneyflow/server/";
 			// $url="http://bomba.salatschuessel.net:8080/";
 			$url = Configuration::getInstance()->getProperty( 'serverurl' );
 		} else {
