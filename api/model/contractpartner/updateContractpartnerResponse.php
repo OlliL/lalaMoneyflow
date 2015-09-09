@@ -25,11 +25,12 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showCreateContractpartnerResponse.php,v 1.3 2015/09/09 08:24:05 olivleh1 Exp $
+// $Id: updateContractpartnerResponse.php,v 1.1 2015/09/09 08:24:05 olivleh1 Exp $
 //
 namespace api\model\contractpartner;
 
-class showCreateContractpartnerResponse implements IshowCreateContractpartnerResponse {
+use api\model\validation\validationResponse;
+class updateContractpartnerResponse extends validationResponse implements IshowCreateContractpartnerResponse {
 	public $postingAccountTransport;
 
 	public final function getPostingAccountTransport() {

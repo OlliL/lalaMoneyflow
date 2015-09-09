@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CapitalsourceControllerHandler.php,v 1.18 2015/08/14 21:02:55 olivleh1 Exp $
+// $Id: CapitalsourceControllerHandler.php,v 1.19 2015/09/09 08:24:06 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -53,6 +53,7 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 	public final function showCapitalsourceList($restriction, $currently_valid) {
 		$response = parent::getJson( __FUNCTION__, array (
 				$restriction,
+				"currentlyValid",
 				$currently_valid
 		) );
 		$result = null;

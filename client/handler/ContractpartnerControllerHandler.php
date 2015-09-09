@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerControllerHandler.php,v 1.16 2015/08/14 21:02:55 olivleh1 Exp $
+// $Id: ContractpartnerControllerHandler.php,v 1.17 2015/09/09 08:24:06 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -39,6 +39,8 @@ use api\model\transport\ContractpartnerTransport;
 use api\model\contractpartner\showCreateContractpartnerResponse;
 use client\mapper\ArrayToPostingAccountTransportMapper;
 use base\Singleton;
+use api\model\contractpartner\createContractpartnerResponse;
+use api\model\contractpartner\updateContractpartnerResponse;
 
 class ContractpartnerControllerHandler extends AbstractHandler {
 	use Singleton;
@@ -56,6 +58,7 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 	public final function showContractpartnerList($restriction, $currently_valid) {
 		$response = parent::getJson( __FUNCTION__, array (
 				$restriction,
+				"currentlyValid",
 				$currently_valid
 		) );
 		$result = null;
@@ -106,7 +109,18 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 
 		$request = new createContractpartnerRequest();
 		$request->setContractpartnerTransport( $contractpartnerTransport );
-		return parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
+		$response = parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
+
+		$result = null;
+		if ($response === true) {
+			$result = true;
+		} else if ($response instanceof createContractpartnerResponse) {
+			$result ['postingAccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
+			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
+			$result ['result'] = $response->getResult();
+		}
+
+		return $result;
 	}
 
 	public final function updateContractpartner(array $contractpartner) {
@@ -114,7 +128,18 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 
 		$request = new updateContractpartnerRequest();
 		$request->setContractpartnerTransport( $contractpartnerTransport );
-		return parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
+		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
+
+		$result = null;
+		if ($response === true) {
+			$result = true;
+		} else if ($response instanceof updateContractpartnerResponse) {
+			$result ['postingAccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
+			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
+			$result ['result'] = $response->getResult();
+		}
+
+		return $result;
 	}
 
 	public final function deleteContractpartner($id) {

@@ -35,6 +35,8 @@
 					<td class="contrastbgcolor">{$ALL_DATA.bankcode}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.validfrom}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.validtil}</td>
+					<td class="contrastbgcolor" align="center"><b>{if $ALL_DATA[DATA].att_group_use == 1}<font color="green">{#TEXT_25#}{else}<font color="red">{#TEXT_26#}{/if}</font></b></td>
+					<td class="contrastbgcolor" align="center"><b>{if $ALL_DATA[DATA].import_allowed == 1}<font color="green">{#TEXT_25#}{else}<font color="red">{#TEXT_26#}{/if}</font></b></td>
 				</tr>
 			</table>
 			<input type="submit" value="{#TEXT_25#}">

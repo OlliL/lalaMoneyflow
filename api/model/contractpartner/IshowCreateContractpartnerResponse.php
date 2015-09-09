@@ -25,20 +25,15 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showCreateContractpartnerResponse.php,v 1.3 2015/09/09 08:24:05 olivleh1 Exp $
+// $Id: IshowCreateContractpartnerResponse.php,v 1.1 2015/09/09 08:24:05 olivleh1 Exp $
 //
 namespace api\model\contractpartner;
 
-class showCreateContractpartnerResponse implements IshowCreateContractpartnerResponse {
-	public $postingAccountTransport;
+interface IshowCreateContractpartnerResponse {
 
-	public final function getPostingAccountTransport() {
-		return $this->postingAccountTransport;
-	}
+	public function getPostingAccountTransport();
 
-	public final function setPostingAccountTransport(array $postingAccountTransport) {
-		$this->postingAccountTransport = $postingAccountTransport;
-	}
+	public function setPostingAccountTransport(array $postingAccountTransport);
 }
 
 ?>

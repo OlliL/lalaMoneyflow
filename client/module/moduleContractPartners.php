@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.51 2015/08/14 21:02:55 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.52 2015/09/09 08:24:06 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -49,7 +49,7 @@ class moduleContractPartners extends module {
 		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template->assign( 'LETTER', $letter );
 		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
-		$this->template->assign( 'CURRENTLY_VALID', $currently_valid);
+		$this->template->assign( 'CURRENTLY_VALID', $currently_valid );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_contractpartners.tpl' );
@@ -85,6 +85,8 @@ class moduleContractPartners extends module {
 					if ($ret === true) {
 						$close = 1;
 					} else {
+						$posting_accounts = $ret ['postingAccounts'];
+
 						foreach ( $ret ['errors'] as $validationResult ) {
 							$error = $validationResult ['error'];
 
@@ -98,29 +100,26 @@ class moduleContractPartners extends module {
 						}
 					}
 				}
+				break;
 			default :
-				if (! is_array( $all_data )) {
-					if ($contractpartnerid > 0) {
-						$showEditContractpartner = ContractpartnerControllerHandler::getInstance()->showEditContractpartner( $contractpartnerid );
-						$all_data = $showEditContractpartner ['contractpartner'];
-						$posting_accounts = $showEditContractpartner ['postingAccounts'];
-					} else {
-						$posting_accounts = ContractpartnerControllerHandler::getInstance()->showCreateContractpartner();
-
-						$all_data ['name'] = '';
-						$all_data ['street'] = '';
-						$all_data ['postcode'] = '';
-						$all_data ['town'] = '';
-						$all_data ['country'] = '';
-						$all_data ['validfrom'] = $this->convertDateToGui( date( 'Y-m-d' ) );
-						$all_data ['validtil'] = $this->convertDateToGui( Configuration::getInstance()->getProperty( 'max_year' ) );
-
-						$all_data ['name_error'] = 0;
-						$all_data ['validfrom_error'] = 0;
-						$all_data ['validtil_error'] = 0;
-					}
-				} elseif ($close === 0) {
+				if ($contractpartnerid > 0) {
+					$showEditContractpartner = ContractpartnerControllerHandler::getInstance()->showEditContractpartner( $contractpartnerid );
+					$all_data = $showEditContractpartner ['contractpartner'];
+					$posting_accounts = $showEditContractpartner ['postingAccounts'];
+				} else {
 					$posting_accounts = ContractpartnerControllerHandler::getInstance()->showCreateContractpartner();
+
+					$all_data ['name'] = '';
+					$all_data ['street'] = '';
+					$all_data ['postcode'] = '';
+					$all_data ['town'] = '';
+					$all_data ['country'] = '';
+					$all_data ['validfrom'] = $this->convertDateToGui( date( 'Y-m-d' ) );
+					$all_data ['validtil'] = $this->convertDateToGui( Configuration::getInstance()->getProperty( 'max_year' ) );
+
+					$all_data ['name_error'] = 0;
+					$all_data ['validfrom_error'] = 0;
+					$all_data ['validtil_error'] = 0;
 				}
 				break;
 		}
