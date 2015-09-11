@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: DateUtil.php,v 1.9 2015/09/11 07:57:15 olivleh1 Exp $
+// $Id: DateUtil.php,v 1.10 2015/09/11 12:49:41 olivleh1 Exp $
 //
 namespace client\util;
 
@@ -61,7 +61,7 @@ class DateUtil {
 		if ($modelDate) {
 			$modelDate->setTime( 0, 0, 0 );
 
-			return $modelDate->getTimestamp();
+			return $modelDate->format(\DateTime::ATOM);
 		}
 	}
 
