@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: modulePreDefMoneyFlows.php,v 1.59 2015/02/13 00:03:37 olivleh1 Exp $
+// $Id: modulePreDefMoneyFlows.php,v 1.60 2015/09/11 07:57:15 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -104,6 +104,7 @@ class modulePreDefMoneyFlows extends module {
 									break;
 								case ErrorCode::CONTRACTPARTNER_DOES_NOT_EXIST :
 								case ErrorCode::CONTRACTPARTNER_IS_NOT_SET :
+								case ErrorCode::CONTRACTPARTNER_NO_LONGER_VALID :
 									$all_data ['contractpartner_error'] = 1;
 									break;
 								case ErrorCode::AMOUNT_IS_ZERO :
@@ -145,7 +146,7 @@ class modulePreDefMoneyFlows extends module {
 			$this->template->assign( 'ALL_DATA', $all_data );
 			$this->template->assign( 'PREDEFMONEYFLOWID', $predefmoneyflowid );
 			$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-			$this->template->assign( 'CONTRACTPARTNER_VALUES', $contractpartner_values );
+			$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
 			$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 			$this->template->assign( 'ERRORS', $this->get_errors() );
 		}

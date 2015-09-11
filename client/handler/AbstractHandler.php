@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractHandler.php,v 1.20 2015/09/09 08:24:06 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.21 2015/09/11 07:57:15 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -103,12 +103,12 @@ abstract class AbstractHandler extends AbstractJsonSender {
 			case "user" :
 			case "group" :
 			case "postingaccount" :
+			case "capitalsource" :
+			case "contractpartner" :
+			case "predefmoneyflow":
 				$url = "http://bomba.salatschuessel.net:8080/moneyflow/server/";
+// 				$url = "http://chili.salatschuessel.net:8080/moneyflow/server/";
 				break;
-			#case "capitalsource" :
-			#case "contractpartner" :
-			#	$url = "http://chili.salatschuessel.net:8080/moneyflow/server/";
-				#break;
 			default :
 				$url = Configuration::getInstance()->getProperty( 'serverurl' );
 		}
@@ -147,7 +147,6 @@ abstract class AbstractHandler extends AbstractJsonSender {
 	protected final function getJson($usecase, $parameter = array()) {
 		$url = $this->getUrl( $usecase, $parameter );
 		$response = Request::get( $url )->withoutStrictSsl()->addHeaders( $this->getHeaders( Http::GET, $url ) )->send();
-		error_log( $response );
 		if ($response->code == 204) {
 			return false;
 		} else {
