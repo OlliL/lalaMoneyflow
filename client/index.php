@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.94 2015/08/14 21:02:55 olivleh1 Exp $
+// $Id: index.php,v 1.95 2015/09/13 17:43:12 olivleh1 Exp $
 //
 namespace client;
 
@@ -46,7 +46,6 @@ use client\module\moduleGroups;
 use client\module\moduleCompare;
 use client\module\moduleFrontPage;
 use client\util\utilTimer;
-use client\util\Environment;
 use client\util\ErrorHandler;
 use client\module\modulePostingAccounts;
 use base\Configuration;

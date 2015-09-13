@@ -24,14 +24,12 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PostingAccountControllerHandler.php,v 1.14 2015/08/01 00:19:23 olivleh1 Exp $
+// $Id: PostingAccountControllerHandler.php,v 1.15 2015/09/13 17:43:10 olivleh1 Exp $
 //
 namespace client\handler;
 
-use base\JsonAutoMapper;
 use api\model\postingaccount\createPostingAccountRequest;
 use api\model\postingaccount\updatePostingAccountRequest;
-use api\model\postingaccount\plotPostingAccountsResponse;
 use api\model\postingaccount\showPostingAccountListResponse;
 use api\model\postingaccount\showEditPostingAccountResponse;
 use api\model\postingaccount\showDeletePostingAccountResponse;

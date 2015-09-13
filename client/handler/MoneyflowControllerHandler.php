@@ -24,11 +24,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowControllerHandler.php,v 1.14 2015/08/01 00:19:23 olivleh1 Exp $
+// $Id: MoneyflowControllerHandler.php,v 1.15 2015/09/13 17:43:10 olivleh1 Exp $
 //
 namespace client\handler;
 
-use base\JsonAutoMapper;
 use api\model\moneyflow\updateMoneyflowRequest;
 use api\model\moneyflow\createMoneyflowsRequest;
 use api\model\moneyflow\searchMoneyflowsRequest;

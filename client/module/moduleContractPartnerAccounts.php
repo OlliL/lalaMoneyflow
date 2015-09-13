@@ -24,14 +24,12 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartnerAccounts.php,v 1.4 2015/07/31 23:29:44 olivleh1 Exp $
+// $Id: moduleContractPartnerAccounts.php,v 1.5 2015/09/13 17:43:11 olivleh1 Exp $
 //
 namespace client\module;
 
 use base\ErrorCode;
 use client\handler\ContractpartnerAccountControllerHandler;
-use client\util\Environment;
-use base\Configuration;
 
 class moduleContractPartnerAccounts extends module {
 

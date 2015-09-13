@@ -24,11 +24,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: SettingControllerHandler.php,v 1.9 2015/08/01 00:19:23 olivleh1 Exp $
+// $Id: SettingControllerHandler.php,v 1.10 2015/09/13 17:43:10 olivleh1 Exp $
 //
 namespace client\handler;
 
-use base\JsonAutoMapper;
 use api\model\setting\updateDefaultSettingsRequest;
 use api\model\setting\updatePersonalSettingsRequest;
 use api\model\setting\showDefaultSettingsResponse;

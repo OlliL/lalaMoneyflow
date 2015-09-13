@@ -25,11 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: compareDataRequest.php,v 1.5 2015/02/13 00:03:42 olivleh1 Exp $
+// $Id: compareDataRequest.php,v 1.6 2015/09/13 17:43:12 olivleh1 Exp $
 //
 namespace api\model\comparedata;
-
-use api\model\transport\CompareDataTransport;
 
 class compareDataRequest {
 	public $formatId;

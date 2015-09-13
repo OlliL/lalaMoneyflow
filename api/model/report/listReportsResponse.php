@@ -25,11 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: listReportsResponse.php,v 1.8 2015/02/13 00:03:40 olivleh1 Exp $
+// $Id: listReportsResponse.php,v 1.9 2015/09/13 17:43:11 olivleh1 Exp $
 //
 namespace api\model\report;
-
-use api\model\transport\ReportTurnoverCapitalsourceTransport;
 
 class listReportsResponse {
 	public $moneyflowTransport;

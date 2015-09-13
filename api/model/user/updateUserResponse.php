@@ -25,11 +25,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: updateUserResponse.php,v 1.5 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: updateUserResponse.php,v 1.6 2015/09/13 17:43:12 olivleh1 Exp $
 //
 namespace api\model\user;
 
-use api\model\transport\UserTransport;
 use api\model\validation\validationResponse;
 
 class updateUserResponse extends validationResponse implements IshowEditUserResponse {

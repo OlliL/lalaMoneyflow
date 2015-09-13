@@ -24,11 +24,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.63 2015/08/20 11:25:48 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.64 2015/09/13 17:43:11 olivleh1 Exp $
 //
 namespace client\module;
 
-use client\handler\CapitalsourceControllerHandler;
 use client\handler\MonthlySettlementControllerHandler;
 use base\ErrorCode;
 use client\core\coreText;

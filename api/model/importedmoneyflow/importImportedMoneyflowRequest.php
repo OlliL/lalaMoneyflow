@@ -25,11 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: importImportedMoneyflowRequest.php,v 1.1 2015/02/11 22:18:33 olivleh1 Exp $
+// $Id: importImportedMoneyflowRequest.php,v 1.2 2015/09/13 17:43:11 olivleh1 Exp $
 //
 namespace api\model\importedmoneyflow;
-
-use api\model\transport\ImportedMoneyflowTransport;
 
 class importImportedMoneyflowRequest {
 	public $importedMoneyflowTransport;

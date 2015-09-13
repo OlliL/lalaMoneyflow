@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowTransport.php,v 1.8 2015/03/25 21:08:45 olivleh1 Exp $
+// $Id: MoneyflowTransport.php,v 1.9 2015/09/13 17:43:12 olivleh1 Exp $
 //
 namespace api\model\transport;
 
@@ -37,7 +37,6 @@ class MoneyflowTransport extends AbstractTransport {
 	public $amount;
 	public $capitalsourceid;
 	public $capitalsourcecomment;
-	public $capitalsourcetype;
 	public $contractpartnerid;
 	public $contractpartnername;
 	public $comment;
@@ -71,10 +70,6 @@ class MoneyflowTransport extends AbstractTransport {
 
 	public final function setCapitalsourcecomment($capitalsourcecomment) {
 		$this->capitalsourcecomment = $capitalsourcecomment;
-	}
-
-	public final function setCapitalsourcetype($capitalsourcetype) {
-		$this->capitalsourcetype = $capitalsourcetype;
 	}
 
 	public final function setContractpartnerid($contractpartnerid) {
@@ -119,10 +114,6 @@ class MoneyflowTransport extends AbstractTransport {
 
 	public final function getCapitalsourcecomment() {
 		return $this->capitalsourcecomment;
-	}
-
-	public final function getCapitalsourcetype() {
-		return $this->capitalsourcetype;
 	}
 
 	public final function getContractpartnerid() {

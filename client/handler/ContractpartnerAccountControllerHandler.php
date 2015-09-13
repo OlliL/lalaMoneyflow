@@ -24,11 +24,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ContractpartnerAccountControllerHandler.php,v 1.4 2015/08/01 00:19:23 olivleh1 Exp $
+// $Id: ContractpartnerAccountControllerHandler.php,v 1.5 2015/09/13 17:43:10 olivleh1 Exp $
 //
 namespace client\handler;
 
-use base\JsonAutoMapper;
 use client\mapper\ArrayToContractpartnerAccountTransportMapper;
 use api\model\transport\ContractpartnerAccountTransport;
 use api\model\contractpartneraccount\createContractpartnerAccountRequest;

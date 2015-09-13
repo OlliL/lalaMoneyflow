@@ -24,11 +24,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ImportedMoneyflowControllerHandler.php,v 1.6 2015/08/01 00:19:23 olivleh1 Exp $
+// $Id: ImportedMoneyflowControllerHandler.php,v 1.7 2015/09/13 17:43:10 olivleh1 Exp $
 //
 namespace client\handler;
 
-use base\JsonAutoMapper;
 use client\mapper\ArrayToImportedMoneyflowTransportMapper;
 use api\model\importedmoneyflow\showAddImportedMoneyflowsResponse;
 use client\mapper\ArrayToCapitalsourceTransportMapper;

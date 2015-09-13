@@ -24,11 +24,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CapitalsourceControllerHandler.php,v 1.19 2015/09/09 08:24:06 olivleh1 Exp $
+// $Id: CapitalsourceControllerHandler.php,v 1.20 2015/09/13 17:43:10 olivleh1 Exp $
 //
 namespace client\handler;
 
-use base\JsonAutoMapper;
 use api\model\capitalsource\updateCapitalsourceRequest;
 use api\model\capitalsource\createCapitalsourceRequest;
 use api\model\capitalsource\showCapitalsourceListResponse;

@@ -24,11 +24,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: UserControllerHandler.php,v 1.17 2015/08/01 00:19:23 olivleh1 Exp $
+// $Id: UserControllerHandler.php,v 1.18 2015/09/13 17:43:10 olivleh1 Exp $
 //
 namespace client\handler;
 
-use base\JsonAutoMapper;
 use api\model\user\createUserRequest;
 use api\model\user\updateUserRequest;
 use api\model\user\getUserSettingsForStartupResponse;
@@ -38,12 +37,10 @@ use api\model\user\showEditUserResponse;
 use api\model\user\showDeleteUserResponse;
 use api\model\user\createUserResponse;
 use api\model\user\updateUserResponse;
-use api\model\transport\ValidationItemTransport;
 use client\mapper\ArrayToUserTransportMapper;
 use api\model\transport\UserTransport;
 use client\mapper\ArrayToGroupTransportMapper;
 use client\mapper\ArrayToAccessRelationTransportMapper;
-use api\model\transport\GroupTransport;
 use api\model\transport\AccessRelationTransport;
 use base\Singleton;
 

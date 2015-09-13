@@ -25,11 +25,10 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: compareDataResponse.php,v 1.6 2015/02/13 00:03:42 olivleh1 Exp $
+// $Id: compareDataResponse.php,v 1.7 2015/09/13 17:43:12 olivleh1 Exp $
 //
 namespace api\model\comparedata;
 
-use api\model\transport\CompareDataTransport;
 use api\model\transport\CompareDataMatchingTransport;
 use api\model\transport\CompareDataWrongCapitalsourceTransport;
 use api\model\transport\CompareDataNotInFileTransport;

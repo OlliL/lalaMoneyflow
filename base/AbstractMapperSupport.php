@@ -25,12 +25,9 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractMapperSupport.php,v 1.16 2015/02/13 00:03:42 olivleh1 Exp $
+// $Id: AbstractMapperSupport.php,v 1.17 2015/09/13 17:43:12 olivleh1 Exp $
 //
 namespace base;
-
-use api\model\transport\ValidationItemTransport;
-use client\mapper\ArrayToCapitalsourceTransportMapper;
 
 abstract class AbstractMapperSupport {
 	private $mapper;

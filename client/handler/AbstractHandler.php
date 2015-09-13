@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractHandler.php,v 1.21 2015/09/11 07:57:15 olivleh1 Exp $
+// $Id: AbstractHandler.php,v 1.22 2015/09/13 17:43:10 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -105,11 +105,17 @@ abstract class AbstractHandler extends AbstractJsonSender {
 			case "postingaccount" :
 			case "capitalsource" :
 			case "contractpartner" :
-			case "predefmoneyflow":
-				$url = "http://bomba.salatschuessel.net:8080/moneyflow/server/";
-// 				$url = "http://chili.salatschuessel.net:8080/moneyflow/server/";
-				break;
+			case "predefmoneyflow" :
+			case "moneyflow" :
+			$url = "http://bomba.salatschuessel.net:8080/moneyflow/server/";
+// 			$url = "http://chili.salatschuessel.net:8080/moneyflow/server/";
+			break;
 			default :
+				$url = Configuration::getInstance()->getProperty( 'serverurl' );
+		}
+
+		switch ($usecase) {
+			case "searchMoneyflows" :
 				$url = Configuration::getInstance()->getProperty( 'serverurl' );
 		}
 
