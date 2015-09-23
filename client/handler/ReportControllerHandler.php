@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportControllerHandler.php,v 1.19 2015/09/13 17:43:10 olivleh1 Exp $
+// $Id: ReportControllerHandler.php,v 1.20 2015/09/23 18:35:03 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -117,8 +117,8 @@ class ReportControllerHandler extends AbstractHandler {
 	public final function showTrendsGraph($capitalsourceIds, $startdate, $enddate) {
 		$request = new showTrendsGraphRequest();
 		$request->setCapitalsourceIds( $capitalsourceIds );
-		$request->setStartDate( $startdate->format( 'U' ) );
-		$request->setEndDate( $enddate->format( 'U' ) );
+		$request->setStartDate( $startdate->format( \DateTime::ATOM ) );
+		$request->setEndDate( $enddate->format( \DateTime::ATOM ) );
 
 		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 		$result = null;
@@ -134,8 +134,8 @@ class ReportControllerHandler extends AbstractHandler {
 		$request = new showYearlyReportGraphRequest();
 		$request->setPostingAccountIdsYes( $postingAccountIdsYes );
 		$request->setPostingAccountIdsNo( $postingAccountIdsNo );
-		$request->setStartDate( $startdate->format( 'U' ) );
-		$request->setEndDate( $enddate->format( 'U' ) );
+		$request->setStartDate( $startdate->format( \DateTime::ATOM ) );
+		$request->setEndDate( $enddate->format( \DateTime::ATOM ) );
 
 		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 		$result = null;
@@ -150,8 +150,8 @@ class ReportControllerHandler extends AbstractHandler {
 		$request = new showMonthlyReportGraphRequest();
 		$request->setPostingAccountIdsYes( $postingAccountIdsYes );
 		$request->setPostingAccountIdsNo( $postingAccountIdsNo );
-		$request->setStartDate( $startdate->format( 'U' ) );
-		$request->setEndDate( $enddate->format( 'U' ) );
+		$request->setStartDate( $startdate->format( \DateTime::ATOM ) );
+		$request->setEndDate( $enddate->format( \DateTime::ATOM ) );
 
 		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 		$result = null;
