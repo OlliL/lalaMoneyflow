@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: DateUtil.php,v 1.10 2015/09/11 12:49:41 olivleh1 Exp $
+// $Id: DateUtil.php,v 1.11 2015/11/01 12:14:10 olivleh1 Exp $
 //
 namespace client\util;
 
@@ -74,6 +74,7 @@ class DateUtil {
 	public static final function convertTransportTimestampToClient($transportDate) {
 		$format = self::getClientDateFormat()."  H:i:s";
 		$clientDate = new \DateTime($transportDate);
+		$clientDate->setTimeZone(new \DateTimeZone(date_default_timezone_get()));
 		return $clientDate->format( $format );
 	}
 

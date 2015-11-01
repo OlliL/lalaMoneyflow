@@ -24,13 +24,14 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.50 2015/08/20 11:25:48 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.51 2015/11/01 12:14:09 olivleh1 Exp $
 //
 namespace client\module;
 
 use base\ErrorCode;
 use client\handler\CompareDataControllerHandler;
 use client\util\Environment;
+use client\util\ErrorHandler;
 
 class moduleCompare extends module {
 
@@ -98,7 +99,11 @@ class moduleCompare extends module {
 		}
 
 		if ($valid_data === true) {
-			$all_data ['filecontents'] = file_get_contents( $fileName );
+			$filecontents = file_get_contents( $fileName );
+			if(!mb_detect_encoding($filecontents,'UTF-8',true)) {
+				$filecontents = utf8_encode($filecontents);
+			}
+			$all_data ['filecontents'] = $filecontents;
 
 			$result = CompareDataControllerHandler::getInstance()->compareData( $all_data );
 			if (is_array( $result ['errors'] )) {
@@ -107,6 +112,9 @@ class moduleCompare extends module {
 					$error = $validationResult ['error'];
 					$this->add_error( $error );
 				}
+			}
+			if(ErrorHandler::getErrors()) {
+				$valid_data = false;
 			}
 		}
 

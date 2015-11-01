@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.108 2015/08/20 11:25:48 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.109 2015/11/01 12:14:09 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -474,11 +474,8 @@ class moduleReports extends module {
 				$accounts_yes = array (
 						$account
 				);
-				$accounts_no = array ();
 				break;
 			case 2 :
-				if (! is_array( $accounts_no ))
-					$accounts_no = array ();
 				if (! is_array( $accounts_yes ))
 					$accounts_yes = array ();
 				if ($barPlot) {
@@ -487,7 +484,9 @@ class moduleReports extends module {
 				}
 				break;
 		}
-	
+		if (! is_array( $accounts_no ))
+			$accounts_no = array ();
+
 		$report = array();
 		if ($perMonthReport) {
 			$report = ReportControllerHandler::getInstance()->showMonthlyReportGraph( $accounts_yes, $accounts_no, $startdate, $enddate );
@@ -516,10 +515,11 @@ class moduleReports extends module {
 				}
 			}
 			foreach ( $all_data as $data ) {
+					$date = new \DateTime($data ['date_ts']);
 				if ($perMonthReport) {
-					$key = html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', date( 'n', $data ['date_ts'] ) ), ENT_COMPAT | ENT_HTML401, $encoding );
+					$key = html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $date->format('n') ), ENT_COMPAT | ENT_HTML401, $encoding );
 				} else {
-					$key = date( 'Y', $data ['date_ts'] );
+					$key = $date->format('Y');
 				}
 				$account_key = $postingAccountKeys [$data ['postingaccountid']];
 				if (! array_key_exists( $key, $plot_data ) || ! array_key_exists( $account_key, $plot_data [$key] ))

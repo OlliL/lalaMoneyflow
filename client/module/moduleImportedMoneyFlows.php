@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleImportedMoneyFlows.php,v 1.6 2015/02/13 00:03:37 olivleh1 Exp $
+// $Id: moduleImportedMoneyFlows.php,v 1.7 2015/11/01 12:14:09 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -93,6 +93,7 @@ class moduleImportedMoneyFlows extends module {
 
 						if ($createMoneyflows !== true) {
 							$data_is_valid = false;
+							if(is_array($createMoneyflows)) {
 							foreach ( $createMoneyflows ['errors'] as $validationResult ) {
 								$error = $validationResult ['error'];
 								$key = $validationResult ['key'];
@@ -136,6 +137,7 @@ class moduleImportedMoneyFlows extends module {
 										$all_data [$key] ['contractpartner_error'] = 1;
 										$all_data [$key] ['bookingdate_error'] = 1;
 								}
+							}
 							}
 						}
 					}

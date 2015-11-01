@@ -36,6 +36,7 @@
 
 						{if $ALL_DATA[DATA].predefmoneyflowid lt 0 }
 						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[{$smarty.section.DATA.index}][mcp_contractpartnerid]" size=1 style="width:130px{if $ALL_DATA[DATA].contractpartner_error == 1};color:red{/if}" onchange="initContractpartner({$elements}+6)">
+							<option value=""> </option>
 						{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
 							<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}" {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $ALL_DATA[DATA].mcp_contractpartnerid}selected{/if} > {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name|escape:htmlall}</option>
 						{/section}
@@ -102,8 +103,8 @@
   function initContractpartner(elementId) {
     var e = document.addmoney.elements[elementId];
     var contractpartnerId = e.options[e.selectedIndex].value;
-  
-    if(document.addmoney.elements[elementId+1].value == "") {
+
+    if(contractpartnerId > 0 && document.addmoney.elements[elementId+1].value == "") {
       document.addmoney.elements[elementId+1].value=comment[contractpartnerId];
     }
     selectItemByValue( document.addmoney.elements[elementId+2], postingAccount[contractpartnerId] );

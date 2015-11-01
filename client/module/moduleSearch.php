@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleSearch.php,v 1.43 2015/02/13 00:03:37 olivleh1 Exp $
+// $Id: moduleSearch.php,v 1.44 2015/11/01 12:14:09 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -112,7 +112,7 @@ class moduleSearch extends module {
 			$contractpartner_values = $searchMoneyflows ['contractpartner'];
 			$postingaccount_values = $searchMoneyflows ['postingaccounts'];
 
-			if ($searchMoneyflows ['result'] == false) {
+			if ($searchMoneyflows ['result'] === false) {
 				$data_is_valid = false;
 				foreach ( $searchMoneyflows ['errors'] as $validationResult ) {
 					$error = $validationResult ['error'];
@@ -173,7 +173,6 @@ class moduleSearch extends module {
 					foreach ( array_keys( $results [0] ) as $column ) {
 						$columns [$column] = 1;
 					}
-
 					$this->template->assign( 'SEARCH_DONE', 1 );
 					$this->template->assign( 'COLUMNS', $columns );
 					$this->template->assign( 'RESULTS', $results );
