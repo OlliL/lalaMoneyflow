@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleContractPartners.php,v 1.52 2015/09/09 08:24:06 olivleh1 Exp $
+// $Id: moduleContractPartners.php,v 1.53 2016/02/03 21:30:13 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -99,12 +99,14 @@ class moduleContractPartners extends module {
 							}
 						}
 					}
+					break;
 				}
-				break;
 			default :
 				if ($contractpartnerid > 0) {
 					$showEditContractpartner = ContractpartnerControllerHandler::getInstance()->showEditContractpartner( $contractpartnerid );
-					$all_data = $showEditContractpartner ['contractpartner'];
+					if (! is_array( $all_data )) {
+						$all_data = $showEditContractpartner ['contractpartner'];
+					}
 					$posting_accounts = $showEditContractpartner ['postingAccounts'];
 				} else {
 					$posting_accounts = ContractpartnerControllerHandler::getInstance()->showCreateContractpartner();

@@ -20,6 +20,7 @@
 				<tr>
 					<th>{#TEXT_271#}</th>
 					<th>{#TEXT_37#}</th>
+					<th>{#TEXT_293#}</th>
 					<!--<th>&nbsp;</th>-->
 					<th>{#TEXT_209#}</th>
 					<th>{#TEXT_16#}</th>
@@ -33,8 +34,9 @@
 					<tr>
 						<td class="contrastbgcolor">
 						<input type="hidden" name="all_data[{$smarty.section.DATA.index}][importedmoneyflowid]" value="{$ALL_DATA[DATA].importedmoneyflowid}">
-						<input class="contrastbgcolor" type="radio" name="all_data[{$smarty.section.DATA.index}][action]" value=1 {if $ALL_DATA[DATA].action == 1}checked{/if} onchange="changeColor({$elements})"></td>
+						                            <input class="contrastbgcolor" type="radio" name="all_data[{$smarty.section.DATA.index}][action]" value=1 {if $ALL_DATA[DATA].action == 1}checked{/if} onchange="changeColor({$elements})"></td>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="radio" name="all_data[{$smarty.section.DATA.index}][action]" value=2 {if $ALL_DATA[DATA].action == 2}checked{/if} onchange="changeColor({$elements})"></td>
+						<td class="contrastbgcolor"><input class="contrastbgcolor" type="radio" name="all_data[{$smarty.section.DATA.index}][action]" value=3 {if $ALL_DATA[DATA].action == 3 ||  $ALL_DATA[DATA].action == null }checked{/if} onchange="changeColor({$elements})"></td>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="checkbox" name="all_data[{$smarty.section.DATA.index}][private]" value=1 {if $ALL_DATA[DATA].private == 1}checked{/if}></td>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][bookingdate]" value="{$ALL_DATA[DATA].bookingdate}" size=9 {if $ALL_DATA[DATA].bookingdate_error == 1}style="color:red"{/if}></td>
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][invoicedate]" value="{$ALL_DATA[DATA].invoicedate}" size=9 {if $ALL_DATA[DATA].invoicedate_error == 1}style="color:red"{/if}></td>
@@ -80,12 +82,13 @@
 						</td>
 					</tr>
 					<tr><td colspan="9"><hr></td></tr>
-					{assign var="elements" value="`$elements+15`"}
+					{assign var="elements" value="`$elements+16`"}
 				{/section}
 {literal}
 <script language="JavaScript">
   var comment = new Array();
   var postingAccount = new Array();
+  var backupColor = 0;
 {/literal}
 {section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
    comment['{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}'] = '{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].moneyflow_comment}';
@@ -124,16 +127,28 @@
   }
   
   function changeColor(elementId) {
+    var flowRow = Math.floor(elementId/16)*5+1;
+    var col = document.addmoney.getElementsByTagName("tr");
+    var cells = col[flowRow].cells;
+
+    if(backupColor == 0) {
+            if (window.getComputedStyle) {
+                var compStyle = window.getComputedStyle (cells[0], "");
+            }
+            else {
+                var compStyle = cells[0].currentStyle;
+            }
+            backupColor = compStyle.backgroundColor;
+    }
+    
     if( document.addmoney.elements[elementId+2].checked ) {
       var color="#00FF00";
     } else if (document.addmoney.elements[elementId+3].checked ) {
       var color="#FF0000";
+    } else if (document.addmoney.elements[elementId+4].checked ) {
+      var color=backupColor;
     }
-    
-    var flowRow = Math.floor(elementId/15)*5+1;
-    var col = document.addmoney.getElementsByTagName("tr");
-    var cells = col[flowRow].cells;
-    
+
     for( i = 0 ; i < cells.length ; i++ ) {
       cells[i].style.backgroundColor = color;
     }
