@@ -42,7 +42,7 @@
 						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][invoicedate]" value="{$ALL_DATA[DATA].invoicedate}" size=9 {if $ALL_DATA[DATA].invoicedate_error == 1}style="color:red"{/if}></td>
 						<td class="contrastbgcolor" nowrap><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][amount]" value="{$ALL_DATA[DATA].amount|number_format}" size=6 style="text-align:right{if $ALL_DATA[DATA].amount_error == 1};color:red{/if}"> {#CURRENCY#}</td>
 
-						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[{$smarty.section.DATA.index}][mcp_contractpartnerid]" size=1 style="width:130px{if $ALL_DATA[DATA].contractpartner_error == 1};color:red{/if}" onchange="initContractpartner({$elements}+8)">
+						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[{$smarty.section.DATA.index}][mcp_contractpartnerid]" size=1 style="width:130px{if $ALL_DATA[DATA].contractpartner_error == 1};color:red{/if}" onchange="initContractpartner({$elements}+9)">
 							<option value=""> </option>
 						{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
 							<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}" {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $ALL_DATA[DATA].mcp_contractpartnerid}selected{/if} > {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name|escape:htmlall}</option>
@@ -99,7 +99,7 @@
 
   var elementId = 1;
   for(var a=1 ; a <= numflows ; a ++) {
-    initContractpartner(elementId + 8);
+    initContractpartner(elementId + 9);
     changeColor(elementId);
     elementId+=15;
   }
@@ -153,13 +153,13 @@
       cells[i].style.backgroundColor = color;
     }
 
-    document.addmoney.elements[elementId+5].style.backgroundColor=color;
     document.addmoney.elements[elementId+6].style.backgroundColor=color;
     document.addmoney.elements[elementId+7].style.backgroundColor=color;
     document.addmoney.elements[elementId+8].style.backgroundColor=color;
     document.addmoney.elements[elementId+9].style.backgroundColor=color;
     document.addmoney.elements[elementId+10].style.backgroundColor=color;
     document.addmoney.elements[elementId+11].style.backgroundColor=color;
+    document.addmoney.elements[elementId+12].style.backgroundColor=color;
   }
 </script>
 {/literal}
