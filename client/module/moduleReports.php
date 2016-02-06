@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.109 2015/11/01 12:14:09 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.110 2016/02/06 22:10:02 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -172,6 +172,13 @@ class moduleReports extends module {
 				$liabilities_currentamount = 0;
 				$liabilities_counter = 0;
 
+				$credit_turnover_capitalsources = null;
+				$credit_lastamount = 0;
+				$credit_fixamount = 0;
+				$credit_calcamount = 0;
+				$credit_currentamount = 0;
+				$credit_counter = 0;
+
 				if (is_array( $turnover_capitalsources ) && count( $turnover_capitalsources ) > 0) {
 					foreach ( $turnover_capitalsources as $turnover_capitalsource ) {
 						switch ($turnover_capitalsource ['type']) {
@@ -205,6 +212,20 @@ class moduleReports extends module {
 									$mms_exists = true;
 								}
 								$liabilities_counter ++;
+								break;
+							case 5 :
+								$credit_turnover_capitalsources [$credit_counter] = $turnover_capitalsource;
+								$credit_turnover_capitalsources [$credit_counter] ['typecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_TYPE', $turnover_capitalsource ['type'] );
+								$credit_turnover_capitalsources [$credit_counter] ['statecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_STATE', $turnover_capitalsource ['state'] );
+								$credit_calcamount += $turnover_capitalsource ['calcamount'];
+								$credit_lastamount += $turnover_capitalsource ['lastamount'];
+								if (array_key_exists( 'amount_current', $turnover_capitalsource ))
+									$credit_currentamount += $turnover_capitalsource ['amount_current'];
+								if (array_key_exists( 'fixamount', $turnover_capitalsource )) {
+									$credit_fixamount += $turnover_capitalsource ['fixamount'];
+									$mms_exists = true;
+								}
+								$credit_counter ++;
 								break;
 						}
 					}
@@ -248,6 +269,13 @@ class moduleReports extends module {
 				$this->template->assign( 'LIABILITIES_FIXAMOUNT', $liabilities_fixamount );
 				$this->template->assign( 'LIABILITIES_CURRENTAMOUNT', $liabilities_currentamount );
 				$this->template->assign( 'LIABILITIES_MON_CALCAMOUNT', $liabilities_calcamount );
+
+				// Credits
+				$this->template->assign( 'CREDITS_SUMMARY_DATA', $credit_turnover_capitalsources );
+				$this->template->assign( 'CREDITS_LASTAMOUNT', $credit_lastamount );
+				$this->template->assign( 'CREDITS_FIXAMOUNT', $credit_fixamount );
+				$this->template->assign( 'CREDITS_CURRENTAMOUNT', $credit_currentamount );
+				$this->template->assign( 'CREDITS_MON_CALCAMOUNT', $credit_calcamount );
 
 				$this->template->assign( 'MOVEMENT', $movement );
 				$this->template->assign( 'MONTHLYSETTLEMENT_EXISTS', $mms_exists );

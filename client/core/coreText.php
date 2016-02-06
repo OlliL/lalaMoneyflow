@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: coreText.php,v 1.33 2015/03/25 21:08:45 olivleh1 Exp $
+// $Id: coreText.php,v 1.34 2016/02/06 22:10:02 olivleh1 Exp $
 //
 namespace client\core;
 
@@ -100,7 +100,8 @@ class coreText extends core {
 						1 => 173,
 						2 => 174,
 						3 => 278,
-						4 => 279
+						4 => 279,
+						5 => 295
 				);
 			case 'CAPITALSOURCE_STATE' :
 				return array (
