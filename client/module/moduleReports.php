@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.110 2016/02/06 22:10:02 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.111 2016/02/06 23:06:13 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -378,6 +378,7 @@ class moduleReports extends module {
 		$p1->SetWeight( 1 );
 		$p1->SetFillGradient( '#E6E6FA', '#B0C4DE' );
 		$p1->mark->SetType( MARK_STAR );
+		$p1->SetFillFromYMin( true );
 		$graph->Add( $p1 );
 
 		if (is_array( $monthly2_data )) {
@@ -385,6 +386,7 @@ class moduleReports extends module {
 			$p2->SetWeight( 1 );
 			$p2->SetFillGradient( '#aeaefa', '#689bde' );
 			$p2->mark->SetType( MARK_STAR );
+			$p2->SetFillFromYMin( true );
 			$graph->Add( $p2 );
 		}
 

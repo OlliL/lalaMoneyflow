@@ -268,7 +268,7 @@ function Go(x)
 									<td class="contrastbgcolor">{$LIABILITIES_SUMMARY_DATA[DATA].typecomment}</td>
 									<td class="contrastbgcolor">{$LIABILITIES_SUMMARY_DATA[DATA].statecomment}</td>
 									<td class="contrastbgcolor">{$LIABILITIES_SUMMARY_DATA[DATA].comment}</td>
-									<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].lastamount < 0}color="red"{else}color="black"{/if}>{$LIABILITIES_SUMMARY_DATA[DATA].lastamount|number_format} {#CURRENCY#}</font></td>
+									<td align="right" class="contrastbgcolor"><font {if $LIABILITIES_SUMMARY_DATA[DATA].lastamount < 0}color="red"{else}color="black"{/if}>{$LIABILITIES_SUMMARY_DATA[DATA].lastamount|number_format} {#CURRENCY#}</font></td>
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
 										<td align="right" class="contrastbgcolor">
 										{if array_key_exists('fixamount',$LIABILITIES_SUMMARY_DATA[DATA])}
@@ -276,7 +276,7 @@ function Go(x)
 										{/if}
 										</td>
 									{/if}
-									<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].calcamount < 0}color="red"{else}color="black"{/if}>{$LIABILITIES_SUMMARY_DATA[DATA].calcamount|number_format} {#CURRENCY#}</font></td>
+									<td align="right" class="contrastbgcolor"><font {if $LIABILITIES_SUMMARY_DATA[DATA].calcamount < 0}color="red"{else}color="black"{/if}>{$LIABILITIES_SUMMARY_DATA[DATA].calcamount|number_format} {#CURRENCY#}</font></td>
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
 										<td align="right" class="contrastbgcolor">
 										{if array_key_exists('fixamount',$LIABILITIES_SUMMARY_DATA[DATA])}
@@ -336,7 +336,7 @@ function Go(x)
 								{/if}
 								<th width="80">{#TEXT_64#}</th>
 								{if $MONTHLYSETTLEMENT_EXISTS == true}
-								<th width="80">{#TEXT_65#}</th>
+								<th width="80">{#TEXT_297#}</th>
 								{else}
 								<th width="80">{#TEXT_288#}</th>
 								<th width="110">{#TEXT_289#}</th>
@@ -347,7 +347,7 @@ function Go(x)
 									<td class="contrastbgcolor">{$CREDITS_SUMMARY_DATA[DATA].typecomment}</td>
 									<td class="contrastbgcolor">{$CREDITS_SUMMARY_DATA[DATA].statecomment}</td>
 									<td class="contrastbgcolor">{$CREDITS_SUMMARY_DATA[DATA].comment}</td>
-									<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].lastamount < 0}color="red"{else}color="black"{/if}>{$CREDITS_SUMMARY_DATA[DATA].lastamount|number_format} {#CURRENCY#}</font></td>
+									<td align="right" class="contrastbgcolor"><font {if $CREDITS_SUMMARY_DATA[DATA].lastamount < 0}color="red"{else}color="black"{/if}>{$CREDITS_SUMMARY_DATA[DATA].lastamount|number_format} {#CURRENCY#}</font></td>
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
 										<td align="right" class="contrastbgcolor">
 										{if array_key_exists('fixamount',$CREDITS_SUMMARY_DATA[DATA])}
@@ -355,7 +355,7 @@ function Go(x)
 										{/if}
 										</td>
 									{/if}
-									<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].calcamount < 0}color="red"{else}color="black"{/if}>{$CREDITS_SUMMARY_DATA[DATA].calcamount|number_format} {#CURRENCY#}</font></td>
+									<td align="right" class="contrastbgcolor"><font {if $CREDITS_SUMMARY_DATA[DATA].calcamount < 0}color="red"{else}color="black"{/if}>{$CREDITS_SUMMARY_DATA[DATA].calcamount|number_format} {#CURRENCY#}</font></td>
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
 										<td align="right" class="contrastbgcolor">
 										{if array_key_exists('fixamount',$CREDITS_SUMMARY_DATA[DATA])}

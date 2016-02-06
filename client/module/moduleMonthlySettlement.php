@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.64 2015/09/13 17:43:11 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.65 2016/02/06 23:06:13 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -69,11 +69,18 @@ class moduleMonthlySettlement extends module {
 
 			if ($month > 0 && $year > 0 && is_array( $all_data ) && count( $all_data ) > 0) {
 				$sumamount = 0;
+				$credit_sumamount = 0;
 				foreach ( $all_data as $settlement ) {
-					$sumamount += $settlement ['amount'];
+					// CREDIT capitalsources will be summed up separately
+					if($settlement['capitalsourcetype'] != 5) {
+						$sumamount += $settlement ['amount'];
+					} else {
+						$credit_sumamount += $settlement ['amount'];
+					}
 				}
 
 				$this->template->assign( 'SUMAMOUNT', $sumamount );
+				$this->template->assign( 'CREDIT_SUMAMOUNT', $credit_sumamount );
 				$this->template->assign( 'MONTH', $monthArray );
 				$this->template->assign( 'YEAR', $year );
 				$this->template->assign( 'ALL_DATA', $all_data );

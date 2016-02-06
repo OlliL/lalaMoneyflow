@@ -61,15 +61,36 @@ function Go(x)
 						<th width="30%">{#TEXT_18#}</th>
 					</tr>
 					{section name=DATA loop=$ALL_DATA}
+						{if $ALL_DATA[DATA].capitalsourcetype != 5}
 						<tr>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].capitalsourcecomment}</td>
 							<td class="contrastbgcolor" align="right"><font {if $ALL_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_DATA[DATA].amount|number_format} {#CURRENCY#}</font></td>
 						</tr>
+						{else}
+							{assign var=CREDIT_EXISTS value=1};
+						{/if}
 					{/section}
 					<tr>
 						<td align="right">&sum;</td>
 						<td align="right" class="contrastbgcolor"><font {if $SUMAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$SUMAMOUNT|number_format} {#CURRENCY#}</u></font></td>
 					</tr>
+					{if $CREDIT_EXISTS == 1 }
+						<tr>
+							<td colspan="2">&nbsp;</td>
+						</tr>
+						{section name=DATA loop=$ALL_DATA}
+							{if $ALL_DATA[DATA].capitalsourcetype == 5}
+								<tr>
+									<td class="contrastbgcolor">{$ALL_DATA[DATA].capitalsourcecomment}</td>
+									<td class="contrastbgcolor" align="right"><font {if $ALL_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_DATA[DATA].amount|number_format} {#CURRENCY#}</font></td>
+								</tr>
+							{/if}
+						{/section}
+					<tr>
+						<td align="right">&sum;</td>
+						<td align="right" class="contrastbgcolor"><font {if $CREDIT_SUMAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$CREDIT_SUMAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+					</tr>
+					{/if}
 				</table>
 				<br>
 				<table border="0" cellpadding=2>
