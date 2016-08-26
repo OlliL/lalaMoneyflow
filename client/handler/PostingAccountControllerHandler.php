@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: PostingAccountControllerHandler.php,v 1.15 2015/09/13 17:43:10 olivleh1 Exp $
+// $Id: PostingAccountControllerHandler.php,v 1.16 2016/08/26 22:32:05 olivleh1 Exp $
 //
 namespace client\handler;
 

@@ -138,9 +138,9 @@ function Go(x)
 				<td valign="top" align="center">
 						<table border=0 cellpadding=2>
 							<tr>
-								<th>{#TEXT_30#}</th>
-								<th>{#TEXT_31#}</th>
-								<th>{#TEXT_21#}</th>
+								<th width="110">{#TEXT_30#}</th>
+								<th width="60">{#TEXT_31#}</th>
+								<th width="150">{#TEXT_21#}</th>
 								<th width="80">{#TEXT_62#}</th>
 								{if $MONTHLYSETTLEMENT_EXISTS == true}
 								<th width="80">{#TEXT_63#}</th>
@@ -242,15 +242,15 @@ function Go(x)
 				{if $LIABILITIES_SUMMARY_DATA != ''}
 				</tr>
 				<tr>
-					<th><h2>{#TEXT_281#}</h2></th>
+					<th><br><h2>{#TEXT_281#}</h2></th>
 				</tr>
 				<tr>
 					<td valign="top" align="center">
 						<table border=0 cellpadding=2>
 							<tr>
-								<th>{#TEXT_30#}</th>
-								<th>{#TEXT_31#}</th>
-								<th>{#TEXT_21#}</th>
+								<th width="110">{#TEXT_30#}</th>
+								<th width="60">{#TEXT_31#}</th>
+								<th width="150">{#TEXT_21#}</th>
 								<th width="80">{#TEXT_62#}</th>
 								{if $MONTHLYSETTLEMENT_EXISTS == true}
 								<th width="80">{#TEXT_63#}</th>
@@ -321,15 +321,15 @@ function Go(x)
 				{if $CREDITS_SUMMARY_DATA != ''}
 				</tr>
 				<tr>
-					<th><h2>{#TEXT_294#}</h2></th>
+					<th><br><h2>{#TEXT_294#}</h2></th>
 				</tr>
 				<tr>
 					<td valign="top" align="center">
 						<table border=0 cellpadding=2>
 							<tr>
-								<th>{#TEXT_30#}</th>
-								<th>{#TEXT_31#}</th>
-								<th>{#TEXT_21#}</th>
+								<th width="110">{#TEXT_30#}</th>
+								<th width="60">{#TEXT_31#}</th>
+								<th width="150">{#TEXT_21#}</th>
 								<th width="80">{#TEXT_62#}</th>
 								{if $MONTHLYSETTLEMENT_EXISTS == true}
 								<th width="80">{#TEXT_63#}</th>

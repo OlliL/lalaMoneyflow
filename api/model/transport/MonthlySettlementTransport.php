@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013-2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2013-2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MonthlySettlementTransport.php,v 1.6 2015/02/13 00:03:39 olivleh1 Exp $
+// $Id: MonthlySettlementTransport.php,v 1.7 2016/08/26 22:32:05 olivleh1 Exp $
 //
 namespace api\model\transport;
 
@@ -38,6 +38,7 @@ class MonthlySettlementTransport extends AbstractTransport {
 	public $capitalsourceid;
 	public $capitalsourcecomment;
 	public $capitalsourcegroupuse;
+	public $capitalsourcetype;
 
 	public final function setId($id) {
 		$this->id = $id;
@@ -101,6 +102,14 @@ class MonthlySettlementTransport extends AbstractTransport {
 
 	public final function getCapitalsourcegroupuse() {
 		return $this->capitalsourcegroupuse;
+	}
+
+	public final function setCapitalsourcetype($capitalsourcetype) {
+		$this->capitalsourcetype = $capitalsourcetype;
+	}
+
+	public final function getCapitalsourcetype() {
+		return $this->capitalsourcetype;
 	}
 }
 

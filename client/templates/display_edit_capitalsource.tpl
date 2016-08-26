@@ -51,7 +51,8 @@
 					<td class="contrastbgcolor">
 						<select class="contrastbgcolor" name="all_data[import_allowed]" size=1>
 							<option value=0 {if $ALL_DATA.import_allowed == 0}selected{/if} > {#TEXT_26#}
-							<option value=1 {if $ALL_DATA.import_allowed == 1}selected{/if} > {#TEXT_25#}
+							<option value=1 {if $ALL_DATA.import_allowed == 1}selected{/if} > {#TEXT_28#}
+							<option value=2 {if $ALL_DATA.import_allowed == 2}selected{/if} > {#TEXT_298#}
 						</select>
 					</td>
 				</tr>

@@ -101,7 +101,7 @@
   for(var a=1 ; a <= numflows ; a ++) {
     initContractpartner(elementId + 9);
     changeColor(elementId);
-    elementId+=15;
+    elementId+=16;
   }
   
   function selectItemByValue(element, value) {
