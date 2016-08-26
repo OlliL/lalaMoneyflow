@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2005-2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2005-2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: module.php,v 1.86 2015/08/07 23:00:53 olivleh1 Exp $
+// $Id: module.php,v 1.87 2016/08/26 22:31:52 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -128,10 +128,10 @@ abstract class module {
 	protected final function fix_amount(&$amount) {
 		$return = true;
 
-		if (preg_match( '/^-{0,1}[0-9]*([\.][0-9][0-9][0-9]){0,}([,][0-9]{1,2}){0,1}$/', $amount )) {
+		if (preg_match( '/^-{0,1}[0-9]+([\.][0-9][0-9][0-9]){0,}([,][0-9]{1,2}){0,1}$/', $amount )) {
 			$amount = str_replace( '.', '', $amount );
 			$amount = str_replace( ',', '.', $amount );
-		} elseif (preg_match( '/^-{0,1}[0-9]*([,][0-9][0-9][0-9]){0,}([\.][0-9]{1,2}){0,1}$/', $amount )) {
+		} elseif (preg_match( '/^-{0,1}[0-9]+([,][0-9][0-9][0-9]){0,}([\.][0-9]{1,2}){0,1}$/', $amount )) {
 			$amount = str_replace( ',', '', $amount );
 		} else {
 			$this->add_error( ErrorCode::AMOUNT_IN_WRONG_FORMAT, array (
