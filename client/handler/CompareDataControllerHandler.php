@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: CompareDataControllerHandler.php,v 1.16 2015/09/13 17:43:10 olivleh1 Exp $
+// $Id: CompareDataControllerHandler.php,v 1.17 2016/09/17 22:46:54 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -79,9 +79,12 @@ class CompareDataControllerHandler extends AbstractHandler {
 		$request = new compareDataRequest();
 		$request->setCapitalSourceId( $compareData ['mcs_capitalsourceid'] );
 		$request->setEndDate( DateUtil::convertClientDateToTransport( $compareData ['enddate'] ) );
-		$request->setFileContents( base64_encode( $compareData ['filecontents'] ) );
+		if (array_key_exists( "filecontents", $compareData )) {
+			$request->setFileContents( base64_encode( $compareData ['filecontents'] ) );
+		}
 		$request->setFormatId( $compareData ['format'] );
 		$request->setStartDate( DateUtil::convertClientDateToTransport( $compareData ['startdate'] ) );
+		$request->setUseImportedData( $compareData ['use_imported_data'] );
 
 		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 		$result = null;

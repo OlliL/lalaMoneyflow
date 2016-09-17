@@ -14,17 +14,26 @@
 			<input type="hidden" name="action" value="analyze_cmp_data">
 			<table border=0>
 				<tr>
-					<th align="right">{#TEXT_188#}</th>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type=file size=30 maxlength=100000 name="file"></td>
-				<tr>
-					<th align="right">{#TEXT_189#}</th>
+					<th align="right">{#TEXT_192#}</th>
 					<td>
-						<select class="contrastbgcolor" name="all_data[format]" size=1>
-						{section name=FORMAT loop=$FORMAT_VALUES}
-							<option value="{$FORMAT_VALUES[FORMAT].formatid}" {if $FORMAT_VALUES[FORMAT].formatid == $ALL_DATA.format}selected{/if}>{$FORMAT_VALUES[FORMAT].name}</option>
-						{/section}
-						</select>
+						<table border=0>
+							<tr>
+								<th align="left"><input type="radio" value="0" name="all_data[use_imported_data]"> {#TEXT_193#}</th>
+								<td>
+									<select class="contrastbgcolor" name="all_data[format]" size=1>
+									{section name=FORMAT loop=$FORMAT_VALUES}
+										<option value="{$FORMAT_VALUES[FORMAT].formatid}" {if $FORMAT_VALUES[FORMAT].formatid == $ALL_DATA.format}selected{/if}>{$FORMAT_VALUES[FORMAT].name}</option>
+									{/section}
+									</select>
+									<input class="contrastbgcolor" type=file size=30 maxlength=100000 name="file">
+								</td>
+							</tr>
+							<tr>
+								<th align="left"><input type="radio" value="1" name="all_data[use_imported_data]" checked> {#TEXT_282#}</th>
+							</tr>
+						</table>
 					</td>
+				</tr>
 				<tr>
 					<th align="right">{#TEXT_69#}</th>
 					<td><input class="contrastbgcolor" type="text" name="all_data[startdate]" value="{$ALL_DATA.startdate}" {if $ALL_DATA.startdate_error == 1}style="color:red"{/if}></td>
@@ -33,6 +42,7 @@
 					<th align="right">{#TEXT_70#}</th>
 					<td><input class="contrastbgcolor" type="text" name="all_data[enddate]"   value="{$ALL_DATA.enddate}"   {if $ALL_DATA.enddate_error == 1}style="color:red"{/if}></td>
 				</tr>
+				<tr>
 					<th>{#TEXT_19#}</th>
 					<td>
 					<select class="contrastbgcolor" name="all_data[mcs_capitalsourceid]" size=1>

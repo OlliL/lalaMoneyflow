@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: compareDataRequest.php,v 1.6 2015/09/13 17:43:12 olivleh1 Exp $
+// $Id: compareDataRequest.php,v 1.7 2016/09/17 22:46:54 olivleh1 Exp $
 //
 namespace api\model\comparedata;
 
@@ -35,6 +35,7 @@ class compareDataRequest {
 	public $startDate;
 	public $endDate;
 	public $fileContents;
+	public $useImportedData;
 
 	public final function setFormatId($formatId) {
 		$this->formatId = $formatId;
@@ -56,6 +57,10 @@ class compareDataRequest {
 		$this->fileContents = $fileContents;
 	}
 
+	public final function setUseImportedData($useImportedData) {
+		$this->useImportedData = $useImportedData;
+	}
+
 	public final function getFormatId() {
 		return $this->formatId;
 	}
@@ -74,6 +79,10 @@ class compareDataRequest {
 
 	public final function getFileContents() {
 		return $this->fileContents;
+	}
+
+	public final function getUseImportedData() {
+		return $this->useImportedData;
 	}
 }
 

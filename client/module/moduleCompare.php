@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleCompare.php,v 1.51 2015/11/01 12:14:09 olivleh1 Exp $
+// $Id: moduleCompare.php,v 1.52 2016/09/17 22:46:54 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -67,10 +67,11 @@ class moduleCompare extends module {
 		$startDate = $all_data ['startdate'];
 		$endDate = $all_data ['enddate'];
 		$formatId = $all_data ['format'];
+		$useImportedData = $all_data ['use_imported_data'];
 
 		$valid_data = true;
 
-		if(! array_key_exists('mcs_capitalsourceid',$all_data) ) {
+		if (! array_key_exists( 'mcs_capitalsourceid', $all_data )) {
 			$this->add_error( ErrorCode::CAPITALSOURCE_IS_NOT_SET );
 			$valid_data = false;
 		} else {
@@ -93,17 +94,19 @@ class moduleCompare extends module {
 			$valid_data = false;
 		}
 
-		if (! $fileName) {
+		if ($useImportedData == "0" && ! $fileName) {
 			$this->add_error( ErrorCode::FILEUPLOAD_FAILED );
 			$valid_data = false;
 		}
 
 		if ($valid_data === true) {
-			$filecontents = file_get_contents( $fileName );
-			if(!mb_detect_encoding($filecontents,'UTF-8',true)) {
-				$filecontents = utf8_encode($filecontents);
+			if ($useImportedData == "0") {
+				$filecontents = file_get_contents( $fileName );
+				if (! mb_detect_encoding( $filecontents, 'UTF-8', true )) {
+					$filecontents = utf8_encode( $filecontents );
+				}
+				$all_data ['filecontents'] = $filecontents;
 			}
-			$all_data ['filecontents'] = $filecontents;
 
 			$result = CompareDataControllerHandler::getInstance()->compareData( $all_data );
 			if (is_array( $result ['errors'] )) {
@@ -113,7 +116,7 @@ class moduleCompare extends module {
 					$this->add_error( $error );
 				}
 			}
-			if(ErrorHandler::getErrors()) {
+			if (ErrorHandler::getErrors()) {
 				$valid_data = false;
 			}
 		}
@@ -145,7 +148,7 @@ class moduleCompare extends module {
 	 * @return array
 	 */
 	private final function setOwnerAndFilterPrivate($compareArray) {
-		$newArray = array();
+		$newArray = array ();
 		foreach ( $compareArray as $key => $matching ) {
 			if ($matching ['moneyflow'] ['mur_userid'] == Environment::getInstance()->getUserId() || $matching ['moneyflow'] ['private'] == 0) {
 				if ($matching ['moneyflow'] ['mur_userid'] == Environment::getInstance()->getUserId())
