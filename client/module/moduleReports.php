@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.111 2016/02/06 23:06:13 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.112 2016/12/24 12:09:27 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -66,6 +66,7 @@ class moduleReports extends module {
 		$prev_year = $listReports ['prev_year'];
 		$next_month = $listReports ['next_month'];
 		$next_year = $listReports ['next_year'];
+		$moneyflow_split_entries = $listReports['moneyflow_split_entries'];
 
 		$mms_exists = false;
 		$report = 0;
@@ -155,6 +156,21 @@ class moduleReports extends module {
 						$all_moneyflow_data [$key] ['owner'] = false;
 					}
 					$movement += $value ['amount'];
+
+					$moneyflowId = $value['moneyflowid'];
+					$moneyflowSplitEntries = array();
+
+					foreach($moneyflow_split_entries as $key2 => $value2 ) {
+						if($moneyflowId == $value2['moneyflowid']) {
+							$moneyflowSplitEntries[] = $value2;
+							unset($moneyflow_split_entries[$key2]);
+						}
+					}
+
+					$all_moneyflow_data [$key] ['has_moneyflow_split_entries'] = count($moneyflowSplitEntries);
+					if(count($moneyflowSplitEntries) > 0) {
+						$all_moneyflow_data [$key] ['moneyflow_split_entries'] = $moneyflowSplitEntries;
+					}
 				}
 
 				$assets_turnover_capitalsources = null;

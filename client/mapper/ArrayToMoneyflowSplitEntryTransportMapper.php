@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2005-2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,29 +25,32 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.40 2016/12/24 12:07:38 olivleh1 Exp $
-//
+namespace client\mapper;
 
-//
-// ATTENTION: you should leave this file unmodified!
-//
-define( 'ROOTDIR', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR );
-define( 'HTTPFULDIR', ROOTDIR . 'contrib/httpful/src/' );
+use api\model\transport\MoneyflowSplitEntryTransport;
 
-function framework_autoload($className) {
-	$fname = str_replace( '\\', DIRECTORY_SEPARATOR, $className ) . '.php';
-	if (is_file( ROOTDIR . $fname )) {
-		require (ROOTDIR . $fname);
-	} else if (is_file( HTTPFULDIR . $fname )) {
-		require (HTTPFULDIR . $fname);
+class ArrayToMoneyflowSplitEntryTransportMapper extends AbstractArrayMapper {
+
+	public static function mapAToB(array $a) {
+		$b = new MoneyflowSplitEntryTransport();
+		$b->setId( $a ['moneyflowsplitentryid'] );
+		$b->setMoneyflowid( $a ['moneyflowid'] );
+		$b->setAmount( $a ['amount'] );
+		$b->setComment( $a ['comment'] );
+		$b->setPostingaccountid( $a ['mpa_postingaccountid'] );
+		return $b;
+	}
+
+	public static function mapBToA(MoneyflowSplitEntryTransport $b) {
+		$a ['moneyflowsplitentryid'] = $b->getId();
+		$a ['moneyflowid'] = $b->getMoneyflowid();
+		$a ['amount'] = $b->getAmount();
+		$a ['comment'] = $b->getComment();
+		$a ['mpa_postingaccountid'] = $b->getPostingaccountid();
+		$a ['postingaccountname'] = $b->getPostingaccountname();
+
+		return $a;
 	}
 }
-spl_autoload_register( 'framework_autoload' );
 
-ini_set( "log_errors", 1 );
-ini_set( "error_log", "/tmp/php-error-client.log" );
-
-define( 'ENABLE_JPGRAPH', true );
-// $money_debug=2;
-$money_debug=0;
 ?>

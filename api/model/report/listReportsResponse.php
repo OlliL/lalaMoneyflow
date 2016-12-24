@@ -25,12 +25,13 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: listReportsResponse.php,v 1.9 2015/09/13 17:43:11 olivleh1 Exp $
+// $Id: listReportsResponse.php,v 1.10 2016/12/24 12:09:26 olivleh1 Exp $
 //
 namespace api\model\report;
 
 class listReportsResponse {
 	public $moneyflowTransport;
+	public $moneyflowSplitEntryTransport;
 	public $year;
 	public $month;
 	public $allYears;
@@ -51,6 +52,14 @@ class listReportsResponse {
 
 	public final function setMoneyflowTransport(array $moneyflowTransport) {
 		$this->moneyflowTransport = $moneyflowTransport;
+	}
+
+	public final function getMoneyflowSplitEntryTransport() {
+		return $this->moneyflowSplitEntryTransport;
+	}
+
+	public final function setMoneyflowSplitEntryTransport(array $moneyflowSplitEntryTransport) {
+		$this->moneyflowSplitEntryTransport = $moneyflowSplitEntryTransport;
 	}
 
 	public final function getAllYears() {

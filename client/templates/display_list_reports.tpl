@@ -77,7 +77,7 @@ function Go(x)
 				<tr>
 					<th width="90"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_bookingdate&amp;reports_order={$NEWORDER}" >{#TEXT_16#}</a></th>
 					<th width="90"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_invoicedate&amp;reports_order={$NEWORDER}" >{#TEXT_17#}</a></th>
-					<th width="70"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_amount&amp;reports_order={$NEWORDER}"     >{#TEXT_18#}</a></th>
+					<th width="100" colspan="2"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_amount&amp;reports_order={$NEWORDER}"     >{#TEXT_18#}</a></th>
 					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=contractpartners_name&amp;reports_order={$NEWORDER}" >{#TEXT_2#}</a></th>
 					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_comment&amp;reports_order={$NEWORDER}"    >{#TEXT_21#}</a></th>
 					<th><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=postingaccount_name&amp;reports_order={$NEWORDER}">{#TEXT_232#}</a></th>
@@ -86,24 +86,49 @@ function Go(x)
 					<th>&nbsp</th>
 				</tr>
 				{section name=DATA loop=$ALL_MONEYFLOW_DATA}
-					<tr>
-						<td class="contrastbgcolor" align="center">{$ALL_MONEYFLOW_DATA[DATA].bookingdate}</td>
-						<td class="contrastbgcolor" align="center">{$ALL_MONEYFLOW_DATA[DATA].invoicedate}</td>
-						<td align="right" class="contrastbgcolor"><font {if $ALL_MONEYFLOW_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_MONEYFLOW_DATA[DATA].amount|number_format} {#CURRENCY#}</font></td>
-						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].contractpartnername}</td>
-						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].comment}</td>
-						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].postingaccountname}</td>
-						<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].capitalsourcecomment}</td>
-						{if $ALL_MONEYFLOW_DATA[DATA].owner == true }
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1024,height=120')">{#TEXT_36#}</a></td>
-						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1024,height=120')">{#TEXT_37#}</a></td>
-						{/if}
-					</tr>
+					{if $ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries eq 0}
+						<tr>
+							<td class="contrastbgcolor" align="center">{$ALL_MONEYFLOW_DATA[DATA].bookingdate}</td>
+							<td class="contrastbgcolor" align="center">{$ALL_MONEYFLOW_DATA[DATA].invoicedate}</td>
+							<td align="right" class="contrastbgcolor" colspan="2"><font {if $ALL_MONEYFLOW_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_MONEYFLOW_DATA[DATA].amount|number_format} {#CURRENCY#}</font></td>
+							<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].contractpartnername}</td>
+							<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].comment}</td>
+							<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].postingaccountname}</td>
+							<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].capitalsourcecomment}</td>
+							{if $ALL_MONEYFLOW_DATA[DATA].owner == true }
+								<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1024,height=120')">{#TEXT_36#}</a></td>
+								<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1024,height=120')">{#TEXT_37#}</a></td>
+							{/if}
+						</tr>
+					{else}
+						{section name=DATA2 loop=$ALL_MONEYFLOW_DATA[DATA].moneyflow_split_entries}
+							<tr>
+							{if $smarty.section.DATA2.first eq true}
+								<td class="contrastbgcolor" align="center" rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}>{$DATA2}  {$ALL_MONEYFLOW_DATA[DATA].bookingdate}</td>
+								<td class="contrastbgcolor" align="center" rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}>{$ALL_MONEYFLOW_DATA[DATA].invoicedate}</td>
+								<td class="contrastbgcolor" align="right"  rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}><font {if $ALL_MONEYFLOW_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_MONEYFLOW_DATA[DATA].amount|number_format} {#CURRENCY#}</font></td>
+							{/if}
+							<td align="right" class="contrastbgcolor"><font {if $ALL_MONEYFLOW_DATA[DATA].moneyflow_split_entries[DATA2].amount < 0}color="red"{else}color="black"{/if}>{$ALL_MONEYFLOW_DATA[DATA].moneyflow_split_entries[DATA2].amount|number_format} {#CURRENCY#}</font></td>
+							{if $smarty.section.DATA2.first eq true}
+								<td class="contrastbgcolor" rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}>{$ALL_MONEYFLOW_DATA[DATA].contractpartnername}</td>
+							{/if}
+							<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].moneyflow_split_entries[DATA2].comment}</td>
+							<td class="contrastbgcolor">{$ALL_MONEYFLOW_DATA[DATA].moneyflow_split_entries[DATA2].postingaccountname}</td>
+							{if $smarty.section.DATA2.first eq true}
+								<td class="contrastbgcolor" rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}>{$ALL_MONEYFLOW_DATA[DATA].capitalsourcecomment}</td>
+								{if $ALL_MONEYFLOW_DATA[DATA].owner == true }
+									<td class="contrastbgcolor" align="center" rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1024,height=120')">{#TEXT_36#}</a></td>
+									<td class="contrastbgcolor" align="center" rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1024,height=120')">{#TEXT_37#}</a></td>
+								{/if}
+							{/if}
+							</tr>							
+						{/section}
+					{/if}
 				{/section}
 				<tr>
 					<td></td>
 					<td align="right">&sum;</td>
-					<td align="right" class="contrastbgcolor"><font {if $MOVEMENT < 0}color="red"{else}color="black"{/if}><u>{$MOVEMENT|number_format} {#CURRENCY#}</u></font></td>
+					<td align="right" class="contrastbgcolor" colspan="2"><font {if $MOVEMENT < 0}color="red"{else}color="black"{/if}><u>{$MOVEMENT|number_format} {#CURRENCY#}</u></font></td>
 			</table>
 			<table width="830" border=0>
 				<tr>

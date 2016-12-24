@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportControllerHandler.php,v 1.20 2015/09/23 18:35:03 olivleh1 Exp $
+// $Id: ReportControllerHandler.php,v 1.21 2016/12/24 12:07:38 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -39,6 +39,7 @@ use api\model\report\showYearlyReportGraphResponse;
 use api\model\report\showMonthlyReportGraphResponse;
 use client\mapper\ArrayToCapitalsourceTransportMapper;
 use client\mapper\ArrayToMoneyflowTransportMapper;
+use client\mapper\ArrayToMoneyflowSplitEntryTransportMapper;
 use client\mapper\ArrayToReportTurnoverCapitalsourceTransportMapper;
 use client\mapper\ArrayToTrendsCalculatedTransportMapper;
 use client\mapper\ArrayToTrendsSettledTransportMapper;
@@ -58,6 +59,7 @@ class ReportControllerHandler extends AbstractHandler {
 		parent::addMapper( ArrayToTrendsSettledTransportMapper::getClass() );
 		parent::addMapper( ArrayToPostingAccountTransportMapper::getClass() );
 		parent::addMapper( ArrayToPostingAccountAmountTransportMapper::getClass() );
+		parent::addMapper( ArrayToMoneyflowSplitEntryTransportMapper::getClass() );
 	}
 
 	protected final function getCategory() {
@@ -72,6 +74,7 @@ class ReportControllerHandler extends AbstractHandler {
 		$result = null;
 		if ($response instanceof listReportsResponse) {
 			$result ['moneyflows'] = parent::mapArrayNullable( $response->getMoneyflowTransport() );
+			$result ['moneyflow_split_entries'] = parent::mapArrayNullable( $response->getMoneyflowSplitEntryTransport() );
 			$result ['turnover_capitalsources'] = parent::mapArrayNullable( $response->getReportTurnoverCapitalsourceTransport() );
 			$result ['allYears'] = $response->getAllYears();
 			$result ['allMonth'] = $response->getAllMonth();

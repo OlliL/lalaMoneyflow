@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2005-2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,29 +25,64 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: include.php,v 1.40 2016/12/24 12:07:38 olivleh1 Exp $
-//
+namespace api\model\transport;
 
-//
-// ATTENTION: you should leave this file unmodified!
-//
-define( 'ROOTDIR', dirname( __FILE__ ) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR );
-define( 'HTTPFULDIR', ROOTDIR . 'contrib/httpful/src/' );
+class MoneyflowSplitEntryTransport extends AbstractTransport {
 
-function framework_autoload($className) {
-	$fname = str_replace( '\\', DIRECTORY_SEPARATOR, $className ) . '.php';
-	if (is_file( ROOTDIR . $fname )) {
-		require (ROOTDIR . $fname);
-	} else if (is_file( HTTPFULDIR . $fname )) {
-		require (HTTPFULDIR . $fname);
+	public $id;
+	public $moneyflowid;
+	public $amount;
+	public $comment;
+	public $postingaccountid;
+	public $postingaccountname;
+
+	public final function setId($id) {
+		$this->id = $id;
+	}
+
+	public final function setAmount($amount) {
+		$this->amount = $amount;
+	}
+
+	public final function setComment($comment) {
+		$this->comment = $comment;
+	}
+
+	public final function getId() {
+		return $this->id;
+	}
+
+	public final function getAmount() {
+		return $this->amount;
+	}
+
+	public final function getComment() {
+		return $this->comment;
+	}
+
+	public final function setPostingaccountid($postingaccountid) {
+		$this->postingaccountid = $postingaccountid;
+	}
+
+	public final function setPostingaccountname($postingaccountname) {
+		$this->postingaccountname = $postingaccountname;
+	}
+
+	public final function getPostingaccountid() {
+		return $this->postingaccountid;
+	}
+
+	public final function getPostingaccountname() {
+		return $this->postingaccountname;
+	}
+
+	public final function getMoneyflowid() {
+		return $this->moneyflowid;
+	}
+
+	public final function setMoneyflowid($moneyflowid) {
+		$this->moneyflowid = $moneyflowid;
 	}
 }
-spl_autoload_register( 'framework_autoload' );
 
-ini_set( "log_errors", 1 );
-ini_set( "error_log", "/tmp/php-error-client.log" );
-
-define( 'ENABLE_JPGRAPH', true );
-// $money_debug=2;
-$money_debug=0;
 ?>

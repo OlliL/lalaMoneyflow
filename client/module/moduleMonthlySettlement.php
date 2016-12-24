@@ -24,12 +24,11 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMonthlySettlement.php,v 1.65 2016/02/06 23:06:13 olivleh1 Exp $
+// $Id: moduleMonthlySettlement.php,v 1.66 2016/12/24 12:09:27 olivleh1 Exp $
 //
 namespace client\module;
 
 use client\handler\MonthlySettlementControllerHandler;
-use base\ErrorCode;
 use client\core\coreText;
 
 class moduleMonthlySettlement extends module {
@@ -125,12 +124,6 @@ class moduleMonthlySettlement extends module {
 							$error = $validationResult ['error'];
 
 							$this->add_error( $error );
-
-							switch ($error) {
-								// case ErrorCode::NAME_ALREADY_EXISTS :
-								// $all_data ['name_error'] = 1;
-								// break;
-							}
 						}
 					}
 				}
