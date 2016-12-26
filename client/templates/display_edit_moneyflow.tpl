@@ -47,6 +47,25 @@
 					{/section}
 					</select></td>
 				</tr>
+				{section name=SPLIT_ENTRIES loop=$MONEYFLOW_SPLIT_ENTRIES}
+					<tr>
+						<td colspan=2></td>
+						<th align="right">{#TEXT_37#} <input class="contrastbgcolor" type="checkbox" name="moneyflow_split_entries[{$smarty.section.SPLIT_ENTRIES.index}][delete]" value=1 {if $MONEYFLOW_SPLIT_ENTRIES[SPLIT_ENTRIES].delete == 1}checked{/if} ></th>
+						<td class="contrastbgcolor">
+						 	<input type="hidden" name="moneyflow_split_entries[{$smarty.section.SPLIT_ENTRIES.index}][moneyflowsplitentryid]" value="{$MONEYFLOW_SPLIT_ENTRIES[SPLIT_ENTRIES].moneyflowsplitentryid}">
+						 	<input class="contrastbgcolornobr" type="text" name="moneyflow_split_entries[{$smarty.section.SPLIT_ENTRIES.index}][amount]" value="{$MONEYFLOW_SPLIT_ENTRIES[SPLIT_ENTRIES].amount}"    size=8  style="{if $MONEYFLOW_SPLIT_ENTRIES[SPLIT_ENTRIES].amount_error == 1}color:red;{/if}text-align:right"> {#CURRENCY#}
+						</td>
+						<td></td>
+						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="moneyflow_split_entries[{$smarty.section.SPLIT_ENTRIES.index}][comment]" value="{$MONEYFLOW_SPLIT_ENTRIES[SPLIT_ENTRIES].comment|escape:htmlall}" size="40"></td>
+						<td class="contrastbgcolor"><select class="contrastbgcolor" name="moneyflow_split_entries[{$smarty.section.SPLIT_ENTRIES.index}][mpa_postingaccountid]" size=1 style="width:150px">
+							<option value=""> </option>
+						{section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
+							<option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}" {if $POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid == $MONEYFLOW_SPLIT_ENTRIES[SPLIT_ENTRIES].mpa_postingaccountid}selected{/if}> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name|escape:htmlall}
+						{/section}
+						</select></td>
+						<td></td>
+					</tr>
+				{/section}
 			</table>
 			<input type="submit" value="{#TEXT_22#}">
 			<input type="button" value="{#TEXT_23#}" onclick="javascript:void self.close();">

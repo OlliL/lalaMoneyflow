@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2013-2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2013-2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowControllerHandler.php,v 1.15 2015/09/13 17:43:10 olivleh1 Exp $
+// $Id: MoneyflowControllerHandler.php,v 1.16 2016/12/26 21:03:25 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -48,6 +48,8 @@ use client\mapper\ArrayToMoneyflowSearchResultTransportMapper;
 use api\model\transport\MoneyflowTransport;
 use api\model\transport\MoneyflowSearchParamsTransport;
 use base\Singleton;
+use client\mapper\ArrayToMoneyflowSplitEntryTransportMapper;
+use api\model\transport\MoneyflowSplitEntryTransport;
 
 class MoneyflowControllerHandler extends AbstractHandler {
 	use Singleton;
@@ -61,6 +63,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		parent::addMapper( ArrayToPostingAccountTransportMapper::getClass() );
 		parent::addMapper( ArrayToMoneyflowSearchParamsTransportMapper::getClass() );
 		parent::addMapper( ArrayToMoneyflowSearchResultTransportMapper::getClass() );
+		parent::addMapper( ArrayToMoneyflowSplitEntryTransportMapper::getClass() );
 	}
 
 	protected final function getCategory() {
@@ -94,6 +97,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 			} else {
 				$result ['moneyflow'] = array ();
 			}
+			$result ['moneyflow_split_entries'] = parent::mapArrayNullable( $response->getMoneyflowSplitEntryTransport() );
 			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
 		}
 
@@ -143,11 +147,23 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		return $result;
 	}
 
-	public final function updateMoneyflow(array $moneyflow) {
+	public final function updateMoneyflow(array $moneyflow, array $delete_moneyflowsplitentryids, array $update_moneyflowsplitentrys, array $insert_moneyflowsplitentrys) {
 		$moneyflowTransport = parent::map( $moneyflow, MoneyflowTransport::getClass() );
 
 		$request = new updateMoneyflowRequest();
 		$request->setMoneyflowTransport( $moneyflowTransport );
+		if (count( $delete_moneyflowsplitentryids ) > 0) {
+			$request->setDeleteMoneyflowSplitEntryIds( $delete_moneyflowsplitentryids );
+		}
+		if (count( $update_moneyflowsplitentrys ) > 0) {
+			$updateMoneyflowSplitEntryTransport = parent::mapArray( $update_moneyflowsplitentrys, MoneyflowSplitEntryTransport::getClass() );
+			$request->setUpdateMoneyflowSplitEntryTransport( $updateMoneyflowSplitEntryTransport );
+		}
+		if (count( $insert_moneyflowsplitentrys ) > 0) {
+			$insertMoneyflowSplitEntryTransport = parent::mapArray( $insert_moneyflowsplitentrys, MoneyflowSplitEntryTransport::getClass() );
+			$request->setInsertMoneyflowSplitEntryTransport( $insertMoneyflowSplitEntryTransport );
+		}
+
 		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 
 		$result = null;

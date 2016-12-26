@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2005-2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2005-2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.94 2015/02/13 00:03:37 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.95 2016/12/26 21:03:25 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -38,12 +38,15 @@ class moduleMoneyFlows extends module {
 		parent::__construct();
 	}
 
-	public final function display_edit_moneyflow($realaction, $id, $all_data) {
+	public final function display_edit_moneyflow($realaction, $id, $all_data, $moneyflow_split_entries) {
 		$close = 0;
 		if (empty( $id ))
 			return;
 
 		$orig_amount = $all_data ['amount'];
+		$delete_moneyflowsplitentryids = array ();
+		$update_moneyflowsplitentrys = array ();
+		$insert_moneyflowsplitentrys = array ();
 
 		switch ($realaction) {
 			case 'save' :
@@ -71,7 +74,43 @@ class moduleMoneyFlows extends module {
 				}
 
 				if ($valid_data === true) {
-					$ret = MoneyflowControllerHandler::getInstance()->updateMoneyflow( $all_data );
+					if (count( $moneyflow_split_entries ) > 0) {
+						$sum_amount = $all_data ['amount'];
+						foreach ( $moneyflow_split_entries as $key => $value ) {
+							if (array_key_exists( 'delete', $value ) && $value ['delete'] == '1') {
+								if ($value ['moneyflowsplitentryid'] > 0) {
+									$delete_moneyflowsplitentryids [] = $value ['moneyflowsplitentryid'];
+								}
+							} else {
+								if ($value ['moneyflowsplitentryid'] > 0 || $value ['amount'] != '') {
+									if (! $this->fix_amount( $value ['amount'] )) {
+										$moneyflow_split_entries [$key] ['amount_error'] = 1;
+										$valid_data = false;
+									} else {
+										$sum_amount = number_format( $sum_amount, 2 ) - number_format( $value ['amount'], 2 );
+									}
+								}
+
+								if ($value ['moneyflowsplitentryid'] > 0) {
+									$value['moneyflowid'] = $all_data ['moneyflowid'];
+									$update_moneyflowsplitentrys [] = $value;
+								} elseif ($value ['amount'] != '') {
+									$value['moneyflowid'] = $all_data ['moneyflowid'];
+									$insert_moneyflowsplitentrys [] = $value;
+								}
+							}
+						}
+
+						if ($sum_amount != 0 && (count( $insert_moneyflowsplitentrys ) > 0 || count( $update_moneyflowsplitentrys ) > 0)) {
+							$this->add_error( ErrorCode::SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT );
+							$valid_data = false;
+						}
+					}
+				}
+
+				if ($valid_data === true) {
+
+					$ret = MoneyflowControllerHandler::getInstance()->updateMoneyflow( $all_data, $delete_moneyflowsplitentryids, $update_moneyflowsplitentrys, $insert_moneyflowsplitentrys );
 					if ($ret === true) {
 						$close = 1;
 						break;
@@ -130,14 +169,24 @@ class moduleMoneyFlows extends module {
 			default :
 				$showEditMoneyflow = MoneyflowControllerHandler::getInstance()->showEditMoneyflow( $id );
 				$all_data_pre = $showEditMoneyflow ['moneyflow'];
+				$moneyflow_split_entries_pre = $showEditMoneyflow ['moneyflow_split_entries'];
 				$capitalsource_values = $showEditMoneyflow ['capitalsources'];
 				$contractpartner_values = $showEditMoneyflow ['contractpartner'];
 				$postingaccount_values = $showEditMoneyflow ['postingaccounts'];
 				if ($realaction != "save") {
 					$all_data = $all_data_pre;
+					$moneyflow_split_entries = $moneyflow_split_entries_pre;
 				}
 
 				break;
+		}
+
+		$i = count( $moneyflow_split_entries );
+		while ( $i < 5 ) {
+			$moneyflow_split_entries [$i] = array (
+					'moneyflowsplitentryid' => $i * - 1
+			);
+			$i ++;
 		}
 
 		$this->template->assign( 'CLOSE', $close );
@@ -146,6 +195,7 @@ class moduleMoneyFlows extends module {
 			$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
 			$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 			$this->template->assign( 'ALL_DATA', $all_data );
+			$this->template->assign( 'MONEYFLOW_SPLIT_ENTRIES', $moneyflow_split_entries );
 			$this->template->assign( 'MONEYFLOWID', $id );
 			$this->template->assign( 'ERRORS', $this->get_errors() );
 		}
@@ -161,7 +211,7 @@ class moduleMoneyFlows extends module {
 				$nothing_checked = true;
 				$numflows = 0;
 				foreach ( $all_data as $id => $value ) {
-					if ($value['predefmoneyflowid'] < 0)
+					if ($value ['predefmoneyflowid'] < 0)
 						$numflows ++;
 
 					if (array_key_exists( 'checked', $value ) && $value ['checked'] == 1) {

@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.95 2015/09/13 17:43:12 olivleh1 Exp $
+// $Id: index.php,v 1.96 2016/12/26 21:03:24 olivleh1 Exp $
 //
 namespace client;
 
@@ -382,7 +382,8 @@ if ($is_logged_in == 0) {
 
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : '';
-				$display = $moduleMoneyFlows->display_edit_moneyflow( $realaction, $id, $all_data );
+				$moneyflow_split_entries = array_key_exists( 'moneyflow_split_entries', $_REQUEST ) ? $_REQUEST ['moneyflow_split_entries'] : array();
+				$display = $moduleMoneyFlows->display_edit_moneyflow( $realaction, $id, $all_data, $moneyflow_split_entries );
 				break;
 
 			case 'delete_moneyflow' :
