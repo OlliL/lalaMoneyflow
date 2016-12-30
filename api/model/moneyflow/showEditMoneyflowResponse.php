@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2014-2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014-2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showEditMoneyflowResponse.php,v 1.5 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: showEditMoneyflowResponse.php,v 1.6 2016/12/30 18:34:53 olivleh1 Exp $
 //
 namespace api\model\moneyflow;
 
@@ -33,6 +33,7 @@ use api\model\transport\MoneyflowTransport;
 
 class showEditMoneyflowResponse implements IshowEditMoneyflowsResponse {
 	public $moneyflowTransport;
+	public $moneyflowSplitEntryTransport;
 	public $capitalsourceTransport;
 	public $contractpartnerTransport;
 	public $postingAccountTransport;
@@ -43,6 +44,14 @@ class showEditMoneyflowResponse implements IshowEditMoneyflowsResponse {
 
 	public final function setMoneyflowTransport(MoneyflowTransport $moneyflowTransport) {
 		$this->moneyflowTransport = $moneyflowTransport;
+	}
+
+	public final function getMoneyflowSplitEntryTransport() {
+		return $this->moneyflowSplitEntryTransport;
+	}
+
+	public final function setMoneyflowSplitEntryTransport(array $moneyflowSplitEntryTransport) {
+		$this->moneyflowSplitEntryTransport = $moneyflowSplitEntryTransport;
 	}
 
 	public final function getCapitalsourceTransport() {

@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: showCompareDataFormResponse.php,v 1.5 2015/02/13 00:03:42 olivleh1 Exp $
+// $Id: showCompareDataFormResponse.php,v 1.6 2016/12/30 18:34:53 olivleh1 Exp $
 //
 namespace api\model\comparedata;
 
@@ -34,6 +34,7 @@ class showCompareDataFormResponse {
 	public $capitalsourceTransport;
 	public $selectedCapitalsourceId;
 	public $selectedDataFormat;
+	public $selectedSourceIsFile;
 
 	public final function getCompareDataFormatTransport() {
 		return $this->compareDataFormatTransport;
@@ -66,6 +67,15 @@ class showCompareDataFormResponse {
 	public final function getSelectedDataFormat() {
 		return $this->selectedDataFormat;
 	}
+
+        public final function setSelectedSourceIsFile($selectedSourceIsFile) {
+                $this->selectedSourceIsFile = $selectedSourceIsFile;
+        }
+
+        public final function getSelectedSourceIsFile() {
+                return $this->selectedSourceIsFile;
+        }
+
 }
 
 ?>

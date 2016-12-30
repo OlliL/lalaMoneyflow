@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013-2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2013-2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: updateMoneyflowRequest.php,v 1.5 2015/02/13 00:03:38 olivleh1 Exp $
+// $Id: updateMoneyflowRequest.php,v 1.6 2016/12/30 18:34:53 olivleh1 Exp $
 //
 namespace api\model\moneyflow;
 
@@ -33,6 +33,9 @@ use api\model\transport\MoneyflowTransport;
 
 class updateMoneyflowRequest {
 	public $moneyflowTransport;
+	public $deleteMoneyflowSplitEntryIds;
+	public $updateMoneyflowSplitEntryTransport;
+	public $insertMoneyflowSplitEntryTransport;
 
 	public final function getMoneyflowTransport() {
 		return $this->moneyflowTransport;
@@ -40,6 +43,30 @@ class updateMoneyflowRequest {
 
 	public final function setMoneyflowTransport(MoneyflowTransport $moneyflowTransport) {
 		$this->moneyflowTransport = $moneyflowTransport;
+	}
+
+	public final function getInsertMoneyflowSplitEntryTransport() {
+		return $this->insertMoneyflowSplitEntryTransport;
+	}
+
+	public final function setInsertMoneyflowSplitEntryTransport(array $insertMoneyflowSplitEntryTransport) {
+		$this->insertMoneyflowSplitEntryTransport = $insertMoneyflowSplitEntryTransport;
+	}
+
+	public final function getUpdateMoneyflowSplitEntryTransport() {
+		return $this->updateMoneyflowSplitEntryTransport;
+	}
+
+	public final function setUpdateMoneyflowSplitEntryTransport(array $updateMoneyflowSplitEntryTransport) {
+		$this->updateMoneyflowSplitEntryTransport = $updateMoneyflowSplitEntryTransport;
+	}
+
+	public final function getDeleteMoneyflowSplitEntryIds() {
+		return $this->deleteMoneyflowSplitEntryIds;
+	}
+
+	public final function setDeleteMoneyflowSplitEntryIds(array $deleteMoneyflowSplitEntryIds) {
+		$this->deleteMoneyflowSplitEntryIds = $deleteMoneyflowSplitEntryIds;
 	}
 }
 
