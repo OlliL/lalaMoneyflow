@@ -28,6 +28,7 @@ Installation:
 	client/locale/*.conf
 	client/templates_c
 	client/cache
+- set the serverurl property in client/client.properties to where the Moneyjinn-Server installation is located.
 
 - in Moneyjinn:
  - log in as admin (password admin)
