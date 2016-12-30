@@ -14,6 +14,7 @@ Requirements:
 	- Extension: mbstring
 	- Extension: gd (for jpgraph)
 	- Extension: intl (for sorting via Transliterator class)
+	- Extension: xml (for utf8_encode)
 
 - Smarty 3.x (http://www.smarty.net/)
 
@@ -22,6 +23,12 @@ Requirements:
 
 Installation:
 =============
+
+- make sure your php.ini contains:
+
+	include_path = ".:<PATH-TO-SMARTY>:<PATH-TO-JPGRAPH:....."
+	file_uploads = On
+	date.timezone = "Europe/Berlin"
 
 - make sure the following directories and files are writable by apache-user (most likely 'www'):
 	client/locale
