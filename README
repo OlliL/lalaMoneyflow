@@ -23,7 +23,6 @@ Requirements:
 Installation:
 =============
 
-- change ROOTDIR in client/include.php
 - make sure the following directories and files are writable by apache-user (most likely 'www'):
 	client/locale
 	client/locale/*.conf
