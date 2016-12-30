@@ -12,8 +12,8 @@ Requirements:
 	- Extension: curl
 	- Extension: json
 	- Extension: mbstring
-	- Extension: ctype
 	- Extension: gd (for jpgraph)
+	- Extension: intl (for sorting via Transliterator class)
 
 - Smarty 3.x (http://www.smarty.net/)
 
