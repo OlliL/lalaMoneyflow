@@ -9,73 +9,37 @@ Requirements:
 - PHP 5.5.x or higher
 	- Extension: session
 	- Extension: hash
-	- Extension: xml
 	- Extension: curl
-	- Extension: PDO_MYSQL
 	- Extension: json
 	- Extension: mbstring
 	- Extension: ctype
 	- Extension: gd (for jpgraph)
-	- Extension: simplexml (for data comparision)
-
-- Caching:
-	- Yac (https://github.com/laruence/yac/)
-	- PECL Extension msgpack
-   OR
-	- memcached Server + PECL Extension memcached
-	- optional: PECL igbinary Extension for faster access
-	- consider configuring memcached to use Unix sockets for better performance
-   OR
-	- redis Server + PECL Extension redis
-	- optional: PECL igbinary Extension for faster access
-	- consider configuring redis to use Unix sockets for better performance
 
 - Smarty 3.x (http://www.smarty.net/)
 
 - JpGraph 3.x (http://jpgraph.net/)
 
-- PECL SQL_Types 0.4.0 (or higher) (for the XML SEPA Parser - data comparision)
-
-
 
 Installation:
 =============
 
-- create a MySQL DB
-	e.g.		create database moneyflow;
-- create a MySQL user to be used by moneyflow (SELECT, INSERT, UPDATE, DELETE privileges are sufficient)
-	e.g.		GRANT SELECT,INSERT,UPDATE,DELETE ON moneyflow.* TO moneyflow@localhost IDENTIFIED BY 'moneyflow' WITH GRANT OPTION; 
-- change DATASOURCE in server/include.php
- - change ROOTDIR in server/include.php, client/include.php
-- execute mysqldump.sql
-	mysql -u root -p<password> -h <dbhost> <dbname> < server/mysqldump.sql
-- execute mysqlext.sql
-	mysql -u root -p<password> -h <dbhost> <dbname> < server/mysqlext.sql
+- change ROOTDIR in client/include.php
 - make sure the following directories and files are writable by apache-user (most likely 'www'):
 	client/locale
 	client/locale/*.conf
 	client/templates_c
 	client/cache
-- log in as admin (password admin)
-- change the password
-- create a new group
-- create a new user with admin privileges, assign the user to the new group
-- create capitalsources
-- create contractpartner
-- create postingt accounts (your user needs to have the right "admin")
+
+- in Moneyjinn:
+ - log in as admin (password admin)
+ - change the password
+ - create a new group
+ - create a new user with admin privileges, assign the user to the new group
+ - create capitalsources
+ - create contractpartner
+ - create postingt accounts (your user needs to have the right "admin")
 
 
-
-
-
-To run the PHPUnit Tests in server:
-===================================
-- install PHP DOM Extension
-- then:
-	- cd server
-	- ../contrib/phpunit.phar tests
-	
-	
 Setting up Eclipse:
 ===================
 - download Eclipse Mars
