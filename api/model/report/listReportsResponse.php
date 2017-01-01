@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2014-2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2014-2017 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,7 +25,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: listReportsResponse.php,v 1.10 2016/12/24 12:09:26 olivleh1 Exp $
+// $Id: listReportsResponse.php,v 1.11 2017/01/01 18:26:12 olivleh1 Exp $
 //
 namespace api\model\report;
 
@@ -45,6 +45,7 @@ class listReportsResponse {
 	public $previousYear;
 	public $nextMonth;
 	public $nextYear;
+	public $moneyflowsWithReceipt;
 
 	public final function getMoneyflowTransport() {
 		return $this->moneyflowTransport;
@@ -164,6 +165,14 @@ class listReportsResponse {
 
 	public final function getNextYear() {
 		return $this->nextYear;
+	}
+
+	public final function setMoneyflowsWithReceipt($moneyflowsWithReceipt) {
+		$this->moneyflowsWithReceipt = $moneyflowsWithReceipt;
+	}
+
+	public final function getMoneyflowsWithReceipt() {
+		return $this->moneyflowsWithReceipt;
 	}
 }
 

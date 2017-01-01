@@ -75,6 +75,7 @@ function Go(x)
 			</table>
 			<table border=0 align="center" cellpadding=2>
 				<tr>
+					<th></th>
 					<th width="90"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_bookingdate&amp;reports_order={$NEWORDER}" >{#TEXT_16#}</a></th>
 					<th width="90"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_invoicedate&amp;reports_order={$NEWORDER}" >{#TEXT_17#}</a></th>
 					<th width="100" colspan="2"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_amount&amp;reports_order={$NEWORDER}"     >{#TEXT_18#}</a></th>
@@ -88,6 +89,9 @@ function Go(x)
 				{section name=DATA loop=$ALL_MONEYFLOW_DATA}
 					{if $ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries eq 0}
 						<tr>
+							<td align="center">{if $ALL_MONEYFLOW_DATA[DATA].has_receipt eq 1}
+								<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=show_moneyflow_receipt&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}','_blank','width=800,height=1000')">+</a>
+							{/if}</td>
 							<td class="contrastbgcolor" align="center">{$ALL_MONEYFLOW_DATA[DATA].bookingdate}</td>
 							<td class="contrastbgcolor" align="center">{$ALL_MONEYFLOW_DATA[DATA].invoicedate}</td>
 							<td align="right" class="contrastbgcolor" colspan="2"><font {if $ALL_MONEYFLOW_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_MONEYFLOW_DATA[DATA].amount|number_format} {#CURRENCY#}</font></td>
@@ -104,6 +108,9 @@ function Go(x)
 						{section name=DATA2 loop=$ALL_MONEYFLOW_DATA[DATA].moneyflow_split_entries}
 							<tr>
 							{if $smarty.section.DATA2.first eq true}
+								<td align="center" rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}>{if $ALL_MONEYFLOW_DATA[DATA].has_receipt eq 1}
+									<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=show_moneyflow_receipt&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}','_blank','width=800,height=1000')">+</a>
+								{/if}</td>
 								<td class="contrastbgcolor" align="center" rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}>{$DATA2}  {$ALL_MONEYFLOW_DATA[DATA].bookingdate}</td>
 								<td class="contrastbgcolor" align="center" rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}>{$ALL_MONEYFLOW_DATA[DATA].invoicedate}</td>
 								<td class="contrastbgcolor" align="right"  rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}><font {if $ALL_MONEYFLOW_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_MONEYFLOW_DATA[DATA].amount|number_format} {#CURRENCY#}</font></td>

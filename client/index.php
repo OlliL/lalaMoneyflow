@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: index.php,v 1.96 2016/12/26 21:03:24 olivleh1 Exp $
+// $Id: index.php,v 1.97 2017/01/01 18:26:12 olivleh1 Exp $
 //
 namespace client;
 
@@ -138,6 +138,7 @@ if ($is_logged_in == 0) {
 		case 'add_moneyflow' :
 		case 'edit_moneyflow' :
 		case 'delete_moneyflow' :
+		case 'show_moneyflow_receipt':
 			$moduleMoneyFlows = new moduleMoneyFlows();
 			break;
 		case 'add_importedmoneyflows' :
@@ -391,6 +392,13 @@ if ($is_logged_in == 0) {
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : '';
 				$display = $moduleMoneyFlows->display_delete_moneyflow( $realaction, $id );
+				break;
+
+
+			case 'show_moneyflow_receipt' :
+
+				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : '';
+				$display = $moduleMoneyFlows->show_moneyflow_receipt( $id );
 				break;
 
 			/* imported moneyflows */

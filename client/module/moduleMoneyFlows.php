@@ -24,18 +24,28 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleMoneyFlows.php,v 1.95 2016/12/26 21:03:25 olivleh1 Exp $
+// $Id: moduleMoneyFlows.php,v 1.96 2017/01/01 18:26:12 olivleh1 Exp $
 //
 namespace client\module;
 
 use base\ErrorCode;
 use client\handler\MoneyflowControllerHandler;
 use client\util\Environment;
+use client\handler\MoneyflowReceiptControllerHandler;
 
 class moduleMoneyFlows extends module {
 
 	public final function __construct() {
 		parent::__construct();
+	}
+
+	public final function show_moneyflow_receipt($id) {
+		if (empty( $id ))
+			return;
+
+		$receipt = MoneyflowReceiptControllerHandler::getInstance()->showMoneyflowReceipt($id);
+		header('Content-Type: image/jpeg');
+		echo base64_decode($receipt);
 	}
 
 	public final function display_edit_moneyflow($realaction, $id, $all_data, $moneyflow_split_entries) {

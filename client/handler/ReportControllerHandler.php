@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2013-2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2013-2017 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: ReportControllerHandler.php,v 1.21 2016/12/24 12:07:38 olivleh1 Exp $
+// $Id: ReportControllerHandler.php,v 1.22 2017/01/01 18:26:12 olivleh1 Exp $
 //
 namespace client\handler;
 
@@ -88,6 +88,7 @@ class ReportControllerHandler extends AbstractHandler {
 			$result ['prev_year'] = $response->getPreviousYear();
 			$result ['next_month'] = $response->getNextMonth();
 			$result ['next_year'] = $response->getNextYear();
+			$result ['moneyflows_with_receipt'] = $response->getMoneyflowsWithReceipt();
 		}
 
 		return $result;

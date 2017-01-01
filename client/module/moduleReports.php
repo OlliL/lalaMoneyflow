@@ -24,7 +24,7 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: moduleReports.php,v 1.112 2016/12/24 12:09:27 olivleh1 Exp $
+// $Id: moduleReports.php,v 1.113 2017/01/01 18:26:12 olivleh1 Exp $
 //
 namespace client\module;
 
@@ -67,6 +67,7 @@ class moduleReports extends module {
 		$next_month = $listReports ['next_month'];
 		$next_year = $listReports ['next_year'];
 		$moneyflow_split_entries = $listReports['moneyflow_split_entries'];
+		$moneyflows_with_receipt = $listReports['moneyflows_with_receipt'];
 
 		$mms_exists = false;
 		$report = 0;
@@ -170,6 +171,12 @@ class moduleReports extends module {
 					$all_moneyflow_data [$key] ['has_moneyflow_split_entries'] = count($moneyflowSplitEntries);
 					if(count($moneyflowSplitEntries) > 0) {
 						$all_moneyflow_data [$key] ['moneyflow_split_entries'] = $moneyflowSplitEntries;
+					}
+
+					if(in_array($value['moneyflowid'],$moneyflows_with_receipt)) {
+						$all_moneyflow_data[$key]['has_receipt'] = 1;
+					} else {
+						$all_moneyflow_data[$key]['has_receipt'] = 0;
 					}
 				}
 
