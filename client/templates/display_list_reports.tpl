@@ -134,6 +134,7 @@ function Go(x)
 				{/section}
 				<tr>
 					<td></td>
+					<td></td>
 					<td align="right">&sum;</td>
 					<td align="right" class="contrastbgcolor" colspan="2"><font {if $MOVEMENT < 0}color="red"{else}color="black"{/if}><u>{$MOVEMENT|number_format} {#CURRENCY#}</u></font></td>
 			</table>
