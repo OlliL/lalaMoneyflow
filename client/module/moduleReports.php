@@ -173,7 +173,7 @@ class moduleReports extends module {
 						$all_moneyflow_data [$key] ['moneyflow_split_entries'] = $moneyflowSplitEntries;
 					}
 
-					if(in_array($value['moneyflowid'],$moneyflows_with_receipt)) {
+					if(is_array($moneyflows_with_receipt) && in_array($value['moneyflowid'],$moneyflows_with_receipt)) {
 						$all_moneyflow_data[$key]['has_receipt'] = 1;
 					} else {
 						$all_moneyflow_data[$key]['has_receipt'] = 0;
