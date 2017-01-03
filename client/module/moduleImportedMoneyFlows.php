@@ -93,51 +93,60 @@ class moduleImportedMoneyFlows extends module {
 
 						if ($createMoneyflows !== true) {
 							$data_is_valid = false;
-							if(is_array($createMoneyflows)) {
-							foreach ( $createMoneyflows ['errors'] as $validationResult ) {
-								$error = $validationResult ['error'];
-								$key = $validationResult ['key'];
+							if (is_array( $createMoneyflows )) {
+								foreach ( $createMoneyflows ['errors'] as $validationResult ) {
+									$error = $validationResult ['error'];
+									$key = "";
+									foreach ( $all_data as $matching_key2 => $value2 ) {
+										if ($value2 ["importedmoneyflowid"] == $validationResult ['key']) {
+											$key = $matching_key2;
+										}
+									}
 
-								switch ($error) {
-									case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-										$this->add_error( $error, array (
-												$all_data [$key] ['amount']
-										) );
-										break;
-									case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
-										$this->add_error( $error, array (
-												Environment::getInstance()->getSettingDateFormat()
-										) );
-										break;
-									default :
-										$this->add_error( $error );
-								}
+									if($key === "") {
+										continue;
+									}
 
-								switch ($error) {
-									case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
-									case ErrorCode::BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT :
-										$all_data [$key] ['bookingdate_error'] = 1;
-										break;
-									case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
-										$all_data [$key] ['bookingdate_error'] = 1;
-									case ErrorCode::CAPITALSOURCE_DOES_NOT_EXIST :
-									case ErrorCode::CAPITALSOURCE_IS_NOT_SET :
-									case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
-										$all_data [$key] ['capitalsource_error'] = 1;
-										break;
-									case ErrorCode::CONTRACTPARTNER_DOES_NOT_EXIST :
-									case ErrorCode::CONTRACTPARTNER_IS_NOT_SET :
-										$all_data [$key] ['contractpartner_error'] = 1;
-										break;
-									case ErrorCode::AMOUNT_IS_ZERO :
-									case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-										$all_data [$key] ['amount_error'] = 1;
-										break;
-									case ErrorCode::CONTRACTPARTNER_NO_LONGER_VALID :
-										$all_data [$key] ['contractpartner_error'] = 1;
-										$all_data [$key] ['bookingdate_error'] = 1;
+									switch ($error) {
+										case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
+											$this->add_error( $error, array (
+													$all_data [$key] ['amount']
+											) );
+											break;
+										case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
+											$this->add_error( $error, array (
+													Environment::getInstance()->getSettingDateFormat()
+											) );
+											break;
+										default :
+											$this->add_error( $error );
+									}
+
+									switch ($error) {
+										case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
+										case ErrorCode::BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT :
+											$all_data [$key] ['bookingdate_error'] = 1;
+											break;
+										case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
+											$all_data [$key] ['bookingdate_error'] = 1;
+										case ErrorCode::CAPITALSOURCE_DOES_NOT_EXIST :
+										case ErrorCode::CAPITALSOURCE_IS_NOT_SET :
+										case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
+											$all_data [$key] ['capitalsource_error'] = 1;
+											break;
+										case ErrorCode::CONTRACTPARTNER_DOES_NOT_EXIST :
+										case ErrorCode::CONTRACTPARTNER_IS_NOT_SET :
+											$all_data [$key] ['contractpartner_error'] = 1;
+											break;
+										case ErrorCode::AMOUNT_IS_ZERO :
+										case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
+											$all_data [$key] ['amount_error'] = 1;
+											break;
+										case ErrorCode::CONTRACTPARTNER_NO_LONGER_VALID :
+											$all_data [$key] ['contractpartner_error'] = 1;
+											$all_data [$key] ['bookingdate_error'] = 1;
+									}
 								}
-							}
 							}
 						}
 					}
