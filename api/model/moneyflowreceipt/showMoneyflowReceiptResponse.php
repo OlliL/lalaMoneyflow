@@ -31,6 +31,7 @@ namespace api\model\moneyflowreceipt;
 
 class showMoneyflowReceiptResponse {
 	public $receipt;
+	public $receiptType;
 
 	public final function setReceipt($receipt) {
 		$this->receipt = $receipt;
@@ -39,5 +40,14 @@ class showMoneyflowReceiptResponse {
 	public final function getReceipt() {
 		return $this->receipt;
 	}
+
+	public final function setReceiptType($receiptType) {
+		$this->receiptType = $receiptType;
+	}
+
+	public final function getReceiptType() {
+		return $this->receiptType;
+	}
+
 }
 ?>

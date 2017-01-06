@@ -44,8 +44,17 @@ class moduleMoneyFlows extends module {
 			return;
 
 		$receipt = MoneyflowReceiptControllerHandler::getInstance()->showMoneyflowReceipt($id);
-		header('Content-Type: image/jpeg');
-		echo base64_decode($receipt);
+
+		switch($receipt['receipt_type']) {
+			case 1:
+				header('Content-Type: image/jpeg');
+				break;
+			case 2:
+				header('Content-Type: application/pdf');
+				break;
+		}
+
+		echo base64_decode($receipt['receipt']);
 	}
 
 	public final function display_edit_moneyflow($realaction, $id, $all_data, $moneyflow_split_entries) {

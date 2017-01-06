@@ -49,7 +49,8 @@ class MoneyflowReceiptControllerHandler extends AbstractHandler {
 
 		$result = null;
 		if ($response instanceof showMoneyflowReceiptResponse) {
-			$result = $response->getReceipt();
+			$result['receipt'] = $response->getReceipt();
+			$result['receipt_type'] = $response->getReceiptType();
 		}
 
 		return $result;
