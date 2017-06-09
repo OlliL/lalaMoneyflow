@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2005-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -100,8 +101,8 @@ if ($is_logged_in == 2) {
 	$password = array_key_exists( 'password', $_REQUEST ) ? $_REQUEST ['password'] : '';
 	$display = $moduleUsers->display_login_user( $realaction, $name, $password, $request_uri );
 
-	if ($_POST ['request_uri'] && ! $display)
-		header( "Location: " . $_POST ['request_uri'] );
+	if ($_POST ['request_uri'] && ! $display && substr( $_POST ['request_uri'], 0, strlen( $_SERVER ['PHP_SELF'] ) ) == $_SERVER ['PHP_SELF'])
+		header( "Location: " . htmlentities( $_POST ['request_uri'] ) );
 }
 
 // if ($money_debug === true)
@@ -138,7 +139,7 @@ if ($is_logged_in == 0) {
 		case 'add_moneyflow' :
 		case 'edit_moneyflow' :
 		case 'delete_moneyflow' :
-		case 'show_moneyflow_receipt':
+		case 'show_moneyflow_receipt' :
 			$moduleMoneyFlows = new moduleMoneyFlows();
 			break;
 		case 'add_importedmoneyflows' :
@@ -383,7 +384,7 @@ if ($is_logged_in == 0) {
 
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : '';
-				$moneyflow_split_entries = array_key_exists( 'moneyflow_split_entries', $_REQUEST ) ? $_REQUEST ['moneyflow_split_entries'] : array();
+				$moneyflow_split_entries = array_key_exists( 'moneyflow_split_entries', $_REQUEST ) ? $_REQUEST ['moneyflow_split_entries'] : array ();
 				$display = $moduleMoneyFlows->display_edit_moneyflow( $realaction, $id, $all_data, $moneyflow_split_entries );
 				break;
 
@@ -393,7 +394,6 @@ if ($is_logged_in == 0) {
 				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : '';
 				$display = $moduleMoneyFlows->display_delete_moneyflow( $realaction, $id );
 				break;
-
 
 			case 'show_moneyflow_receipt' :
 

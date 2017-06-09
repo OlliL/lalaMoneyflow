@@ -43,9 +43,9 @@ class moduleEvents extends module {
 			$events = EventControllerHandler::getInstance()->showEventList();
 
 			if ($events ['mms_missing'] === true && $events ['numberOfAddableSettlements'] > 0) {
-				$this->template->assign( 'MONTH', $events ['month'] );
-				$this->template->assign( 'YEAR', $events ['year'] );
-				$this->template->assign( 'NUM_ADDABLE_SETTLEMENTS', $events ['numberOfAddableSettlements'] );
+				$this->template_assign( 'MONTH', $events ['month'] );
+				$this->template_assign( 'YEAR', $events ['year'] );
+				$this->template_assign( 'NUM_ADDABLE_SETTLEMENTS', $events ['numberOfAddableSettlements'] );
 
 				$this->parse_header( 1 );
 				return $this->fetch_template( 'display_event_monthlysettlement.tpl' );

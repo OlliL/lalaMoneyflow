@@ -48,10 +48,10 @@ class moduleSearch extends module {
 			$searchparams ['grouping2'] = 'month';
 			$searchparams ['order'] = 'grouping';
 		}
-		$this->template->assign( 'SEARCHPARAMS', $searchparams );
-		$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner($contractpartner_values) );
-		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'SEARCHPARAMS', $searchparams );
+		$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner($contractpartner_values) );
+		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_search.tpl' );
@@ -173,18 +173,18 @@ class moduleSearch extends module {
 					foreach ( array_keys( $results [0] ) as $column ) {
 						$columns [$column] = 1;
 					}
-					$this->template->assign( 'SEARCH_DONE', 1 );
-					$this->template->assign( 'COLUMNS', $columns );
-					$this->template->assign( 'RESULTS', $results );
+					$this->template_assign( 'SEARCH_DONE', 1 );
+					$this->template_assign( 'COLUMNS', $columns );
+					$this->template_assign( 'RESULTS', $results );
 				} else {
 					$this->add_error( ErrorCode::NO_DATA_FOUND );
 				}
 			}
 
-			$this->template->assign( 'SEARCHPARAMS', $searchparams );
-			$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner($contractpartner_values) );
-			$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
-			$this->template->assign( 'ERRORS', $this->get_errors() );
+			$this->template_assign( 'SEARCHPARAMS', $searchparams );
+			$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner($contractpartner_values) );
+			$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
+			$this->template_assign( 'ERRORS', $this->get_errors() );
 
 			$this->parse_header();
 			return $this->fetch_template( 'display_search.tpl' );

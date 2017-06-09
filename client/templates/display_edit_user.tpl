@@ -20,7 +20,7 @@
 			<table border=0>
 				<tr>
 					<th>{#TEXT_85#}</th>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[name]"          size=10 value="{$ALL_DATA.name|escape:htmlall}"></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[name]"          size=10 value="{$ALL_DATA.name}"></td>
 				</tr>
 				<tr>
 					<th>{#TEXT_86#}</th>
@@ -66,7 +66,7 @@
 						<select class="contrastbgcolor" name="access_relation[ref_id]" size=1>
 							<option value=""> </option> 
 							{section name=GROUP loop=$GROUPS}
-								<option {if $GROUPS[GROUP].groupid == $ACCESS_RELATION.ref_id}selected{/if} value="{$GROUPS[GROUP].groupid}">{$GROUPS[GROUP].name|escape:htmlall}</option>
+								<option {if $GROUPS[GROUP].groupid == $ACCESS_RELATION.ref_id}selected{/if} value="{$GROUPS[GROUP].groupid}">{$GROUPS[GROUP].name}</option>
 							{/section}
 						</select>
 					</td>
@@ -95,7 +95,7 @@
 			<tr/>
 			{section name=RELATION loop=$ACCESS_RELATIONS}
 			<tr>
-				<td class="contrastbgcolor">{$ACCESS_RELATIONS[RELATION].name|escape:htmlall}</td>
+				<td class="contrastbgcolor">{$ACCESS_RELATIONS[RELATION].name}</td>
 				<td class="contrastbgcolor" style="text-align:center;">{$ACCESS_RELATIONS[RELATION].validfrom}</td>
 				<td class="contrastbgcolor" style="text-align:center;">{$ACCESS_RELATIONS[RELATION].validtil}</td>
 			</tr>

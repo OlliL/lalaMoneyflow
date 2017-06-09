@@ -20,7 +20,7 @@
 					<th width="200">{#TEXT_41#}</th>
 				</tr>
 				<tr>
-					<td class="contrastbgcolor">{$ALL_DATA.name|escape:htmlall}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.name}</td>
 				</tr>
 			</table>
 			<input type="submit" value="{#TEXT_25#}">

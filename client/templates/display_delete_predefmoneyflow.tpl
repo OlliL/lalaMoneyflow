@@ -28,10 +28,10 @@
 				</tr>
 				<tr>
 					<td class="contrastbgcolor" align="right">{$ALL_DATA.amount|string_format:"%.2f"} {#CURRENCY#}</td>
-					<td class="contrastbgcolor">{$ALL_DATA.contractpartnername|escape:htmlall}</td>
-					<td class="contrastbgcolor">{$ALL_DATA.comment|escape:htmlall}</td>
-					<td class="contrastbgcolor">{$ALL_DATA.postingaccountname|escape:htmlall}</td>
-					<td class="contrastbgcolor">{$ALL_DATA.capitalsourcecomment|escape:htmlall}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.contractpartnername}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.comment}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.postingaccountname}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.capitalsourcecomment}</td>
 					<td class="contrastbgcolor">{if $ALL_DATA.once_a_month == 1}{#TEXT_25#}{else}{#TEXT_26#}{/if}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.last_used}</td>
 				</tr>

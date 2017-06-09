@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2005-2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -35,16 +36,34 @@ use client\util\ErrorHandler;
 use client\util\DateUtil;
 
 require_once 'Smarty.class.php';
-
 abstract class module {
 	protected $template;
+
+	protected function template_assign($name, $value) {
+/*		if (is_array( $value ) && count( $value ) == count( $value, COUNT_RECURSIVE )) {
+			$value_escaped = array_map( 'htmlentities', $value );
+		} else
+			*/
+			if (is_array( $value )) {
+				array_walk_recursive($value, function (&$func_value) {
+					$func_value = htmlentities($func_value);
+				});
+// 			foreach ( $$value as &$l ) {
+// 				$l = array_map( 'htmlentities', $l );
+// 			}
+			$value_escaped = $value;
+		} else {
+			$value_escaped = htmlentities( $value );
+		}
+		$this->template->assign( $name, $value_escaped );
+	}
 
 	protected function __construct() {
 		$this->template = new \Smarty();
 		$this->template->error_unassigned = false;
 		$this->template->error_reporting = E_ERROR;
 		$this->template->registerPlugin( 'modifier', 'number_format', 'client\util\SmartyPlugin::my_number_format' );
-		$this->template->assign( 'ENV_INDEX_PHP', 'index.php' );
+		$this->template_assign( 'ENV_INDEX_PHP', 'index.php' );
 		$this->template->setCompileCheck( \Smarty::COMPILECHECK_OFF );
 
 		if (! empty( $_SERVER ['HTTP_REFERER'] )) {
@@ -62,9 +81,13 @@ abstract class module {
 		}
 
 		if ((! empty( $_POST ['sr'] ) && $_POST ['sr'] == 1) || (! empty( $_GET ['sr'] ) && $_GET ['sr'] == 1)) {
-			$this->template->assign( 'ENV_REFERER', htmlentities( $http_referer ) );
+			$this->template_assign( 'ENV_REFERER', $http_referer );
 		} else {
-			$this->template->assign( 'ENV_REFERER', htmlentities( $referer ) );
+			// Check for XSS
+			if(substr( $referer, 0, strlen( $_SERVER ['PHP_SELF'] ) ) != $_SERVER ['PHP_SELF']) {
+				$referer = $_SERVER ['PHP_SELF'];
+			}
+			$this->template_assign( 'ENV_REFERER', $referer );
 		}
 	}
 
@@ -107,7 +130,7 @@ abstract class module {
 		$this->template->assign( 'REPORTS_MONTH', date( 'm' ) );
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
 		$this->template->assign( 'VERSION', '0.22.0' );
-		$this->template->assign( 'NO_NAVIGATION', $nonavi );
+		$this->template_assign( 'NO_NAVIGATION', $nonavi );
 		$admin = Environment::getInstance()->getUserPermAdmin();
 		if ($admin) {
 			$this->template->assign( 'IS_ADMIN', true );

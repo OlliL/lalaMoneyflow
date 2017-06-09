@@ -57,9 +57,9 @@ class moduleLanguages extends module {
 			$all_data = array ();
 		}
 		
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
-		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
+		$this->template_assign( 'ALL_DATA', $all_data );
+		$this->template_assign( 'COUNT_ALL_DATA', count( $all_data ) );
+		$this->template_assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 		
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_languages.tpl' );
@@ -86,15 +86,15 @@ class moduleLanguages extends module {
 				$all_data_eng = $this->coreText->get_lang_data( 1 );
 				$lang_eng = $this->coreLanguages->get_language_name( 1 );
 				
-				$this->template->assign( 'LANGUAGEID', $id );
-				$this->template->assign( 'LANG', $lang );
-				$this->template->assign( 'LANG_ENG', $lang_eng );
-				$this->template->assign( 'ALL_DATA', $all_data );
-				$this->template->assign( 'ALL_DATA_ENG', $all_data_eng );
+				$this->template_assign( 'LANGUAGEID', $id );
+				$this->template_assign( 'LANG', $lang );
+				$this->template_assign( 'LANG_ENG', $lang_eng );
+				$this->template_assign( 'ALL_DATA', $all_data );
+				$this->template_assign( 'ALL_DATA_ENG', $all_data_eng );
 				break;
 		}
 		
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 		
 		$this->parse_header();
 		return $this->fetch_template( 'display_edit_language.tpl' );
@@ -108,7 +108,7 @@ class moduleLanguages extends module {
 				
 				if ($languageId > 0) {
 					$this->coreText->create_new_textfile( $all_data ['source'], $languageId );
-					$this->template->assign( 'CLOSE', 1 );
+					$this->template_assign( 'CLOSE', 1 );
 					break;
 				}
 			
@@ -116,8 +116,8 @@ class moduleLanguages extends module {
 				break;
 		}
 		
-		$this->template->assign( 'ERRORS', $this->get_errors() );
-		$this->template->assign( 'LANGUAGE_VALUES', $this->coreLanguages->get_all_data() );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'LANGUAGE_VALUES', $this->coreLanguages->get_all_data() );
 		
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_add_language.tpl' );

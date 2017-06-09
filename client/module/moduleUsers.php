@@ -87,10 +87,10 @@ class moduleUsers extends module {
 			return;
 		} else {
 			Environment::getInstance()->setSettingGuiLanguage( Configuration::getInstance()->getProperty( 'language_login' ) );
-			$this->template->assign( 'NAME', $name );
-			$this->template->assign( 'STAY_LOGGED_IN', $stay_logged_in );
-			$this->template->assign( 'ERRORS', $this->get_errors() );
-			$this->template->assign( 'REQUEST_URI', $request_uri );
+			$this->template_assign( 'NAME', $name );
+			$this->template_assign( 'STAY_LOGGED_IN', $stay_logged_in );
+			$this->template_assign( 'ERRORS', $this->get_errors() );
+			$this->template_assign( 'REQUEST_URI', $request_uri );
 			$this->parse_header( 1 );
 			return $this->fetch_template( 'display_login_user.tpl' );
 		}
@@ -133,9 +133,9 @@ class moduleUsers extends module {
 			}
 		}
 
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
-		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
+		$this->template_assign( 'ALL_DATA', $all_data );
+		$this->template_assign( 'COUNT_ALL_DATA', count( $all_data ) );
+		$this->template_assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_users.tpl' );
@@ -262,13 +262,13 @@ class moduleUsers extends module {
 				);
 		}
 
-		$this->template->assign( 'CLOSE', $close );
-		$this->template->assign( 'USERID', $userid );
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'ACCESS_RELATION', $access_relation );
-		$this->template->assign( 'ACCESS_RELATIONS', $access_relations );
-		$this->template->assign( 'GROUPS', $groups );
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'CLOSE', $close );
+		$this->template_assign( 'USERID', $userid );
+		$this->template_assign( 'ALL_DATA', $all_data );
+		$this->template_assign( 'ACCESS_RELATION', $access_relation );
+		$this->template_assign( 'ACCESS_RELATIONS', $access_relations );
+		$this->template_assign( 'GROUPS', $groups );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_user.tpl' );
@@ -278,20 +278,20 @@ class moduleUsers extends module {
 		switch ($realaction) {
 			case 'yes' :
 				if (UserControllerHandler::getInstance()->deleteUserById( $userid )) {
-					$this->template->assign( 'CLOSE', 1 );
+					$this->template_assign( 'CLOSE', 1 );
 					break;
 				}
 			default :
 				if ($userid > 0) {
 					$all_data = UserControllerHandler::getInstance()->showDeleteUser( $userid );
 					if ($all_data) {
-						$this->template->assign( 'ALL_DATA', $all_data );
+						$this->template_assign( 'ALL_DATA', $all_data );
 					}
 				}
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_user.tpl' );

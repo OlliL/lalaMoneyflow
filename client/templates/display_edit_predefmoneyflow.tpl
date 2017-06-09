@@ -27,18 +27,18 @@
 					<td class="contrastbgcolornobr"><input class="contrastbgcolor" type="text" name="all_data[amount]" value="{$ALL_DATA.amount}" align="right" size="8" style="{if $ALL_DATA.amount_error == 1}color:red;{/if}text-align:right"> {#CURRENCY#}</td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcp_contractpartnerid]" size="1" {if $ALL_DATA.contractpartner_error == 1}style="color:red"{/if}>
 					{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
-						<option {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $ALL_DATA.mcp_contractpartnerid}selected{/if} value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name|escape:htmlall}
+						<option {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $ALL_DATA.mcp_contractpartnerid}selected{/if} value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}
 					{/section}
 					</select></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]" value="{$ALL_DATA.comment|escape:htmlall}" size="30"></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]" value="{$ALL_DATA.comment}" size="30"></td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mpa_postingaccountid]" size=1 style="width:150px">
 					{section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
-						<option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}" {if $POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid == $ALL_DATA.mpa_postingaccountid}selected{/if}> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name|escape:htmlall}
+						<option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}" {if $POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid == $ALL_DATA.mpa_postingaccountid}selected{/if}> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name}
 					{/section}
 					</select></td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcs_capitalsourceid]" size="1" {if $ALL_DATA.capitalsource_error == 1}style="color:red"{/if}>
 					{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
-						<option {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid == $ALL_DATA.mcs_capitalsourceid}selected{/if} value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}"> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment|escape:htmlall}
+						<option {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid == $ALL_DATA.mcs_capitalsourceid}selected{/if} value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}"> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}
 					{/section}
 					</select></td>
 					<td class="contrastbgcolor">

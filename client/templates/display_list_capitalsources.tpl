@@ -27,7 +27,7 @@
 				{if $LETTER eq $ALL_INDEX_LETTERS[LETTER]}
 					{$LETTER}
 				{else}
-					<a href="{$ENV_INDEX_PHP}?action=list_capitalsources&amp;letter={$ALL_INDEX_LETTERS[LETTER]|escape:htmlall}">{$ALL_INDEX_LETTERS[LETTER]|escape:htmlall}</a>
+					<a href="{$ENV_INDEX_PHP}?action=list_capitalsources&amp;letter={$ALL_INDEX_LETTERS[LETTER]}">{$ALL_INDEX_LETTERS[LETTER]}</a>
 				{/if}
 			{/section}
 			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&amp;sr=1','_blank','width=1000,height=120')">{#TEXT_29#}</a>
@@ -53,7 +53,7 @@
 					</tr>
 					{section name=DATA loop=$ALL_DATA}
 						<tr>
-							<td class="contrastbgcolor">{$ALL_DATA[DATA].comment|escape:htmlall}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].comment}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].typecomment}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].statecomment}</td>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].accountnumber}</td>

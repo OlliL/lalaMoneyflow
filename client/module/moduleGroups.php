@@ -42,9 +42,9 @@ class moduleGroups extends module {
 		$all_index_letters = $listGroups ['initials'];
 		$all_data = $listGroups ['groups'];
 
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
-		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
+		$this->template_assign( 'ALL_DATA', $all_data );
+		$this->template_assign( 'COUNT_ALL_DATA', count( $all_data ) );
+		$this->template_assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_groups.tpl' );
@@ -87,10 +87,10 @@ class moduleGroups extends module {
 				break;
 		}
 
-		$this->template->assign( 'CLOSE', $close );
-		$this->template->assign( 'GROUPID', $groupid );
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'CLOSE', $close );
+		$this->template_assign( 'GROUPID', $groupid );
+		$this->template_assign( 'ALL_DATA', $all_data );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_group.tpl' );
@@ -100,20 +100,20 @@ class moduleGroups extends module {
 		switch ($realaction) {
 			case 'yes' :
 				if (GroupControllerHandler::getInstance()->deleteGroupById( $groupid )) {
-					$this->template->assign( 'CLOSE', 1 );
+					$this->template_assign( 'CLOSE', 1 );
 					break;
 				}
 			default :
 				if ($groupid > 0) {
 					$all_data = GroupControllerHandler::getInstance()->showDeleteGroup( $groupid );
 					if ($all_data) {
-						$this->template->assign( 'ALL_DATA', $all_data );
+						$this->template_assign( 'ALL_DATA', $all_data );
 					}
 				}
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_group.tpl' );

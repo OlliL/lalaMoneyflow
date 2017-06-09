@@ -53,10 +53,10 @@ class moduleCompare extends module {
 			$all_data ['mcs_capitalsourceid'] = $selected_capitalsource;
 		}
 
-		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-		$this->template->assign( 'FORMAT_VALUES', $format_values );
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
+		$this->template_assign( 'FORMAT_VALUES', $format_values );
+		$this->template_assign( 'ALL_DATA', $all_data );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_upfrm_cmp_data.tpl' );
@@ -130,11 +130,11 @@ class moduleCompare extends module {
 		$result ['not_in_file'] = $this->setOwnerAndFilterPrivate( $result ['not_in_file'] );
 		$result ['wrong_source'] = $this->setOwnerAndFilterPrivate( $result ['wrong_source'] );
 
-		$this->template->assign( 'MATCHING', $result ['matching'] );
-		$this->template->assign( 'NOT_IN_DB', $result ['not_in_db'] );
-		$this->template->assign( 'NOT_IN_FILE', $result ['not_in_file'] );
-		$this->template->assign( 'WRONG_SOURCE', $result ['wrong_source'] );
-		$this->template->assign( 'CAPITALSOURCECOMMENT', $result ['capitalsource'] ['comment'] );
+		$this->template_assign( 'MATCHING', $result ['matching'] );
+		$this->template_assign( 'NOT_IN_DB', $result ['not_in_db'] );
+		$this->template_assign( 'NOT_IN_FILE', $result ['not_in_file'] );
+		$this->template_assign( 'WRONG_SOURCE', $result ['wrong_source'] );
+		$this->template_assign( 'CAPITALSOURCECOMMENT', $result ['capitalsource'] ['comment'] );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_analyze_cmp_data.tpl' );

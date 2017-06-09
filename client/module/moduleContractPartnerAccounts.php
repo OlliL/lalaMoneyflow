@@ -42,10 +42,10 @@ class moduleContractPartnerAccounts extends module {
 		$contractpartnername = $listContractpartnerAccounts['contractpartnername'];
 		$all_data = $listContractpartnerAccounts['contractpartneraccount'];
 
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
-		$this->template->assign( 'CONTRACTPARTNERID', $contractpartnerid);
-		$this->template->assign( 'CONTRACTPARTNER_NAME', $contractpartnername );
+		$this->template_assign( 'ALL_DATA', $all_data );
+		$this->template_assign( 'COUNT_ALL_DATA', count( $all_data ) );
+		$this->template_assign( 'CONTRACTPARTNERID', $contractpartnerid);
+		$this->template_assign( 'CONTRACTPARTNER_NAME', $contractpartnername );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_list_contractpartneraccounts.tpl' );
@@ -92,12 +92,12 @@ class moduleContractPartnerAccounts extends module {
 				break;
 		}
 
-		$this->template->assign( 'CLOSE', $close );
+		$this->template_assign( 'CLOSE', $close );
 		if ($close == 0) {
-			$this->template->assign( 'CONTRACTPARTNERACCOUNTID', $contractpartneraccountid );
-			$this->template->assign( 'CONTRACTPARTNERID', $contractpartnerid );
-			$this->template->assign( 'ALL_DATA', $all_data );
-			$this->template->assign( 'ERRORS', $this->get_errors() );
+			$this->template_assign( 'CONTRACTPARTNERACCOUNTID', $contractpartneraccountid );
+			$this->template_assign( 'CONTRACTPARTNERID', $contractpartnerid );
+			$this->template_assign( 'ALL_DATA', $all_data );
+			$this->template_assign( 'ERRORS', $this->get_errors() );
 		}
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_contractpartneraccount.tpl' );
@@ -108,20 +108,20 @@ class moduleContractPartnerAccounts extends module {
 			case 'yes' :
 				$contractpartneraccountid;
 				if (ContractpartnerAccountControllerHandler::getInstance()->deleteContractpartnerAccount( $contractpartneraccountid )) {
-					$this->template->assign( 'CLOSE', 1 );
+					$this->template_assign( 'CLOSE', 1 );
 					break;
 				}
 			default :
 				if ($contractpartneraccountid > 0) {
 					$all_data = ContractpartnerAccountControllerHandler::getInstance()->showDeleteContractpartnerAccount( $contractpartneraccountid );
 					if ($all_data) {
-						$this->template->assign( 'ALL_DATA', $all_data );
+						$this->template_assign( 'ALL_DATA', $all_data );
 					}
 				}
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_contractpartneraccount.tpl' );

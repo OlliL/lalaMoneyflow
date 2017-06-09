@@ -45,11 +45,11 @@ class moduleContractPartners extends module {
 		$all_data = $listContractpartner ['contractpartner'];
 		$currently_valid = $listContractpartner ['currently_valid'];
 
-		$this->template->assign( 'ALL_DATA', $this->sort_contractpartner( $all_data ) );
-		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
-		$this->template->assign( 'LETTER', $letter );
-		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
-		$this->template->assign( 'CURRENTLY_VALID', $currently_valid );
+		$this->template_assign( 'ALL_DATA', $this->sort_contractpartner( $all_data ) );
+		$this->template_assign( 'COUNT_ALL_DATA', count( $all_data ) );
+		$this->template_assign( 'LETTER', $letter );
+		$this->template_assign( 'ALL_INDEX_LETTERS', $all_index_letters );
+		$this->template_assign( 'CURRENTLY_VALID', $currently_valid );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_contractpartners.tpl' );
@@ -126,12 +126,12 @@ class moduleContractPartners extends module {
 				break;
 		}
 
-		$this->template->assign( 'CLOSE', $close );
+		$this->template_assign( 'CLOSE', $close );
 		if ($close == 0) {
-			$this->template->assign( 'CONTRACTPARTNERID', $contractpartnerid );
-			$this->template->assign( 'POSTINGACCOUNT_VALUES', $posting_accounts );
-			$this->template->assign( 'ALL_DATA', $all_data );
-			$this->template->assign( 'ERRORS', $this->get_errors() );
+			$this->template_assign( 'CONTRACTPARTNERID', $contractpartnerid );
+			$this->template_assign( 'POSTINGACCOUNT_VALUES', $posting_accounts );
+			$this->template_assign( 'ALL_DATA', $all_data );
+			$this->template_assign( 'ERRORS', $this->get_errors() );
 		}
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_contractpartner.tpl' );
@@ -141,20 +141,20 @@ class moduleContractPartners extends module {
 		switch ($realaction) {
 			case 'yes' :
 				if (ContractpartnerControllerHandler::getInstance()->deleteContractpartner( $contractpartnerid )) {
-					$this->template->assign( 'CLOSE', 1 );
+					$this->template_assign( 'CLOSE', 1 );
 					break;
 				}
 			default :
 				if ($contractpartnerid > 0) {
 					$all_data = ContractpartnerControllerHandler::getInstance()->showDeleteContractpartner( $contractpartnerid );
 					if ($all_data) {
-						$this->template->assign( 'ALL_DATA', $all_data );
+						$this->template_assign( 'ALL_DATA', $all_data );
 					}
 				}
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_contractpartner.tpl' );

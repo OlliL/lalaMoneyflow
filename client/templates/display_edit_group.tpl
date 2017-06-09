@@ -17,7 +17,7 @@
 			<table border=0>
 				<tr>
 					<th>{#TEXT_41#}</th>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[name]"          size=10 value="{$ALL_DATA.name|escape:htmlall}"></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[name]"          size=10 value="{$ALL_DATA.name}"></td>
 				</tr>
 			</table>
 			<br>

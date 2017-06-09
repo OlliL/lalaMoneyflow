@@ -19,7 +19,7 @@
 					</tr>
 					{section name=DATA loop=$ALL_DATA}
 						<tr>
-							<td class="contrastbgcolor">{$ALL_DATA[DATA].name|escape:htmlall}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].name}</td>
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_group&amp;groupid={$ALL_DATA[DATA].groupid}&amp;sr=1','_blank','width=260,height=100')">{#TEXT_36#}</a></td>
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_group&amp;groupid={$ALL_DATA[DATA].groupid}&amp;sr=1','_blank','width=300,height=130')">{#TEXT_37#}</a></td>
 						</tr>

@@ -5,7 +5,7 @@
 {$HEADER}
 
 		<td align="center" valign="top">
-			<h1>{$CONTRACTPARTNER_NAME|escape:htmlall}: {#TEXT_263#}</h1>
+			<h1>{$CONTRACTPARTNER_NAME}: {#TEXT_263#}</h1>
 			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartneraccount&amp;contractpartnerid={$CONTRACTPARTNERID}&amp;sr=1','_blank','width=400,height=120')">{#TEXT_29#}</a> 
 			{if $COUNT_ALL_DATA > 0}
 				<br><br>
@@ -16,8 +16,8 @@
 					</tr>
 					{section name=DATA loop=$ALL_DATA}
 						<tr>
-							<td class="contrastbgcolor">{$ALL_DATA[DATA].accountnumber|escape:htmlall}</td>
-							<td class="contrastbgcolor">{$ALL_DATA[DATA].bankcode|escape:htmlall}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].accountnumber}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].bankcode}</td>
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_contractpartneraccount&amp;contractpartnerid={$CONTRACTPARTNERID}&amp;contractpartneraccountid={$ALL_DATA[DATA].contractpartneraccountid}&amp;sr=1','_blank','width=400,height=120')">{#TEXT_37#}</a></td>
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartneraccount&amp;contractpartnerid={$CONTRACTPARTNERID}&amp;contractpartneraccountid={$ALL_DATA[DATA].contractpartneraccountid}&amp;sr=1','_blank','width=400,height=120')">{#TEXT_36#}</a></td>
 						</tr>

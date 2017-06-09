@@ -60,9 +60,9 @@ function toggle(div_name) {
 						<td class="contrastbgcolor" align="center">{$file.bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$file.invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $file.amount < 0}color="red"{else}color="black"{/if}>{$file.amount|number_format} {#CURRENCY#}</font></td>
-						<td class="contrastbgcolor">{$file.contractpartnername|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$file.comment|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$CAPITALSOURCECOMMENT|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$file.contractpartnername}</td>
+						<td class="contrastbgcolor">{$file.comment}</td>
+						<td class="contrastbgcolor">{$CAPITALSOURCECOMMENT}</td>
 						<td>&nbsp</td>
 						<td>&nbsp</td>
 					</tr>
@@ -94,9 +94,9 @@ function toggle(div_name) {
 						<td class="contrastbgcolor" align="center">{$moneyflow.bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$moneyflow.invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $moneyflow.amount < 0}color="red"{else}color="black"{/if}>{$moneyflow.amount|number_format} {#CURRENCY#}</font></td>
-						<td class="contrastbgcolor">{$moneyflow.contractpartnername|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$moneyflow.comment|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$moneyflow.capitalsourcecomment|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$moneyflow.contractpartnername}</td>
+						<td class="contrastbgcolor">{$moneyflow.comment}</td>
+						<td class="contrastbgcolor">{$moneyflow.capitalsourcecomment}</td>
 						{if $moneyflow.owner == true }
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$moneyflow.moneyflowid}','_blank','width=1024,height=120')">{#TEXT_36#}</a></td>
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$moneyflow.moneyflowid}','_blank','width=1024,height=120')">{#TEXT_37#}</a></td>
@@ -131,9 +131,9 @@ function toggle(div_name) {
 						<td class="contrastbgcolor" align="center">{$file.bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$file.invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $file.amount < 0}color="red"{else}color="black"{/if}>{$file.amount|number_format} {#CURRENCY#}</font></td>
-						<td class="contrastbgcolor">{$file.contractpartnername|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$file.comment|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$CAPITALSOURCECOMMENT|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$file.contractpartnername}</td>
+						<td class="contrastbgcolor">{$file.comment}</td>
+						<td class="contrastbgcolor">{$CAPITALSOURCECOMMENT}</td>
 						<td>&nbsp</td>
 						<td>&nbsp</td>
 					</tr>
@@ -143,9 +143,9 @@ function toggle(div_name) {
 						<td class="contrastbgcolor" align="center">{$moneyflow.bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$moneyflow.invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $moneyflow.amount < 0}color="red"{else}color="black"{/if}>{$moneyflow.amount|number_format} {#CURRENCY#}</font></td>
-						<td class="contrastbgcolor">{$moneyflow.contractpartnername|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$moneyflow.comment|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$moneyflow.capitalsourcecomment|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$moneyflow.contractpartnername}</td>
+						<td class="contrastbgcolor">{$moneyflow.comment}</td>
+						<td class="contrastbgcolor">{$moneyflow.capitalsourcecomment}</td>
 						{if $moneyflow.owner == true }
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$moneyflow.moneyflowid}','_blank','width=1024,height=120')">{#TEXT_36#}</a></td>
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$moneyflow.moneyflowid}','_blank','width=1024,height=120')">{#TEXT_37#}</a></td>
@@ -181,9 +181,9 @@ function toggle(div_name) {
 						<td class="contrastbgcolor" align="center">{$file.bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$file.invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $file.amount < 0}color="red"{else}color="black"{/if}>{$file.amount|number_format} {#CURRENCY#}</font></td>
-						<td class="contrastbgcolor">{$file.contractpartnername|escape:htmlall}</td>	
-						<td class="contrastbgcolor">{$file.comment|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$CAPITALSOURCECOMMENT|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$file.contractpartnername}</td>	
+						<td class="contrastbgcolor">{$file.comment}</td>
+						<td class="contrastbgcolor">{$CAPITALSOURCECOMMENT}</td>
 						<td>&nbsp</td>
 						<td>&nbsp</td>
 					</tr>
@@ -193,9 +193,9 @@ function toggle(div_name) {
 						<td class="contrastbgcolor" align="center">{$moneyflow.bookingdate}</td>
 						<td class="contrastbgcolor" align="center">{$moneyflow.invoicedate}</td>
 						<td align="right" class="contrastbgcolor"><font {if $moneyflow.amount < 0}color="red"{else}color="black"{/if}>{$moneyflow.amount|number_format} {#CURRENCY#}</font></td>
-						<td class="contrastbgcolor">{$moneyflow.contractpartnername|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$moneyflow.comment|escape:htmlall}</td>
-						<td class="contrastbgcolor">{$moneyflow.capitalsourcecomment|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$moneyflow.contractpartnername}</td>
+						<td class="contrastbgcolor">{$moneyflow.comment}</td>
+						<td class="contrastbgcolor">{$moneyflow.capitalsourcecomment}</td>
 						{if $moneyflow.owner == true }
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$moneyflow.moneyflowid}','_blank','width=1024,height=120')">{#TEXT_36#}</a></td>
 						<td class="contrastbgcolor" align="center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$moneyflow.moneyflowid}','_blank','width=1024,height=120')">{#TEXT_37#}</a></td>

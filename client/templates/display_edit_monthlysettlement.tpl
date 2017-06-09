@@ -61,8 +61,8 @@ function Go(month,year)
 							{/if}<input type="hidden" name="all_data[{$smarty.section.DATA.index}][mcs_capitalsourceid]" value="{$ALL_DATA[DATA].mcs_capitalsourceid}">
 							<input type="hidden" name="all_data[{$smarty.section.DATA.index}][month]" value="{$MONTH.nummeric}">
 							<input type="hidden" name="all_data[{$smarty.section.DATA.index}][year]" value="{$YEAR}">
-							<input type="hidden" name="all_data[{$smarty.section.DATA.index}][capitalsourcecomment]" value="{$ALL_DATA[DATA].capitalsourcecomment|escape:htmlall}">
-						{$ALL_DATA[DATA].capitalsourcecomment|escape:htmlall}
+							<input type="hidden" name="all_data[{$smarty.section.DATA.index}][capitalsourcecomment]" value="{$ALL_DATA[DATA].capitalsourcecomment}">
+						{$ALL_DATA[DATA].capitalsourcecomment}
 						</td>
 						<td class="contrastbgcolor" align="right">
 							{if $ALL_DATA[DATA].imported == 1}

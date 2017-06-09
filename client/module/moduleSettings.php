@@ -78,9 +78,9 @@ class moduleSettings extends module {
 				break;
 		}
 
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'LANGUAGE_VALUES', $this->coreLanguages->get_all_data() );
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'ALL_DATA', $all_data );
+		$this->template_assign( 'LANGUAGE_VALUES', $this->coreLanguages->get_all_data() );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header();
 
@@ -113,9 +113,9 @@ class moduleSettings extends module {
 				break;
 		}
 
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'LANGUAGE_VALUES', $this->coreLanguages->get_all_data() );
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'ALL_DATA', $all_data );
+		$this->template_assign( 'LANGUAGE_VALUES', $this->coreLanguages->get_all_data() );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header();
 

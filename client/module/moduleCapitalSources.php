@@ -58,11 +58,11 @@ class moduleCapitalSources extends module {
 				$all_data [$key] ['owner'] = false;
 			}
 		}
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
-		$this->template->assign( 'LETTER', $letter );
-		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
-		$this->template->assign( 'CURRENTLY_VALID', $currently_valid);
+		$this->template_assign( 'ALL_DATA', $all_data );
+		$this->template_assign( 'COUNT_ALL_DATA', count( $all_data ) );
+		$this->template_assign( 'LETTER', $letter );
+		$this->template_assign( 'ALL_INDEX_LETTERS', $all_index_letters );
+		$this->template_assign( 'CURRENTLY_VALID', $currently_valid);
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_capitalsources.tpl' );
@@ -140,16 +140,16 @@ class moduleCapitalSources extends module {
 				$type_values = $this->coreText->get_domain_data( 'CAPITALSOURCE_TYPE' );
 				$state_values = $this->coreText->get_domain_data( 'CAPITALSOURCE_STATE' );
 
-				$this->template->assign( 'TYPE_VALUES', $type_values );
-				$this->template->assign( 'STATE_VALUES', $state_values );
+				$this->template_assign( 'TYPE_VALUES', $type_values );
+				$this->template_assign( 'STATE_VALUES', $state_values );
 				break;
 		}
 
-		$this->template->assign( 'CLOSE', $close );
+		$this->template_assign( 'CLOSE', $close );
 		if ($close == 0) {
-			$this->template->assign( 'ALL_DATA', $all_data );
-			$this->template->assign( 'CAPITALSOURCEID', $capitalsourceid );
-			$this->template->assign( 'ERRORS', $this->get_errors() );
+			$this->template_assign( 'ALL_DATA', $all_data );
+			$this->template_assign( 'CAPITALSOURCEID', $capitalsourceid );
+			$this->template_assign( 'ERRORS', $this->get_errors() );
 		}
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_capitalsource.tpl' );
@@ -159,7 +159,7 @@ class moduleCapitalSources extends module {
 		switch ($realaction) {
 			case 'yes' :
 				if (CapitalsourceControllerHandler::getInstance()->deleteCapitalsourceById( $capitalsourceid )) {
-					$this->template->assign( 'CLOSE', 1 );
+					$this->template_assign( 'CLOSE', 1 );
 					break;
 				}
 			default :
@@ -168,13 +168,13 @@ class moduleCapitalSources extends module {
 					if (is_array( $all_data )) {
 						$all_data ['statecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_STATE', $all_data ['state'] );
 						$all_data ['typecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_TYPE', $all_data ['type'] );
-						$this->template->assign( 'ALL_DATA', $all_data );
+						$this->template_assign( 'ALL_DATA', $all_data );
 					}
 				}
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_capitalsource.tpl' );

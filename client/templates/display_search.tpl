@@ -24,7 +24,7 @@
 						<select class="contrastbgcolor" name="contractpartner" size=1>
 							<option value=""> </option>
 							{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
-								<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"  {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $SEARCHPARAMS.mcp_contractpartnerid}selected{/if}> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name|escape:htmlall}
+								<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"  {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $SEARCHPARAMS.mcp_contractpartnerid}selected{/if}> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}
 							{/section}
 						</select>
 					</td>
@@ -35,7 +35,7 @@
                                  		<select class="contrastbgcolor" name="postingaccount" size="1">
 							<option value=""> </option>
 							{section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
-								<option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}" {if $POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid == $SEARCHPARAMS.mpa_postingaccountid}selected{/if}> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name|escape:htmlall}</option>
+								<option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}" {if $POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid == $SEARCHPARAMS.mpa_postingaccountid}selected{/if}> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name}</option>
 							{/section}
                                  		</select>
 					</td>
@@ -110,9 +110,9 @@
 					<tr>
 						{if $COLUMNS.year  == "1"}<td class="contrastbgcolor" align="center">{$RESULTS[DATA].year}</td>{/if}
 						{if $COLUMNS.month == "1"}<td class="contrastbgcolor" align="center">{$RESULTS[DATA].month}</td>{/if}
-						{if $COLUMNS.name  == "1"}<td class="contrastbgcolor" align="center">{$RESULTS[DATA].name|escape:htmlall}</td>{/if}
+						{if $COLUMNS.name  == "1"}<td class="contrastbgcolor" align="center">{$RESULTS[DATA].name}</td>{/if}
 						<td align="right" class="contrastbgcolor"><font {if $RESULTS[DATA].amount < 0}color="red"{else}color="black"{/if}>{$RESULTS[DATA].amount|number_format} {#CURRENCY#}</font></td>
-						<td class="contrastbgcolor">{$RESULTS[DATA].comment|escape:htmlall}</td>
+						<td class="contrastbgcolor">{$RESULTS[DATA].comment}</td>
 					</tr>
 				{/section}
 			</table>

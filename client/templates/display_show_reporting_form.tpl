@@ -207,7 +207,7 @@ div.multiple_accounts {
                               <div id="single_account">
                                  <select class="contrastbgcolor" size="1" name="account">
 					{section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
-						<option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}"> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name|escape:htmlall}</option>
+						<option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}"> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name}</option>
 					{/section}
                                  </select>
                               </div>
@@ -220,7 +220,7 @@ div.multiple_accounts {
                                              name="accounts_yes[]" multiple
                                              style="width:20em;min-height:15em">
 						{section name=ACCOUNT loop=$ACCOUNTS_YES}
-							<option value="{$ACCOUNTS_YES[ACCOUNT].postingaccountid}"> {$ACCOUNTS_YES[ACCOUNT].name|escape:htmlall}</option>
+							<option value="{$ACCOUNTS_YES[ACCOUNT].postingaccountid}"> {$ACCOUNTS_YES[ACCOUNT].name}</option>
 						{/section}
                                           </select>
                                        </td>
@@ -235,7 +235,7 @@ div.multiple_accounts {
                                              name="accounts_no[]" multiple 
                                              style="width:20em;min-height:15em">
 						{section name=ACCOUNT loop=$ACCOUNTS_NO}
-							<option value="{$ACCOUNTS_NO[ACCOUNT].postingaccountid}"> {$ACCOUNTS_NO[ACCOUNT].name|escape:htmlall}</option>
+							<option value="{$ACCOUNTS_NO[ACCOUNT].postingaccountid}"> {$ACCOUNTS_NO[ACCOUNT].name}</option>
 						{/section}
                                           </select></td>
                                     </tr>

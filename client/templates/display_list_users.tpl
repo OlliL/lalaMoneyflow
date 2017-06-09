@@ -23,8 +23,8 @@
 					</tr>
 					{section name=DATA loop=$ALL_DATA}
 						<tr>
-							<td class="contrastbgcolor">{$ALL_DATA[DATA].name|escape:htmlall}</td>
-							<td class="contrastbgcolor">{$ALL_DATA[DATA].group|escape:htmlall}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].name}</td>
+							<td class="contrastbgcolor">{$ALL_DATA[DATA].group}</td>
 							<td class="contrastbgcolor" align="center"><b>{if $ALL_DATA[DATA].perm_login == 1}<font color="green">{#TEXT_25#}{else}<font color="red">{#TEXT_26#}{/if}</font></b></td>
 							<td class="contrastbgcolor" align="center"><b>{if $ALL_DATA[DATA].perm_admin == 1}<font color="green">{#TEXT_25#}{else}<font color="red">{#TEXT_26#}{/if}</font></b></td>
 							<td class="contrastbgcolor" align="center"><b>{if $ALL_DATA[DATA].att_new == 1}<font color="green">{#TEXT_25#}{else}<font color="red">{#TEXT_26#}{/if}</font></b></td>

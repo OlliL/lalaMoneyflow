@@ -78,21 +78,21 @@ class moduleMonthlySettlement extends module {
 					}
 				}
 
-				$this->template->assign( 'SUMAMOUNT', $sumamount );
-				$this->template->assign( 'CREDIT_SUMAMOUNT', $credit_sumamount );
-				$this->template->assign( 'MONTH', $monthArray );
-				$this->template->assign( 'YEAR', $year );
-				$this->template->assign( 'ALL_DATA', $all_data );
+				$this->template_assign( 'SUMAMOUNT', $sumamount );
+				$this->template_assign( 'CREDIT_SUMAMOUNT', $credit_sumamount );
+				$this->template_assign( 'MONTH', $monthArray );
+				$this->template_assign( 'YEAR', $year );
+				$this->template_assign( 'ALL_DATA', $all_data );
 				$count_all_data = count( $all_data );
 			}
 		}
-		$this->template->assign( 'ALL_YEARS', $allYears );
-		$this->template->assign( 'ALL_MONTHS', $months );
-		$this->template->assign( 'SELECTED_MONTH', $month );
-		$this->template->assign( 'SELECTED_YEAR', $year );
-		$this->template->assign( 'COUNT_ALL_DATA', $count_all_data );
-		$this->template->assign( 'NUM_EDITABLE_SETTLEMENTS', $numberOfEditableSettlements );
-		$this->template->assign( 'NUM_ADDABLE_SETTLEMENTS', $numberOfAddableSettlements );
+		$this->template_assign( 'ALL_YEARS', $allYears );
+		$this->template_assign( 'ALL_MONTHS', $months );
+		$this->template_assign( 'SELECTED_MONTH', $month );
+		$this->template_assign( 'SELECTED_YEAR', $year );
+		$this->template_assign( 'COUNT_ALL_DATA', $count_all_data );
+		$this->template_assign( 'NUM_EDITABLE_SETTLEMENTS', $numberOfEditableSettlements );
+		$this->template_assign( 'NUM_ADDABLE_SETTLEMENTS', $numberOfAddableSettlements );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_monthlysettlements.tpl' );
@@ -160,15 +160,15 @@ class moduleMonthlySettlement extends module {
 				'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month )
 		);
 
-		$this->template->assign( 'CLOSE', $close );
-		$this->template->assign( 'NEW', $new );
-		$this->template->assign( 'MONTH', $monthArray );
-		$this->template->assign( 'YEAR', $year );
-		$this->template->assign( 'ALL_DATA', $all_data_new );
-		$this->template->assign( 'ALL_DATA', $all_data_new );
-		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data_new ) );
-		$this->template->assign( 'ERRORS', $this->get_errors() );
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'CLOSE', $close );
+		$this->template_assign( 'NEW', $new );
+		$this->template_assign( 'MONTH', $monthArray );
+		$this->template_assign( 'YEAR', $year );
+		$this->template_assign( 'ALL_DATA', $all_data_new );
+		$this->template_assign( 'ALL_DATA', $all_data_new );
+		$this->template_assign( 'COUNT_ALL_DATA', count( $all_data_new ) );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_edit_monthlysettlement.tpl' );
@@ -179,7 +179,7 @@ class moduleMonthlySettlement extends module {
 			switch ($realaction) {
 				case 'yes' :
 					if (MonthlySettlementControllerHandler::getInstance()->deleteMonthlySettlement( $year, $month )) {
-						$this->template->assign( 'CLOSE', 1 );
+						$this->template_assign( 'CLOSE', 1 );
 						break;
 					}
 				default :
@@ -197,14 +197,14 @@ class moduleMonthlySettlement extends module {
 							'nummeric' => sprintf( '%02d', $month ),
 							'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month )
 					);
-					$this->template->assign( 'SUMAMOUNT', $sumamount );
-					$this->template->assign( 'MONTH', $monthArray );
-					$this->template->assign( 'YEAR', $year );
-					$this->template->assign( 'ALL_DATA', $all_data );
+					$this->template_assign( 'SUMAMOUNT', $sumamount );
+					$this->template_assign( 'MONTH', $monthArray );
+					$this->template_assign( 'YEAR', $year );
+					$this->template_assign( 'ALL_DATA', $all_data );
 					break;
 			}
 		}
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_monthlysettlement.tpl' );

@@ -43,9 +43,9 @@ class modulePreDefMoneyFlows extends module {
 		$all_index_letters = $listPreDefMoneyflows ['initials'];
 		$all_data = $listPreDefMoneyflows ['predefmoneyflows'];
 
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'COUNT_ALL_DATA', count( $all_data ) );
-		$this->template->assign( 'ALL_INDEX_LETTERS', $all_index_letters );
+		$this->template_assign( 'ALL_DATA', $all_data );
+		$this->template_assign( 'COUNT_ALL_DATA', count( $all_data ) );
+		$this->template_assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_predefmoneyflows.tpl' );
@@ -141,14 +141,14 @@ class modulePreDefMoneyFlows extends module {
 				}
 				break;
 		}
-		$this->template->assign( 'CLOSE', $close );
+		$this->template_assign( 'CLOSE', $close );
 		if ($close === 0) {
-			$this->template->assign( 'ALL_DATA', $all_data );
-			$this->template->assign( 'PREDEFMONEYFLOWID', $predefmoneyflowid );
-			$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-			$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
-			$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
-			$this->template->assign( 'ERRORS', $this->get_errors() );
+			$this->template_assign( 'ALL_DATA', $all_data );
+			$this->template_assign( 'PREDEFMONEYFLOWID', $predefmoneyflowid );
+			$this->template_assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
+			$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
+			$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
+			$this->template_assign( 'ERRORS', $this->get_errors() );
 		}
 
 		$this->parse_header( 1 );
@@ -159,16 +159,16 @@ class modulePreDefMoneyFlows extends module {
 		switch ($realaction) {
 			case 'yes' :
 				if (PreDefMoneyflowControllerHandler::getInstance()->deletePreDefMoneyflow( $predefmoneyflowid )) {
-					$this->template->assign( 'CLOSE', 1 );
+					$this->template_assign( 'CLOSE', 1 );
 					break;
 				}
 			default :
 				$all_data = PreDefMoneyflowControllerHandler::getInstance()->showDeletePreDefMoneyflow( $predefmoneyflowid );
-				$this->template->assign( 'ALL_DATA', $all_data );
+				$this->template_assign( 'ALL_DATA', $all_data );
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_predefmoneyflow.tpl' );

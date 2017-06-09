@@ -45,22 +45,22 @@
 						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[{$smarty.section.DATA.index}][mcp_contractpartnerid]" size=1 style="width:130px{if $ALL_DATA[DATA].contractpartner_error == 1};color:red{/if}" onchange="initContractpartner({$elements}+9)">
 							<option value=""> </option>
 						{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
-							<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}" {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $ALL_DATA[DATA].mcp_contractpartnerid}selected{/if} > {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name|escape:htmlall}</option>
+							<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}" {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $ALL_DATA[DATA].mcp_contractpartnerid}selected{/if} > {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}</option>
 						{/section}
 						</select></td>
 
-						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][comment]" value="{$ALL_DATA[DATA].comment|escape:htmlall}" size="30" {if $ALL_DATA[DATA].comment_error == 1}style="color:red"{/if}></td>
+						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[{$smarty.section.DATA.index}][comment]" value="{$ALL_DATA[DATA].comment}" size="30" {if $ALL_DATA[DATA].comment_error == 1}style="color:red"{/if}></td>
 
 						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[{$smarty.section.DATA.index}][mpa_postingaccountid]" size=1 style="width:150px{if $ALL_DATA[DATA].postingaccount_error == 1};color:red{/if}">
 							<option value=""> </option>
 						{section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
-							<option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}" {if $POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid == $ALL_DATA[DATA].mpa_postingaccountid}selected{/if} > {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name|escape:htmlall}</option>
+							<option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}" {if $POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid == $ALL_DATA[DATA].mpa_postingaccountid}selected{/if} > {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name}</option>
 						{/section}
 						</select></td>
 
 						<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[{$smarty.section.DATA.index}][mcs_capitalsourceid]" size=1 style="width:150px{if $ALL_DATA[DATA].capitalsource_error == 1};color:red{/if}">
 						{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
-							<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}" {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid == $ALL_DATA[DATA].mcs_capitalsourceid}selected{/if} > {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment|escape:htmlall}</option>
+							<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}" {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid == $ALL_DATA[DATA].mcs_capitalsourceid}selected{/if} > {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}</option>
 						{/section}
 						</select></td>
 					</tr>
@@ -70,13 +70,13 @@
 							<tr>
 								<td width="80">&nbsp;</td>
 								<th width="30"  align="right">{#TEXT_32#}</th>
-								<td width="140" class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][accountnumber]" value="{$ALL_DATA[DATA].accountnumber|escape:htmlall}">{$ALL_DATA[DATA].accountnumber|escape:htmlall}</td>
+								<td width="140" class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][accountnumber]" value="{$ALL_DATA[DATA].accountnumber}">{$ALL_DATA[DATA].accountnumber}</td>
 								<th width="25"  align="right">{#TEXT_33#}</th>
-								<td width="80"  class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][bankcode]" value="{$ALL_DATA[DATA].bankcode|escape:htmlall}">{$ALL_DATA[DATA].bankcode|escape:htmlall}</td>
+								<td width="80"  class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][bankcode]" value="{$ALL_DATA[DATA].bankcode}">{$ALL_DATA[DATA].bankcode}</td>
 								<th width="110" align="right">{#TEXT_269#}</th>
-								<td width="150" class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][name]" value="{$ALL_DATA[DATA].name|escape:htmlall}">{$ALL_DATA[DATA].name|escape:htmlall}</td>
+								<td width="150" class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][name]" value="{$ALL_DATA[DATA].name}">{$ALL_DATA[DATA].name}</td>
 								<th width="110" align="right">{#TEXT_270#}</th>
-								<td width="190" class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][usage]" value="{$ALL_DATA[DATA].usage|escape:htmlall}">{$ALL_DATA[DATA].usage|escape:htmlall|nl2br}</td>
+								<td width="190" class="contrastbgcolor"><input type="hidden" name="all_data[{$smarty.section.DATA.index}][usage]" value="{$ALL_DATA[DATA].usage}">{$ALL_DATA[DATA].usage|nl2br}</td>
 							</tr>
 							</table>
 						</td>

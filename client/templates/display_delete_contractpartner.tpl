@@ -28,11 +28,11 @@
 					<th width="100">{#TEXT_232#}</th>
 				</tr>
 				<tr>
-					<td class="contrastbgcolor">{$ALL_DATA.name|escape:htmlall}</td>
-					<td class="contrastbgcolor" wrap>{$ALL_DATA.street|escape:htmlall}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.name}</td>
+					<td class="contrastbgcolor" wrap>{$ALL_DATA.street}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.postcode}</td>
-					<td class="contrastbgcolor">{$ALL_DATA.town|escape:htmlall}</td>
-					<td class="contrastbgcolor">{$ALL_DATA.country|escape:htmlall}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.town}</td>
+					<td class="contrastbgcolor">{$ALL_DATA.country}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.validfrom}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.validtil}</td>
 					<td class="contrastbgcolor">{$ALL_DATA.moneyflow_comment}</td>

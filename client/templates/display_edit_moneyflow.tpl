@@ -32,18 +32,18 @@
 					<td class="contrastbgcolor"><input class="contrastbgcolornobr" type="text" name="all_data[amount]"      value="{$ALL_DATA.amount}"    size=8  style="{if $ALL_DATA.amount_error == 1}color:red;{/if}text-align:right"> {#CURRENCY#}</td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcp_contractpartnerid]" size=1 style="width:130px">
 					{section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
-						<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"  {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $ALL_DATA.mcp_contractpartnerid}selected{/if}> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name|escape:htmlall}
+						<option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"  {if $CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid == $ALL_DATA.mcp_contractpartnerid}selected{/if}> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}
 					{/section}
 					</select></td>
-					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]" value="{$ALL_DATA.comment|escape:htmlall}" size="40"></td>
+					<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="all_data[comment]" value="{$ALL_DATA.comment}" size="40"></td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mpa_postingaccountid]" size=1 style="width:150px">
 					{section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
-						<option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}" {if $POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid == $ALL_DATA.mpa_postingaccountid}selected{/if}> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name|escape:htmlall}
+						<option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}" {if $POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid == $ALL_DATA.mpa_postingaccountid}selected{/if}> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name}
 					{/section}
 					</select></td>
 					<td class="contrastbgcolor"><select class="contrastbgcolor" name="all_data[mcs_capitalsourceid]" size=1 style="width:150px">
 					{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
-						<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}" {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid == $ALL_DATA.mcs_capitalsourceid}selected{/if}> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment|escape:htmlall}
+						<option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}" {if $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid == $ALL_DATA.mcs_capitalsourceid}selected{/if}> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}
 					{/section}
 					</select></td>
 				</tr>
@@ -56,11 +56,11 @@
 						 	<input class="contrastbgcolornobr" type="text" name="moneyflow_split_entries[{$smarty.section.SPLIT_ENTRIES.index}][amount]" value="{$MONEYFLOW_SPLIT_ENTRIES[SPLIT_ENTRIES].amount}"    size=8  style="{if $MONEYFLOW_SPLIT_ENTRIES[SPLIT_ENTRIES].amount_error == 1}color:red;{/if}text-align:right"> {#CURRENCY#}
 						</td>
 						<td></td>
-						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="moneyflow_split_entries[{$smarty.section.SPLIT_ENTRIES.index}][comment]" value="{$MONEYFLOW_SPLIT_ENTRIES[SPLIT_ENTRIES].comment|escape:htmlall}" size="40"></td>
+						<td class="contrastbgcolor"><input class="contrastbgcolor" type="text" name="moneyflow_split_entries[{$smarty.section.SPLIT_ENTRIES.index}][comment]" value="{$MONEYFLOW_SPLIT_ENTRIES[SPLIT_ENTRIES].comment}" size="40"></td>
 						<td class="contrastbgcolor"><select class="contrastbgcolor" name="moneyflow_split_entries[{$smarty.section.SPLIT_ENTRIES.index}][mpa_postingaccountid]" size=1 style="width:150px">
 							<option value=""> </option>
 						{section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
-							<option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}" {if $POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid == $MONEYFLOW_SPLIT_ENTRIES[SPLIT_ENTRIES].mpa_postingaccountid}selected{/if}> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name|escape:htmlall}
+							<option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}" {if $POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid == $MONEYFLOW_SPLIT_ENTRIES[SPLIT_ENTRIES].mpa_postingaccountid}selected{/if}> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name}
 						{/section}
 						</select></td>
 						<td></td>

@@ -262,55 +262,55 @@ class moduleReports extends module {
 						'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month )
 				);
 
-				$this->template->assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
+				$this->template_assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
-				$this->template->assign( 'PREV_MONTH', $prev_month );
-				$this->template->assign( 'PREV_YEAR', $prev_year );
-				$this->template->assign( 'PREV_LINK', $prev_link );
-				$this->template->assign( 'NEXT_MONTH', $next_month );
-				$this->template->assign( 'NEXT_YEAR', $next_year );
-				$this->template->assign( 'NEXT_LINK', $next_link );
+				$this->template_assign( 'PREV_MONTH', $prev_month );
+				$this->template_assign( 'PREV_YEAR', $prev_year );
+				$this->template_assign( 'PREV_LINK', $prev_link );
+				$this->template_assign( 'NEXT_MONTH', $next_month );
+				$this->template_assign( 'NEXT_YEAR', $next_year );
+				$this->template_assign( 'NEXT_LINK', $next_link );
 
-				$this->template->assign( 'MONTH', $month_array );
-				$this->template->assign( 'SORTBY', $sortby );
-				$this->template->assign( 'NEWORDER', $neworder );
-				$this->template->assign( 'ORDER', $order );
+				$this->template_assign( 'MONTH', $month_array );
+				$this->template_assign( 'SORTBY', $sortby );
+				$this->template_assign( 'NEWORDER', $neworder );
+				$this->template_assign( 'ORDER', $order );
 
 				// Assets
-				$this->template->assign( 'SUMMARY_DATA', $assets_turnover_capitalsources );
-				$this->template->assign( 'LASTAMOUNT', $assets_lastamount );
-				$this->template->assign( 'FIXAMOUNT', $assets_fixamount );
-				$this->template->assign( 'CURRENTAMOUNT', $assets_currentamount );
-				$this->template->assign( 'MON_CALCAMOUNT', $assets_calcamount );
-				$this->template->assign( 'MON_CALCULATEDTURNOVER', $assets_movement_calculated_month );
-				$this->template->assign( 'FIRSTAMOUNT', $firstamount );
-				$this->template->assign( 'YEA_CALCULATEDTURNOVER', $movement_calculated_year );
+				$this->template_assign( 'SUMMARY_DATA', $assets_turnover_capitalsources );
+				$this->template_assign( 'LASTAMOUNT', $assets_lastamount );
+				$this->template_assign( 'FIXAMOUNT', $assets_fixamount );
+				$this->template_assign( 'CURRENTAMOUNT', $assets_currentamount );
+				$this->template_assign( 'MON_CALCAMOUNT', $assets_calcamount );
+				$this->template_assign( 'MON_CALCULATEDTURNOVER', $assets_movement_calculated_month );
+				$this->template_assign( 'FIRSTAMOUNT', $firstamount );
+				$this->template_assign( 'YEA_CALCULATEDTURNOVER', $movement_calculated_year );
 
 				// Liabilites
-				$this->template->assign( 'LIABILITIES_SUMMARY_DATA', $liabilities_turnover_capitalsources );
-				$this->template->assign( 'LIABILITIES_LASTAMOUNT', $liabilities_lastamount );
-				$this->template->assign( 'LIABILITIES_FIXAMOUNT', $liabilities_fixamount );
-				$this->template->assign( 'LIABILITIES_CURRENTAMOUNT', $liabilities_currentamount );
-				$this->template->assign( 'LIABILITIES_MON_CALCAMOUNT', $liabilities_calcamount );
+				$this->template_assign( 'LIABILITIES_SUMMARY_DATA', $liabilities_turnover_capitalsources );
+				$this->template_assign( 'LIABILITIES_LASTAMOUNT', $liabilities_lastamount );
+				$this->template_assign( 'LIABILITIES_FIXAMOUNT', $liabilities_fixamount );
+				$this->template_assign( 'LIABILITIES_CURRENTAMOUNT', $liabilities_currentamount );
+				$this->template_assign( 'LIABILITIES_MON_CALCAMOUNT', $liabilities_calcamount );
 
 				// Credits
-				$this->template->assign( 'CREDITS_SUMMARY_DATA', $credit_turnover_capitalsources );
-				$this->template->assign( 'CREDITS_LASTAMOUNT', $credit_lastamount );
-				$this->template->assign( 'CREDITS_FIXAMOUNT', $credit_fixamount );
-				$this->template->assign( 'CREDITS_CURRENTAMOUNT', $credit_currentamount );
-				$this->template->assign( 'CREDITS_MON_CALCAMOUNT', $credit_calcamount );
+				$this->template_assign( 'CREDITS_SUMMARY_DATA', $credit_turnover_capitalsources );
+				$this->template_assign( 'CREDITS_LASTAMOUNT', $credit_lastamount );
+				$this->template_assign( 'CREDITS_FIXAMOUNT', $credit_fixamount );
+				$this->template_assign( 'CREDITS_CURRENTAMOUNT', $credit_currentamount );
+				$this->template_assign( 'CREDITS_MON_CALCAMOUNT', $credit_calcamount );
 
-				$this->template->assign( 'MOVEMENT', $movement );
-				$this->template->assign( 'MONTHLYSETTLEMENT_EXISTS', $mms_exists );
+				$this->template_assign( 'MOVEMENT', $movement );
+				$this->template_assign( 'MONTHLYSETTLEMENT_EXISTS', $mms_exists );
 				$report = 1;
 			}
 		}
 
-		$this->template->assign( 'REPORT', $report );
-		$this->template->assign( 'ALL_YEARS', $years );
-		$this->template->assign( 'ALL_MONTHS', $months );
-		$this->template->assign( 'SELECTED_MONTH', $month );
-		$this->template->assign( 'SELECTED_YEAR', $year );
+		$this->template_assign( 'REPORT', $report );
+		$this->template_assign( 'ALL_YEARS', $years );
+		$this->template_assign( 'ALL_MONTHS', $months );
+		$this->template_assign( 'SELECTED_MONTH', $month );
+		$this->template_assign( 'SELECTED_YEAR', $year );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_reports.tpl' );
@@ -319,13 +319,13 @@ class moduleReports extends module {
 	public final function display_plot_trends($all_data) {
 		$showTrendsForm = ReportControllerHandler::getInstance()->showTrendsForm();
 		if (is_array( $showTrendsForm ['capitalsources'] )) {
-			$this->template->assign( 'CAPITALSOURCE_VALUES', $showTrendsForm ['capitalsources'] );
+			$this->template_assign( 'CAPITALSOURCE_VALUES', $showTrendsForm ['capitalsources'] );
 		}
 		$years = $showTrendsForm ['allYears'];
-		$this->template->assign( 'ALL_YEARS', $years );
+		$this->template_assign( 'ALL_YEARS', $years );
 
 		if (is_array( $all_data ) && isset( $all_data ['mcs_capitalsourceid'] )) {
-			$this->template->assign( 'PLOT_GRAPH', 1 );
+			$this->template_assign( 'PLOT_GRAPH', 1 );
 		} else {
 			$all_data ['mcs_capitalsourceid'] = $showTrendsForm ['selected_capitalsources'];
 			if (empty( $all_data ['mcs_capitalsourceid'] ))
@@ -334,12 +334,12 @@ class moduleReports extends module {
 				}
 			$all_data ['endyear'] = $years [count( $years ) - 1];
 			$all_data ['endmonth'] = 12;
-			$this->template->assign( 'PLOT_GRAPH', 0 );
+			$this->template_assign( 'PLOT_GRAPH', 0 );
 		}
 
 		$months = $this->coreText->get_domain_data( 'MONTHS' );
-		$this->template->assign( 'MONTHS', $months );
-		$this->template->assign( 'ALL_DATA', $all_data );
+		$this->template_assign( 'MONTHS', $months );
+		$this->template_assign( 'ALL_DATA', $all_data );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_plot_trends.tpl' );
@@ -448,14 +448,14 @@ class moduleReports extends module {
 			}
 		}
 
-		$this->template->assign( 'CURRENT_MONTH', date( 'n' ) );
-		$this->template->assign( 'CURRENT_YEAR', date( 'Y' ) );
+		$this->template_assign( 'CURRENT_MONTH', date( 'n' ) );
+		$this->template_assign( 'CURRENT_YEAR', date( 'Y' ) );
 
-		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
-		$this->template->assign( 'ACCOUNTS_YES', $accounts_yes );
-		$this->template->assign( 'ACCOUNTS_NO', $accounts_no );
-		$this->template->assign( 'MONTHS', $months );
-		$this->template->assign( 'YEARS', $years );
+		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
+		$this->template_assign( 'ACCOUNTS_YES', $accounts_yes );
+		$this->template_assign( 'ACCOUNTS_NO', $accounts_no );
+		$this->template_assign( 'MONTHS', $months );
+		$this->template_assign( 'YEARS', $years );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_show_reporting_form.tpl' );

@@ -41,7 +41,7 @@ class coreText extends core {
 	}
 
 	private final function getFileName($id) {
-		return 'locale/' . $id . '.conf';
+		return 'locale/' . basename($id) . '.conf';
 	}
 
 	private final function getTextfile($id) {

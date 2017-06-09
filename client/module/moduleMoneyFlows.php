@@ -133,7 +133,7 @@ class moduleMoneyFlows extends module {
 					if ($ret === true) {
 						$close = 1;
 						break;
-						$this->template->assign( 'CLOSE', 1 );
+						$this->template_assign( 'CLOSE', 1 );
 					} else {
 						$capitalsource_values = $ret ['capitalsources'];
 						$contractpartner_values = $ret ['contractpartner'];
@@ -201,22 +201,22 @@ class moduleMoneyFlows extends module {
 		}
 
 		$i = count( $moneyflow_split_entries );
-		while ( $i < 5 ) {
+		while ( $i < 10 ) {
 			$moneyflow_split_entries [$i] = array (
 					'moneyflowsplitentryid' => $i * - 1
 			);
 			$i ++;
 		}
 
-		$this->template->assign( 'CLOSE', $close );
+		$this->template_assign( 'CLOSE', $close );
 		if ($close === 0) {
-			$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-			$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
-			$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
-			$this->template->assign( 'ALL_DATA', $all_data );
-			$this->template->assign( 'MONEYFLOW_SPLIT_ENTRIES', $moneyflow_split_entries );
-			$this->template->assign( 'MONEYFLOWID', $id );
-			$this->template->assign( 'ERRORS', $this->get_errors() );
+			$this->template_assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
+			$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
+			$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
+			$this->template_assign( 'ALL_DATA', $all_data );
+			$this->template_assign( 'MONEYFLOW_SPLIT_ENTRIES', $moneyflow_split_entries );
+			$this->template_assign( 'MONEYFLOWID', $id );
+			$this->template_assign( 'ERRORS', $this->get_errors() );
 		}
 
 		$this->parse_header( 1 );
@@ -369,12 +369,12 @@ class moduleMoneyFlows extends module {
 				break;
 		}
 
-		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-		$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
-		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'NUMFLOWS', $numflows );
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
+		$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
+		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
+		$this->template_assign( 'ALL_DATA', $all_data );
+		$this->template_assign( 'NUMFLOWS', $numflows );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_add_moneyflow.tpl' );
@@ -384,18 +384,18 @@ class moduleMoneyFlows extends module {
 		switch ($realaction) {
 			case 'yes' :
 				if (MoneyflowControllerHandler::getInstance()->deleteMoneyflowById( $id )) {
-					$this->template->assign( 'CLOSE', 1 );
+					$this->template_assign( 'CLOSE', 1 );
 					break;
 				}
 			default :
 				$all_data = MoneyflowControllerHandler::getInstance()->showDeleteMoneyflow( $id );
 				if ($all_data) {
-					$this->template->assign( 'ALL_DATA', $all_data );
+					$this->template_assign( 'ALL_DATA', $all_data );
 				}
 				break;
 		}
 
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_delete_moneyflow.tpl' );

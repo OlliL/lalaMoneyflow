@@ -161,12 +161,12 @@ class moduleImportedMoneyFlows extends module {
 				}
 		}
 
-		$this->template->assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-		$this->template->assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
-		$this->template->assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
-		$this->template->assign( 'ALL_DATA', $all_data );
-		$this->template->assign( 'NUMFLOWS', count( $all_data ) );
-		$this->template->assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
+		$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
+		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
+		$this->template_assign( 'ALL_DATA', $all_data );
+		$this->template_assign( 'NUMFLOWS', count( $all_data ) );
+		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_add_importedmoneyflows.tpl' );
