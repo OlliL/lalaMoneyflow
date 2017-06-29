@@ -106,7 +106,7 @@ if ($is_logged_in == 2) {
 }
 
 // if ($money_debug === true)
-error_reporting( E_ALL );
+error_reporting( E_ALL  & ~E_DEPRECATED ); // DEPRECATED for jpGraph
 
 if ($is_logged_in == 0) {
 
