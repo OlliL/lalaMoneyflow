@@ -147,10 +147,6 @@ class moduleReports extends module {
 
 				$movement = 0;
 				foreach ( $all_moneyflow_data as $key => $value ) {
-					$all_moneyflow_data [$key] ['contractpartnername'] = htmlentities( $value ['contractpartnername'], ENT_COMPAT | ENT_HTML401 );
-					$all_moneyflow_data [$key] ['capitalsourcecomment'] = htmlentities( $value ['capitalsourcecomment'], ENT_COMPAT | ENT_HTML401 );
-					$all_moneyflow_data [$key] ['postingaccountname'] = htmlentities( $value ['postingaccountname'], ENT_COMPAT | ENT_HTML401 );
-					$all_moneyflow_data [$key] ['comment'] = htmlentities( $value ['comment'], ENT_COMPAT | ENT_HTML401 );
 					if ($all_moneyflow_data [$key] ['mur_userid'] == Environment::getInstance()->getUserId()) {
 						$all_moneyflow_data [$key] ['owner'] = true;
 					} else {
