@@ -84,8 +84,8 @@ abstract class module {
 			$this->template_assign( 'ENV_REFERER', $http_referer );
 		} else {
 			// Check for XSS
-			if(substr( $referer, 0, strlen( $_SERVER ['PHP_SELF'] ) ) != $_SERVER ['PHP_SELF']) {
-				$referer = $_SERVER ['PHP_SELF'];
+			if(parse_url($referer)['path'] != $_SERVER ['SCRIPT_NAME']) {
+				$referer = $_SERVER ['SCRIPT_NAME'];
 			}
 			$this->template_assign( 'ENV_REFERER', $referer );
 		}

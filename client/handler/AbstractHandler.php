@@ -89,7 +89,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 					// FIXME: omg what a hack
 					$moduleUsers = new moduleUsers();
 					$moduleUsers->logout();
-					header( "Location: " . $_SERVER ['PHP_SELF'] );
+					header( "Location: " . $_SERVER ['SCRIPT_NAME'] );
 					break;
 			}
 			return false;

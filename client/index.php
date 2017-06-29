@@ -66,7 +66,7 @@ $moduleEvents = new moduleEvents();
 $moduleUsers = new moduleUsers();
 $moduleSettings = new moduleSettings();
 
-$request_uri = $_SERVER ['REQUEST_URI'];
+$request_uri = $_POST ['request_uri'];
 $all_data = null;
 
 if ($action == 'logout') {
@@ -74,7 +74,7 @@ if ($action == 'logout') {
 	/* user tries to logout */
 
 	$moduleUsers->logout();
-	$request_uri = $_SERVER ['PHP_SELF'];
+	$request_uri = $_SERVER ['SCRIPT_NAME'];
 }
 
 $is_logged_in = $moduleUsers->is_logged_in();
@@ -91,7 +91,7 @@ if ($is_logged_in == 2) {
 	$display = $moduleSettings->display_personal_settings( $realaction, $all_data );
 
 	if ($_POST ['realaction'] == 'save' && ! is_array( ErrorHandler::getErrors() ))
-		header( "Location: " . $_SERVER ['PHP_SELF'] );
+		header( "Location: " . $_SERVER ['SCRIPT_NAME'] );
 } elseif ($action == 'login_user' || $is_logged_in != 0) {
 
 	/* user tries to login */
@@ -101,10 +101,10 @@ if ($is_logged_in == 2) {
 	$password = array_key_exists( 'password', $_REQUEST ) ? $_REQUEST ['password'] : '';
 	$display = $moduleUsers->display_login_user( $realaction, $name, $password, $request_uri );
 
-	if ($_POST ['request_uri'] && ! $display && substr( $_POST ['request_uri'], 0, strlen( $_SERVER ['PHP_SELF'] ) ) == $_SERVER ['PHP_SELF'])
-		header( "Location: " . htmlentities( $_POST ['request_uri'] ) );
-}
+	if ($request_uri && parse_url($request_uri)['path'] == $_SERVER ['SCRIPT_NAME'] && !$display)
+		header( "Location: " . htmlentities( $request_uri ) );
 
+}
 // if ($money_debug === true)
 error_reporting( E_ALL  & ~E_DEPRECATED ); // DEPRECATED for jpGraph
 
