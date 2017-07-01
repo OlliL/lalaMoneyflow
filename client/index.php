@@ -101,19 +101,20 @@ if ($is_logged_in == 2) {
 	$password = array_key_exists( 'password', $_REQUEST ) ? $_REQUEST ['password'] : '';
 	$display = $moduleUsers->display_login_user( $realaction, $name, $password, $request_uri );
 
-	if ($request_uri && parse_url($request_uri)['path'] == $_SERVER ['SCRIPT_NAME'] && !$display)
-		header( "Location: " . htmlentities( $request_uri ) );
+	if (! $display) {
+		$display = $moduleEvents->check_events();
 
+		if ($request_uri && parse_url( $request_uri ) ['path'] == $_SERVER ['SCRIPT_NAME'] && ! $display)
+			header( "Location: " . htmlentities( $request_uri ) );
+	}
 }
 // if ($money_debug === true)
-error_reporting( E_ALL  & ~E_DEPRECATED ); // DEPRECATED for jpGraph
+error_reporting( E_ALL & ~ E_DEPRECATED ); // DEPRECATED for jpGraph
 
 if ($is_logged_in == 0) {
 
 	if (array_key_exists( 'all_data', $_REQUEST ) && is_array( $_REQUEST ['all_data'] ))
 		$all_data = $_REQUEST ['all_data'];
-
-	$display = $moduleEvents->check_events();
 
 	switch ($action) {
 		case 'list_capitalsources' :
