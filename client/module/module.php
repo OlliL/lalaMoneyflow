@@ -40,17 +40,12 @@ abstract class module {
 	protected $template;
 
 	protected function template_assign($name, $value) {
-/*		if (is_array( $value ) && count( $value ) == count( $value, COUNT_RECURSIVE )) {
-			$value_escaped = array_map( 'htmlentities', $value );
-		} else
-			*/
-			if (is_array( $value )) {
-				array_walk_recursive($value, function (&$func_value) {
-					$func_value = htmlentities($func_value);
-				});
-// 			foreach ( $$value as &$l ) {
-// 				$l = array_map( 'htmlentities', $l );
-// 			}
+		if($name === 'ERRORS' ) {
+			$value_escaped = $value;
+		} else if (is_array( $value )) {
+			array_walk_recursive( $value, function (&$func_value) {
+				$func_value = htmlentities( $func_value );
+			} );
 			$value_escaped = $value;
 		} else {
 			$value_escaped = htmlentities( $value );
@@ -84,7 +79,7 @@ abstract class module {
 			$this->template_assign( 'ENV_REFERER', $http_referer );
 		} else {
 			// Check for XSS
-			if(parse_url($referer)['path'] != $_SERVER ['SCRIPT_NAME']) {
+			if (parse_url( $referer ) ['path'] != $_SERVER ['SCRIPT_NAME']) {
 				$referer = $_SERVER ['SCRIPT_NAME'];
 			}
 			$this->template_assign( 'ENV_REFERER', $referer );
