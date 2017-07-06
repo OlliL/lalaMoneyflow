@@ -66,7 +66,7 @@ $moduleEvents = new moduleEvents();
 $moduleUsers = new moduleUsers();
 $moduleSettings = new moduleSettings();
 
-$request_uri = $_POST ['request_uri'];
+$request_uri = $_SERVER ['REQUEST_URI'];
 $all_data = null;
 
 if ($action == 'logout') {
@@ -104,8 +104,8 @@ if ($is_logged_in == 2) {
 	if (! $display) {
 		$display = $moduleEvents->check_events();
 
-		if ($request_uri && parse_url( $request_uri ) ['path'] == $_SERVER ['SCRIPT_NAME'] && ! $display)
-			header( "Location: " . htmlentities( $request_uri ) );
+		if ($_POST ['request_uri'] && parse_url( $_POST ['request_uri'] ) ['path'] == $_SERVER ['SCRIPT_NAME'] && ! $display)
+			header( "Location: " . htmlentities( $_POST ['request_uri'] ) );
 	}
 }
 // if ($money_debug === true)
