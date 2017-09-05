@@ -60,7 +60,6 @@
                 <li><a href="{$ENV_INDEX_PHP}?action=list_contractpartners">{#TEXT_2#}</a></li>
                 <li><a href="{$ENV_INDEX_PHP}?action=list_predefmoneyflows">{#TEXT_3#}</a></li>
                 <li><a href="{$ENV_INDEX_PHP}?action=list_monthlysettlements">{#TEXT_4#}</a></li>
-                <li><a href="{$ENV_INDEX_PHP}?action=list_reports">{#TEXT_5#}</a></li>
               </ul>
             </li>
 
