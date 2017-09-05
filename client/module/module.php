@@ -59,7 +59,7 @@ abstract class module {
 		$this->template->error_reporting = E_ERROR;
 		$this->template->registerPlugin( 'modifier', 'number_format', 'client\util\SmartyPlugin::my_number_format' );
 		$this->template_assign( 'ENV_INDEX_PHP', 'index.php' );
-		$this->template->setCompileCheck( \Smarty::COMPILECHECK_OFF );
+//		$this->template->setCompileCheck( \Smarty::COMPILECHECK_OFF );
 
 		if (! empty( $_SERVER ['HTTP_REFERER'] )) {
 			$http_referer = $_SERVER ['HTTP_REFERER'];
@@ -120,12 +120,13 @@ abstract class module {
 		return $result;
 	}
 
-	protected final function parse_header($nonavi = 0) {
+	protected final function parse_header($nonavi = 0, $bootstraped = 0) {
 		$this->template->assign( 'REPORTS_YEAR', date( 'Y' ) );
 		$this->template->assign( 'REPORTS_MONTH', date( 'm' ) );
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
 		$this->template->assign( 'VERSION', '0.22.0' );
 		$this->template_assign( 'NO_NAVIGATION', $nonavi );
+
 		$admin = Environment::getInstance()->getUserPermAdmin();
 		if ($admin) {
 			$this->template->assign( 'IS_ADMIN', true );
@@ -135,10 +136,19 @@ abstract class module {
 		$cache_id = Environment::getInstance()->getUserId();
 		$language = Environment::getInstance()->getSettingGuiLanguage();
 		$this->template->setCaching( true );
-		$header = $this->fetch_template( 'display_header.tpl', 'header_' . $language . '_' . $admin . '_' . $nonavi . '_' . $cache_id );
+
+		if($bootstraped === 1) {
+			$file_header = 'display_header_bs.tpl';
+			$file_footer = 'display_footer_bs.tpl';
+		} else {
+			$file_header = 'display_header.tpl';
+			$file_footer = 'display_footer.tpl';
+		}
+
+		$header = $this->fetch_template( $file_header, 'header_' . $language . '_' . $admin . '_' . $nonavi . '_' . $cache_id );
 		$this->template->assign( 'HEADER', $header );
 
-		$footer = $this->fetch_template( 'display_footer.tpl', 'footer_' . $language . '_' . $cache_id );
+		$footer = $this->fetch_template( $file_footer, 'footer_' . $language . '_' . $cache_id );
 		$this->template->assign( 'FOOTER', $footer );
 		$this->template->setCaching( false );
 	}

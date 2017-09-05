@@ -91,7 +91,7 @@ class moduleUsers extends module {
 			$this->template_assign( 'STAY_LOGGED_IN', $stay_logged_in );
 			$this->template_assign( 'ERRORS', $this->get_errors() );
 			$this->template_assign( 'REQUEST_URI', $request_uri );
-			$this->parse_header( 1 );
+			$this->parse_header( 1, 1 );
 			return $this->fetch_template( 'display_login_user.tpl' );
 		}
 	}

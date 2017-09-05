@@ -35,7 +35,7 @@ class moduleFrontPage extends module {
 	}
 
 	public final function display_main() {
-		$this->parse_header();
+		$this->parse_header(0,1);
 		return $this->fetch_template( 'display_main.tpl' );
 	}
 }
