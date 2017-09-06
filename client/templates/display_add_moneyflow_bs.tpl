@@ -71,7 +71,7 @@
   <div class="form-group">
     <label class="control-label col-sm-4" for="amount">{#TEXT_18#}</label>
     <div class="input-group col-sm-8">
-      <input type="number" class="form-control" id="amount" name="all_data[-1][amount]">
+      <input type="number" step="0.01" class="form-control" id="amount" name="all_data[-1][amount]">
       <span class="input-group-addon">
         <span class="glyphicon glyphicon-euro"></span>
       </span>
