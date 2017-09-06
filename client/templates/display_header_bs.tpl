@@ -1,10 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>moneyjinn</title>
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="contrib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="contrib/bootstrap-datepicker/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="site.css">
 
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="contrib/moment/moment.js"></script>
+    <script type="text/javascript" src="contrib/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="contrib/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
   </head>
   <body>
         
@@ -84,7 +94,8 @@
         </div>
       </div>
     </nav>
-
-    <div class="wrapper">
-      <div class="row">
 {/if}
+
+    <main class="col-md-12">
+    <!--<main class="">-->
+    

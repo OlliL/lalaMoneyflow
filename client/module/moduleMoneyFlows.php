@@ -374,8 +374,11 @@ class moduleMoneyFlows extends module {
 		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template_assign( 'ALL_DATA', $all_data );
 		$this->template_assign( 'NUMFLOWS', $numflows );
+		$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' )));
 		$this->template_assign( 'ERRORS', $this->get_errors() );
 
+// 		$this->parse_header(0,1);
+// 		return $this->fetch_template( 'display_add_moneyflow_bs.tpl' );
 		$this->parse_header();
 		return $this->fetch_template( 'display_add_moneyflow.tpl' );
 	}
