@@ -177,7 +177,7 @@
   }
   
   function preFillForm(jsonPreDefMoneyflowIndex) {
-    if ( jsonPreDefMoneyflowIndex === BOOKING_DEFAULT || jsonPreDefMoneyflowIndex === BOOKING_EMPTY ) {
+    if ( jsonPreDefMoneyflowIndex == BOOKING_DEFAULT || jsonPreDefMoneyflowIndex == BOOKING_EMPTY ) {
       document.addmoney.predefmoneyflowid.value = -1;
       document.addmoney.amount.value = "";
       document.addmoney.mcp_contractpartnerid.value = "";
@@ -185,7 +185,7 @@
       document.addmoney.mpa_postingaccountid.value = "";
       document.addmoney.mcs_capitalsourceid.selectedIndex = 0;
 
-      if( jsonPreDefMoneyflowIndex === BOOKING_EMPTY) {
+      if( jsonPreDefMoneyflowIndex == BOOKING_EMPTY) {
         deleteErrors();
 
         var select = document.getElementById('selectmoneyflow');
