@@ -1,0 +1,31 @@
+{
+  "name": "bootstrap-float-label",
+  "version": "3.0.1",
+  "description": "Pure CSS implementation of Float Label pattern for Bootstrap 3.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tonystar/bootstrap-float-label.git"
+  },
+  "keywords": [
+    "bootstrap",
+    "bootstrap-4",
+    "bootstrap4",
+    "float-label",
+    "floatlabel",
+    "css-only",
+    "cssonly"
+  ],
+  "author": "Anton Staroverov (https://tonystar.me)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tonystar/bootstrap-float-label/issues"
+  },
+  "homepage": "https://github.com/tonystar/bootstrap-float-label#readme",
+  "dependencies": {
+    "float-label-css": "1.0.2"
+  },
+  "devDependencies": {
+    "bootstrap": "3.3.7",
+    "bootstrap-sass": "3.3.7"
+  }
+}

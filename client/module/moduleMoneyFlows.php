@@ -274,6 +274,7 @@ class moduleMoneyFlows extends module {
 					$capitalsource_values = $createMoneyflows ['capitalsources'];
 					$contractpartner_values = $createMoneyflows ['contractpartner'];
 					$postingaccount_values = $createMoneyflows ['postingaccounts'];
+					$preDefMoneyflows = $createMoneyflows ['predefmoneyflows'];
 
 					$numflows = $createMoneyflows ['num_free_moneyflows'];
 
@@ -332,6 +333,7 @@ class moduleMoneyFlows extends module {
 					$capitalsource_values = $addMoneyflow ['capitalsources'];
 					$contractpartner_values = $addMoneyflow ['contractpartner'];
 					$postingaccount_values = $addMoneyflow ['postingaccounts'];
+					$preDefMoneyflows = $addMoneyflow ['predefmoneyflows'];
 				}
 			default :
 				if ($realaction === 'save' && $data_is_valid == true || $realaction != 'save') {
@@ -342,7 +344,8 @@ class moduleMoneyFlows extends module {
 
 						$contractpartner_values = $addMoneyflow ['contractpartner'];
 						$postingaccount_values = $addMoneyflow ['postingaccounts'];
-						$all_data_pre = $addMoneyflow ['predefmoneyflows'];
+						$preDefMoneyflows = $addMoneyflow ['predefmoneyflows'];
+						$all_data_pre = $preDefMoneyflows;
 						$numflows = $addMoneyflow ['num_free_moneyflows'];
 					}
 
@@ -374,11 +377,14 @@ class moduleMoneyFlows extends module {
 		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template_assign( 'ALL_DATA', $all_data );
 		$this->template_assign( 'NUMFLOWS', $numflows );
-		$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' )));
 		$this->template_assign( 'ERRORS', $this->get_errors() );
 
-// 		$this->parse_header(0,1);
-// 		return $this->fetch_template( 'display_add_moneyflow_bs.tpl' );
+		$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' )));
+		$this->template_assign_raw( 'JSON_PREDEFMONEYFLOWS', json_encode($preDefMoneyflows));
+		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode($all_data[0]));
+
+		$this->parse_header(0,1);
+		return $this->fetch_template( 'display_add_moneyflow_bs.tpl' );
 		$this->parse_header();
 		return $this->fetch_template( 'display_add_moneyflow.tpl' );
 	}

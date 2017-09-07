@@ -39,6 +39,10 @@ require_once 'Smarty.class.php';
 abstract class module {
 	protected $template;
 
+	protected function template_assign_raw($name, $value) {
+		$this->template->assign( $name, $value );
+	}
+
 	protected function template_assign($name, $value) {
 		if($name === 'ERRORS' ) {
 			$value_escaped = $value;
