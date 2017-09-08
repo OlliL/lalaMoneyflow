@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2005-2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -43,18 +44,18 @@ class moduleMoneyFlows extends module {
 		if (empty( $id ))
 			return;
 
-		$receipt = MoneyflowReceiptControllerHandler::getInstance()->showMoneyflowReceipt($id);
+		$receipt = MoneyflowReceiptControllerHandler::getInstance()->showMoneyflowReceipt( $id );
 
-		switch($receipt['receipt_type']) {
-			case 1:
-				header('Content-Type: image/jpeg');
+		switch ($receipt ['receipt_type']) {
+			case 1 :
+				header( 'Content-Type: image/jpeg' );
 				break;
-			case 2:
-				header('Content-Type: application/pdf');
+			case 2 :
+				header( 'Content-Type: application/pdf' );
 				break;
 		}
 
-		echo base64_decode($receipt['receipt']);
+		echo base64_decode( $receipt ['receipt'] );
 	}
 
 	public final function display_edit_moneyflow($realaction, $id, $all_data, $moneyflow_split_entries) {
@@ -111,10 +112,10 @@ class moduleMoneyFlows extends module {
 								}
 
 								if ($value ['moneyflowsplitentryid'] > 0) {
-									$value['moneyflowid'] = $all_data ['moneyflowid'];
+									$value ['moneyflowid'] = $all_data ['moneyflowid'];
 									$update_moneyflowsplitentrys [] = $value;
 								} elseif ($value ['amount'] != '') {
-									$value['moneyflowid'] = $all_data ['moneyflowid'];
+									$value ['moneyflowid'] = $all_data ['moneyflowid'];
 									$insert_moneyflowsplitentrys [] = $value;
 								}
 							}
@@ -226,148 +227,86 @@ class moduleMoneyFlows extends module {
 	public final function display_add_moneyflow($realaction, $all_data) {
 		switch ($realaction) {
 			case 'save' :
-				$data_is_valid = true;
-				$nothing_checked = true;
-				$numflows = 0;
-				foreach ( $all_data as $id => $value ) {
-					if ($value ['predefmoneyflowid'] < 0)
-						$numflows ++;
+				$add_data = $all_data;
+				$add_data[0]['moneyflowid'] = -1;
 
-					if (array_key_exists( 'checked', $value ) && $value ['checked'] == 1) {
+				$createMoneyflows = MoneyflowControllerHandler::getInstance()->createMoneyflows( $add_data );
+				$capitalsource_values = $createMoneyflows ['capitalsources'];
+				$contractpartner_values = $createMoneyflows ['contractpartner'];
+				$postingaccount_values = $createMoneyflows ['postingaccounts'];
+				$preDefMoneyflows = $createMoneyflows ['predefmoneyflows'];
 
-						if (! $this->fix_amount( $value ['amount'] )) {
-							$all_data [$id] ['amount_error'] = 1;
-							$data_is_valid = false;
-						}
-						$nothing_checked = false;
-						if (! empty( $value ['invoicedate'] )) {
-							if (! $this->dateIsValid( $value ['invoicedate'] )) {
-								$this->add_error( ErrorCode::INVOICEDATE_IN_WRONG_FORMAT, array (
+				$result = $createMoneyflows ['result'];
+				if ($result === true) {
+					$data_is_valid = true;
+				} else {
+					$data_is_valid = false;
+					foreach ( $createMoneyflows ['errors'] as $validationResult ) {
+						$error = $validationResult ['error'];
+						$key = $validationResult ['key'];
+
+						switch ($error) {
+							case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
+								$this->add_error( $error, array (
+										$all_data [$key] ['amount']
+								) );
+								break;
+							case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
+								$this->add_error( $error, array (
 										Environment::getInstance()->getSettingDateFormat()
 								) );
-								$all_data [$id] ['invoicedate_error'] = 1;
-								$data_is_valid = false;
-							}
+								break;
+							default :
+								$this->add_error( $error );
 						}
 
-						if (! $this->dateIsValid( $value ['bookingdate'] )) {
-							$this->add_error( ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT, array (
-									Environment::getInstance()->getSettingDateFormat()
-							) );
-							$all_data [$id] ['bookingdate_error'] = 1;
-							$data_is_valid = false;
-						}
-						$add_data [] = array_merge( $value, array (
-								'moneyflowid' => $id
-						) );
-					}
-				}
-
-				if ($nothing_checked) {
-					$this->add_error( ErrorCode::NOTHING_MARKED_TO_ADD );
-					$data_is_valid = false;
-				}
-
-				if ($data_is_valid) {
-
-					$createMoneyflows = MoneyflowControllerHandler::getInstance()->createMoneyflows( $add_data );
-					$capitalsource_values = $createMoneyflows ['capitalsources'];
-					$contractpartner_values = $createMoneyflows ['contractpartner'];
-					$postingaccount_values = $createMoneyflows ['postingaccounts'];
-					$preDefMoneyflows = $createMoneyflows ['predefmoneyflows'];
-
-					$numflows = $createMoneyflows ['num_free_moneyflows'];
-
-					$result = $createMoneyflows ['result'];
-					if ($result === true) {
-						$all_data_pre = $createMoneyflows ['predefmoneyflows'];
-					} else {
-						$data_is_valid = false;
-						foreach ( $createMoneyflows ['errors'] as $validationResult ) {
-							$error = $validationResult ['error'];
-							$key = $validationResult ['key'];
-
-							switch ($error) {
-								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-									$this->add_error( $error, array (
-											$all_data [$key] ['amount']
-									) );
-									break;
-								case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
-									$this->add_error( $error, array (
-											Environment::getInstance()->getSettingDateFormat()
-									) );
-									break;
-								default :
-									$this->add_error( $error );
-							}
-
-							switch ($error) {
-								case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
-								case ErrorCode::BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT :
-									$all_data [$key] ['bookingdate_error'] = 1;
-									break;
-								case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
-									$all_data [$key] ['bookingdate_error'] = 1;
-								case ErrorCode::CAPITALSOURCE_DOES_NOT_EXIST :
-								case ErrorCode::CAPITALSOURCE_IS_NOT_SET :
-								case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
-									$all_data [$key] ['capitalsource_error'] = 1;
-									break;
-								case ErrorCode::CONTRACTPARTNER_DOES_NOT_EXIST :
-								case ErrorCode::CONTRACTPARTNER_IS_NOT_SET :
-									$all_data [$key] ['contractpartner_error'] = 1;
-									break;
-								case ErrorCode::AMOUNT_IS_ZERO :
-								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-									$all_data [$key] ['amount_error'] = 1;
-									break;
-								case ErrorCode::CONTRACTPARTNER_NO_LONGER_VALID :
-									$all_data [$key] ['contractpartner_error'] = 1;
-									$all_data [$key] ['bookingdate_error'] = 1;
-							}
+						switch ($error) {
+							case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
+							case ErrorCode::BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT :
+								$all_data [$key] ['bookingdate_error'] = 1;
+								break;
+							case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
+								$all_data [$key] ['bookingdate_error'] = 1;
+							case ErrorCode::CAPITALSOURCE_DOES_NOT_EXIST :
+							case ErrorCode::CAPITALSOURCE_IS_NOT_SET :
+							case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
+								$all_data [$key] ['capitalsource_error'] = 1;
+								break;
+							case ErrorCode::CONTRACTPARTNER_DOES_NOT_EXIST :
+							case ErrorCode::CONTRACTPARTNER_IS_NOT_SET :
+								$all_data [$key] ['contractpartner_error'] = 1;
+								break;
+							case ErrorCode::AMOUNT_IS_ZERO :
+							case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
+								$all_data [$key] ['amount_error'] = 1;
+								break;
+							case ErrorCode::CONTRACTPARTNER_NO_LONGER_VALID :
+								$all_data [$key] ['contractpartner_error'] = 1;
+								$all_data [$key] ['bookingdate_error'] = 1;
 						}
 					}
-				} else {
-					$addMoneyflow = MoneyflowControllerHandler::getInstance()->showAddMoneyflows();
-					$capitalsource_values = $addMoneyflow ['capitalsources'];
-					$contractpartner_values = $addMoneyflow ['contractpartner'];
-					$postingaccount_values = $addMoneyflow ['postingaccounts'];
-					$preDefMoneyflows = $addMoneyflow ['predefmoneyflows'];
 				}
 			default :
 				if ($realaction === 'save' && $data_is_valid == true || $realaction != 'save') {
 
 					if ($realaction !== 'save') {
 						$addMoneyflow = MoneyflowControllerHandler::getInstance()->showAddMoneyflows();
-						$capitalsource_values = $addMoneyflow ['capitalsources'];
 
+						$capitalsource_values = $addMoneyflow ['capitalsources'];
 						$contractpartner_values = $addMoneyflow ['contractpartner'];
 						$postingaccount_values = $addMoneyflow ['postingaccounts'];
 						$preDefMoneyflows = $addMoneyflow ['predefmoneyflows'];
-						$all_data_pre = $preDefMoneyflows;
-						$numflows = $addMoneyflow ['num_free_moneyflows'];
 					}
 
 					// clean the array before filling it.
-					$all_data = array ();
 					$date = $this->convertDateToGui( date( 'Y-m-d' ) );
 
-					for($i = $numflows; $i > 0; $i --) {
-						$all_data [$numflows - $i] = array (
-								'predefmoneyflowid' => ($numflows - $i + 1) * - 1,
-								'bookingdate' => $date
-						);
-					}
-
-					if (is_array( $all_data_pre )) {
-						$i = $numflows;
-						foreach ( $all_data_pre as $value ) {
-							$all_data [$i] = $value;
-							$all_data [$i] ['bookingdate'] = $date;
-							$i ++;
-						}
-					}
+					$all_data = array (
+							array (
+									'predefmoneyflowid' => - 1,
+									'bookingdate' => $date
+							)
+					);
 				}
 				break;
 		}
@@ -375,18 +314,14 @@ class moduleMoneyFlows extends module {
 		$this->template_assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 		$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
 		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
-		$this->template_assign( 'ALL_DATA', $all_data );
-		$this->template_assign( 'NUMFLOWS', $numflows );
 		$this->template_assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' ) ) );
 
-		$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' )));
-		$this->template_assign_raw( 'JSON_PREDEFMONEYFLOWS', json_encode($preDefMoneyflows));
-		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode($all_data[0]));
+		$this->template_assign_raw( 'JSON_PREDEFMONEYFLOWS', json_encode( $preDefMoneyflows ) );
+		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data [0] ) );
 
-		$this->parse_header(0,1,'display_add_moneyflow_bs.tpl');
+		$this->parse_header( 0, 1, 'display_add_moneyflow_bs.tpl' );
 		return $this->fetch_template( 'display_add_moneyflow_bs.tpl' );
-		$this->parse_header();
-		return $this->fetch_template( 'display_add_moneyflow.tpl' );
 	}
 
 	public final function display_delete_moneyflow($realaction, $id) {
