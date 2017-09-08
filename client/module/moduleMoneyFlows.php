@@ -228,7 +228,7 @@ class moduleMoneyFlows extends module {
 		switch ($realaction) {
 			case 'save' :
 				$add_data = $all_data;
-				$add_data[0]['moneyflowid'] = -1;
+				$add_data ['moneyflowid'] = - 1;
 
 				$createMoneyflows = MoneyflowControllerHandler::getInstance()->createMoneyflows( $add_data );
 				$capitalsource_values = $createMoneyflows ['capitalsources'];
@@ -248,7 +248,7 @@ class moduleMoneyFlows extends module {
 						switch ($error) {
 							case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
 								$this->add_error( $error, array (
-										$all_data [$key] ['amount']
+										$all_data ['amount']
 								) );
 								break;
 							case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
@@ -263,26 +263,26 @@ class moduleMoneyFlows extends module {
 						switch ($error) {
 							case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
 							case ErrorCode::BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT :
-								$all_data [$key] ['bookingdate_error'] = 1;
+								$all_data ['bookingdate_error'] = 1;
 								break;
 							case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
-								$all_data [$key] ['bookingdate_error'] = 1;
+								$all_data ['bookingdate_error'] = 1;
 							case ErrorCode::CAPITALSOURCE_DOES_NOT_EXIST :
 							case ErrorCode::CAPITALSOURCE_IS_NOT_SET :
 							case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
-								$all_data [$key] ['capitalsource_error'] = 1;
+								$all_data ['capitalsource_error'] = 1;
 								break;
 							case ErrorCode::CONTRACTPARTNER_DOES_NOT_EXIST :
 							case ErrorCode::CONTRACTPARTNER_IS_NOT_SET :
-								$all_data [$key] ['contractpartner_error'] = 1;
+								$all_data ['contractpartner_error'] = 1;
 								break;
 							case ErrorCode::AMOUNT_IS_ZERO :
 							case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-								$all_data [$key] ['amount_error'] = 1;
+								$all_data ['amount_error'] = 1;
 								break;
 							case ErrorCode::CONTRACTPARTNER_NO_LONGER_VALID :
-								$all_data [$key] ['contractpartner_error'] = 1;
-								$all_data [$key] ['bookingdate_error'] = 1;
+								$all_data ['contractpartner_error'] = 1;
+								$all_data ['bookingdate_error'] = 1;
 						}
 					}
 				}
@@ -302,10 +302,8 @@ class moduleMoneyFlows extends module {
 					$date = $this->convertDateToGui( date( 'Y-m-d' ) );
 
 					$all_data = array (
-							array (
-									'predefmoneyflowid' => - 1,
-									'bookingdate' => $date
-							)
+							'predefmoneyflowid' => - 1,
+							'bookingdate' => $date
 					);
 				}
 				break;
@@ -318,7 +316,7 @@ class moduleMoneyFlows extends module {
 		$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' ) ) );
 
 		$this->template_assign_raw( 'JSON_PREDEFMONEYFLOWS', json_encode( $preDefMoneyflows ) );
-		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data [0] ) );
+		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 
 		$this->parse_header( 0, 1, 'display_add_moneyflow_bs.tpl' );
 		return $this->fetch_template( 'display_add_moneyflow_bs.tpl' );

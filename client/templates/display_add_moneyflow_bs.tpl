@@ -12,8 +12,8 @@
   <form action="{$ENV_INDEX_PHP}?action=add_moneyflow" method="POST" name="addmoney" role="form">
     <input type="hidden" name="action"                          value="add_moneyflow">
     <input type="hidden" name="realaction"                      value="save">
-    <input type="hidden" name="all_data[0][predefmoneyflowid]" value="-1"               id="predefmoneyflowid" >
-    <input type="hidden" name="all_data[0][checked]"           value="1">
+    <input type="hidden" name="all_data[predefmoneyflowid]" value="-1"               id="predefmoneyflowid" >
+    <input type="hidden" name="all_data[checked]"           value="1">
 
     <div class="span2 well">
 
@@ -26,7 +26,7 @@
       <div class="form-group">
         <span class="has-float-label">
           <div class='input-group date col-xs-12' id="bookingdate">
-            <input type="text" class="form-control" name="all_data[0][bookingdate]" id="bookingdateSelect" required data-error="{#TEXT_305#}">
+            <input type="text" class="form-control" name="all_data[bookingdate]" id="bookingdateSelect" required data-error="{#TEXT_305#}">
             <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
             </span>
@@ -50,7 +50,7 @@
       <div class="form-group">
         <span class="has-float-label">
           <div class='input-group date col-xs-12' id="invoicedate">
-            <input type="text" class="form-control" name="all_data[0][invoicedate]" id="invoicedateSelect">
+            <input type="text" class="form-control" name="all_data[invoicedate]" id="invoicedateSelect">
             <span class="input-group-addon">
               <span class="glyphicon glyphicon-calendar"></span>
             </span>
@@ -73,7 +73,7 @@
 
       <div class="form-group has-float-label">
         <div class="input-group col-xs-12">
-          <input type="number" step="0.01" class="form-control" id="amount" name="all_data[0][amount]" required data-error="{#TEXT_306#}">
+          <input type="number" step="0.01" class="form-control" id="amount" name="all_data[amount]" required data-error="{#TEXT_306#}">
           <span class="input-group-addon">
             <span class="glyphicon glyphicon-euro"></span>
           </span>
@@ -84,7 +84,7 @@
 
       <div class="form-group has-float-label">
         <div class="input-group col-xs-12">
-          <select class="form-control" name="all_data[0][mcp_contractpartnerid]" id="mcp_contractpartnerid" required data-error="{#TEXT_307#}">
+          <select class="form-control" name="all_data[mcp_contractpartnerid]" id="mcp_contractpartnerid" required data-error="{#TEXT_307#}">
             <option value=""> </option>
 {section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
             <option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}</option>
@@ -103,7 +103,7 @@
 
       <div class="form-group has-float-label">
         <div class="input-group col-xs-12">
-          <input type="text" class="form-control" id="comment" name="all_data[0][comment]" required data-error="{#TEXT_308#}">
+          <input type="text" class="form-control" id="comment" name="all_data[comment]" required data-error="{#TEXT_308#}">
         </div>
         <label for="comment">{#TEXT_21#}</label>
         <div class="help-block with-errors"></div>
@@ -111,7 +111,7 @@
  
       <div class="form-group has-float-label">
         <div class="input-group col-xs-12">
-          <select class="form-control" name="all_data[0][mpa_postingaccountid]" id="mpa_postingaccountid" required data-error="{#TEXT_309#}">
+          <select class="form-control" name="all_data[mpa_postingaccountid]" id="mpa_postingaccountid" required data-error="{#TEXT_309#}">
             <option value=""> </option>
 {section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
             <option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}"> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name}</option>
@@ -131,7 +131,7 @@
 
       <div class="form-group has-float-label">
         <div class="input-group col-xs-12">
-          <select class="form-control" name="all_data[0][mcs_capitalsourceid]" id="mcs_capitalsourceid" required data-error="{#TEXT_310#}">
+          <select class="form-control" name="all_data[mcs_capitalsourceid]" id="mcs_capitalsourceid" required data-error="{#TEXT_310#}">
 {section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
             <option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}"> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}</option>
 {/section}
@@ -148,8 +148,8 @@
 
       <div class="form-group input-group col-lg-12">
             <button type="button" class="btn btn-default" onclick="preFillForm(-1)">{#TEXT_304#}</button>
-            <input id="private"  data-toggle="toggle" value="1" data-on="{#TEXT_209#}" data-off="{#TEXT_301#}" data-onstyle="danger" data-offstyle="success" type="checkbox" name="all_data[0][private]">
-            <input id="favorite" value="1" type="checkbox" name="all_data[0][save_as_predefmoneyflow]">
+            <input id="private"  data-toggle="toggle" value="1" data-on="{#TEXT_209#}" data-off="{#TEXT_301#}" data-onstyle="danger" data-offstyle="success" type="checkbox" name="all_data[private]">
+            <input id="favorite" value="1" type="checkbox" name="all_data[save_as_predefmoneyflow]">
           </div>
       </div>
  

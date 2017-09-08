@@ -115,18 +115,18 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		return $result;
 	}
 
-	public final function createMoneyflows(array $moneyflows) {
+	public final function createMoneyflows(array $moneyflow) {
 		$preDefMoneyflowIds = array ();
 
-		foreach ( $moneyflows as $moneyflow ) {
-			if ($moneyflow ['predefmoneyflowid'] > 0) {
-				$preDefMoneyflowIds [] = $moneyflow ['predefmoneyflowid'];
-			}
+		if ($moneyflow ['predefmoneyflowid'] > 0) {
+			$preDefMoneyflowIds [] = $moneyflow ['predefmoneyflowid'];
 		}
-		$moneyflowTransport = parent::mapArray( $moneyflows, MoneyflowTransport::getClass() );
+
+		$moneyflowTransport = parent::map( $moneyflow, MoneyflowTransport::getClass() );
+		$moneyflowTransports = array($moneyflowTransport);
 
 		$request = new createMoneyflowsRequest();
-		$request->setMoneyflowTransport( $moneyflowTransport );
+		$request->setMoneyflowTransport( $moneyflowTransports );
 		$request->setUsedPreDefMoneyflowIds( $preDefMoneyflowIds );
 
 		$response = parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
