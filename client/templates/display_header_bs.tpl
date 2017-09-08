@@ -10,14 +10,15 @@
     <link rel="stylesheet" href="contrib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="contrib/bootstrap-datepicker/css/bootstrap-datetimepicker.min.css">
     <link rel="stylesheet" href="contrib/bootstrap-float-label/dist/bootstrap-float-label.css">
-    <link rel="stylesheet" href="contrib/bootstrap-toggle-master/css/bootstrap-toggle.min.css">
+    <link rel="stylesheet" href="contrib/bootstrap-toggle/css/bootstrap-toggle.min.css">
     <link rel="stylesheet" href="site.css">
 
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="contrib/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="contrib/moment/moment.js"></script>
     <script type="text/javascript" src="contrib/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="contrib/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script type="text/javascript" src="contrib/bootstrap-toggle-master/js/bootstrap-toggle.min.js"></script>
+    <script type="text/javascript" src="contrib/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+    <script type="text/javascript" src="contrib/bootstrap-validator/dist/validator.min.js"></script>
 
   </head>
   <body>
@@ -26,9 +27,9 @@
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#"><small>moneyjinn {$VERSION}</small></a>
+          <a class="navbar-brand" href="{$ENV_INDEX_PHP}"><small>moneyjinn {$VERSION}</small></a>
           <ul class="nav navbar-nav pull-left">
-            <li><a href="{$ENV_INDEX_PHP}?action=add_moneyflow"><i class="glyphicon glyphicon-euro"></i></a></li>
+            <li {if $TEMPLATE == "display_add_moneyflow_bs.tpl"} class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=add_moneyflow"><i class="glyphicon glyphicon-euro"></i></a></li>
           </ul>
 
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#moneyjinn-navbar-collapse" aria-expanded="false">

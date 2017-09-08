@@ -124,12 +124,13 @@ abstract class module {
 		return $result;
 	}
 
-	protected final function parse_header($nonavi = 0, $bootstraped = 0) {
+	protected final function parse_header($nonavi=0, $bootstraped=0, $template=null) {
 		$this->template->assign( 'REPORTS_YEAR', date( 'Y' ) );
 		$this->template->assign( 'REPORTS_MONTH', date( 'm' ) );
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
 		$this->template->assign( 'VERSION', '0.22.0' );
 		$this->template_assign( 'NO_NAVIGATION', $nonavi );
+		$this->template_assign( 'TEMPLATE', $template);
 
 		$admin = Environment::getInstance()->getUserPermAdmin();
 		if ($admin) {
@@ -139,7 +140,7 @@ abstract class module {
 		}
 		$cache_id = Environment::getInstance()->getUserId();
 		$language = Environment::getInstance()->getSettingGuiLanguage();
-		$this->template->setCaching( true );
+// 		$this->template->setCaching( true );
 
 		if($bootstraped === 1) {
 			$file_header = 'display_header_bs.tpl';

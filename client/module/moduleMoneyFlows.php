@@ -383,7 +383,7 @@ class moduleMoneyFlows extends module {
 		$this->template_assign_raw( 'JSON_PREDEFMONEYFLOWS', json_encode($preDefMoneyflows));
 		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode($all_data[0]));
 
-		$this->parse_header(0,1);
+		$this->parse_header(0,1,'display_add_moneyflow_bs.tpl');
 		return $this->fetch_template( 'display_add_moneyflow_bs.tpl' );
 		$this->parse_header();
 		return $this->fetch_template( 'display_add_moneyflow.tpl' );
