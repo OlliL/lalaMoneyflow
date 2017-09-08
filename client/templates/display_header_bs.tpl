@@ -101,6 +101,4 @@
     </nav>
 {/if}
 
-    <main class="col-md-12">
-    <!--<main class="">-->
-    
+<div class="main-wrapper">    

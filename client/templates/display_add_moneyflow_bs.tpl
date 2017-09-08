@@ -1,4 +1,5 @@
 {$HEADER}
+<div class="main-wrapper">
 <div class="container">
   
   <div>
@@ -163,6 +164,7 @@
       
   </form>
 </div>
+<div class="overlay" style="display: none">
 
 <script language="JavaScript">
   
@@ -327,7 +329,7 @@
   preFillForm(BOOKING_DEFAULT);
 
   $("form").validator();
-
+//  $('.overlay').toggle();
 </script>
 
 {$FOOTER}
