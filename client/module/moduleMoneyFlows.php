@@ -243,7 +243,6 @@ class moduleMoneyFlows extends module {
 					$data_is_valid = false;
 					foreach ( $createMoneyflows ['errors'] as $validationResult ) {
 						$error = $validationResult ['error'];
-						$key = $validationResult ['key'];
 
 						switch ($error) {
 							case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
