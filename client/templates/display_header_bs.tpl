@@ -100,5 +100,4 @@
       </div>
     </nav>
 {/if}
-
-<div class="main-wrapper">    
+    <div class="main-wrapper">    
