@@ -63,7 +63,7 @@
                 <li><a href="{$ENV_INDEX_PHP}?action=add_moneyflow">{#TEXT_8#}</a>
                 <li role="separator" class="divider"></li>
                 <li><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&amp;sr=1','_blank','width=1000,height=120')">{#TEXT_1#}</a></li>
-                <li><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&amp;sr=1','_blank','width=1000,height=120')">{#TEXT_2#}</a></li>
+                <li><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&amp;sr=1','_blank','width=600,height=460')">{#TEXT_2#}</a></li>
                 <li><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_predefmoneyflow&amp;sr=1','_blank','width=1000,height=120')">{#TEXT_3#}</a></li>
               </ul>
             </li>

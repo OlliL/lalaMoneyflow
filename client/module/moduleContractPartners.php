@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2005-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -59,69 +60,39 @@ class moduleContractPartners extends module {
 		$close = 0;
 		switch ($realaction) {
 			case 'save' :
-				$valid_data = true;
 				$all_data ['contractpartnerid'] = $contractpartnerid;
-				if (! $this->dateIsValid( $all_data ['validfrom'] )) {
-					$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-							Environment::getInstance()->getSettingDateFormat()
-					) );
-					$all_data ['validfrom_error'] = 1;
-					$valid_data = false;
-				}
-				if (! $this->dateIsValid( $all_data ['validtil'] )) {
-					$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-							Environment::getInstance()->getSettingDateFormat()
-					) );
-					$all_data ['validtil_error'] = 1;
-					$valid_data = false;
-				}
-				if ($valid_data === true) {
 
-					if ($contractpartnerid == 0)
-						$ret = ContractpartnerControllerHandler::getInstance()->createContractpartner( $all_data );
-					else
-						$ret = ContractpartnerControllerHandler::getInstance()->updateContractpartner( $all_data );
+				if ($contractpartnerid == 0)
+					$ret = ContractpartnerControllerHandler::getInstance()->createContractpartner( $all_data );
+				else
+					$ret = ContractpartnerControllerHandler::getInstance()->updateContractpartner( $all_data );
 
-					if ($ret === true) {
-						$close = 1;
-					} else {
-						$posting_accounts = $ret ['postingAccounts'];
+				if ($ret === true) {
+					$close = 1;
+				} else {
+					$posting_accounts = $ret ['postingAccounts'];
 
-						foreach ( $ret ['errors'] as $validationResult ) {
-							$error = $validationResult ['error'];
+					foreach ( $ret ['errors'] as $validationResult ) {
+						$error = $validationResult ['error'];
 
-							$this->add_error( $error );
+						$this->add_error( $error );
 
-							switch ($error) {
-								case ErrorCode::NAME_ALREADY_EXISTS :
-									$all_data ['name_error'] = 1;
-									break;
-							}
+						switch ($error) {
+							case ErrorCode::NAME_ALREADY_EXISTS :
+								$all_data ['name_error'] = 1;
+								break;
 						}
 					}
-					break;
 				}
+				break;
 			default :
 				if ($contractpartnerid > 0) {
 					$showEditContractpartner = ContractpartnerControllerHandler::getInstance()->showEditContractpartner( $contractpartnerid );
-					if (! is_array( $all_data )) {
-						$all_data = $showEditContractpartner ['contractpartner'];
-					}
+					$all_data = $showEditContractpartner ['contractpartner'];
 					$posting_accounts = $showEditContractpartner ['postingAccounts'];
 				} else {
 					$posting_accounts = ContractpartnerControllerHandler::getInstance()->showCreateContractpartner();
-
-					$all_data ['name'] = '';
-					$all_data ['street'] = '';
-					$all_data ['postcode'] = '';
-					$all_data ['town'] = '';
-					$all_data ['country'] = '';
-					$all_data ['validfrom'] = $this->convertDateToGui( date( 'Y-m-d' ) );
-					$all_data ['validtil'] = $this->convertDateToGui( Configuration::getInstance()->getProperty( 'max_year' ) );
-
-					$all_data ['name_error'] = 0;
-					$all_data ['validfrom_error'] = 0;
-					$all_data ['validtil_error'] = 0;
+					$all_data = array ();
 				}
 				break;
 		}
@@ -130,11 +101,13 @@ class moduleContractPartners extends module {
 		if ($close == 0) {
 			$this->template_assign( 'CONTRACTPARTNERID', $contractpartnerid );
 			$this->template_assign( 'POSTINGACCOUNT_VALUES', $posting_accounts );
-			$this->template_assign( 'ALL_DATA', $all_data );
 			$this->template_assign( 'ERRORS', $this->get_errors() );
+
+			$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' ) ) );
+			$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 		}
-		$this->parse_header( 1 );
-		return $this->fetch_template( 'display_edit_contractpartner.tpl' );
+		$this->parse_header( 1, 1, 'display_edit_contractpartner_bs.tpl' );
+		return $this->fetch_template( 'display_edit_contractpartner_bs.tpl' );
 	}
 
 	public final function display_delete_contractpartner($realaction, $contractpartnerid) {
