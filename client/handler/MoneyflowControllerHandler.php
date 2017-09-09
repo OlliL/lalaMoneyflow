@@ -29,12 +29,12 @@
 namespace client\handler;
 
 use api\model\moneyflow\updateMoneyflowRequest;
-use api\model\moneyflow\createMoneyflowsRequest;
+use api\model\moneyflow\createMoneyflowRequest;
 use api\model\moneyflow\searchMoneyflowsRequest;
 use api\model\moneyflow\showAddMoneyflowsResponse;
 use api\model\moneyflow\showEditMoneyflowResponse;
 use api\model\moneyflow\showDeleteMoneyflowResponse;
-use api\model\moneyflow\createMoneyflowsResponse;
+use api\model\moneyflow\createMoneyflowResponse;
 use api\model\moneyflow\updateMoneyflowResponse;
 use api\model\moneyflow\showSearchMoneyflowFormResponse;
 use api\model\moneyflow\searchMoneyflowsResponse;
@@ -115,26 +115,31 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		return $result;
 	}
 
-	public final function createMoneyflows(array $moneyflow) {
-		$preDefMoneyflowIds = array ();
+	public final function createMoneyflow($moneyflow) {
+
+		$preDefMoneyflowId = null;
+		$saveAsPreDefMoneyflow = null;
 
 		if ($moneyflow ['predefmoneyflowid'] > 0) {
-			$preDefMoneyflowIds [] = $moneyflow ['predefmoneyflowid'];
+			$preDefMoneyflowId = $moneyflow ['predefmoneyflowid'];
+		}
+		if ($moneyflow ['save_as_predefmoneyflow'] > 0) {
+			$saveAsPreDefMoneyflow = $moneyflow ['save_as_predefmoneyflow'];
 		}
 
 		$moneyflowTransport = parent::map( $moneyflow, MoneyflowTransport::getClass() );
-		$moneyflowTransports = array($moneyflowTransport);
 
-		$request = new createMoneyflowsRequest();
-		$request->setMoneyflowTransport( $moneyflowTransports );
-		$request->setUsedPreDefMoneyflowIds( $preDefMoneyflowIds );
+		$request = new createMoneyflowRequest();
+		$request->setMoneyflowTransport( $moneyflowTransport );
+		$request->setUsedPreDefMoneyflowId( $preDefMoneyflowId );
+		$request->setSaveAsPreDefMoneyflow( $saveAsPreDefMoneyflow );
 
 		$response = parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
 
 		$result = null;
 		if ($response === true) {
 			$result = true;
-		} else if ($response instanceof createMoneyflowsResponse) {
+		} else if ($response instanceof createMoneyflowResponse) {
 			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
 			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
 			$result ['predefmoneyflows'] = parent::mapArrayNullable( $response->getPreDefMoneyflowTransport() );

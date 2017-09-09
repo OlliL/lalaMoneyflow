@@ -29,24 +29,32 @@
 //
 namespace api\model\moneyflow;
 
-class createMoneyflowsRequest {
+class createMoneyflowRequest {
 	public $moneyflowTransport;
-	public $usedPreDefMoneyflowIds;
+	public $usedPreDefMoneyflowId;
+	public $saveAsPreDefMoneyflow;
 
 	public final function getMoneyflowTransport() {
 		return $this->moneyflowTransport;
 	}
 
-	public final function setMoneyflowTransport(array $moneyflowTransport) {
+	public final function setMoneyflowTransport($moneyflowTransport) {
 		$this->moneyflowTransport = $moneyflowTransport;
 	}
 
-	public final function getUsedPreDefMoneyflowIds() {
-		return $this->usedPreDefMoneyflowIds;
+	public final function getUsedPreDefMoneyflowId() {
+		return $this->usedPreDefMoneyflowId;
 	}
 
-	public final function setUsedPreDefMoneyflowIds(array $usedPreDefMoneyflowIds) {
-		$this->usedPreDefMoneyflowIds = $usedPreDefMoneyflowIds;
+	public final function setUsedPreDefMoneyflowId($usedPreDefMoneyflowId) {
+		$this->usedPreDefMoneyflowId = $usedPreDefMoneyflowId;
+	}
+	public final function getSaveAsPreDefMoneyflow() {
+		return $this->saveAsPreDefMoneyflow;
+	}
+
+	public final function setSaveAsPreDefMoneyflow($saveAsPreDefMoneyflow) {
+		$this->saveAsPreDefMoneyflow = $saveAsPreDefMoneyflow;
 	}
 }
 

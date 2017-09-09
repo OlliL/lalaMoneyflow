@@ -31,7 +31,7 @@ namespace api\model\moneyflow;
 
 use api\model\validation\validationResponse;
 
-class createMoneyflowsResponse extends validationResponse implements IshowAddMoneyflowsResponse {
+class createMoneyflowResponse extends validationResponse implements IshowAddMoneyflowsResponse {
 	public $preDefMoneyflowTransport;
 	public $capitalsourceTransport;
 	public $contractpartnerTransport;

@@ -230,7 +230,7 @@ class moduleMoneyFlows extends module {
 				$add_data = $all_data;
 				$add_data ['moneyflowid'] = - 1;
 
-				$createMoneyflows = MoneyflowControllerHandler::getInstance()->createMoneyflows( $add_data );
+				$createMoneyflows = MoneyflowControllerHandler::getInstance()->createMoneyflow( $add_data );
 				$capitalsource_values = $createMoneyflows ['capitalsources'];
 				$contractpartner_values = $createMoneyflows ['contractpartner'];
 				$postingaccount_values = $createMoneyflows ['postingaccounts'];
