@@ -56,7 +56,7 @@ class moduleContractPartners extends module {
 		return $this->fetch_template( 'display_list_contractpartners.tpl' );
 	}
 
-	public final function display_edit_contractpartner($realaction, $contractpartnerid, $all_data) {
+	public final function display_edit_contractpartner($realaction, $contractpartnerid, $all_data, $isEmbedded = false) {
 		$close = 0;
 		switch ($realaction) {
 			case 'save' :
@@ -104,9 +104,12 @@ class moduleContractPartners extends module {
 			$this->template_assign( 'ERRORS', $this->get_errors() );
 
 			$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' ) ) );
+			$this->template_assign( 'IS_EMBEDDED', $isEmbedded);
 			$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 		}
-		$this->parse_header( 1, 1, 'display_edit_contractpartner_bs.tpl' );
+		if(!$isEmbedded) {
+			$this->parse_header( 1, 1, 'display_edit_contractpartner_bs.tpl' );
+		}
 		return $this->fetch_template( 'display_edit_contractpartner_bs.tpl' );
 	}
 

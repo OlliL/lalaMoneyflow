@@ -36,8 +36,11 @@ use client\handler\MoneyflowReceiptControllerHandler;
 
 class moduleMoneyFlows extends module {
 
+	private $moduleContractPartners;
+
 	public final function __construct() {
 		parent::__construct();
+		$this->moduleContractPartners = new moduleContractPartners();
 	}
 
 	public final function show_moneyflow_receipt($id) {
@@ -316,6 +319,10 @@ class moduleMoneyFlows extends module {
 
 		$this->template_assign_raw( 'JSON_PREDEFMONEYFLOWS', json_encode( $preDefMoneyflows ) );
 		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
+
+		$this->template_assign("HEADER", "");
+		$this->template_assign("FOOTER", "");
+		$this->template_assign_raw("EMBEDDED_ADD_CONTRACTPARTNER", $this->moduleContractPartners->display_edit_contractpartner(null,null,null,true));
 
 		$this->parse_header( 0, 1, 'display_add_moneyflow_bs.tpl' );
 		return $this->fetch_template( 'display_add_moneyflow_bs.tpl' );

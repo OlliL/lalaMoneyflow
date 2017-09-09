@@ -1,7 +1,7 @@
-{$HEADER}
+{if !$IS_EMBEDDED}
+  {$HEADER}
+{/if}
       <div class="container">
-
-        <div>&nbsp;</div>
 
         <form action="{$ENV_INDEX_PHP}" method="POST" name="editcontractpartner">
           <input type="hidden" name="action"            value="edit_contractpartner">
@@ -54,7 +54,7 @@
                 </span>
 {/if}
               </div>
-              <label for="mpa_postingaccountid">{#TEXT_232#}</label>
+              <label for="mpa_postingaccountid">{#TEXT_316#}</label>
               <div class="help-block with-errors"></div>
             </div>
 
@@ -145,18 +145,20 @@
               </div>
             </div>
 
-            <button type="button" class="btn btn-default" onclick="preFillForm(-1)">{#TEXT_304#}</button>
           </div>
 
           <div class="form-group">
             <div class="col-sm-12 text-center">
-              <button type="submit" class="btn btn-primary">{#TEXT_22#}</button>
+              <button type="button" class="btn"             onclick="btnCancel()"    >{#TEXT_315#}</button>
+              <button type="button" class="btn btn-default" onclick="preFillForm(-1)">{#TEXT_304#}</button>
+              <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
             </div>  
           </div>  
 
         </form>
       </div>
-      <div class="overlay" style="display: none"></div>
+      
+      <div class="overlay_editcontract_postingaccount" style="display: none"></div>
 
       <script>
 
@@ -173,6 +175,14 @@
         /* This is used when in the select box "New booking" is selected explicitly to always null the form */
         var FORM_MODE_EMPTY = -1;
 
+        function btnCancel() {
+          $('form[name=editcontractpartner]').validator('destroy');
+{if $IS_EMBEDDED}
+         $('.overlay_addmoney_contractpartner').toggle();
+{else}
+          window.close();
+{/if}
+        }
         function deleteErrors() {
           var element = document.getElementById("errors");
           while ( element != null ) {
@@ -180,10 +190,6 @@
             delete element;
             element = document.getElementById("errors");
           }
-
-          $(function() {
-            $('#favorite').bootstrapToggle('destroy');
-          })
         }
 
         function preFillForm(jsonPreDefMoneyflowIndex) {
@@ -232,17 +238,19 @@
             }
           }
 
-          $("form").validator('reset');
-          $("form").validator('update');
+          $('form[name=editcontractpartner]').validator('reset');
+          $('form[name=editcontractpartner]').validator('update');
         }
 
 
         preFillForm(FORM_MODE_DEFAULT);
 
-        $("form").validator();
-      //  $('.overlay').toggle();
+        $('form[name=editcontractpartner]').validator();
+      //  $('.overlay_editcontract_postingaccount').toggle();
 {/if}
       </script>
 
-{$FOOTER}
+{if !$IS_EMBEDDED}
+  {$FOOTER}
+{/if}
 

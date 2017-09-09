@@ -87,7 +87,7 @@
 {/section}
                 </select>
                 <span class="input-group-btn">
-                  <button type="button" class="btn">
+                  <button type="button" class="btn" onClick="toggleOverlayContractpartner()">
                     <span class="glyphicon glyphicon-plus"></span>
                   </button>
                 </span>
@@ -143,7 +143,6 @@
             </div>
 
             <div class="form-group input-group col-lg-12">
-                  <button type="button" class="btn btn-default" onclick="preFillForm(-1)">{#TEXT_304#}</button>
                   <input id="private"  data-toggle="toggle" value="1" data-on="{#TEXT_209#}" data-off="{#TEXT_301#}" data-onstyle="danger" data-offstyle="success" type="checkbox" name="all_data[private]">
                   <input id="favorite" value="1" type="checkbox" name="all_data[save_as_predefmoneyflow]">
             </div>
@@ -152,13 +151,19 @@
 
           <div class="form-group">
             <div class="col-sm-12 text-center">
-              <button type="submit" class="btn btn-primary">{#TEXT_22#}</button>
+              <button type="button" class="btn btn-default" onclick="preFillForm(-1)">{#TEXT_304#}</button>
+              <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
             </div>  
           </div>  
 
         </form>
       </div>
-      <div class="overlay" style="display: none"></div>
+      
+      <div class="overlay overlay_addmoney_contractpartner" style="display: none">
+        <div class="embedded embedded_contractpartner ">
+{$EMBEDDED_ADD_CONTRACTPARTNER}
+        </div>
+      </div>
 
       <script>
 
@@ -171,6 +176,10 @@
         var BOOKING_DEFAULT = -2;
         /* This is used when in the select box "New booking" is selected explicitly to always null the form */
         var BOOKING_EMPTY = -1;
+        
+        function toggleOverlayContractpartner() {
+          $('.overlay_addmoney_contractpartner').toggle();
+        }
 
         function fillSelectMoneyflow(currency, jsonPreDefMoneyflows) {
           var jsonPredefmoneyflowsSize = jsonPreDefMoneyflows.length;
@@ -305,8 +314,8 @@
             deleteErrors();
           }
 
-          $("form").validator('reset');
-          $("form").validator('update');
+          $('form[name=addmoney]').validator('reset');
+          $('form[name=addmoney]').validator('update');
 
           $(function() {
             $('#favorite').bootstrapToggle({
@@ -322,8 +331,7 @@
         fillSelectMoneyflow(currency, jsonPreDefMoneyflows);
         preFillForm(BOOKING_DEFAULT);
 
-        $("form").validator();
-      //  $('.overlay').toggle();
+        $('form[name=addmoney]').validator();
       </script>
 
 {$FOOTER}

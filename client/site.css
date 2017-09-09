@@ -16,7 +16,25 @@
 	right: 0;
 	bottom: 0;
 	background-color: rgba(0, 0, 0, 0.85);
-	z-index: 9999;
 	color: white;
 	display: inline-block;
+}
+
+.overlay_addmoney_contractpartner {
+	z-index: 900;
+}
+
+.embedded {
+	max-width: 650px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 15px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	color: #333;
+	background-color: #fff;
+}
+
+.embedded_contractpartner {
+	z-index: 910;
 }
