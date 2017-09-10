@@ -80,7 +80,7 @@
 
             <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
-                <select class="form-control" name="all_data[mcp_contractpartnerid]" id="mcp_contractpartnerid" required data-error="{#TEXT_307#}">
+                <select class="form-control" name="all_data[mcp_contractpartnerid]" id="mcp_contractpartnerid" onchange="setContractpartnerDefaults()" required data-error="{#TEXT_307#}">
                   <option value="">&nbsp;</option>
 {section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
                   <option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}</option>
@@ -168,17 +168,36 @@
       <script>
 
         var jsonPreDefMoneyflows = {$JSON_PREDEFMONEYFLOWS};
+        var jsonContractpartner = {$JSON_CONTRACTPARTNER};
         var jsonFormDefaults = {$JSON_FORM_DEFAULTS};
         var currency = "{#CURRENCY#}";
         var today = "{$TODAY}";
+        var onEmpty = "{#TEXT_302#}";
+        var offEmpty = "{#TEXT_303#}";
+        var onFavorite = "{#TEXT_311#}";
+        var offFavorite = "{#TEXT_312#}";
 
         /* When the page is loaded, the booking form is set to the defaults which might be previous entered data or empty (if the page is initially loaded) */
         var BOOKING_DEFAULT = -2;
         /* This is used when in the select box "New booking" is selected explicitly to always null the form */
         var BOOKING_EMPTY = -1;
-        
+
+
         function toggleOverlayContractpartner() {
           $('.overlay_addmoney_contractpartner').toggle();
+        }
+
+        function setContractpartnerDefaults() {
+          var length = jsonContractpartner.length;
+          var selectedValue = document.addmoney.mcp_contractpartnerid;
+          
+          for (i=0 ; i<length ; i++) {
+            if (jsonContractpartner[i]["contractpartnerid"] == document.addmoney.mcp_contractpartnerid.value) {
+              document.addmoney.comment.value = jsonContractpartner[i]["moneyflow_comment"];
+              document.addmoney.mpa_postingaccountid.value = jsonContractpartner[i]["mpa_postingaccountid"];
+              break;
+            }
+          }
         }
 
         function fillSelectMoneyflow(currency, jsonPreDefMoneyflows) {
@@ -216,11 +235,6 @@
         }
 
         function preFillForm(jsonPreDefMoneyflowIndex) {
-
-          var onEmpty = "{#TEXT_302#}";
-          var offEmpty = "{#TEXT_303#}";
-          var onFavorite = "{#TEXT_311#}";
-          var offFavorite = "{#TEXT_312#}";
 
           var favoriteOn = onEmpty;
           var favoriteOff = offEmpty;
@@ -327,12 +341,13 @@
 
         }
 
+        $('form[name=addmoney]').validator();
 
         fillSelectMoneyflow(currency, jsonPreDefMoneyflows);
         preFillForm(BOOKING_DEFAULT);
+         
+        document.addmoney.amount.focus();
 
-        $('form[name=addmoney]').validator();
       </script>
-
 {$FOOTER}
 

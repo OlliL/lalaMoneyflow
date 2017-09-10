@@ -318,6 +318,7 @@ class moduleMoneyFlows extends module {
 		$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' ) ) );
 
 		$this->template_assign_raw( 'JSON_PREDEFMONEYFLOWS', json_encode( $preDefMoneyflows ) );
+		$this->template_assign_raw( 'JSON_CONTRACTPARTNER', json_encode( $this->sort_contractpartner( $contractpartner_values ) ) );
 		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 
 		$this->template_assign("HEADER", "");

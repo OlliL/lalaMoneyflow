@@ -123,7 +123,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		if ($moneyflow ['predefmoneyflowid'] > 0) {
 			$preDefMoneyflowId = $moneyflow ['predefmoneyflowid'];
 		}
-		if ($moneyflow ['save_as_predefmoneyflow'] > 0) {
+		if (array_key_exists('save_as_predefmoneyflow',$moneyflow) && $moneyflow ['save_as_predefmoneyflow'] > 0) {
 			$saveAsPreDefMoneyflow = $moneyflow ['save_as_predefmoneyflow'];
 		}
 
