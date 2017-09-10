@@ -29,7 +29,7 @@
         <div class="form-group">
           <div class="input-group">
             <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-            <input id="email" type="text" class="form-control" name="name" placeholder="{#TEXT_85#}" value="{$NAME}" required data-error="{#TEXT_317#}">
+            <input id="email" type="text" class="form-control" name="name" placeholder="{#TEXT_85#}" value="{$NAME}" required data-error="{#TEXT_317#}" autofocus>
           </div>
           <div class="help-block with-errors"></div>
         </div>
@@ -58,7 +58,6 @@
 </div>
 {literal}
 <script>
-  document.login.name.focus();
   $('form[name=login]').validator();
 </script>
 {/literal}

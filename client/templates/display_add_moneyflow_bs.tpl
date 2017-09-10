@@ -69,7 +69,7 @@
 
             <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
-                <input type="number" step="0.01" class="form-control" id="amount" name="all_data[amount]" required data-error="{#TEXT_306#}">
+                <input type="number" step="0.01" class="form-control" id="amount" name="all_data[amount]" required data-error="{#TEXT_306#}" autofocus>
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-euro"></span>
                 </span>
@@ -345,9 +345,6 @@
 
         fillSelectMoneyflow(currency, jsonPreDefMoneyflows);
         preFillForm(BOOKING_DEFAULT);
-         
-        document.addmoney.amount.focus();
-
       </script>
 {$FOOTER}
 
