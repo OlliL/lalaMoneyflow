@@ -14,11 +14,13 @@
     <link rel="stylesheet" href="site.css">
 
     <script type="text/javascript" src="contrib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="contrib/jquery-form/dist/jquery.form.min.js"></script>
     <script type="text/javascript" src="contrib/moment/moment.js"></script>
     <script type="text/javascript" src="contrib/bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="contrib/bootstrap-datepicker/js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript" src="contrib/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
     <script type="text/javascript" src="contrib/bootstrap-validator/dist/validator.min.js"></script>
+    <script type="text/javascript" src="site.js"></script>
 
   </head>
   <body>
@@ -100,4 +102,18 @@
       </div>
     </nav>
 {/if}
+
     <div class="main-wrapper">    
+{if $EMBEDDED_ADD_CONTRACTPARTNER }
+      <div class="overlay overlay_edit_contractpartner" style="display: none">
+        <div class="embedded embedded_contractpartner ">
+{$EMBEDDED_ADD_CONTRACTPARTNER}
+        </div>
+      </div>
+
+<script>
+        function toggleOverlayContractpartner() {
+          $('.overlay_edit_contractpartner').toggle();
+        }
+</script>
+{/if}

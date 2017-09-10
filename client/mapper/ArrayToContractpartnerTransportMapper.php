@@ -37,11 +37,16 @@ class ArrayToContractpartnerTransportMapper extends AbstractArrayMapper {
 		$b = new ContractpartnerTransport();
 		if (array_key_exists( 'contractpartnerid', $a ))
 			$b->setId( $a ['contractpartnerid'] );
-		$b->setCountry( $a ['country'] );
-		$b->setName( $a ['name'] );
-		$b->setPostcode( $a ['postcode'] );
-		$b->setStreet( $a ['street'] );
-		$b->setTown( $a ['town'] );
+		if (array_key_exists( "country", $a ))
+			$b->setCountry( $a ['country'] );
+		if (array_key_exists( "name", $a ))
+			$b->setName( $a ['name'] );
+		if (array_key_exists( "postcode", $a ))
+			$b->setPostcode( $a ['postcode'] );
+		if (array_key_exists( "street", $a ))
+			$b->setStreet( $a ['street'] );
+		if (array_key_exists( "town", $a ))
+			$b->setTown( $a ['town'] );
 		$validfrom = parent::convertClientDateToTransport( $a ['validfrom'] );
 		if ($validfrom)
 			$b->setValidFrom( $validfrom );
@@ -49,8 +54,10 @@ class ArrayToContractpartnerTransportMapper extends AbstractArrayMapper {
 		$validtil = parent::convertClientDateToTransport( $a ['validtil'] );
 		if ($validtil)
 			$b->setValidTil( $validtil );
-		$b->setMoneyflowComment( $a ['moneyflow_comment'] );
-		$b->setPostingAccountId( $a ['mpa_postingaccountid'] );
+		if (array_key_exists( "moneyflow_comment", $a ))
+			$b->setMoneyflowComment( $a ['moneyflow_comment'] );
+		if (array_key_exists( "mpa_postingaccountid", $a ))
+			$b->setPostingAccountId( $a ['mpa_postingaccountid'] );
 		return $b;
 	}
 

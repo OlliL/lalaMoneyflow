@@ -124,7 +124,7 @@ abstract class module {
 		return $result;
 	}
 
-	protected final function parse_header($nonavi=0, $bootstraped=0, $template=null) {
+	protected final function parse_header($nonavi=0, $bootstraped=0, $template=null, $embeddedForms = array()) {
 		$this->template->assign( 'REPORTS_YEAR', date( 'Y' ) );
 		$this->template->assign( 'REPORTS_MONTH', date( 'm' ) );
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
@@ -148,6 +148,12 @@ abstract class module {
 		} else {
 			$file_header = 'display_header.tpl';
 			$file_footer = 'display_footer.tpl';
+		}
+
+		if(count($embeddedForms) > 0) {
+			foreach ($embeddedForms as $key => $value) {
+				$this->template->assign( $key, $value );
+			}
 		}
 
 		$header = $this->fetch_template( $file_header, 'header_' . $language . '_' . $admin . '_' . $nonavi . '_' . $cache_id );
@@ -198,6 +204,22 @@ abstract class module {
 			array_multisort( $sortKey1, SORT_ASC, $contractpartner_values );
 		}
 		return $contractpartner_values;
+	}
+
+	protected final function handleReturnForAjax($ret) {
+		if ($ret === true) {
+			header("HTTP/1.1 204 No Content");
+			return null;
+		} elseif ( array_key_exists("errors", $ret)) {
+			foreach ( $ret ['errors'] as $validationResult ) {
+				$this->add_error($validationResult ['error']);
+			}
+			header('HTTP/1.1 500 Internal Server Error');
+			return json_encode($this->get_errors());
+		} else {
+			return json_encode($ret);
+		}
+
 	}
 }
 ?>

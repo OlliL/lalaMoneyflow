@@ -321,11 +321,9 @@ class moduleMoneyFlows extends module {
 		$this->template_assign_raw( 'JSON_CONTRACTPARTNER', json_encode( $this->sort_contractpartner( $contractpartner_values ) ) );
 		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 
-		$this->template_assign("HEADER", "");
-		$this->template_assign("FOOTER", "");
-		$this->template_assign_raw("EMBEDDED_ADD_CONTRACTPARTNER", $this->moduleContractPartners->display_edit_contractpartner(null,null,null,true));
 
-		$this->parse_header( 0, 1, 'display_add_moneyflow_bs.tpl' );
+		$embeddedEditContractpartner = $this->moduleContractPartners->display_edit_contractpartner(null,true);
+		$this->parse_header( 0, 1, 'display_add_moneyflow_bs.tpl', array("EMBEDDED_ADD_CONTRACTPARTNER" => $embeddedEditContractpartner) );
 		return $this->fetch_template( 'display_add_moneyflow_bs.tpl' );
 	}
 

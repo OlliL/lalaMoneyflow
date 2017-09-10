@@ -4,8 +4,7 @@
       <div class="container">
 
         <form action="{$ENV_INDEX_PHP}" method="POST" name="editcontractpartner">
-          <input type="hidden" name="action"            value="edit_contractpartner">
-          <input type="hidden" name="realaction"        value="save">
+          <input type="hidden" name="action"            value="edit_contractpartner_submit">
           <input type="hidden" name="contractpartnerid" value="{$CONTRACTPARTNERID}">
           <input type="hidden" name="REFERER"           value="{$ENV_REFERER}">
 
@@ -15,32 +14,29 @@
 
           <div class="span2 well">
 
-{section name=ERROR loop=$ERRORS}
-            <div class="alert alert-danger" id="errors">
-              {$ERRORS[ERROR]}
+            <div id="editContractpartnerErrorsGoHere">
             </div>
-{/section}
 
 
             <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
-                <input type="text" class="form-control" id="name" name="all_data[name]" required data-error="{#TEXT_313#}">
+                <input type="text" class="form-control" id="edcontname" name="all_data[name]" required data-error="{#TEXT_313#}">
               </div>
-              <label for="name">{#TEXT_41#}</label>
+              <label for="edcontname">{#TEXT_41#}</label>
               <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
-                <input type="text" class="form-control" id="moneyflow_comment" name="all_data[moneyflow_comment]">
+                <input type="text" class="form-control" id="edcontmoneyflow_comment" name="all_data[moneyflow_comment]">
               </div>
-              <label for="moneyflow_comment">{#TEXT_272#}</label>
+              <label for="edcontmoneyflow_comment">{#TEXT_272#}</label>
               <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
-                <select class="form-control" name="all_data[mpa_postingaccountid]" id="mpa_postingaccountid">
+                <select class="form-control" name="all_data[mpa_postingaccountid]" id="edcontmpa_postingaccountid">
                   <option value="">&nbsp;</option>
 {section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
                   <option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}"> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name}</option>
@@ -54,7 +50,7 @@
                 </span>
 {/if}
               </div>
-              <label for="mpa_postingaccountid">{#TEXT_316#}</label>
+              <label for="edcontmpa_postingaccountid">{#TEXT_316#}</label>
               <div class="help-block with-errors"></div>
             </div>
 
@@ -62,54 +58,54 @@
               <div class="panel panel-default">
               
                 <div class="panel-heading">
-                  <a data-toggle="collapse" href="#collapse1">{#TEXT_314#}</a>
+                  <a data-toggle="collapse" href="#edcontcollapse1">{#TEXT_314#}</a>
                 </div>
                 
-                <div id="collapse1" class="panel-collapse collapse panel-footer">
+                <div id="edcontcollapse1" class="panel-collapse collapse panel-footer">
                   <div class="form-group has-float-label">
                     <div class="input-group col-xs-12">
-                      <input type="text" class="form-control" id="street" name="all_data[street]">
+                      <input type="text" class="form-control" id="edcontstreet" name="all_data[street]">
                     </div>
-                    <label for="street">{#TEXT_42#}</label>
+                    <label for="edcontstreet">{#TEXT_42#}</label>
                     <div class="help-block with-errors"></div>
                   </div>
 
                   <div class="form-group has-float-label">
                     <div class="input-group col-xs-12">
-                      <input type="number" class="form-control" id="postcode" name="all_data[postcode]">
+                      <input type="number" class="form-control" id="edcontpostcode" name="all_data[postcode]">
                     </div>
-                    <label for="postcode">{#TEXT_43#}</label>
+                    <label for="edcontpostcode">{#TEXT_43#}</label>
                     <div class="help-block with-errors"></div>
                   </div>
 
                   <div class="form-group has-float-label">
                     <div class="input-group col-xs-12">
-                      <input type="text" class="form-control" id="town" name="all_data[town]">
+                      <input type="text" class="form-control" id="edconttown" name="all_data[town]">
                     </div>
-                    <label for="town">{#TEXT_44#}</label>
+                    <label for="edconttown">{#TEXT_44#}</label>
                     <div class="help-block with-errors"></div>
                   </div>
 
                   <div class="form-group has-float-label">
                     <div class="input-group col-xs-12">
-                      <input type="text" class="form-control" id="country" name="all_data[country]">
+                      <input type="text" class="form-control" id="edcontcountry" name="all_data[country]">
                     </div>
-                    <label for="country">{#TEXT_45#}</label>
+                    <label for="edcontcountry">{#TEXT_45#}</label>
                     <div class="help-block with-errors"></div>
                   </div>
 
                   <div class="form-group has-float-label">
-                    <div class='input-group date col-xs-12' id="validfrom">
-                      <input type="text" class="form-control" name="all_data[validfrom]" id="validfromSelect" required data-error="{#TEXT_238#}">
+                    <div class='input-group date col-xs-12' id="edcontvalidfrom">
+                      <input type="text" class="form-control" name="all_data[validfrom]" id="edcontvalidfromSelect" required data-error="{#TEXT_238#}">
                       <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                       </span>
                     </div>
-                    <label for="validfromSelect">{#TEXT_34#}</label>
+                    <label for="edcontvalidfromSelect">{#TEXT_34#}</label>
                     <div class="help-block with-errors"></div>
                     <script type="text/javascript">
                         $(function () {
-                            $('#validfrom').datetimepicker({
+                            $('#edcontvalidfrom').datetimepicker({
                               format: 'YYYY-MM-DD',
                               focusOnShow: false,
                               showClear: true,
@@ -121,17 +117,17 @@
                   </div>
 
                   <div class="form-group has-float-label">
-                    <div class='input-group date col-xs-12' id="validtil">
-                      <input type="text" class="form-control" name="all_data[validtil]" id="validtilSelect" required data-error="{#TEXT_239#}">
+                    <div class='input-group date col-xs-12' id="edcontvalidtil">
+                      <input type="text" class="form-control" name="all_data[validtil]" id="edcontvalidtilSelect" required data-error="{#TEXT_239#}">
                       <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                       </span>
                     </div>
-                    <label for="validtilSelect">{#TEXT_35#}</label>
+                    <label for="edcontvalidtilSelect">{#TEXT_35#}</label>
                     <div class="help-block with-errors"></div>
                     <script type="text/javascript">
                         $(function () {
-                            $('#validtil').datetimepicker({
+                            $('#edcontvalidtil').datetimepicker({
                               format: 'YYYY-MM-DD',
                               focusOnShow: false,
                               showClear: true,
@@ -150,7 +146,7 @@
           <div class="form-group">
             <div class="col-sm-12 text-center">
               <button type="button" class="btn"             onclick="btnCancel()"    >{#TEXT_315#}</button>
-              <button type="button" class="btn btn-default" onclick="preFillForm(-1)">{#TEXT_304#}</button>
+              <button type="button" class="btn btn-default" onclick="preFillFormEditContractpartner(-1)">{#TEXT_304#}</button>
               <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
             </div>  
           </div>  
@@ -158,14 +154,7 @@
         </form>
       </div>
       
-      <div class="overlay_editcontract_postingaccount" style="display: none"></div>
-
       <script>
-
-{if $CLOSE == 1}
-        opener.location = "{$ENV_REFERER}" ;
-        window.open('','_self').close();
-{else}
 
         var jsonFormDefaults = {$JSON_FORM_DEFAULTS};
         var today = "{$TODAY}";
@@ -175,65 +164,57 @@
         /* This is used when in the select box "New booking" is selected explicitly to always null the form */
         var FORM_MODE_EMPTY = -1;
 
-        function btnCancel() {
-          $('form[name=editcontractpartner]').validator('destroy');
-{if $IS_EMBEDDED}
-         $('.overlay_addmoney_contractpartner').toggle();
-{else}
-          window.close();
-{/if}
-        }
-        function deleteErrors() {
-          var element = document.getElementById("errors");
+        function deleteEditContractpartnerErrors() {
+          var element = document.getElementById("editContractpartnerErrors");
           while ( element != null ) {
             element.outerHTML = "";
             delete element;
-            element = document.getElementById("errors");
+            element = document.getElementById("editContractpartnerErrors");
           }
         }
 
-        function preFillForm(jsonPreDefMoneyflowIndex) {
+        function preFillFormEditContractpartner(jsonPreDefMoneyflowIndex) {
 
           if ( jsonPreDefMoneyflowIndex == FORM_MODE_DEFAULT || jsonPreDefMoneyflowIndex == FORM_MODE_EMPTY ) {
-            document.editcontractpartner.name.value = "";
-            document.editcontractpartner.street.value = "";
-            document.editcontractpartner.postcode.value = "";
-            document.editcontractpartner.town.value = "";
-            document.editcontractpartner.country.value = "";
-            document.editcontractpartner.validfromSelect.value = today;
-            document.editcontractpartner.validtilSelect.value = "2999-12-31";      
-            document.editcontractpartner.moneyflow_comment.value = "";
-            document.editcontractpartner.mpa_postingaccountid.value = "";
+            document.editcontractpartner.edcontname.value = "";
+            document.editcontractpartner.edcontstreet.value = "";
+            document.editcontractpartner.edcontpostcode.value = "";
+            document.editcontractpartner.edconttown.value = "";
+            document.editcontractpartner.edcontcountry.value = "";
+            document.editcontractpartner.edcontvalidfromSelect.value = today;
+            document.editcontractpartner.edcontvalidtilSelect.value = "2999-12-31";      
+            document.editcontractpartner.edcontmoneyflow_comment.value = "";
+            document.editcontractpartner.edcontmpa_postingaccountid.value = "";
 
             if( jsonPreDefMoneyflowIndex == FORM_MODE_EMPTY) {
-              deleteErrors();
+              deleteEditContractpartnerErrors();
             } else {
               if ( "name" in jsonFormDefaults ) {
-                document.editcontractpartner.name.value = jsonFormDefaults["name"];
+                document.editcontractpartner.edcontname.value = jsonFormDefaults["name"];
               }
               if ( "street" in jsonFormDefaults ) {
-                document.editcontractpartner.street.value = jsonFormDefaults["street"];
+                document.editcontractpartner.edcontstreet.value = jsonFormDefaults["street"];
               }
               if ( "postcode" in jsonFormDefaults ) {
-                document.editcontractpartner.postcode.value = jsonFormDefaults["postcode"];
+                document.editcontractpartner.edcontpostcode.value = jsonFormDefaults["postcode"];
               }
               if ( "town" in jsonFormDefaults ) {
-                document.editcontractpartner.town.value = jsonFormDefaults["town"];
+                document.editcontractpartner.edconttown.value = jsonFormDefaults["town"];
               }
               if ( "country" in jsonFormDefaults ) {
-                document.editcontractpartner.country.value = jsonFormDefaults["country"];
+                document.editcontractpartner.edcontcountry.value = jsonFormDefaults["country"];
               }
               if ( "validfrom" in jsonFormDefaults ) {
-                document.editcontractpartner.validfromSelect.value = jsonFormDefaults["validfrom"];
+                document.editcontractpartner.edcontvalidfromSelect.value = jsonFormDefaults["validfrom"];
               }
               if ( "validtil" in jsonFormDefaults ) {
-                document.editcontractpartner.validtilSelect.value = jsonFormDefaults["validtil"];
+                document.editcontractpartner.edcontvalidtilSelect.value = jsonFormDefaults["validtil"];
               }
               if ( "moneyflow_comment" in jsonFormDefaults ) {
-                document.editcontractpartner.moneyflow_comment.value = jsonFormDefaults["moneyflow_comment"];
+                document.editcontractpartner.edcontmoneyflow_comment.value = jsonFormDefaults["moneyflow_comment"];
               }
               if ( "mpa_postingaccountid" in jsonFormDefaults ) {
-                document.editcontractpartner.mpa_postingaccountid.value = jsonFormDefaults["mpa_postingaccountid"];
+                document.editcontractpartner.edcontmpa_postingaccountid.value = jsonFormDefaults["mpa_postingaccountid"];
               }
             }
           }
@@ -243,11 +224,57 @@
         }
 
 
-        preFillForm(FORM_MODE_DEFAULT);
+        preFillFormEditContractpartner(FORM_MODE_DEFAULT);
 
         $('form[name=editcontractpartner]').validator();
-      //  $('.overlay_editcontract_postingaccount').toggle();
+      
+        function btnCancel() {
+{if $IS_EMBEDDED}
+         preFillFormEditContractpartner(FORM_MODE_EMPTY);
+         $('.overlay_edit_contractpartner').toggle();
+{else}
+          window.close();
 {/if}
+        }
+
+        function ajaxSuccess(data) {
+{if $IS_EMBEDDED}
+          if(data != null) {
+            updateContractpartnerSelect(data["contractpartnerid"]
+                                       ,document.editcontractpartner.edcontname.value
+                                       ,document.editcontractpartner.edcontmoneyflow_comment.value
+                                       ,document.editcontractpartner.edcontmpa_postingaccountid.value );
+          }
+          preFillFormEditContractpartner(FORM_MODE_EMPTY);
+          $('.overlay_edit_contractpartner').toggle();
+{else}
+          window.close();
+{/if}
+        }
+
+        function ajaxError(data) {
+          deleteEditContractpartnerErrors();
+          var responseText = $.parseJSON(data.responseText);
+          var length = responseText.length;
+
+          element = document.getElementById("editContractpartnerErrorsGoHere");
+  
+          for(i=0 ; i < length ; i++ ) {
+          	var errorDiv = document.createElement('div');
+          	errorDiv.id = 'editContractpartnerErrors';
+          	errorDiv.className = 'alert alert-danger';
+          	errorDiv.innerHTML = responseText[i]; 
+          	element.appendChild(errorDiv);
+          }
+        }
+
+
+        $('form[name=editcontractpartner]').ajaxForm({
+            dataType: 'json',
+            success: ajaxSuccess,
+            error: ajaxError
+        });
+
       </script>
 
 {if !$IS_EMBEDDED}

@@ -30,15 +30,15 @@
 namespace api\model\contractpartner;
 
 use api\model\validation\validationResponse;
-class createContractpartnerResponse extends validationResponse implements IshowCreateContractpartnerResponse {
-	public $postingAccountTransport;
+class createContractpartnerResponse extends validationResponse {
+	public $contractpartnerId;
 
-	public final function getPostingAccountTransport() {
-		return $this->postingAccountTransport;
+	public final function getContractPartnerId() {
+		return $this->contractpartnerId;
 	}
 
-	public final function setPostingAccountTransport(array $postingAccountTransport) {
-		$this->postingAccountTransport = $postingAccountTransport;
+	public final function setContractPartnerId($contractpartnerId) {
+		$this->contractpartnerId = $contractpartnerId;
 	}
 }
 

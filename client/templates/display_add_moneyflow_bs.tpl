@@ -2,7 +2,7 @@
       <div class="container">
 
         <div>
-            <select class="form-control" id="selectmoneyflow" onchange="preFillForm(this.value)">
+            <select class="form-control" id="selectmoneyflow" onchange="preFillFormAddMoneyflow(this.value)">
               <option value="-1">Neue Buchung</option>
             </select>
         </div>
@@ -17,11 +17,13 @@
 
           <div class="span2 well">
 
+            <div id="addmoneyErrorsGoHere">
 {section name=ERROR loop=$ERRORS}
-            <div class="alert alert-danger" id="errors">
-              {$ERRORS[ERROR]}
-            </div>
+              <div class="alert alert-danger" id="addmoneyErrors">
+                {$ERRORS[ERROR]}
+              </div>
 {/section}
+            </div>
 
             <div class="form-group has-float-label">
               <div class='input-group date col-xs-12' id="bookingdate">
@@ -151,7 +153,7 @@
 
           <div class="form-group">
             <div class="col-sm-12 text-center">
-              <button type="button" class="btn btn-default" onclick="preFillForm(-1)">{#TEXT_304#}</button>
+              <button type="button" class="btn btn-default" onclick="preFillFormAddMoneyflow(-1)">{#TEXT_304#}</button>
               <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
             </div>  
           </div>  
@@ -159,11 +161,6 @@
         </form>
       </div>
       
-      <div class="overlay overlay_addmoney_contractpartner" style="display: none">
-        <div class="embedded embedded_contractpartner ">
-{$EMBEDDED_ADD_CONTRACTPARTNER}
-        </div>
-      </div>
 
       <script>
 
@@ -183,9 +180,6 @@
         var BOOKING_EMPTY = -1;
 
 
-        function toggleOverlayContractpartner() {
-          $('.overlay_addmoney_contractpartner').toggle();
-        }
 
         function setContractpartnerDefaults() {
           var length = jsonContractpartner.length;
@@ -221,12 +215,12 @@
           }
         }
 
-        function deleteErrors() {
-          var element = document.getElementById("errors");
+        function deleteAddMoneyErrors() {
+          var element = document.getElementById("addmoneyErrors");
           while ( element != null ) {
             element.outerHTML = "";
             delete element;
-            element = document.getElementById("errors");
+            element = document.getElementById("addmoneyErrors");
           }
 
           $(function() {
@@ -234,7 +228,7 @@
           })
         }
 
-        function preFillForm(jsonPreDefMoneyflowIndex) {
+        function preFillFormAddMoneyflow(jsonPreDefMoneyflowIndex) {
 
           var favoriteOn = onEmpty;
           var favoriteOff = offEmpty;
@@ -250,7 +244,7 @@
             document.addmoney.mcs_capitalsourceid.selectedIndex = 0;
 
             if( jsonPreDefMoneyflowIndex == BOOKING_EMPTY) {
-              deleteErrors();
+              deleteAddMoneyErrors();
 
               var select = document.getElementById('selectmoneyflow');
               select.selectedIndex = 0;
@@ -325,7 +319,7 @@
               $('#favorite').prop('checked', false).change();
             })
 
-            deleteErrors();
+            deleteAddMoneyErrors();
           }
 
           $('form[name=addmoney]').validator('reset');
@@ -344,7 +338,7 @@
         $('form[name=addmoney]').validator();
 
         fillSelectMoneyflow(currency, jsonPreDefMoneyflows);
-        preFillForm(BOOKING_DEFAULT);
+        preFillFormAddMoneyflow(BOOKING_DEFAULT);
       </script>
 {$FOOTER}
 

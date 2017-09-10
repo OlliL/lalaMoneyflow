@@ -56,61 +56,41 @@ class moduleContractPartners extends module {
 		return $this->fetch_template( 'display_list_contractpartners.tpl' );
 	}
 
-	public final function display_edit_contractpartner($realaction, $contractpartnerid, $all_data, $isEmbedded = false) {
-		$close = 0;
-		switch ($realaction) {
-			case 'save' :
-				$all_data ['contractpartnerid'] = $contractpartnerid;
-
-				if ($contractpartnerid == 0)
-					$ret = ContractpartnerControllerHandler::getInstance()->createContractpartner( $all_data );
-				else
-					$ret = ContractpartnerControllerHandler::getInstance()->updateContractpartner( $all_data );
-
-				if ($ret === true) {
-					$close = 1;
-				} else {
-					$posting_accounts = $ret ['postingAccounts'];
-
-					foreach ( $ret ['errors'] as $validationResult ) {
-						$error = $validationResult ['error'];
-
-						$this->add_error( $error );
-
-						switch ($error) {
-							case ErrorCode::NAME_ALREADY_EXISTS :
-								$all_data ['name_error'] = 1;
-								break;
-						}
-					}
-				}
-				break;
-			default :
-				if ($contractpartnerid > 0) {
-					$showEditContractpartner = ContractpartnerControllerHandler::getInstance()->showEditContractpartner( $contractpartnerid );
-					$all_data = $showEditContractpartner ['contractpartner'];
-					$posting_accounts = $showEditContractpartner ['postingAccounts'];
-				} else {
-					$posting_accounts = ContractpartnerControllerHandler::getInstance()->showCreateContractpartner();
-					$all_data = array ();
-				}
-				break;
+	public final function display_edit_contractpartner($contractpartnerid, $isEmbedded = false) {
+		if ($contractpartnerid > 0) {
+			$showEditContractpartner = ContractpartnerControllerHandler::getInstance()->showEditContractpartner( $contractpartnerid );
+			$all_data = $showEditContractpartner ['contractpartner'];
+			$posting_accounts = $showEditContractpartner ['postingAccounts'];
+		} else {
+			$posting_accounts = ContractpartnerControllerHandler::getInstance()->showCreateContractpartner();
+			$all_data = array ();
 		}
 
-		$this->template_assign( 'CLOSE', $close );
-		if ($close == 0) {
-			$this->template_assign( 'CONTRACTPARTNERID', $contractpartnerid );
-			$this->template_assign( 'POSTINGACCOUNT_VALUES', $posting_accounts );
-			$this->template_assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'CONTRACTPARTNERID', $contractpartnerid );
+		$this->template_assign( 'POSTINGACCOUNT_VALUES', $posting_accounts );
 
-			$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' ) ) );
-			$this->template_assign( 'IS_EMBEDDED', $isEmbedded);
-			$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
-		}
-		if(!$isEmbedded) {
+		$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' ) ) );
+		$this->template_assign( 'IS_EMBEDDED', $isEmbedded );
+		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
+
+		if (! $isEmbedded) {
 			$this->parse_header( 1, 1, 'display_edit_contractpartner_bs.tpl' );
+		} else {
+			$this->template_assign("HEADER", "");
+			$this->template_assign("FOOTER", "");
 		}
 		return $this->fetch_template( 'display_edit_contractpartner_bs.tpl' );
+	}
+
+	public final function edit_contractpartner($contractpartnerid, $all_data) {
+		$all_data ['contractpartnerid'] = $contractpartnerid;
+
+		if ($contractpartnerid == 0)
+			$ret = ContractpartnerControllerHandler::getInstance()->createContractpartner( $all_data );
+		else
+			$ret = ContractpartnerControllerHandler::getInstance()->updateContractpartner( $all_data );
+
+		return $this->handleReturnForAjax( $ret );
 	}
 
 	public final function display_delete_contractpartner($realaction, $contractpartnerid) {

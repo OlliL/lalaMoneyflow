@@ -39,7 +39,6 @@ use api\model\contractpartner\showCreateContractpartnerResponse;
 use client\mapper\ArrayToPostingAccountTransportMapper;
 use base\Singleton;
 use api\model\contractpartner\createContractpartnerResponse;
-use api\model\contractpartner\updateContractpartnerResponse;
 
 class ContractpartnerControllerHandler extends AbstractHandler {
 	use Singleton;
@@ -114,9 +113,12 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 		if ($response === true) {
 			$result = true;
 		} else if ($response instanceof createContractpartnerResponse) {
-			$result ['postingAccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
-			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
-			$result ['result'] = $response->getResult();
+			if($response->getContractPartnerId() != null) {
+				$result ['contractpartnerid'] = $response->getContractPartnerId();
+			} else {
+				$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
+				$result ['result'] = $response->getResult();
+			}
 		}
 
 		return $result;
@@ -130,12 +132,11 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 
 		$result = null;
+
 		if ($response === true) {
 			$result = true;
-		} else if ($response instanceof updateContractpartnerResponse) {
-			$result ['postingAccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
-			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
-			$result ['result'] = $response->getResult();
+		} else if (is_array($response)) {
+			$result = $response;
 		}
 
 		return $result;

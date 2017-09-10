@@ -94,6 +94,7 @@ abstract class AbstractHandler extends AbstractJsonSender {
 			}
 			return false;
 		}
+
 		return self::mapJson( $result );
 	}
 

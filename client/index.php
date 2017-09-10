@@ -124,6 +124,7 @@ if ($is_logged_in == 0) {
 			break;
 		case 'list_contractpartners' :
 		case 'edit_contractpartner' :
+		case 'edit_contractpartner_submit' :
 		case 'delete_contractpartner' :
 			$moduleContractPartners = new moduleContractPartners();
 			break;
@@ -317,9 +318,14 @@ if ($is_logged_in == 0) {
 
 			case 'edit_contractpartner' :
 
-				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$contractpartnerid = array_key_exists( 'contractpartnerid', $_REQUEST ) ? $_REQUEST ['contractpartnerid'] : 0;
-				$display = $moduleContractPartners->display_edit_contractpartner( $realaction, $contractpartnerid, $all_data );
+				$display = $moduleContractPartners->display_edit_contractpartner( $contractpartnerid );
+				break;
+
+			case 'edit_contractpartner_submit' :
+
+				$contractpartnerid = array_key_exists( 'contractpartnerid', $_REQUEST ) ? $_REQUEST ['contractpartnerid'] : 0;
+				$display = $moduleContractPartners->edit_contractpartner( $contractpartnerid, $all_data );
 				break;
 
 			case 'delete_contractpartner' :

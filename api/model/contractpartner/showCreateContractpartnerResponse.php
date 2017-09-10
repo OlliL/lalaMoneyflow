@@ -29,7 +29,7 @@
 //
 namespace api\model\contractpartner;
 
-class showCreateContractpartnerResponse implements IshowCreateContractpartnerResponse {
+class showCreateContractpartnerResponse {
 	public $postingAccountTransport;
 
 	public final function getPostingAccountTransport() {
