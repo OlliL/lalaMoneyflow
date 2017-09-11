@@ -113,10 +113,14 @@
 
 <script>
         function showOverlayContractpartner() {
+          saveFocusedElement();
           $('.overlay_edit_contractpartner').show();
+          document.editcontractpartner.edcontname.focus();
+          
         }
         function hideOverlayContractpartner() {
           $('.overlay_edit_contractpartner').hide();
+          restoreLastFocusedElement();
         }
 </script>
 {/if}
@@ -130,10 +134,13 @@
 
 <script>
         function showOverlayPostingAccount() {
+          saveFocusedElement();
           $('.overlay_edit_postingaccount').show();
+          document.editpostingaccount.edpostaccname.focus();
         }
         function hideOverlayPostingAccount() {
           $('.overlay_edit_postingaccount').hide();
+          restoreLastFocusedElement();
         }
 </script>
 {/if}

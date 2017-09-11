@@ -27,7 +27,7 @@
           
           <div class="form-group">
             <div class="col-sm-12 text-center">
-              <button type="button" class="btn"             onclick="btnCancel()"    >{#TEXT_315#}</button>
+              <button type="button" class="btn"             onclick="btnEditPostingAccountCancel()"    >{#TEXT_315#}</button>
               <button type="button" class="btn btn-default" onclick="preFillFormEditPostingAccount(-1)">{#TEXT_304#}</button>
               <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
             </div>  
@@ -78,7 +78,7 @@
 
         $('form[name=editpostingaccount]').validator();
       
-        function btnCancel() {
+        function btnEditPostingAccountCancel() {
 {if $IS_EMBEDDED}
           preFillFormEditPostingAccount(FORM_MODE_EMPTY);
           hideOverlayPostingAccount();
@@ -87,7 +87,7 @@
 {/if}
         }
 
-        function ajaxSuccess(data) {
+        function ajaxEditPostingAccountSuccess(data) {
 {if $IS_EMBEDDED}
           if(data != null) {
             updatePostingAccountSelect(data["postingaccountid"]
@@ -100,7 +100,7 @@
 {/if}
         }
 
-        function ajaxError(data) {
+        function ajaxEditPostingAccountError(data) {
           deleteEditPostingAccountErrors();
           var responseText = $.parseJSON(data.responseText);
           var length = responseText.length;
@@ -119,8 +119,8 @@
 
         $('form[name=editpostingaccount]').ajaxForm({
             dataType: 'json',
-            success: ajaxSuccess,
-            error: ajaxError
+            success: ajaxEditPostingAccountSuccess,
+            error: ajaxEditPostingAccountError
         });
 
       </script>

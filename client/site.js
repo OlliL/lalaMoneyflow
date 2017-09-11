@@ -1,6 +1,32 @@
 /**
  * 
  */
+
+var focusedElement;
+var lastFocusedInput; // see display_footer_bs.tpl
+
+function saveFocusedElement() {
+	focusedElement = lastFocusedInput;
+}
+
+function restoreLastFocusedElement() {
+	return focusedElement.focus();
+}
+
+var clicky;
+
+$(document).mousedown(function(e) {
+    // The latest element clicked
+    clicky = $(e.target);
+});
+
+// when 'clicky == null' on blur, we know it was not caused by a click
+// but maybe by pressing the tab key
+$(document).mouseup(function(e) {
+    clicky = null;
+});
+
+
 function updateContractpartnerSelect(id, name, moneyflowComment,
 		postingAccountId) {
 	var selects = document.getElementsByName('all_data[mcp_contractpartnerid]');

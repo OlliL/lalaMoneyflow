@@ -144,7 +144,7 @@
 
           <div class="form-group">
             <div class="col-sm-12 text-center">
-              <button type="button" class="btn"             onclick="btnCancel()"    >{#TEXT_315#}</button>
+              <button type="button" class="btn"             onclick="btnEditContractpartnerCancel()"    >{#TEXT_315#}</button>
               <button type="button" class="btn btn-default" onclick="preFillFormEditContractpartner(-1)">{#TEXT_304#}</button>
               <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
             </div>  
@@ -227,7 +227,7 @@
 
         $('form[name=editcontractpartner]').validator();
       
-        function btnCancel() {
+        function btnEditContractpartnerCancel() {
 {if $IS_EMBEDDED}
           preFillFormEditContractpartner(FORM_MODE_EMPTY);
           hideOverlayContractpartner();
@@ -236,7 +236,7 @@
 {/if}
         }
 
-        function ajaxSuccess(data) {
+        function ajaxEditContractpartnerSuccess(data) {
 {if $IS_EMBEDDED}
           if(data != null) {
             updateContractpartnerSelect(data["contractpartnerid"]
@@ -251,7 +251,7 @@
 {/if}
         }
 
-        function ajaxError(data) {
+        function ajaxEditContractpartnerError(data) {
           deleteEditContractpartnerErrors();
           var responseText = $.parseJSON(data.responseText);
           var length = responseText.length;
@@ -270,8 +270,8 @@
 
         $('form[name=editcontractpartner]').ajaxForm({
             dataType: 'json',
-            success: ajaxSuccess,
-            error: ajaxError
+            success: ajaxEditContractpartnerSuccess,
+            error: ajaxEditContractpartnerError
         });
 
       </script>
