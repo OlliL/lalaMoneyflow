@@ -115,7 +115,7 @@ if ($is_logged_in == 0) {
 
 	if (array_key_exists( 'all_data', $_REQUEST ) && is_array( $_REQUEST ['all_data'] ))
 		$all_data = $_REQUEST ['all_data'];
-
+error_log(print_r($all_data, true));
 	switch ($action) {
 		case 'list_capitalsources' :
 		case 'edit_capitalsource' :
@@ -184,6 +184,7 @@ if ($is_logged_in == 0) {
 
 		case 'list_postingaccounts' :
 		case 'edit_postingaccount' :
+		case 'edit_postingaccount_submit' :
 		case 'delete_postingaccount' :
 		case 'plot_postingaccounts' :
 			$modulePostingAccounts = new modulePostingAccounts();
@@ -268,12 +269,19 @@ if ($is_logged_in == 0) {
 				$letter = array_key_exists( 'letter', $_REQUEST ) ? $_REQUEST ['letter'] : '';
 				$display = $modulePostingAccounts->display_list_postingaccounts( $letter );
 				break;
+
 			case 'edit_postingaccount' :
-				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+
 				$id = array_key_exists( 'postingaccountid', $_REQUEST ) ? $_REQUEST ['postingaccountid'] : 0;
-				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
-				$display = $modulePostingAccounts->display_edit_postingaccount( $realaction, $id, $all_data );
+				$display = $modulePostingAccounts->display_edit_postingaccount( $id );
 				break;
+
+			case 'edit_postingaccount_submit' :
+
+				$id = array_key_exists( 'postingaccountid', $_REQUEST ) ? $_REQUEST ['postingaccountid'] : 0;
+				$display = $modulePostingAccounts->edit_postingaccount( $id, $all_data );
+				break;
+
 			case 'delete_postingaccount' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'postingaccountid', $_REQUEST ) ? $_REQUEST ['postingaccountid'] : '';

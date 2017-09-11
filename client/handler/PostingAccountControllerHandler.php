@@ -37,6 +37,7 @@ use client\mapper\ArrayToPostingAccountTransportMapper;
 use client\mapper\ArrayToPostingAccountAmountTransportMapper;
 use api\model\transport\PostingAccountTransport;
 use base\Singleton;
+use api\model\postingaccount\createPostingAccountResponse;
 
 class PostingAccountControllerHandler extends AbstractHandler {
 	use Singleton;
@@ -91,8 +92,24 @@ class PostingAccountControllerHandler extends AbstractHandler {
 
 		$request = new createPostingAccountRequest();
 		$request->setPostingAccountTransport( $postingAccountTransport );
-		return parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
+
+		$response = parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
+
+		$result = null;
+		if ($response === true) {
+			$result = true;
+		} else if ($response instanceof createPostingAccountResponse) {
+			if($response->getPostingAccountId() != null) {
+				$result ['postingaccountid'] = $response->getPostingAccountId();
+			} else {
+				$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
+				$result ['result'] = $response->getResult();
+			}
+		}
+
+		return $result;
 	}
+
 
 	public final function updatePostingAccount(array $postingAccount) {
 		$postingAccountTransport = parent::map( $postingAccount, PostingAccountTransport::getClass() );

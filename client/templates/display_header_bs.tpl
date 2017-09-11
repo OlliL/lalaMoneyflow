@@ -112,8 +112,28 @@
       </div>
 
 <script>
-        function toggleOverlayContractpartner() {
-          $('.overlay_edit_contractpartner').toggle();
+        function showOverlayContractpartner() {
+          $('.overlay_edit_contractpartner').show();
+        }
+        function hideOverlayContractpartner() {
+          $('.overlay_edit_contractpartner').hide();
+        }
+</script>
+{/if}
+
+{if $EMBEDDED_ADD_POSTINGACCOUNT }
+      <div class="overlay overlay_edit_postingaccount" style="display: none">
+        <div class="embedded embedded_postingaccount ">
+{$EMBEDDED_ADD_POSTINGACCOUNT}
+        </div>
+      </div>
+
+<script>
+        function showOverlayPostingAccount() {
+          $('.overlay_edit_postingaccount').show();
+        }
+        function hideOverlayPostingAccount() {
+          $('.overlay_edit_postingaccount').hide();
         }
 </script>
 {/if}

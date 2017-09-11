@@ -35,12 +35,13 @@ use client\util\Environment;
 use client\handler\MoneyflowReceiptControllerHandler;
 
 class moduleMoneyFlows extends module {
-
 	private $moduleContractPartners;
+	private $modulePostingAccounts;
 
 	public final function __construct() {
 		parent::__construct();
 		$this->moduleContractPartners = new moduleContractPartners();
+		$this->modulePostingAccounts = new modulePostingAccounts();
 	}
 
 	public final function show_moneyflow_receipt($id) {
@@ -321,9 +322,12 @@ class moduleMoneyFlows extends module {
 		$this->template_assign_raw( 'JSON_CONTRACTPARTNER', json_encode( $this->sort_contractpartner( $contractpartner_values ) ) );
 		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 
-
-		$embeddedEditContractpartner = $this->moduleContractPartners->display_edit_contractpartner(null,true);
-		$this->parse_header( 0, 1, 'display_add_moneyflow_bs.tpl', array("EMBEDDED_ADD_CONTRACTPARTNER" => $embeddedEditContractpartner) );
+		$embeddedEditPostingAccounts = $this->modulePostingAccounts->display_edit_postingAccount( null, true );
+		$embeddedEditContractpartner = $this->moduleContractPartners->display_edit_contractpartner( null, true );
+		$this->parse_header( 0, 1, 'display_add_moneyflow_bs.tpl', array (
+				"EMBEDDED_ADD_CONTRACTPARTNER" => $embeddedEditContractpartner,
+				"EMBEDDED_ADD_POSTINGACCOUNT" => $embeddedEditPostingAccounts
+		) );
 		return $this->fetch_template( 'display_add_moneyflow_bs.tpl' );
 	}
 

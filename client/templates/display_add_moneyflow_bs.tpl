@@ -89,7 +89,7 @@
 {/section}
                 </select>
                 <span class="input-group-btn">
-                  <button type="button" class="btn" onClick="toggleOverlayContractpartner()">
+                  <button type="button" class="btn" onClick="showOverlayContractpartner()">
                     <span class="glyphicon glyphicon-plus"></span>
                   </button>
                 </span>
@@ -117,7 +117,7 @@
                 </select>
 {if $IS_ADMIN }
                 <span class="input-group-btn">
-                  <button type="button" class="btn">
+                  <button type="button" class="btn" onClick="showOverlayPostingAccount()">
                     <span class="glyphicon glyphicon-plus"></span>
                   </button>
                 </span>
@@ -187,8 +187,12 @@
           
           for (i=0 ; i<length ; i++) {
             if (jsonContractpartner[i]["contractpartnerid"] == document.addmoney.mcp_contractpartnerid.value) {
-              document.addmoney.comment.value = jsonContractpartner[i]["moneyflow_comment"];
-              document.addmoney.mpa_postingaccountid.value = jsonContractpartner[i]["mpa_postingaccountid"];
+              if ( jsonContractpartner[i]["moneyflow_comment"] != null ) {
+                document.addmoney.comment.value = jsonContractpartner[i]["moneyflow_comment"];
+              }
+              if ( jsonContractpartner[i]["mpa_postingaccountid"] != null ) {
+                document.addmoney.mpa_postingaccountid.value = jsonContractpartner[i]["mpa_postingaccountid"];
+              }
               break;
             }
           }

@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2006-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -50,51 +51,35 @@ class modulePostingAccounts extends module {
 		return $this->fetch_template( 'display_list_postingaccounts.tpl' );
 	}
 
-	public final function display_edit_postingAccount($realaction, $postingaccountid, $all_data) {
-		$close = 0;
-		switch ($realaction) {
-			case 'save' :
-				$all_data ['postingaccountid'] = $postingaccountid;
-				if ($postingaccountid == 0)
-					$ret = PostingAccountControllerHandler::getInstance()->createPostingAccount( $all_data );
-				else
-					$ret = PostingAccountControllerHandler::getInstance()->updatePostingAccount( $all_data );
-
-				if ($ret === true) {
-					$close = 1;
-				} else {
-					foreach ( $ret ['errors'] as $validationResult ) {
-						$error = $validationResult ['error'];
-
-						$this->add_error( $error );
-
-						switch ($error) {
-							case ErrorCode::NAME_MUST_NOT_BE_EMPTY :
-							case ErrorCode::POSTINGACCOUNT_WITH_SAME_NAME_ALREADY_EXISTS :
-								$all_data ['name_error'] = 1;
-								break;
-						}
-					}
-				}
-			default :
-				if (! is_array( $all_data )) {
-					if ($postingaccountid > 0) {
-						$all_data = PostingAccountControllerHandler::getInstance()->showEditPostingAccount( $postingaccountid );
-					} else {
-						$all_data ['name'] = '';
-					}
-				}
-				break;
+	public final function display_edit_postingAccount($postingaccountid, $isEmbedded = false) {
+		if ($postingaccountid > 0) {
+			$all_data = PostingAccountControllerHandler::getInstance()->showEditPostingAccount( $postingaccountid );
+		} else {
+			$all_data ['name'] = '';
 		}
 
-		$this->template_assign( 'CLOSE', $close );
-		if ($close == 0) {
-			$this->template_assign( 'POSTINGACCOUNTID', $postingaccountid );
-			$this->template_assign( 'ALL_DATA', $all_data );
-			$this->template_assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign( 'POSTINGACCOUNTID', $postingaccountid );
+		$this->template_assign( 'IS_EMBEDDED', $isEmbedded );
+		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
+
+		if (! $isEmbedded) {
+			$this->parse_header( 1, 1, 'display_edit_postingaccount.tpl' );
+		} else {
+			$this->template_assign( "HEADER", "" );
+			$this->template_assign( "FOOTER", "" );
 		}
-		$this->parse_header( 1 );
-		return $this->fetch_template( 'display_edit_postingaccount.tpl' );
+		return $this->fetch_template( 'display_edit_postingaccount_bs.tpl' );
+	}
+
+	public final function edit_postingAccount($postingaccountid, $all_data) {
+		$all_data ['postingaccountid'] = $postingaccountid;
+
+		if ($postingaccountid == 0)
+			$ret = PostingAccountControllerHandler::getInstance()->createPostingAccount( $all_data );
+		else
+			$ret = PostingAccountControllerHandler::getInstance()->updatePostingAccount( $all_data );
+
+		return $this->handleReturnForAjax( $ret );
 	}
 
 	public final function display_delete_postingAccount($realaction, $postingaccountid, $force) {

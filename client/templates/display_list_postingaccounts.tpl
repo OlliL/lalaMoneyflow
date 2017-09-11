@@ -10,7 +10,7 @@
 			{section name=LETTER loop=$ALL_INDEX_LETTERS}
 				<a href="{$ENV_INDEX_PHP}?action=list_postingaccounts&amp;letter={$ALL_INDEX_LETTERS[LETTER]}">{$ALL_INDEX_LETTERS[LETTER]}</a>
 			{/section}
-			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_postingaccount&amp;sr=1','_blank','width=230,height=200')">{#TEXT_29#}</a>
+			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_postingaccount&amp;sr=1','_blank','width=600,height=230')">{#TEXT_29#}</a>
 			{if $COUNT_ALL_DATA > 0}
 				<br><br>
 				<table border=0>
@@ -20,7 +20,7 @@
 					{section name=DATA loop=$ALL_DATA}
 						<tr>
 							<td class="contrastbgcolor">{$ALL_DATA[DATA].name}</td>
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_postingaccount&amp;postingaccountid={$ALL_DATA[DATA].postingaccountid}&amp;sr=1','_blank','width=260,height=100')">{#TEXT_36#}</a></td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_postingaccount&amp;postingaccountid={$ALL_DATA[DATA].postingaccountid}&amp;sr=1','_blank','width=600,height=230')">{#TEXT_36#}</a></td>
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_postingaccount&amp;postingaccountid={$ALL_DATA[DATA].postingaccountid}&amp;sr=1','_blank','width=300,height=130')">{#TEXT_37#}</a></td>
 						</tr>
 					{/section}

@@ -6,7 +6,6 @@
         <form action="{$ENV_INDEX_PHP}" method="POST" name="editcontractpartner">
           <input type="hidden" name="action"            value="edit_contractpartner_submit">
           <input type="hidden" name="contractpartnerid" value="{$CONTRACTPARTNERID}">
-          <input type="hidden" name="REFERER"           value="{$ENV_REFERER}">
 
           <div class="text-center">
             <h4>{if $CONTRACTPARTNERID > 0}{#TEXT_46#}{else}{#TEXT_11#}{/if}</h4>
@@ -230,8 +229,8 @@
       
         function btnCancel() {
 {if $IS_EMBEDDED}
-         preFillFormEditContractpartner(FORM_MODE_EMPTY);
-         $('.overlay_edit_contractpartner').toggle();
+          preFillFormEditContractpartner(FORM_MODE_EMPTY);
+          hideOverlayContractpartner();
 {else}
           window.close();
 {/if}
@@ -246,7 +245,7 @@
                                        ,document.editcontractpartner.edcontmpa_postingaccountid.value );
           }
           preFillFormEditContractpartner(FORM_MODE_EMPTY);
-          $('.overlay_edit_contractpartner').toggle();
+          hideOverlayContractpartner();
 {else}
           window.close();
 {/if}
