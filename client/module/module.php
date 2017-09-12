@@ -35,6 +35,7 @@ use base\ErrorCode;
 use client\util\ErrorHandler;
 use client\util\DateUtil;
 use base\Configuration;
+use client\handler\PostingAccountControllerHandler;
 
 require_once 'Smarty.class.php';
 abstract class module {
@@ -45,7 +46,7 @@ abstract class module {
 	}
 
 	protected function template_assign($name, $value) {
-		if($name === 'ERRORS' ) {
+		if ($name === 'ERRORS') {
 			$value_escaped = $value;
 		} else if (is_array( $value )) {
 			array_walk_recursive( $value, function (&$func_value) {
@@ -64,7 +65,7 @@ abstract class module {
 		$this->template->error_reporting = E_ERROR;
 		$this->template->registerPlugin( 'modifier', 'number_format', 'client\util\SmartyPlugin::my_number_format' );
 		$this->template_assign( 'ENV_INDEX_PHP', 'index.php' );
-//		$this->template->setCompileCheck( \Smarty::COMPILECHECK_OFF );
+		// $this->template->setCompileCheck( \Smarty::COMPILECHECK_OFF );
 
 		if (! empty( $_SERVER ['HTTP_REFERER'] )) {
 			$http_referer = $_SERVER ['HTTP_REFERER'];
@@ -125,13 +126,51 @@ abstract class module {
 		return $result;
 	}
 
-	protected final function parse_header($nonavi=0, $bootstraped=0, $template=null, $embeddedForms = array()) {
+	private final function addEmbeddedForms() {
+		$coreText = new coreText();
+		$embeddedForms = array ();
+
+		$this->template_assign_raw( 'IS_EMBEDDED', true );
+		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', "[]" );
+		$this->template_assign_raw( "HEADER", "" );
+		$this->template_assign_raw( "FOOTER", "" );
+
+		// Capitalsource
+		$type_values = $coreText->get_domain_data( 'CAPITALSOURCE_TYPE' );
+		$state_values = $coreText->get_domain_data( 'CAPITALSOURCE_STATE' );
+		$this->template_assign( 'TYPE_VALUES', $type_values );
+		$this->template_assign( 'STATE_VALUES', $state_values );
+
+		$embeddedEditCapitalsource = $this->fetch_template( 'display_edit_capitalsource_bs.tpl' );
+		$embeddedForms ["EMBEDDED_ADD_CAPITALSOURCE"] = $embeddedEditCapitalsource;
+
+		// Contractpartner
+		$listPostingAccounts = PostingAccountControllerHandler::getInstance()->showPostingAccountList( 'all' );
+		$postingAccounts = $listPostingAccounts ['postingAccounts'];
+		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingAccounts );
+
+		$embeddedEditContractpartner = $this->fetch_template( 'display_edit_contractpartner_bs.tpl' );
+		$embeddedForms ["EMBEDDED_ADD_CONTRACTPARTNER"] = $embeddedEditContractpartner;
+
+		// PostingAccount
+		$admin = Environment::getInstance()->getUserPermAdmin();
+		if ($admin) {
+			$embeddedPostingAccount = $this->fetch_template( 'display_edit_postingaccount_bs.tpl' );
+			$embeddedForms ["EMBEDDED_ADD_POSTINGACCOUNT"] = $embeddedPostingAccount;
+		}
+
+		return $embeddedForms;
+	}
+
+	protected final function parse_header($nonavi = 0, $bootstraped = 0, $template = null) {
 		$this->template->assign( 'REPORTS_YEAR', date( 'Y' ) );
 		$this->template->assign( 'REPORTS_MONTH', date( 'm' ) );
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
 		$this->template->assign( 'VERSION', '0.22.0' );
 		$this->template_assign( 'NO_NAVIGATION', $nonavi );
-		$this->template_assign( 'TEMPLATE', $template);
+		$this->template_assign( 'TEMPLATE', $template );
+		$this->template_assign( 'MAX_DATE', Configuration::getInstance()->getProperty( 'max_year' ) );
+		$this->template_assign_raw( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' ) ) );
 
 		$admin = Environment::getInstance()->getUserPermAdmin();
 		if ($admin) {
@@ -141,9 +180,9 @@ abstract class module {
 		}
 		$cache_id = Environment::getInstance()->getUserId();
 		$language = Environment::getInstance()->getSettingGuiLanguage();
-// 		$this->template->setCaching( true );
+		// $this->template->setCaching( true );
 
-		if($bootstraped === 1) {
+		if ($bootstraped === 1) {
 			$file_header = 'display_header_bs.tpl';
 			$file_footer = 'display_footer_bs.tpl';
 		} else {
@@ -151,12 +190,14 @@ abstract class module {
 			$file_footer = 'display_footer.tpl';
 		}
 
-		if(count($embeddedForms) > 0) {
-			foreach ($embeddedForms as $key => $value) {
-				$this->template->assign( $key, $value );
+		if ($nonavi === 0) {
+			$embeddedForms = $this->addEmbeddedForms();
+			if (count( $embeddedForms ) > 0) {
+				foreach ( $embeddedForms as $key => $value ) {
+					$this->template->assign( $key, $value );
+				}
 			}
 		}
-
 		$header = $this->fetch_template( $file_header, 'header_' . $language . '_' . $admin . '_' . $nonavi . '_' . $cache_id );
 		$this->template->assign( 'HEADER', $header );
 
@@ -209,18 +250,17 @@ abstract class module {
 
 	protected final function handleReturnForAjax($ret) {
 		if ($ret === true) {
-			header("HTTP/1.1 204 No Content");
+			header( "HTTP/1.1 204 No Content" );
 			return null;
-		} elseif ( array_key_exists("errors", $ret)) {
+		} elseif (array_key_exists( "errors", $ret )) {
 			foreach ( $ret ['errors'] as $validationResult ) {
-				$this->add_error($validationResult ['error']);
+				$this->add_error( $validationResult ['error'] );
 			}
-			header('HTTP/1.1 500 Internal Server Error');
-			return json_encode($this->get_errors());
+			header( 'HTTP/1.1 500 Internal Server Error' );
+			return json_encode( $this->get_errors() );
 		} else {
-			return json_encode($ret);
+			return json_encode( $ret );
 		}
-
 	}
 }
 ?>

@@ -69,7 +69,7 @@ class moduleCapitalSources extends module {
 		return $this->fetch_template( 'display_list_capitalsources.tpl' );
 	}
 
-	public final function display_edit_capitalsource($capitalsourceid, $isEmbedded = false) {
+	public final function display_edit_capitalsource($capitalsourceid) {
 		if ($capitalsourceid > 0) {
 			$all_data = CapitalsourceControllerHandler::getInstance()->showEditCapitalsource( $capitalsourceid );
 		} else {
@@ -82,19 +82,9 @@ class moduleCapitalSources extends module {
 		$this->template_assign( 'TYPE_VALUES', $type_values );
 		$this->template_assign( 'STATE_VALUES', $state_values );
 		$this->template_assign( 'CAPITALSOURCEID', $capitalsourceid );
-
-		$this->template_assign( 'MAX_DATE', Configuration::getInstance()->getProperty( 'max_year' ));
-		$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' ) ) );
-
-		$this->template_assign( 'IS_EMBEDDED', $isEmbedded );
 		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 
-		if (! $isEmbedded) {
-			$this->parse_header( 1, 1, 'display_edit_capitalsource_bs.tpl' );
-		} else {
-			$this->template_assign( "HEADER", "" );
-			$this->template_assign( "FOOTER", "" );
-		}
+		$this->parse_header( 1, 1, 'display_edit_capitalsource_bs.tpl' );
 		return $this->fetch_template( 'display_edit_capitalsource_bs.tpl' );
 	}
 

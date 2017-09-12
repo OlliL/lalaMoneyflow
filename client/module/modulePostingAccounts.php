@@ -51,23 +51,17 @@ class modulePostingAccounts extends module {
 		return $this->fetch_template( 'display_list_postingaccounts.tpl' );
 	}
 
-	public final function display_edit_postingAccount($postingaccountid, $isEmbedded = false) {
+	public final function display_edit_postingAccount($postingaccountid) {
 		if ($postingaccountid > 0) {
 			$all_data = PostingAccountControllerHandler::getInstance()->showEditPostingAccount( $postingaccountid );
 		} else {
-			$all_data ['name'] = '';
+			$all_data = array ();
 		}
 
 		$this->template_assign( 'POSTINGACCOUNTID', $postingaccountid );
-		$this->template_assign( 'IS_EMBEDDED', $isEmbedded );
 		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 
-		if (! $isEmbedded) {
-			$this->parse_header( 1, 1, 'display_edit_postingaccount.tpl' );
-		} else {
-			$this->template_assign( "HEADER", "" );
-			$this->template_assign( "FOOTER", "" );
-		}
+		$this->parse_header( 1, 1, 'display_edit_postingaccount.tpl' );
 		return $this->fetch_template( 'display_edit_postingaccount_bs.tpl' );
 	}
 

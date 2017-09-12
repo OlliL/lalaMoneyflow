@@ -56,7 +56,7 @@ class moduleContractPartners extends module {
 		return $this->fetch_template( 'display_list_contractpartners.tpl' );
 	}
 
-	public final function display_edit_contractpartner($contractpartnerid, $isEmbedded = false) {
+	public final function display_edit_contractpartner($contractpartnerid) {
 		if ($contractpartnerid > 0) {
 			$showEditContractpartner = ContractpartnerControllerHandler::getInstance()->showEditContractpartner( $contractpartnerid );
 			$all_data = $showEditContractpartner ['contractpartner'];
@@ -68,19 +68,9 @@ class moduleContractPartners extends module {
 
 		$this->template_assign( 'CONTRACTPARTNERID', $contractpartnerid );
 		$this->template_assign( 'POSTINGACCOUNT_VALUES', $posting_accounts );
-
-		$this->template_assign( 'MAX_DATE', Configuration::getInstance()->getProperty( 'max_year' ));
-		$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' ) ) );
-
-		$this->template_assign( 'IS_EMBEDDED', $isEmbedded );
 		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 
-		if (! $isEmbedded) {
-			$this->parse_header( 1, 1, 'display_edit_contractpartner_bs.tpl' );
-		} else {
-			$this->template_assign("HEADER", "");
-			$this->template_assign("FOOTER", "");
-		}
+		$this->parse_header( 1, 1, 'display_edit_contractpartner_bs.tpl' );
 		return $this->fetch_template( 'display_edit_contractpartner_bs.tpl' );
 	}
 

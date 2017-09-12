@@ -325,14 +325,7 @@ class moduleMoneyFlows extends module {
 
 		$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' ) ) );
 
-		$embeddedEditPostingAccounts = $this->modulePostingAccounts->display_edit_postingAccount( null, true );
-		$embeddedEditContractpartner = $this->moduleContractPartners->display_edit_contractpartner( null, true );
-		$embeddedEditCapitalsource = $this->moduleCapitalSources->display_edit_capitalsource( null, true );
-		$this->parse_header( 0, 1, 'display_add_moneyflow_bs.tpl', array (
-				"EMBEDDED_ADD_CONTRACTPARTNER" => $embeddedEditContractpartner,
-				"EMBEDDED_ADD_POSTINGACCOUNT" => $embeddedEditPostingAccounts,
-				"EMBEDDED_ADD_CAPITALSOURCE" => $embeddedEditCapitalsource
-		) );
+		$this->parse_header( 0, 1, 'display_add_moneyflow_bs.tpl');
 		return $this->fetch_template( 'display_add_moneyflow_bs.tpl' );
 	}
 

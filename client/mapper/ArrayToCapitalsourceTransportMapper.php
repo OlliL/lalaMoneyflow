@@ -62,13 +62,21 @@ class ArrayToCapitalsourceTransportMapper extends AbstractArrayMapper {
 		$a ['accountnumber'] = $b->getAccountNumber();
 		$a ['bankcode'] = $b->getBankCode();
 		$a ['comment'] = $b->getComment();
-		$a ['att_group_use'] = $b->getGroupUse();
+		if ($b->getGroupUse() == null) {
+			$a ['att_group_use'] = 0;
+		} else {
+			$a ['att_group_use'] = $b->getGroupUse();
+		}
 		$a ['state'] = $b->getState();
 		$a ['type'] = $b->getType();
 		$a ['validfrom'] = parent::convertTransportDateToClient( $b->getValidFrom() );
 		$a ['validtil'] = parent::convertTransportDateToClient( $b->getValidTil() );
 		$a ['mur_userid'] = $b->getUserid();
-		$a ['import_allowed'] = $b->getImportAllowed();
+		if ($b->getImportAllowed() == null) {
+			$a ['import_allowed'] = 0;
+		} else {
+			$a ['import_allowed'] = $b->getImportAllowed();
+		}
 
 		return $a;
 	}

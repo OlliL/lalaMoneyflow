@@ -145,7 +145,7 @@
           <div class="form-group">
             <div class="col-sm-12 text-center">
               <button type="button" class="btn"             onclick="btnEditContractpartnerCancel()"    >{#TEXT_315#}</button>
-              <button type="button" class="btn btn-default" onclick="preFillFormEditContractpartner(-1)">{#TEXT_304#}</button>
+              <button type="button" class="btn btn-default" onclick="resetFormEditContractpartner()">{#TEXT_304#}</button>
               <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
             </div>  
           </div>  
@@ -155,14 +155,16 @@
       
       <script>
 
-        var jsonFormDefaults = {$JSON_FORM_DEFAULTS};
-        var today = "{$TODAY}";
-        var maxDate = "{$MAX_DATE}";
+        var editContractpartnerJsonFormDefaults = {$JSON_FORM_DEFAULTS};
+        var editContractpartnerId = "{$CONTRACTPARTNERID}";
 
-        /* When the page is loaded, the booking form is set to the defaults which might be previous entered data or empty (if the page is initially loaded) */
-        var FORM_MODE_DEFAULT = -2;
-        /* This is used when in the select box "New booking" is selected explicitly to always null the form */
-        var FORM_MODE_EMPTY = -1;
+        function resetFormEditContractpartner() {
+          if ( +editContractpartnerId > 0 ) {
+            preFillFormEditContractpartner(FORM_MODE_DEFAULT);
+          } else {
+            preFillFormEditContractpartner(FORM_MODE_EMPTY);
+          }
+        }
 
         function deleteEditContractpartnerErrors() {
           var element = document.getElementById("editContractpartnerErrors");
@@ -189,32 +191,32 @@
             if( jsonPreDefMoneyflowIndex == FORM_MODE_EMPTY) {
               deleteEditContractpartnerErrors();
             } else {
-              if ( "name" in jsonFormDefaults ) {
-                document.editcontractpartner.edcontname.value = jsonFormDefaults["name"];
+              if ( "name" in editContractpartnerJsonFormDefaults ) {
+                document.editcontractpartner.edcontname.value = editContractpartnerJsonFormDefaults["name"];
               }
-              if ( "street" in jsonFormDefaults ) {
-                document.editcontractpartner.edcontstreet.value = jsonFormDefaults["street"];
+              if ( "street" in editContractpartnerJsonFormDefaults ) {
+                document.editcontractpartner.edcontstreet.value = editContractpartnerJsonFormDefaults["street"];
               }
-              if ( "postcode" in jsonFormDefaults ) {
-                document.editcontractpartner.edcontpostcode.value = jsonFormDefaults["postcode"];
+              if ( "postcode" in editContractpartnerJsonFormDefaults ) {
+                document.editcontractpartner.edcontpostcode.value = editContractpartnerJsonFormDefaults["postcode"];
               }
-              if ( "town" in jsonFormDefaults ) {
-                document.editcontractpartner.edconttown.value = jsonFormDefaults["town"];
+              if ( "town" in editContractpartnerJsonFormDefaults ) {
+                document.editcontractpartner.edconttown.value = editContractpartnerJsonFormDefaults["town"];
               }
-              if ( "country" in jsonFormDefaults ) {
-                document.editcontractpartner.edcontcountry.value = jsonFormDefaults["country"];
+              if ( "country" in editContractpartnerJsonFormDefaults ) {
+                document.editcontractpartner.edcontcountry.value = editContractpartnerJsonFormDefaults["country"];
               }
-              if ( "validfrom" in jsonFormDefaults ) {
-                document.editcontractpartner.edcontvalidfromSelect.value = jsonFormDefaults["validfrom"];
+              if ( "validfrom" in editContractpartnerJsonFormDefaults ) {
+                document.editcontractpartner.edcontvalidfromSelect.value = editContractpartnerJsonFormDefaults["validfrom"];
               }
-              if ( "validtil" in jsonFormDefaults ) {
-                document.editcontractpartner.edcontvalidtilSelect.value = jsonFormDefaults["validtil"];
+              if ( "validtil" in editContractpartnerJsonFormDefaults ) {
+                document.editcontractpartner.edcontvalidtilSelect.value = editContractpartnerJsonFormDefaults["validtil"];
               }
-              if ( "moneyflow_comment" in jsonFormDefaults ) {
-                document.editcontractpartner.edcontmoneyflow_comment.value = jsonFormDefaults["moneyflow_comment"];
+              if ( "moneyflow_comment" in editContractpartnerJsonFormDefaults ) {
+                document.editcontractpartner.edcontmoneyflow_comment.value = editContractpartnerJsonFormDefaults["moneyflow_comment"];
               }
-              if ( "mpa_postingaccountid" in jsonFormDefaults ) {
-                document.editcontractpartner.edcontmpa_postingaccountid.value = jsonFormDefaults["mpa_postingaccountid"];
+              if ( "mpa_postingaccountid" in editContractpartnerJsonFormDefaults ) {
+                document.editcontractpartner.edcontmpa_postingaccountid.value = editContractpartnerJsonFormDefaults["mpa_postingaccountid"];
               }
             }
           }

@@ -30,7 +30,7 @@
 					<a href="{$ENV_INDEX_PHP}?action=list_capitalsources&amp;letter={$ALL_INDEX_LETTERS[LETTER]}">{$ALL_INDEX_LETTERS[LETTER]}</a>
 				{/if}
 			{/section}
-			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&amp;sr=1','_blank','width=1000,height=120')">{#TEXT_29#}</a>
+			<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&amp;sr=1','_blank','width=600,height=650')">{#TEXT_29#}</a>
 			<form action="{$ENV_INDEX_PHP}" method="GET" name="validForm">
 				<input type="hidden"   name="action"                   value="list_capitalsources">
 				<input type="hidden"   name="letter"                   value="{$LETTER}"          >		
@@ -63,7 +63,7 @@
 							<td class="contrastbgcolor" align="center"><b>{if $ALL_DATA[DATA].att_group_use == 1}<font color="green">{#TEXT_25#}{else}<font color="red">{#TEXT_26#}{/if}</font></b></td>
 							<td class="contrastbgcolor" align="center"><b>{if $ALL_DATA[DATA].import_allowed == 1}<font color="green">{#TEXT_28#}{elseif $ALL_DATA[DATA].import_allowed == 2}<font color="green">{#TEXT_298#}{else}<font color="red">{#TEXT_26#}{/if}</font></b></td>
 							{if $ALL_DATA[DATA].owner == true }
-							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&amp;capitalsourceid={$ALL_DATA[DATA].capitalsourceid}&amp;sr=1','_blank','width=1000,height=120')">{#TEXT_36#}</a></td>
+							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&amp;capitalsourceid={$ALL_DATA[DATA].capitalsourceid}&amp;sr=1','_blank','width=600,height=650')">{#TEXT_36#}</a></td>
 							<td class="contrastbgcolor"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_capitalsource&amp;capitalsourceid={$ALL_DATA[DATA].capitalsourceid}&amp;sr=1','_blank','width=800,height=120')">{#TEXT_37#}</a></td>
 							{/if}
 						</tr>

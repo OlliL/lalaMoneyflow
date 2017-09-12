@@ -2,6 +2,17 @@
  * 
  */
 
+/*
+ * When the page is loaded, the booking form is set to the defaults which might
+ * be previous entered data or empty (if the page is initially loaded)
+ */
+var FORM_MODE_DEFAULT = -2;
+/*
+ * This is used when in the select box "New booking" is selected explicitly to
+ * always null the form
+ */
+var FORM_MODE_EMPTY = -1;
+
 var focusedElement;
 var lastFocusedInput; // see display_footer_bs.tpl
 
@@ -16,14 +27,14 @@ function restoreLastFocusedElement() {
 var clicky;
 
 $(document).mousedown(function(e) {
-    // The latest element clicked
-    clicky = $(e.target);
+	// The latest element clicked
+	clicky = $(e.target);
 });
 
 // when 'clicky == null' on blur, we know it was not caused by a click
 // but maybe by pressing the tab key
 $(document).mouseup(function(e) {
-    clicky = null;
+	clicky = null;
 });
 
 function updateSelect(selects, id, name) {
@@ -35,7 +46,7 @@ function updateSelect(selects, id, name) {
 		option.innerHTML = name;
 		selects[i].appendChild(option);
 		selects[i].value = id;
-	}	
+	}
 }
 
 function updateContractpartnerSelect(id, name, moneyflowComment,
@@ -44,7 +55,7 @@ function updateContractpartnerSelect(id, name, moneyflowComment,
 	updateSelect(selects, id, name);
 
 	// add_moneyflow specials:
-	if (jsonContractpartner != null) {
+	if (typeof jsonContractpartner !== 'undefined') {
 		jsonContractpartner.push({
 			contractpartnerid : id,
 			moneyflow_comment : moneyflowComment,

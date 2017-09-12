@@ -28,7 +28,7 @@
           <div class="form-group">
             <div class="col-sm-12 text-center">
               <button type="button" class="btn"             onclick="btnEditPostingAccountCancel()"    >{#TEXT_315#}</button>
-              <button type="button" class="btn btn-default" onclick="preFillFormEditPostingAccount(-1)">{#TEXT_304#}</button>
+              <button type="button" class="btn btn-default" onclick="resetFormEditPostingAccount()">{#TEXT_304#}</button>
               <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
             </div>  
           </div>  
@@ -38,13 +38,16 @@
       
       <script>
 
-        var jsonFormDefaults = {$JSON_FORM_DEFAULTS};
-        var today = "{$TODAY}";
+        var editPostingAccountJsonFormDefaults = {$JSON_FORM_DEFAULTS};
+        var editPostingAccountId = "{$POSTINGACCOUNTID}";
 
-        /* When the page is loaded, the booking form is set to the defaults which might be previous entered data or empty (if the page is initially loaded) */
-        var FORM_MODE_DEFAULT = -2;
-        /* This is used when in the select box "New booking" is selected explicitly to always null the form */
-        var FORM_MODE_EMPTY = -1;
+        function resetFormEditPostingAccount() {
+          if ( +editPostingAccountId > 0 ) {
+            preFillFormEditPostingAccount(FORM_MODE_DEFAULT);
+          } else {
+            preFillFormEditPostingAccount(FORM_MODE_EMPTY);
+          }
+        }
 
         function deleteEditPostingAccountErrors() {
           var element = document.getElementById("editPostingAccountErrors");
@@ -63,8 +66,8 @@
             if( jsonPreDefMoneyflowIndex == FORM_MODE_EMPTY) {
               deleteEditPostingAccountErrors();
             } else {
-              if ( "name" in jsonFormDefaults ) {
-                document.editpostingaccount.edpostaccname.value = jsonFormDefaults["name"];
+              if ( "name" in editPostingAccountJsonFormDefaults ) {
+                document.editpostingaccount.edpostaccname.value = editPostingAccountJsonFormDefaults["name"];
               }
             }
           }

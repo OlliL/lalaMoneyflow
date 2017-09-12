@@ -52,18 +52,16 @@
           
             <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
-                <input type="text" class="form-control" id="edcapsrcaccountnumber" name="all_data[accountnumber]" required data-error="{#TEXT_324#}">
+                <input type="text" class="form-control" id="edcapsrcaccountnumber" name="all_data[accountnumber]"">
               </div>
               <label for="edcapsrcaccountnumber">{#TEXT_32#}</label>
-              <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
-                <input type="text" class="form-control" id="edcapsrcbankcode" name="all_data[bankcode]" required data-error="{#TEXT_325#}">
+                <input type="text" class="form-control" id="edcapsrcbankcode" name="all_data[bankcode]"">
               </div>
               <label for="edcapsrcbankcode">{#TEXT_33#}</label>
-              <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group has-float-label">
@@ -140,7 +138,7 @@
           <div class="form-group">
             <div class="col-sm-12 text-center">
               <button type="button" class="btn"             onclick="btnEditCapitalsourceCancel()"    >{#TEXT_315#}</button>
-              <button type="button" class="btn btn-default" onclick="preFillFormEditCapitalsource(-1)">{#TEXT_304#}</button>
+              <button type="button" class="btn btn-default" onclick="resetFormEditCapitalsource()">{#TEXT_304#}</button>
               <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
             </div>  
           </div>  
@@ -150,15 +148,17 @@
       
       <script>
 
-        var jsonFormDefaults = {$JSON_FORM_DEFAULTS};
-        var today = "{$TODAY}";
-        var maxDate = "{$MAX_DATE}";
+        var editContractpartnerJsonFormDefaults = {$JSON_FORM_DEFAULTS};
+        var editContractpartnerId = "{$CAPITALSOURCEID}";
 
-        /* When the page is loaded, the booking form is set to the defaults which might be previous entered data or empty (if the page is initially loaded) */
-        var FORM_MODE_DEFAULT = -2;
-        /* This is used when in the select box "New booking" is selected explicitly to always null the form */
-        var FORM_MODE_EMPTY = -1;
-
+        function resetFormEditCapitalsource() {
+          if ( +editContractpartnerId > 0 ) {
+            preFillFormEditCapitalsource(FORM_MODE_DEFAULT);
+          } else {
+            preFillFormEditCapitalsource(FORM_MODE_EMPTY);
+          }
+        }
+        
         function deleteEditCapitalsourceErrors() {
           var element = document.getElementById("editCapitalsourceErrors");
           while ( element != null ) {
@@ -184,32 +184,32 @@
             if( jsonPreDefMoneyflowIndex == FORM_MODE_EMPTY) {
               deleteEditCapitalsourceErrors();
             } else {
-              if ( "comment" in jsonFormDefaults ) {
-                document.editcapitalsource.edcapsrccomment.value = jsonFormDefaults["comment"];
+              if ( "comment" in editContractpartnerJsonFormDefaults ) {
+                document.editcapitalsource.edcapsrccomment.value = editContractpartnerJsonFormDefaults["comment"];
               }
-              if ( "type" in jsonFormDefaults ) {
-                document.editcapitalsource.edcapsrctype.value = jsonFormDefaults["type"];
+              if ( "type" in editContractpartnerJsonFormDefaults ) {
+                document.editcapitalsource.edcapsrctype.value = editContractpartnerJsonFormDefaults["type"];
               }
-              if ( "state" in jsonFormDefaults ) {
-                document.editcapitalsource.edcapsrcstate.value = jsonFormDefaults["state"];
+              if ( "state" in editContractpartnerJsonFormDefaults ) {
+                document.editcapitalsource.edcapsrcstate.value = editContractpartnerJsonFormDefaults["state"];
               }
-              if ( "accountnumber" in jsonFormDefaults ) {
-                document.editcapitalsource.edcapsrcaccountnumber.value = jsonFormDefaults["accountnumber"];
+              if ( "accountnumber" in editContractpartnerJsonFormDefaults ) {
+                document.editcapitalsource.edcapsrcaccountnumber.value = editContractpartnerJsonFormDefaults["accountnumber"];
               }
-              if ( "bankcode" in jsonFormDefaults ) {
-                document.editcapitalsource.edcapsrcbankcode.value = jsonFormDefaults["bankcode"];
+              if ( "bankcode" in editContractpartnerJsonFormDefaults ) {
+                document.editcapitalsource.edcapsrcbankcode.value = editContractpartnerJsonFormDefaults["bankcode"];
               }
-              if ( "validfrom" in jsonFormDefaults ) {
-                document.editcapitalsource.edcapsrcvalidfromSelect.value = jsonFormDefaults["validfrom"];
+              if ( "validfrom" in editContractpartnerJsonFormDefaults ) {
+                document.editcapitalsource.edcapsrcvalidfromSelect.value = editContractpartnerJsonFormDefaults["validfrom"];
               }
-              if ( "validtil" in jsonFormDefaults ) {
-                document.editcapitalsource.edcapsrcvalidtilSelect.value = jsonFormDefaults["validtil"];
+              if ( "validtil" in editContractpartnerJsonFormDefaults ) {
+                document.editcapitalsource.edcapsrcvalidtilSelect.value = editContractpartnerJsonFormDefaults["validtil"];
               }
-              if ( "att_group_use" in jsonFormDefaults ) {
-                document.editcapitalsource.edcapsrcatt_group_use.value = jsonFormDefaults["att_group_use"];
+              if ( "att_group_use" in editContractpartnerJsonFormDefaults ) {
+                document.editcapitalsource.edcapsrcatt_group_use.value = editContractpartnerJsonFormDefaults["att_group_use"];
               }
-              if ( "import_allowed" in jsonFormDefaults ) {
-                document.editcapitalsource.edcapsrcimport_allowed.value = jsonFormDefaults["import_allowed"];
+              if ( "import_allowed" in editContractpartnerJsonFormDefaults ) {
+                document.editcapitalsource.edcapsrcimport_allowed.value = editContractpartnerJsonFormDefaults["import_allowed"];
               }
             }
           }
