@@ -49,25 +49,19 @@
           }
         }
 
-        function deleteEditPostingAccountErrors() {
-          var element = document.getElementById("editPostingAccountErrors");
-          while ( element != null ) {
-            element.outerHTML = "";
-            delete element;
-            element = document.getElementById("editPostingAccountErrors");
-          }
-        }
+        function preFillFormEditPostingAccount(formMode) {
 
-        function preFillFormEditPostingAccount(jsonPreDefMoneyflowIndex) {
-
-          if ( jsonPreDefMoneyflowIndex == FORM_MODE_DEFAULT || jsonPreDefMoneyflowIndex == FORM_MODE_EMPTY ) {
+          if ( formMode == FORM_MODE_DEFAULT || formMode == FORM_MODE_EMPTY ) {
             document.editpostingaccount.edpostaccname.value = "";
 
-            if( jsonPreDefMoneyflowIndex == FORM_MODE_EMPTY) {
-              deleteEditPostingAccountErrors();
+            if ( formMode == FORM_MODE_EMPTY) {
+              clearErrorDiv("editPostingAccountErrors");
             } else {
-              if ( "name" in editPostingAccountJsonFormDefaults ) {
-                document.editpostingaccount.edpostaccname.value = editPostingAccountJsonFormDefaults["name"];
+              for ( var key in editPostingAccountJsonFormDefaults ) {
+                var element = document.getElementById( 'edpostacc'+key );
+                if ( element !== null ) {
+                  element.value = editPostingAccountJsonFormDefaults[key];
+                }
               }
             }
           }
@@ -76,11 +70,6 @@
           $('form[name=editpostingaccount]').validator('update');
         }
 
-
-        preFillFormEditPostingAccount(FORM_MODE_DEFAULT);
-
-        $('form[name=editpostingaccount]').validator();
-      
         function btnEditPostingAccountCancel() {
 {if $IS_EMBEDDED}
           preFillFormEditPostingAccount(FORM_MODE_EMPTY);
@@ -104,19 +93,8 @@
         }
 
         function ajaxEditPostingAccountError(data) {
-          deleteEditPostingAccountErrors();
-          var responseText = $.parseJSON(data.responseText);
-          var length = responseText.length;
-
-          element = document.getElementById("editPostingAccountErrorsGoHere");
-  
-          for(i=0 ; i < length ; i++ ) {
-          	var errorDiv = document.createElement('div');
-          	errorDiv.id = 'editPostingAccountErrors';
-          	errorDiv.className = 'alert alert-danger';
-          	errorDiv.innerHTML = responseText[i]; 
-          	element.appendChild(errorDiv);
-          }
+          clearErrorDiv("editPostingAccountErrors");
+          populateErrorDiv(data.responseText,'editPostingAccountErrorsGoHere','editPostingAccountErrors');
         }
 
 
@@ -126,6 +104,9 @@
             error: ajaxEditPostingAccountError
         });
 
+
+        preFillFormEditPostingAccount(FORM_MODE_DEFAULT);
+        $('form[name=editpostingaccount]').validator();
       </script>
 
 {if !$IS_EMBEDDED}

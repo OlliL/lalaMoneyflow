@@ -94,17 +94,17 @@
                   </div>
 
                   <div class="form-group has-float-label">
-                    <div class='input-group date col-xs-12' id="edcontvalidfrom">
-                      <input type="text" class="form-control" name="all_data[validfrom]" id="edcontvalidfromSelect" required data-error="{#TEXT_238#}">
+                    <div class='input-group date col-xs-12' id="edcontvalidfromDiv">
+                      <input type="text" class="form-control" name="all_data[validfrom]" id="edcontvalidfrom" required data-error="{#TEXT_238#}">
                       <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                       </span>
                     </div>
-                    <label for="edcontvalidfromSelect">{#TEXT_34#}</label>
+                    <label for="edcontvalidfrom">{#TEXT_34#}</label>
                     <div class="help-block with-errors"></div>
                     <script type="text/javascript">
                       $(function () {
-                          $('#edcontvalidfrom').datetimepicker({
+                          $('#edcontvalidfromDiv').datetimepicker({
                             format: 'YYYY-MM-DD',
                             focusOnShow: false,
                             showClear: true,
@@ -116,17 +116,17 @@
                   </div>
 
                   <div class="form-group has-float-label">
-                    <div class='input-group date col-xs-12' id="edcontvalidtil">
-                      <input type="text" class="form-control" name="all_data[validtil]" id="edcontvalidtilSelect" required data-error="{#TEXT_239#}">
+                    <div class='input-group date col-xs-12' id="edcontvalidtilDiv">
+                      <input type="text" class="form-control" name="all_data[validtil]" id="edcontvalidtil" required data-error="{#TEXT_239#}">
                       <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                       </span>
                     </div>
-                    <label for="edcontvalidtilSelect">{#TEXT_35#}</label>
+                    <label for="edcontvalidtil">{#TEXT_35#}</label>
                     <div class="help-block with-errors"></div>
                     <script type="text/javascript">
                       $(function () {
-                        $('#edcontvalidtil').datetimepicker({
+                        $('#edcontvalidtilDiv').datetimepicker({
                           format: 'YYYY-MM-DD',
                           focusOnShow: false,
                           showClear: true,
@@ -166,57 +166,27 @@
           }
         }
 
-        function deleteEditContractpartnerErrors() {
-          var element = document.getElementById("editContractpartnerErrors");
-          while ( element != null ) {
-            element.outerHTML = "";
-            delete element;
-            element = document.getElementById("editContractpartnerErrors");
-          }
-        }
+        function preFillFormEditContractpartner(formMode) {
 
-        function preFillFormEditContractpartner(jsonPreDefMoneyflowIndex) {
-
-          if ( jsonPreDefMoneyflowIndex == FORM_MODE_DEFAULT || jsonPreDefMoneyflowIndex == FORM_MODE_EMPTY ) {
+          if ( formMode == FORM_MODE_DEFAULT || formMode == FORM_MODE_EMPTY ) {
             document.editcontractpartner.edcontname.value = "";
             document.editcontractpartner.edcontstreet.value = "";
             document.editcontractpartner.edcontpostcode.value = "";
             document.editcontractpartner.edconttown.value = "";
             document.editcontractpartner.edcontcountry.value = "";
-            document.editcontractpartner.edcontvalidfromSelect.value = today;
-            document.editcontractpartner.edcontvalidtilSelect.value = maxDate;      
+            document.editcontractpartner.edcontvalidfrom.value = today;
+            document.editcontractpartner.edcontvalidtil.value = maxDate;      
             document.editcontractpartner.edcontmoneyflow_comment.value = "";
             document.editcontractpartner.edcontmpa_postingaccountid.value = "";
 
-            if( jsonPreDefMoneyflowIndex == FORM_MODE_EMPTY) {
-              deleteEditContractpartnerErrors();
+            if ( formMode == FORM_MODE_EMPTY) {
+              clearErrorDiv("editContractpartnerErrors");
             } else {
-              if ( "name" in editContractpartnerJsonFormDefaults ) {
-                document.editcontractpartner.edcontname.value = editContractpartnerJsonFormDefaults["name"];
-              }
-              if ( "street" in editContractpartnerJsonFormDefaults ) {
-                document.editcontractpartner.edcontstreet.value = editContractpartnerJsonFormDefaults["street"];
-              }
-              if ( "postcode" in editContractpartnerJsonFormDefaults ) {
-                document.editcontractpartner.edcontpostcode.value = editContractpartnerJsonFormDefaults["postcode"];
-              }
-              if ( "town" in editContractpartnerJsonFormDefaults ) {
-                document.editcontractpartner.edconttown.value = editContractpartnerJsonFormDefaults["town"];
-              }
-              if ( "country" in editContractpartnerJsonFormDefaults ) {
-                document.editcontractpartner.edcontcountry.value = editContractpartnerJsonFormDefaults["country"];
-              }
-              if ( "validfrom" in editContractpartnerJsonFormDefaults ) {
-                document.editcontractpartner.edcontvalidfromSelect.value = editContractpartnerJsonFormDefaults["validfrom"];
-              }
-              if ( "validtil" in editContractpartnerJsonFormDefaults ) {
-                document.editcontractpartner.edcontvalidtilSelect.value = editContractpartnerJsonFormDefaults["validtil"];
-              }
-              if ( "moneyflow_comment" in editContractpartnerJsonFormDefaults ) {
-                document.editcontractpartner.edcontmoneyflow_comment.value = editContractpartnerJsonFormDefaults["moneyflow_comment"];
-              }
-              if ( "mpa_postingaccountid" in editContractpartnerJsonFormDefaults ) {
-                document.editcontractpartner.edcontmpa_postingaccountid.value = editContractpartnerJsonFormDefaults["mpa_postingaccountid"];
+              for ( var key in editContractpartnerJsonFormDefaults ) {
+                var element = document.getElementById( 'edcont'+key );
+                if ( element !== null ) {
+                  element.value = editContractpartnerJsonFormDefaults[key];
+                }
               }
             }
           }
@@ -225,11 +195,6 @@
           $('form[name=editcontractpartner]').validator('update');
         }
 
-
-        preFillFormEditContractpartner(FORM_MODE_DEFAULT);
-
-        $('form[name=editcontractpartner]').validator();
-      
         function btnEditContractpartnerCancel() {
 {if $IS_EMBEDDED}
           preFillFormEditContractpartner(FORM_MODE_EMPTY);
@@ -255,19 +220,8 @@
         }
 
         function ajaxEditContractpartnerError(data) {
-          deleteEditContractpartnerErrors();
-          var responseText = $.parseJSON(data.responseText);
-          var length = responseText.length;
-
-          element = document.getElementById("editContractpartnerErrorsGoHere");
-  
-          for(i=0 ; i < length ; i++ ) {
-          	var errorDiv = document.createElement('div');
-          	errorDiv.id = 'editContractpartnerErrors';
-          	errorDiv.className = 'alert alert-danger';
-          	errorDiv.innerHTML = responseText[i]; 
-          	element.appendChild(errorDiv);
-          }
+          clearErrorDiv('editContractpartnerErrors');
+          populateErrorDiv(data.responseText,'editContractpartnerErrorsGoHere','editContractpartnerErrors');
         }
 
 
@@ -277,6 +231,10 @@
             error: ajaxEditContractpartnerError
         });
 
+
+
+        preFillFormEditContractpartner(FORM_MODE_DEFAULT);
+        $('form[name=editcontractpartner]').validator();
       </script>
 
 {if !$IS_EMBEDDED}

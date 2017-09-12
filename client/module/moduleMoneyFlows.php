@@ -314,6 +314,8 @@ class moduleMoneyFlows extends module {
 				break;
 		}
 
+		$this->parse_header( 0, 1, 'display_add_moneyflow_bs.tpl');
+
 		$this->template_assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 		$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
 		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
@@ -322,10 +324,7 @@ class moduleMoneyFlows extends module {
 		$this->template_assign_raw( 'JSON_PREDEFMONEYFLOWS', json_encode( $preDefMoneyflows ) );
 		$this->template_assign_raw( 'JSON_CONTRACTPARTNER', json_encode( $this->sort_contractpartner( $contractpartner_values ) ) );
 		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
-
-		$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' ) ) );
-
-		$this->parse_header( 0, 1, 'display_add_moneyflow_bs.tpl');
+		error_log( json_encode( $all_data ));
 		return $this->fetch_template( 'display_add_moneyflow_bs.tpl' );
 	}
 

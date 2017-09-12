@@ -12,7 +12,7 @@
         <form action="{$ENV_INDEX_PHP}?action=add_moneyflow" method="POST" name="addmoney">
           <input type="hidden" name="action"                          value="add_moneyflow">
           <input type="hidden" name="realaction"                      value="save">
-          <input type="hidden" name="all_data[predefmoneyflowid]" value="-1"               id="predefmoneyflowid" >
+          <input type="hidden" name="all_data[predefmoneyflowid]" value="-1"               id="addmnfpredefmoneyflowid" >
           <input type="hidden" name="all_data[checked]"           value="1">
 
           <div class="span2 well">
@@ -26,17 +26,17 @@
             </div>
 
             <div class="form-group has-float-label">
-              <div class='input-group date col-xs-12' id="bookingdate">
-                <input type="text" class="form-control" name="all_data[bookingdate]" id="bookingdateSelect" required data-error="{#TEXT_305#}">
+              <div class='input-group date col-xs-12' id="addmnfbookingdateDiv">
+                <input type="text" class="form-control" name="all_data[bookingdate]" id="addmnfbookingdate" required data-error="{#TEXT_305#}">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
                 </span>
               </div>
-              <label for="bookingdateSelect">{#TEXT_16#}</label>
+              <label for="addmnfbookingdate">{#TEXT_16#}</label>
               <div class="help-block with-errors"></div>
               <script type="text/javascript">
                   $(function () {
-                      $('#bookingdate').datetimepicker({
+                      $('#addmnfbookingdateDiv').datetimepicker({
                         format: 'YYYY-MM-DD',
                         focusOnShow: false,
                         showClear: true,
@@ -48,17 +48,17 @@
             </div>
 
             <div class="form-group has-float-label">
-              <div class='input-group date col-xs-12' id="invoicedate">
-                <input type="text" class="form-control" name="all_data[invoicedate]" id="invoicedateSelect">
+              <div class='input-group date col-xs-12' id="addmnfinvoicedateDiv">
+                <input type="text" class="form-control" name="all_data[invoicedate]" id="addmnfinvoicedate">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
                 </span>
               </div>
-              <label for="invoicedateSelect">{#TEXT_17#}</label>
+              <label for="addmnfinvoicedate">{#TEXT_17#}</label>
               <div class="help-block with-errors"></div>
               <script type="text/javascript">
                   $(function () {
-                      $('#invoicedate').datetimepicker({
+                      $('#addmnfinvoicedateDiv').datetimepicker({
                         format: 'YYYY-MM-DD',
                         focusOnShow: false,
                         showClear: true,
@@ -71,18 +71,18 @@
 
             <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
-                <input type="number" step="0.01" class="form-control" id="amount" name="all_data[amount]" required data-error="{#TEXT_306#}" autofocus>
+                <input type="number" step="0.01" class="form-control" id="addmnfamount" name="all_data[amount]" required data-error="{#TEXT_306#}" autofocus>
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-euro"></span>
                 </span>
               </div>
-              <label for="amount">{#TEXT_18#}</label>
+              <label for="addmnfamount">{#TEXT_18#}</label>
               <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
-                <select class="form-control" name="all_data[mcp_contractpartnerid]" id="mcp_contractpartnerid" onchange="setContractpartnerDefaults()" required data-error="{#TEXT_307#}">
+                <select class="form-control" name="all_data[mcp_contractpartnerid]" id="addmnfmcp_contractpartnerid" onchange="setContractpartnerDefaults()" required data-error="{#TEXT_307#}">
                   <option value="">&nbsp;</option>
 {section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
                   <option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}</option>
@@ -94,22 +94,22 @@
                   </button>
                 </span>
               </div>
-              <label for="mcp_contractpartnerid">{#TEXT_2#}</label>
+              <label for="addmnfmcp_contractpartnerid">{#TEXT_2#}</label>
               <div class="help-block with-errors"></div>
             </div>
 
 
             <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
-                <input type="text" class="form-control" id="comment" name="all_data[comment]" required data-error="{#TEXT_308#}">
+                <input type="text" class="form-control" id="addmnfcomment" name="all_data[comment]" required data-error="{#TEXT_308#}">
               </div>
-              <label for="comment">{#TEXT_21#}</label>
+              <label for="addmnfcomment">{#TEXT_21#}</label>
               <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
-                <select class="form-control" name="all_data[mpa_postingaccountid]" id="mpa_postingaccountid" required data-error="{#TEXT_309#}">
+                <select class="form-control" name="all_data[mpa_postingaccountid]" id="addmnfmpa_postingaccountid" required data-error="{#TEXT_309#}">
                   <option value="">&nbsp;</option>
 {section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
                   <option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}"> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name}</option>
@@ -123,13 +123,13 @@
                 </span>
 {/if}
               </div>
-              <label for="mpa_postingaccountid">{#TEXT_232#}</label>
+              <label for="addmnfmpa_postingaccountid">{#TEXT_232#}</label>
               <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
-                <select class="form-control" name="all_data[mcs_capitalsourceid]" id="mcs_capitalsourceid" required data-error="{#TEXT_310#}">
+                <select class="form-control" name="all_data[mcs_capitalsourceid]" id="addmnfmcs_capitalsourceid" required data-error="{#TEXT_310#}">
 {section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
                   <option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}"> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}</option>
 {/section}
@@ -140,7 +140,7 @@
                   </button>
                 </span>
               </div>
-              <label for="mcs_capitalsourceid">{#TEXT_19#}</label>
+              <label for="addmnfmcs_capitalsourceid">{#TEXT_19#}</label>
               <div class="help-block with-errors"></div>
             </div>
 
@@ -153,7 +153,7 @@
 
           <div class="form-group">
             <div class="col-sm-12 text-center">
-              <button type="button" class="btn btn-default" onclick="preFillFormAddMoneyflow(-1)">{#TEXT_304#}</button>
+              <button type="button" class="btn btn-default" onclick="resetFormAddMoneyflow()">{#TEXT_304#}</button>
               <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
             </div>  
           </div>  
@@ -164,47 +164,43 @@
 
       <script>
 
-        var jsonPreDefMoneyflows = {$JSON_PREDEFMONEYFLOWS};
-        var jsonContractpartner = {$JSON_CONTRACTPARTNER};
-        var jsonFormDefaults = {$JSON_FORM_DEFAULTS};
-        var currency = "{#CURRENCY#}";
-        var today = "{$TODAY}";
+        var addMoneyflowJsonPreDefMoneyflows = {$JSON_PREDEFMONEYFLOWS};
+        var addMoneyflowJsonContractpartner = {$JSON_CONTRACTPARTNER};
+        var addMoneyflowJsonFormDefaults = {$JSON_FORM_DEFAULTS};
         var onEmpty = "{#TEXT_302#}";
         var offEmpty = "{#TEXT_303#}";
         var onFavorite = "{#TEXT_311#}";
         var offFavorite = "{#TEXT_312#}";
 
-        /* When the page is loaded, the booking form is set to the defaults which might be previous entered data or empty (if the page is initially loaded) */
-        var BOOKING_DEFAULT = -2;
-        /* This is used when in the select box "New booking" is selected explicitly to always null the form */
-        var BOOKING_EMPTY = -1;
 
-
+        function resetFormAddMoneyflow() {
+          preFillFormAddMoneyflow(FORM_MODE_EMPTY);
+        }
 
         function setContractpartnerDefaults() {
-          var length = jsonContractpartner.length;
-          var selectedValue = document.addmoney.mcp_contractpartnerid;
+          var length = addMoneyflowJsonContractpartner.length;
+          var selectedValue = document.addmoney.addmnfmcp_contractpartnerid;
           
           for (i=0 ; i<length ; i++) {
-            if (jsonContractpartner[i]["contractpartnerid"] == document.addmoney.mcp_contractpartnerid.value) {
-              if ( jsonContractpartner[i]["moneyflow_comment"] != null ) {
-                document.addmoney.comment.value = jsonContractpartner[i]["moneyflow_comment"];
+            if (addMoneyflowJsonContractpartner[i]["contractpartnerid"] == document.addmoney.addmnfmcp_contractpartnerid.value) {
+              if ( addMoneyflowJsonContractpartner[i]["moneyflow_comment"] != null ) {
+                document.addmoney.addmnfcomment.value = addMoneyflowJsonContractpartner[i]["moneyflow_comment"];
               }
-              if ( jsonContractpartner[i]["mpa_postingaccountid"] != null ) {
-                document.addmoney.mpa_postingaccountid.value = jsonContractpartner[i]["mpa_postingaccountid"];
+              if ( addMoneyflowJsonContractpartner[i]["mpa_postingaccountid"] != null ) {
+                document.addmoney.addmnfmpa_postingaccountid.value = addMoneyflowJsonContractpartner[i]["mpa_postingaccountid"];
               }
               break;
             }
           }
         }
 
-        function fillSelectMoneyflow(currency, jsonPreDefMoneyflows) {
-          var jsonPredefmoneyflowsSize = jsonPreDefMoneyflows.length;
+        function fillSelectMoneyflow(currency, addMoneyflowJsonPreDefMoneyflows) {
+          var jsonPredefmoneyflowsSize = addMoneyflowJsonPreDefMoneyflows.length;
 
           var select = document.getElementById('selectmoneyflow');
 
           for (var i = 0; i < jsonPredefmoneyflowsSize; i++){
-            var preDefMoneyflow = jsonPreDefMoneyflows[i];
+            var preDefMoneyflow = addMoneyflowJsonPreDefMoneyflows[i];
 
             var opt = document.createElement('option');
             opt.value = i;
@@ -219,111 +215,78 @@
           }
         }
 
-        function deleteAddMoneyErrors() {
-          var element = document.getElementById("addmoneyErrors");
-          while ( element != null ) {
-            element.outerHTML = "";
-            delete element;
-            element = document.getElementById("addmoneyErrors");
-          }
-
-          $(function() {
-            $('#favorite').bootstrapToggle('destroy');
-          })
-        }
-
-        function preFillFormAddMoneyflow(jsonPreDefMoneyflowIndex) {
+        function preFillFormAddMoneyflow(formMode) {
 
           var favoriteOn = onEmpty;
           var favoriteOff = offEmpty;
 
-          if ( jsonPreDefMoneyflowIndex == BOOKING_DEFAULT || jsonPreDefMoneyflowIndex == BOOKING_EMPTY ) {
-            document.addmoney.predefmoneyflowid.value = -1;
-            document.addmoney.bookingdateSelect.value = today;
-            document.addmoney.invoicedateSelect.value = "";      
-            document.addmoney.amount.value = "";
-            document.addmoney.mcp_contractpartnerid.value = "";
-            document.addmoney.comment.value = "";
-            document.addmoney.mpa_postingaccountid.value = "";
-            document.addmoney.mcs_capitalsourceid.selectedIndex = 0;
+          $(function() {
+            $('#favorite').bootstrapToggle('destroy');
+          })
 
-            if( jsonPreDefMoneyflowIndex == BOOKING_EMPTY) {
-              deleteAddMoneyErrors();
+          if ( formMode == FORM_MODE_DEFAULT || formMode == FORM_MODE_EMPTY ) {
+            document.addmoney.addmnfpredefmoneyflowid.value = -1;
+            document.addmoney.addmnfbookingdate.value = today;
+            document.addmoney.addmnfinvoicedate.value = "";      
+            document.addmoney.addmnfamount.value = "";
+            document.addmoney.addmnfmcp_contractpartnerid.value = "";
+            document.addmoney.addmnfcomment.value = "";
+            document.addmoney.addmnfmpa_postingaccountid.value = "";
+            document.addmoney.addmnfmcs_capitalsourceid.selectedIndex = 0;
+
+            if( formMode == FORM_MODE_EMPTY) {
+              clearErrorDiv("addmoneyErrors");
+              $(function() {
+                $('#favorite').prop('checked', false).change();
+              })
 
               var select = document.getElementById('selectmoneyflow');
               select.selectedIndex = 0;
             } else {
-              if ( "predefmoneyflowid" in jsonFormDefaults ) {
-                document.addmoney.predefmoneyflowid.value = jsonFormDefaults["predefmoneyflowid"];
-                if(jsonFormDefaults["predefmoneyflowid"] >= 0) {
-                  favoriteOn = onFavorite;
-                  favoriteOff = offFavorite;
+              for ( var key in addMoneyflowJsonFormDefaults ) {
+                var element = document.getElementById( 'addmnf'+key );
+
+                if ( element !== null ) {
+                  if ( key == "save_as_predefmoneyflow") {
+                    if ( addMoneyflowJsonFormDefaults["save_as_predefmoneyflow"] == "1" ) {
+                      $(function() {
+                        $('#favorite').prop('checked', true).change();
+                      })
+                    }
+                  } else if ( key == "private") {
+                    if ( addMoneyflowJsonFormDefaults["private"] == "1" ) {
+                      $(function() {
+                        $('#private').prop('checked', true).change();
+                      })
+                    }
+                  } else {
+                    element.value = addMoneyflowJsonFormDefaults[key];
+                  }
                 }
               }
-
-              if ( "bookingdate" in jsonFormDefaults ) {
-                document.addmoney.bookingdateSelect.value = jsonFormDefaults["bookingdate"];
+              
+              if ( document.addmoney.addmnfpredefmoneyflowid >= 0 ) {
+                favoriteOn = onFavorite;
+                favoriteOff = offFavorite;
               }
+             }
+          } else if  ( (+formMode) >= 0 && (+formMode) < addMoneyflowJsonPreDefMoneyflows.length ) {  
+            var predefmoneyflow = addMoneyflowJsonPreDefMoneyflows[formMode];
 
-              if ( "invoicedate" in jsonFormDefaults ) {
-                document.addmoney.invoicedateSelect.value = jsonFormDefaults["invoicedate"];
-              }
-
-              if ( "amount" in jsonFormDefaults ) {
-                document.addmoney.amount.value = jsonFormDefaults["amount"];
-              }
-
-              if ( "mcp_contractpartnerid" in jsonFormDefaults ) {
-                document.addmoney.mcp_contractpartnerid.value = jsonFormDefaults["mcp_contractpartnerid"];
-              }
-
-              if ( "comment" in jsonFormDefaults ) {
-                document.addmoney.comment.value = jsonFormDefaults["comment"];
-              }
-
-              if ( "mpa_postingaccountid" in jsonFormDefaults ) {
-                document.addmoney.mpa_postingaccountid.value = jsonFormDefaults["mpa_postingaccountid"];
-              }
-
-              if ( "mcs_capitalsourceid" in jsonFormDefaults ) {
-                document.addmoney.mcs_capitalsourceid.value = jsonFormDefaults["mcs_capitalsourceid"];
-              }
-
-              if ( "save_as_predefmoneyflow" in jsonFormDefaults ) {
-                if ( jsonFormDefaults["save_as_predefmoneyflow"] == "1" ) {
-                  $(function() {
-                    $('#favorite').prop('checked', true).change();
-                  })
-                }
-              }
-
-              if ( "private" in jsonFormDefaults ) {
-                if ( jsonFormDefaults["private"] == "1" ) {
-                  $(function() {
-                    $('#private').prop('checked', true).change();
-                  })
-                }
-              }
-
-            }
-          } else if  ( (+jsonPreDefMoneyflowIndex) >= 0 && (+jsonPreDefMoneyflowIndex) < jsonPreDefMoneyflows.length ) {  
-            var predefmoneyflow = jsonPreDefMoneyflows[jsonPreDefMoneyflowIndex];
-
-            document.addmoney.predefmoneyflowid.value = predefmoneyflow["predefmoneyflowid"];
-            document.addmoney.amount.value = parseFloat(predefmoneyflow["amount"]).toFixed(2);
-            document.addmoney.mcp_contractpartnerid.value = predefmoneyflow["mcp_contractpartnerid"];
-            document.addmoney.comment.value = predefmoneyflow["comment"];
-            document.addmoney.mpa_postingaccountid.value = predefmoneyflow["mpa_postingaccountid"];
-            document.addmoney.mcs_capitalsourceid.value = predefmoneyflow["mcs_capitalsourceid"];
+            document.addmoney.addmnfpredefmoneyflowid.value = predefmoneyflow["predefmoneyflowid"];
+            document.addmoney.addmnfamount.value = parseFloat(predefmoneyflow["amount"]).toFixed(2);
+            document.addmoney.addmnfmcp_contractpartnerid.value = predefmoneyflow["mcp_contractpartnerid"];
+            document.addmoney.addmnfcomment.value = predefmoneyflow["comment"];
+            document.addmoney.addmnfmpa_postingaccountid.value = predefmoneyflow["mpa_postingaccountid"];
+            document.addmoney.addmnfmcs_capitalsourceid.value = predefmoneyflow["mcs_capitalsourceid"];
 
             favoriteOn = onFavorite;
             favoriteOff = offFavorite;
 
+            clearErrorDiv("addmoneyErrors");
             $(function() {
               $('#favorite').prop('checked', false).change();
             })
-
-            deleteAddMoneyErrors();
           }
 
           $('form[name=addmoney]').validator('reset');
@@ -335,14 +298,11 @@
               off: favoriteOff
             });
           })
-
-
         }
 
+        fillSelectMoneyflow(currency, addMoneyflowJsonPreDefMoneyflows);
+        preFillFormAddMoneyflow(FORM_MODE_DEFAULT);
         $('form[name=addmoney]').validator();
-
-        fillSelectMoneyflow(currency, jsonPreDefMoneyflows);
-        preFillFormAddMoneyflow(BOOKING_DEFAULT);
       </script>
 {$FOOTER}
 

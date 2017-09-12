@@ -65,17 +65,17 @@
             </div>
 
             <div class="form-group has-float-label">
-              <div class='input-group date col-xs-12' id="edcapsrcvalidfrom">
-                <input type="text" class="form-control" name="all_data[validfrom]" id="edcapsrcvalidfromSelect" required data-error="{#TEXT_238#}">
+              <div class='input-group date col-xs-12' id="edcapsrcvalidfromDiv">
+                <input type="text" class="form-control" name="all_data[validfrom]" id="edcapsrcvalidfrom" required data-error="{#TEXT_238#}">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
                 </span>
               </div>
-              <label for="edcapsrcvalidfromSelect">{#TEXT_34#}</label>
+              <label for="edcapsrcvalidfrom">{#TEXT_34#}</label>
               <div class="help-block with-errors"></div>
               <script type="text/javascript">
                 $(function () {
-                  $('#edcapsrcvalidfrom').datetimepicker({
+                  $('#edcapsrcvalidfromDiv').datetimepicker({
                     format: 'YYYY-MM-DD',
                     focusOnShow: false,
                     showClear: true,
@@ -87,8 +87,8 @@
             </div>
 
             <div class="form-group has-float-label">
-              <div class='input-group date col-xs-12' id="edcapsrcvalidtil">
-                <input type="text" class="form-control" name="all_data[validtil]" id="edcapsrcvalidtilSelect" required data-error="{#TEXT_239#}">
+              <div class='input-group date col-xs-12' id="edcapsrcvalidtilDiv">
+                <input type="text" class="form-control" name="all_data[validtil]" id="edcapsrcvalidtil" required data-error="{#TEXT_239#}">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
                 </span>
@@ -97,7 +97,7 @@
               <div class="help-block with-errors"></div>
               <script type="text/javascript">
                 $(function () {
-                  $('#edcapsrcvalidtil').datetimepicker({
+                  $('#edcapsrcvalidtilDiv').datetimepicker({
                     format: 'YYYY-MM-DD',
                     focusOnShow: false,
                     showClear: true,
@@ -148,68 +148,38 @@
       
       <script>
 
-        var editContractpartnerJsonFormDefaults = {$JSON_FORM_DEFAULTS};
-        var editContractpartnerId = "{$CAPITALSOURCEID}";
+        var editCapitalsourceJsonFormDefaults = {$JSON_FORM_DEFAULTS};
+        var editCapitalsourceId = "{$CAPITALSOURCEID}";
 
         function resetFormEditCapitalsource() {
-          if ( +editContractpartnerId > 0 ) {
+          if ( +editCapitalsourceId > 0 ) {
             preFillFormEditCapitalsource(FORM_MODE_DEFAULT);
           } else {
             preFillFormEditCapitalsource(FORM_MODE_EMPTY);
           }
         }
         
-        function deleteEditCapitalsourceErrors() {
-          var element = document.getElementById("editCapitalsourceErrors");
-          while ( element != null ) {
-            element.outerHTML = "";
-            delete element;
-            element = document.getElementById("editCapitalsourceErrors");
-          }
-        }
+        function preFillFormEditCapitalsource(formMode) {
 
-        function preFillFormEditCapitalsource(jsonPreDefMoneyflowIndex) {
-
-          if ( jsonPreDefMoneyflowIndex == FORM_MODE_DEFAULT || jsonPreDefMoneyflowIndex == FORM_MODE_EMPTY ) {
+          if ( formMode == FORM_MODE_DEFAULT || formMode == FORM_MODE_EMPTY ) {
             document.editcapitalsource.edcapsrccomment.value = "";
             document.editcapitalsource.edcapsrctype.selectedIndex = 0;
             document.editcapitalsource.edcapsrcstate.selectedIndex = 0;
             document.editcapitalsource.edcapsrcaccountnumber.value = "";
             document.editcapitalsource.edcapsrcbankcode.value = "";
-            document.editcapitalsource.edcapsrcvalidfromSelect.value = today;
-            document.editcapitalsource.edcapsrcvalidtilSelect.value = maxDate;      
+            document.editcapitalsource.edcapsrcvalidfrom.value = today;
+            document.editcapitalsource.edcapsrcvalidtil.value = maxDate;      
             document.editcapitalsource.edcapsrcatt_group_use.selectedIndex = 0;
             document.editcapitalsource.edcapsrcimport_allowed.selectedIndex = 0;
 
-            if( jsonPreDefMoneyflowIndex == FORM_MODE_EMPTY) {
-              deleteEditCapitalsourceErrors();
+            if ( formMode == FORM_MODE_EMPTY) {
+              clearErrorDiv("editCapitalsourceErrors");
             } else {
-              if ( "comment" in editContractpartnerJsonFormDefaults ) {
-                document.editcapitalsource.edcapsrccomment.value = editContractpartnerJsonFormDefaults["comment"];
-              }
-              if ( "type" in editContractpartnerJsonFormDefaults ) {
-                document.editcapitalsource.edcapsrctype.value = editContractpartnerJsonFormDefaults["type"];
-              }
-              if ( "state" in editContractpartnerJsonFormDefaults ) {
-                document.editcapitalsource.edcapsrcstate.value = editContractpartnerJsonFormDefaults["state"];
-              }
-              if ( "accountnumber" in editContractpartnerJsonFormDefaults ) {
-                document.editcapitalsource.edcapsrcaccountnumber.value = editContractpartnerJsonFormDefaults["accountnumber"];
-              }
-              if ( "bankcode" in editContractpartnerJsonFormDefaults ) {
-                document.editcapitalsource.edcapsrcbankcode.value = editContractpartnerJsonFormDefaults["bankcode"];
-              }
-              if ( "validfrom" in editContractpartnerJsonFormDefaults ) {
-                document.editcapitalsource.edcapsrcvalidfromSelect.value = editContractpartnerJsonFormDefaults["validfrom"];
-              }
-              if ( "validtil" in editContractpartnerJsonFormDefaults ) {
-                document.editcapitalsource.edcapsrcvalidtilSelect.value = editContractpartnerJsonFormDefaults["validtil"];
-              }
-              if ( "att_group_use" in editContractpartnerJsonFormDefaults ) {
-                document.editcapitalsource.edcapsrcatt_group_use.value = editContractpartnerJsonFormDefaults["att_group_use"];
-              }
-              if ( "import_allowed" in editContractpartnerJsonFormDefaults ) {
-                document.editcapitalsource.edcapsrcimport_allowed.value = editContractpartnerJsonFormDefaults["import_allowed"];
+              for ( var key in editCapitalsourceJsonFormDefaults ) {
+                var element = document.getElementById( 'edcapsrc'+key );
+                if ( element !== null ) {
+                  element.value = editCapitalsourceJsonFormDefaults[key];
+                }
               }
             }
           }
@@ -217,11 +187,6 @@
           $('form[name=editcapitalsource]').validator('reset');
           $('form[name=editcapitalsource]').validator('update');
         }
-
-
-        preFillFormEditCapitalsource(FORM_MODE_DEFAULT);
-
-        $('form[name=editcapitalsource]').validator();
       
         function btnEditCapitalsourceCancel() {
 {if $IS_EMBEDDED}
@@ -247,21 +212,9 @@
         }
 
         function ajaxEditCapitalsourceError(data) {
-          deleteEditCapitalsourceErrors();
-          var responseText = $.parseJSON(data.responseText);
-          var length = responseText.length;
-
-          element = document.getElementById("editCapitalsourceErrorsGoHere");
-  
-          for(i=0 ; i < length ; i++ ) {
-          	var errorDiv = document.createElement('div');
-          	errorDiv.id = 'editCapitalsourceErrors';
-          	errorDiv.className = 'alert alert-danger';
-          	errorDiv.innerHTML = responseText[i]; 
-          	element.appendChild(errorDiv);
-          }
+          clearErrorDiv('editCapitalsourceErrors');
+          populateErrorDiv(data.responseText,'editCapitalsourceErrorsGoHere','editCapitalsourceErrors');
         }
-
 
         $('form[name=editcapitalsource]').ajaxForm({
             dataType: 'json',
@@ -269,6 +222,9 @@
             error: ajaxEditCapitalsourceError
         });
 
+
+        preFillFormEditCapitalsource(FORM_MODE_DEFAULT);
+        $('form[name=editcapitalsource]').validator();
       </script>
 
 {if !$IS_EMBEDDED}

@@ -24,6 +24,7 @@
     <script>
       var today = "{$TODAY}";
       var maxDate = "{$MAX_DATE}";
+      var currency = "{#CURRENCY#}";
     </script>
     
   </head>
