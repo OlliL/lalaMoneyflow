@@ -74,7 +74,6 @@ class ContractpartnerControllerHandler extends AbstractHandler {
 		$result = null;
 		if ($response instanceof showCreateContractpartnerResponse) {
 			$result = parent::mapArray( $response->getPostingAccountTransport() );
-			;
 		}
 		return $result;
 	}

@@ -36,6 +36,7 @@ use api\model\capitalsource\showDeleteCapitalsourceResponse;
 use client\mapper\ArrayToCapitalsourceTransportMapper;
 use api\model\transport\CapitalsourceTransport;
 use base\Singleton;
+use api\model\capitalsource\createCapitalsourceResponse;
 
 class CapitalsourceControllerHandler extends AbstractHandler {
 	use Singleton;
@@ -92,8 +93,23 @@ class CapitalsourceControllerHandler extends AbstractHandler {
 
 		$request = new createCapitalsourceRequest();
 		$request->setCapitalsourceTransport( $capitalsourceTransport );
-		return parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
+		$response = parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
+
+		$result = null;
+		if ($response === true) {
+			$result = true;
+		} else if ($response instanceof createCapitalsourceResponse) {
+			if($response->getCapitalsourceId() != null) {
+				$result ['capitalsourceid'] = $response->getCapitalsourceId();
+			} else {
+				$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
+				$result ['result'] = $response->getResult();
+			}
+		}
+
+		return $result;
 	}
+
 
 	public final function updateCapitalsource(array $capitalsource) {
 		$capitalsourceTransport = parent::map( $capitalsource, CapitalsourceTransport::getClass() );

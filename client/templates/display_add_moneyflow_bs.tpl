@@ -89,7 +89,7 @@
 {/section}
                 </select>
                 <span class="input-group-btn">
-                  <button type="button" class="btn" onClick="showOverlayContractpartner()">
+                  <button type="button" class="btn" onclick="showOverlayContractpartner()">
                     <span class="glyphicon glyphicon-plus"></span>
                   </button>
                 </span>
@@ -117,7 +117,7 @@
                 </select>
 {if $IS_ADMIN }
                 <span class="input-group-btn">
-                  <button type="button" class="btn" onClick="showOverlayPostingAccount()">
+                  <button type="button" class="btn" onclick="showOverlayPostingAccount()">
                     <span class="glyphicon glyphicon-plus"></span>
                   </button>
                 </span>
@@ -135,7 +135,7 @@
 {/section}
                 </select>
                 <span class="input-group-btn">
-                  <button type="button" class="btn">
+                  <button type="button" class="btn" onclick="showOverlayCapitalsource()">
                     <span class="glyphicon glyphicon-plus"></span>
                   </button>
                 </span>

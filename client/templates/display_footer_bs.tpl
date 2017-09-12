@@ -8,7 +8,10 @@
       });
       
       $('input').blur(function(e) {
+        console.log(e.relatedTarget);
+        console.log(e.currentTarget);
         if(clicky != null && clicky.attr("type") == "button") {
+        e.currentTarget.willValidate = false
           console.log("prevent validation");
           e.stopImmediatePropagation();
           e.preventDefault();

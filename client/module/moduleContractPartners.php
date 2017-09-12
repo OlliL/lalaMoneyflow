@@ -69,7 +69,9 @@ class moduleContractPartners extends module {
 		$this->template_assign( 'CONTRACTPARTNERID', $contractpartnerid );
 		$this->template_assign( 'POSTINGACCOUNT_VALUES', $posting_accounts );
 
+		$this->template_assign( 'MAX_DATE', Configuration::getInstance()->getProperty( 'max_year' ));
 		$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' ) ) );
+
 		$this->template_assign( 'IS_EMBEDDED', $isEmbedded );
 		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 

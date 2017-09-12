@@ -144,3 +144,24 @@
         }
 </script>
 {/if}
+
+{if $EMBEDDED_ADD_CAPITALSOURCE }
+      <div class="overlay overlay_edit_capitalsource" style="display: none">
+        <div class="embedded embedded_capitalsource ">
+{$EMBEDDED_ADD_CAPITALSOURCE}
+        </div>
+      </div>
+
+<script>
+        function showOverlayCapitalsource() {
+          saveFocusedElement();
+          $('.overlay_edit_capitalsource').show();
+          document.editcapitalsource.edcapsrccomment.focus();
+        }
+        function hideOverlayCapitalsource() {
+          $('.overlay_edit_capitalsource').hide();
+          restoreLastFocusedElement();
+        }
+</script>
+{/if}
+

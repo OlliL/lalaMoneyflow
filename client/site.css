@@ -26,6 +26,9 @@
 .overlay_edit_postingaccount {
 	z-index: 901;
 }
+.overlay_edit_capitalsource {
+	z-index: 902;
+}
 
 .embedded {
 	max-width: 650px;
@@ -41,7 +44,9 @@
 .embedded_contractpartner {
 	z-index: 910;
 }
-
 .embedded_postingaccount {
 	z-index: 911;
+}
+.embedded_capitalsource {
+	z-index: 912;
 }

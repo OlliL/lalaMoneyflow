@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2005-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -62,97 +63,50 @@ class moduleCapitalSources extends module {
 		$this->template_assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template_assign( 'LETTER', $letter );
 		$this->template_assign( 'ALL_INDEX_LETTERS', $all_index_letters );
-		$this->template_assign( 'CURRENTLY_VALID', $currently_valid);
+		$this->template_assign( 'CURRENTLY_VALID', $currently_valid );
 
 		$this->parse_header();
 		return $this->fetch_template( 'display_list_capitalsources.tpl' );
 	}
 
-	public final function display_edit_capitalsource($realaction, $capitalsourceid, $all_data) {
-		$close = 0;
-		if (! isset( $capitalsourceid ))
-			return;
-
-		switch ($realaction) {
-			case 'save' :
-				$valid_data = true;
-				$all_data ['capitalsourceid'] = $capitalsourceid;
-				if (! $this->dateIsValid( $all_data ['validfrom'] )) {
-					$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-							Environment::getInstance()->getSettingDateFormat()
-					) );
-					$all_data ['validfrom_error'] = 1;
-					$valid_data = false;
-				}
-				if (! $this->dateIsValid( $all_data ['validtil'] )) {
-					$this->add_error( ErrorCode::DATE_FORMAT_NOT_CORRECT, array (
-							Environment::getInstance()->getSettingDateFormat()
-					) );
-					$all_data ['validtil_error'] = 1;
-					$valid_data = false;
-				}
-
-				if ($valid_data === true) {
-					if ($capitalsourceid == 0)
-						$ret = CapitalsourceControllerHandler::getInstance()->createCapitalsource( $all_data );
-					else
-						$ret = CapitalsourceControllerHandler::getInstance()->updateCapitalsource( $all_data );
-
-					if ($ret === true) {
-						$close = 1;
-						break;
-					} else {
-						foreach ( $ret ['errors'] as $validationResult ) {
-							$error = $validationResult ['error'];
-
-							$this->add_error( $error );
-
-							switch ($error) {
-								case ErrorCode::VALIDFROM_AFTER_VALIDTIL :
-									$all_data ['validfrom_error'] = 1;
-									$all_data ['validtil_error'] = 1;
-									break;
-								case ErrorCode::NAME_ALREADY_EXISTS :
-									$all_data ['comment_error'] = 1;
-									break;
-								case ErrorCode::BANK_CODE_TO_LONG :
-									$all_data ['bankcode_error'] = 1;
-									break;
-								case ErrorCode::ACCOUNT_NUMBER_TO_LONG :
-									$all_data ['accountnumber_error'] = 1;
-									break;
-							}
-						}
-					}
-				}
-			default :
-				if (! is_array( $all_data )) {
-					if ($capitalsourceid > 0) {
-						$all_data = CapitalsourceControllerHandler::getInstance()->showEditCapitalsource( $capitalsourceid );
-						if (! is_array( $all_data )) {
-							unset( $capitalsourceid );
-						}
-					} else {
-						$all_data ['validfrom'] = $this->convertDateToGui( date( 'Y-m-d' ) );
-						$all_data ['validtil'] = $this->convertDateToGui( Configuration::getInstance()->getProperty( 'max_year' ) );
-					}
-				}
-				$type_values = $this->coreText->get_domain_data( 'CAPITALSOURCE_TYPE' );
-				$state_values = $this->coreText->get_domain_data( 'CAPITALSOURCE_STATE' );
-
-				$this->template_assign( 'TYPE_VALUES', $type_values );
-				$this->template_assign( 'STATE_VALUES', $state_values );
-				break;
+	public final function display_edit_capitalsource($capitalsourceid, $isEmbedded = false) {
+		if ($capitalsourceid > 0) {
+			$all_data = CapitalsourceControllerHandler::getInstance()->showEditCapitalsource( $capitalsourceid );
+		} else {
+			$all_data = array ();
 		}
 
-		$this->template_assign( 'CLOSE', $close );
-		if ($close == 0) {
-			$this->template_assign( 'ALL_DATA', $all_data );
-			$this->template_assign( 'CAPITALSOURCEID', $capitalsourceid );
-			$this->template_assign( 'ERRORS', $this->get_errors() );
+		$type_values = $this->coreText->get_domain_data( 'CAPITALSOURCE_TYPE' );
+		$state_values = $this->coreText->get_domain_data( 'CAPITALSOURCE_STATE' );
+
+		$this->template_assign( 'TYPE_VALUES', $type_values );
+		$this->template_assign( 'STATE_VALUES', $state_values );
+		$this->template_assign( 'CAPITALSOURCEID', $capitalsourceid );
+
+		$this->template_assign( 'MAX_DATE', Configuration::getInstance()->getProperty( 'max_year' ));
+		$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' ) ) );
+
+		$this->template_assign( 'IS_EMBEDDED', $isEmbedded );
+		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
+
+		if (! $isEmbedded) {
+			$this->parse_header( 1, 1, 'display_edit_capitalsource_bs.tpl' );
+		} else {
+			$this->template_assign( "HEADER", "" );
+			$this->template_assign( "FOOTER", "" );
 		}
-		$this->parse_header( 1 );
-		return $this->fetch_template( 'display_edit_capitalsource.tpl' );
+		return $this->fetch_template( 'display_edit_capitalsource_bs.tpl' );
+	}
+
+	public final function edit_capitalsource($capitalsourceid, $all_data) {
+		$all_data ['capitalsourceid'] = $capitalsourceid;
+
+		if ($capitalsourceid == 0)
+			$ret = CapitalsourceControllerHandler::getInstance()->createCapitalsource( $all_data );
+		else
+			$ret = CapitalsourceControllerHandler::getInstance()->updateCapitalsource( $all_data );
+
+		return $this->handleReturnForAjax( $ret );
 	}
 
 	public final function display_delete_capitalsource($realaction, $capitalsourceid) {

@@ -34,6 +34,7 @@ use client\util\Environment;
 use base\ErrorCode;
 use client\util\ErrorHandler;
 use client\util\DateUtil;
+use base\Configuration;
 
 require_once 'Smarty.class.php';
 abstract class module {

@@ -103,15 +103,15 @@
                     <label for="edcontvalidfromSelect">{#TEXT_34#}</label>
                     <div class="help-block with-errors"></div>
                     <script type="text/javascript">
-                        $(function () {
-                            $('#edcontvalidfrom').datetimepicker({
-                              format: 'YYYY-MM-DD',
-                              focusOnShow: false,
-                              showClear: true,
-                              showTodayButton: true,
-                              showClose: true
-                            });
-                        });
+                      $(function () {
+                          $('#edcontvalidfrom').datetimepicker({
+                            format: 'YYYY-MM-DD',
+                            focusOnShow: false,
+                            showClear: true,
+                            showTodayButton: true,
+                            showClose: true
+                          });
+                      });
                     </script>
                   </div>
 
@@ -125,15 +125,15 @@
                     <label for="edcontvalidtilSelect">{#TEXT_35#}</label>
                     <div class="help-block with-errors"></div>
                     <script type="text/javascript">
-                        $(function () {
-                            $('#edcontvalidtil').datetimepicker({
-                              format: 'YYYY-MM-DD',
-                              focusOnShow: false,
-                              showClear: true,
-                              showTodayButton: true,
-                              showClose: true
-                            });
+                      $(function () {
+                        $('#edcontvalidtil').datetimepicker({
+                          format: 'YYYY-MM-DD',
+                          focusOnShow: false,
+                          showClear: true,
+                          showTodayButton: true,
+                          showClose: true
                         });
+                      });
                     </script>
                   </div>
                 </div>
@@ -157,6 +157,7 @@
 
         var jsonFormDefaults = {$JSON_FORM_DEFAULTS};
         var today = "{$TODAY}";
+        var maxDate = "{$MAX_DATE}";
 
         /* When the page is loaded, the booking form is set to the defaults which might be previous entered data or empty (if the page is initially loaded) */
         var FORM_MODE_DEFAULT = -2;
@@ -181,7 +182,7 @@
             document.editcontractpartner.edconttown.value = "";
             document.editcontractpartner.edcontcountry.value = "";
             document.editcontractpartner.edcontvalidfromSelect.value = today;
-            document.editcontractpartner.edcontvalidtilSelect.value = "2999-12-31";      
+            document.editcontractpartner.edcontvalidtilSelect.value = maxDate;      
             document.editcontractpartner.edcontmoneyflow_comment.value = "";
             document.editcontractpartner.edcontmpa_postingaccountid.value = "";
 

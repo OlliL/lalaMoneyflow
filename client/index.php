@@ -119,6 +119,7 @@ error_log(print_r($all_data, true));
 	switch ($action) {
 		case 'list_capitalsources' :
 		case 'edit_capitalsource' :
+		case 'edit_capitalsource_submit' :
 		case 'delete_capitalsource' :
 			$moduleCapitalSources = new moduleCapitalSources();
 			break;
@@ -303,9 +304,14 @@ error_log(print_r($all_data, true));
 				break;
 
 			case 'edit_capitalsource' :
-				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$capitalsourceid = array_key_exists( 'capitalsourceid', $_REQUEST ) ? $_REQUEST ['capitalsourceid'] : 0;
-				$display = $moduleCapitalSources->display_edit_capitalsource( $realaction, $capitalsourceid, $all_data );
+				$display = $moduleCapitalSources->display_edit_capitalsource( $capitalsourceid );
+				break;
+
+			case 'edit_capitalsource_submit' :
+
+				$capitalsourceid = array_key_exists( 'capitalsourceid', $_REQUEST ) ? $_REQUEST ['capitalsourceid'] : 0;
+				$display = $moduleCapitalSources->edit_capitalsource( $capitalsourceid, $all_data );
 				break;
 
 			case 'delete_capitalsource' :

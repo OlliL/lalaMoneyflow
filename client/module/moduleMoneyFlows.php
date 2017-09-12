@@ -37,11 +37,13 @@ use client\handler\MoneyflowReceiptControllerHandler;
 class moduleMoneyFlows extends module {
 	private $moduleContractPartners;
 	private $modulePostingAccounts;
+	private $moduleCapitalSources;
 
 	public final function __construct() {
 		parent::__construct();
 		$this->moduleContractPartners = new moduleContractPartners();
 		$this->modulePostingAccounts = new modulePostingAccounts();
+		$this->moduleCapitalSources = new moduleCapitalSources();
 	}
 
 	public final function show_moneyflow_receipt($id) {
@@ -316,17 +318,20 @@ class moduleMoneyFlows extends module {
 		$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
 		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template_assign( 'ERRORS', $this->get_errors() );
-		$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' ) ) );
 
 		$this->template_assign_raw( 'JSON_PREDEFMONEYFLOWS', json_encode( $preDefMoneyflows ) );
 		$this->template_assign_raw( 'JSON_CONTRACTPARTNER', json_encode( $this->sort_contractpartner( $contractpartner_values ) ) );
 		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 
+		$this->template_assign( 'TODAY', $this->convertDateToGui( date( 'Y-m-d' ) ) );
+
 		$embeddedEditPostingAccounts = $this->modulePostingAccounts->display_edit_postingAccount( null, true );
 		$embeddedEditContractpartner = $this->moduleContractPartners->display_edit_contractpartner( null, true );
+		$embeddedEditCapitalsource = $this->moduleCapitalSources->display_edit_capitalsource( null, true );
 		$this->parse_header( 0, 1, 'display_add_moneyflow_bs.tpl', array (
 				"EMBEDDED_ADD_CONTRACTPARTNER" => $embeddedEditContractpartner,
-				"EMBEDDED_ADD_POSTINGACCOUNT" => $embeddedEditPostingAccounts
+				"EMBEDDED_ADD_POSTINGACCOUNT" => $embeddedEditPostingAccounts,
+				"EMBEDDED_ADD_CAPITALSOURCE" => $embeddedEditCapitalsource
 		) );
 		return $this->fetch_template( 'display_add_moneyflow_bs.tpl' );
 	}
