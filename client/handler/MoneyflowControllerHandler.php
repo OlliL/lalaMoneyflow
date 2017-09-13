@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2013-2016 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -50,6 +51,7 @@ use api\model\transport\MoneyflowSearchParamsTransport;
 use base\Singleton;
 use client\mapper\ArrayToMoneyflowSplitEntryTransportMapper;
 use api\model\transport\MoneyflowSplitEntryTransport;
+use api\model\validation\validationResponse;
 
 class MoneyflowControllerHandler extends AbstractHandler {
 	use Singleton;
@@ -116,14 +118,13 @@ class MoneyflowControllerHandler extends AbstractHandler {
 	}
 
 	public final function createMoneyflow($moneyflow) {
-
 		$preDefMoneyflowId = null;
 		$saveAsPreDefMoneyflow = null;
 
 		if ($moneyflow ['predefmoneyflowid'] > 0) {
 			$preDefMoneyflowId = $moneyflow ['predefmoneyflowid'];
 		}
-		if (array_key_exists('save_as_predefmoneyflow',$moneyflow) && $moneyflow ['save_as_predefmoneyflow'] > 0) {
+		if (array_key_exists( 'save_as_predefmoneyflow', $moneyflow ) && $moneyflow ['save_as_predefmoneyflow'] > 0) {
 			$saveAsPreDefMoneyflow = $moneyflow ['save_as_predefmoneyflow'];
 		}
 
@@ -139,14 +140,9 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		$result = null;
 		if ($response === true) {
 			$result = true;
-		} else if ($response instanceof createMoneyflowResponse) {
-			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
-			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
-			$result ['predefmoneyflows'] = parent::mapArrayNullable( $response->getPreDefMoneyflowTransport() );
-			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
-			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
+		} else if ($response instanceof validationResponse) {
 			$result ['result'] = $response->getResult();
-			$result ['num_free_moneyflows'] = $response->getSettingNumberOfFreeMoneyflows();
+			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
 		}
 
 		return $result;

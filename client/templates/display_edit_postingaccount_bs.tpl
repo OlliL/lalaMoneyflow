@@ -18,9 +18,9 @@
 
             <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
-                <input type="text" class="form-control" id="edpostaccname" name="all_data[name]" required data-error="{#TEXT_319#}">
+                <input type="text" class="form-control" id="edtmpaaccname" name="all_data[name]" required data-error="{#TEXT_319#}">
               </div>
-              <label for="edpostaccname">{#TEXT_232#}</label>
+              <label for="edtmpaaccname">{#TEXT_232#}</label>
               <div class="help-block with-errors"></div>
             </div>
           </div>
@@ -52,13 +52,13 @@
         function preFillFormEditPostingAccount(formMode) {
 
           if ( formMode == FORM_MODE_DEFAULT || formMode == FORM_MODE_EMPTY ) {
-            document.editpostingaccount.edpostaccname.value = "";
+            document.editpostingaccount.edtmpaaccname.value = "";
 
             if ( formMode == FORM_MODE_EMPTY) {
               clearErrorDiv("editPostingAccountErrors");
             } else {
               for ( var key in editPostingAccountJsonFormDefaults ) {
-                var element = document.getElementById( 'edpostacc'+key );
+                var element = document.getElementById( 'edtmpaacc'+key );
                 if ( element !== null ) {
                   element.value = editPostingAccountJsonFormDefaults[key];
                 }
@@ -83,7 +83,7 @@
 {if $IS_EMBEDDED}
           if(data != null) {
             updatePostingAccountSelect(data["postingaccountid"]
-                                       ,document.editpostingaccount.edpostaccname.value );
+                                       ,document.editpostingaccount.edtmpaaccname.value );
           }
           preFillFormEditPostingAccount(FORM_MODE_EMPTY);
           hideOverlayPostingAccount();

@@ -19,23 +19,23 @@
 
             <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
-                <input type="text" class="form-control" id="edcontname" name="all_data[name]" required data-error="{#TEXT_313#}">
+                <input type="text" class="form-control" id="edtmcpname" name="all_data[name]" required data-error="{#TEXT_313#}">
               </div>
-              <label for="edcontname">{#TEXT_41#}</label>
+              <label for="edtmcpname">{#TEXT_41#}</label>
               <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
-                <input type="text" class="form-control" id="edcontmoneyflow_comment" name="all_data[moneyflow_comment]">
+                <input type="text" class="form-control" id="edtmcpmoneyflow_comment" name="all_data[moneyflow_comment]">
               </div>
-              <label for="edcontmoneyflow_comment">{#TEXT_272#}</label>
+              <label for="edtmcpmoneyflow_comment">{#TEXT_272#}</label>
               <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
-                <select class="form-control" name="all_data[mpa_postingaccountid]" id="edcontmpa_postingaccountid">
+                <select class="form-control" name="all_data[mpa_postingaccountid]" id="edtmcpmpa_postingaccountid">
                   <option value="">&nbsp;</option>
 {section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
                   <option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}"> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name}</option>
@@ -49,7 +49,7 @@
                 </span>
 {/if}
               </div>
-              <label for="edcontmpa_postingaccountid">{#TEXT_316#}</label>
+              <label for="edtmcpmpa_postingaccountid">{#TEXT_316#}</label>
               <div class="help-block with-errors"></div>
             </div>
 
@@ -57,54 +57,54 @@
               <div class="panel panel-default">
               
                 <div class="panel-heading">
-                  <a data-toggle="collapse" href="#edcontcollapse1">{#TEXT_314#}</a>
+                  <a data-toggle="collapse" href="#edtmcpcollapse1">{#TEXT_314#}</a>
                 </div>
                 
-                <div id="edcontcollapse1" class="panel-collapse collapse panel-footer">
+                <div id="edtmcpcollapse1" class="panel-collapse collapse panel-footer">
                   <div class="form-group has-float-label">
                     <div class="input-group col-xs-12">
-                      <input type="text" class="form-control" id="edcontstreet" name="all_data[street]">
+                      <input type="text" class="form-control" id="edtmcpstreet" name="all_data[street]">
                     </div>
-                    <label for="edcontstreet">{#TEXT_42#}</label>
+                    <label for="edtmcpstreet">{#TEXT_42#}</label>
                     <div class="help-block with-errors"></div>
                   </div>
 
                   <div class="form-group has-float-label">
                     <div class="input-group col-xs-12">
-                      <input type="number" class="form-control" id="edcontpostcode" name="all_data[postcode]">
+                      <input type="number" class="form-control" id="edtmcppostcode" name="all_data[postcode]">
                     </div>
-                    <label for="edcontpostcode">{#TEXT_43#}</label>
+                    <label for="edtmcppostcode">{#TEXT_43#}</label>
                     <div class="help-block with-errors"></div>
                   </div>
 
                   <div class="form-group has-float-label">
                     <div class="input-group col-xs-12">
-                      <input type="text" class="form-control" id="edconttown" name="all_data[town]">
+                      <input type="text" class="form-control" id="edtmcptown" name="all_data[town]">
                     </div>
-                    <label for="edconttown">{#TEXT_44#}</label>
+                    <label for="edtmcptown">{#TEXT_44#}</label>
                     <div class="help-block with-errors"></div>
                   </div>
 
                   <div class="form-group has-float-label">
                     <div class="input-group col-xs-12">
-                      <input type="text" class="form-control" id="edcontcountry" name="all_data[country]">
+                      <input type="text" class="form-control" id="edtmcpcountry" name="all_data[country]">
                     </div>
-                    <label for="edcontcountry">{#TEXT_45#}</label>
+                    <label for="edtmcpcountry">{#TEXT_45#}</label>
                     <div class="help-block with-errors"></div>
                   </div>
 
                   <div class="form-group has-float-label">
-                    <div class='input-group date col-xs-12' id="edcontvalidfromDiv">
-                      <input type="text" class="form-control" name="all_data[validfrom]" id="edcontvalidfrom" required data-error="{#TEXT_238#}">
+                    <div class='input-group date col-xs-12' id="edtmcpvalidfromDiv">
+                      <input type="text" class="form-control" name="all_data[validfrom]" id="edtmcpvalidfrom" required data-error="{#TEXT_238#}">
                       <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                       </span>
                     </div>
-                    <label for="edcontvalidfrom">{#TEXT_34#}</label>
+                    <label for="edtmcpvalidfrom">{#TEXT_34#}</label>
                     <div class="help-block with-errors"></div>
                     <script type="text/javascript">
                       $(function () {
-                          $('#edcontvalidfromDiv').datetimepicker({
+                          $('#edtmcpvalidfromDiv').datetimepicker({
                             format: 'YYYY-MM-DD',
                             focusOnShow: false,
                             showClear: true,
@@ -116,17 +116,17 @@
                   </div>
 
                   <div class="form-group has-float-label">
-                    <div class='input-group date col-xs-12' id="edcontvalidtilDiv">
-                      <input type="text" class="form-control" name="all_data[validtil]" id="edcontvalidtil" required data-error="{#TEXT_239#}">
+                    <div class='input-group date col-xs-12' id="edtmcpvalidtilDiv">
+                      <input type="text" class="form-control" name="all_data[validtil]" id="edtmcpvalidtil" required data-error="{#TEXT_239#}">
                       <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                       </span>
                     </div>
-                    <label for="edcontvalidtil">{#TEXT_35#}</label>
+                    <label for="edtmcpvalidtil">{#TEXT_35#}</label>
                     <div class="help-block with-errors"></div>
                     <script type="text/javascript">
                       $(function () {
-                        $('#edcontvalidtilDiv').datetimepicker({
+                        $('#edtmcpvalidtilDiv').datetimepicker({
                           format: 'YYYY-MM-DD',
                           focusOnShow: false,
                           showClear: true,
@@ -169,21 +169,21 @@
         function preFillFormEditContractpartner(formMode) {
 
           if ( formMode == FORM_MODE_DEFAULT || formMode == FORM_MODE_EMPTY ) {
-            document.editcontractpartner.edcontname.value = "";
-            document.editcontractpartner.edcontstreet.value = "";
-            document.editcontractpartner.edcontpostcode.value = "";
-            document.editcontractpartner.edconttown.value = "";
-            document.editcontractpartner.edcontcountry.value = "";
-            document.editcontractpartner.edcontvalidfrom.value = today;
-            document.editcontractpartner.edcontvalidtil.value = maxDate;      
-            document.editcontractpartner.edcontmoneyflow_comment.value = "";
-            document.editcontractpartner.edcontmpa_postingaccountid.value = "";
+            document.editcontractpartner.edtmcpname.value = "";
+            document.editcontractpartner.edtmcpstreet.value = "";
+            document.editcontractpartner.edtmcppostcode.value = "";
+            document.editcontractpartner.edtmcptown.value = "";
+            document.editcontractpartner.edtmcpcountry.value = "";
+            document.editcontractpartner.edtmcpvalidfrom.value = today;
+            document.editcontractpartner.edtmcpvalidtil.value = maxDate;      
+            document.editcontractpartner.edtmcpmoneyflow_comment.value = "";
+            document.editcontractpartner.edtmcpmpa_postingaccountid.value = "";
 
             if ( formMode == FORM_MODE_EMPTY) {
               clearErrorDiv("editContractpartnerErrors");
             } else {
               for ( var key in editContractpartnerJsonFormDefaults ) {
-                var element = document.getElementById( 'edcont'+key );
+                var element = document.getElementById( 'edtmcp'+key );
                 if ( element !== null ) {
                   element.value = editContractpartnerJsonFormDefaults[key];
                 }
@@ -208,9 +208,9 @@
 {if $IS_EMBEDDED}
           if(data != null) {
             updateContractpartnerSelect(data["contractpartnerid"]
-                                       ,document.editcontractpartner.edcontname.value
-                                       ,document.editcontractpartner.edcontmoneyflow_comment.value
-                                       ,document.editcontractpartner.edcontmpa_postingaccountid.value );
+                                       ,document.editcontractpartner.edtmcpname.value
+                                       ,document.editcontractpartner.edtmcpmoneyflow_comment.value
+                                       ,document.editcontractpartner.edtmcpmpa_postingaccountid.value );
           }
           preFillFormEditContractpartner(FORM_MODE_EMPTY);
           hideOverlayContractpartner();

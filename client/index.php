@@ -140,6 +140,7 @@ error_log(print_r($all_data, true));
 			$modulePreDefMoneyFlows = new modulePreDefMoneyFlows();
 			break;
 		case 'add_moneyflow' :
+		case 'add_moneyflow_submit' :
 		case 'edit_moneyflow' :
 		case 'delete_moneyflow' :
 		case 'show_moneyflow_receipt' :
@@ -398,9 +399,13 @@ error_log(print_r($all_data, true));
 
 			case 'add_moneyflow' :
 
-				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
-				$display = $moduleMoneyFlows->display_add_moneyflow( $realaction, $all_data );
+				$display = $moduleMoneyFlows->display_add_moneyflow();
 				break;
+			case 'add_moneyflow_submit' :
+
+				$display = $moduleMoneyFlows->add_moneyflow( $all_data );
+				break;
+
 			case 'edit_moneyflow' :
 
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';

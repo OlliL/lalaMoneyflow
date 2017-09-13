@@ -9,20 +9,14 @@
 
         <div>&nbsp;</div>
 
-        <form action="{$ENV_INDEX_PHP}?action=add_moneyflow" method="POST" name="addmoney">
-          <input type="hidden" name="action"                          value="add_moneyflow">
+        <form action="{$ENV_INDEX_PHP}" method="POST" name="addmoneyflow">
+          <input type="hidden" name="action"                          value="add_moneyflow_submit">
           <input type="hidden" name="realaction"                      value="save">
-          <input type="hidden" name="all_data[predefmoneyflowid]" value="-1"               id="addmnfpredefmoneyflowid" >
-          <input type="hidden" name="all_data[checked]"           value="1">
+          <input type="hidden" name="all_data[predefmoneyflowid]"     value="-1"               id="addmnfpredefmoneyflowid" >
 
           <div class="span2 well">
 
-            <div id="addmoneyErrorsGoHere">
-{section name=ERROR loop=$ERRORS}
-              <div class="alert alert-danger" id="addmoneyErrors">
-                {$ERRORS[ERROR]}
-              </div>
-{/section}
+            <div id="addMoneyflowErrorsGoHere">
             </div>
 
             <div class="form-group has-float-label">
@@ -179,15 +173,15 @@
 
         function setContractpartnerDefaults() {
           var length = addMoneyflowJsonContractpartner.length;
-          var selectedValue = document.addmoney.addmnfmcp_contractpartnerid;
+          var selectedValue = document.addmoneyflow.addmnfmcp_contractpartnerid;
           
           for (i=0 ; i<length ; i++) {
-            if (addMoneyflowJsonContractpartner[i]["contractpartnerid"] == document.addmoney.addmnfmcp_contractpartnerid.value) {
+            if (addMoneyflowJsonContractpartner[i]["contractpartnerid"] == document.addmoneyflow.addmnfmcp_contractpartnerid.value) {
               if ( addMoneyflowJsonContractpartner[i]["moneyflow_comment"] != null ) {
-                document.addmoney.addmnfcomment.value = addMoneyflowJsonContractpartner[i]["moneyflow_comment"];
+                document.addmoneyflow.addmnfcomment.value = addMoneyflowJsonContractpartner[i]["moneyflow_comment"];
               }
               if ( addMoneyflowJsonContractpartner[i]["mpa_postingaccountid"] != null ) {
-                document.addmoney.addmnfmpa_postingaccountid.value = addMoneyflowJsonContractpartner[i]["mpa_postingaccountid"];
+                document.addmoneyflow.addmnfmpa_postingaccountid.value = addMoneyflowJsonContractpartner[i]["mpa_postingaccountid"];
               }
               break;
             }
@@ -225,17 +219,17 @@
           })
 
           if ( formMode == FORM_MODE_DEFAULT || formMode == FORM_MODE_EMPTY ) {
-            document.addmoney.addmnfpredefmoneyflowid.value = -1;
-            document.addmoney.addmnfbookingdate.value = today;
-            document.addmoney.addmnfinvoicedate.value = "";      
-            document.addmoney.addmnfamount.value = "";
-            document.addmoney.addmnfmcp_contractpartnerid.value = "";
-            document.addmoney.addmnfcomment.value = "";
-            document.addmoney.addmnfmpa_postingaccountid.value = "";
-            document.addmoney.addmnfmcs_capitalsourceid.selectedIndex = 0;
+            document.addmoneyflow.addmnfpredefmoneyflowid.value = -1;
+            document.addmoneyflow.addmnfbookingdate.value = today;
+            document.addmoneyflow.addmnfinvoicedate.value = "";      
+            document.addmoneyflow.addmnfamount.value = "";
+            document.addmoneyflow.addmnfmcp_contractpartnerid.value = "";
+            document.addmoneyflow.addmnfcomment.value = "";
+            document.addmoneyflow.addmnfmpa_postingaccountid.value = "";
+            document.addmoneyflow.addmnfmcs_capitalsourceid.selectedIndex = 0;
 
             if( formMode == FORM_MODE_EMPTY) {
-              clearErrorDiv("addmoneyErrors");
+              clearErrorDiv("addMoneyflowErrors");
               $(function() {
                 $('#favorite').prop('checked', false).change();
               })
@@ -265,7 +259,7 @@
                 }
               }
               
-              if ( document.addmoney.addmnfpredefmoneyflowid >= 0 ) {
+              if ( document.addmoneyflow.addmnfpredefmoneyflowid >= 0 ) {
                 favoriteOn = onFavorite;
                 favoriteOff = offFavorite;
               }
@@ -273,24 +267,24 @@
           } else if  ( (+formMode) >= 0 && (+formMode) < addMoneyflowJsonPreDefMoneyflows.length ) {  
             var predefmoneyflow = addMoneyflowJsonPreDefMoneyflows[formMode];
 
-            document.addmoney.addmnfpredefmoneyflowid.value = predefmoneyflow["predefmoneyflowid"];
-            document.addmoney.addmnfamount.value = parseFloat(predefmoneyflow["amount"]).toFixed(2);
-            document.addmoney.addmnfmcp_contractpartnerid.value = predefmoneyflow["mcp_contractpartnerid"];
-            document.addmoney.addmnfcomment.value = predefmoneyflow["comment"];
-            document.addmoney.addmnfmpa_postingaccountid.value = predefmoneyflow["mpa_postingaccountid"];
-            document.addmoney.addmnfmcs_capitalsourceid.value = predefmoneyflow["mcs_capitalsourceid"];
+            document.addmoneyflow.addmnfpredefmoneyflowid.value = predefmoneyflow["predefmoneyflowid"];
+            document.addmoneyflow.addmnfamount.value = parseFloat(predefmoneyflow["amount"]).toFixed(2);
+            document.addmoneyflow.addmnfmcp_contractpartnerid.value = predefmoneyflow["mcp_contractpartnerid"];
+            document.addmoneyflow.addmnfcomment.value = predefmoneyflow["comment"];
+            document.addmoneyflow.addmnfmpa_postingaccountid.value = predefmoneyflow["mpa_postingaccountid"];
+            document.addmoneyflow.addmnfmcs_capitalsourceid.value = predefmoneyflow["mcs_capitalsourceid"];
 
             favoriteOn = onFavorite;
             favoriteOff = offFavorite;
 
-            clearErrorDiv("addmoneyErrors");
+            clearErrorDiv("addMoneyflowErrors");
             $(function() {
               $('#favorite').prop('checked', false).change();
             })
           }
 
-          $('form[name=addmoney]').validator('reset');
-          $('form[name=addmoney]').validator('update');
+          $('form[name=addmoneyflow]').validator('reset');
+          $('form[name=addmoneyflow]').validator('update');
 
           $(function() {
             $('#favorite').bootstrapToggle({
@@ -300,9 +294,26 @@
           })
         }
 
+        function ajaxAddMoneyflowSuccess(data) {
+          resetFormAddMoneyflow();
+        }
+
+        function ajaxAddMoneyflowError(data) {
+          clearErrorDiv('addMoneyflowErrors');
+          populateErrorDiv(data.responseText,'addMoneyflowErrorsGoHere','addMoneyflowErrors');
+        }
+
+
+        $('form[name=addmoneyflow]').ajaxForm({
+            dataType: 'json',
+            success: ajaxAddMoneyflowSuccess,
+            error: ajaxAddMoneyflowError
+        });
+
+
         fillSelectMoneyflow(currency, addMoneyflowJsonPreDefMoneyflows);
         preFillFormAddMoneyflow(FORM_MODE_DEFAULT);
-        $('form[name=addmoney]').validator();
+        $('form[name=addmoneyflow]').validator();
       </script>
 {$FOOTER}
 
