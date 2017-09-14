@@ -1,14 +1,17 @@
 {$HEADER}
-      <div class="container">
-
-        <div>
-            <select class="form-control" id="selectmoneyflow" onchange="preFillFormAddMoneyflow(this.value)">
-              <option value="-1">Neue Buchung</option>
-            </select>
+      <div class="container container-wide">
+        <div class="row">
+    	  <div class="col-xs-12">
+            <div class="col-md-6 col-md-offset-3 col-xs-12">
+              <select class="form-control" id="selectmoneyflow" onchange="preFillFormAddMoneyflow(this.value)">
+                <option value="-1">Neue Buchung</option>
+              </select>
+            </div>
+          </div>
         </div>
-
-        <div>&nbsp;</div>
-
+        <div class="row">
+          <div class="col-xs-12">&nbsp;</div>
+        </div>
         <form action="{$ENV_INDEX_PHP}" method="POST" name="addmoneyflow">
           <input type="hidden" name="action"                          value="add_moneyflow_submit">
           <input type="hidden" name="realaction"                      value="save">
@@ -19,7 +22,8 @@
             <div id="addMoneyflowErrorsGoHere">
             </div>
 
-            <div class="form-group has-float-label">
+     <div class="row">
+            <div class="form-group has-float-label col-md-2 col-xs-12">
               <div class='input-group date col-xs-12' id="addmnfbookingdateDiv">
                 <input type="text" class="form-control" name="all_data[bookingdate]" id="addmnfbookingdate" required data-error="{#TEXT_305#}">
                 <span class="input-group-addon">
@@ -41,7 +45,7 @@
               </script>
             </div>
 
-            <div class="form-group has-float-label">
+            <div class="form-group has-float-label col-md-2 col-xs-12">
               <div class='input-group date col-xs-12' id="addmnfinvoicedateDiv">
                 <input type="text" class="form-control" name="all_data[invoicedate]" id="addmnfinvoicedate">
                 <span class="input-group-addon">
@@ -63,121 +67,7 @@
               </script>
             </div>
 
-            <div class="form-group has-float-label">
-              <div class="input-group col-xs-12">
-                <input type="number" step="0.01" class="form-control" id="addmnfamount" name="all_data[amount]" required data-error="{#TEXT_306#}" autofocus>
-                <span class="input-group-btn">
-                  <button type="button" class="btn" onclick="toggleAddMoneyflowSplitEntries()" id="addmnfToggleSplitEntries">
-                    <span class="glyphicon glyphicon-plus"></span>
-                  </button>
-                </span>
-              </div>
-              <label for="addmnfamount">{#TEXT_18#}</label>
-              <div class="help-block with-errors"></div>
-            </div>
-
-
- <!--           
-            <div class="well">
-
-<div class="row">
-    <div class="col-xs-2">
-        <button type="button" class="btn btn-lg btn-block" onclick="">
-          <span class="glyphicon glyphicon-minus"></span>
-        </button>
-    </div>
-    <div class="col-xs-8">
-        <div class="row">
-              <fieldset class="form-inline">
-                <div class="has-float-label col-xs-5">
-                  <div class="input-group col-xs-12">
-                    <input type="number" step="0.01" class="form-control" id="addmnfsubamount1" name="all_data[amount]" required data-error="{#TEXT_306#}">
-                  </div>
-                  <label for="addmnfsubcomment1">{#TEXT_18#}</label>
-                  <div class="help-block with-errors"></div>
-                </div>
-
-                <div class="has-float-label col-xs-7">
-                  <div class="input-group col-xs-12">
-                    <input type="text" class="form-control" id="addmnfsubcomment1" name="all_data[comment]" required data-error="{#TEXT_308#}">
-                  </div>
-                  <label for="addmnfsubcomment1">{#TEXT_21#}</label>
-                  <div class="help-block with-errors"></div>
-                </div>
-               </fieldset>
-        </div>
-        <div class="row">
-              <div class="has-float-label col-xs-12">
-                <div class="input-group col-xs-12">
-                  <select class="form-control" name="all_data[mpa_postingaccountid]" id="addmnfsubmpa_postingaccountid1" required data-error="{#TEXT_309#}">
-                    <option value="">&nbsp;</option>
-{section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
-                    <option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}"> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name}</option>
-{/section}
-                  </select>
-                </div>
-                <label for="addmnfsubmpa_postingaccountid1">{#TEXT_232#}</label>
-                <div class="help-block with-errors"></div>
-              </div>        </div>
-    </div>
-    <div class="col-xs-2" style="display: none">
-        <button type="button" class="btn btn-lg btn-block" onclick="">
-          <span class="glyphicon glyphicon-plus"></span>
-        </button>
-    </div>
-</div><div class="row">
-    <div class="col-xs-2">
-        <button type="button" class="btn btn-lg btn-block" onclick="">
-          <span class="glyphicon glyphicon-minus"></span>
-        </button>
-    </div>
-    <div class="col-xs-8">
-        <div class="row">
-              <fieldset class="form-inline">
-                <div class="has-float-label col-xs-5">
-                  <div class="input-group col-xs-12">
-                    <input type="number" step="0.01" class="form-control" id="addmnfsubamount1" name="all_data[amount]" required data-error="{#TEXT_306#}">
-                  </div>
-                  <label for="addmnfsubcomment1">{#TEXT_18#}</label>
-                  <div class="help-block with-errors"></div>
-                </div>
-
-                <div class="has-float-label col-xs-7">
-                  <div class="input-group col-xs-12">
-                    <input type="text" class="form-control" id="addmnfsubcomment1" name="all_data[comment]" required data-error="{#TEXT_308#}">
-                  </div>
-                  <label for="addmnfsubcomment1">{#TEXT_21#}</label>
-                  <div class="help-block with-errors"></div>
-                </div>
-               </fieldset>
-        </div>
-        <div class="row">
-              <div class="has-float-label col-xs-12">
-                <div class="input-group col-xs-12">
-                  <select class="form-control" name="all_data[mpa_postingaccountid]" id="addmnfsubmpa_postingaccountid1" required data-error="{#TEXT_309#}">
-                    <option value="">&nbsp;</option>
-{section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
-                    <option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}"> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name}</option>
-{/section}
-                  </select>
-                </div>
-                <label for="addmnfsubmpa_postingaccountid1">{#TEXT_232#}</label>
-                <div class="help-block with-errors"></div>
-              </div>        </div>
-    </div>
-    <div class="col-xs-2">
-        <button type="button" class="btn btn-lg btn-block" onclick="">
-          <span class="glyphicon glyphicon-plus"></span>
-        </button>
-    </div>
-</div>
-
-
-
-            </div>
--->            
-
-            <div class="form-group has-float-label">
+            <div class="form-group has-float-label col-md-4 col-xs-12">
               <div class="input-group col-xs-12">
                 <select class="form-control" name="all_data[mcp_contractpartnerid]" id="addmnfmcp_contractpartnerid" onchange="setContractpartnerDefaults()" required data-error="{#TEXT_307#}">
                   <option value="">&nbsp;</option>
@@ -195,8 +85,38 @@
               <div class="help-block with-errors"></div>
             </div>
 
+            <div class="form-group has-float-label col-md-4 col-xs-12">
+              <div class="input-group col-xs-12">
+                <select class="form-control" name="all_data[mcs_capitalsourceid]" id="addmnfmcs_capitalsourceid" required data-error="{#TEXT_310#}">
+{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
+                  <option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}"> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}</option>
+{/section}
+                </select>
+                <span class="input-group-btn">
+                  <button type="button" class="btn" onclick="showOverlayCapitalsource()">
+                    <span class="glyphicon glyphicon-plus"></span>
+                  </button>
+                </span>
+              </div>
+              <label for="addmnfmcs_capitalsourceid">{#TEXT_19#}</label>
+              <div class="help-block with-errors"></div>
+            </div>
 
-            <div class="form-group has-float-label">
+    </div>
+    <div class="row">
+
+            <div class="form-group has-float-label col-md-2 col-xs-12">
+              <div class="input-group col-xs-12">
+                <input type="number" step="0.01" class="form-control" id="addmnfamount" name="all_data[amount]" required data-error="{#TEXT_306#}" autofocus>
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-euro"></span>
+                </span>
+              </div>
+              <label for="addmnfamount">{#TEXT_18#}</label>
+              <div class="help-block with-errors"></div>
+            </div>
+
+            <div class="form-group has-float-label col-md-4 col-xs-12">
               <div class="input-group col-xs-12">
                 <input type="text" class="form-control" id="addmnfcomment" name="all_data[comment]" required data-error="{#TEXT_308#}">
               </div>
@@ -204,7 +124,7 @@
               <div class="help-block with-errors"></div>
             </div>
 
-            <div class="form-group has-float-label">
+            <div class="form-group has-float-label col-md-3 col-xs-12">
               <div class="input-group col-xs-12">
                 <select class="form-control" name="all_data[mpa_postingaccountid]" id="addmnfmpa_postingaccountid" required data-error="{#TEXT_309#}">
                   <option value="">&nbsp;</option>
@@ -224,26 +144,23 @@
               <div class="help-block with-errors"></div>
             </div>
 
-            <div class="form-group has-float-label">
-              <div class="input-group col-xs-12">
-                <select class="form-control" name="all_data[mcs_capitalsourceid]" id="addmnfmcs_capitalsourceid" required data-error="{#TEXT_310#}">
-{section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
-                  <option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}"> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}</option>
-{/section}
-                </select>
-                <span class="input-group-btn">
-                  <button type="button" class="btn" onclick="showOverlayCapitalsource()">
-                    <span class="glyphicon glyphicon-plus"></span>
-                  </button>
-                </span>
-              </div>
-              <label for="addmnfmcs_capitalsourceid">{#TEXT_19#}</label>
-              <div class="help-block with-errors"></div>
-            </div>
-
-            <div class="form-group input-group col-lg-12">
+            <div class="col-md-3 col-xs-12">
                   <input id="private"  data-toggle="toggle" value="1" data-on="{#TEXT_209#}" data-off="{#TEXT_301#}" data-onstyle="danger" data-offstyle="success" type="checkbox" name="all_data[private]">
                   <input id="favorite" value="1" type="checkbox" name="all_data[save_as_predefmoneyflow]">
+            </div>
+    </div>
+
+            <div class="panel-group hide-on-small">
+              <div class="panel panel-default">
+              
+                <div class="panel-heading">
+                  <a data-toggle="collapse" href="#addmnfsplitentries">Unterbuchungen</a>
+                </div>
+                
+                <div id="addmnfsplitentries" class="panel-collapse collapse panel-footer">
+                </div>
+
+              </div>
             </div>
 
           </div>
@@ -257,12 +174,59 @@
 
         </form>
       </div>
-      
+
+{literal}    
+<script id="template" type="x-tmpl-mustache">
+          <div class="row" id="addmnfsub{{splitEntryIndex}}">
+            <div class="form-group has-float-label col-md-1 col-xs-12">
+              <div class="input-group col-xs-12">
+                <span class="input-group-btn">
+                  <button type="button" class="btn" onclick="removeSplitEntryLine({{splitEntryIndex}})">
+                    <span class="glyphicon glyphicon-minus"></span>
+                  </button>
+                  <button type="button" class="btn" onclick="addSplitEntryLine()" id="addmnfmoresplitentries{{splitEntryIndex}}">
+                    <span class="glyphicon glyphicon-plus"></span>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <div class="form-group has-float-label col-md-2 col-xs-12">
+              <div class="input-group col-xs-12">
+                <input type="number" step="0.01" class="form-control" id="addmnfsubamount{{splitEntryIndex}}" name="all_subdata[{{splitEntryIndex}}][amount]" required data-error="{{amountError}}" autofocus>
+              </div>
+              <label for="addmnfsubamount{{splitEntryIndex}}">{{amountLabel}}</label>
+              <div class="help-block with-errors"></div>
+            </div>
+
+            <div class="form-group has-float-label col-md-4 col-xs-12">
+              <div class="input-group col-xs-12">
+                <input type="text" class="form-control" id="addmnfsubcomment{{splitEntryIndex}}" name="all_subdata[{{splitEntryIndex}}][comment]" required data-error="{{commentError}}">
+              </div>
+              <label for="addmnfsubcomment{{splitEntryIndex}}">{{commentLabel}}</label>
+              <div class="help-block with-errors"></div>
+            </div>
+
+            <div class="form-group has-float-label col-md-3 col-xs-12">
+              <div class="input-group col-xs-12">
+                <select class="form-control" name="all_subdata[{{splitEntryIndex}}][mpa_postingaccountid]" id="addmnfsubmpa_postingaccountid{{splitEntryIndex}}" required data-error="{{postingAccountError}}">
+                  <option value="">&nbsp;</option>
+{{#postingAccounts}}
+                  <option value="{{postingaccountid}}">{{name}}</option>
+{{/postingAccounts}}
+                </select>
+              </div>
+              <label for="addmnfsubmpa_postingaccountid{{splitEntryIndex}}">{{postingAccountLabel}}</label>
+              <div class="help-block with-errors"></div>
+            </div>
+          </div>
+</script>
+{/literal}
 
       <script>
 
         var addMoneyflowJsonPreDefMoneyflows = {$JSON_PREDEFMONEYFLOWS};
         var addMoneyflowJsonContractpartner = {$JSON_CONTRACTPARTNER};
+        var addMoneyflowJsonPostingAccounts = {$JSON_POSTINGACCOUNTS};
         var addMoneyflowJsonFormDefaults = {$JSON_FORM_DEFAULTS};
         var onEmpty = "{#TEXT_302#}";
         var offEmpty = "{#TEXT_303#}";
@@ -418,10 +382,63 @@
             error: ajaxAddMoneyflowError
         });
 
+        var shownSplitEntryRows = [];
+        var splitEntriesTemplateData = {
+          splitEntryIndex: -1,
+          amountError: "{#TEXT_306#}",
+          amountLabel: "{#TEXT_18#}",
+          commentError: "{#TEXT_308#}",
+          commentLabel: "{#TEXT_21#}",
+          postingAccountError: "{#TEXT_309#}",
+          postingAccountLabel: "{#TEXT_232#}",
+          postingAccounts: addMoneyflowJsonPostingAccounts
+        };
+        
+
+        function addSplitEntryLine() {
+
+          splitEntriesTemplateData.splitEntryIndex++;
+
+          var template = $('#template').html();
+          var rendered = Mustache.render(template,splitEntriesTemplateData);
+          $('#addmnfsplitentries').append( rendered );
+
+	  if( shownSplitEntryRows.length > 0 ) {
+            $('#addmnfmoresplitentries' + (shownSplitEntryRows[shownSplitEntryRows.length - 1])).hide();
+          }
+          
+          shownSplitEntryRows.push(splitEntriesTemplateData.splitEntryIndex);
+
+          $('form[name=addmoneyflow]').validator('reset');
+          $('form[name=addmoneyflow]').validator('update');
+
+        }
+        
+        function removeSplitEntryLine(splitEntryIndex) {
+
+          // make sure more than two entry cannot be deleted
+          
+          $('#addmnfsub' + splitEntryIndex).remove();
+          var index = shownSplitEntryRows.indexOf(splitEntryIndex);
+          if(index > -1) {
+            shownSplitEntryRows.splice(index,1);
+          }
+
+          // we always show at least two rows!
+          if( shownSplitEntryRows.length < 2) {
+            addSplitEntryLine();
+          }
+          
+          $('#addmnfmoresplitentries' + shownSplitEntryRows[shownSplitEntryRows.length - 1]).show();
+        }
+        
 
         fillSelectMoneyflow(currency, addMoneyflowJsonPreDefMoneyflows);
         preFillFormAddMoneyflow(FORM_MODE_DEFAULT);
         $('form[name=addmoneyflow]').validator();
+
+	addSplitEntryLine();
+	addSplitEntryLine();
       </script>
 {$FOOTER}
 

@@ -1,7 +1,7 @@
 {if !$IS_EMBEDDED}
   {$HEADER}
 {/if}
-      <div class="container">
+      <div class="container container-small">
 
         <form action="{$ENV_INDEX_PHP}" method="POST" name="editpostingaccount">
           <input type="hidden" name="action"            value="edit_postingaccount_submit">

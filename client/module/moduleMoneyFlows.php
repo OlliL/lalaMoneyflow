@@ -245,6 +245,7 @@ class moduleMoneyFlows extends module {
 		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template_assign( 'ERRORS', $this->get_errors() );
 
+		$this->template_assign_raw( 'JSON_POSTINGACCOUNTS', json_encode( $postingaccount_values ) );
 		$this->template_assign_raw( 'JSON_PREDEFMONEYFLOWS', json_encode( $preDefMoneyflows ) );
 		$this->template_assign_raw( 'JSON_CONTRACTPARTNER', json_encode( $this->sort_contractpartner( $contractpartner_values ) ) );
 		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
