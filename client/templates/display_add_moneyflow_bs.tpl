@@ -192,7 +192,7 @@
             </div>
             <div class="form-group has-float-label col-md-2 col-xs-12">
               <div class="input-group col-xs-12">
-                <input type="number" step="0.01" class="form-control" id="addmnfsubamount{{splitEntryIndex}}" name="all_subdata[{{splitEntryIndex}}][amount]" required data-error="{{amountError}}" autofocus>
+                <input type="number" step="0.01" class="form-control" id="addmnfsubamount{{splitEntryIndex}}" name="all_subdata[{{splitEntryIndex}}][amount]"  data-error="{{amountError}}" autofocus>
               </div>
               <label for="addmnfsubamount{{splitEntryIndex}}">{{amountLabel}}</label>
               <div class="help-block with-errors"></div>
@@ -200,7 +200,7 @@
 
             <div class="form-group has-float-label col-md-4 col-xs-12">
               <div class="input-group col-xs-12">
-                <input type="text" class="form-control" id="addmnfsubcomment{{splitEntryIndex}}" name="all_subdata[{{splitEntryIndex}}][comment]" required data-error="{{commentError}}">
+                <input type="text" class="form-control" id="addmnfsubcomment{{splitEntryIndex}}" name="all_subdata[{{splitEntryIndex}}][comment]"  data-error="{{commentError}}">
               </div>
               <label for="addmnfsubcomment{{splitEntryIndex}}">{{commentLabel}}</label>
               <div class="help-block with-errors"></div>
@@ -208,7 +208,7 @@
 
             <div class="form-group has-float-label col-md-3 col-xs-12">
               <div class="input-group col-xs-12">
-                <select class="form-control" name="all_subdata[{{splitEntryIndex}}][mpa_postingaccountid]" id="addmnfsubmpa_postingaccountid{{splitEntryIndex}}" required data-error="{{postingAccountError}}">
+                <select class="form-control" name="all_subdata[{{splitEntryIndex}}][mpa_postingaccountid]" id="addmnfsubmpa_postingaccountid{{splitEntryIndex}}"  data-error="{{postingAccountError}}">
                   <option value="">&nbsp;</option>
 {{#postingAccounts}}
                   <option value="{{postingaccountid}}">{{name}}</option>
