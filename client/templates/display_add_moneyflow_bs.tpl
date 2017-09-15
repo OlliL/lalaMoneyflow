@@ -269,8 +269,8 @@
 
 
         function resetFormAddMoneyflow() {
-          initSplitEntries();
           preFillFormAddMoneyflow(FORM_MODE_EMPTY);
+          initSplitEntries();
         }
 
         function setContractpartnerDefaults() {
