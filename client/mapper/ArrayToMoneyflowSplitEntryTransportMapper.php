@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2016 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2016-2017 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -33,8 +33,10 @@ class ArrayToMoneyflowSplitEntryTransportMapper extends AbstractArrayMapper {
 
 	public static function mapAToB(array $a) {
 		$b = new MoneyflowSplitEntryTransport();
-		$b->setId( $a ['moneyflowsplitentryid'] );
-		$b->setMoneyflowid( $a ['moneyflowid'] );
+		if (array_key_exists( 'moneyflowsplitentryid', $a ))
+			$b->setId( $a ['moneyflowsplitentryid'] );
+		if (array_key_exists( 'moneyflowid', $a ))
+			$b->setMoneyflowid( $a ['moneyflowid'] );
 		$b->setAmount( $a ['amount'] );
 		$b->setComment( $a ['comment'] );
 		$b->setPostingaccountid( $a ['mpa_postingaccountid'] );

@@ -235,6 +235,7 @@
 
 
         function resetFormAddMoneyflow() {
+          initSplitEntries();
           preFillFormAddMoneyflow(FORM_MODE_EMPTY);
         }
 
@@ -394,6 +395,14 @@
           postingAccounts: addMoneyflowJsonPostingAccounts
         };
         
+        function initSplitEntries() {
+          $('#addmnfsplitentries').empty();
+          shownSplitEntryRows = [];
+          splitEntriesTemplateData.splitEntryIndex = -1;
+          
+          addSplitEntryLine();
+          addSplitEntryLine();
+        }
 
         function addSplitEntryLine() {
 
@@ -432,13 +441,12 @@
           $('#addmnfmoresplitentries' + shownSplitEntryRows[shownSplitEntryRows.length - 1]).show();
         }
         
-
         fillSelectMoneyflow(currency, addMoneyflowJsonPreDefMoneyflows);
         preFillFormAddMoneyflow(FORM_MODE_DEFAULT);
         $('form[name=addmoneyflow]').validator();
+        
+        initSplitEntries();
 
-	addSplitEntryLine();
-	addSplitEntryLine();
       </script>
 {$FOOTER}
 

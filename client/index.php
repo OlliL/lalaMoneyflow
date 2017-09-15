@@ -115,7 +115,7 @@ if ($is_logged_in == 0) {
 
 	if (array_key_exists( 'all_data', $_REQUEST ) && is_array( $_REQUEST ['all_data'] ))
 		$all_data = $_REQUEST ['all_data'];
-error_log(print_r($all_data, true));
+
 	switch ($action) {
 		case 'list_capitalsources' :
 		case 'edit_capitalsource' :
