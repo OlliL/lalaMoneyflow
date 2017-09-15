@@ -33,6 +33,7 @@ class createMoneyflowRequest {
 	public $moneyflowTransport;
 	public $usedPreDefMoneyflowId;
 	public $saveAsPreDefMoneyflow;
+    public $insertMoneyflowSplitEntryTransport;
 
 	public final function getMoneyflowTransport() {
 		return $this->moneyflowTransport;
@@ -56,6 +57,14 @@ class createMoneyflowRequest {
 	public final function setSaveAsPreDefMoneyflow($saveAsPreDefMoneyflow) {
 		$this->saveAsPreDefMoneyflow = $saveAsPreDefMoneyflow;
 	}
+
+    public final function getInsertMoneyflowSplitEntryTransport() {
+        return $this->insertMoneyflowSplitEntryTransport;
+    }
+
+    public final function setInsertMoneyflowSplitEntryTransport(array $insertMoneyflowSplitEntryTransport) {
+        $this->insertMoneyflowSplitEntryTransport = $insertMoneyflowSplitEntryTransport;
+    }
 }
 
 ?>

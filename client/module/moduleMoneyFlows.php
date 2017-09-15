@@ -243,19 +243,26 @@ class moduleMoneyFlows extends module {
 		$this->template_assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 		$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
 		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
-		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->template_assign_raw( 'JSON_POSTINGACCOUNTS', json_encode( $postingaccount_values ) );
 		$this->template_assign_raw( 'JSON_PREDEFMONEYFLOWS', json_encode( $preDefMoneyflows ) );
 		$this->template_assign_raw( 'JSON_CONTRACTPARTNER', json_encode( $this->sort_contractpartner( $contractpartner_values ) ) );
-		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 
 		return $this->fetch_template( 'display_add_moneyflow_bs.tpl' );
 	}
 
-	public final function add_moneyflow($all_data) {
-		$all_data ['moneyflowid'] = - 1;
-		$ret = MoneyflowControllerHandler::getInstance()->createMoneyflow( $all_data );
+	public final function add_moneyflow($all_data, $all_subdata)
+    {
+        $all_data ['moneyflowid'] = -1;
+        $insert_moneyflowsplitentries = array();
+        if (is_array($all_subdata)) {
+            foreach ($all_subdata as $splitEntry) {
+                if($splitEntry['amount'] != null && $splitEntry['comment'] != null && $splitEntry['mpa_postingaccountid'] != null) {
+                    $insert_moneyflowsplitentries[] = $splitEntry;
+                }
+            }
+        }
+		$ret = MoneyflowControllerHandler::getInstance()->createMoneyflow( $all_data, $insert_moneyflowsplitentries );
 		return $this->handleReturnForAjax( $ret );
 	}
 

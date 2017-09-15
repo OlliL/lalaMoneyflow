@@ -117,7 +117,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		return $result;
 	}
 
-	public final function createMoneyflow($moneyflow) {
+	public final function createMoneyflow($moneyflow, $insert_moneyflowsplitentries) {
 		$preDefMoneyflowId = null;
 		$saveAsPreDefMoneyflow = null;
 
@@ -130,7 +130,13 @@ class MoneyflowControllerHandler extends AbstractHandler {
 
 		$moneyflowTransport = parent::map( $moneyflow, MoneyflowTransport::getClass() );
 
-		$request = new createMoneyflowRequest();
+        $request = new createMoneyflowRequest();
+
+        if (count( $insert_moneyflowsplitentries ) > 0) {
+            $insertMoneyflowSplitEntryTransport = parent::mapArray( $insert_moneyflowsplitentries, MoneyflowSplitEntryTransport::getClass() );
+            $request->setInsertMoneyflowSplitEntryTransport( $insertMoneyflowSplitEntryTransport );
+        }
+
 		$request->setMoneyflowTransport( $moneyflowTransport );
 		$request->setUsedPreDefMoneyflowId( $preDefMoneyflowId );
 		$request->setSaveAsPreDefMoneyflow( $saveAsPreDefMoneyflow );

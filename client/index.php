@@ -403,7 +403,8 @@ error_log(print_r($all_data, true));
 				break;
 			case 'add_moneyflow_submit' :
 
-				$display = $moduleMoneyFlows->add_moneyflow( $all_data );
+				$all_subdata = array_key_exists( 'all_subdata', $_REQUEST ) ? $_REQUEST ['all_subdata'] : '';
+				$display = $moduleMoneyFlows->add_moneyflow( $all_data, $all_subdata );
 				break;
 
 			case 'edit_moneyflow' :
