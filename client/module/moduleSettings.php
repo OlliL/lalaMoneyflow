@@ -55,7 +55,7 @@ class moduleSettings extends module {
 				}
 				if (strstr( $all_data ['password'], "/" ) != false) {
 					$this->add_error( ErrorCode::PASSWORD_MUST_NOT_CONTAIN_SLASHES );
-					$valid_data = false;
+                    $data_is_valid = false;
 				}
 
 				if ($data_is_valid === true) {

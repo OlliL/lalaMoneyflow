@@ -96,7 +96,7 @@ class moduleGroups extends module {
 		return $this->fetch_template( 'display_edit_group.tpl' );
 	}
 
-	public final function display_delete_group($realaction, $groupid, $force) {
+	public final function display_delete_group($realaction, $groupid) {
 		switch ($realaction) {
 			case 'yes' :
 				if (GroupControllerHandler::getInstance()->deleteGroupById( $groupid )) {

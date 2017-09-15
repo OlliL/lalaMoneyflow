@@ -35,7 +35,6 @@ use api\model\moneyflow\searchMoneyflowsRequest;
 use api\model\moneyflow\showAddMoneyflowsResponse;
 use api\model\moneyflow\showEditMoneyflowResponse;
 use api\model\moneyflow\showDeleteMoneyflowResponse;
-use api\model\moneyflow\createMoneyflowResponse;
 use api\model\moneyflow\updateMoneyflowResponse;
 use api\model\moneyflow\showSearchMoneyflowFormResponse;
 use api\model\moneyflow\searchMoneyflowsResponse;

@@ -29,11 +29,9 @@
 //
 namespace client\module;
 
-use base\ErrorCode;
 use client\handler\CapitalsourceControllerHandler;
 use client\core\coreText;
 use client\util\Environment;
-use base\Configuration;
 
 class moduleCapitalSources extends module {
 	private $coreText;

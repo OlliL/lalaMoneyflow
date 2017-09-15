@@ -73,11 +73,13 @@ abstract class AbstractMapperSupport {
 					$method
 			);
 		}
+		return null;
 	}
 
 	private final function executeMapper($mapper, $obj) {
 		if ($mapper)
 			return call_user_func( $mapper, $obj );
+        return null;
 	}
 
 	protected function map($obj, $targetObject = null) {

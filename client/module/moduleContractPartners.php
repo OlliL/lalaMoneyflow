@@ -29,10 +29,7 @@
 //
 namespace client\module;
 
-use base\ErrorCode;
 use client\handler\ContractpartnerControllerHandler;
-use client\util\Environment;
-use base\Configuration;
 
 class moduleContractPartners extends module {
 

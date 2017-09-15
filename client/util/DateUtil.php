@@ -63,6 +63,7 @@ class DateUtil {
 
 			return $modelDate->format(\DateTime::ATOM);
 		}
+		return null;
 	}
 
 	public static final function convertTransportDateToClient($transportDate) {

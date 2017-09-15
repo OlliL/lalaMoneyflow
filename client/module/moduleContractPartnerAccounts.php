@@ -55,7 +55,6 @@ class moduleContractPartnerAccounts extends module {
 		$close = 0;
 		switch ($realaction) {
 			case 'save' :
-				$valid_data = true;
 				$all_data ['contractpartneraccountid'] = $contractpartneraccountid;
 				$all_data ['mcp_contractpartnerid'] = $contractpartnerid;
 
@@ -106,7 +105,6 @@ class moduleContractPartnerAccounts extends module {
 	public final function display_delete_contractpartneraccount($realaction, $contractpartneraccountid) {
 		switch ($realaction) {
 			case 'yes' :
-				$contractpartneraccountid;
 				if (ContractpartnerAccountControllerHandler::getInstance()->deleteContractpartnerAccount( $contractpartneraccountid )) {
 					$this->template_assign( 'CLOSE', 1 );
 					break;

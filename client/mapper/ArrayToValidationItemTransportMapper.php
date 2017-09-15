@@ -38,7 +38,7 @@ class ArrayToValidationItemTransportMapper extends AbstractArrayMapper {
 		$b->setKey( $a ['key'] );
 		$b->setError( $a ['error'] );
 		if ($a ['variable_array'])
-			$g->setVariableArray( $a ['variable_array'] );
+			$b->setVariableArray( $a ['variable_array'] );
 		return $b;
 	}
 

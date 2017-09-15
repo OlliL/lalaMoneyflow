@@ -71,6 +71,7 @@ abstract class AbstractEnvironment {
 	protected final function getValue($key) {
 		if (array_key_exists( $key, $this->environment ))
 			return $this->environment [$key];
+        return null;
 	}
 
 	protected final function setValue($key, $value) {

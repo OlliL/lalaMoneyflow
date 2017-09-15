@@ -58,9 +58,8 @@ class AbstractJsonSender extends AbstractMapperSupport {
 			}
 		} else if (is_array( $obj )) {
 			return '{"List":' . json_encode( $obj ) . '}';
-		} else {
-			return '{"Scalar":' . json_encode( $obj ) . '}';
 		}
+		return '{"Scalar":' . json_encode( $obj ) . '}';
 	}
 }
 

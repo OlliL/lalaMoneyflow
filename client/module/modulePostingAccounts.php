@@ -30,7 +30,6 @@
 namespace client\module;
 
 use client\handler\PostingAccountControllerHandler;
-use base\ErrorCode;
 
 class modulePostingAccounts extends module {
 
@@ -76,7 +75,7 @@ class modulePostingAccounts extends module {
 		return $this->handleReturnForAjax( $ret );
 	}
 
-	public final function display_delete_postingAccount($realaction, $postingaccountid, $force) {
+	public final function display_delete_postingAccount($realaction, $postingaccountid) {
 		switch ($realaction) {
 			case 'yes' :
 				if (PostingAccountControllerHandler::getInstance()->deletePostingAccountById( $postingaccountid )) {

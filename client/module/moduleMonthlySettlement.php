@@ -103,7 +103,6 @@ class moduleMonthlySettlement extends module {
 		$new = 0;
 		switch ($realaction) {
 			case 'save' :
-				$ret = true;
 				$data_is_valid = true;
 
 				foreach ( $all_data as $id => $value ) {

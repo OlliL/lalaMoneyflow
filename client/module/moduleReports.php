@@ -83,7 +83,6 @@ class moduleReports extends module {
 		}
 
 		if ($month > 0 && $year > 0) {
-			$i = 0;
 
 			switch ($order) {
 				case 'DESC' :
@@ -248,9 +247,6 @@ class moduleReports extends module {
 								break;
 						}
 					}
-				} else {
-					// logic in the template needs this if it is empty
-					$turnover_capitalsources = '';
 				}
 
 				$month_array = array (
@@ -517,7 +513,6 @@ class moduleReports extends module {
 				break;
 		}
 
-		$postingaccounts = array ();
 		switch ($accountmode) {
 			case 1 :
 				$accounts_yes = array (
@@ -590,10 +585,10 @@ class moduleReports extends module {
 			} elseif ($piePlot) {
 				$this->plotPiePlot( $plot_data, $postingAccountNames, $title );
 			}
-		} else {
-			$this->parse_header( 1 );
-			return $this->fetch_template( 'display_show_reporting_plot_no_data.tpl' );
 		}
+
+		$this->parse_header( 1 );
+		return $this->fetch_template( 'display_show_reporting_plot_no_data.tpl' );
 	}
 
 	private final function plotHorizontalBarPlot($plot_data, $postingAccountNames, $title) {

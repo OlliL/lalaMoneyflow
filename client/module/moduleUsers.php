@@ -84,11 +84,10 @@ class moduleUsers extends module {
 		}
 
 		if ($loginok == 1) {
-			return;
+			return null;
 		} else {
 			Environment::getInstance()->setSettingGuiLanguage( Configuration::getInstance()->getProperty( 'language_login' ) );
 			$this->template_assign( 'NAME', $name );
-			$this->template_assign( 'STAY_LOGGED_IN', $stay_logged_in );
 			$this->template_assign( 'ERRORS', $this->get_errors() );
 			$this->template_assign( 'REQUEST_URI', $request_uri );
 			$this->parse_header( 1, 1 );
@@ -218,7 +217,7 @@ class moduleUsers extends module {
 					$groups = $showEditUser ['groups'];
 					$access_relation ['validfrom_error'] = 0;
 				} else {
-					$showCreateUser = UserControllerHandler::getInstance()->showCreateUser( $userid );
+					$showCreateUser = UserControllerHandler::getInstance()->showCreateUser( );
 					$groups = $showCreateUser ['groups'];
 					$all_data_pre = array (
 							'name' => '',

@@ -30,7 +30,6 @@ namespace client\module;
 
 use client\core\coreLanguages;
 use client\core\coreText;
-use base\Configuration;
 
 class moduleLanguages extends module {
 	private $coreLanguages;
@@ -44,7 +43,6 @@ class moduleLanguages extends module {
 
 	public final function display_list_languages($letter) {
 		$all_index_letters = $this->coreLanguages->get_all_index_letters();
-		$num_languages = $this->coreLanguages->count_all_data();
 
 		if (empty( $letter )) {
 			$letter = 'all';

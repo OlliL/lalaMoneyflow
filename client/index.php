@@ -261,8 +261,7 @@ error_log(print_r($all_data, true));
 			case 'delete_group' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'groupid', $_REQUEST ) ? $_REQUEST ['groupid'] : '';
-				$force = array_key_exists( 'force', $_REQUEST ) ? $_REQUEST ['force'] : '';
-				$display = $moduleGroups->display_delete_group( $realaction, $id, $force );
+				$display = $moduleGroups->display_delete_group( $realaction, $id );
 				break;
 
 			/* postingaccounts */
@@ -287,8 +286,7 @@ error_log(print_r($all_data, true));
 			case 'delete_postingaccount' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'postingaccountid', $_REQUEST ) ? $_REQUEST ['postingaccountid'] : '';
-				$force = array_key_exists( 'force', $_REQUEST ) ? $_REQUEST ['force'] : '';
-				$display = $modulePostingAccounts->display_delete_postingaccount( $realaction, $id, $force );
+				$display = $modulePostingAccounts->display_delete_postingaccount( $realaction, $id );
 				break;
 		}
 	}
@@ -540,13 +538,6 @@ error_log(print_r($all_data, true));
 
 				$file = $_FILES ['file'];
 				$display = $moduleCompare->display_analyze_form( $file, $all_data );
-				break;
-
-			/* postingaccounts */
-
-			case 'plot_postingaccounts' :
-
-				$display = $modulePostingAccounts->plot_postingaccounts( 2010, 2014 );
 				break;
 
 			default :

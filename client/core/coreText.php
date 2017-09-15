@@ -109,6 +109,7 @@ class coreText extends core {
 						2 => 176
 				);
 		}
+		return null;
 	}
 
 	public final function get_domain_data($domain) {

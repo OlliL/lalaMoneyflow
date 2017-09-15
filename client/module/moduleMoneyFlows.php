@@ -67,7 +67,7 @@ class moduleMoneyFlows extends module {
 	public final function display_edit_moneyflow($realaction, $id, $all_data, $moneyflow_split_entries) {
 		$close = 0;
 		if (empty( $id ))
-			return;
+			return null;
 
 		$orig_amount = $all_data ['amount'];
 		$delete_moneyflowsplitentryids = array ();
@@ -140,7 +140,6 @@ class moduleMoneyFlows extends module {
 					if ($ret === true) {
 						$close = 1;
 						break;
-						$this->template_assign( 'CLOSE', 1 );
 					} else {
 						$capitalsource_values = $ret ['capitalsources'];
 						$contractpartner_values = $ret ['contractpartner'];

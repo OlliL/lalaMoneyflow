@@ -66,7 +66,6 @@ class moduleCompare extends module {
 		$fileName = $file ['tmp_name'];
 		$startDate = $all_data ['startdate'];
 		$endDate = $all_data ['enddate'];
-		$formatId = $all_data ['format'];
 		$useImportedData = $all_data ['use_imported_data'];
 
 		$valid_data = true;
@@ -74,8 +73,6 @@ class moduleCompare extends module {
 		if (! array_key_exists( 'mcs_capitalsourceid', $all_data )) {
 			$this->add_error( ErrorCode::CAPITALSOURCE_IS_NOT_SET );
 			$valid_data = false;
-		} else {
-			$capitalSourceId = $all_data ['mcs_capitalsourceid'];
 		}
 
 		if (! $this->dateIsValid( $startDate )) {

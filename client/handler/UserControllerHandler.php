@@ -90,7 +90,7 @@ class UserControllerHandler extends AbstractHandler {
 		return $result;
 	}
 
-	public final function showCreateUser($id) {
+	public final function showCreateUser() {
 		$response = parent::getJson( __FUNCTION__ );
 		$result = null;
 		if ($response instanceof showCreateUserResponse) {

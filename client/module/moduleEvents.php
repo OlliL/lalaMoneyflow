@@ -56,6 +56,7 @@ class moduleEvents extends module {
 			}
 			// echo $events['numberOfImportedMoneyflows'];
 		}
+		return null;
 	}
 }
 

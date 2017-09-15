@@ -64,9 +64,9 @@ class modulePreDefMoneyFlows extends module {
 					$this->add_error( ErrorCode::AMOUNT_IN_WRONG_FORMAT, array (
 							$all_data ['amount']
 					) );
-					break;
 					$all_data ['amount_error'] = 1;
 					$valid_data = false;
+                    break;
 				}
 
 				if ($data_is_valid) {
