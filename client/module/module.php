@@ -147,7 +147,7 @@ abstract class module {
 		// Contractpartner
 		$listPostingAccounts = PostingAccountControllerHandler::getInstance()->showPostingAccountList( 'all' );
 		$postingAccounts = $listPostingAccounts ['postingAccounts'];
-		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingAccounts );
+		$this->template_assign( 'HEAD_POSTINGACCOUNT_VALUES', $postingAccounts );
 
 		$embeddedEditContractpartner = $this->fetch_template( 'display_edit_contractpartner_bs.tpl' );
 		$embeddedForms ["EMBEDDED_ADD_CONTRACTPARTNER"] = $embeddedEditContractpartner;

@@ -37,8 +37,8 @@
               <div class="input-group col-xs-12">
                 <select class="form-control" name="all_data[mpa_postingaccountid]" id="edtmcpmpa_postingaccountid">
                   <option value="">&nbsp;</option>
-{section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
-                  <option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}"> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name}</option>
+{section name=POSTINGACCOUNT loop=$HEAD_POSTINGACCOUNT_VALUES}
+                  <option value="{$HEAD_POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}"> {$HEAD_POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name}</option>
 {/section}
                 </select>
 {if $IS_ADMIN }
