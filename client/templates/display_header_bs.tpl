@@ -109,26 +109,43 @@
     </nav>
 {/if}
 
-    <div class="main-wrapper">    
+    <div class="main-wrapper">
+    
+    
 {if $EMBEDDED_ADD_CONTRACTPARTNER }
-      <div class="overlay overlay_edit_contractpartner" style="display: none">
-        <div class="embedded embedded_contractpartner ">
+      <div id="contractpartnerModal" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      <div class="modal-body">
 {$EMBEDDED_ADD_CONTRACTPARTNER}
-        </div>
       </div>
-
+      </div>
+      </div>
+      </div>
+{literal}
 <script>
         function showOverlayContractpartner() {
           saveFocusedElement();
-          $('.overlay_edit_contractpartner').show();
           document.editcontractpartner.edtmcpname.focus();
           
         }
         function hideOverlayContractpartner() {
-          $('.overlay_edit_contractpartner').hide();
-          restoreLastFocusedElement();
+          $('#contractpartnerModal').modal('hide');
         }
+
+        function hideOverlayContractpartnerIsDone() {
+          setTimeout("restoreLastFocusedElement()", 150);
+        }
+        
+        $('#contractpartnerModal').on('shown.bs.modal', function (e) {
+          showOverlayContractpartner();
+        })
+
+        $('#contractpartnerModal').on('hidden.bs.modal', function (e) {
+          hideOverlayContractpartnerIsDone();
+        })
 </script>
+{/literal}
 {/if}
 
 {if $EMBEDDED_ADD_POSTINGACCOUNT }
