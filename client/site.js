@@ -25,7 +25,7 @@ function restoreLastFocusedElement() {
 }
 
 function updateSelect(selectElements, id, name) {
-	var len = selects.length;
+	var len = selectElements.length;
 
 	for (i = 0; i < len; i++) {
 		var option = document.createElement('option');

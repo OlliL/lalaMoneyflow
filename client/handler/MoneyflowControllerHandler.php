@@ -129,28 +129,18 @@ class MoneyflowControllerHandler extends AbstractHandler {
 
 		$moneyflowTransport = parent::map( $moneyflow, MoneyflowTransport::getClass() );
 
-        $request = new createMoneyflowRequest();
+		$request = new createMoneyflowRequest();
 
-        if (count( $insert_moneyflowsplitentries ) > 0) {
-            $insertMoneyflowSplitEntryTransport = parent::mapArray( $insert_moneyflowsplitentries, MoneyflowSplitEntryTransport::getClass() );
-            $request->setInsertMoneyflowSplitEntryTransport( $insertMoneyflowSplitEntryTransport );
-        }
+		if (count( $insert_moneyflowsplitentries ) > 0) {
+			$insertMoneyflowSplitEntryTransport = parent::mapArray( $insert_moneyflowsplitentries, MoneyflowSplitEntryTransport::getClass() );
+			$request->setInsertMoneyflowSplitEntryTransport( $insertMoneyflowSplitEntryTransport );
+		}
 
 		$request->setMoneyflowTransport( $moneyflowTransport );
 		$request->setUsedPreDefMoneyflowId( $preDefMoneyflowId );
 		$request->setSaveAsPreDefMoneyflow( $saveAsPreDefMoneyflow );
 
-		$response = parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
-
-		$result = null;
-		if ($response === true) {
-			$result = true;
-		} else if ($response instanceof validationResponse) {
-			$result ['result'] = $response->getResult();
-			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
-		}
-
-		return $result;
+		return parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 
 	public final function updateMoneyflow(array $moneyflow, array $delete_moneyflowsplitentryids, array $update_moneyflowsplitentrys, array $insert_moneyflowsplitentrys) {

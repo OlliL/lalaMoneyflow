@@ -121,7 +121,7 @@
         function showOverlayContractpartner() {
           saveFocusedElement();
           $('.overlay_edit_contractpartner').show();
-          document.editcontractpartner.edcontname.focus();
+          document.editcontractpartner.edtmcpname.focus();
           
         }
         function hideOverlayContractpartner() {
@@ -142,7 +142,7 @@
         function showOverlayPostingAccount() {
           saveFocusedElement();
           $('.overlay_edit_postingaccount').show();
-          document.editpostingaccount.edpostaccname.focus();
+          document.editpostingaccount.edtmpaname.focus();
         }
         function hideOverlayPostingAccount() {
           $('.overlay_edit_postingaccount').hide();
@@ -162,7 +162,7 @@
         function showOverlayCapitalsource() {
           saveFocusedElement();
           $('.overlay_edit_capitalsource').show();
-          document.editcapitalsource.edcapsrccomment.focus();
+          document.editcapitalsource.edtmcscomment.focus();
         }
         function hideOverlayCapitalsource() {
           $('.overlay_edit_capitalsource').hide();

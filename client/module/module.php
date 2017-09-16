@@ -249,6 +249,7 @@ abstract class module {
 	}
 
 	protected final function handleReturnForAjax($ret) {
+		error_log(print_r($ret,true));
 		if ($ret === true) {
 			header( "HTTP/1.1 204 No Content" );
 			return null;

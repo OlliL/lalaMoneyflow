@@ -3,7 +3,7 @@
 {/if}
       <div class="container container-small">
 
-        <form action="{$ENV_INDEX_PHP}" method="POST" name="editcontractpartner">
+        <form action="{$ENV_INDEX_PHP}" method="POST" name="editcontractpartner" id="edtmcpform">
           <input type="hidden" name="action"            value="edit_contractpartner_submit">
           <input type="hidden" name="contractpartnerid" value="{$CONTRACTPARTNERID}">
 
@@ -191,8 +191,8 @@
             }
           }
 
-          $('form[name=editcontractpartner]').validator('reset');
-          $('form[name=editcontractpartner]').validator('update');
+          $('#edtmcpform').validator('reset');
+          $('#edtmcpform').validator('update');
         }
 
         function btnEditContractpartnerCancel() {
@@ -224,8 +224,9 @@
           populateErrorDiv(data.responseText,'editContractpartnerErrorsGoHere','editContractpartnerErrors');
         }
 
-
-        $('form[name=editcontractpartner]').ajaxForm({
+        $('#edtmcpform').validator();
+        preFillFormEditContractpartner(FORM_MODE_DEFAULT);
+        $('#edtmcpform').ajaxForm({
             dataType: 'json',
             success: ajaxEditContractpartnerSuccess,
             error: ajaxEditContractpartnerError
@@ -233,8 +234,6 @@
 
 
 
-        preFillFormEditContractpartner(FORM_MODE_DEFAULT);
-        $('form[name=editcontractpartner]').validator();
       </script>
 
 {if !$IS_EMBEDDED}

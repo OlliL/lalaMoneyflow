@@ -3,7 +3,7 @@
 {/if}
       <div class="container container-small">
 
-        <form action="{$ENV_INDEX_PHP}" method="POST" name="editcapitalsource">
+        <form action="{$ENV_INDEX_PHP}" method="POST" name="editcapitalsource" id="edtmcsform">
           <input type="hidden" name="action"            value="edit_capitalsource_submit">
           <input type="hidden" name="capitalsourceid"   value="{$CAPITALSOURCEID}">
 
@@ -63,8 +63,9 @@
               </div>
               <label for="edtmcsbankcode">{#TEXT_33#}</label>
             </div>
+    <div class="row">
 
-            <div class="form-group has-float-label">
+            <div class="form-group has-float-label col-xs-6">
               <div class='input-group date col-xs-12' id="edtmcsvalidfromDiv">
                 <input type="text" class="form-control" name="all_data[validfrom]" id="edtmcsvalidfrom" required data-error="{#TEXT_238#}">
                 <span class="input-group-addon">
@@ -86,14 +87,14 @@
               </script>
             </div>
 
-            <div class="form-group has-float-label">
+            <div class="form-group has-float-label col-xs-6">
               <div class='input-group date col-xs-12' id="edtmcsvalidtilDiv">
                 <input type="text" class="form-control" name="all_data[validtil]" id="edtmcsvalidtil" required data-error="{#TEXT_239#}">
                 <span class="input-group-addon">
                   <span class="glyphicon glyphicon-calendar"></span>
                 </span>
               </div>
-              <label for="edtmcstilfromSelect">{#TEXT_35#}</label>
+              <label for="edtmcsvalidtil">{#TEXT_35#}</label>
               <div class="help-block with-errors"></div>
               <script type="text/javascript">
                 $(function () {
@@ -107,6 +108,7 @@
                 });
               </script>
             </div>
+    </div>
 
              <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
@@ -184,8 +186,8 @@
             }
           }
 
-          $('form[name=editcapitalsource]').validator('reset');
-          $('form[name=editcapitalsource]').validator('update');
+          $('#edtmcsform').validator('reset');
+          $('#edtmcsform').validator('update');
         }
       
         function btnEditCapitalsourceCancel() {
@@ -216,15 +218,13 @@
           populateErrorDiv(data.responseText,'editCapitalsourceErrorsGoHere','editCapitalsourceErrors');
         }
 
-        $('form[name=editcapitalsource]').ajaxForm({
+        preFillFormEditCapitalsource(FORM_MODE_DEFAULT);
+        $('#edtmcsform').validator();
+        $('#edtmcsform').ajaxForm({
             dataType: 'json',
             success: ajaxEditCapitalsourceSuccess,
             error: ajaxEditCapitalsourceError
         });
-
-
-        preFillFormEditCapitalsource(FORM_MODE_DEFAULT);
-        $('form[name=editcapitalsource]').validator();
       </script>
 
 {if !$IS_EMBEDDED}

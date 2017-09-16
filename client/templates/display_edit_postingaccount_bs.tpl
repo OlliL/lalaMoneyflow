@@ -3,7 +3,7 @@
 {/if}
       <div class="container container-small">
 
-        <form action="{$ENV_INDEX_PHP}" method="POST" name="editpostingaccount">
+        <form action="{$ENV_INDEX_PHP}" method="POST" name="editpostingaccount" id="edtmpaform">
           <input type="hidden" name="action"            value="edit_postingaccount_submit">
           <input type="hidden" name="postingaccountid"  value="{$POSTINGACCOUNTID}">
 
@@ -18,9 +18,9 @@
 
             <div class="form-group has-float-label">
               <div class="input-group col-xs-12">
-                <input type="text" class="form-control" id="edtmpaaccname" name="all_data[name]" required data-error="{#TEXT_319#}">
+                <input type="text" class="form-control" id="edtmpaname" name="all_data[name]" required data-error="{#TEXT_319#}">
               </div>
-              <label for="edtmpaaccname">{#TEXT_232#}</label>
+              <label for="edtmpaname">{#TEXT_232#}</label>
               <div class="help-block with-errors"></div>
             </div>
           </div>
@@ -52,13 +52,13 @@
         function preFillFormEditPostingAccount(formMode) {
 
           if ( formMode == FORM_MODE_DEFAULT || formMode == FORM_MODE_EMPTY ) {
-            document.editpostingaccount.edtmpaaccname.value = "";
+            document.editpostingaccount.edtmpaname.value = "";
 
             if ( formMode == FORM_MODE_EMPTY) {
               clearErrorDiv("editPostingAccountErrors");
             } else {
               for ( var key in editPostingAccountJsonFormDefaults ) {
-                var element = document.getElementById( 'edtmpaacc'+key );
+                var element = document.getElementById( 'edtmpa'+key );
                 if ( element !== null ) {
                   element.value = editPostingAccountJsonFormDefaults[key];
                 }
@@ -66,8 +66,8 @@
             }
           }
 
-          $('form[name=editpostingaccount]').validator('reset');
-          $('form[name=editpostingaccount]').validator('update');
+          $('#edtmpaform').validator('reset');
+          $('#edtmpaform').validator('update');
         }
 
         function btnEditPostingAccountCancel() {
@@ -83,7 +83,7 @@
 {if $IS_EMBEDDED}
           if(data != null) {
             updatePostingAccountSelect(data["postingaccountid"]
-                                       ,document.editpostingaccount.edtmpaaccname.value );
+                                       ,document.editpostingaccount.edtmpaname.value );
           }
           preFillFormEditPostingAccount(FORM_MODE_EMPTY);
           hideOverlayPostingAccount();
@@ -97,16 +97,13 @@
           populateErrorDiv(data.responseText,'editPostingAccountErrorsGoHere','editPostingAccountErrors');
         }
 
-
-        $('form[name=editpostingaccount]').ajaxForm({
+        preFillFormEditPostingAccount(FORM_MODE_DEFAULT);
+        $('#edtmpaform').validator();
+        $('#edtmpaform').ajaxForm({
             dataType: 'json',
             success: ajaxEditPostingAccountSuccess,
             error: ajaxEditPostingAccountError
         });
-
-
-        preFillFormEditPostingAccount(FORM_MODE_DEFAULT);
-        $('form[name=editpostingaccount]').validator();
       </script>
 
 {if !$IS_EMBEDDED}
