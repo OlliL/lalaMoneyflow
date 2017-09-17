@@ -1,7 +1,9 @@
 {if !$IS_EMBEDDED}
   {$HEADER}
-{/if}
       <div class="container container-small">
+{else}
+      <div>
+{/if}
 
         <form action="{$ENV_INDEX_PHP}" method="POST" name="editpostingaccount" id="edtmpaform">
           <input type="hidden" name="action"            value="edit_postingaccount_submit">
@@ -9,27 +11,32 @@
 
           <div class="text-center">
             <h4>{if $POSTINGACCOUNTID > 0}{#TEXT_321#}{else}{#TEXT_320#}{/if}</h4>
-         </div>
+          </div>
 
-          <div class="span2 well">
-
-            <div id="editPostingAccountErrorsGoHere">
+          <div class="well">
+            <div class="row">
+              <div class="col-xs-12" id="editPostingAccountErrorsGoHere">
+              </div>
             </div>
 
-            <div class="form-group has-float-label">
-              <div class="input-group col-xs-12">
-                <input type="text" class="form-control" id="edtmpaname" name="all_data[name]" required data-error="{#TEXT_319#}">
+            <div class="row">
+              <div class="form-group has-float-label col-xs-12">
+                <div class="input-group col-xs-12">
+                  <input type="text" class="form-control" id="edtmpaname" name="all_data[name]" required data-error="{#TEXT_319#}">
+                </div>
+                <label for="edtmpaname">{#TEXT_232#}</label>
+                <div class="help-block with-errors"></div>
               </div>
-              <label for="edtmpaname">{#TEXT_232#}</label>
-              <div class="help-block with-errors"></div>
             </div>
           </div>
-          
-          <div class="form-group">
-            <div class="col-sm-12 text-center">
-              <button type="button" class="btn"             onclick="btnEditPostingAccountCancel()"    >{#TEXT_315#}</button>
-              <button type="button" class="btn btn-default" onclick="resetFormEditPostingAccount()">{#TEXT_304#}</button>
-              <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
+
+          <div class="row">
+            <div class="form-group">
+              <div class="col-sm-12 text-center">
+                <button type="button" class="btn"             onclick="btnEditPostingAccountCancel()">{#TEXT_315#}</button>
+                <button type="button" class="btn btn-default" onclick="resetFormEditPostingAccount()">{#TEXT_304#}</button>
+                <button type="submit" class="btn btn-primary"                                        >{#TEXT_22#}</button>
+              </div>
             </div>  
           </div>  
 

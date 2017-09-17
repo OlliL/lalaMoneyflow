@@ -1,7 +1,9 @@
 {if !$IS_EMBEDDED}
   {$HEADER}
-{/if}
       <div class="container container-small">
+{else}
+      <div>
+{/if}
 
         <form action="{$ENV_INDEX_PHP}" method="POST" name="editcontractpartner" id="edtmcpform">
           <input type="hidden" name="action"            value="edit_contractpartner_submit">
@@ -9,147 +11,155 @@
 
           <div class="text-center">
             <h4>{if $CONTRACTPARTNERID > 0}{#TEXT_46#}{else}{#TEXT_11#}{/if}</h4>
-         </div>
+          </div>
 
-          <div class="span2 well">
-
-            <div id="editContractpartnerErrorsGoHere">
-            </div>
-
-
-            <div class="form-group has-float-label">
-              <div class="input-group col-xs-12">
-                <input type="text" class="form-control" id="edtmcpname" name="all_data[name]" required data-error="{#TEXT_313#}">
+          <div class="well">
+            <div class="row">
+              <div class="col-xs-12" id="editContractpartnerErrorsGoHere">
               </div>
-              <label for="edtmcpname">{#TEXT_41#}</label>
-              <div class="help-block with-errors"></div>
             </div>
 
-            <div class="form-group has-float-label">
-              <div class="input-group col-xs-12">
-                <input type="text" class="form-control" id="edtmcpmoneyflow_comment" name="all_data[moneyflow_comment]">
-              </div>
-              <label for="edtmcpmoneyflow_comment">{#TEXT_272#}</label>
-              <div class="help-block with-errors"></div>
-            </div>
-
-            <div class="form-group has-float-label">
-              <div class="input-group col-xs-12">
-                <select class="form-control" name="all_data[mpa_postingaccountid]" id="edtmcpmpa_postingaccountid">
-                  <option value="">&nbsp;</option>
-{section name=POSTINGACCOUNT loop=$HEAD_POSTINGACCOUNT_VALUES}
-                  <option value="{$HEAD_POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}"> {$HEAD_POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name}</option>
-{/section}
-                </select>
-{if $IS_ADMIN }
-                <span class="input-group-btn">
-                  <button type="button" class="btn">
-                    <span class="glyphicon glyphicon-plus"></span>
-                  </button>
-                </span>
-{/if}
-              </div>
-              <label for="edtmcpmpa_postingaccountid">{#TEXT_316#}</label>
-              <div class="help-block with-errors"></div>
-            </div>
-
-            <div class="panel-group">
-              <div class="panel panel-default">
-              
-                <div class="panel-heading">
-                  <a data-toggle="collapse" href="#edtmcpcollapse1">{#TEXT_314#}</a>
+            <div class="row">
+              <div class="form-group has-float-label col-xs-12">
+                <div class="input-group col-xs-12">
+                  <input type="text" class="form-control" id="edtmcpname" name="all_data[name]" required data-error="{#TEXT_313#}">
                 </div>
+                <label for="edtmcpname">{#TEXT_41#}</label>
+                <div class="help-block with-errors"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group has-float-label col-xs-12">
+                <div class="input-group col-xs-12">
+                  <input type="text" class="form-control" id="edtmcpmoneyflow_comment" name="all_data[moneyflow_comment]">
+               </div>
+               <label for="edtmcpmoneyflow_comment">{#TEXT_272#}</label>
+               <div class="help-block with-errors"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group has-float-label col-xs-12">
+                <div class="input-group col-xs-12">
+                  <select class="form-control" name="all_data[mpa_postingaccountid]" id="edtmcpmpa_postingaccountid">
+                    <option value="">&nbsp;</option>
+{section name=POSTINGACCOUNT loop=$HEAD_POSTINGACCOUNT_VALUES}
+                    <option value="{$HEAD_POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}"> {$HEAD_POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name}</option>
+{/section}
+                  </select>
+{if $IS_ADMIN }
+                  <span class="input-group-btn">
+                    <button type="button" class="btn">
+                      <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                  </span>
+{/if}
+                </div>
+                <label for="edtmcpmpa_postingaccountid">{#TEXT_316#}</label>
+                <div class="help-block with-errors"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="panel-group">
+                <div class="panel panel-default">
+              
+                  <div class="panel-heading">
+                    <a data-toggle="collapse" href="#edtmcpcollapse1">{#TEXT_314#}</a>
+                  </div>
                 
-                <div id="edtmcpcollapse1" class="panel-collapse collapse panel-footer">
-                  <div class="form-group has-float-label">
-                    <div class="input-group col-xs-12">
-                      <input type="text" class="form-control" id="edtmcpstreet" name="all_data[street]">
+                  <div id="edtmcpcollapse1" class="panel-collapse collapse panel-footer">
+                    <div class="form-group has-float-label">
+                      <div class="input-group col-xs-12">
+                        <input type="text" class="form-control" id="edtmcpstreet" name="all_data[street]">
+                      </div>
+                      <label for="edtmcpstreet">{#TEXT_42#}</label>
+                      <div class="help-block with-errors"></div>
                     </div>
-                    <label for="edtmcpstreet">{#TEXT_42#}</label>
-                    <div class="help-block with-errors"></div>
-                  </div>
 
-                  <div class="form-group has-float-label">
-                    <div class="input-group col-xs-12">
-                      <input type="number" class="form-control" id="edtmcppostcode" name="all_data[postcode]">
+                    <div class="form-group has-float-label">
+                      <div class="input-group col-xs-12">
+                        <input type="number" class="form-control" id="edtmcppostcode" name="all_data[postcode]">
+                      </div>
+                      <label for="edtmcppostcode">{#TEXT_43#}</label>
+                      <div class="help-block with-errors"></div>
                     </div>
-                    <label for="edtmcppostcode">{#TEXT_43#}</label>
-                    <div class="help-block with-errors"></div>
-                  </div>
 
-                  <div class="form-group has-float-label">
-                    <div class="input-group col-xs-12">
-                      <input type="text" class="form-control" id="edtmcptown" name="all_data[town]">
+                    <div class="form-group has-float-label">
+                      <div class="input-group col-xs-12">
+                        <input type="text" class="form-control" id="edtmcptown" name="all_data[town]">
+                      </div>
+                      <label for="edtmcptown">{#TEXT_44#}</label>
+                      <div class="help-block with-errors"></div>
                     </div>
-                    <label for="edtmcptown">{#TEXT_44#}</label>
-                    <div class="help-block with-errors"></div>
-                  </div>
 
-                  <div class="form-group has-float-label">
-                    <div class="input-group col-xs-12">
-                      <input type="text" class="form-control" id="edtmcpcountry" name="all_data[country]">
+                    <div class="form-group has-float-label">
+                      <div class="input-group col-xs-12">
+                        <input type="text" class="form-control" id="edtmcpcountry" name="all_data[country]">
+                      </div>
+                      <label for="edtmcpcountry">{#TEXT_45#}</label>
+                      <div class="help-block with-errors"></div>
                     </div>
-                    <label for="edtmcpcountry">{#TEXT_45#}</label>
-                    <div class="help-block with-errors"></div>
-                  </div>
 
-                  <div class="form-group has-float-label">
-                    <div class='input-group date col-xs-12' id="edtmcpvalidfromDiv">
-                      <input type="text" class="form-control" name="all_data[validfrom]" id="edtmcpvalidfrom" required data-error="{#TEXT_238#}">
-                      <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                      </span>
+                    <div class="form-group has-float-label">
+                      <div class='input-group date col-xs-12' id="edtmcpvalidfromDiv">
+                        <input type="text" class="form-control" name="all_data[validfrom]" id="edtmcpvalidfrom" required data-error="{#TEXT_238#}">
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                      </div>
+                      <label for="edtmcpvalidfrom">{#TEXT_34#}</label>
+                      <div class="help-block with-errors"></div>
+                      <script type="text/javascript">
+                        $(function () {
+                            $('#edtmcpvalidfromDiv').datetimepicker({
+                              format: 'YYYY-MM-DD',
+                              focusOnShow: false,
+                              showClear: true,
+                              showTodayButton: true,
+                              showClose: true
+                            });
+                        });
+                      </script>
                     </div>
-                    <label for="edtmcpvalidfrom">{#TEXT_34#}</label>
-                    <div class="help-block with-errors"></div>
-                    <script type="text/javascript">
-                      $(function () {
-                          $('#edtmcpvalidfromDiv').datetimepicker({
+
+                    <div class="form-group has-float-label">
+                      <div class='input-group date col-xs-12' id="edtmcpvalidtilDiv">
+                        <input type="text" class="form-control" name="all_data[validtil]" id="edtmcpvalidtil" required data-error="{#TEXT_239#}">
+                        <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                      </div>
+                      <label for="edtmcpvalidtil">{#TEXT_35#}</label>
+                      <div class="help-block with-errors"></div>
+                      <script type="text/javascript">
+                        $(function () {
+                          $('#edtmcpvalidtilDiv').datetimepicker({
                             format: 'YYYY-MM-DD',
                             focusOnShow: false,
                             showClear: true,
                             showTodayButton: true,
                             showClose: true
                           });
-                      });
-                    </script>
-                  </div>
-
-                  <div class="form-group has-float-label">
-                    <div class='input-group date col-xs-12' id="edtmcpvalidtilDiv">
-                      <input type="text" class="form-control" name="all_data[validtil]" id="edtmcpvalidtil" required data-error="{#TEXT_239#}">
-                      <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                      </span>
-                    </div>
-                    <label for="edtmcpvalidtil">{#TEXT_35#}</label>
-                    <div class="help-block with-errors"></div>
-                    <script type="text/javascript">
-                      $(function () {
-                        $('#edtmcpvalidtilDiv').datetimepicker({
-                          format: 'YYYY-MM-DD',
-                          focusOnShow: false,
-                          showClear: true,
-                          showTodayButton: true,
-                          showClose: true
                         });
-                      });
-                    </script>
+                      </script>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
 
-          <div class="form-group">
-            <div class="col-sm-12 text-center">
-              <button type="button" class="btn"             onclick="btnEditContractpartnerCancel()"    >{#TEXT_315#}</button>
-              <button type="button" class="btn btn-default" onclick="resetFormEditContractpartner()">{#TEXT_304#}</button>
-              <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
+          <div class="row">
+            <div class="form-group col-sm-12 text-center">
+              <span>
+                <button type="button" class="btn"             onclick="btnEditContractpartnerCancel()">{#TEXT_315#}</button>
+                <button type="button" class="btn btn-default" onclick="resetFormEditContractpartner()">{#TEXT_304#}</button>
+                <button type="submit" class="btn btn-primary"                                         >{#TEXT_22#}</button>
+              </span>
             </div>  
-          </div>  
-
+          </div>
         </form>
       </div>
       

@@ -81,8 +81,7 @@
 {/section}
                   </select>
                   <span class="input-group-btn">
-<!--                    <button type="button" class="btn" onclick="showOverlayContractpartner()"> -->
-                    <button type="button" class="btn" data-toggle="modal" data-target="#contractpartnerModal">
+                    <button type="button" class="btn" onclick="showOverlayContractpartner()">
                       <span class="glyphicon glyphicon-plus"></span>
                     </button>
                   </span>

@@ -1,7 +1,9 @@
 {if !$IS_EMBEDDED}
   {$HEADER}
-{/if}
       <div class="container container-small">
+{else}
+      <div>
+{/if}
 
         <form action="{$ENV_INDEX_PHP}" method="POST" name="editcapitalsource" id="edtmcsform">
           <input type="hidden" name="action"            value="edit_capitalsource_submit">
@@ -9,140 +11,158 @@
 
           <div class="text-center">
             <h4>{if $CAPITALSOURCEID > 0}{#TEXT_38#}{else}{#TEXT_10#}{/if}</h4>
-         </div>
-
-          <div class="span2 well">
-
-            <div id="editCapitalsourceErrorsGoHere">
-            </div>
-
-            <div class="form-group has-float-label">
-              <div class="input-group col-xs-12">
-                <input type="text" class="form-control" id="edtmcscomment" name="all_data[comment]" required data-error="{#TEXT_308#}">
-              </div>
-              <label for="edtmcscomment">{#TEXT_21#}</label>
-              <div class="help-block with-errors"></div>
-            </div>
-
-            <div class="form-group has-float-label">
-              <div class="input-group col-xs-12">
-                <select class="form-control" name="all_data[type]" id="edtmcstype" required data-error="{#TEXT_322#}">
-                  <option value="">&nbsp;</option>
-{section name=TYPE loop=$TYPE_VALUES}
-                  <option value="{$TYPE_VALUES[TYPE].value}" > {$TYPE_VALUES[TYPE].text}</option>
-{/section}
-                </select>
-              </div>
-              <label for="edtmcstype">{#TEXT_30#}</label>
-              <div class="help-block with-errors"></div>
-            </div>
-          
-            <div class="form-group has-float-label">
-              <div class="input-group col-xs-12">
-                <select class="form-control" name="all_data[state]" id="edtmcsstate" required data-error="{#TEXT_323#}">
-                  <option value="">&nbsp;</option>
-{section name=STATE loop=$STATE_VALUES}
-                  <option value="{$STATE_VALUES[STATE].value}" > {$STATE_VALUES[STATE].text}</option>
-{/section}
-                </select>
-              </div>
-              <label for="edtmcsstate">{#TEXT_31#}</label>
-              <div class="help-block with-errors"></div>
-            </div>
-          
-            <div class="form-group has-float-label">
-              <div class="input-group col-xs-12">
-                <input type="text" class="form-control" id="edtmcsaccountnumber" name="all_data[accountnumber]"">
-              </div>
-              <label for="edtmcsaccountnumber">{#TEXT_32#}</label>
-            </div>
-
-            <div class="form-group has-float-label">
-              <div class="input-group col-xs-12">
-                <input type="text" class="form-control" id="edtmcsbankcode" name="all_data[bankcode]"">
-              </div>
-              <label for="edtmcsbankcode">{#TEXT_33#}</label>
-            </div>
-    <div class="row">
-
-            <div class="form-group has-float-label col-xs-6">
-              <div class='input-group date col-xs-12' id="edtmcsvalidfromDiv">
-                <input type="text" class="form-control" name="all_data[validfrom]" id="edtmcsvalidfrom" required data-error="{#TEXT_238#}">
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-              </div>
-              <label for="edtmcsvalidfrom">{#TEXT_34#}</label>
-              <div class="help-block with-errors"></div>
-              <script type="text/javascript">
-                $(function () {
-                  $('#edtmcsvalidfromDiv').datetimepicker({
-                    format: 'YYYY-MM-DD',
-                    focusOnShow: false,
-                    showClear: true,
-                    showTodayButton: true,
-                    showClose: true
-                  });
-                });
-              </script>
-            </div>
-
-            <div class="form-group has-float-label col-xs-6">
-              <div class='input-group date col-xs-12' id="edtmcsvalidtilDiv">
-                <input type="text" class="form-control" name="all_data[validtil]" id="edtmcsvalidtil" required data-error="{#TEXT_239#}">
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-              </div>
-              <label for="edtmcsvalidtil">{#TEXT_35#}</label>
-              <div class="help-block with-errors"></div>
-              <script type="text/javascript">
-                $(function () {
-                  $('#edtmcsvalidtilDiv').datetimepicker({
-                    format: 'YYYY-MM-DD',
-                    focusOnShow: false,
-                    showClear: true,
-                    showTodayButton: true,
-                    showClose: true
-                  });
-                });
-              </script>
-            </div>
-    </div>
-
-             <div class="form-group has-float-label">
-              <div class="input-group col-xs-12">
-                <select class="form-control" name="all_data[att_group_use]" id="edtmcsatt_group_use" required data-error="{#TEXT_326#}">
-                  <option value="">&nbsp;</option>
-                  <option value=0>{#TEXT_26#}</option>
-                  <option value=1>{#TEXT_25#}</option>
-                </select>
-              </div>
-              <label for="edtmcsatt_group_use">{#TEXT_210#}</label>
-              <div class="help-block with-errors"></div>
-            </div>
-          
-             <div class="form-group has-float-label">
-              <div class="input-group col-xs-12">
-                <select class="form-control" name="all_data[import_allowed]" id="edtmcsimport_allowed" required data-error="{#TEXT_327#}">
-                  <option value="">&nbsp;</option>
-                  <option value=0>{#TEXT_26#}</option>
-                  <option value=1>{#TEXT_28#}</option>
-                  <option value=2>{#TEXT_298#}</option>
-                </select>
-              </div>
-              <label for="edtmcsimport_allowed">{#TEXT_282#}</label>
-              <div class="help-block with-errors"></div>
-            </div>
-          
           </div>
 
-          <div class="form-group">
-            <div class="col-sm-12 text-center">
-              <button type="button" class="btn"             onclick="btnEditCapitalsourceCancel()"    >{#TEXT_315#}</button>
-              <button type="button" class="btn btn-default" onclick="resetFormEditCapitalsource()">{#TEXT_304#}</button>
-              <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
-            </div>  
+          <div class="well">
+            <div class="row">
+              <div class="col-xs-12" id="editCapitalsourceErrorsGoHere">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group has-float-label col-xs-12">
+                <div class="input-group col-xs-12">
+                  <input type="text" class="form-control" id="edtmcscomment" name="all_data[comment]" required data-error="{#TEXT_308#}">
+                </div>
+                <label for="edtmcscomment">{#TEXT_21#}</label>
+                <div class="help-block with-errors"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group has-float-label col-xs-12">
+                <div class="input-group col-xs-12">
+                  <select class="form-control" name="all_data[type]" id="edtmcstype" required data-error="{#TEXT_322#}">
+                    <option value="">&nbsp;</option>
+{section name=TYPE loop=$TYPE_VALUES}
+                    <option value="{$TYPE_VALUES[TYPE].value}" > {$TYPE_VALUES[TYPE].text}</option>
+{/section}
+                  </select>
+                </div>
+                <label for="edtmcstype">{#TEXT_30#}</label>
+                <div class="help-block with-errors"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group has-float-label col-xs-12">
+                <div class="input-group col-xs-12">
+                  <select class="form-control" name="all_data[state]" id="edtmcsstate" required data-error="{#TEXT_323#}">
+                    <option value="">&nbsp;</option>
+{section name=STATE loop=$STATE_VALUES}
+                    <option value="{$STATE_VALUES[STATE].value}" > {$STATE_VALUES[STATE].text}</option>
+{/section}
+                  </select>
+                </div>
+                <label for="edtmcsstate">{#TEXT_31#}</label>
+                <div class="help-block with-errors"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group has-float-label col-xs-12">
+                <div class="input-group col-xs-12">
+                  <input type="text" class="form-control" id="edtmcsaccountnumber" name="all_data[accountnumber]"">
+                </div>
+                <label for="edtmcsaccountnumber">{#TEXT_32#}</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group has-float-label col-xs-12">
+                <div class="input-group col-xs-12">
+                  <input type="text" class="form-control" id="edtmcsbankcode" name="all_data[bankcode]"">
+                </div>
+                <label for="edtmcsbankcode">{#TEXT_33#}</label>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group has-float-label col-xs-12">
+                <div class='input-group date col-xs-12' id="edtmcsvalidfromDiv">
+                  <input type="text" class="form-control" name="all_data[validfrom]" id="edtmcsvalidfrom" required data-error="{#TEXT_238#}">
+                  <span class="input-group-addon">
+                   <span class="glyphicon glyphicon-calendar"></span>
+                   </span>
+                </div>
+                <label for="edtmcsvalidfrom">{#TEXT_34#}</label>
+                <div class="help-block with-errors"></div>
+                <script type="text/javascript">
+                  $(function () {
+                    $('#edtmcsvalidfromDiv').datetimepicker({
+                      format: 'YYYY-MM-DD',
+                      focusOnShow: false,
+                      showClear: true,
+                      showTodayButton: true,
+                      showClose: true
+                    });
+                  });
+                </script>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group has-float-label col-xs-12">
+                <div class='input-group date col-xs-12' id="edtmcsvalidtilDiv">
+                  <input type="text" class="form-control" name="all_data[validtil]" id="edtmcsvalidtil" required data-error="{#TEXT_239#}">
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+                </div>
+                <label for="edtmcsvalidtil">{#TEXT_35#}</label>
+                <div class="help-block with-errors"></div>
+                <script type="text/javascript">
+                  $(function () {
+                    $('#edtmcsvalidtilDiv').datetimepicker({
+                      format: 'YYYY-MM-DD',
+                      focusOnShow: false,
+                      showClear: true,
+                      showTodayButton: true,
+                      showClose: true
+                    });
+                  });
+                </script>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group has-float-label col-xs-12">
+                <div class="input-group col-xs-12">
+                  <select class="form-control" name="all_data[att_group_use]" id="edtmcsatt_group_use" required data-error="{#TEXT_326#}">
+                    <option value="">&nbsp;</option>
+                    <option value=0>{#TEXT_26#}</option>
+                    <option value=1>{#TEXT_25#}</option>
+                  </select>
+                </div>
+                <label for="edtmcsatt_group_use">{#TEXT_210#}</label>
+                <div class="help-block with-errors"></div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group has-float-label col-xs-12">
+                <div class="input-group col-xs-12">
+                  <select class="form-control" name="all_data[import_allowed]" id="edtmcsimport_allowed" required data-error="{#TEXT_327#}">
+                    <option value="">&nbsp;</option>
+                    <option value=0>{#TEXT_26#}</option>
+                    <option value=1>{#TEXT_28#}</option>
+                    <option value=2>{#TEXT_298#}</option>
+                  </select>
+                </div>
+                <label for="edtmcsimport_allowed">{#TEXT_282#}</label>
+                <div class="help-block with-errors"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group">
+              <div class="col-sm-12 text-center">
+                <button type="button" class="btn"             onclick="btnEditCapitalsourceCancel()"    >{#TEXT_315#}</button>
+                <button type="button" class="btn btn-default" onclick="resetFormEditCapitalsource()">{#TEXT_304#}</button>
+                <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
+              </div>  
+            </div>
           </div>  
 
         </form>

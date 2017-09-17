@@ -114,7 +114,7 @@
     
 {if $EMBEDDED_ADD_CONTRACTPARTNER }
       <div id="contractpartnerModal" class="modal fade" role="dialog">
-      <div class="modal-dialog modal-lg">
+      <div class="modal-dialog">
       <div class="modal-content">
       <div class="modal-body">
 {$EMBEDDED_ADD_CONTRACTPARTNER}
@@ -126,64 +126,63 @@
 <script>
         function showOverlayContractpartner() {
           saveFocusedElement();
+          $('#contractpartnerModal').modal('show');
           document.editcontractpartner.edtmcpname.focus();
           
         }
         function hideOverlayContractpartner() {
           $('#contractpartnerModal').modal('hide');
-        }
-
-        function hideOverlayContractpartnerIsDone() {
           setTimeout("restoreLastFocusedElement()", 150);
         }
-        
-        $('#contractpartnerModal').on('shown.bs.modal', function (e) {
-          showOverlayContractpartner();
-        })
-
-        $('#contractpartnerModal').on('hidden.bs.modal', function (e) {
-          hideOverlayContractpartnerIsDone();
-        })
 </script>
 {/literal}
 {/if}
 
 {if $EMBEDDED_ADD_POSTINGACCOUNT }
-      <div class="overlay overlay_edit_postingaccount" style="display: none">
-        <div class="embedded embedded_postingaccount ">
+      <div id="postingAccountModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-body">
 {$EMBEDDED_ADD_POSTINGACCOUNT}
-        </div>
+      </div>
+      </div>
+      </div>
       </div>
 
 <script>
         function showOverlayPostingAccount() {
           saveFocusedElement();
-          $('.overlay_edit_postingaccount').show();
+          $('#postingAccountModal').modal('show');
           document.editpostingaccount.edtmpaname.focus();
         }
+
         function hideOverlayPostingAccount() {
-          $('.overlay_edit_postingaccount').hide();
-          restoreLastFocusedElement();
+          $('#postingAccountModal').modal('hide');
+          setTimeout("restoreLastFocusedElement()", 150);
         }
 </script>
 {/if}
 
 {if $EMBEDDED_ADD_CAPITALSOURCE }
-      <div class="overlay overlay_edit_capitalsource" style="display: none">
-        <div class="embedded embedded_capitalsource ">
+      <div id="capitalsourceModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-body">
 {$EMBEDDED_ADD_CAPITALSOURCE}
-        </div>
+      </div>
+      </div>
+      </div>
       </div>
 
 <script>
         function showOverlayCapitalsource() {
           saveFocusedElement();
-          $('.overlay_edit_capitalsource').show();
+          $('#capitalsourceModal').modal('show');
           document.editcapitalsource.edtmcscomment.focus();
         }
         function hideOverlayCapitalsource() {
-          $('.overlay_edit_capitalsource').hide();
-          restoreLastFocusedElement();
+          $('#capitalsourceModal').modal('hide');
+          setTimeout("restoreLastFocusedElement()", 150);
         }
 
 </script>
