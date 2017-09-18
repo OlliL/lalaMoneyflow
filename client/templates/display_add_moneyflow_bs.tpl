@@ -459,11 +459,19 @@
 
         function hideNonRelevantFieldsIfSplitEntries() {
           if(filledSplitEntryRows.length > 0) {
-            $('#addmnfcommentDiv').hide();
-            $('#addmnfmpa_postingaccountidDiv').hide();
+            if($('#addmnfcommentDiv').is(':visible')) {
+              $('#addmnfcommentDiv').hide();
+              $('#addmnfcomment').prop('required',false).change();
+              $('#addmnfmpa_postingaccountidDiv').hide();
+              $('#addmnfmpa_postingaccountid').prop('required',false).change();
+            }
           } else {
-            $('#addmnfcommentDiv').show();
-            $('#addmnfmpa_postingaccountidDiv').show();
+            if($('#addmnfcommentDiv').is(':hidden')) {
+              $('#addmnfcommentDiv').show();
+              $('#addmnfcomment').prop('required',true).change();
+              $('#addmnfmpa_postingaccountidDiv').show();
+              $('#addmnfmpa_postingaccountid').prop('required',true).change();
+            }
           }
         }
         
