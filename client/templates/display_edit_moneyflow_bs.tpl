@@ -1,5 +1,9 @@
 {$HEADER}
       <div class="container container-wide">
+        <div class="text-center">
+          <h4>{if $MONEYFLOWID > 0}{#TEXT_15#}{else}{#TEXT_8#}{/if}</h4>
+        </div>
+{if $MONEYFLOWID == 0}
         <div class="row">
     	  <div class="col-xs-12">
             <div class="col-md-6 col-md-offset-3 col-xs-12">
@@ -9,13 +13,15 @@
             </div>
           </div>
         </div>
+{/if}
         <div class="row">
           <div class="col-xs-12">&nbsp;</div>
         </div>
         <form action="{$ENV_INDEX_PHP}" method="POST" name="addmoneyflow" id="addmnfform">
-          <input type="hidden" name="action"                          value="add_moneyflow_submit">
-          <input type="hidden" name="realaction"                      value="save">
+          <input type="hidden" name="action"                          value="edit_moneyflow_submit">
+          <input type="hidden" name="moneyflowid"                     value="{$MONEYFLOWID}">
           <input type="hidden" name="all_data[predefmoneyflowid]"     value="-1"               id="addmnfpredefmoneyflowid" >
+          <input type="hidden" name="all_data[existing_split_entry_ids]"  value=""               id="addmnfexisting_split_entry_ids" >
 
           <div class="span2 well">
 
@@ -185,6 +191,9 @@
 
           <div class="form-group">
             <div class="col-sm-12 text-center">
+{if $NEW_WINDOW}
+              <button type="button" class="btn"             onclick="btnEditMoneyflowCancel()"    >{#TEXT_315#}</button>
+{/if}
               <button type="button" class="btn btn-default" onclick="resetFormAddMoneyflow()">{#TEXT_304#}</button>
               <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
             </div>  
@@ -211,6 +220,7 @@
             <div class="form-group col-md-2 col-xs-12">
               <span class="has-float-label">
                 <div class="input-group col-xs-12">
+                  <input type="hidden" id="addmnfsubmoneyflowsplitentryid{{splitEntryIndex}}" name="all_subdata[{{splitEntryIndex}}][moneyflowsplitentryid]" value="-1">
                   <input type="number" step="0.01" class="form-control" id="addmnfsubamount{{splitEntryIndex}}" name="all_subdata[{{splitEntryIndex}}][amount]"  data-error="{{{amountError}}}" onChange="calculateRemainingAmount({{splitEntryIndex}});checkIfRequired({{splitEntryIndex}})">
                 </div>
                 <label for="addmnfsubamount{{splitEntryIndex}}">{{amountLabel}}</label>
@@ -266,6 +276,7 @@
         var addMoneyflowJsonContractpartner = {$JSON_CONTRACTPARTNER};
         var addMoneyflowJsonPostingAccounts = {$JSON_POSTINGACCOUNTS};
         var addMoneyflowJsonFormDefaults = {$JSON_FORM_DEFAULTS};
+        var addMoneyflowJsonFormSplitEntriesDefaults = {$JSON_FORM_SPLIT_ENTRIES_DEFAULTS};
         var onEmpty = "{#TEXT_302#}";
         var offEmpty = "{#TEXT_303#}";
         var onFavorite = "{#TEXT_311#}";
@@ -311,23 +322,25 @@
         }
 
         function fillSelectMoneyflow(currency, addMoneyflowJsonPreDefMoneyflows) {
-          var jsonPredefmoneyflowsSize = addMoneyflowJsonPreDefMoneyflows.length;
+          if(addMoneyflowJsonPreDefMoneyflows != null) {
+            var jsonPredefmoneyflowsSize = addMoneyflowJsonPreDefMoneyflows.length;
 
-          var select = document.getElementById('selectmoneyflow');
+            var select = document.getElementById('selectmoneyflow');
 
-          for (var i = 0; i < jsonPredefmoneyflowsSize; i++){
-            var preDefMoneyflow = addMoneyflowJsonPreDefMoneyflows[i];
+            for (var i = 0; i < jsonPredefmoneyflowsSize; i++){
+              var preDefMoneyflow = addMoneyflowJsonPreDefMoneyflows[i];
 
-            var opt = document.createElement('option');
-            opt.value = i;
-            opt.innerHTML =  preDefMoneyflow["contractpartnername"] +
-                             " | " + 
-                             parseFloat(preDefMoneyflow["amount"]).toFixed(2) + 
-                             currency + 
-                             " | " + 
-                             preDefMoneyflow["comment"];
+              var opt = document.createElement('option');
+              opt.value = i;
+              opt.innerHTML =  preDefMoneyflow["contractpartnername"] +
+                               " | " + 
+                               parseFloat(preDefMoneyflow["amount"]).toFixed(2) + 
+                               currency + 
+                               " | " + 
+                               preDefMoneyflow["comment"];
 
-            select.appendChild(opt);
+              select.appendChild(opt);
+            }
           }
         }
 
@@ -356,8 +369,10 @@
                 $('#favorite').prop('checked', false).change();
               })
 
-              var select = document.getElementById('selectmoneyflow');
-              select.selectedIndex = 0;
+              if(addMoneyflowJsonPreDefMoneyflows != null) {
+                var select = document.getElementById('selectmoneyflow');
+                select.selectedIndex = 0;
+              }
             } else {
               for ( var key in addMoneyflowJsonFormDefaults ) {
                 var element = document.getElementById( 'addmnf'+key );
@@ -380,6 +395,37 @@
                   }
                 }
               }
+
+              var existingSplitEntryIds = [];
+              var usedSplitEntryRows = 0;
+              for( var key in addMoneyflowJsonFormSplitEntriesDefaults ) {
+                if(usedSplitEntryRows == shownSplitEntryRows.length) {
+                  addSplitEntryLine();
+                }
+                var splitEntryRow = shownSplitEntryRows[usedSplitEntryRows];
+                var jsonDefault = addMoneyflowJsonFormSplitEntriesDefaults[key];
+
+                for ( var key2 in jsonDefault ) {
+                  var element = document.getElementById( 'addmnfsub'+key2+splitEntryRow );
+                  if ( element !== null ) {
+                    element.value = jsonDefault[key2];
+                    if(key2 == "moneyflowsplitentryid") {
+                      existingSplitEntryIds.push(jsonDefault[key2]);
+                    }
+                  }
+                }
+                
+                
+                checkIfRequired(splitEntryRow);
+                usedSplitEntryRows++;
+                
+              }
+              
+              if(usedSplitEntryRows > 0) {
+                $('#addmnfexisting_split_entry_ids').val(JSON.stringify(existingSplitEntryIds));
+                $('.collapse').collapse('show');
+              } 
+              calculateRemainingAmount();
               
               if ( document.addmoneyflow.addmnfpredefmoneyflowid >= 0 ) {
                 favoriteOn = onFavorite;
@@ -602,8 +648,19 @@
           }
           return true;
         }
+
+        function btnEditMoneyflowCancel() {
+          window.close();
+        }
+
         function ajaxAddMoneyflowSuccess(data) {
+{/literal}
+{if $NEW_WINDOW}
+          window.close();
+{else}
           resetFormAddMoneyflow();
+{/if}
+{literal}
         }
 
         function ajaxAddMoneyflowError(data) {
@@ -612,6 +669,7 @@
         }
 
         fillSelectMoneyflow(currency, addMoneyflowJsonPreDefMoneyflows);
+        initSplitEntries();
         preFillFormAddMoneyflow(FORM_MODE_DEFAULT);
         $('#addmnfform').validator();
         $('#addmnfform').ajaxForm({
@@ -623,7 +681,6 @@
             error: ajaxAddMoneyflowError
         });
         
-        initSplitEntries();
 
 {/literal}
       </script>

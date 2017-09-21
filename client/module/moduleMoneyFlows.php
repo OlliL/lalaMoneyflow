@@ -64,204 +64,69 @@ class moduleMoneyFlows extends module {
 		echo base64_decode( $receipt ['receipt'] );
 	}
 
-	public final function display_edit_moneyflow($realaction, $id, $all_data, $moneyflow_split_entries) {
-		$close = 0;
-		if (empty( $id ))
-			return null;
+	public final function display_edit_moneyflow($id) {
 
-		$orig_amount = $all_data ['amount'];
+		if ($id == 0) {
+			$this->parse_header( 0, 1, 'display_edit_moneyflow_bs.tpl' );
+			$displayMoneyflow = MoneyflowControllerHandler::getInstance()->showAddMoneyflows();
+			$this->template_assign_raw( 'JSON_FORM_DEFAULTS', '""' );
+			$this->template_assign_raw( 'JSON_FORM_SPLIT_ENTRIES_DEFAULTS', '""' );
+			$this->template_assign_raw( 'NEW_WINDOW', false );
+		} else {
+			$this->parse_header( 1, 1, 'display_edit_moneyflow_bs.tpl' );
+			$displayMoneyflow = MoneyflowControllerHandler::getInstance()->showEditMoneyflow( $id );
+			$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $displayMoneyflow ['moneyflow'] ) );
+			$this->template_assign_raw( 'JSON_FORM_SPLIT_ENTRIES_DEFAULTS', json_encode( $displayMoneyflow ['moneyflow_split_entries'] ) );
+			$this->template_assign_raw( 'NEW_WINDOW', true );
+		}
+
+		$contractpartner = $this->sort_contractpartner( $displayMoneyflow ['contractpartner'] );
+
+		$this->template_assign( 'MONEYFLOWID', $id );
+		$this->template_assign( 'CAPITALSOURCE_VALUES', $displayMoneyflow ['capitalsources'] );
+		$this->template_assign( 'CONTRACTPARTNER_VALUES', $contractpartner );
+		$this->template_assign( 'POSTINGACCOUNT_VALUES', $displayMoneyflow ['postingaccounts'] );
+
+		$this->template_assign_raw( 'JSON_POSTINGACCOUNTS', json_encode( $displayMoneyflow ['postingaccounts'] ) );
+		$this->template_assign_raw( 'JSON_PREDEFMONEYFLOWS', json_encode( $displayMoneyflow ['predefmoneyflows'] ) );
+		$this->template_assign_raw( 'JSON_CONTRACTPARTNER', json_encode( $contractpartner ) );
+
+		return $this->fetch_template( 'display_edit_moneyflow_bs.tpl' );
+	}
+
+	public final function edit_moneyflow($id, $all_data, $all_subdata) {
 		$delete_moneyflowsplitentryids = array ();
-		$update_moneyflowsplitentrys = array ();
-		$insert_moneyflowsplitentrys = array ();
+		$update_moneyflowsplitentries = array ();
+		$insert_moneyflowsplitentries = array ();
 
-		switch ($realaction) {
-			case 'save' :
-				$valid_data = true;
-				$all_data ['moneyflowid'] = $id;
+		$existingSplitEntryIds = json_decode( $all_data ['existing_split_entry_ids'] );
+		$receivedSplitEntryIds = array ();
 
-				if (! $this->fix_amount( $all_data ['amount'] )) {
-					$all_data ['amount_error'] = 1;
-					$valid_data = false;
-				}
-
-				if (! $this->dateIsValid( $all_data ['bookingdate'] )) {
-					$this->add_error( ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT, array (
-							Environment::getInstance()->getSettingDateFormat()
-					) );
-					$all_data ['bookingdate_error'] = 1;
-					$valid_data = false;
-				}
-				if (! $this->dateIsValid( $all_data ['invoicedate'] )) {
-					$this->add_error( ErrorCode::INVOICEDATE_IN_WRONG_FORMAT, array (
-							Environment::getInstance()->getSettingDateFormat()
-					) );
-					$all_data ['invoicedate_error'] = 1;
-					$valid_data = false;
-				}
-
-				if ($valid_data === true) {
-					if (count( $moneyflow_split_entries ) > 0) {
-						$sum_amount = $all_data ['amount'];
-						foreach ( $moneyflow_split_entries as $key => $value ) {
-							if (array_key_exists( 'delete', $value ) && $value ['delete'] == '1') {
-								if ($value ['moneyflowsplitentryid'] > 0) {
-									$delete_moneyflowsplitentryids [] = $value ['moneyflowsplitentryid'];
-								}
-							} else {
-								if ($value ['moneyflowsplitentryid'] > 0 || $value ['amount'] != '') {
-									if (! $this->fix_amount( $value ['amount'] )) {
-										$moneyflow_split_entries [$key] ['amount_error'] = 1;
-										$valid_data = false;
-									} else {
-										$sum_amount = number_format( $sum_amount, 2 ) - number_format( $value ['amount'], 2 );
-									}
-								}
-
-								if ($value ['moneyflowsplitentryid'] > 0) {
-									$value ['moneyflowid'] = $all_data ['moneyflowid'];
-									$update_moneyflowsplitentrys [] = $value;
-								} elseif ($value ['amount'] != '') {
-									$value ['moneyflowid'] = $all_data ['moneyflowid'];
-									$insert_moneyflowsplitentrys [] = $value;
-								}
-							}
-						}
-
-						if ($sum_amount != 0 && (count( $insert_moneyflowsplitentrys ) > 0 || count( $update_moneyflowsplitentrys ) > 0)) {
-							$this->add_error( ErrorCode::SPLIT_ENTRIES_AMOUNT_IS_NOT_EQUALS_MONEYFLOW_AMOUNT );
-							$valid_data = false;
-						}
-					}
-				}
-
-				if ($valid_data === true) {
-
-					$ret = MoneyflowControllerHandler::getInstance()->updateMoneyflow( $all_data, $delete_moneyflowsplitentryids, $update_moneyflowsplitentrys, $insert_moneyflowsplitentrys );
-					if ($ret === true) {
-						$close = 1;
-						break;
+		if (is_array( $all_subdata )) {
+			foreach ( $all_subdata as $splitEntry ) {
+				if ($splitEntry ['amount'] != null && $splitEntry ['comment'] != null && $splitEntry ['mpa_postingaccountid'] != null) {
+					if ($splitEntry ['moneyflowsplitentryid'] == - 1) {
+						$insert_moneyflowsplitentries [] = $splitEntry;
 					} else {
-						$capitalsource_values = $ret ['capitalsources'];
-						$contractpartner_values = $ret ['contractpartner'];
-						$postingaccount_values = $ret ['postingaccounts'];
-						foreach ( $ret ['errors'] as $validationResult ) {
-							$error = $validationResult ['error'];
-
-							switch ($error) {
-								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-									$this->add_error( $error, array (
-											$orig_amount
-									) );
-									break;
-								case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
-									$this->add_error( $error, array (
-											Environment::getInstance()->getSettingDateFormat()
-									) );
-									break;
-								default :
-									$this->add_error( $error );
-							}
-
-							switch ($error) {
-								case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
-								case ErrorCode::BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT :
-									$all_data ['bookingdate_error'] = 1;
-									break;
-								case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
-									$all_data ['bookingdate_error'] = 1;
-								case ErrorCode::CAPITALSOURCE_DOES_NOT_EXIST :
-								case ErrorCode::CAPITALSOURCE_IS_NOT_SET :
-								case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
-									$all_data ['capitalsource_error'] = 1;
-									break;
-								case ErrorCode::CONTRACTPARTNER_DOES_NOT_EXIST :
-								case ErrorCode::CONTRACTPARTNER_IS_NOT_SET :
-									$all_data ['contractpartner_error'] = 1;
-									break;
-								case ErrorCode::AMOUNT_IS_ZERO :
-								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-									$all_data ['amount_error'] = 1;
-									break;
-								case ErrorCode::CONTRACTPARTNER_NO_LONGER_VALID :
-									$all_data ['contractpartner_error'] = 1;
-									$all_data ['bookingdate_error'] = 1;
-									break;
-							}
-						}
+						$update_moneyflowsplitentries [] = $splitEntry;
+						$receivedSplitEntryIds [] = $splitEntry ['moneyflowsplitentryid'];
 					}
-					break;
 				}
-			default :
-				$showEditMoneyflow = MoneyflowControllerHandler::getInstance()->showEditMoneyflow( $id );
-				$all_data_pre = $showEditMoneyflow ['moneyflow'];
-				$moneyflow_split_entries_pre = $showEditMoneyflow ['moneyflow_split_entries'];
-				$capitalsource_values = $showEditMoneyflow ['capitalsources'];
-				$contractpartner_values = $showEditMoneyflow ['contractpartner'];
-				$postingaccount_values = $showEditMoneyflow ['postingaccounts'];
-				if ($realaction != "save") {
-					$all_data = $all_data_pre;
-					$moneyflow_split_entries = $moneyflow_split_entries_pre;
-				}
+			}
 
-				break;
+			if (is_array( $existingSplitEntryIds )) {
+				$delete_moneyflowsplitentryids = array_diff( $existingSplitEntryIds, $receivedSplitEntryIds );
+			}
 		}
 
-		$i = count( $moneyflow_split_entries );
-		while ( $i < 10 ) {
-			$moneyflow_split_entries [$i] = array (
-					'moneyflowsplitentryid' => $i * - 1
-			);
-			$i ++;
+		$all_data['moneyflowid'] = $id;
+
+		if ($id > 0) {
+			$ret = MoneyflowControllerHandler::getInstance()->updateMoneyflow( $all_data, $delete_moneyflowsplitentryids, $update_moneyflowsplitentries, $insert_moneyflowsplitentries );
+		} else {
+			$ret = MoneyflowControllerHandler::getInstance()->createMoneyflow( $all_data, $insert_moneyflowsplitentries );
 		}
 
-		$this->template_assign( 'CLOSE', $close );
-		if ($close === 0) {
-			$this->template_assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-			$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
-			$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
-			$this->template_assign( 'ALL_DATA', $all_data );
-			$this->template_assign( 'MONEYFLOW_SPLIT_ENTRIES', $moneyflow_split_entries );
-			$this->template_assign( 'MONEYFLOWID', $id );
-			$this->template_assign( 'ERRORS', $this->get_errors() );
-		}
-
-		$this->parse_header( 1 );
-		return $this->fetch_template( 'display_edit_moneyflow.tpl' );
-	}
-
-	public final function display_add_moneyflow() {
-		$addMoneyflow = MoneyflowControllerHandler::getInstance()->showAddMoneyflows();
-
-		$capitalsource_values = $addMoneyflow ['capitalsources'];
-		$contractpartner_values = $addMoneyflow ['contractpartner'];
-		$postingaccount_values = $addMoneyflow ['postingaccounts'];
-		$preDefMoneyflows = $addMoneyflow ['predefmoneyflows'];
-
-		$this->parse_header( 0, 1, 'display_add_moneyflow_bs.tpl' );
-
-		$this->template_assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-		$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
-		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
-
-		$this->template_assign_raw( 'JSON_POSTINGACCOUNTS', json_encode( $postingaccount_values ) );
-		$this->template_assign_raw( 'JSON_PREDEFMONEYFLOWS', json_encode( $preDefMoneyflows ) );
-		$this->template_assign_raw( 'JSON_CONTRACTPARTNER', json_encode( $this->sort_contractpartner( $contractpartner_values ) ) );
-
-		return $this->fetch_template( 'display_add_moneyflow_bs.tpl' );
-	}
-
-	public final function add_moneyflow($all_data, $all_subdata)
-    {
-        $all_data ['moneyflowid'] = -1;
-        $insert_moneyflowsplitentries = array();
-        if (is_array($all_subdata)) {
-            foreach ($all_subdata as $splitEntry) {
-                if($splitEntry['amount'] != null && $splitEntry['comment'] != null && $splitEntry['mpa_postingaccountid'] != null) {
-                    $insert_moneyflowsplitentries[] = $splitEntry;
-                }
-            }
-        }
-		$ret = MoneyflowControllerHandler::getInstance()->createMoneyflow( $all_data, $insert_moneyflowsplitentries );
 		return $this->handleReturnForAjax( $ret );
 	}
 

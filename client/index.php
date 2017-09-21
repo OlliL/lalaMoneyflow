@@ -139,9 +139,8 @@ if ($is_logged_in == 0) {
 		case 'delete_predefmoneyflow' :
 			$modulePreDefMoneyFlows = new modulePreDefMoneyFlows();
 			break;
-		case 'add_moneyflow' :
-		case 'add_moneyflow_submit' :
 		case 'edit_moneyflow' :
+		case 'edit_moneyflow_submit' :
 		case 'delete_moneyflow' :
 		case 'show_moneyflow_receipt' :
 			$moduleMoneyFlows = new moduleMoneyFlows();
@@ -395,22 +394,16 @@ if ($is_logged_in == 0) {
 
 			/* moneyflows */
 
-			case 'add_moneyflow' :
-
-				$display = $moduleMoneyFlows->display_add_moneyflow();
-				break;
-			case 'add_moneyflow_submit' :
-
-				$all_subdata = array_key_exists( 'all_subdata', $_REQUEST ) ? $_REQUEST ['all_subdata'] : '';
-				$display = $moduleMoneyFlows->add_moneyflow( $all_data, $all_subdata );
-				break;
-
 			case 'edit_moneyflow' :
 
-				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
-				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : '';
-				$moneyflow_split_entries = array_key_exists( 'moneyflow_split_entries', $_REQUEST ) ? $_REQUEST ['moneyflow_split_entries'] : array ();
-				$display = $moduleMoneyFlows->display_edit_moneyflow( $realaction, $id, $all_data, $moneyflow_split_entries );
+				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : 0;
+				$display = $moduleMoneyFlows->display_edit_moneyflow($id);
+				break;
+			case 'edit_moneyflow_submit' :
+
+				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : 0;
+				$all_subdata = array_key_exists( 'all_subdata', $_REQUEST ) ? $_REQUEST ['all_subdata'] : '';
+				$display = $moduleMoneyFlows->edit_moneyflow( $id, $all_data, $all_subdata );
 				break;
 
 			case 'delete_moneyflow' :

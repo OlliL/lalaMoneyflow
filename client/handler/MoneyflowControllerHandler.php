@@ -163,14 +163,11 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 
 		$result = null;
+
 		if ($response === true) {
 			$result = true;
-		} else if ($response instanceof updateMoneyflowResponse) {
-			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
-			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
-			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
-			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
-			$result ['result'] = $response->getResult();
+		} else if (is_array($response)) {
+			$result = $response;
 		}
 		return $result;
 	}

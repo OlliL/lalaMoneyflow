@@ -37,7 +37,7 @@
         <div class="navbar-header">
           <a class="navbar-brand" href="{$ENV_INDEX_PHP}"><small>moneyjinn {$VERSION}</small></a>
           <ul class="nav navbar-nav pull-left">
-            <li {if $TEMPLATE == "display_add_moneyflow_bs.tpl"} class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=add_moneyflow"><i class="glyphicon glyphicon-euro"></i></a></li>
+            <li {if $TEMPLATE == "display_edit_moneyflow_bs.tpl"} class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=edit_moneyflow"><i class="glyphicon glyphicon-euro"></i></a></li>
           </ul>
 
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#moneyjinn-navbar-collapse" aria-expanded="false">
@@ -68,7 +68,7 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-plus"></i> <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="{$ENV_INDEX_PHP}?action=add_moneyflow">{#TEXT_8#}</a>
+                <li><a href="{$ENV_INDEX_PHP}?action=edit_moneyflow">{#TEXT_8#}</a>
                 <li role="separator" class="divider"></li>
                 <li><a href="javascript:showOverlayCapitalsource()">{#TEXT_1#}</a></li>
                 <li><a href="javascript:showOverlayContractpartner()">{#TEXT_2#}</a></li>

@@ -17,7 +17,7 @@
 {if $NO_NAVIGATION == 0}
 				<td valign="top" width="100"><div class="nobr">
 <p style="font-size:11px;color:darkblue;font-weight:bold;text-align:center">lalaMoneyflow<br>{$VERSION}</p><br>
-					<a href="{$ENV_INDEX_PHP}?action=add_moneyflow">{#TEXT_8#}</a><br>
+					<a href="{$ENV_INDEX_PHP}?action=edit_moneyflow">{#TEXT_8#}</a><br>
 					<br>
 					<a href="{$ENV_INDEX_PHP}?action=list_capitalsources">{#TEXT_1#}</a><br>
 					<a href="{$ENV_INDEX_PHP}?action=list_contractpartners">{#TEXT_2#}</a><br>
