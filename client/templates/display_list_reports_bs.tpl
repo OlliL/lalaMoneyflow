@@ -27,53 +27,49 @@ function Go(x)
           <h4>{#TEXT_5#}</h4>
         </div>
 
-        <div class="row">
-    	  <div class="col-xs-12">
 
-
-			<form action="#" method="get">
-			{if {$ALL_YEARS|@count} gt 0}
-			<table border="0" cellpadding=5>
-				<tr>
-					<td class="contrastbgcolor"><select class="contrastbgcolor" name="reports_year" size=1 onchange="Go(this.form.reports_year.options[this.form.reports_year.options.selectedIndex].value)">
-					{section name=YEAR loop=$ALL_YEARS}
-						<option {if $ALL_YEARS[YEAR] == $SELECTED_YEAR}selected{/if} value="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_year={$ALL_YEARS[YEAR]}"> {$ALL_YEARS[YEAR]}
-					{/section}
-					</select></td>
-					{section name=MONTH loop=$ALL_MONTHS}
-						<td class="contrastbgcolor">
-							{if $ALL_MONTHS[MONTH].nummeric ne $SELECTED_MONTH}
-								<a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$ALL_MONTHS[MONTH].nummeric}&amp;reports_year={$SELECTED_YEAR}">{$ALL_MONTHS[MONTH].name}</a> 
-							{else}
-								{$ALL_MONTHS[MONTH].name}
-							{/if}
-						</td>
-					{/section}
-				</tr>
-			</table>
-			{else}
-				<font color="#FF0000">{#TEXT_261#}</font>
-			{/if}
-			</form>
-
-
-
-          </div>
+        <div class="text-center">
+          <form action="#" method="get" class="form-inline">
+            <table style="margin: 0 auto;">
+              <tr>
+{if {$ALL_YEARS|@count} gt 0}
+                <td class="text-right">
+                  <select class="form-control" name="reports_year" onchange="Go(this.form.reports_year.options[this.form.reports_year.options.selectedIndex].value)">
+{section name=YEAR loop=$ALL_YEARS}
+                    <option {if $ALL_YEARS[YEAR] == $SELECTED_YEAR}selected{/if} value="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_year={$ALL_YEARS[YEAR]}"> {$ALL_YEARS[YEAR]}
+{/section}
+                  </select>
+                  &nbsp;
+                </td>
+                <td>
+                  <ul class="pagination">
+{section name=MONTH loop=$ALL_MONTHS}
+{if $ALL_MONTHS[MONTH].nummeric ne $SELECTED_MONTH}
+                    <li><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$ALL_MONTHS[MONTH].nummeric}&amp;reports_year={$SELECTED_YEAR}">{$ALL_MONTHS[MONTH].name}</a></li> 
+{else}
+                    <li class="active"><a href="#">{$ALL_MONTHS[MONTH].name}</a></li>
+{/if}
+{/section}
+                  </ul>
+                </td>
+{else}
+                <td class="red">{#TEXT_261#}</td>
+{/if}
+              </tr>
+            </table>  
+          </form>
         </div>
 
 {if $REPORT eq 1}
         <div class="row">
-    	  <div class="col-xs-2">
+    	  <div class="col-xs-6">
 						{if $PREV_LINK == true }
 							<a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$PREV_MONTH}&amp;reports_year={$PREV_YEAR}{if $SORTBY != ''}&amp;reports_sortby={$SORTBY}&amp;reports_order={$ORDER}{/if}">&lt;&lt; {#TEXT_202#}</a>
 						{else}
 							&nbsp;
 						{/if}
     	  </div>
-    	  <div class="col-xs-8 text-center">
-    	 	<h4>{#TEXT_61#} {$MONTH.name} {$SELECTED_YEAR}</h4>
-    	  </div>
-    	  <div class="col-xs-2 text-right">
+    	  <div class="col-xs-6 text-right">
 						{if $NEXT_LINK == true }
 							<a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$NEXT_MONTH}&amp;reports_year={$NEXT_YEAR}{if $SORTBY != ''}&amp;reports_sortby={$SORTBY}&amp;reports_order={$ORDER}{/if}">{#TEXT_201#} &gt;&gt;</a>
 						{else}
@@ -81,113 +77,102 @@ function Go(x)
 						{/if}
     	  </div>
     	</div>
-
-			<div>
-				<div class="row">
-					<div class="col-xs-1"></div>
-					<div class="col-xs-1"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_bookingdate&amp;reports_order={$NEWORDER}" >{#TEXT_16#}</a></div>
-					<div class="col-xs-1"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_invoicedate&amp;reports_order={$NEWORDER}" >{#TEXT_17#}</a></div>
-					<div class="col-xs-1"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_amount&amp;reports_order={$NEWORDER}"     >{#TEXT_18#}</a></div>
-					<div class="col-xs-2"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=contractpartners_name&amp;reports_order={$NEWORDER}" >{#TEXT_2#}</a></div>
-					<div class="col-xs-2"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_comment&amp;reports_order={$NEWORDER}"    >{#TEXT_21#}</a></div>
-					<div class="col-xs-1"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=postingaccount_name&amp;reports_order={$NEWORDER}">{#TEXT_232#}</a></div>
-					<div class="col-xs-2"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=capitalsources_comment&amp;reports_order={$NEWORDER}">{#TEXT_19#}</a></div>
-					<div class="col-xs-1">&nbsp</div>
-					
-				</div>
+    	
+        <div class="row">
+    	  <div class="col-xs-12">
+		<div class="panel panel-default">
+		  <div class="panel-heading text-center">
+		    <h4>{#TEXT_61#} {$MONTH.name} {$SELECTED_YEAR}</h4>
+		  </div>
+		  <div class="panel-body">
+			<table class="table table-striped table-bordered table-hover">
+				<thead>
+				<tr>
+					<th class="text-center"></th>
+					<th class="text-center"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_bookingdate&amp;reports_order={$NEWORDER}" >{#TEXT_16#}</a></th>
+					<th class="text-center"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_invoicedate&amp;reports_order={$NEWORDER}" >{#TEXT_17#}</a></th>
+					<th class="text-center" colspan="2"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_amount&amp;reports_order={$NEWORDER}"     >{#TEXT_18#}</a></th>
+					<th class="text-center"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=contractpartners_name&amp;reports_order={$NEWORDER}" >{#TEXT_2#}</a></th>
+					<th class="text-center"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=moneyflows_comment&amp;reports_order={$NEWORDER}"    >{#TEXT_21#}</a></th>
+					<th class="text-center"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=postingaccount_name&amp;reports_order={$NEWORDER}">{#TEXT_232#}</a></th>
+					<th class="text-center"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$MONTH.nummeric}&amp;reports_year={$SELECTED_YEAR}&amp;reports_sortby=capitalsources_comment&amp;reports_order={$NEWORDER}">{#TEXT_19#}</a></th>
+					<th class="text-center"></th>
+					<th class="text-center"></th>
+				</tr>
+       		                </thead>
+       		                
+				<tbody>
 				{section name=DATA loop=$ALL_MONEYFLOW_DATA}
-						<div class="row {if $smarty.section.DATA.index % 2  == 1} striped{/if}">
 					{if $ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries eq 0}
-							<div class="col-xs-1 text-right">
-{if $ALL_MONEYFLOW_DATA[DATA].has_receipt eq 1}
+						<tr>
+							<td class="text-center">{if $ALL_MONEYFLOW_DATA[DATA].has_receipt eq 1}
 								<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=show_moneyflow_receipt&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}','_blank','width=800,height=1000')">+</a>
-{/if}
-							</div>
-							<div class="col-xs-1">{$ALL_MONEYFLOW_DATA[DATA].bookingdate}</div>
-							<div class="col-xs-1">{$ALL_MONEYFLOW_DATA[DATA].invoicedate}</div>
-							<div class="col-xs-1"><font {if $ALL_MONEYFLOW_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_MONEYFLOW_DATA[DATA].amount|number_format} {#CURRENCY#}</font></div>
-							<div class="col-xs-2">{$ALL_MONEYFLOW_DATA[DATA].contractpartnername}</div>
-							<div class="col-xs-2">{$ALL_MONEYFLOW_DATA[DATA].comment}</div>
-							<div class="col-xs-1">{$ALL_MONEYFLOW_DATA[DATA].postingaccountname}</div>
-							<div class="col-xs-2">{$ALL_MONEYFLOW_DATA[DATA].capitalsourcecomment}</div>
-{if $ALL_MONEYFLOW_DATA[DATA].owner == true }
-							<div class="col-xs-1">
-								<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1024,height=800')">{#TEXT_36#}</a>
-								<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1024,height=120')">{#TEXT_37#}</a>
-							</div>
-{/if}
-					{else}
-							<div class="col-xs-1 text-right">
-{if $ALL_MONEYFLOW_DATA[DATA].has_receipt eq 1}
-								<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=show_moneyflow_receipt&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}','_blank','width=800,height=1000')">+</a>
-{/if}
-							</div>
-							<div class="col-xs-1">{$ALL_MONEYFLOW_DATA[DATA].bookingdate}</div>
-							<div class="col-xs-1">{$ALL_MONEYFLOW_DATA[DATA].invoicedate}</div>
-							<div class="col-xs-1">
-								<div class="col-xs-6"><font {if $ALL_MONEYFLOW_DATA[DATA].amount < 0}color="red"{else}color="black"{/if}>{$ALL_MONEYFLOW_DATA[DATA].amount|number_format} {#CURRENCY#}</font></div>
-								<div class="col-xs-6">
-{section name=DATA2 loop=$ALL_MONEYFLOW_DATA[DATA].moneyflow_split_entries}
-									<div class="row">
-										<div class="col-xs-12">
-											<font {if $ALL_MONEYFLOW_DATA[DATA].moneyflow_split_entries[DATA2].amount < 0}color="red"{else}color="black"{/if}>{$ALL_MONEYFLOW_DATA[DATA].moneyflow_split_entries[DATA2].amount|number_format} {#CURRENCY#}</font>
-										</div>
-									</div>
-{/section}
-								</div>
-							</div>
-							
-							<div class="col-xs-2">{$ALL_MONEYFLOW_DATA[DATA].contractpartnername}</div>
-							
-							<div class="col-xs-2">
-{section name=DATA2 loop=$ALL_MONEYFLOW_DATA[DATA].moneyflow_split_entries}
-								<div class="row">
-									<div class="col-xs-12">{$ALL_MONEYFLOW_DATA[DATA].moneyflow_split_entries[DATA2].comment}</div>
-								</div>
-{/section}
-							</div>
-
-							<div class="col-xs-1">
-{section name=DATA2 loop=$ALL_MONEYFLOW_DATA[DATA].moneyflow_split_entries}
-								<div class="row">
-									<div class="col-xs-12">{$ALL_MONEYFLOW_DATA[DATA].moneyflow_split_entries[DATA2].postingaccountname}</div>
-								</div>
-{/section}
-							</div>
-								
-							<div class="col-xs-2">{$ALL_MONEYFLOW_DATA[DATA].capitalsourcecomment}</div>
-{if $ALL_MONEYFLOW_DATA[DATA].owner == true }
-							<div class="col-xs-1">
-								<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1024,height=800')">{#TEXT_36#}</a>
-								<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1024,height=120')">{#TEXT_37#}</a>
-							</div>
+							{/if}</td>
+							<td class="text-center">{$ALL_MONEYFLOW_DATA[DATA].bookingdate}</td>
+							<td class="text-center">{$ALL_MONEYFLOW_DATA[DATA].invoicedate}</td>
+							<td class="text-right of_number_to_be_evaluated" colspan="2">{$ALL_MONEYFLOW_DATA[DATA].amount|number_format} {#CURRENCY#}</td>
+							<td>{$ALL_MONEYFLOW_DATA[DATA].contractpartnername}</td>
+							<td>{$ALL_MONEYFLOW_DATA[DATA].comment}</td>
+							<td>{$ALL_MONEYFLOW_DATA[DATA].postingaccountname}</td>
+							<td>{$ALL_MONEYFLOW_DATA[DATA].capitalsourcecomment}</td>
+							{if $ALL_MONEYFLOW_DATA[DATA].owner == true }
+								<td class="text-center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1024,height=800')">{#TEXT_36#}</a></td>
+								<td class="text-center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1024,height=120')">{#TEXT_37#}</a></td>
+							{else}
+								<td colspan="2"></td>
 							{/if}
+						</tr>
+					{else}
+						{section name=DATA2 loop=$ALL_MONEYFLOW_DATA[DATA].moneyflow_split_entries}
+							<tr>
+							{if $smarty.section.DATA2.first eq true}
+								<td class="text-center" rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}>{if $ALL_MONEYFLOW_DATA[DATA].has_receipt eq 1}
+									<a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=show_moneyflow_receipt&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}','_blank','width=800,height=1000')">+</a>
+								{/if}</td>
+								<td class="text-center" rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}>{$DATA2}  {$ALL_MONEYFLOW_DATA[DATA].bookingdate}</td>
+								<td class="text-center" rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}>{$ALL_MONEYFLOW_DATA[DATA].invoicedate}</td>
+								<td class="text-right of_number_to_be_evaluated" rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}>{$ALL_MONEYFLOW_DATA[DATA].amount|number_format} {#CURRENCY#}</td>
+							{/if}
+							<td class="text-right of_number_to_be_evaluated">{$ALL_MONEYFLOW_DATA[DATA].moneyflow_split_entries[DATA2].amount|number_format} {#CURRENCY#}</td>
+							{if $smarty.section.DATA2.first eq true}
+								<td rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}>{$ALL_MONEYFLOW_DATA[DATA].contractpartnername}</td>
+							{/if}
+							<td>{$ALL_MONEYFLOW_DATA[DATA].moneyflow_split_entries[DATA2].comment}</td>
+							<td>{$ALL_MONEYFLOW_DATA[DATA].moneyflow_split_entries[DATA2].postingaccountname}</td>
+							{if $smarty.section.DATA2.first eq true}
+								<td rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}>{$ALL_MONEYFLOW_DATA[DATA].capitalsourcecomment}</td>
+								{if $ALL_MONEYFLOW_DATA[DATA].owner == true }
+									<td rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1024,height=800')">{#TEXT_36#}</a></td>
+									<td rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1024,height=120')">{#TEXT_37#}</a></td>
+								{else}
+									<td colspan="2"></td>
+								{/if}
+							{/if}
+							</tr>							
+						{/section}
 					{/if}
-						</div>	
 				{/section}
-				<div class="row">
-					<div class="col-xs-1"></div>
-					<div class="col-xs-1"></div>
-					<div class="col-xs-1">&sum;</div>
-					<div class="col-xs-1"><font {if $MOVEMENT < 0}color="red"{else}color="black"{/if}><u>{$MOVEMENT|number_format} {#CURRENCY#}</u></font></div>
-				</div>
+				<tr>
+					<td class="text-right" colspan="3">&sum;</td>
+					<td class="text-right of_number_to_be_evaluated" colspan="2"><u>{$MOVEMENT|number_format} {#CURRENCY#}</u></td>
+					<td class="text-right" colspan="6"></td>
+				</tr>
+				</tbody>
+			</table>
 			</div>
-
-
-
+			</div>
+          </div>
+        </div>
 
         <div class="row">
-    	  <div class="col-xs-2">
+    	  <div class="col-xs-6">
 						{if $PREV_LINK == true }
 							<a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$PREV_MONTH}&amp;reports_year={$PREV_YEAR}{if $SORTBY != ''}&amp;reports_sortby={$SORTBY}&amp;reports_order={$ORDER}{/if}">&lt;&lt; {#TEXT_202#}</a>
 						{else}
 							&nbsp;
 						{/if}
     	  </div>
-    	  <div class="col-xs-8">
-    	 	&nbsp;
-    	  </div>
-    	  <div class="col-xs-2">
+    	  <div class="col-xs-6 text-right">
 						{if $NEXT_LINK == true }
 							<a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$NEXT_MONTH}&amp;reports_year={$NEXT_YEAR}{if $SORTBY != ''}&amp;reports_sortby={$SORTBY}&amp;reports_order={$ORDER}{/if}">{#TEXT_201#} &gt;&gt;</a>
 						{else}
@@ -196,67 +181,77 @@ function Go(x)
     	  </div>
     	</div>
 
+	<br>
 
-
-
-
-			<br>
-			{if ( $SUMMARY_DATA != '' || $LIABILITIES_SUMMARY_DATA != '' ) }
-			<hr align="center" width="830">
-			<h1>{#TEXT_68#}</h1>
-			<table border=0 cellpadding=2>
-				<tr>
-				{if $SUMMARY_DATA != ''}
-					<th><h2>{#TEXT_280#}</h2></th>
-				{/if}
-				</tr>
-				<tr>
-				{if $SUMMARY_DATA != ''}
-				<td valign="top" align="center">
-						<table border=0 cellpadding=2>
+{if ( $SUMMARY_DATA != '' || $LIABILITIES_SUMMARY_DATA != '' ) }
+        <div class="row">
+          <div class="col-xs-12 text-center"><h1>{#TEXT_68#}</h1></div>
+        </div>
+	<br>
+{if $SUMMARY_DATA != ''}
+        <div class="row">
+          <div class="col-xs-8 col-xs-push-2">
+            <div class="panel panel-default">
+              <div class="panel-heading text-center">
+                <h4>{#TEXT_280#}</h4>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-xs-12 text-center">
+						<table class="table table-striped table-bordered table-hover" style="table-layout:fixed">
+							<col style="width:15%">
+							<col style="width:10%">
+							<col style="width:20%">
+							<col style="width:10%">
+							<col style="width:10%">
+							<col style="width:10%">
+							<col style="width:15%">
+						        <thead>
 							<tr>
-								<th width="110">{#TEXT_30#}</th>
-								<th width="60">{#TEXT_31#}</th>
-								<th width="150">{#TEXT_21#}</th>
-								<th width="80">{#TEXT_62#}</th>
+								<th class="text-center">{#TEXT_30#}</th>
+								<th class="text-center">{#TEXT_31#}</th>
+								<th class="text-center">{#TEXT_21#}</th>
+								<th class="text-center">{#TEXT_62#}</th>
 								{if $MONTHLYSETTLEMENT_EXISTS == true}
-								<th width="80">{#TEXT_63#}</th>
+								<th class="text-center">{#TEXT_63#}</th>
 								{/if}
-								<th width="80">{#TEXT_64#}</th>
+								<th class="text-center">{#TEXT_64#}</th>
 								{if $MONTHLYSETTLEMENT_EXISTS == true}
-								<th width="80">{#TEXT_65#}</th>
+								<th class="text-center">{#TEXT_65#}</th>
 								{else}
-								<th width="80">{#TEXT_288#}</th>
-								<th width="110">{#TEXT_289#}</th>
+								<th class="text-center">{#TEXT_288#}</th>
+								<th class="text-center">{#TEXT_289#}</th>
 								{/if}
 							</tr>
+							</thead>
+							<tbody>
 							{section name=DATA loop=$SUMMARY_DATA}
 								<tr>
-									<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].typecomment}</td>
-									<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].statecomment}</td>
-									<td class="contrastbgcolor">{$SUMMARY_DATA[DATA].comment}</td>
-									<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].lastamount < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].lastamount|number_format} {#CURRENCY#}</font></td>
+									<td class="text-left">{$SUMMARY_DATA[DATA].typecomment}</td>
+									<td class="text-left">{$SUMMARY_DATA[DATA].statecomment}</td>
+									<td class="text-left">{$SUMMARY_DATA[DATA].comment}</td>
+									<td class="text-right of_number_to_be_evaluated">{$SUMMARY_DATA[DATA].lastamount|number_format} {#CURRENCY#}</td>
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
-										<td align="right" class="contrastbgcolor">
+										<td class="text-right  of_number_to_be_evaluated">
 										{if array_key_exists('fixamount',$SUMMARY_DATA[DATA])}
-											<font {if $SUMMARY_DATA[DATA].fixamount  < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].fixamount|number_format} {#CURRENCY#}</font>
+											{$SUMMARY_DATA[DATA].fixamount|number_format} {#CURRENCY#}
 										{/if}
 										</td>
 									{/if}
-									<td align="right" class="contrastbgcolor"><font {if $SUMMARY_DATA[DATA].calcamount < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].calcamount|number_format} {#CURRENCY#}</font></td>
+									<td class="text-right of_number_to_be_evaluated">{$SUMMARY_DATA[DATA].calcamount|number_format} {#CURRENCY#}</td>
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
-										<td align="right" class="contrastbgcolor">
+										<td class="text-right of_number_to_be_evaluated">
 										{if array_key_exists('fixamount',$SUMMARY_DATA[DATA])}
 											{math equation="x - y" x=$SUMMARY_DATA[DATA].fixamount y=$SUMMARY_DATA[DATA].calcamount assign=CAPITALSOURCE_DIFFERENCE}
 									
-											<font {if $CAPITALSOURCE_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$CAPITALSOURCE_DIFFERENCE|number_format} {#CURRENCY#}</font>
+											{$CAPITALSOURCE_DIFFERENCE|number_format} {#CURRENCY#}
 										{/if}
 										</td>
 									{else}
-										<td align="right" class="contrastbgcolor">
-										<font {if $SUMMARY_DATA[DATA].amount_current  < 0}color="red"{else}color="black"{/if}>{$SUMMARY_DATA[DATA].amount_current|number_format} {#CURRENCY#}</font>
+										<td class="text-right of_number_to_be_evaluated">
+										{$SUMMARY_DATA[DATA].amount_current|number_format} {#CURRENCY#}
 										</td>
-										<td align="right" class="contrastbgcolor">
+										<td class="text-right">
 										{if array_key_exists('amount_current_state',$SUMMARY_DATA[DATA])}
 											{$SUMMARY_DATA[DATA].amount_current_state}
 										{else}
@@ -267,106 +262,133 @@ function Go(x)
 								</tr>
 							{/section}
 								<tr>
-									<td></td>
-									<td></td>
-									<td align="right">&sum;</td>
-									<td align="right" class="contrastbgcolor"><font {if $LASTAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$LASTAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									<td class="text-right" colspan="3">&sum;</td>
+									<td class="text-right of_number_to_be_evaluated"><u>{$LASTAMOUNT|number_format} {#CURRENCY#}</u></td>
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
-									<td align="right" class="contrastbgcolor"><font {if $FIXAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$FIXAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									<td class="text-right of_number_to_be_evaluated"><u>{$FIXAMOUNT|number_format} {#CURRENCY#}</u></td>
 									{/if}
-									<td align="right" class="contrastbgcolor"><font {if $MON_CALCAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$MON_CALCAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									<td class="text-right of_number_to_be_evaluated"><u>{$MON_CALCAMOUNT|number_format} {#CURRENCY#}</u></td>
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
 									{math equation="x - y" x=$FIXAMOUNT y=$MON_CALCAMOUNT assign=MON_DIFFERENCE}
-									<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{else}color="black"{/if}><u>{$MON_DIFFERENCE|number_format} {#CURRENCY#}</u></font></td>
+									<td class="text-right of_number_to_be_evaluated"><u>{$MON_DIFFERENCE|number_format} {#CURRENCY#}</u></td>
 									{else}
-									<td align="right" class="contrastbgcolor"><font {if $CURRENTAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$CURRENTAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									<td class="text-right of_number_to_be_evaluated"><u>{$CURRENTAMOUNT|number_format} {#CURRENCY#}</u></td>
 									{/if}
 								</tr>
+							</tbody>
 						</table>
-						<br>
-						<table border=0 cellpadding=2>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-xs-6 col-xs-offset-3">
+						<table class="table table-striped table-bordered table-hover">
+						        <thead>
 							<tr>
-								<th></th>
-								<th>{#TEXT_56#}</th>
-								<th>{#TEXT_57#}</th>
+								<th class="text-center"></th>
+								<th class="text-center">{#TEXT_56#}</th>
+								<th class="text-center">{#TEXT_57#}</th>
 							</tr>
+							</thead>
+							<tbody>
 							{if !$FIRSTAMOUNT}{assign var="FIRSTAMOUNT" value="0"}{/if}
 							{if $MONTHLYSETTLEMENT_EXISTS == true}
 							<tr>
-								<th align="right">{#TEXT_66#}</th>
+								<th class="text-right">{#TEXT_66#}</th>
 								{math equation="y-x" x=$LASTAMOUNT y=$FIXAMOUNT assign=MON_FIXEDTURNOVER}
-								<td align="right" class="contrastbgcolor"><font {if $MON_FIXEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$MON_FIXEDTURNOVER|number_format} {#CURRENCY#}</font></td>
+								<td class="text-right of_number_to_be_evaluated">{$MON_FIXEDTURNOVER|number_format} {#CURRENCY#}</td>
 								{math equation="y-x" x=$FIRSTAMOUNT y=$FIXAMOUNT assign=YEA_FIXEDTURNOVER}
-								<td align="right" class="contrastbgcolor"><font {if $YEA_FIXEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$YEA_FIXEDTURNOVER|number_format} {#CURRENCY#}</font></td>
+								<td class="text-right of_number_to_be_evaluated">{$YEA_FIXEDTURNOVER|number_format} {#CURRENCY#}</td>
 							</tr>
 							{/if}
 							<tr>
-								<th align="right">{#TEXT_67#}</th>
-								<td align="right" class="contrastbgcolor"><font {if $MON_CALCULATEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$MON_CALCULATEDTURNOVER|number_format} {#CURRENCY#}</font></td>
-								<td align="right" class="contrastbgcolor"><font {if $YEA_CALCULATEDTURNOVER < 0}color="red"{else}color="black"{/if}>{$YEA_CALCULATEDTURNOVER|number_format} {#CURRENCY#}</font></td>
+								<th class="text-right">{#TEXT_67#}</th>
+								<td class="text-right of_number_to_be_evaluated">{$MON_CALCULATEDTURNOVER|number_format} {#CURRENCY#}</td>
+								<td class="text-right of_number_to_be_evaluated">{$YEA_CALCULATEDTURNOVER|number_format} {#CURRENCY#}</td>
 							</tr>
 							{if $MONTHLYSETTLEMENT_EXISTS == true}
 							<tr>
-								<th align="right">{#TEXT_65#}</th>
-								<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$MON_DIFFERENCE|number_format} {#CURRENCY#}</font></td>
+								<th class="text-right">{#TEXT_65#}</th>
+								<td class="text-right of_number_to_be_evaluated">{$MON_DIFFERENCE|number_format} {#CURRENCY#}</td>
 								{math equation="x - y" x=$YEA_FIXEDTURNOVER y=$YEA_CALCULATEDTURNOVER assign=YEA_DIFFERENCE}
-								<td align="right" class="contrastbgcolor"><font {if $YEA_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$YEA_DIFFERENCE|number_format} {#CURRENCY#}</font></td>
+								<td class="text-right of_number_to_be_evaluated">{$YEA_DIFFERENCE|number_format} {#CURRENCY#}</td>
 							</tr>
 							{/if}
+							</tbody>
 						</table>
-					</td>
-				{/if}
-				{if $LIABILITIES_SUMMARY_DATA != ''}
-				</tr>
-				<tr>
-					<th><br><h2>{#TEXT_281#}</h2></th>
-				</tr>
-				<tr>
-					<td valign="top" align="center">
-						<table border=0 cellpadding=2>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+{/if}
+{if $LIABILITIES_SUMMARY_DATA != ''}
+        <div class="row">
+          <div class="col-xs-12">&nbsp;</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-8 col-xs-push-2">
+            <div class="panel panel-default">
+              <div class="panel-heading text-center">
+                <h4>{#TEXT_281#}</h4>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-xs-12 text-center">
+						<table class="table table-striped table-bordered table-hover" style="table-layout:fixed">
+							<col style="width:15%">
+							<col style="width:10%">
+							<col style="width:20%">
+							<col style="width:10%">
+							<col style="width:10%">
+							<col style="width:10%">
+							<col style="width:15%">
+						        <thead>
 							<tr>
-								<th width="110">{#TEXT_30#}</th>
-								<th width="60">{#TEXT_31#}</th>
-								<th width="150">{#TEXT_21#}</th>
-								<th width="80">{#TEXT_62#}</th>
+								<th class="text-center">{#TEXT_30#}</th>
+								<th class="text-center">{#TEXT_31#}</th>
+								<th class="text-center">{#TEXT_21#}</th>
+								<th class="text-center">{#TEXT_62#}</th>
 								{if $MONTHLYSETTLEMENT_EXISTS == true}
-								<th width="80">{#TEXT_63#}</th>
+								<th class="text-center">{#TEXT_63#}</th>
 								{/if}
-								<th width="80">{#TEXT_64#}</th>
+								<th class="text-center">{#TEXT_64#}</th>
 								{if $MONTHLYSETTLEMENT_EXISTS == true}
-								<th width="80">{#TEXT_65#}</th>
+								<th class="text-center">{#TEXT_65#}</th>
 								{else}
-								<th width="80">{#TEXT_288#}</th>
-								<th width="110">{#TEXT_289#}</th>
+								<th class="text-center">{#TEXT_288#}</th>
+								<th class="text-center">{#TEXT_289#}</th>
 								{/if}
 							</tr>
+							</thead>
+							<tbody>
 							{section name=DATA loop=$LIABILITIES_SUMMARY_DATA}
 								<tr>
-									<td class="contrastbgcolor">{$LIABILITIES_SUMMARY_DATA[DATA].typecomment}</td>
-									<td class="contrastbgcolor">{$LIABILITIES_SUMMARY_DATA[DATA].statecomment}</td>
-									<td class="contrastbgcolor">{$LIABILITIES_SUMMARY_DATA[DATA].comment}</td>
-									<td align="right" class="contrastbgcolor"><font {if $LIABILITIES_SUMMARY_DATA[DATA].lastamount < 0}color="red"{else}color="black"{/if}>{$LIABILITIES_SUMMARY_DATA[DATA].lastamount|number_format} {#CURRENCY#}</font></td>
+									<td class="text-left">{$LIABILITIES_SUMMARY_DATA[DATA].typecomment}</td>
+									<td class="text-left">{$LIABILITIES_SUMMARY_DATA[DATA].statecomment}</td>
+									<td class="text-left">{$LIABILITIES_SUMMARY_DATA[DATA].comment}</td>
+									<td class="text-right of_number_to_be_evaluated">{$LIABILITIES_SUMMARY_DATA[DATA].lastamount|number_format} {#CURRENCY#}</td>
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
-										<td align="right" class="contrastbgcolor">
+										<td class="text-right of_number_to_be_evaluated">
 										{if array_key_exists('fixamount',$LIABILITIES_SUMMARY_DATA[DATA])}
-											<font {if $LIABILITIES_SUMMARY_DATA[DATA].fixamount  < 0}color="red"{else}color="black"{/if}>{$LIABILITIES_SUMMARY_DATA[DATA].fixamount|number_format} {#CURRENCY#}</font>
+											{$LIABILITIES_SUMMARY_DATA[DATA].fixamount|number_format} {#CURRENCY#}
 										{/if}
 										</td>
 									{/if}
-									<td align="right" class="contrastbgcolor"><font {if $LIABILITIES_SUMMARY_DATA[DATA].calcamount < 0}color="red"{else}color="black"{/if}>{$LIABILITIES_SUMMARY_DATA[DATA].calcamount|number_format} {#CURRENCY#}</font></td>
+									<td class="text-right of_number_to_be_evaluated">{$LIABILITIES_SUMMARY_DATA[DATA].calcamount|number_format} {#CURRENCY#}</td>
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
-										<td align="right" class="contrastbgcolor">
+										<td class="text-right of_number_to_be_evaluated">
 										{if array_key_exists('fixamount',$LIABILITIES_SUMMARY_DATA[DATA])}
 											{math equation="x - y" x=$LIABILITIES_SUMMARY_DATA[DATA].fixamount y=$LIABILITIES_SUMMARY_DATA[DATA].calcamount assign=CAPITALSOURCE_DIFFERENCE}
 									
-											<font {if $CAPITALSOURCE_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$CAPITALSOURCE_DIFFERENCE|number_format} {#CURRENCY#}</font>
+											{$CAPITALSOURCE_DIFFERENCE|number_format} {#CURRENCY#}
 										{/if}
 										</td>
 									{else}
-										<td align="right" class="contrastbgcolor">
-										<font {if $LIABILITIES_SUMMARY_DATA[DATA].amount_current  < 0}color="red"{else}color="black"{/if}>{$LIABILITIES_SUMMARY_DATA[DATA].amount_current|number_format} {#CURRENCY#}</font>
+										<td class="text-right of_number_to_be_evaluated">
+										{$LIABILITIES_SUMMARY_DATA[DATA].amount_current|number_format} {#CURRENCY#}
 										</td>
-										<td align="right" class="contrastbgcolor">
+										<td class="text-right">
 										{if array_key_exists('amount_current_state',$LIABILITIES_SUMMARY_DATA[DATA])}
 											{$LIABILITIES_SUMMARY_DATA[DATA].amount_current_state}
 										{else}
@@ -377,75 +399,95 @@ function Go(x)
 								</tr>
 							{/section}
 								<tr>
-									<td></td>
-									<td></td>
-									<td align="right">&sum;</td>
-									<td align="right" class="contrastbgcolor"><font {if $LIABILITIES_LASTAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$LIABILITIES_LASTAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									<td class="text-right" colspan="3">&sum;</td>
+									<td class="text-right of_number_to_be_evaluated"><u>{$LIABILITIES_LASTAMOUNT|number_format} {#CURRENCY#}</u></td>
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
-									<td align="right" class="contrastbgcolor"><font {if $LIABILITIES_FIXAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$LIABILITIES_FIXAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									<td class="text-right of_number_to_be_evaluated"><u>{$LIABILITIES_FIXAMOUNT|number_format} {#CURRENCY#}</u></td>
 									{/if}
-									<td align="right" class="contrastbgcolor"><font {if $LIABILITIES_MON_CALCAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$LIABILITIES_MON_CALCAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									<td class="text-right of_number_to_be_evaluated"><u>{$LIABILITIES_MON_CALCAMOUNT|number_format} {#CURRENCY#}</u></td>
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
 									{math equation="x - y" x=$LIABILITIES_FIXAMOUNT y=$LIABILITIES_MON_CALCAMOUNT assign=MON_DIFFERENCE}
-									<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{else}color="black"{/if}><u>{$MON_DIFFERENCE|number_format} {#CURRENCY#}</u></font></td>
+									<td class="text-right of_number_to_be_evaluated"><u>{$MON_DIFFERENCE|number_format} {#CURRENCY#}</u></td>
 									{else}
-									<td align="right" class="contrastbgcolor"><font {if $LIABILITIES_CURRENTAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$LIABILITIES_CURRENTAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									<td class="text-right of_number_to_be_evaluated"><u>{$LIABILITIES_CURRENTAMOUNT|number_format} {#CURRENCY#}</u></td>
 									{/if}
 								</tr>
+								</tbody>
 						</table>
-					</td>
-				{/if}
-				{if $CREDITS_SUMMARY_DATA != ''}
-				</tr>
-				<tr>
-					<th><br><h2>{#TEXT_294#}</h2></th>
-				</tr>
-				<tr>
-					<td valign="top" align="center">
-						<table border=0 cellpadding=2>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+{/if}
+{if $CREDITS_SUMMARY_DATA != ''}
+        <div class="row">
+          <div class="col-xs-12">&nbsp;</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-8 col-xs-push-2">
+            <div class="panel panel-default">
+              <div class="panel-heading text-center">
+                <h4>{#TEXT_294#}</h4>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-xs-12 text-center">
+						<table class="table table-striped table-bordered table-hover" style="table-layout:fixed">
+							<col style="width:15%">
+							<col style="width:10%">
+							<col style="width:20%">
+							<col style="width:10%">
+							<col style="width:10%">
+							<col style="width:10%">
+							<col style="width:15%">
+						        <thead>
 							<tr>
-								<th width="110">{#TEXT_30#}</th>
-								<th width="60">{#TEXT_31#}</th>
-								<th width="150">{#TEXT_21#}</th>
-								<th width="80">{#TEXT_62#}</th>
+								<th class="text-center">{#TEXT_30#}</th>
+								<th class="text-center">{#TEXT_31#}</th>
+								<th class="text-center">{#TEXT_21#}</th>
+								<th class="text-center">{#TEXT_62#}</th>
 								{if $MONTHLYSETTLEMENT_EXISTS == true}
-								<th width="80">{#TEXT_63#}</th>
+								<th class="text-center">{#TEXT_63#}</th>
 								{/if}
-								<th width="80">{#TEXT_64#}</th>
+								<th class="text-center">{#TEXT_64#}</th>
 								{if $MONTHLYSETTLEMENT_EXISTS == true}
-								<th width="80">{#TEXT_297#}</th>
+								<th class="text-center">{#TEXT_297#}</th>
 								{else}
-								<th width="80">{#TEXT_288#}</th>
-								<th width="110">{#TEXT_289#}</th>
+								<th class="text-center">{#TEXT_288#}</th>
+								<th class="text-center">{#TEXT_289#}</th>
 								{/if}
 							</tr>
+							</thead>
+							<tbody>
 							{section name=DATA loop=$CREDITS_SUMMARY_DATA}
 								<tr>
-									<td class="contrastbgcolor">{$CREDITS_SUMMARY_DATA[DATA].typecomment}</td>
-									<td class="contrastbgcolor">{$CREDITS_SUMMARY_DATA[DATA].statecomment}</td>
-									<td class="contrastbgcolor">{$CREDITS_SUMMARY_DATA[DATA].comment}</td>
-									<td align="right" class="contrastbgcolor"><font {if $CREDITS_SUMMARY_DATA[DATA].lastamount < 0}color="red"{else}color="black"{/if}>{$CREDITS_SUMMARY_DATA[DATA].lastamount|number_format} {#CURRENCY#}</font></td>
+									<td class="text-left">{$CREDITS_SUMMARY_DATA[DATA].typecomment}</td>
+									<td class="text-left">{$CREDITS_SUMMARY_DATA[DATA].statecomment}</td>
+									<td class="text-left">{$CREDITS_SUMMARY_DATA[DATA].comment}</td>
+									<td class="text-right of_number_to_be_evaluated">{$CREDITS_SUMMARY_DATA[DATA].lastamount|number_format} {#CURRENCY#}</td>
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
-										<td align="right" class="contrastbgcolor">
+										<td class="text-right of_number_to_be_evaluated">
 										{if array_key_exists('fixamount',$CREDITS_SUMMARY_DATA[DATA])}
-											<font {if $CREDITS_SUMMARY_DATA[DATA].fixamount  < 0}color="red"{else}color="black"{/if}>{$CREDITS_SUMMARY_DATA[DATA].fixamount|number_format} {#CURRENCY#}</font>
+											{$CREDITS_SUMMARY_DATA[DATA].fixamount|number_format} {#CURRENCY#}
 										{/if}
 										</td>
 									{/if}
-									<td align="right" class="contrastbgcolor"><font {if $CREDITS_SUMMARY_DATA[DATA].calcamount < 0}color="red"{else}color="black"{/if}>{$CREDITS_SUMMARY_DATA[DATA].calcamount|number_format} {#CURRENCY#}</font></td>
+									<td class="text-right of_number_to_be_evaluated">{$CREDITS_SUMMARY_DATA[DATA].calcamount|number_format} {#CURRENCY#}</td>
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
-										<td align="right" class="contrastbgcolor">
+										<td class="text-right of_number_to_be_evaluated">
 										{if array_key_exists('fixamount',$CREDITS_SUMMARY_DATA[DATA])}
 											{math equation="x - y" x=$CREDITS_SUMMARY_DATA[DATA].fixamount y=$CREDITS_SUMMARY_DATA[DATA].calcamount assign=CAPITALSOURCE_DIFFERENCE}
 									
-											<font {if $CAPITALSOURCE_DIFFERENCE < 0}color="red"{else}color="black"{/if}>{$CAPITALSOURCE_DIFFERENCE|number_format} {#CURRENCY#}</font>
+											{$CAPITALSOURCE_DIFFERENCE|number_format} {#CURRENCY#}
 										{/if}
 										</td>
 									{else}
-										<td align="right" class="contrastbgcolor">
-										<font {if $CREDITS_SUMMARY_DATA[DATA].amount_current  < 0}color="red"{else}color="black"{/if}>{$CREDITS_SUMMARY_DATA[DATA].amount_current|number_format} {#CURRENCY#}</font>
+										<td class="text-right of_number_to_be_evaluated">
+										{$CREDITS_SUMMARY_DATA[DATA].amount_current|number_format} {#CURRENCY#}
 										</td>
-										<td align="right" class="contrastbgcolor">
+										<td class="text-right">
 										{if array_key_exists('amount_current_state',$CREDITS_SUMMARY_DATA[DATA])}
 											{$CREDITS_SUMMARY_DATA[DATA].amount_current_state}
 										{else}
@@ -456,28 +498,33 @@ function Go(x)
 								</tr>
 							{/section}
 								<tr>
-									<td></td>
-									<td></td>
-									<td align="right">&sum;</td>
-									<td align="right" class="contrastbgcolor"><font {if $CREDITS_LASTAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$CREDITS_LASTAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									<td class="text-right" colspan="3">&sum;</td>
+									<td class="text-right of_number_to_be_evaluated"><u>{$CREDITS_LASTAMOUNT|number_format} {#CURRENCY#}</u></td>
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
-									<td align="right" class="contrastbgcolor"><font {if $CREDITS_FIXAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$CREDITS_FIXAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									<td class="text-right of_number_to_be_evaluated"><u>{$CREDITS_FIXAMOUNT|number_format} {#CURRENCY#}</u></td>
 									{/if}
-									<td align="right" class="contrastbgcolor"><font {if $CREDITS_MON_CALCAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$CREDITS_MON_CALCAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									<td class="text-right of_number_to_be_evaluated"><u>{$CREDITS_MON_CALCAMOUNT|number_format} {#CURRENCY#}</u></td>
 									{if $MONTHLYSETTLEMENT_EXISTS == true}
 									{math equation="x - y" x=$CREDITS_FIXAMOUNT y=$CREDITS_MON_CALCAMOUNT assign=MON_DIFFERENCE}
-									<td align="right" class="contrastbgcolor"><font {if $MON_DIFFERENCE < 0}color="red"{else}color="black"{/if}><u>{$MON_DIFFERENCE|number_format} {#CURRENCY#}</u></font></td>
+									<td class="text-right of_number_to_be_evaluated"><u>{$MON_DIFFERENCE|number_format} {#CURRENCY#}</u></td>
 									{else}
-									<td align="right" class="contrastbgcolor"><font {if $CREDITS_CURRENTAMOUNT < 0}color="red"{else}color="black"{/if}><u>{$CREDITS_CURRENTAMOUNT|number_format} {#CURRENCY#}</u></font></td>
+									<td class="text-right of_number_to_be_evaluated"><u>{$CREDITS_CURRENTAMOUNT|number_format} {#CURRENCY#}</u></td>
 									{/if}
 								</tr>
+								</tbody>
 						</table>
-					</td>
-				{/if}
-				</tr>
-			</table>
-			{/if}
-
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 {/if}
-</div>
+{/if}
+{/if}
+      </div>
+      
+<script>
+  $("td.of_number_to_be_evaluated:contains('-')").addClass('red');
+</script>
 {$FOOTER}
