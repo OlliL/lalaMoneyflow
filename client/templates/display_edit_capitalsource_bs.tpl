@@ -62,7 +62,7 @@
             <div class="row">
               <div class="form-group has-float-label col-xs-12">
                 <div class="input-group col-xs-12">
-                  <input type="text" class="form-control" id="edtmcsaccountnumber" name="all_data[accountnumber]"">
+                  <input type="text" class="form-control" id="edtmcsaccountnumber" name="all_data[accountnumber]">
                 </div>
                 <label for="edtmcsaccountnumber">{#TEXT_32#}</label>
               </div>
@@ -71,7 +71,7 @@
             <div class="row">
               <div class="form-group has-float-label col-xs-12">
                 <div class="input-group col-xs-12">
-                  <input type="text" class="form-control" id="edtmcsbankcode" name="all_data[bankcode]"">
+                  <input type="text" class="form-control" id="edtmcsbankcode" name="all_data[bankcode]">
                 </div>
                 <label for="edtmcsbankcode">{#TEXT_33#}</label>
               </div>

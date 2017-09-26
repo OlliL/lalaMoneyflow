@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2005-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -66,12 +67,12 @@ class moduleReports extends module {
 		$prev_year = $listReports ['prev_year'];
 		$next_month = $listReports ['next_month'];
 		$next_year = $listReports ['next_year'];
-		$moneyflow_split_entries = $listReports['moneyflow_split_entries'];
-		$moneyflows_with_receipt = $listReports['moneyflows_with_receipt'];
+		$moneyflow_split_entries = $listReports ['moneyflow_split_entries'];
+		$moneyflows_with_receipt = $listReports ['moneyflows_with_receipt'];
 
 		$mms_exists = false;
 		$report = 0;
-		$months = array();
+		$months = array ();
 
 		if (is_array( $allMonth )) {
 			foreach ( $allMonth as $key => $value ) {
@@ -153,25 +154,25 @@ class moduleReports extends module {
 					}
 					$movement += $value ['amount'];
 
-					$moneyflowId = $value['moneyflowid'];
-					$moneyflowSplitEntries = array();
+					$moneyflowId = $value ['moneyflowid'];
+					$moneyflowSplitEntries = array ();
 
-					foreach($moneyflow_split_entries as $key2 => $value2 ) {
-						if($moneyflowId == $value2['moneyflowid']) {
-							$moneyflowSplitEntries[] = $value2;
-							unset($moneyflow_split_entries[$key2]);
+					foreach ( $moneyflow_split_entries as $key2 => $value2 ) {
+						if ($moneyflowId == $value2 ['moneyflowid']) {
+							$moneyflowSplitEntries [] = $value2;
+							unset( $moneyflow_split_entries [$key2] );
 						}
 					}
 
-					$all_moneyflow_data [$key] ['has_moneyflow_split_entries'] = count($moneyflowSplitEntries);
-					if(count($moneyflowSplitEntries) > 0) {
+					$all_moneyflow_data [$key] ['has_moneyflow_split_entries'] = count( $moneyflowSplitEntries );
+					if (count( $moneyflowSplitEntries ) > 0) {
 						$all_moneyflow_data [$key] ['moneyflow_split_entries'] = $moneyflowSplitEntries;
 					}
 
-					if(is_array($moneyflows_with_receipt) && in_array($value['moneyflowid'],$moneyflows_with_receipt)) {
-						$all_moneyflow_data[$key]['has_receipt'] = 1;
+					if (is_array( $moneyflows_with_receipt ) && in_array( $value ['moneyflowid'], $moneyflows_with_receipt )) {
+						$all_moneyflow_data [$key] ['has_receipt'] = 1;
 					} else {
-						$all_moneyflow_data[$key]['has_receipt'] = 0;
+						$all_moneyflow_data [$key] ['has_receipt'] = 0;
 					}
 				}
 
@@ -304,8 +305,10 @@ class moduleReports extends module {
 		$this->template_assign( 'SELECTED_MONTH', $month );
 		$this->template_assign( 'SELECTED_YEAR', $year );
 
-		$this->parse_header();
-		return $this->fetch_template( 'display_list_reports.tpl' );
+		// $this->parse_header();
+		// return $this->fetch_template( 'display_list_reports.tpl' );
+		$this->parse_header( 0, 1, 'display_list_reports_bs.tpl' );
+		return $this->fetch_template( 'display_list_reports_bs.tpl' );
 	}
 
 	public final function display_plot_trends($all_data) {
@@ -484,7 +487,7 @@ class moduleReports extends module {
 		$piePlot = false;
 		$horizontalBarPlot = false;
 		$encoding = Configuration::getInstance()->getProperty( 'encoding' );
-		$title="";
+		$title = "";
 
 		switch ($timemode) {
 			case 1 :
@@ -495,13 +498,13 @@ class moduleReports extends module {
 				$title = $year;
 				break;
 			case 2 :
-				if($year_month && $month_month) {
-				$startdate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $year_month . '-' . $month_month . '-01 00:00:00' );
-				$enddate = clone $startdate;
-				$enddate->modify( 'last day of this month' );
-				$perMonthReport = true;
-				$piePlot = true;
-				$title = html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $month_month ), ENT_COMPAT | ENT_HTML401, $encoding ) . ' ' . $year_month;
+				if ($year_month && $month_month) {
+					$startdate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $year_month . '-' . $month_month . '-01 00:00:00' );
+					$enddate = clone $startdate;
+					$enddate->modify( 'last day of this month' );
+					$perMonthReport = true;
+					$piePlot = true;
+					$title = html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $month_month ), ENT_COMPAT | ENT_HTML401, $encoding ) . ' ' . $year_month;
 				}
 				break;
 			case 3 :
@@ -531,17 +534,17 @@ class moduleReports extends module {
 		if (! is_array( $accounts_no ))
 			$accounts_no = array ();
 
-		$report = array();
+		$report = array ();
 		if ($perMonthReport) {
 			$report = ReportControllerHandler::getInstance()->showMonthlyReportGraph( $accounts_yes, $accounts_no, $startdate, $enddate );
 		} elseif ($perYearReport) {
 			$report = ReportControllerHandler::getInstance()->showYearlyReportGraph( $accounts_yes, $accounts_no, $startdate, $enddate );
 		}
-		if(is_array($report) && array_key_exists('postingAccounts',$report)) {
-		$postingAccounts = $report ['postingAccounts'];
-		$all_data = $report ['data'];
+		if (is_array( $report ) && array_key_exists( 'postingAccounts', $report )) {
+			$postingAccounts = $report ['postingAccounts'];
+			$all_data = $report ['data'];
 		} else {
-		$all_data = array();
+			$all_data = array ();
 		}
 
 		$plot_data = array ();
@@ -559,11 +562,11 @@ class moduleReports extends module {
 				}
 			}
 			foreach ( $all_data as $data ) {
-					$date = new \DateTime($data ['date_ts']);
+				$date = new \DateTime( $data ['date_ts'] );
 				if ($perMonthReport) {
-					$key = html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $date->format('n') ), ENT_COMPAT | ENT_HTML401, $encoding );
+					$key = html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $date->format( 'n' ) ), ENT_COMPAT | ENT_HTML401, $encoding );
 				} else {
-					$key = $date->format('Y');
+					$key = $date->format( 'Y' );
 				}
 				$account_key = $postingAccountKeys [$data ['postingaccountid']];
 				if (! array_key_exists( $key, $plot_data ) || ! array_key_exists( $account_key, $plot_data [$key] ))
