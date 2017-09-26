@@ -305,8 +305,6 @@ class moduleReports extends module {
 		$this->template_assign( 'SELECTED_MONTH', $month );
 		$this->template_assign( 'SELECTED_YEAR', $year );
 
-		// $this->parse_header();
-		// return $this->fetch_template( 'display_list_reports.tpl' );
 		$this->parse_header( 0, 1, 'display_list_reports_bs.tpl' );
 		return $this->fetch_template( 'display_list_reports_bs.tpl' );
 	}
