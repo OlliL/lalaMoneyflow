@@ -162,6 +162,10 @@ class moduleImportedMoneyFlows extends module {
 				}
 		}
 
+		if($all_data === null) {
+			$all_data = array();
+		}
+
 		$this->template_assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 		$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
 		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
