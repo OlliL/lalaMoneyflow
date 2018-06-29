@@ -108,93 +108,86 @@
       </div>
 
 <script>
+        // initially hide the empty chart on loading the page
+        document.getElementById("myChart").style.display="none";
 
+        var ctx = document.getElementById("myChart").getContext('2d');
 
-document.getElementById("myChart").style.display="none";
+        var gradientFill0 = ctx.createLinearGradient(0, 500, 0, 0);
+        gradientFill0.addColorStop(0, "rgba(176, 196, 222, 1)");
+        gradientFill0.addColorStop(1, "rgba(230, 230, 250, 1)");
 
-var ctx = document.getElementById("myChart").getContext('2d');
+        var gradientFill1 = ctx.createLinearGradient(0, 500, 0, 0);
+        gradientFill1.addColorStop(0, "rgba(104, 155, 222, 1)");
+        gradientFill1.addColorStop(1, "rgba(174, 174, 250, 1)");
 
-var gradientFill0 = ctx.createLinearGradient(0, 500, 0, 0);
-gradientFill0.addColorStop(0, "rgba(176, 196, 222, 1)");
-gradientFill0.addColorStop(1, "rgba(230, 230, 250, 1)");
-
-var gradientFill1 = ctx.createLinearGradient(0, 500, 0, 0);
-gradientFill1.addColorStop(0, "rgba(104, 155, 222, 1)");
-gradientFill1.addColorStop(1, "rgba(174, 174, 250, 1)");
-
-var myChart = new Chart(ctx, {
-    		type: 'line',
-			data: {
-				labels: "",
-				datasets: [{
-					label: 'Settled',
-					data: '',
-					fill: true,
-					borderColor: '#B0C4DE',
-					backgroundColor: gradientFill0
-				},
-				{
-					label: 'Calculated',
-					data: '',
-					fill: true,
-					borderColor: '#689bde',
-					backgroundColor: gradientFill1
-				}]
-			},
-			options: {
-				responsive: true,
-				title: {
-					display: true,
-					text: 'Chart.js Line Chart'
-				},
-				tooltips: {
-					mode: 'index',
-					intersect: false,
-				},
-				hover: {
-					mode: 'nearest',
-					intersect: true
-				},
-				scales: {
-					xAxes: [{
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: '{#TEXT_171#}'
-						}
-					}],
-					yAxes: [{
-						display: true,
-						scaleLabel: {
-							display: true,
-							labelString: '{#TEXT_172#}'
-						}
-					}]
-				}
-			}
-});
-</script>
-
-      <script>    
+        var myChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: "",
+            datasets: [{
+              label: '{#TEXT_328#}',
+              data: '',
+              fill: true,
+              borderColor: '#B0C4DE',
+              backgroundColor: gradientFill0
+            },
+            {
+              label: '{#TEXT_290#}',
+              data: '',
+              fill: true,
+              borderColor: '#689bde',
+              backgroundColor: gradientFill1
+            }]
+          },
+          options: {
+            responsive: true,
+            title: {
+              display: true,
+              text: ''
+            },
+            tooltips: {
+              mode: 'index',
+              intersect: false,
+            },
+            hover: {
+              mode: 'nearest',
+              intersect: true
+            },
+            scales: {
+              xAxes: [{
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: '{#TEXT_171#}'
+                }
+              }],
+              yAxes: [{
+                display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: '{#TEXT_172#}'
+                }
+              }]
+            }
+          }
+        });
+        
+        function getXLabel(month, year) {
+          if(month < 10) {
+            return "0" + month + "/" + year;
+          } else {
+            return month + "/" + year;
+          }
+        }
+        
         function ajaxPlotTrendsSuccess(data) {
 
           document.getElementById("myChart").style.display="";
 
-          var labels = data.settled.map(function(e) {
-            if(e.month < 10) {
-              return "0" + e.month + "/" + e.year;
-            } else {
-              return e.month + "/" + e.year;
-            }
-          });
-
-          var datas = data.settled.map(function(e) {
-            return e.amount;
-          });
-
-
          
           // CLEAR CHART
+          
           myChart.data.labels.splice(0,myChart.data.labels.length);
           myChart.data.datasets.forEach((dataset) => {
             dataset.data.splice(0,dataset.data.length);
@@ -202,8 +195,18 @@ var myChart = new Chart(ctx, {
 
 
 
-
           // FILL CHART
+
+          // Add settled data
+
+          var labels = data.settled.map(function(e) {
+            return getXLabel(e.month, e.year);
+          });
+
+          var datas = data.settled.map(function(e) {
+            return e.amount;
+          });
+
           labels.forEach((label) => {
             myChart.data.labels.push(label)
           });
@@ -211,14 +214,12 @@ var myChart = new Chart(ctx, {
             myChart.data.datasets[0].data.push(data);
             myChart.data.datasets[1].data.push(null);
           });
-          
+
+
+          // Add calculated - not (yet) settled - data if it exists
           if(data.calculated != null && data.calculated.length > 0) {
             var calc_labels = data.calculated.map(function(e) {
-              if(e.month < 10) {
-                return "0" + e.month + "/" + e.year;
-              } else {
-                return e.month + "/" + e.year;
-              }
+              return getXLabel(e.month, e.year);
             });
  
             var calc_datas = data.calculated.map(function(e) {
