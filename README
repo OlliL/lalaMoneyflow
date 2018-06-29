@@ -1,12 +1,12 @@
 Requirements:
 =============
 
-- Apache 2.2 or 2.4 (other versions may work too)
+- Apache 2.4
 	- with "AllowOverride FileInfo" for the moneyflow directory
 
 - MySQL 5.1 or higher
 	
-- PHP 5.5.x or higher
+- PHP 7
 	- Extension: session
 	- Extension: hash
 	- Extension: curl
