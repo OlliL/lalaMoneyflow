@@ -71,7 +71,8 @@
                         focusOnShow: false,
                         showClear: true,
                         showTodayButton: true,
-                        showClose: true
+                        showClose: true,
+                        locale: "de"
                       });
                   });
               </script>
