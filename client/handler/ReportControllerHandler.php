@@ -110,7 +110,8 @@ class ReportControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__ );
 		$result = null;
 		if ($response instanceof showTrendsFormResponse) {
-			$result ['allYears'] = $response->getAllYears();
+			$result ['minDate'] = $response->getMinDate();
+			$result ['maxDate'] = $response->getMaxDate();
 			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
 		}
 		$result ['selected_capitalsources'] = $response->getSettingTrendCapitalsourceId();

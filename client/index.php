@@ -156,6 +156,7 @@ if ($is_logged_in == 0) {
 		case 'list_reports' :
 		case 'plot_trends' :
 		case 'plot_graph' :
+		case 'plot_graph_bs' :
 		case 'show_reporting_form' :
 		case 'plot_report' :
 			$moduleReports = new moduleReports();
@@ -485,11 +486,18 @@ if ($is_logged_in == 0) {
 			case 'plot_graph' :
 
 				$id = array_key_exists( 'id', $_REQUEST ) ? $_REQUEST ['id'] : '';
-				$startmonth = array_key_exists( 'startmonth', $_REQUEST ) ? $_REQUEST ['startmonth'] : '';
-				$startyear = array_key_exists( 'startyear', $_REQUEST ) ? $_REQUEST ['startyear'] : '';
-				$endmonth = array_key_exists( 'endmonth', $_REQUEST ) ? $_REQUEST ['endmonth'] : '';
-				$endyear = array_key_exists( 'endyear', $_REQUEST ) ? $_REQUEST ['endyear'] : '';
-				$display = (ENABLE_JPGRAPH ? $moduleReports->plot_graph( $id, $startmonth, $startyear, $endmonth, $endyear ) : '');
+				$startdate = array_key_exists( 'startdate', $_REQUEST ) ? $_REQUEST ['startdate'] : '';
+				$enddate = array_key_exists( 'enddate', $_REQUEST ) ? $_REQUEST ['enddate'] : '';
+				$display = (ENABLE_JPGRAPH ? $moduleReports->plot_graph( $id, $startdate, $enddate ) : '');
+				break;
+
+			case 'plot_graph_bs' :
+
+				$id = array_key_exists( 'mcs_capitalsourceid', $_REQUEST ) ? $_REQUEST ['mcs_capitalsourceid'] : '';
+				$startdate = array_key_exists( 'startdate', $_REQUEST ) ? $_REQUEST ['startdate'] : '';
+				$enddate = array_key_exists( 'enddate', $_REQUEST ) ? $_REQUEST ['enddate'] : '';
+				$display = $moduleReports->plot_graph_bs( $id, $startdate, $enddate);
+				error_log($display);
 				break;
 
 			/* search */

@@ -34,14 +34,17 @@ use client\core\coreText;
 use client\util\Environment;
 use base\Configuration;
 
+
 if (ENABLE_JPGRAPH) {
 	require_once 'jpgraph.php';
 	require_once 'jpgraph_bar.php';
 	require_once 'jpgraph_pie.php';
 	require_once 'jpgraph_line.php';
 }
+
 class moduleReports extends module {
 	private $coreText;
+	private const TRENDS_DATE_FORMAT = 'm/Y';
 
 	public final function __construct() {
 		parent::__construct();
@@ -311,115 +314,26 @@ class moduleReports extends module {
 
 	public final function display_plot_trends($all_data) {
 		$showTrendsForm = ReportControllerHandler::getInstance()->showTrendsForm();
+
 		if (is_array( $showTrendsForm ['capitalsources'] )) {
 			$this->template_assign( 'CAPITALSOURCE_VALUES', $showTrendsForm ['capitalsources'] );
 		}
-		$years = $showTrendsForm ['allYears'];
-		$this->template_assign( 'ALL_YEARS', $years );
 
-		if (is_array( $all_data ) && isset( $all_data ['mcs_capitalsourceid'] )) {
-			$this->template_assign( 'PLOT_GRAPH', 1 );
-		} else {
-			$all_data ['mcs_capitalsourceid'] = $showTrendsForm ['selected_capitalsources'];
-			if (empty( $all_data ['mcs_capitalsourceid'] ))
-				foreach ( $showTrendsForm ['capitalsources'] as $capitalsource ) {
-					$all_data ['mcs_capitalsourceid'] [$capitalsource ['capitalsourceid']] = 1;
-				}
-			$all_data ['endyear'] = $years [count( $years ) - 1];
-			$all_data ['endmonth'] = 12;
-			$this->template_assign( 'PLOT_GRAPH', 0 );
-		}
+		$this->template_assign( 'SELECTED_CAPITALSOURCEIDS', $showTrendsForm ['selected_capitalsources'] );
+		$this->template_assign( 'START_DATE', date_format(new \DateTime($showTrendsForm ['minDate']), self::TRENDS_DATE_FORMAT) );
+		$this->template_assign( 'END_DATE',   date_format(new \DateTime($showTrendsForm ['maxDate']), self::TRENDS_DATE_FORMAT) );
 
-		$months = $this->coreText->get_domain_data( 'MONTHS' );
-		$this->template_assign( 'MONTHS', $months );
-		$this->template_assign( 'ALL_DATA', $all_data );
-
-		$this->parse_header();
-		return $this->fetch_template( 'display_plot_trends.tpl' );
+		$this->parse_header( 0, 1, 'display_plot_trends_bs.tpl' );
+		return $this->fetch_template( 'display_plot_trends_bs.tpl' );
 	}
 
-	public final function plot_graph($all_capitalsources_ids, $startmonth, $startyear, $endmonth, $endyear) {
-		$startdate = new \DateTime( $startyear . "-" . $startmonth . "-01" );
-		$enddate = new \DateTime( $endyear . "-" . $endmonth . "-01" );
+	public final function plot_graph_bs($all_capitalsources_ids, $aStartdate, $aEnddate) {
+		$startdate = \DateTime::createFromFormat(self::TRENDS_DATE_FORMAT."/d", $aStartdate."/01");
+		$enddate = \DateTime::createFromFormat(self::TRENDS_DATE_FORMAT."/d", $aEnddate."/01");
+
 		$showTrendsGraph = ReportControllerHandler::getInstance()->showTrendsGraph( $all_capitalsources_ids, $startdate, $enddate );
 
-		$graph_comment = $this->coreText->get_graph( 168 );
-		$graph_from = $this->coreText->get_graph( 169 );
-		$graph_until = $this->coreText->get_graph( 170 );
-		$graph_xaxis = $this->coreText->get_graph( 171 );
-		$graph_yaxis = $this->coreText->get_graph( 172 );
-
-		$i = 0;
-		if (is_array( $showTrendsGraph ['settled'] ) && count( $showTrendsGraph ['settled'] ) > 0) {
-			foreach ( $showTrendsGraph ['settled'] as $settledAmount ) {
-				$monthly_data [$i] = $settledAmount ['amount'];
-				$monthly2_data [$i] = NULL;
-				$monthly_x [$i] = sprintf( "%02s/%02s", $settledAmount ['month'], substr( $settledAmount ['year'], 2 ) );
-				$i ++;
-			}
-		} else {
-			$monthly_data [$i] = 0;
-			$i ++;
-		}
-
-		if (is_array( $showTrendsGraph ['calculated'] )) {
-			$last_amount = $monthly_data [$i - 1];
-			$monthly2_data [$i - 1] = $last_amount;
-			foreach ( $showTrendsGraph ['calculated'] as $calculatedAmount ) {
-				$monthly2_data [$i] = $calculatedAmount ['amount'];
-				$monthly_x [$i] = sprintf( "%02s/%02s", $calculatedAmount ['month'], substr( $calculatedAmount ['year'], 2 ) );
-				$i ++;
-			}
-		} else {
-			$monthly2_data = NULL;
-		}
-
-		$graph = new \Graph( 900, 600 );
-		$graph->SetMargin( 50, 20, 40, 35 );
-		$graph->SetScale( "intlin" );
-		$graph->SetMarginColor( '#E6E6FA' );
-		$graph->SetFrame( true, array (
-				0,
-				0,
-				0
-		), 0 );
-
-		$txt = new \Text( $graph_comment . ' ' . $graph_from . $monthly_x [0] . $graph_until . end( $monthly_x ) );
-		$txt->SetFont( FF_FONT1, FS_BOLD );
-		$txt->Center( 0, 900 );
-		$txt->ParagraphAlign( 'center' );
-		$graph->AddText( $txt );
-
-		$p1 = new \LinePlot( $monthly_data );
-		$p1->SetWeight( 1 );
-		$p1->SetFillGradient( '#E6E6FA', '#B0C4DE' );
-		$p1->mark->SetType( MARK_STAR );
-		$p1->SetFillFromYMin( true );
-		$graph->Add( $p1 );
-
-		if (is_array( $monthly2_data )) {
-			$p2 = new \LinePlot( $monthly2_data );
-			$p2->SetWeight( 1 );
-			$p2->SetFillGradient( '#aeaefa', '#689bde' );
-			$p2->mark->SetType( MARK_STAR );
-			$p2->SetFillFromYMin( true );
-			$graph->Add( $p2 );
-		}
-
-		$graph->xaxis->title->Set( $graph_xaxis );
-		$graph->xaxis->SetTitleMargin( 10 );
-		$graph->xaxis->SetTickLabels( $monthly_x );
-		$graph->xaxis->SetFont( FF_FONT0 );
-		$graph->xaxis->title->SetFont( FF_FONT1, FS_BOLD );
-
-		$graph->yaxis->title->Set( $graph_yaxis );
-		$graph->yaxis->SetTitleMargin( 35 );
-		$graph->yaxis->SetFont( FF_FONT0 );
-		$graph->yaxis->title->SetFont( FF_FONT1, FS_BOLD );
-
-		$graph->xgrid->Show();
-
-		$graph->Stroke();
+		return $this->handleReturnForAjax( $showTrendsGraph );
 	}
 
 	public final function show_reporting_form() {

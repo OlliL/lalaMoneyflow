@@ -30,9 +30,26 @@
 namespace api\model\report;
 
 class showTrendsFormResponse {
-	public $allYears;
+	public $minDate;
+	public $maxDate;
 	public $capitalsourceTransport;
 	public $settingTrendCapitalsourceId;
+
+	public final function getMinDate() {
+		return $this->minDate;
+	}
+
+	public final function setMinDate($minDate) {
+		$this->minDate = $minDate;
+	}
+
+	public final function getMaxDate() {
+		return $this->maxDate;
+	}
+
+	public final function setMaxDate($maxDate) {
+		$this->maxDate = $maxDate;
+	}
 
 	public final function getCapitalsourceTransport() {
 		return $this->capitalsourceTransport;
@@ -42,13 +59,6 @@ class showTrendsFormResponse {
 		$this->capitalsourceTransport = $capitalsourceTransport;
 	}
 
-	public final function getAllYears() {
-		return $this->allYears;
-	}
-
-	public final function setAllYears(array $allYears) {
-		$this->allYears = $allYears;
-	}
 
 	public final function setSettingTrendCapitalsourceId($settingTrendCapitalsourceId) {
 		$this->settingTrendCapitalsourceId = $settingTrendCapitalsourceId;
