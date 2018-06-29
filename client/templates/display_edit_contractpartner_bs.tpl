@@ -111,7 +111,7 @@
                       </div>
                       <label for="edtmcpvalidfrom">{#TEXT_34#}</label>
                       <div class="help-block with-errors"></div>
-                      <script type="text/javascript">
+                      <script>
                         $(function () {
                             $('#edtmcpvalidfromDiv').datetimepicker({
                               format: 'YYYY-MM-DD',
@@ -133,7 +133,7 @@
                       </div>
                       <label for="edtmcpvalidtil">{#TEXT_35#}</label>
                       <div class="help-block with-errors"></div>
-                      <script type="text/javascript">
+                      <script>
                         $(function () {
                           $('#edtmcpvalidtilDiv').datetimepicker({
                             format: 'YYYY-MM-DD',

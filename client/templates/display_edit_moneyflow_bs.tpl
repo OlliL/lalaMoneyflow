@@ -40,7 +40,7 @@
                 <label for="addmnfbookingdate">{#TEXT_16#}</label>
               </span>
               <div class="help-block with-errors"></div>
-              <script type="text/javascript">
+              <script>
                   $(function () {
                       $('#addmnfbookingdateDiv').datetimepicker({
                         format: 'YYYY-MM-DD',
@@ -64,7 +64,7 @@
                 <label for="addmnfinvoicedate">{#TEXT_17#}</label>
               </span>
               <div class="help-block with-errors"></div>
-              <script type="text/javascript">
+              <script>
                   $(function () {
                       $('#addmnfinvoicedateDiv').datetimepicker({
                         format: 'YYYY-MM-DD',

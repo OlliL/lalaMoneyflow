@@ -1,5 +1,5 @@
 {$HEADER}
-    <script type="text/javascript" src="contrib/chart.js/Chart.min.js"></script>
+    <script src="contrib/chart.js/Chart.min.js"></script>
 
 
       <div class="container container-small">
@@ -29,7 +29,7 @@
                   <label for="plttrdstartdate">{#TEXT_69#}</label>
                 </span>
                 <div class="help-block with-errors"></div>
-                <script type="text/javascript">
+                <script>
                     $(function () {
                         $('#plttrdstartdateDiv').datetimepicker({
                           format: "MM/YYYY",
@@ -55,7 +55,7 @@
                   <label for="plttrdenddate">{#TEXT_70#}</label>
                 </span>
                 <div class="help-block with-errors"></div>
-                <script type="text/javascript">
+                <script>
                     $(function () {
                         $('#plttrdenddateDiv').datetimepicker({
                           format: "MM/YYYY",
@@ -78,9 +78,9 @@
                     <select class="form-control" name="mcs_capitalsourceid[]" id="addmnfmcs_capitalsourceid" required data-error="{#TEXT_310#}"  size="5" multiple>
 {section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
                       <option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}"
-  {foreach $SELECTED_CAPITALSOURCEIDS as $id}
-    {if $id == $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}selected{/if}
-  {/foreach}
+{foreach $SELECTED_CAPITALSOURCEIDS as $id}
+{if $id == $CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}selected{/if}
+{/foreach}
                       > {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}</option>
 {/section}
                     </select>
