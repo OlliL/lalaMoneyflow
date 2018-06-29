@@ -26,6 +26,12 @@
       var today = "{$TODAY}";
       var maxDate = "{$MAX_DATE}";
       var currency = "{#CURRENCY#}";
+
+      moment.updateLocale('en', {
+        week : {
+          dow : 1 // Monday is the first day of the week
+        }
+      });
     </script>
     
   </head>
