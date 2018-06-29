@@ -8,7 +8,7 @@
         </div>
 
         <form action="{$ENV_INDEX_PHP}" method="POST" id="plttrdform">
-          <input type="hidden" name="action" value="plot_graph_bs">
+          <input type="hidden" name="action" value="plot_graph">
           <input type="hidden" name="realaction" value="plot">
 
           <div class="span2 well">

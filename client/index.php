@@ -156,7 +156,6 @@ if ($is_logged_in == 0) {
 		case 'list_reports' :
 		case 'plot_trends' :
 		case 'plot_graph' :
-		case 'plot_graph_bs' :
 		case 'show_reporting_form' :
 		case 'plot_report' :
 			$moduleReports = new moduleReports();
@@ -485,18 +484,10 @@ if ($is_logged_in == 0) {
 				break;
 			case 'plot_graph' :
 
-				$id = array_key_exists( 'id', $_REQUEST ) ? $_REQUEST ['id'] : '';
-				$startdate = array_key_exists( 'startdate', $_REQUEST ) ? $_REQUEST ['startdate'] : '';
-				$enddate = array_key_exists( 'enddate', $_REQUEST ) ? $_REQUEST ['enddate'] : '';
-				$display = (ENABLE_JPGRAPH ? $moduleReports->plot_graph( $id, $startdate, $enddate ) : '');
-				break;
-
-			case 'plot_graph_bs' :
-
 				$id = array_key_exists( 'mcs_capitalsourceid', $_REQUEST ) ? $_REQUEST ['mcs_capitalsourceid'] : '';
 				$startdate = array_key_exists( 'startdate', $_REQUEST ) ? $_REQUEST ['startdate'] : '';
 				$enddate = array_key_exists( 'enddate', $_REQUEST ) ? $_REQUEST ['enddate'] : '';
-				$display = $moduleReports->plot_graph_bs( $id, $startdate, $enddate);
+				$display = $moduleReports->plot_graph( $id, $startdate, $enddate);
 				error_log($display);
 				break;
 

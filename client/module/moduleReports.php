@@ -327,7 +327,7 @@ class moduleReports extends module {
 		return $this->fetch_template( 'display_plot_trends_bs.tpl' );
 	}
 
-	public final function plot_graph_bs($all_capitalsources_ids, $aStartdate, $aEnddate) {
+	public final function plot_graph($all_capitalsources_ids, $aStartdate, $aEnddate) {
 		$startdate = \DateTime::createFromFormat(self::TRENDS_DATE_FORMAT."/d", $aStartdate."/01");
 		$enddate = \DateTime::createFromFormat(self::TRENDS_DATE_FORMAT."/d", $aEnddate."/01");
 
