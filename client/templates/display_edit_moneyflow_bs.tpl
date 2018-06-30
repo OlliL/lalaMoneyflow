@@ -222,6 +222,9 @@
                 <div class="input-group col-xs-12">
                   <input type="hidden" id="addmnfsubmoneyflowsplitentryid{{splitEntryIndex}}" name="all_subdata[{{splitEntryIndex}}][moneyflowsplitentryid]" value="-1">
                   <input type="number" step="0.01" class="form-control" id="addmnfsubamount{{splitEntryIndex}}" name="all_subdata[{{splitEntryIndex}}][amount]"  data-error="{{{amountError}}}" onChange="calculateRemainingAmount({{splitEntryIndex}});checkIfRequired({{splitEntryIndex}})">
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-euro"></span>
+                  </span>
                 </div>
                 <label for="addmnfsubamount{{splitEntryIndex}}">{{amountLabel}}</label>
               </span>
@@ -305,14 +308,18 @@
         function setContractpartnerDefaults() {
           var length = addMoneyflowJsonContractpartner.length;
           var selectedValue = document.addmoneyflow.addmnfmcp_contractpartnerid;
+
+          var addmnfcomment = $('#addmnfcomment');
+          var addmnfmpa_postingaccountid = $('#addmnfmpa_postingaccountid');
+          var addmnfmcp_contractpartnerid_val = $('#addmnfmcp_contractpartnerid').val();
           
           for (i=0 ; i<length ; i++) {
-            if (addMoneyflowJsonContractpartner[i]["contractpartnerid"] == document.addmoneyflow.addmnfmcp_contractpartnerid.value) {
-              if ( addMoneyflowJsonContractpartner[i]["moneyflow_comment"] != null ) {
-                document.addmoneyflow.addmnfcomment.value = addMoneyflowJsonContractpartner[i]["moneyflow_comment"];
+            if (addMoneyflowJsonContractpartner[i]["contractpartnerid"] == addmnfmcp_contractpartnerid_val) {
+              if ( addMoneyflowJsonContractpartner[i]["moneyflow_comment"] != null && addmnfcomment.val() == "") {
+                addmnfcomment.val(addMoneyflowJsonContractpartner[i]["moneyflow_comment"]);
               }
-              if ( addMoneyflowJsonContractpartner[i]["mpa_postingaccountid"] != null ) {
-                document.addmoneyflow.addmnfmpa_postingaccountid.value = addMoneyflowJsonContractpartner[i]["mpa_postingaccountid"];
+              if ( addMoneyflowJsonContractpartner[i]["mpa_postingaccountid"] != null && addmnfmpa_postingaccountid.val() == "") {
+                addmnfmpa_postingaccountid.val(addMoneyflowJsonContractpartner[i]["mpa_postingaccountid"]);
               }
               break;
             }
@@ -552,6 +559,13 @@
           var addmnfsubamount = $('#addmnfsubamount' + lastSubElement);
           var addmnfremaining = $('#addmnfremaining' + lastSubElement);
 
+          var addmnfcomment = $('#addmnfcomment');
+          var addmnfmpa_postingaccountid = $('#addmnfmpa_postingaccountid');
+          var addmnfsubcomment = $('#addmnfsubcomment' + lastSubElement);
+          var addmnfsubmpa_postingaccountid = $('#addmnfsubmpa_postingaccountid' + lastSubElement);
+
+          addmnfsubcomment.val(addmnfcomment.val());
+          addmnfsubmpa_postingaccountid.val(addmnfmpa_postingaccountid.val());
           addmnfsubamount.val(addmnfremaining.val());
           checkIfRequired(lastSubElement);
           calculateRemainingAmount();
