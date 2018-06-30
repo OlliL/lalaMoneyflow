@@ -6,6 +6,7 @@
     <form action="{$ENV_INDEX_PHP}" method="POST" data-toggle="validator" name="login">
       <input type="hidden" name="action" value="login_user">
       <input type="hidden" name="realaction" value="login">
+      <input type="hidden" name="sr" value="1">
       <input type="hidden" name="request_uri" value="{$REQUEST_URI}">
 
     <div class="panel panel-default">

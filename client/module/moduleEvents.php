@@ -41,7 +41,6 @@ class moduleEvents extends module {
 		if (! Environment::getInstance()->getEventsShown()) {
 			Environment::getInstance()->setEventsShown( true );
 			$events = EventControllerHandler::getInstance()->showEventList();
-
 			if ($events ['mms_missing'] === true && $events ['numberOfAddableSettlements'] > 0) {
 				$this->template_assign( 'MONTH', $events ['month'] );
 				$this->template_assign( 'YEAR', $events ['year'] );
@@ -51,10 +50,9 @@ class moduleEvents extends module {
 				return $this->fetch_template( 'display_event_monthlysettlement.tpl' );
 			}
 			if ($events ['numberOfImportedMoneyflows'] > 0) {
-				$this->parse_header( 1 );
+				$this->parse_header( 0, 1, 'display_event_imported_moneyflows.tpl' );
 				return $this->fetch_template( 'display_event_imported_moneyflows.tpl' );
 			}
-			// echo $events['numberOfImportedMoneyflows'];
 		}
 		return null;
 	}
