@@ -81,7 +81,7 @@
 							</table>
 						</td>
 					</tr>
-					<tr><td colspan="9"><hr></td></tr>
+					<tr><td colspan="11"><hr></td></tr>
 					{assign var="elements" value="`$elements+16`"}
 				{/section}
 {literal}
