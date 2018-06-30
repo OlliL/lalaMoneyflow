@@ -47,6 +47,7 @@ class moduleEvents extends module {
 				$this->template_assign( 'NUM_ADDABLE_SETTLEMENTS', $events ['numberOfAddableSettlements'] );
 
 				$this->parse_header( 1 );
+				$this->parse_header( 0, 1, 'display_event_monthlysettlement.tpl' );
 				return $this->fetch_template( 'display_event_monthlysettlement.tpl' );
 			}
 			if ($events ['numberOfImportedMoneyflows'] > 0) {
