@@ -21,7 +21,7 @@
               <div class="form-group col-md-6 col-xs-12">
                 <span class="has-float-label">
                   <div class='input-group date col-xs-12' id="plttrdstartdateDiv">
-                    <input type="text" class="form-control" name="startdate" id="plttrdstartdate" required data-error="XXXXXXXXXXXXX!" value="{$START_DATE}">
+                    <input type="text" class="form-control" name="startdate" id="plttrdstartdate" required data-error="{#TEXT_329#}" value="{$START_DATE}">
                     <span class="input-group-addon">
                       <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -47,7 +47,7 @@
               <div class="form-group col-md-6 col-xs-12">
                 <span class="has-float-label">
                   <div class='input-group date col-xs-12' id="plttrdenddateDiv">
-                    <input type="text" class="form-control" name="enddate" id="plttrdenddate" required data-error="XXXXXXXXXXXXX!" value="{$END_DATE}">
+                    <input type="text" class="form-control" name="enddate" id="plttrdenddate" required data-error="{#TEXT_330#}" value="{$END_DATE}">
                     <span class="input-group-addon">
                       <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -102,14 +102,18 @@
           </div>
         </form>
       </div>
-        
-      <div class="container container-middle">
-        <canvas id="myChart" width="200" height="100"></canvas>    
+
+      <div class="container container-middle" style="position: relative; height: 55vh">
+        <canvas id="myChart"></canvas>
       </div>
+
 
 <script>
         // initially hide the empty chart on loading the page
         document.getElementById("myChart").style.display="none";
+
+        Chart.defaults.global.responsive = true;
+        Chart.defaults.global.maintainAspectRatio = false;
 
         var ctx = document.getElementById("myChart").getContext('2d');
 
