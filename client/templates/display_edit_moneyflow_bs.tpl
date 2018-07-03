@@ -284,6 +284,9 @@
         var offEmpty = "{#TEXT_303#}";
         var onFavorite = "{#TEXT_311#}";
         var offFavorite = "{#TEXT_312#}";
+        
+        var previousCommentSetByContractpartnerDefaults = "";
+        var previousPostingAccountSetByContractpartnerDefaults = "";
 
         var shownSplitEntryRows = [];
         var filledSplitEntryRows = [];
@@ -303,8 +306,16 @@
         function resetFormAddMoneyflow() {
           preFillFormAddMoneyflow(FORM_MODE_EMPTY);
           initSplitEntries();
+
+          previousCommentSetByContractpartnerDefaults = "";
+          previousPostingAccountSetByContractpartnerDefaults = "";
         }
 
+        /**
+         * When changing a contractpartner in the drop down box, fill out his defaults for
+         * comment and postingaccount - but only if the user didn't modified the fields
+         * on his own in the meantime
+         */
         function setContractpartnerDefaults() {
           var length = addMoneyflowJsonContractpartner.length;
           var selectedValue = document.addmoneyflow.addmnfmcp_contractpartnerid;
@@ -313,15 +324,28 @@
           var addmnfmpa_postingaccountid = $('#addmnfmpa_postingaccountid');
           var addmnfmcp_contractpartnerid_val = $('#addmnfmcp_contractpartnerid').val();
           
-          for (i=0 ; i<length ; i++) {
-            if (addMoneyflowJsonContractpartner[i]["contractpartnerid"] == addmnfmcp_contractpartnerid_val) {
-              if ( addMoneyflowJsonContractpartner[i]["moneyflow_comment"] != null && addmnfcomment.val() == "") {
-                addmnfcomment.val(addMoneyflowJsonContractpartner[i]["moneyflow_comment"]);
+          var updateComment = false;
+          var updatePostingAccount = false;
+
+          if( addmnfcomment.val() == previousCommentSetByContractpartnerDefaults )
+            updateComment = true;
+          
+          if( addmnfmpa_postingaccountid.val() == previousPostingAccountSetByContractpartnerDefaults )
+            updatePostingAccount = true;
+          
+          if( updateComment || updatePostingAccount ) {
+            for (i=0 ; i<length ; i++) {
+              if (addMoneyflowJsonContractpartner[i]["contractpartnerid"] == addmnfmcp_contractpartnerid_val) {
+                if ( updateComment ) {
+                  addmnfcomment.val(addMoneyflowJsonContractpartner[i]["moneyflow_comment"]);
+                  previousCommentSetByContractpartnerDefaults = addMoneyflowJsonContractpartner[i]["moneyflow_comment"];
+                }
+                if ( updatePostingAccount ) {
+                  addmnfmpa_postingaccountid.val(addMoneyflowJsonContractpartner[i]["mpa_postingaccountid"]);
+                  previousPostingAccountSetByContractpartnerDefaults = addMoneyflowJsonContractpartner[i]["mpa_postingaccountid"];
+                }
+                break;
               }
-              if ( addMoneyflowJsonContractpartner[i]["mpa_postingaccountid"] != null && addmnfmpa_postingaccountid.val() == "") {
-                addmnfmpa_postingaccountid.val(addMoneyflowJsonContractpartner[i]["mpa_postingaccountid"]);
-              }
-              break;
             }
           }
           $('#addmnfform').validator('reset');
@@ -685,6 +709,7 @@
         fillSelectMoneyflow(currency, addMoneyflowJsonPreDefMoneyflows);
         initSplitEntries();
         preFillFormAddMoneyflow(FORM_MODE_DEFAULT);
+
         $('#addmnfform').validator();
         $('#addmnfform').ajaxForm({
             beforeSubmit: function() {

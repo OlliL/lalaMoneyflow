@@ -262,5 +262,13 @@ abstract class module {
 			return json_encode( $ret );
 		}
 	}
+
+	protected final function json_encode_with_null_to_empty_string(array $data) {
+		array_walk_recursive($data, function (&$item, $key) {
+			$item = null === $item ? '' : $item;
+		});
+
+		return json_encode($data);
+	}
 }
 ?>

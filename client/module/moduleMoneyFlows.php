@@ -89,7 +89,7 @@ class moduleMoneyFlows extends module {
 
 		$this->template_assign_raw( 'JSON_POSTINGACCOUNTS', json_encode( $displayMoneyflow ['postingaccounts'] ) );
 		$this->template_assign_raw( 'JSON_PREDEFMONEYFLOWS', json_encode( $displayMoneyflow ['predefmoneyflows'] ) );
-		$this->template_assign_raw( 'JSON_CONTRACTPARTNER', json_encode( $contractpartner ) );
+		$this->template_assign_raw( 'JSON_CONTRACTPARTNER', $this->json_encode_with_null_to_empty_string( $contractpartner ) );
 
 		return $this->fetch_template( 'display_edit_moneyflow_bs.tpl' );
 	}
