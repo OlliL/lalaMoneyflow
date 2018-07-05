@@ -491,7 +491,6 @@ if ($is_logged_in == 0) {
 				$startdate = array_key_exists( 'startdate', $_REQUEST ) ? $_REQUEST ['startdate'] : '';
 				$enddate = array_key_exists( 'enddate', $_REQUEST ) ? $_REQUEST ['enddate'] : '';
 				$display = $moduleReports->plot_graph( $id, $startdate, $enddate);
-				error_log($display);
 				break;
 
 			/* search */
