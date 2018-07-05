@@ -12,7 +12,7 @@
         <div class="form-group">
           <div class="col-sm-12 text-center">
               <a class="btn btn-default" href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_monthlysettlement&amp;monthlysettlements_month={$MONTH}&amp;monthlysettlements_year={$YEAR}&amp;sr=1','_blank','width=500,height={$ADD_WIN_HEIGHT}')">{#TEXT_25#}</a>
-              <a class="btn btn-primary" href="{$ENV_REFERER}">{#TEXT_26#}</a>
+              <a class="btn btn-primary" href="{$REQUEST_URI}">{#TEXT_26#}</a>
           </div>
         </div>
       </div>

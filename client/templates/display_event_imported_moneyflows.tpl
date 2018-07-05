@@ -11,7 +11,7 @@
         <div class="form-group">
           <div class="col-sm-12 text-center">
               <a class="btn btn-default" href="{$ENV_INDEX_PHP}?action=add_importedmoneyflows">{#TEXT_25#}</a>
-              <a class="btn btn-primary" href="{$ENV_REFERER}">{#TEXT_26#}</a>
+              <a class="btn btn-primary" href="{$REQUEST_URI}">{#TEXT_26#}</a>
           </div>
         </div>
       </div>

@@ -26,7 +26,8 @@
       var today = "{$TODAY}";
       var maxDate = "{$MAX_DATE}";
       var currency = "{#CURRENCY#}";
-
+      var ENV_REFERER = $('<textarea />').html("{$ENV_REFERER}").text();
+        
       moment.updateLocale('en', {
         week : {
           dow : 1 // Monday is the first day of the week

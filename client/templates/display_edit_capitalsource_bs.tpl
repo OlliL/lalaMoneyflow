@@ -229,6 +229,7 @@
           preFillFormEditCapitalsource(FORM_MODE_EMPTY);
           hideOverlayCapitalsource();
 {else}
+          opener.location = ENV_REFERER;
           window.close();
 {/if}
         }

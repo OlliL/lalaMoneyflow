@@ -37,7 +37,7 @@ class moduleEvents extends module {
 		parent::__construct();
 	}
 
-	public final function check_events() {
+	public final function check_events($request_uri) {
 		if (! Environment::getInstance()->getEventsShown()) {
 			Environment::getInstance()->setEventsShown( true );
 			$events = EventControllerHandler::getInstance()->showEventList();
@@ -45,12 +45,14 @@ class moduleEvents extends module {
 				$this->template_assign( 'MONTH', $events ['month'] );
 				$this->template_assign( 'YEAR', $events ['year'] );
 				$this->template_assign( 'NUM_ADDABLE_SETTLEMENTS', $events ['numberOfAddableSettlements'] );
+				$this->template_assign( 'REQUEST_URI', $request_uri );
 
-				$this->parse_header( 1 );
 				$this->parse_header( 0, 1, 'display_event_monthlysettlement.tpl' );
 				return $this->fetch_template( 'display_event_monthlysettlement.tpl' );
 			}
 			if ($events ['numberOfImportedMoneyflows'] > 0) {
+				$this->template_assign( 'REQUEST_URI', $request_uri );
+
 				$this->parse_header( 0, 1, 'display_event_imported_moneyflows.tpl' );
 				return $this->fetch_template( 'display_event_imported_moneyflows.tpl' );
 			}

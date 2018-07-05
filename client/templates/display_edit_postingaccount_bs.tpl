@@ -82,6 +82,7 @@
           preFillFormEditPostingAccount(FORM_MODE_EMPTY);
           hideOverlayPostingAccount();
 {else}
+          opener.location = ENV_REFERER;
           window.close();
 {/if}
         }

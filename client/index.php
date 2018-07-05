@@ -68,6 +68,8 @@ $moduleSettings = new moduleSettings();
 
 $request_uri = $_SERVER ['REQUEST_URI'];
 $all_data = null;
+if (array_key_exists( 'all_data', $_REQUEST ) && is_array( $_REQUEST ['all_data'] ))
+	$all_data = $_REQUEST ['all_data'];
 
 if ($action == 'logout') {
 
@@ -87,7 +89,6 @@ if ($is_logged_in == 2) {
 		ErrorHandler::addError( ErrorCode::PASSWORD_MUST_BE_CHANGED );
 	}
 	$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
-	$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 	$display = $moduleSettings->display_personal_settings( $realaction, $all_data );
 
 	if ($_POST ['realaction'] == 'save' && ! is_array( ErrorHandler::getErrors() ))
@@ -102,19 +103,26 @@ if ($is_logged_in == 2) {
 	$display = $moduleUsers->display_login_user( $realaction, $name, $password, $request_uri );
 
 	if (! $display) {
-		$display = $moduleEvents->check_events();
+		// login successfull
 
-		if ($_POST ['request_uri'] && parse_url( $_POST ['request_uri'] ) ['path'] == $_SERVER ['SCRIPT_NAME'] && ! $display)
-			header( "Location: " . htmlentities( $_POST ['request_uri'] ) );
+		if (array_key_exists( 'request_uri', $_POST ) && parse_url( $_POST ['request_uri'] ) ['path'] == $_SERVER ['SCRIPT_NAME']) {
+			$request_uri = $_POST ['request_uri'];
+		} else {
+			$request_uri = $_SERVER ['SCRIPT_NAME'];
+		}
+
+		$display = $moduleEvents->check_events($request_uri);
+
+		if (!$display) {
+			// no events
+			header( "Location: " . htmlentities( $request_uri ) );
+		}
 	}
 }
 // if ($money_debug === true)
 error_reporting( E_ALL & ~ E_DEPRECATED ); // DEPRECATED for jpGraph
 
 if ($is_logged_in == 0) {
-
-	if (array_key_exists( 'all_data', $_REQUEST ) && is_array( $_REQUEST ['all_data'] ))
-		$all_data = $_REQUEST ['all_data'];
 
 	switch ($action) {
 		case 'list_capitalsources' :
@@ -204,7 +212,6 @@ if ($is_logged_in == 0) {
 		switch ($action) {
 			case 'system_settings' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
-				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = $moduleSettings->display_system_settings( $realaction, $all_data );
 				break;
 
@@ -217,12 +224,10 @@ if ($is_logged_in == 0) {
 			case 'edit_language' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'languageid', $_REQUEST ) ? $_REQUEST ['languageid'] : '';
-				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = $moduleLanguages->display_edit_language( $realaction, $id, $all_data );
 				break;
 			case 'add_language' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
-				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = $moduleLanguages->display_add_language( $realaction, $all_data );
 				break;
 
@@ -235,7 +240,6 @@ if ($is_logged_in == 0) {
 			case 'edit_user' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'userid', $_REQUEST ) ? $_REQUEST ['userid'] : '';
-				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$access_relation = array_key_exists( 'access_relation', $_REQUEST ) ? $_REQUEST ['access_relation'] : '';
 				$display = $moduleUsers->display_edit_user( $realaction, $id, $all_data, $access_relation );
 				break;
@@ -254,7 +258,6 @@ if ($is_logged_in == 0) {
 			case 'edit_group' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'groupid', $_REQUEST ) ? $_REQUEST ['groupid'] : '';
-				$all_data = array_key_exists( 'all_data', $_REQUEST ) ? $_REQUEST ['all_data'] : '';
 				$display = $moduleGroups->display_edit_group( $realaction, $id, $all_data );
 				break;
 			case 'delete_group' :
