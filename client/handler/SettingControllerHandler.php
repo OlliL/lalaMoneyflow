@@ -51,7 +51,6 @@ class SettingControllerHandler extends AbstractHandler {
 		if ($response instanceof showDefaultSettingsResponse) {
 			$result ['maxrows'] = $response->getMaxRows();
 			$result ['language'] = $response->getLanguage();
-			$result ['numflows'] = $response->getNumFreeMoneyflows();
 			$result ['dateformat'] = $response->getDateFormat();
 		}
 
@@ -63,7 +62,6 @@ class SettingControllerHandler extends AbstractHandler {
 		$request->setDateFormat( $settings ['dateformat'] );
 		$request->setLanguage( $settings ['language'] );
 		$request->setMaxRows( $settings ['maxrows'] );
-		$request->setNumFreeMoneyflows( $settings ['numflows'] );
 
 		return parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
@@ -74,7 +72,6 @@ class SettingControllerHandler extends AbstractHandler {
 		if ($response instanceof showPersonalSettingsResponse) {
 			$result ['maxrows'] = $response->getMaxRows();
 			$result ['language'] = $response->getLanguage();
-			$result ['numflows'] = $response->getNumFreeMoneyflows();
 			$result ['dateformat'] = $response->getDateFormat();
 		}
 
@@ -86,7 +83,6 @@ class SettingControllerHandler extends AbstractHandler {
 		$request->setDateFormat( $settings ['dateformat'] );
 		$request->setLanguage( $settings ['language'] );
 		$request->setMaxRows( $settings ['maxrows'] );
-		$request->setNumFreeMoneyflows( $settings ['numflows'] );
 		$request->setPassword( $settings ['password'] );
 
 		return parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );

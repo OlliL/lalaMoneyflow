@@ -33,7 +33,6 @@ class showPersonalSettingsResponse {
 	public $language;
 	public $dateFormat;
 	public $maxRows;
-	public $numFreeMoneyflows;
 
 	public final function setLanguage($language) {
 		$this->language = $language;
@@ -47,10 +46,6 @@ class showPersonalSettingsResponse {
 		$this->maxRows = $maxRows;
 	}
 
-	public final function setNumFreeMoneyflows($numFreeMoneyflows) {
-		$this->numFreeMoneyflows = $numFreeMoneyflows;
-	}
-
 	public final function getLanguage() {
 		return $this->language;
 	}
@@ -61,10 +56,6 @@ class showPersonalSettingsResponse {
 
 	public final function getMaxRows() {
 		return $this->maxRows;
-	}
-
-	public final function getNumFreeMoneyflows() {
-		return $this->numFreeMoneyflows;
 	}
 }
 

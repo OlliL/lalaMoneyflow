@@ -33,7 +33,6 @@ class updatePersonalSettingsRequest {
 	public $language;
 	public $dateFormat;
 	public $maxRows;
-	public $numFreeMoneyflows;
 	public $password;
 
 	public final function setLanguage($language) {
@@ -46,10 +45,6 @@ class updatePersonalSettingsRequest {
 
 	public final function setMaxRows($maxRows) {
 		$this->maxRows = $maxRows;
-	}
-
-	public final function setNumFreeMoneyflows($numFreeMoneyflows) {
-		$this->numFreeMoneyflows = $numFreeMoneyflows;
 	}
 
 	public final function setPassword($password) {
@@ -66,10 +61,6 @@ class updatePersonalSettingsRequest {
 
 	public final function getMaxRows() {
 		return $this->maxRows;
-	}
-
-	public final function getNumFreeMoneyflows() {
-		return $this->numFreeMoneyflows;
 	}
 
 	public final function getPassword() {
