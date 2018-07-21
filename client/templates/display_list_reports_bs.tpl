@@ -106,7 +106,7 @@ function Go(x)
                     <tr>
                       <td class="text-center">
       {if $ALL_MONEYFLOW_DATA[DATA].has_receipt eq 1}
-                        <a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=show_moneyflow_receipt&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}','_blank','width=800,height=1000')">+</a>
+                        <a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=show_moneyflow_receipt&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}','_blank','width=800,height=1000')"><i class="glyphicon glyphicon-picture"></i></a>
       {/if}
                       </td>
                       <td class="text-center">{$ALL_MONEYFLOW_DATA[DATA].bookingdate}</td>
@@ -129,7 +129,7 @@ function Go(x)
         {if $smarty.section.DATA2.first eq true}
                       <td class="text-center" rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}>
           {if $ALL_MONEYFLOW_DATA[DATA].has_receipt eq 1}
-                        <a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=show_moneyflow_receipt&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}','_blank','width=800,height=1000')">+</a>
+                        <a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=show_moneyflow_receipt&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}','_blank','width=800,height=1000')"><i class="glyphicon glyphicon-picture"></i></a>
           {/if}
                       </td>
                       <td class="text-center" rowspan={$ALL_MONEYFLOW_DATA[DATA].has_moneyflow_split_entries}>{$DATA2}  {$ALL_MONEYFLOW_DATA[DATA].bookingdate}</td>
