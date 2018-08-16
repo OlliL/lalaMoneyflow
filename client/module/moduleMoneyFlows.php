@@ -115,14 +115,17 @@ class moduleMoneyFlows extends module {
 			}
 
 			if (is_array( $existingSplitEntryIds )) {
-				$delete_moneyflowsplitentryids = array_diff( $existingSplitEntryIds, $receivedSplitEntryIds );
+				$delete_moneyflowsplitentryids = array_values(array_diff( $existingSplitEntryIds, $receivedSplitEntryIds ));
 			}
 		}
 
 		$all_data['moneyflowid'] = $id;
 
 		if ($id > 0) {
-			$ret = MoneyflowControllerHandler::getInstance()->updateMoneyflow( $all_data, $delete_moneyflowsplitentryids, $update_moneyflowsplitentries, $insert_moneyflowsplitentries );
+			$ret = MoneyflowControllerHandler::getInstance()->updateMoneyflow( $all_data
+					                                                 , $delete_moneyflowsplitentryids
+					                                                 , $update_moneyflowsplitentries
+					                                                 , $insert_moneyflowsplitentries );
 		} else {
 			$ret = MoneyflowControllerHandler::getInstance()->createMoneyflow( $all_data, $insert_moneyflowsplitentries );
 		}
