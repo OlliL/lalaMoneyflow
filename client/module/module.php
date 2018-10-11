@@ -180,7 +180,7 @@ abstract class module {
 		}
 		$cache_id = Environment::getInstance()->getUserId();
 		$language = Environment::getInstance()->getSettingGuiLanguage();
-		// $this->template->setCaching( true );
+		$this->template->setCaching( true );
 
 		if ($bootstraped === 1) {
 			$file_header = 'display_header_bs.tpl';

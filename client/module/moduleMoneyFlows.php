@@ -75,6 +75,7 @@ class moduleMoneyFlows extends module {
 		} else {
 			$this->parse_header( 1, 1, 'display_edit_moneyflow_bs.tpl' );
 			$displayMoneyflow = MoneyflowControllerHandler::getInstance()->showEditMoneyflow( $id );
+			$displayMoneyflow ['predefmoneyflows'] = array();
 			$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $displayMoneyflow ['moneyflow'] ) );
 			$this->template_assign_raw( 'JSON_FORM_SPLIT_ENTRIES_DEFAULTS', json_encode( $displayMoneyflow ['moneyflow_split_entries'] ) );
 			$this->template_assign_raw( 'NEW_WINDOW', true );
