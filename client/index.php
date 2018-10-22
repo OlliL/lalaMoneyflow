@@ -240,7 +240,7 @@ if ($is_logged_in == 0) {
 			case 'edit_user' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'userid', $_REQUEST ) ? $_REQUEST ['userid'] : '';
-				$access_relation = array_key_exists( 'access_relation', $_REQUEST ) ? $_REQUEST ['access_relation'] : '';
+				$access_relation = array_key_exists( 'access_relation', $_REQUEST ) ? $_REQUEST ['access_relation'] : array();
 				$display = $moduleUsers->display_edit_user( $realaction, $id, $all_data, $access_relation );
 				break;
 			case 'delete_user' :
