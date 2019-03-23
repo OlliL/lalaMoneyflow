@@ -180,7 +180,8 @@ abstract class module {
 		}
 		$cache_id = Environment::getInstance()->getUserId();
 		$language = Environment::getInstance()->getSettingGuiLanguage();
-		$this->template->setCaching( true );
+		// deactivated for highlighting current screen in menu
+		// $this->template->setCaching( true );
 
 		if ($bootstraped === 1) {
 			$file_header = 'display_header_bs.tpl';
@@ -198,7 +199,7 @@ abstract class module {
 				}
 			}
 		}
-		$header = $this->fetch_template( $file_header, 'header_' . $language . '_' . $admin . '_' . $nonavi . '_' . $cache_id );
+		$header = $this->fetch_template( $file_header, false );
 		$this->template->assign( 'HEADER', $header );
 
 		$footer = $this->fetch_template( $file_footer, 'footer_' . $language . '_' . $cache_id );
@@ -264,11 +265,11 @@ abstract class module {
 	}
 
 	protected final function json_encode_with_null_to_empty_string(array $data) {
-		array_walk_recursive($data, function (&$item, $key) {
+		array_walk_recursive( $data, function (&$item, $key) {
 			$item = null === $item ? '' : $item;
-		});
+		} );
 
-		return json_encode($data);
+		return json_encode( $data );
 	}
 }
 ?>

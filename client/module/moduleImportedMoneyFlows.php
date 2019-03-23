@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2014-2015 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
@@ -36,6 +37,24 @@ class moduleImportedMoneyFlows extends module {
 
 	public final function __construct() {
 		parent::__construct();
+	}
+
+	public final function display_add_importedmoneyflow2($realaction, $all_data) {
+		$addMoneyflow = ImportedMoneyflowControllerHandler::getInstance()->showAddImportedMoneyflows();
+
+		$contractpartner = $this->sort_contractpartner( $addMoneyflow ['contractpartner'] );
+
+		$this->parse_header( 0, 1, 'display_add_importedmoneyflows_bs.tpl' );
+
+		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $addMoneyflow ['importedmoneyflows'][0] ) );
+		$this->template_assign_raw( 'JSON_POSTINGACCOUNTS', json_encode( $addMoneyflow ['postingaccounts'] ) );
+		$this->template_assign_raw( 'JSON_CONTRACTPARTNER', $this->json_encode_with_null_to_empty_string( $contractpartner ) );
+
+		$this->template_assign( 'CAPITALSOURCE_VALUES', $addMoneyflow ['capitalsources'] );
+		$this->template_assign( 'CONTRACTPARTNER_VALUES', $contractpartner );
+		$this->template_assign( 'POSTINGACCOUNT_VALUES',  $addMoneyflow ['postingaccounts']  );
+
+		return $this->fetch_template( 'display_add_importedmoneyflows_bs.tpl' );
 	}
 
 	public final function display_add_importedmoneyflow($realaction, $all_data) {
@@ -104,7 +123,7 @@ class moduleImportedMoneyFlows extends module {
 										}
 									}
 
-									if($key === "") {
+									if ($key === "") {
 										continue;
 									}
 
@@ -162,8 +181,8 @@ class moduleImportedMoneyFlows extends module {
 				}
 		}
 
-		if($all_data === null) {
-			$all_data = array();
+		if ($all_data === null) {
+			$all_data = array ();
 		}
 
 		$this->template_assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
