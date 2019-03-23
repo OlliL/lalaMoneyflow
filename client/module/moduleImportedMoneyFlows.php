@@ -30,8 +30,6 @@
 namespace client\module;
 
 use client\handler\ImportedMoneyflowControllerHandler;
-use base\ErrorCode;
-use client\util\Environment;
 
 class moduleImportedMoneyFlows extends module {
 
@@ -39,162 +37,51 @@ class moduleImportedMoneyFlows extends module {
 		parent::__construct();
 	}
 
-	public final function display_add_importedmoneyflow2($realaction, $all_data) {
+	public final function display_add_importedmoneyflow($realaction, $all_data) {
 		$addMoneyflow = ImportedMoneyflowControllerHandler::getInstance()->showAddImportedMoneyflows();
-
-		$contractpartner = $this->sort_contractpartner( $addMoneyflow ['contractpartner'] );
 
 		$this->parse_header( 0, 1, 'display_add_importedmoneyflows_bs.tpl' );
 
-		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $addMoneyflow ['importedmoneyflows'][0] ) );
-		$this->template_assign_raw( 'JSON_POSTINGACCOUNTS', json_encode( $addMoneyflow ['postingaccounts'] ) );
-		$this->template_assign_raw( 'JSON_CONTRACTPARTNER', $this->json_encode_with_null_to_empty_string( $contractpartner ) );
+		if ($addMoneyflow == null) {
+			$this->template_assign_raw( 'NUM_MONEYFLOWS', 0 );
+		} else {
+			$contractpartner = $this->sort_contractpartner( $addMoneyflow ['contractpartner'] );
 
-		$this->template_assign( 'CAPITALSOURCE_VALUES', $addMoneyflow ['capitalsources'] );
-		$this->template_assign( 'CONTRACTPARTNER_VALUES', $contractpartner );
-		$this->template_assign( 'POSTINGACCOUNT_VALUES',  $addMoneyflow ['postingaccounts']  );
+			$this->template_assign_raw( 'NUM_MONEYFLOWS', count( $addMoneyflow ['importedmoneyflows'] ) );
+			$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $addMoneyflow ['importedmoneyflows'] ) );
+			$this->template_assign_raw( 'JSON_POSTINGACCOUNTS', json_encode( $addMoneyflow ['postingaccounts'] ) );
+			$this->template_assign_raw( 'JSON_CONTRACTPARTNER', $this->json_encode_with_null_to_empty_string( $contractpartner ) );
+
+			$this->template_assign( 'CAPITALSOURCE_VALUES', $addMoneyflow ['capitalsources'] );
+			$this->template_assign( 'CONTRACTPARTNER_VALUES', $contractpartner );
+			$this->template_assign( 'POSTINGACCOUNT_VALUES', $addMoneyflow ['postingaccounts'] );
+		}
 
 		return $this->fetch_template( 'display_add_importedmoneyflows_bs.tpl' );
 	}
 
-	public final function display_add_importedmoneyflow($realaction, $all_data) {
-		$add_data = null;
-		$delete_ids = null;
+	public final function process_importedmoneyflow($all_data, $all_subdata) {
+		$insert_moneyflowsplitentries = array ();
 
-		switch ($realaction) {
-			case 'save' :
-				$data_is_valid = true;
-				$nothing_checked = true;
-				foreach ( $all_data as $id => $value ) {
-					if (array_key_exists( 'action', $value ) && ($value ['action'] == 1)) {
-
-						if (! $this->fix_amount( $value ['amount'] )) {
-							$all_data [$id] ['amount_error'] = 1;
-							$data_is_valid = false;
-						}
-						$nothing_checked = false;
-						if (! empty( $value ['invoicedate'] )) {
-							if (! $this->dateIsValid( $value ['invoicedate'] )) {
-								$this->add_error( ErrorCode::INVOICEDATE_IN_WRONG_FORMAT, array (
-										Environment::getInstance()->getSettingDateFormat()
-								) );
-								$all_data [$id] ['invoicedate_error'] = 1;
-							}
-						}
-
-						if (! $this->dateIsValid( $value ['bookingdate'] )) {
-							$this->add_error( ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT, array (
-									Environment::getInstance()->getSettingDateFormat()
-							) );
-							$all_data [$id] ['bookingdate_error'] = 1;
-							$data_is_valid = false;
-						}
-						$add_data [] = $value;
-					} elseif (array_key_exists( 'action', $value ) && ($value ['action'] == 2)) {
-						$delete_ids [] = $value ['importedmoneyflowid'];
-						$nothing_checked = false;
+		if (is_array( $all_subdata )) {
+			foreach ( $all_subdata as $splitEntry ) {
+				if ($splitEntry ['amount'] != null && $splitEntry ['comment'] != null && $splitEntry ['mpa_postingaccountid'] != null) {
+					if ($splitEntry ['moneyflowsplitentryid'] == - 1) {
+						$insert_moneyflowsplitentries [] = $splitEntry;
 					}
 				}
-
-				if ($nothing_checked) {
-					$this->add_error( ErrorCode::NOTHING_MARKED_TO_ADD );
-					$data_is_valid = false;
-				}
-
-				if ($data_is_valid) {
-
-					if ($delete_ids && is_array( $delete_ids )) {
-						foreach ( $delete_ids as $id ) {
-							ImportedMoneyflowControllerHandler::getInstance()->deleteImportedMoneyflowById( $id );
-						}
-					}
-					if (is_array( $add_data )) {
-						$createMoneyflows = ImportedMoneyflowControllerHandler::getInstance()->importImportedMoneyflows( $add_data );
-
-						if ($createMoneyflows !== true) {
-							$data_is_valid = false;
-							if (is_array( $createMoneyflows )) {
-								foreach ( $createMoneyflows ['errors'] as $validationResult ) {
-									$error = $validationResult ['error'];
-									$key = "";
-									foreach ( $all_data as $matching_key2 => $value2 ) {
-										if ($value2 ["importedmoneyflowid"] == $validationResult ['key']) {
-											$key = $matching_key2;
-										}
-									}
-
-									if ($key === "") {
-										continue;
-									}
-
-									switch ($error) {
-										case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-											$this->add_error( $error, array (
-													$all_data [$key] ['amount']
-											) );
-											break;
-										case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
-											$this->add_error( $error, array (
-													Environment::getInstance()->getSettingDateFormat()
-											) );
-											break;
-										default :
-											$this->add_error( $error );
-									}
-
-									switch ($error) {
-										case ErrorCode::BOOKINGDATE_IN_WRONG_FORMAT :
-										case ErrorCode::BOOKINGDATE_OUTSIDE_GROUP_ASSIGNMENT :
-											$all_data [$key] ['bookingdate_error'] = 1;
-											break;
-										case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
-											$all_data [$key] ['bookingdate_error'] = 1;
-										case ErrorCode::CAPITALSOURCE_DOES_NOT_EXIST :
-										case ErrorCode::CAPITALSOURCE_IS_NOT_SET :
-										case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
-											$all_data [$key] ['capitalsource_error'] = 1;
-											break;
-										case ErrorCode::CONTRACTPARTNER_DOES_NOT_EXIST :
-										case ErrorCode::CONTRACTPARTNER_IS_NOT_SET :
-											$all_data [$key] ['contractpartner_error'] = 1;
-											break;
-										case ErrorCode::AMOUNT_IS_ZERO :
-										case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-											$all_data [$key] ['amount_error'] = 1;
-											break;
-										case ErrorCode::CONTRACTPARTNER_NO_LONGER_VALID :
-											$all_data [$key] ['contractpartner_error'] = 1;
-											$all_data [$key] ['bookingdate_error'] = 1;
-									}
-								}
-							}
-						}
-					}
-				}
-			default :
-				$addMoneyflow = ImportedMoneyflowControllerHandler::getInstance()->showAddImportedMoneyflows();
-				$capitalsource_values = $addMoneyflow ['capitalsources'];
-				$contractpartner_values = $addMoneyflow ['contractpartner'];
-				$postingaccount_values = $addMoneyflow ['postingaccounts'];
-				if ($realaction === 'save' && $data_is_valid == true || $realaction != 'save') {
-					$all_data = $addMoneyflow ['importedmoneyflows'];
-				}
+			}
+		}
+		if ($all_data ['delete'] == 1) {
+			$ret = ImportedMoneyflowControllerHandler::getInstance()->deleteImportedMoneyflowById( $all_data ['importedmoneyflowid'] );
+		} else {
+			// TODO: Split Entries + RETURN VALUE
+			$ret = ImportedMoneyflowControllerHandler::getInstance()->importImportedMoneyflows( array (
+					$all_data
+			) );
 		}
 
-		if ($all_data === null) {
-			$all_data = array ();
-		}
-
-		$this->template_assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-		$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
-		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
-		$this->template_assign( 'ALL_DATA', $all_data );
-		$this->template_assign( 'NUMFLOWS', count( $all_data ) );
-		$this->template_assign( 'ERRORS', $this->get_errors() );
-
-		$this->parse_header();
-		return $this->fetch_template( 'display_add_importedmoneyflows.tpl' );
+		return $this->handleReturnForAjax( $ret );
 	}
 }
-
 ?>

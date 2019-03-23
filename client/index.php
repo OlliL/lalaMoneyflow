@@ -154,9 +154,7 @@ if ($is_logged_in == 0) {
 			$moduleMoneyFlows = new moduleMoneyFlows();
 			break;
 		case 'add_importedmoneyflows' :
-			$moduleImportedMoneyFlows = new moduleImportedMoneyFlows();
-			break;
-		case 'add_importedmoneyflows2' :
+		case 'add_importedmoneyflow_submit' :
 			$moduleImportedMoneyFlows = new moduleImportedMoneyFlows();
 			break;
 		case 'list_monthlysettlements' :
@@ -427,15 +425,15 @@ if ($is_logged_in == 0) {
 
 			/* imported moneyflows */
 
+			case 'add_importedmoneyflow_submit' :
+
+				$all_subdata = array_key_exists( 'all_subdata', $_REQUEST ) ? $_REQUEST ['all_subdata'] : '';
+				$display = $moduleImportedMoneyFlows->process_importedmoneyflow( $all_data, $all_subdata );
+				break;
 			case 'add_importedmoneyflows' :
 
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$display = $moduleImportedMoneyFlows->display_add_importedmoneyflow( $realaction, $all_data );
-				break;
-			case 'add_importedmoneyflows2' :
-
-				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
-				$display = $moduleImportedMoneyFlows->display_add_importedmoneyflow2( $realaction, $all_data );
 				break;
 
 			/* monthlysettlements */
