@@ -10,46 +10,46 @@
 
         <div class="well">
         <div class="row">
-        <form action="{$ENV_INDEX_PHP}" method="POST" name="addmoneyflow" id="addmnfform">
+        <form action="{$ENV_INDEX_PHP}" method="POST" name="addimportedmoneyflow" id="addmimform">
           <input type="hidden" name="action"                          value="edit_moneyflow_submit">
           <input type="hidden" name="moneyflowid"                     value="{$MONEYFLOWID}">
-          <input type="hidden" name="all_data[predefmoneyflowid]"     value="-1"               id="addmnfpredefmoneyflowid" >
-          <input type="hidden" name="all_data[existing_split_entry_ids]"  value=""               id="addmnfexisting_split_entry_ids" >
+          <input type="hidden" name="all_data[predefmoneyflowid]"     value="-1"               id="addmimpredefmoneyflowid" >
+          <input type="hidden" name="all_data[existing_split_entry_ids]"  value=""               id="addmimexisting_split_entry_ids" >
 
           <div class="span2 well">
            <div class="row">
              <div class="col-md-2 col-xs-3" style="font-weight:700;font-size:10.5px">{#TEXT_32#}</div>
-             <div class="col-md-3" id="addmnfaccountnumber"></div>
+             <div class="col-md-3" id="addmimaccountnumber"></div>
              <div class="col-md-1 col-xs-3" style="font-weight:700;font-size:10.5px">{#TEXT_33#}</div>
-             <div class="col-md-2" id="addmnfbankcode"></div>
+             <div class="col-md-2" id="addmimbankcode"></div>
              <div class="col-md-2 col-xs-3" style="font-weight:700;font-size:10.5px">{#TEXT_269#}</div>
-             <div class="col-md-2" id="addmnfname"></div>
+             <div class="col-md-2" id="addmimname"></div>
            </div>
            <div class="row">
              <div class="col-md-2 col-xs-3" style="font-weight:700;font-size:10.5px">{#TEXT_270#}</div>
-             <div class="col-md-10" id="addmnfusage"></div>
+             <div class="col-md-10" id="addmimusage"></div>
           </div>
           </div>
           <div class="span2 well">
 
-            <div id="addMoneyflowErrorsGoHere">
+            <div id="addImportedMoneyflowErrorsGoHere">
             </div>
 
      <div class="row">
             <div class="form-group col-md-2 col-xs-12">
               <span class="has-float-label">
-                <div class='input-group date col-xs-12' id="addmnfbookingdateDiv">
-                  <input type="text" class="form-control" name="all_data[bookingdate]" id="addmnfbookingdate" required data-error="{#TEXT_305#}">
+                <div class='input-group date col-xs-12' id="addmimbookingdateDiv">
+                  <input type="text" class="form-control" name="all_data[bookingdate]" id="addmimbookingdate" required data-error="{#TEXT_305#}">
                   <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                   </span>
                 </div>
-                <label for="addmnfbookingdate">{#TEXT_16#}</label>
+                <label for="addmimbookingdate">{#TEXT_16#}</label>
               </span>
               <div class="help-block with-errors"></div>
               <script>
                   $(function () {
-                      $('#addmnfbookingdateDiv').datetimepicker({
+                      $('#addmimbookingdateDiv').datetimepicker({
                         format: 'YYYY-MM-DD',
                         focusOnShow: false,
                         showClear: true,
@@ -62,18 +62,18 @@
 
             <div class="form-group col-md-2 col-xs-12">
               <span class="has-float-label">
-                <div class='input-group date col-xs-12' id="addmnfinvoicedateDiv">
-                  <input type="text" class="form-control" name="all_data[invoicedate]" id="addmnfinvoicedate">
+                <div class='input-group date col-xs-12' id="addmiminvoicedateDiv">
+                  <input type="text" class="form-control" name="all_data[invoicedate]" id="addmiminvoicedate">
                   <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                   </span>
                 </div>
-                <label for="addmnfinvoicedate">{#TEXT_17#}</label>
+                <label for="addmiminvoicedate">{#TEXT_17#}</label>
               </span>
               <div class="help-block with-errors"></div>
               <script>
                   $(function () {
-                      $('#addmnfinvoicedateDiv').datetimepicker({
+                      $('#addmiminvoicedateDiv').datetimepicker({
                         format: 'YYYY-MM-DD',
                         focusOnShow: false,
                         showClear: true,
@@ -87,7 +87,7 @@
             <div class="form-group col-md-4 col-xs-12">
               <span class="has-float-label">
                 <div class="input-group col-xs-12">
-                  <select class="form-control" name="all_data[mcp_contractpartnerid]" id="addmnfmcp_contractpartnerid" onchange="setContractpartnerDefaults()" required data-error="{#TEXT_307#}">
+                  <select class="form-control" name="all_data[mcp_contractpartnerid]" id="addmimmcp_contractpartnerid" onchange="setContractpartnerDefaults()" required data-error="{#TEXT_307#}">
                     <option value="">&nbsp;</option>
 {section name=CONTRACTPARTNER loop=$CONTRACTPARTNER_VALUES}
                     <option value="{$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].contractpartnerid}"> {$CONTRACTPARTNER_VALUES[CONTRACTPARTNER].name}</option>
@@ -99,7 +99,7 @@
                     </button>
                   </span>
                 </div>
-                <label for="addmnfmcp_contractpartnerid">{#TEXT_2#}</label>
+                <label for="addmimmcp_contractpartnerid">{#TEXT_2#}</label>
               </span>
               <div class="help-block with-errors"></div>
             </div>
@@ -107,7 +107,7 @@
             <div class="form-group col-md-4 col-xs-12">
               <span class="has-float-label">
                 <div class="input-group col-xs-12">
-                  <select class="form-control" name="all_data[mcs_capitalsourceid]" id="addmnfmcs_capitalsourceid" required data-error="{#TEXT_310#}">
+                  <select class="form-control" name="all_data[mcs_capitalsourceid]" id="addmimmcs_capitalsourceid" required data-error="{#TEXT_310#}">
 {section name=CAPITALSOURCE loop=$CAPITALSOURCE_VALUES}
                     <option value="{$CAPITALSOURCE_VALUES[CAPITALSOURCE].capitalsourceid}"> {$CAPITALSOURCE_VALUES[CAPITALSOURCE].comment}</option>
 {/section}
@@ -118,7 +118,7 @@
                     </button>
                   </span>
                 </div>
-                <label for="addmnfmcs_capitalsourceid">{#TEXT_19#}</label>
+                <label for="addmimmcs_capitalsourceid">{#TEXT_19#}</label>
               </span>
               <div class="help-block with-errors"></div>
             </div>
@@ -129,33 +129,33 @@
             <div class="form-group col-md-2 col-xs-12">
               <span class="has-float-label">
                 <div class="input-group col-xs-12">
-                  <input type="number" step="0.01" class="form-control" id="addmnfamount" name="all_data[amount]" required data-error="{#TEXT_306#}" autofocus onChange="calculateRemainingAmount()">
+                  <input type="number" step="0.01" class="form-control" id="addmimamount" name="all_data[amount]" required data-error="{#TEXT_306#}" autofocus onChange="calculateRemainingAmount()">
                   <span class="input-group-addon">
                     <span class="glyphicon glyphicon-euro"></span>
                   </span>
                 </div>
-                <label for="addmnfamount">{#TEXT_18#}</label>
+                <label for="addmimamount">{#TEXT_18#}</label>
               </span>
               <div class="help-block with-errors"></div>
             </div>
 
             <div class="form-group col-md-4 col-xs-12">
-              <div id="addmnfcommentDiv">
+              <div id="addmimcommentDiv">
               <span class="has-float-label">
                 <div class="input-group col-xs-12">
-                  <input type="text" class="form-control" id="addmnfcomment" name="all_data[comment]" required data-error="{#TEXT_308#}">
+                  <input type="text" class="form-control" id="addmimcomment" name="all_data[comment]" required data-error="{#TEXT_308#}">
                 </div>
-                <label for="addmnfcomment">{#TEXT_21#}</label>
+                <label for="addmimcomment">{#TEXT_21#}</label>
               </span>
               <div class="help-block with-errors"></div>
               </div>
             </div>
 
             <div class="form-group col-md-3 col-xs-12">
-              <div id="addmnfmpa_postingaccountidDiv">
+              <div id="addmimmpa_postingaccountidDiv">
               <span class="has-float-label">
                 <div class="input-group col-xs-12">
-                  <select class="form-control" name="all_data[mpa_postingaccountid]" id="addmnfmpa_postingaccountid" required data-error="{#TEXT_309#}">
+                  <select class="form-control" name="all_data[mpa_postingaccountid]" id="addmimmpa_postingaccountid" required data-error="{#TEXT_309#}">
                     <option value="">&nbsp;</option>
 {section name=POSTINGACCOUNT loop=$POSTINGACCOUNT_VALUES}
                     <option value="{$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].postingaccountid}"> {$POSTINGACCOUNT_VALUES[POSTINGACCOUNT].name}</option>
@@ -169,7 +169,7 @@
                   </span>
 {/if}
                 </div>
-                <label for="addmnfmpa_postingaccountid">{#TEXT_232#}</label>
+                <label for="addmimmpa_postingaccountid">{#TEXT_232#}</label>
               </span>
               <div class="help-block with-errors"></div>
               </div>
@@ -185,10 +185,10 @@
               <div class="panel panel-default">
               
                 <div class="panel-heading">
-                  <a data-toggle="collapse" href="#addmnfsplitentries">Unterbuchungen</a>
+                  <a data-toggle="collapse" href="#addmimsplitentries">Unterbuchungen</a>
                 </div>
                 
-                <div id="addmnfsplitentries" class="panel-collapse collapse panel-footer">
+                <div id="addmimsplitentries" class="panel-collapse collapse panel-footer">
                 </div>
 
               </div>
@@ -198,7 +198,7 @@
 
           <div class="form-group">
             <div class="col-sm-12 text-center">
-              <button type="button" class="btn btn-default" onclick="resetFormAddMoneyflow()">{#TEXT_304#}</button>
+              <button type="button" class="btn btn-default" onclick="resetFormAddImportedMoneyflow()">{#TEXT_304#}</button>
               <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
             </div>  
           </div>  
@@ -210,14 +210,14 @@
 
 {literal}    
 <script id="template" type="x-tmpl-mustache">
-          <div class="row" id="addmnfsub{{splitEntryIndex}}">
+          <div class="row" id="addmimsub{{splitEntryIndex}}">
             <div class="form-group has-float-label col-md-1 col-xs-12">
               <div class="input-group col-xs-12">
                 <span class="input-group-btn">
                   <button type="button" class="btn" onclick="removeSplitEntryLine({{splitEntryIndex}})">
                     <span class="glyphicon glyphicon-minus"></span>
                   </button>
-                  <button type="button" class="btn" onclick="addSplitEntryLine()" id="addmnfmoresplitentries{{splitEntryIndex}}">
+                  <button type="button" class="btn" onclick="addSplitEntryLine()" id="addmimmoresplitentries{{splitEntryIndex}}">
                     <span class="glyphicon glyphicon-plus"></span>
                   </button>
                 </span>
@@ -226,13 +226,13 @@
             <div class="form-group col-md-2 col-xs-12">
               <span class="has-float-label">
                 <div class="input-group col-xs-12">
-                  <input type="hidden" id="addmnfsubmoneyflowsplitentryid{{splitEntryIndex}}" name="all_subdata[{{splitEntryIndex}}][moneyflowsplitentryid]" value="-1">
-                  <input type="number" step="0.01" class="form-control" id="addmnfsubamount{{splitEntryIndex}}" name="all_subdata[{{splitEntryIndex}}][amount]"  data-error="{{{amountError}}}" onChange="calculateRemainingAmount({{splitEntryIndex}});checkIfRequired({{splitEntryIndex}})">
+                  <input type="hidden" id="addmimsubmoneyflowsplitentryid{{splitEntryIndex}}" name="all_subdata[{{splitEntryIndex}}][moneyflowsplitentryid]" value="-1">
+                  <input type="number" step="0.01" class="form-control" id="addmimsubamount{{splitEntryIndex}}" name="all_subdata[{{splitEntryIndex}}][amount]"  data-error="{{{amountError}}}" onChange="calculateRemainingAmount({{splitEntryIndex}});checkIfRequired({{splitEntryIndex}})">
                   <span class="input-group-addon">
                     <span class="glyphicon glyphicon-euro"></span>
                   </span>
                 </div>
-                <label for="addmnfsubamount{{splitEntryIndex}}">{{amountLabel}}</label>
+                <label for="addmimsubamount{{splitEntryIndex}}">{{amountLabel}}</label>
               </span>
               <div class="help-block with-errors"></div>
             </div>
@@ -240,9 +240,9 @@
             <div class="form-group col-md-4 col-xs-12">
               <span class="has-float-label">
                 <div class="input-group col-xs-12">
-                  <input type="text" class="form-control" id="addmnfsubcomment{{splitEntryIndex}}" name="all_subdata[{{splitEntryIndex}}][comment]"  data-error="{{{commentError}}}" onChange="checkIfRequired({{splitEntryIndex}})">
+                  <input type="text" class="form-control" id="addmimsubcomment{{splitEntryIndex}}" name="all_subdata[{{splitEntryIndex}}][comment]"  data-error="{{{commentError}}}" onChange="checkIfRequired({{splitEntryIndex}})">
                 </div>
-                <label for="addmnfsubcomment{{splitEntryIndex}}">{{commentLabel}}</label>
+                <label for="addmimsubcomment{{splitEntryIndex}}">{{commentLabel}}</label>
               </span>
               <div class="help-block with-errors"></div>
             </div>
@@ -250,19 +250,19 @@
             <div class="form-group col-md-3 col-xs-12">
               <span class="has-float-label">
                 <div class="input-group col-xs-12">
-                  <select class="form-control" name="all_subdata[{{splitEntryIndex}}][mpa_postingaccountid]" id="addmnfsubmpa_postingaccountid{{splitEntryIndex}}"  data-error="{{{postingAccountError}}}" onChange="checkIfRequired({{splitEntryIndex}})">
+                  <select class="form-control" name="all_subdata[{{splitEntryIndex}}][mpa_postingaccountid]" id="addmimsubmpa_postingaccountid{{splitEntryIndex}}"  data-error="{{{postingAccountError}}}" onChange="checkIfRequired({{splitEntryIndex}})">
                     <option value="">&nbsp;</option>
 {{#postingAccounts}}
                     <option value="{{postingaccountid}}">{{name}}</option>
 {{/postingAccounts}}
                   </select>
                 </div>
-                <label for="addmnfsubmpa_postingaccountid{{splitEntryIndex}}">{{postingAccountLabel}}</label>
+                <label for="addmimsubmpa_postingaccountid{{splitEntryIndex}}">{{postingAccountLabel}}</label>
               </span>
               <div class="help-block with-errors"></div>
             </div>
             
-            <div class="form-group col-md-2 col-xs-12" id="addmnfremainingDiv{{splitEntryIndex}}">
+            <div class="form-group col-md-2 col-xs-12" id="addmimremainingDiv{{splitEntryIndex}}">
               <div class="input-group col-xs-12">
                 <span class="input-group-btn">
                   <button type="button" class="btn" onclick="copyRemainer()">
@@ -270,8 +270,8 @@
                   </button>
                 </span>
                 <span class="has-float-label">
-                  <input type="text" class="form-control" id="addmnfremaining{{splitEntryIndex}}" readonly pattern="0">
-                  <label for="addmnfremaining{{splitEntryIndex}}">Rest</label>
+                  <input type="text" class="form-control" id="addmimremaining{{splitEntryIndex}}" readonly pattern="0">
+                  <label for="addmimremaining{{splitEntryIndex}}">Rest</label>
                 </span>                
               </div>
             </div>
@@ -281,9 +281,9 @@
 
       <script>
 
-        var addMoneyflowJsonContractpartner = {$JSON_CONTRACTPARTNER};
-        var addMoneyflowJsonPostingAccounts = {$JSON_POSTINGACCOUNTS};
-        var addMoneyflowJsonFormDefaults = {$JSON_FORM_DEFAULTS};
+        var addImportedMoneyflowJsonContractpartner = {$JSON_CONTRACTPARTNER};
+        var addImportedMoneyflowJsonPostingAccounts = {$JSON_POSTINGACCOUNTS};
+        var addImportedMoneyflowJsonFormDefaults = {$JSON_FORM_DEFAULTS};
         var onEmpty = "{#TEXT_302#}";
         var offEmpty = "{#TEXT_303#}";
 
@@ -300,13 +300,13 @@
           commentLabel: "{#TEXT_21#}",
           postingAccountError: "{#TEXT_309#}",
           postingAccountLabel: "{#TEXT_232#}",
-          postingAccounts: addMoneyflowJsonPostingAccounts
+          postingAccounts: addImportedMoneyflowJsonPostingAccounts
         };
         
 
 {literal}
-        function resetFormAddMoneyflow() {
-          preFillFormAddMoneyflow();
+        function resetFormAddImportedMoneyflow() {
+          preFillFormAddImportedMoneyflow();
           initSplitEntries();
 
           previousCommentSetByContractpartnerDefaults = "";
@@ -319,68 +319,68 @@
          * on his own in the meantime
          */
         function setContractpartnerDefaults() {
-          var length = addMoneyflowJsonContractpartner.length;
-          var selectedValue = document.addmoneyflow.addmnfmcp_contractpartnerid;
+          var length = addImportedMoneyflowJsonContractpartner.length;
+          var selectedValue = document.addimportedmoneyflow.addmimmcp_contractpartnerid;
 
-          var addmnfcomment = $('#addmnfcomment');
-          var addmnfmpa_postingaccountid = $('#addmnfmpa_postingaccountid');
-          var addmnfmcp_contractpartnerid_val = $('#addmnfmcp_contractpartnerid').val();
+          var addmimcomment = $('#addmimcomment');
+          var addmimmpa_postingaccountid = $('#addmimmpa_postingaccountid');
+          var addmimmcp_contractpartnerid_val = $('#addmimmcp_contractpartnerid').val();
           
           var updateComment = false;
           var updatePostingAccount = false;
 
-          if( addmnfcomment.val() == previousCommentSetByContractpartnerDefaults )
+          if( addmimcomment.val() == previousCommentSetByContractpartnerDefaults )
             updateComment = true;
 
-          if( addmnfmpa_postingaccountid.val() == previousPostingAccountSetByContractpartnerDefaults || ( ! addmnfmpa_postingaccountid.val() && ! previousPostingAccountSetByContractpartnerDefaults ))
+          if( addmimmpa_postingaccountid.val() == previousPostingAccountSetByContractpartnerDefaults || ( ! addmimmpa_postingaccountid.val() && ! previousPostingAccountSetByContractpartnerDefaults ))
             updatePostingAccount = true;
             
           if( updateComment || updatePostingAccount ) {
             for (i=0 ; i<length ; i++) {
-              if (addMoneyflowJsonContractpartner[i]["contractpartnerid"] == addmnfmcp_contractpartnerid_val) {
+              if (addImportedMoneyflowJsonContractpartner[i]["contractpartnerid"] == addmimmcp_contractpartnerid_val) {
                 if ( updateComment ) {
-                  addmnfcomment.val(addMoneyflowJsonContractpartner[i]["moneyflow_comment"]);
-                  previousCommentSetByContractpartnerDefaults = addMoneyflowJsonContractpartner[i]["moneyflow_comment"];
+                  addmimcomment.val(addImportedMoneyflowJsonContractpartner[i]["moneyflow_comment"]);
+                  previousCommentSetByContractpartnerDefaults = addImportedMoneyflowJsonContractpartner[i]["moneyflow_comment"];
                 }
                 if ( updatePostingAccount ) {
-                  addmnfmpa_postingaccountid.val(addMoneyflowJsonContractpartner[i]["mpa_postingaccountid"]);
-                  previousPostingAccountSetByContractpartnerDefaults = addMoneyflowJsonContractpartner[i]["mpa_postingaccountid"];
+                  addmimmpa_postingaccountid.val(addImportedMoneyflowJsonContractpartner[i]["mpa_postingaccountid"]);
+                  previousPostingAccountSetByContractpartnerDefaults = addImportedMoneyflowJsonContractpartner[i]["mpa_postingaccountid"];
                 }
                 break;
               }
             }
           }
-          $('#addmnfform').validator('reset');
-          $('#addmnfform').validator('update');
+          $('#addmimform').validator('reset');
+          $('#addmimform').validator('update');
         }
 
-        function preFillFormAddMoneyflow() {
+        function preFillFormAddImportedMoneyflow() {
 
           $(function() {
             $('#favorite').bootstrapToggle('destroy');
           })
 
-          document.addmoneyflow.addmnfpredefmoneyflowid.value = -1;
-          document.addmoneyflow.addmnfbookingdate.value = today;
-          document.addmoneyflow.addmnfinvoicedate.value = "";      
-          document.addmoneyflow.addmnfamount.value = "";
-          document.addmoneyflow.addmnfmcp_contractpartnerid.value = "";
-          document.addmoneyflow.addmnfcomment.value = "";
-          document.addmoneyflow.addmnfmpa_postingaccountid.value = "";
-          document.addmoneyflow.addmnfmcs_capitalsourceid.selectedIndex = 0;
+          document.addimportedmoneyflow.addmimpredefmoneyflowid.value = -1;
+          document.addimportedmoneyflow.addmimbookingdate.value = today;
+          document.addimportedmoneyflow.addmiminvoicedate.value = "";      
+          document.addimportedmoneyflow.addmimamount.value = "";
+          document.addimportedmoneyflow.addmimmcp_contractpartnerid.value = "";
+          document.addimportedmoneyflow.addmimcomment.value = "";
+          document.addimportedmoneyflow.addmimmpa_postingaccountid.value = "";
+          document.addimportedmoneyflow.addmimmcs_capitalsourceid.selectedIndex = 0;
 
-          for ( var key in addMoneyflowJsonFormDefaults ) {
-            var element = document.getElementById( 'addmnf'+key );
+          for ( var key in addImportedMoneyflowJsonFormDefaults ) {
+            var element = document.getElementById( 'addmim'+key );
 
             if ( element !== null ) {
               if ( key == "save_as_predefmoneyflow") {
-                if ( addMoneyflowJsonFormDefaults["save_as_predefmoneyflow"] == "1" ) {
+                if ( addImportedMoneyflowJsonFormDefaults["save_as_predefmoneyflow"] == "1" ) {
                   $(function() {
                     $('#favorite').prop('checked', true).change();
                   })
                 }
               } else if ( key == "private") {
-                if ( addMoneyflowJsonFormDefaults["private"] == "1" ) {
+                if ( addImportedMoneyflowJsonFormDefaults["private"] == "1" ) {
                   $(function() {
                     $('#private').prop('checked', true).change();
                   })
@@ -388,17 +388,17 @@
               } else {
               console.log(element.tagName);
                 if ( element.tagName == 'DIV' ) {
-                  element.innerHTML = addMoneyflowJsonFormDefaults[key];
-                  console.log(addMoneyflowJsonFormDefaults[key]);
+                  element.innerHTML = addImportedMoneyflowJsonFormDefaults[key];
+                  console.log(addImportedMoneyflowJsonFormDefaults[key]);
                 } else {
-                  element.value = addMoneyflowJsonFormDefaults[key];
+                  element.value = addImportedMoneyflowJsonFormDefaults[key];
                 }
               }
             }
           }
 
-          $('#addmnfform').validator('reset');
-          $('#addmnfform').validator('update');
+          $('#addmimform').validator('reset');
+          $('#addmimform').validator('update');
 
           $(function() {
             $('#favorite').bootstrapToggle({
@@ -408,8 +408,8 @@
           })
         }
 
-	function toggleAddMoneyflowSplitEntries () {
-	  var element = document.getElementById('addmnfToggleSplitEntries');
+	function toggleAddImportedMoneyflowSplitEntries () {
+	  var element = document.getElementById('addmimToggleSplitEntries');
 	  element.innerHTML = '<span class="glyphicon glyphicon-minus"></span>';
 	}
 
@@ -420,9 +420,9 @@
          ************************************************************/
          
         function checkIfRequired(row) {
-          var elementAmount = $('#addmnfsubamount' + row);
-          var elementComment = $('#addmnfsubcomment' + row);
-          var elementPostingAccount = $('#addmnfsubmpa_postingaccountid' + row);
+          var elementAmount = $('#addmimsubamount' + row);
+          var elementComment = $('#addmimsubcomment' + row);
+          var elementPostingAccount = $('#addmimsubmpa_postingaccountid' + row);
           
           var required = true;
           if(elementAmount.val().length == 0 && elementComment.val().length == 0 && elementPostingAccount.val().length == 0) {
@@ -444,31 +444,31 @@
             elementComment.prop('required',required).change();
             elementPostingAccount.prop('required',required).change();
  
-            $('#addmnfform').validator('reset');
-            $('#addmnfform').validator('update');
+            $('#addmimform').validator('reset');
+            $('#addmimform').validator('update');
           }
         }
 
         function hideNonRelevantFieldsIfSplitEntries() {
           if(filledSplitEntryRows.length > 0) {
-            if($('#addmnfcommentDiv').is(':visible')) {
-              $('#addmnfcommentDiv').hide();
-              $('#addmnfcomment').prop('required',false).change();
-              $('#addmnfmpa_postingaccountidDiv').hide();
-              $('#addmnfmpa_postingaccountid').prop('required',false).change();
+            if($('#addmimcommentDiv').is(':visible')) {
+              $('#addmimcommentDiv').hide();
+              $('#addmimcomment').prop('required',false).change();
+              $('#addmimmpa_postingaccountidDiv').hide();
+              $('#addmimmpa_postingaccountid').prop('required',false).change();
             }
           } else {
-            if($('#addmnfcommentDiv').is(':hidden')) {
-              $('#addmnfcommentDiv').show();
-              $('#addmnfcomment').prop('required',true).change();
-              $('#addmnfmpa_postingaccountidDiv').show();
-              $('#addmnfmpa_postingaccountid').prop('required',true).change();
+            if($('#addmimcommentDiv').is(':hidden')) {
+              $('#addmimcommentDiv').show();
+              $('#addmimcomment').prop('required',true).change();
+              $('#addmimmpa_postingaccountidDiv').show();
+              $('#addmimmpa_postingaccountid').prop('required',true).change();
             }
           }
         }
         
         function calculateRemainingAmount(row) {
-          var amount = $('#addmnfamount').val();
+          var amount = $('#addmimamount').val();
           var length = shownSplitEntryRows.length;
 
           // have we edited the last row? If yes add a new one automatically
@@ -478,41 +478,41 @@
           }
 
           for(i=0 ; i < length ; i++ ) {
-            var subamount = $('#addmnfsubamount' + shownSplitEntryRows[i]).val();
+            var subamount = $('#addmimsubamount' + shownSplitEntryRows[i]).val();
             if(subamount != null) {
               amount -= subamount;
             }
 
           }
           if(amount == 0) {
-            $('#addmnfremainingDiv' + (shownSplitEntryRows[shownSplitEntryRows.length - 1])).hide();
+            $('#addmimremainingDiv' + (shownSplitEntryRows[shownSplitEntryRows.length - 1])).hide();
           } else {
-            $('#addmnfremainingDiv' + (shownSplitEntryRows[shownSplitEntryRows.length - 1])).show();
+            $('#addmimremainingDiv' + (shownSplitEntryRows[shownSplitEntryRows.length - 1])).show();
           }
                       
-          $('#addmnfremaining' + (shownSplitEntryRows[shownSplitEntryRows.length - 1])).val(amount.toFixed(2));
+          $('#addmimremaining' + (shownSplitEntryRows[shownSplitEntryRows.length - 1])).val(amount.toFixed(2));
         }
         
         function copyRemainer() {
           var lastSubElement = shownSplitEntryRows[shownSplitEntryRows.length - 1];
-          var addmnfsubamount = $('#addmnfsubamount' + lastSubElement);
-          var addmnfremaining = $('#addmnfremaining' + lastSubElement);
+          var addmimsubamount = $('#addmimsubamount' + lastSubElement);
+          var addmimremaining = $('#addmimremaining' + lastSubElement);
 
-          var addmnfcomment = $('#addmnfcomment');
-          var addmnfmpa_postingaccountid = $('#addmnfmpa_postingaccountid');
-          var addmnfsubcomment = $('#addmnfsubcomment' + lastSubElement);
-          var addmnfsubmpa_postingaccountid = $('#addmnfsubmpa_postingaccountid' + lastSubElement);
+          var addmimcomment = $('#addmimcomment');
+          var addmimmpa_postingaccountid = $('#addmimmpa_postingaccountid');
+          var addmimsubcomment = $('#addmimsubcomment' + lastSubElement);
+          var addmimsubmpa_postingaccountid = $('#addmimsubmpa_postingaccountid' + lastSubElement);
 
-          addmnfsubcomment.val(addmnfcomment.val());
-          addmnfsubmpa_postingaccountid.val(addmnfmpa_postingaccountid.val());
-          addmnfsubamount.val(addmnfremaining.val());
+          addmimsubcomment.val(addmimcomment.val());
+          addmimsubmpa_postingaccountid.val(addmimmpa_postingaccountid.val());
+          addmimsubamount.val(addmimremaining.val());
           checkIfRequired(lastSubElement);
           calculateRemainingAmount();
         }
          
          
         function initSplitEntries() {
-          $('#addmnfsplitentries').empty();
+          $('#addmimsplitentries').empty();
           shownSplitEntryRows = [];
           filledSplitEntryRows = [];
           splitEntriesTemplateData.splitEntryIndex = -1;
@@ -533,18 +533,18 @@
 
           var template = $('#template').html();
           var rendered = Mustache.render(template,splitEntriesTemplateData);
-          $('#addmnfsplitentries').append( rendered );
+          $('#addmimsplitentries').append( rendered );
 
 	  if( shownSplitEntryRows.length > 0 ) {
-            $('#addmnfmoresplitentries' + (shownSplitEntryRows[shownSplitEntryRows.length - 1])).hide();
-            $('#addmnfremainingDiv' + (shownSplitEntryRows[shownSplitEntryRows.length - 1])).hide();
+            $('#addmimmoresplitentries' + (shownSplitEntryRows[shownSplitEntryRows.length - 1])).hide();
+            $('#addmimremainingDiv' + (shownSplitEntryRows[shownSplitEntryRows.length - 1])).hide();
             
           }
           
           shownSplitEntryRows.push(splitEntriesTemplateData.splitEntryIndex);
 
-          $('#addmnfform').validator('reset');
-          $('#addmnfform').validator('update');
+          $('#addmimform').validator('reset');
+          $('#addmimform').validator('update');
 
           calculateRemainingAmount();
         }
@@ -556,7 +556,7 @@
          */
         function removeSplitEntryLine(splitEntryIndex) {
 
-          $('#addmnfsub' + splitEntryIndex).remove();
+          $('#addmimsub' + splitEntryIndex).remove();
 
           // maintain state-arrays
           var index = shownSplitEntryRows.indexOf(splitEntryIndex);
@@ -576,8 +576,8 @@
           }
           
           // show the "+" button and the "remaining" information on the last displayed row
-          $('#addmnfmoresplitentries' + shownSplitEntryRows[shownSplitEntryRows.length - 1]).show();
-          $('#addmnfremainingDiv' + shownSplitEntryRows[shownSplitEntryRows.length - 1]).show();
+          $('#addmimmoresplitentries' + shownSplitEntryRows[shownSplitEntryRows.length - 1]).show();
+          $('#addmimremainingDiv' + shownSplitEntryRows[shownSplitEntryRows.length - 1]).show();
 
           // recalculate the "remaining" amount
           calculateRemainingAmount();
@@ -594,36 +594,36 @@
         function copyIfSplitEntries() {
           if(filledSplitEntryRows.length > 0) {
             filledSplitEntryRows.sort(function(a, b){return a-b});
-            var elementSplitEntryComment = $('#addmnfsubcomment' + filledSplitEntryRows[0]);
-            var elementSplitEntryPostingAccount = $('#addmnfsubmpa_postingaccountid' + filledSplitEntryRows[0]);
-            $('#addmnfcomment').val(elementSplitEntryComment.val());
-            $('#addmnfmpa_postingaccountid').val(elementSplitEntryPostingAccount.val());
+            var elementSplitEntryComment = $('#addmimsubcomment' + filledSplitEntryRows[0]);
+            var elementSplitEntryPostingAccount = $('#addmimsubmpa_postingaccountid' + filledSplitEntryRows[0]);
+            $('#addmimcomment').val(elementSplitEntryComment.val());
+            $('#addmimmpa_postingaccountid').val(elementSplitEntryPostingAccount.val());
           }
           return true;
         }
 
-        function ajaxAddMoneyflowSuccess(data) {
+        function ajaxAddImportedMoneyflowSuccess(data) {
           // TODO: remove from HTML
-          resetFormAddMoneyflow();
+          resetFormAddImportedMoneyflow();
         }
 
-        function ajaxAddMoneyflowError(data) {
-          clearErrorDiv('addMoneyflowErrors');
-          populateErrorDiv(data.responseText,'addMoneyflowErrorsGoHere','addMoneyflowErrors');
+        function ajaxAddImportedMoneyflowError(data) {
+          clearErrorDiv('addImportedMoneyflowErrors');
+          populateErrorDiv(data.responseText,'addImportedMoneyflowErrorsGoHere','addImportedMoneyflowErrors');
         }
 
         initSplitEntries();
-        preFillFormAddMoneyflow();
+        preFillFormAddImportedMoneyflow();
         setContractpartnerDefaults();
 
-        $('#addmnfform').validator();
-        $('#addmnfform').ajaxForm({
+        $('#addmimform').validator();
+        $('#addmimform').ajaxForm({
             beforeSubmit: function() {
               return copyIfSplitEntries();
             },
             dataType: 'json',
-            success: ajaxAddMoneyflowSuccess,
-            error: ajaxAddMoneyflowError
+            success: ajaxAddImportedMoneyflowSuccess,
+            error: ajaxAddImportedMoneyflowError
         });
         
 
