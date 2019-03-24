@@ -423,11 +423,11 @@
           var currentRequired = elementAmount.prop('required');
           if(currentRequired != required) {
             if(required) {
-              filledSplitEntryRows.push(row);
+              filledSplitEntryRows[num].push(row);
             } else {
-              var index = filledSplitEntryRows.indexOf(row);
+              var index = filledSplitEntryRows[num].indexOf(row);
               if(index > -1) {
-                filledSplitEntryRows.splice(index,1);
+                filledSplitEntryRows[num].splice(index,1);
               }
             }
             hideNonRelevantFieldsIfSplitEntries(num);
