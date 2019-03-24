@@ -81,7 +81,6 @@ class ImportedMoneyflowControllerHandler extends AbstractHandler {
 		$request->setImportedMoneyflowTransport( $importedMoneyflowTransport );
 
 		if (count( $insert_moneyflowsplitentries ) > 0) {
-			error_log(print_r($insert_moneyflowsplitentries, true));
 			$insertMoneyflowSplitEntryTransport = parent::mapArray( $insert_moneyflowsplitentries, MoneyflowSplitEntryTransport::getClass() );
 			$request->setInsertMoneyflowSplitEntryTransport( $insertMoneyflowSplitEntryTransport );
 		}
