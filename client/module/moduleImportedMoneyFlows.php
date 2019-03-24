@@ -75,10 +75,7 @@ class moduleImportedMoneyFlows extends module {
 		if ($all_data ['delete'] == 1) {
 			$ret = ImportedMoneyflowControllerHandler::getInstance()->deleteImportedMoneyflowById( $all_data ['importedmoneyflowid'] );
 		} else {
-			// TODO: Split Entries + RETURN VALUE
-			$ret = ImportedMoneyflowControllerHandler::getInstance()->importImportedMoneyflows( array (
-					$all_data
-			) );
+			$ret = ImportedMoneyflowControllerHandler::getInstance()->importImportedMoneyflows( $all_data,  $all_subdata);
 		}
 
 		return $this->handleReturnForAjax( $ret );

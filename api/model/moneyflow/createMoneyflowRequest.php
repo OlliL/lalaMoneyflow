@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013-2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2013-2019 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ class createMoneyflowRequest {
 	public $moneyflowTransport;
 	public $usedPreDefMoneyflowId;
 	public $saveAsPreDefMoneyflow;
-    public $insertMoneyflowSplitEntryTransport;
+	public $insertMoneyflowSplitEntryTransport;
 
 	public final function getMoneyflowTransport() {
 		return $this->moneyflowTransport;
@@ -58,13 +58,13 @@ class createMoneyflowRequest {
 		$this->saveAsPreDefMoneyflow = $saveAsPreDefMoneyflow;
 	}
 
-    public final function getInsertMoneyflowSplitEntryTransport() {
-        return $this->insertMoneyflowSplitEntryTransport;
-    }
+	public final function getInsertMoneyflowSplitEntryTransport() {
+		return $this->insertMoneyflowSplitEntryTransport;
+	}
 
-    public final function setInsertMoneyflowSplitEntryTransport(array $insertMoneyflowSplitEntryTransport) {
-        $this->insertMoneyflowSplitEntryTransport = $insertMoneyflowSplitEntryTransport;
-    }
+	public final function setInsertMoneyflowSplitEntryTransport(array $insertMoneyflowSplitEntryTransport) {
+		$this->insertMoneyflowSplitEntryTransport = $insertMoneyflowSplitEntryTransport;
+	}
 }
 
 ?>

@@ -31,13 +31,22 @@ namespace api\model\importedmoneyflow;
 
 class importImportedMoneyflowRequest {
 	public $importedMoneyflowTransport;
+	public $insertMoneyflowSplitEntryTransport;
 
 	public final function getImportedMoneyflowTransport() {
 		return $this->importedMoneyflowTransport;
 	}
 
-	public final function setImportedMoneyflowTransport(array $importedMoneyflowTransport) {
+	public final function setImportedMoneyflowTransport($importedMoneyflowTransport) {
 		$this->importedMoneyflowTransport = $importedMoneyflowTransport;
+	}
+
+	public final function getInsertMoneyflowSplitEntryTransport() {
+		return $this->insertMoneyflowSplitEntryTransport;
+	}
+
+	public final function setInsertMoneyflowSplitEntryTransport(array $insertMoneyflowSplitEntryTransport) {
+		$this->insertMoneyflowSplitEntryTransport = $insertMoneyflowSplitEntryTransport;
 	}
 }
 

@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2013-2015 Oliver Lehmann <oliver@laladev.org>
+// Copyright (c) 2013-2019 Oliver Lehmann <oliver@laladev.org>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -36,6 +36,8 @@ use client\mapper\ArrayToPostingAccountTransportMapper;
 use api\model\transport\ImportedMoneyflowTransport;
 use api\model\importedmoneyflow\importImportedMoneyflowRequest;
 use base\Singleton;
+use api\model\transport\MoneyflowSplitEntryTransport;
+use client\mapper\ArrayToMoneyflowSplitEntryTransportMapper;
 
 class ImportedMoneyflowControllerHandler extends AbstractHandler {
 	use Singleton;
@@ -46,6 +48,7 @@ class ImportedMoneyflowControllerHandler extends AbstractHandler {
 		parent::addMapper( ArrayToContractpartnerTransportMapper::getClass() );
 		parent::addMapper( ArrayToPostingAccountTransportMapper::getClass() );
 		parent::addMapper( ArrayToImportedMoneyflowTransportMapper::getClass() );
+		parent::addMapper( ArrayToMoneyflowSplitEntryTransportMapper::getClass() );
 	}
 
 	protected final function getCategory() {
@@ -71,11 +74,18 @@ class ImportedMoneyflowControllerHandler extends AbstractHandler {
 		) );
 	}
 
-	public final function importImportedMoneyflows(array $imported_moneyflow) {
-		$importedMoneyflowTransport = parent::mapArray( $imported_moneyflow, ImportedMoneyflowTransport::getClass() );
+	public final function importImportedMoneyflows($imported_moneyflow, $insert_moneyflowsplitentries) {
+		$importedMoneyflowTransport = parent::map( $imported_moneyflow, ImportedMoneyflowTransport::getClass() );
 
 		$request = new importImportedMoneyflowRequest();
 		$request->setImportedMoneyflowTransport( $importedMoneyflowTransport );
+
+		if (count( $insert_moneyflowsplitentries ) > 0) {
+			error_log(print_r($insert_moneyflowsplitentries, true));
+			$insertMoneyflowSplitEntryTransport = parent::mapArray( $insert_moneyflowsplitentries, MoneyflowSplitEntryTransport::getClass() );
+			$request->setInsertMoneyflowSplitEntryTransport( $insertMoneyflowSplitEntryTransport );
+		}
+
 		return parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 }
