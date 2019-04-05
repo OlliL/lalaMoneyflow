@@ -193,8 +193,9 @@
             <div class="col-sm-12 text-center">
 {if $NEW_WINDOW}
               <button type="button" class="btn"             onclick="btnEditMoneyflowCancel()"    >{#TEXT_315#}</button>
-{/if}
+{else}
               <button type="button" class="btn btn-default" onclick="resetFormAddMoneyflow()">{#TEXT_304#}</button>
+{/if}
               <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
             </div>  
           </div>  

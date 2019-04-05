@@ -207,8 +207,8 @@
 
           <div class="form-group">
             <div class="col-sm-12 text-center">
-              <button type="button" class="btn btn-danger" onclick="deleteImportedMoneyflow({$NUM})">{#TEXT_37#}</button>
               <button type="submit" class="btn btn-primary"                          >{#TEXT_271#}</button>
+              <button type="button" class="btn btn-danger" onclick="deleteImportedMoneyflow({$NUM})">{#TEXT_37#}</button>
             </div>  
           </div>  
 

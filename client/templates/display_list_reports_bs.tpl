@@ -118,7 +118,7 @@ function Go(x)
                       <td>{$ALL_MONEYFLOW_DATA[DATA].capitalsourcecomment}</td>
       {if $ALL_MONEYFLOW_DATA[DATA].owner == true }
                       <td class="text-center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1205,height=800')">{#TEXT_36#}</a></td>
-                      <td class="text-center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1024,height=120')">{#TEXT_37#}</a></td>
+                      <td class="text-center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=520,height=310')">{#TEXT_37#}</a></td>
       {else}
                       <td colspan="2"></td>
       {/if}

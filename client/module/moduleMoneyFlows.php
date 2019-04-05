@@ -29,21 +29,13 @@
 //
 namespace client\module;
 
-use base\ErrorCode;
 use client\handler\MoneyflowControllerHandler;
-use client\util\Environment;
 use client\handler\MoneyflowReceiptControllerHandler;
 
 class moduleMoneyFlows extends module {
-	private $moduleContractPartners;
-	private $modulePostingAccounts;
-	private $moduleCapitalSources;
 
 	public final function __construct() {
 		parent::__construct();
-		$this->moduleContractPartners = new moduleContractPartners();
-		$this->modulePostingAccounts = new modulePostingAccounts();
-		$this->moduleCapitalSources = new moduleCapitalSources();
 	}
 
 	public final function show_moneyflow_receipt($id) {
@@ -65,7 +57,6 @@ class moduleMoneyFlows extends module {
 	}
 
 	public final function display_edit_moneyflow($id) {
-
 		if ($id == 0) {
 			$this->parse_header( 0, 1, 'display_edit_moneyflow_bs.tpl' );
 			$displayMoneyflow = MoneyflowControllerHandler::getInstance()->showAddMoneyflows();
@@ -75,7 +66,7 @@ class moduleMoneyFlows extends module {
 		} else {
 			$this->parse_header( 1, 1, 'display_edit_moneyflow_bs.tpl' );
 			$displayMoneyflow = MoneyflowControllerHandler::getInstance()->showEditMoneyflow( $id );
-			$displayMoneyflow ['predefmoneyflows'] = array();
+			$displayMoneyflow ['predefmoneyflows'] = array ();
 			$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $displayMoneyflow ['moneyflow'] ) );
 			$this->template_assign_raw( 'JSON_FORM_SPLIT_ENTRIES_DEFAULTS', json_encode( $displayMoneyflow ['moneyflow_split_entries'] ) );
 			$this->template_assign_raw( 'NEW_WINDOW', true );
@@ -116,17 +107,14 @@ class moduleMoneyFlows extends module {
 			}
 
 			if (is_array( $existingSplitEntryIds )) {
-				$delete_moneyflowsplitentryids = array_values(array_diff( $existingSplitEntryIds, $receivedSplitEntryIds ));
+				$delete_moneyflowsplitentryids = array_values( array_diff( $existingSplitEntryIds, $receivedSplitEntryIds ) );
 			}
 		}
 
-		$all_data['moneyflowid'] = $id;
+		$all_data ['moneyflowid'] = $id;
 
 		if ($id > 0) {
-			$ret = MoneyflowControllerHandler::getInstance()->updateMoneyflow( $all_data
-					                                                 , $delete_moneyflowsplitentryids
-					                                                 , $update_moneyflowsplitentries
-					                                                 , $insert_moneyflowsplitentries );
+			$ret = MoneyflowControllerHandler::getInstance()->updateMoneyflow( $all_data, $delete_moneyflowsplitentryids, $update_moneyflowsplitentries, $insert_moneyflowsplitentries );
 		} else {
 			$ret = MoneyflowControllerHandler::getInstance()->createMoneyflow( $all_data, $insert_moneyflowsplitentries );
 		}
@@ -134,25 +122,19 @@ class moduleMoneyFlows extends module {
 		return $this->handleReturnForAjax( $ret );
 	}
 
-	public final function display_delete_moneyflow($realaction, $id) {
-		switch ($realaction) {
-			case 'yes' :
-				if (MoneyflowControllerHandler::getInstance()->deleteMoneyflowById( $id )) {
-					$this->template_assign( 'CLOSE', 1 );
-					break;
-				}
-			default :
-				$all_data = MoneyflowControllerHandler::getInstance()->showDeleteMoneyflow( $id );
-				if ($all_data) {
-					$this->template_assign( 'ALL_DATA', $all_data );
-				}
-				break;
-		}
+	public final function display_delete_moneyflow($id) {
+		$all_data = MoneyflowControllerHandler::getInstance()->showDeleteMoneyflow( $id );
 
-		$this->template_assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
+		$this->template_assign( 'MONEYFLOWID', $id );
 
-		$this->parse_header( 1 );
-		return $this->fetch_template( 'display_delete_moneyflow.tpl' );
+		$this->parse_header( 1, 1, 'display_delete_moneyflow_bs.tpl' );
+		return $this->fetch_template( 'display_delete_moneyflow_bs.tpl' );
+	}
+
+	public final function delete_moneyflow($id) {
+		$ret = MoneyflowControllerHandler::getInstance()->deleteMoneyflowById( $id );
+		return $this->handleReturnForAjax( $ret );
 	}
 }
 ?>

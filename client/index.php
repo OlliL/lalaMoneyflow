@@ -111,9 +111,9 @@ if ($is_logged_in == 2) {
 			$request_uri = $_SERVER ['SCRIPT_NAME'];
 		}
 
-		$display = $moduleEvents->check_events($request_uri);
+		$display = $moduleEvents->check_events( $request_uri );
 
-		if (!$display) {
+		if (! $display) {
 			// no events
 			header( "Location: " . htmlentities( $request_uri ) );
 		}
@@ -150,6 +150,7 @@ if ($is_logged_in == 0) {
 		case 'edit_moneyflow' :
 		case 'edit_moneyflow_submit' :
 		case 'delete_moneyflow' :
+		case 'delete_moneyflow_submit' :
 		case 'show_moneyflow_receipt' :
 			$moduleMoneyFlows = new moduleMoneyFlows();
 			break;
@@ -241,7 +242,7 @@ if ($is_logged_in == 0) {
 			case 'edit_user' :
 				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'userid', $_REQUEST ) ? $_REQUEST ['userid'] : '';
-				$access_relation = array_key_exists( 'access_relation', $_REQUEST ) ? $_REQUEST ['access_relation'] : array();
+				$access_relation = array_key_exists( 'access_relation', $_REQUEST ) ? $_REQUEST ['access_relation'] : array ();
 				$display = $moduleUsers->display_edit_user( $realaction, $id, $all_data, $access_relation );
 				break;
 			case 'delete_user' :
@@ -401,7 +402,7 @@ if ($is_logged_in == 0) {
 			case 'edit_moneyflow' :
 
 				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : 0;
-				$display = $moduleMoneyFlows->display_edit_moneyflow($id);
+				$display = $moduleMoneyFlows->display_edit_moneyflow( $id );
 				break;
 			case 'edit_moneyflow_submit' :
 
@@ -412,9 +413,14 @@ if ($is_logged_in == 0) {
 
 			case 'delete_moneyflow' :
 
-				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : '';
-				$display = $moduleMoneyFlows->display_delete_moneyflow( $realaction, $id );
+				$display = $moduleMoneyFlows->display_delete_moneyflow( $id );
+				break;
+
+			case 'delete_moneyflow_submit' :
+
+				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : 0;
+				$display = $moduleMoneyFlows->delete_moneyflow( $id );
 				break;
 
 			case 'show_moneyflow_receipt' :
@@ -496,7 +502,7 @@ if ($is_logged_in == 0) {
 				$id = array_key_exists( 'mcs_capitalsourceid', $_REQUEST ) ? $_REQUEST ['mcs_capitalsourceid'] : '';
 				$startdate = array_key_exists( 'startdate', $_REQUEST ) ? $_REQUEST ['startdate'] : '';
 				$enddate = array_key_exists( 'enddate', $_REQUEST ) ? $_REQUEST ['enddate'] : '';
-				$display = $moduleReports->plot_graph( $id, $startdate, $enddate);
+				$display = $moduleReports->plot_graph( $id, $startdate, $enddate );
 				break;
 
 			/* search */
