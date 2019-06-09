@@ -10,7 +10,6 @@
       $('input').blur(function(e) {
         if(e.relatedTarget != null && e.relatedTarget.getAttribute('type') == 'button') {
         e.currentTarget.willValidate = false
-          console.log("prevent validation");
           e.stopImmediatePropagation();
           e.preventDefault();
         }

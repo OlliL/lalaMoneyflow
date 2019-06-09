@@ -15,6 +15,15 @@ var FORM_MODE_EMPTY = -1;
 
 var focusedElement;
 var lastFocusedInput; // see display_footer_bs.tpl
+var toBeUpdatedElement;
+
+function setToBeUpdatedElement(element) {
+	toBeUpdatedElement = element;
+}
+
+function getToBeUpdatedElement() {
+	return toBeUpdatedElement;
+}
 
 function saveFocusedElement() {
 	focusedElement = lastFocusedInput;
@@ -38,11 +47,20 @@ function updateSelect(selectElements, id, name) {
 
 function updateContractpartnerSelect(id, name, moneyflowComment,
 		postingAccountId) {
-	var selectElements = document.getElementsByName('all_data[mcp_contractpartnerid]');
+	
+	var element = getToBeUpdatedElement();
+	var selectElements = [];
+	
+	if( element ) {
+		selectElements.push(document.getElementById(element));
+	} else {
+	    selectElements = document.getElementsByName('all_data[mcp_contractpartnerid]');
+	}
+	
 	updateSelect(selectElements, id, name);
 
-	// add_moneyflow specials:
 	if (typeof addMoneyflowJsonContractpartner !== 'undefined') {
+		// add moneyflow specials:
 		addMoneyflowJsonContractpartner.push({
 			contractpartnerid : id,
 			moneyflow_comment : moneyflowComment,
@@ -52,7 +70,20 @@ function updateContractpartnerSelect(id, name, moneyflowComment,
 		if (typeof setContractpartnerDefaults === "function") {
 			setContractpartnerDefaults();
 		}
+	} else if (typeof addImportedMoneyflowJsonContractpartner !== 'undefined') {
+		// add imported moneyflow special
+		addImportedMoneyflowJsonContractpartner.push({
+			contractpartnerid : id,
+			moneyflow_comment : moneyflowComment,
+			mpa_postingaccountid : postingAccountId
+		});
+
+		if (element && typeof setContractpartnerDefaultsForElement === "function") {
+			setContractpartnerDefaultsForElement(element);
+		}		
 	}
+	
+	setToBeUpdatedElement('');
 }
 
 function updatePostingAccountSelect(id, name) {
