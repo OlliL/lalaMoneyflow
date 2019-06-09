@@ -327,11 +327,13 @@
 
 	/**
 	 * This function is used from site.js after a new contractpartner is created. Its argument is the id of
-	 * the contractpartner-element where the button is clicked. The first character is the number of the line.
+	 * the contractpartner-element from where the + button was clicked. The first character of the argument
+	 * is the number of the line.
 	 */
 	function setContractpartnerDefaultsForElement(element) {
 	  setContractpartnerDefaults(element.substring(0, 1));
 	}
+	
         /**
          * When changing a contractpartner in the drop down box, fill out his defaults for
          * comment and postingaccount - but only if the user didn't modified the fields
