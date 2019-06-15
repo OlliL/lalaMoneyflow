@@ -191,14 +191,14 @@ abstract class module {
 			$file_footer = 'display_footer.tpl';
 		}
 
-		if ($nonavi === 0) {
-			$embeddedForms = $this->addEmbeddedForms();
-			if (count( $embeddedForms ) > 0) {
-				foreach ( $embeddedForms as $key => $value ) {
-					$this->template->assign( $key, $value );
-				}
+		$embeddedForms = $this->addEmbeddedForms();
+		if (count( $embeddedForms ) > 0) {
+			foreach ( $embeddedForms as $key => $value ) {
+				$this->template->assign( $key, $value );
 			}
 		}
+
+		$this->template_assign_raw( 'IS_EMBEDDED', false );
 		$header = $this->fetch_template( $file_header, false );
 		$this->template->assign( 'HEADER', $header );
 

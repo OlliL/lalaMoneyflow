@@ -50,7 +50,7 @@
                   </select>
 {if $IS_ADMIN }
                   <span class="input-group-btn">
-                    <button type="button" class="btn">
+                    <button type="button" class="btn" onclick="showOverlayPostingAccount()">
                       <span class="glyphicon glyphicon-plus"></span>
                     </button>
                   </span>
