@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2005-2018 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2005-2019 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -308,7 +308,7 @@ class moduleReports extends module {
 		$this->template_assign( 'SELECTED_MONTH', $month );
 		$this->template_assign( 'SELECTED_YEAR', $year );
 
-		$this->parse_header( 0, 1, 'display_list_reports_bs.tpl' );
+		$this->parse_header_bootstraped( 0, 'display_list_reports_bs.tpl' );
 		return $this->fetch_template( 'display_list_reports_bs.tpl' );
 	}
 
@@ -323,7 +323,7 @@ class moduleReports extends module {
 		$this->template_assign( 'START_DATE', date_format(new \DateTime($showTrendsForm ['minDate']), self::TRENDS_DATE_FORMAT) );
 		$this->template_assign( 'END_DATE',   date_format(new \DateTime($showTrendsForm ['maxDate']), self::TRENDS_DATE_FORMAT) );
 
-		$this->parse_header( 0, 1, 'display_plot_trends_bs.tpl' );
+		$this->parse_header_without_embedded( 0, 'display_plot_trends_bs.tpl' );
 		return $this->fetch_template( 'display_plot_trends_bs.tpl' );
 	}
 

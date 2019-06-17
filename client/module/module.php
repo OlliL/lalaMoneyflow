@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2005-2016 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2005-2019 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -162,7 +162,19 @@ abstract class module {
 		return $embeddedForms;
 	}
 
-	protected final function parse_header($nonavi = 0, $bootstraped = 0, $template = null) {
+	protected final function parse_header_without_embedded($nonavi, $template) {
+		$this->parse_header_internal( $nonavi, true, $template, false );
+	}
+
+	protected final function parse_header($nonavi = 0) {
+		$this->parse_header_internal( $nonavi, false, null, true );
+	}
+
+	protected final function parse_header_bootstraped($nonavi, $template) {
+		$this->parse_header_internal( $nonavi, true, $template, true );
+	}
+
+	private final function parse_header_internal($nonavi, $isBootstrapped, $template, $addEmbeddedForms) {
 		$this->template->assign( 'REPORTS_YEAR', date( 'Y' ) );
 		$this->template->assign( 'REPORTS_MONTH', date( 'm' ) );
 		$this->template->assign( 'ENABLE_JPGRAPH', ENABLE_JPGRAPH );
@@ -183,7 +195,7 @@ abstract class module {
 		// deactivated for highlighting current screen in menu
 		// $this->template->setCaching( true );
 
-		if ($bootstraped === 1) {
+		if ($isBootstrapped) {
 			$file_header = 'display_header_bs.tpl';
 			$file_footer = 'display_footer_bs.tpl';
 		} else {
@@ -191,10 +203,12 @@ abstract class module {
 			$file_footer = 'display_footer.tpl';
 		}
 
-		$embeddedForms = $this->addEmbeddedForms();
-		if (count( $embeddedForms ) > 0) {
-			foreach ( $embeddedForms as $key => $value ) {
-				$this->template->assign( $key, $value );
+		if ($addEmbeddedForms) {
+			$embeddedForms = $this->addEmbeddedForms();
+			if (count( $embeddedForms ) > 0) {
+				foreach ( $embeddedForms as $key => $value ) {
+					$this->template->assign( $key, $value );
+				}
 			}
 		}
 

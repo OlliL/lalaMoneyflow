@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2005-2015 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2005-2019 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -35,7 +36,7 @@ class moduleFrontPage extends module {
 	}
 
 	public final function display_main() {
-		$this->parse_header(0,1);
+		$this->parse_header_bootstraped( 0, 'display_main' );
 		return $this->fetch_template( 'display_main.tpl' );
 	}
 }

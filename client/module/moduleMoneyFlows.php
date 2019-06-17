@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2005-2017 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2005-2019 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -58,13 +58,13 @@ class moduleMoneyFlows extends module {
 
 	public final function display_edit_moneyflow($id) {
 		if ($id == 0) {
-			$this->parse_header( 0, 1, 'display_edit_moneyflow_bs.tpl' );
+			$this->parse_header_bootstraped( 0, 'display_edit_moneyflow_bs.tpl' );
 			$displayMoneyflow = MoneyflowControllerHandler::getInstance()->showAddMoneyflows();
 			$this->template_assign_raw( 'JSON_FORM_DEFAULTS', '""' );
 			$this->template_assign_raw( 'JSON_FORM_SPLIT_ENTRIES_DEFAULTS', '""' );
 			$this->template_assign_raw( 'NEW_WINDOW', false );
 		} else {
-			$this->parse_header( 1, 1, 'display_edit_moneyflow_bs.tpl' );
+			$this->parse_header_bootstraped( 1, 'display_edit_moneyflow_bs.tpl' );
 			$displayMoneyflow = MoneyflowControllerHandler::getInstance()->showEditMoneyflow( $id );
 			$displayMoneyflow ['predefmoneyflows'] = array ();
 			$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $displayMoneyflow ['moneyflow'] ) );
@@ -128,7 +128,7 @@ class moduleMoneyFlows extends module {
 		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 		$this->template_assign( 'MONEYFLOWID', $id );
 
-		$this->parse_header( 1, 1, 'display_delete_moneyflow_bs.tpl' );
+		$this->parse_header_without_embedded( 1, 'display_delete_moneyflow_bs.tpl' );
 		return $this->fetch_template( 'display_delete_moneyflow_bs.tpl' );
 	}
 

@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2006-2015 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2006-2019 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -90,7 +90,7 @@ class moduleUsers extends module {
 			$this->template_assign( 'NAME', $name );
 			$this->template_assign( 'ERRORS', $this->get_errors() );
 			$this->template_assign( 'REQUEST_URI', $request_uri );
-			$this->parse_header( 1, 1 );
+			$this->parse_header_without_embedded( 1, 'display_login_user.tpl' );
 			return $this->fetch_template( 'display_login_user.tpl' );
 		}
 	}

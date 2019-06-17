@@ -40,7 +40,7 @@ class moduleImportedMoneyFlows extends module {
 	public final function display_add_importedmoneyflow($realaction, $all_data) {
 		$addMoneyflow = ImportedMoneyflowControllerHandler::getInstance()->showAddImportedMoneyflows();
 
-		$this->parse_header( 0, 1, 'display_add_importedmoneyflows_bs.tpl' );
+		$this->parse_header_bootstraped( 0, 'display_add_importedmoneyflows_bs.tpl' );
 
 		if ($addMoneyflow == null) {
 			$this->template_assign_raw( 'NUM_MONEYFLOWS', 0 );

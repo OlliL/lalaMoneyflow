@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2005-2017 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2005-2019 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -82,7 +82,7 @@ class moduleCapitalSources extends module {
 		$this->template_assign( 'CAPITALSOURCEID', $capitalsourceid );
 		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 
-		$this->parse_header( 1, 1, 'display_edit_capitalsource_bs.tpl' );
+		$this->parse_header_without_embedded( 1, 'display_edit_capitalsource_bs.tpl' );
 		return $this->fetch_template( 'display_edit_capitalsource_bs.tpl' );
 	}
 

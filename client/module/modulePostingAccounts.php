@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2006-2015 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2006-2019 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -60,7 +60,7 @@ class modulePostingAccounts extends module {
 		$this->template_assign( 'POSTINGACCOUNTID', $postingaccountid );
 		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 
-		$this->parse_header( 1, 1, 'display_edit_postingaccount.tpl' );
+		$this->parse_header_without_embedded( 1, 'display_edit_postingaccount.tpl' );
 		return $this->fetch_template( 'display_edit_postingaccount_bs.tpl' );
 	}
 

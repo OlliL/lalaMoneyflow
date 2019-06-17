@@ -1,6 +1,6 @@
 <?php
 //
-// Copyright (c) 2009-2018 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2009-2019 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -47,13 +47,13 @@ class moduleEvents extends module {
 				$this->template_assign( 'NUM_ADDABLE_SETTLEMENTS', $events ['numberOfAddableSettlements'] );
 				$this->template_assign( 'REQUEST_URI', $request_uri );
 
-				$this->parse_header( 0, 1, 'display_event_monthlysettlement.tpl' );
+				$this->parse_header_bootstraped( 0, 'display_event_monthlysettlement.tpl' );
 				return $this->fetch_template( 'display_event_monthlysettlement.tpl' );
 			}
 			if ($events ['numberOfImportedMoneyflows'] > 0) {
 				$this->template_assign( 'REQUEST_URI', $request_uri );
 
-				$this->parse_header( 0, 1, 'display_event_imported_moneyflows.tpl' );
+				$this->parse_header_bootstraped( 0, 'display_event_imported_moneyflows.tpl' );
 				return $this->fetch_template( 'display_event_imported_moneyflows.tpl' );
 			}
 		}
