@@ -67,7 +67,7 @@ class moduleContractPartners extends module {
 		$this->template_assign( 'HEAD_POSTINGACCOUNT_VALUES', $posting_accounts );
 		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 
-		$this->parse_header_bootstraped( 1, 'display_edit_contractpartner_bs.tpl' );
+		$this->parse_header_without_embedded( 1, 'display_edit_contractpartner_bs.tpl' );
 		return $this->fetch_template( 'display_edit_contractpartner_bs.tpl' );
 	}
 
