@@ -94,8 +94,8 @@ class moduleMonthlySettlement extends module {
 		$this->template_assign( 'NUM_EDITABLE_SETTLEMENTS', $numberOfEditableSettlements );
 		$this->template_assign( 'NUM_ADDABLE_SETTLEMENTS', $numberOfAddableSettlements );
 
-		$this->parse_header();
-		return $this->fetch_template( 'display_list_monthlysettlements.tpl' );
+		$this->parse_header_without_embedded(0, 'display_list_monthlysettlements_bs.tpl');
+		return $this->fetch_template( 'display_list_monthlysettlements_bs.tpl' );
 	}
 
 	public final function display_edit_monthlysettlement($realaction, $month, $year, $all_data) {

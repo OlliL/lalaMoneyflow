@@ -83,13 +83,13 @@
               </ul>
             </li>
 
-            <li class="dropdown">
+            <li class="dropdown {if $TEMPLATE == "display_list_monthlysettlements_bs.tpl"}active{/if}">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-wrench"></i> <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="{$ENV_INDEX_PHP}?action=list_capitalsources">{#TEXT_1#}</a></li>
                 <li><a href="{$ENV_INDEX_PHP}?action=list_contractpartners">{#TEXT_2#}</a></li>
                 <li><a href="{$ENV_INDEX_PHP}?action=list_predefmoneyflows">{#TEXT_3#}</a></li>
-                <li><a href="{$ENV_INDEX_PHP}?action=list_monthlysettlements">{#TEXT_4#}</a></li>
+                <li{if $TEMPLATE == "display_list_monthlysettlements_bs.tpl"} class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=list_monthlysettlements">{#TEXT_4#}</a></li>
               </ul>
             </li>
 
