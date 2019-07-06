@@ -101,80 +101,45 @@ class moduleMonthlySettlement extends module {
 
 	public final function edit_monthlysettlement($all_data) {
 		$ret = MonthlySettlementControllerHandler::getInstance()->upsertMonthlySettlement( $all_data );
-		error_log(print_r($ret,true));
+		error_log( print_r( $ret, true ) );
 
 		return $this->handleReturnForAjax( $ret );
 	}
 
 	public final function display_edit_monthlysettlement($realaction, $month, $year, $all_data) {
-		$close = 0;
 		$new = 0;
-		switch ($realaction) {
-			case 'save' :
-				$data_is_valid = true;
-
-				foreach ( $all_data as $id => $value ) {
-					if (is_array( $value )) {
-						if (! $this->fix_amount( $all_data [$id] ['amount'] )) {
-							$all_data [$id] ['amount_error'] = 1;
-							$data_is_valid = false;
-						}
-					}
-				}
-
-				if ($data_is_valid === true) {
-					$ret = MonthlySettlementControllerHandler::getInstance()->upsertMonthlySettlement( $all_data );
-					if ($ret === true) {
-						$close = 1;
-					} else {
-						foreach ( $ret ['errors'] as $validationResult ) {
-							$error = $validationResult ['error'];
-
-							$this->add_error( $error );
-						}
-					}
-				}
-
-				$all_data_new = $all_data;
-				break;
-
-			default :
-				$monthlySettlementCreate = MonthlySettlementControllerHandler::getInstance()->showMonthlySettlementCreate( $year, $month );
-				$year = $monthlySettlementCreate ['year'];
-				$month = $monthlySettlementCreate ['month'];
-				$all_data_new = $monthlySettlementCreate ['monthly_settlements'];
-				$all_data_imported = $monthlySettlementCreate ['monthly_settlements_imported'];
-				foreach ( $all_data_imported as $imported ) {
-					$imported ['imported'] = 1;
-					$all_data_new [] = $imported;
-				}
-
-				if ($monthlySettlementCreate ['edit_mode'] == 0) {
-					$new = 1;
-				}
-				if (is_array( $all_data_new ) && count( $all_data_new ) > 0) {
-					foreach ( $all_data_new as $key => $data ) {
-						$all_data_new [$key] ['amount'] = sprintf( '%.02f', $data ['amount'] );
-						$sort [$key] = sprintf( "%d%20d", $data ['mur_userid'], $data ['mcs_capitalsourceid'] );
-					}
-					array_multisort( $sort, SORT_ASC, $all_data_new );
-				}
-				break;
+		$monthlySettlementCreate = MonthlySettlementControllerHandler::getInstance()->showMonthlySettlementCreate( $year, $month );
+		$year = $monthlySettlementCreate ['year'];
+		$month = $monthlySettlementCreate ['month'];
+		$all_data_new = $monthlySettlementCreate ['monthly_settlements'];
+		$all_data_imported = $monthlySettlementCreate ['monthly_settlements_imported'];
+		foreach ( $all_data_imported as $imported ) {
+			$imported ['imported'] = 1;
+			$all_data_new [] = $imported;
 		}
+
+		if ($monthlySettlementCreate ['edit_mode'] == 0) {
+			$new = 1;
+		}
+		if (is_array( $all_data_new ) && count( $all_data_new ) > 0) {
+			foreach ( $all_data_new as $key => $data ) {
+				$all_data_new [$key] ['amount'] = sprintf( '%.02f', $data ['amount'] );
+				$sort [$key] = sprintf( "%d%20d", $data ['mur_userid'], $data ['mcs_capitalsourceid'] );
+			}
+			array_multisort( $sort, SORT_ASC, $all_data_new );
+		}
+		break;
 
 		$monthArray = array (
 				'nummeric' => sprintf( '%02d', $month ),
 				'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month )
 		);
 
-		$this->template_assign( 'CLOSE', $close );
 		$this->template_assign( 'NEW', $new );
 		$this->template_assign( 'MONTH', $monthArray );
 		$this->template_assign( 'YEAR', $year );
 		$this->template_assign( 'ALL_DATA', $all_data_new );
 		$this->template_assign( 'COUNT_ALL_DATA', count( $all_data_new ) );
-		$this->template_assign( 'ERRORS', $this->get_errors() );
-		$this->template_assign( 'ERRORS', $this->get_errors() );
 
 		$this->parse_header_without_embedded( 1, 'display_edit_monthlysettlement_bs.tpl' );
 		return $this->fetch_template( 'display_edit_monthlysettlement_bs.tpl' );
