@@ -99,6 +99,13 @@ class moduleMonthlySettlement extends module {
 		return $this->fetch_template( 'display_list_monthlysettlements_bs.tpl' );
 	}
 
+	public final function edit_monthlysettlement($all_data) {
+		$ret = MonthlySettlementControllerHandler::getInstance()->upsertMonthlySettlement( $all_data );
+		error_log(print_r($ret,true));
+
+		return $this->handleReturnForAjax( $ret );
+	}
+
 	public final function display_edit_monthlysettlement($realaction, $month, $year, $all_data) {
 		$close = 0;
 		$new = 0;
@@ -169,8 +176,8 @@ class moduleMonthlySettlement extends module {
 		$this->template_assign( 'ERRORS', $this->get_errors() );
 		$this->template_assign( 'ERRORS', $this->get_errors() );
 
-		$this->parse_header( 1 );
-		return $this->fetch_template( 'display_edit_monthlysettlement.tpl' );
+		$this->parse_header_without_embedded( 1, 'display_edit_monthlysettlement_bs.tpl' );
+		return $this->fetch_template( 'display_edit_monthlysettlement_bs.tpl' );
 	}
 
 	public final function delete_monthlysettlement($month, $year) {
