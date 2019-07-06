@@ -106,7 +106,7 @@ class moduleMonthlySettlement extends module {
 		return $this->handleReturnForAjax( $ret );
 	}
 
-	public final function display_edit_monthlysettlement($realaction, $month, $year, $all_data) {
+	public final function display_edit_monthlysettlement($month, $year, $all_data) {
 		$new = 0;
 		$monthlySettlementCreate = MonthlySettlementControllerHandler::getInstance()->showMonthlySettlementCreate( $year, $month );
 		$year = $monthlySettlementCreate ['year'];
@@ -128,7 +128,6 @@ class moduleMonthlySettlement extends module {
 			}
 			array_multisort( $sort, SORT_ASC, $all_data_new );
 		}
-		break;
 
 		$monthArray = array (
 				'nummeric' => sprintf( '%02d', $month ),

@@ -456,11 +456,10 @@ if ($is_logged_in == 0) {
 
 				$month = array_key_exists( 'monthlysettlements_month', $_REQUEST ) ? $_REQUEST ['monthlysettlements_month'] : '';
 				$year = array_key_exists( 'monthlysettlements_year', $_REQUEST ) ? $_REQUEST ['monthlysettlements_year'] : '';
-				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
-				$display = $moduleMonthlySettlement->display_edit_monthlysettlement( $realaction, $month, $year, $all_data );
+				$display = $moduleMonthlySettlement->display_edit_monthlysettlement( $month, $year, $all_data );
 				break;
 			case 'edit_monthlysettlement_submit' :
-error_log(1);
+
 				$display = $moduleMonthlySettlement->edit_monthlysettlement( $all_data );
 				break;
 			case 'delete_monthlysettlement' :
