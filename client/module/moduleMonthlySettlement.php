@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2005-2015 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
@@ -52,7 +53,7 @@ class moduleMonthlySettlement extends module {
 		$numberOfEditableSettlements = $showMonthlySettlementList ['numberOfEditableSettlements'];
 		$numberOfAddableSettlements = $showMonthlySettlementList ['numberOfAddableSettlements'];
 		$count_all_data = 0;
-		$months = array();
+		$months = array ();
 
 		if (is_array( $allMonth )) {
 			foreach ( $allMonth as $key => $value ) {
@@ -71,7 +72,7 @@ class moduleMonthlySettlement extends module {
 				$credit_sumamount = 0;
 				foreach ( $all_data as $settlement ) {
 					// CREDIT capitalsources will be summed up separately
-					if($settlement['capitalsourcetype'] != 5) {
+					if ($settlement ['capitalsourcetype'] != 5) {
 						$sumamount += $settlement ['amount'];
 					} else {
 						$credit_sumamount += $settlement ['amount'];
@@ -94,7 +95,7 @@ class moduleMonthlySettlement extends module {
 		$this->template_assign( 'NUM_EDITABLE_SETTLEMENTS', $numberOfEditableSettlements );
 		$this->template_assign( 'NUM_ADDABLE_SETTLEMENTS', $numberOfAddableSettlements );
 
-		$this->parse_header_without_embedded(0, 'display_list_monthlysettlements_bs.tpl');
+		$this->parse_header_without_embedded( 0, 'display_list_monthlysettlements_bs.tpl' );
 		return $this->fetch_template( 'display_list_monthlysettlements_bs.tpl' );
 	}
 
@@ -144,12 +145,12 @@ class moduleMonthlySettlement extends module {
 				if ($monthlySettlementCreate ['edit_mode'] == 0) {
 					$new = 1;
 				}
-				if(is_array($all_data_new) && count($all_data_new) > 0) {
-				foreach ( $all_data_new as $key => $data ) {
-					$all_data_new [$key] ['amount'] = sprintf( '%.02f', $data ['amount'] );
-					$sort [$key] = sprintf( "%d%20d", $data ['mur_userid'], $data ['mcs_capitalsourceid'] );
-				}
-				array_multisort( $sort, SORT_ASC, $all_data_new );
+				if (is_array( $all_data_new ) && count( $all_data_new ) > 0) {
+					foreach ( $all_data_new as $key => $data ) {
+						$all_data_new [$key] ['amount'] = sprintf( '%.02f', $data ['amount'] );
+						$sort [$key] = sprintf( "%d%20d", $data ['mur_userid'], $data ['mcs_capitalsourceid'] );
+					}
+					array_multisort( $sort, SORT_ASC, $all_data_new );
 				}
 				break;
 		}
@@ -164,7 +165,6 @@ class moduleMonthlySettlement extends module {
 		$this->template_assign( 'MONTH', $monthArray );
 		$this->template_assign( 'YEAR', $year );
 		$this->template_assign( 'ALL_DATA', $all_data_new );
-		$this->template_assign( 'ALL_DATA', $all_data_new );
 		$this->template_assign( 'COUNT_ALL_DATA', count( $all_data_new ) );
 		$this->template_assign( 'ERRORS', $this->get_errors() );
 		$this->template_assign( 'ERRORS', $this->get_errors() );
@@ -173,40 +173,44 @@ class moduleMonthlySettlement extends module {
 		return $this->fetch_template( 'display_edit_monthlysettlement.tpl' );
 	}
 
-	public final function display_delete_monthlysettlement($realaction, $month, $year) {
+	public final function delete_monthlysettlement($month, $year) {
 		if ($month > 0 && $year > 0) {
-			switch ($realaction) {
-				case 'yes' :
-					if (MonthlySettlementControllerHandler::getInstance()->deleteMonthlySettlement( $year, $month )) {
-						$this->template_assign( 'CLOSE', 1 );
-						break;
-					}
-				default :
-
-					$showMonthlySettlementDelete = MonthlySettlementControllerHandler::getInstance()->showMonthlySettlementDelete( $year, $month );
-					$all_data = $showMonthlySettlementDelete ['monthly_settlements'];
-					$sumamount = 0;
-					if (is_array( $all_data )) {
-						foreach ( $all_data as $settlement ) {
-							$sumamount += $settlement ['amount'];
-						}
-					}
-
-					$monthArray = array (
-							'nummeric' => sprintf( '%02d', $month ),
-							'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month )
-					);
-					$this->template_assign( 'SUMAMOUNT', $sumamount );
-					$this->template_assign( 'MONTH', $monthArray );
-					$this->template_assign( 'YEAR', $year );
-					$this->template_assign( 'ALL_DATA', $all_data );
-					break;
-			}
+			$ret = MonthlySettlementControllerHandler::getInstance()->deleteMonthlySettlement( $year, $month );
+			return $this->handleReturnForAjax( $ret );
 		}
-		$this->template_assign( 'ERRORS', $this->get_errors() );
+	}
 
-		$this->parse_header( 1 );
-		return $this->fetch_template( 'display_delete_monthlysettlement.tpl' );
+	public final function display_delete_monthlysettlement($month, $year) {
+		if ($month > 0 && $year > 0) {
+
+			$showMonthlySettlementDelete = MonthlySettlementControllerHandler::getInstance()->showMonthlySettlementDelete( $year, $month );
+			$all_data = $showMonthlySettlementDelete ['monthly_settlements'];
+			$sumamount = 0;
+			$credit_sumamount = 0;
+			foreach ( $all_data as $settlement ) {
+				// CREDIT capitalsources will be summed up separately
+				if ($settlement ['capitalsourcetype'] != 5) {
+					$sumamount += $settlement ['amount'];
+				} else {
+					$credit_sumamount += $settlement ['amount'];
+				}
+			}
+
+			$this->template_assign( 'SUMAMOUNT', $sumamount );
+			$this->template_assign( 'CREDIT_SUMAMOUNT', $credit_sumamount );
+
+			$monthArray = array (
+					'nummeric' => sprintf( '%02d', $month ),
+					'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month )
+			);
+			$this->template_assign( 'MONTH', $monthArray );
+			$this->template_assign( 'YEAR', $year );
+			$this->template_assign( 'ALL_DATA', $all_data );
+			$this->template_assign( 'COUNT_ALL_DATA', count( $all_data ) );
+		}
+
+		$this->parse_header_without_embedded( 1, 'display_list_monthlysettlements_bs.tpl' );
+		return $this->fetch_template( 'display_delete_monthlysettlement_bs.tpl' );
 	}
 }
 ?>

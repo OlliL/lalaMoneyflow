@@ -69,7 +69,7 @@ function Go(x)
         </div>
 
 {if $COUNT_ALL_DATA > 0}
-{math equation="y * x + z" y=$NUM_EDITABLE_SETTLEMENTS x=35 z=135 assign=EDIT_WIN_HEIGHT}
+{math equation="y * x + z" y=$NUM_EDITABLE_SETTLEMENTS x=60 z=200 assign=EDIT_WIN_HEIGHT}
 
         <div class="row">
           <div class="col-lg-4 col-lg-push-4 col-sm-6 col-sm-push-3">
@@ -150,7 +150,7 @@ function Go(x)
       <div class="form-group">
         <div class="col-sm-12 text-center">
           <button type="submit" class="btn btn-primary" onClick="void window.open('{$ENV_INDEX_PHP}?action=edit_monthlysettlement&amp;monthlysettlements_month={$MONTH.nummeric}&amp;monthlysettlements_year={$YEAR}&amp;sr=1','_blank','width=500,height={$EDIT_WIN_HEIGHT}')"   >{#TEXT_36#}</button>
-          <button type="button" class="btn btn-danger"  onclick="void window.open('{$ENV_INDEX_PHP}?action=delete_monthlysettlement&amp;monthlysettlements_month={$MONTH.nummeric}&amp;monthlysettlements_year={$YEAR}&amp;sr=1','_blank','width=500,height={$EDIT_WIN_HEIGHT}')" >{#TEXT_37#}</button>
+          <button type="button" class="btn btn-danger"  onclick="void window.open('{$ENV_INDEX_PHP}?action=delete_monthlysettlement&amp;monthlysettlements_month={$MONTH.nummeric}&amp;monthlysettlements_year={$YEAR}&amp;sr=1','_blank','width=600,height={$EDIT_WIN_HEIGHT}')" >{#TEXT_37#}</button>
         </div>  
       </div>  
 {/if}

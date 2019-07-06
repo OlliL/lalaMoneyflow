@@ -161,6 +161,7 @@ if ($is_logged_in == 0) {
 		case 'list_monthlysettlements' :
 		case 'edit_monthlysettlement' :
 		case 'delete_monthlysettlement' :
+		case 'delete_monthlysettlement_submit' :
 			$moduleMonthlySettlement = new moduleMonthlySettlement();
 			break;
 		case 'list_reports' :
@@ -461,8 +462,13 @@ if ($is_logged_in == 0) {
 
 				$month = array_key_exists( 'monthlysettlements_month', $_REQUEST ) ? $_REQUEST ['monthlysettlements_month'] : '';
 				$year = array_key_exists( 'monthlysettlements_year', $_REQUEST ) ? $_REQUEST ['monthlysettlements_year'] : '';
-				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
-				$display = $moduleMonthlySettlement->display_delete_monthlysettlement( $realaction, $month, $year );
+				$display = $moduleMonthlySettlement->display_delete_monthlysettlement( $month, $year );
+				break;
+			case 'delete_monthlysettlement_submit' :
+
+				$month = array_key_exists( 'monthlysettlements_month', $_REQUEST ) ? $_REQUEST ['monthlysettlements_month'] : '';
+				$year = array_key_exists( 'monthlysettlements_year', $_REQUEST ) ? $_REQUEST ['monthlysettlements_year'] : '';
+				$display = $moduleMonthlySettlement->delete_monthlysettlement( $month, $year );
 				break;
 
 			/* reports */
