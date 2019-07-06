@@ -87,7 +87,7 @@ function Go(month,year)
 {if $ALL_DATA[DATA].imported == 1}
                             <input type="hidden" name="all_data[{$smarty.section.DATA.index}][amount]" value="{$ALL_DATA[DATA].amount}">
                             <div class="input-group col-xs-12">
-                              <input disabled type="number" step="0.01" class="form-control" id="addmnfamount" name="all_data[{$smarty.section.DATA.index}][amount]" required data-error="{#TEXT_306#}" value="{$ALL_DATA[DATA].amount}" style="text-align: right;">
+                              <input disabled type="number" step="0.01" class="form-control" name="all_data[{$smarty.section.DATA.index}][amount]" required data-error="{#TEXT_306#}" value="{$ALL_DATA[DATA].amount}" style="text-align: right;">
                               <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-euro"></span>
                               </span>
@@ -95,12 +95,12 @@ function Go(month,year)
 {else}
                             <div class="form-group" style="margin-bottom:0px;">
                               <div class="input-group col-xs-12">
-                                <input type="number" step="0.01" class="form-control" id="addmnfamount" name="all_data[{$smarty.section.DATA.index}][amount]" required data-error="{#TEXT_306#}" value="{$ALL_DATA[DATA].amount}" style="text-align: right;">
+                                <input type="number" step="0.01" class="form-control" name="all_data[{$smarty.section.DATA.index}][amount]" required data-error="{#TEXT_306#}" value="{$ALL_DATA[DATA].amount}" style="text-align: right;">
                                 <span class="input-group-addon">
                                   <span class="glyphicon glyphicon-euro"></span>
                                 </span>
                               </div>
-                              <div class="help-block with-errors" style="margin-bottom:0px;"margin-top:0px;"></div>
+                              <div class="help-block with-errors" style="margin-bottom:0px;margin-top:0px;"></div>
                             </div>
 {/if}
                           </td>
@@ -139,7 +139,7 @@ function Go(month,year)
 {if $ALL_DATA[DATA].imported == 1}
                             <input type="hidden" name="all_data[{$smarty.section.DATA.index}][amount]" value="{$ALL_DATA[DATA].amount}">
                             <div class="input-group col-xs-12">
-                              <input disabled type="number" step="0.01" class="form-control" id="addmnfamount" name="all_data[{$smarty.section.DATA.index}][amount]" required data-error="{#TEXT_306#}" value="{$ALL_DATA[DATA].amount}" style="text-align: right;">
+                              <input disabled type="number" step="0.01" class="form-control" name="all_data[{$smarty.section.DATA.index}][amount]" required data-error="{#TEXT_306#}" value="{$ALL_DATA[DATA].amount}" style="text-align: right;">
                               <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-euro"></span>
                               </span>
@@ -147,12 +147,12 @@ function Go(month,year)
 {else}
                             <div class="form-group" style="margin-bottom:0px;">
                               <div class="input-group col-xs-12">
-                                <input type="number" step="0.01" class="form-control" id="addmnfamount" name="all_data[{$smarty.section.DATA.index}][amount]" required data-error="{#TEXT_306#}" value="{$ALL_DATA[DATA].amount}" style="text-align: right;">
+                                <input type="number" step="0.01" class="form-control" name="all_data[{$smarty.section.DATA.index}][amount]" required data-error="{#TEXT_306#}" value="{$ALL_DATA[DATA].amount}" style="text-align: right;">
                                 <span class="input-group-addon">
                                   <span class="glyphicon glyphicon-euro"></span>
                                 </span>
                               </div>
-                              <div class="help-block with-errors" style="margin-bottom:0px;"margin-top:0px;"></div>
+                              <div class="help-block with-errors" style="margin-bottom:0px;margin-top:0px;"></div>
                             </div>
 {/if}
                           </td>
