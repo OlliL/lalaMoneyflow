@@ -49,8 +49,8 @@ class moduleContractPartners extends module {
 		$this->template_assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 		$this->template_assign( 'CURRENTLY_VALID', $currently_valid );
 
-		$this->parse_header();
-		return $this->fetch_template( 'display_list_contractpartners.tpl' );
+		$this->parse_header_bootstraped( 0, 'display_list_contractpartners_bs.tpl' );
+		return $this->fetch_template( 'display_list_contractpartners_bs.tpl' );
 	}
 
 	public final function display_edit_contractpartner($contractpartnerid) {
