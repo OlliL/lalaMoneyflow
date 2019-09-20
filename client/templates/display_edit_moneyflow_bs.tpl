@@ -401,6 +401,10 @@
                 $('#addmnffavorite').prop('checked', false).change();
               })
 
+              $(function() {
+                $('#addmnfprivate').prop('checked', false).change();
+              })
+
               if(addMoneyflowJsonPreDefMoneyflows != null) {
                 var select = document.getElementById('selectmoneyflow');
                 select.selectedIndex = 0;
