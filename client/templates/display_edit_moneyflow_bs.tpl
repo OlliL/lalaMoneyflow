@@ -169,8 +169,8 @@
             </div>
 
             <div class="col-md-3 col-xs-12">
-                  <input id="private"  data-toggle="toggle" value="1" data-on="{#TEXT_209#}" data-off="{#TEXT_301#}" data-onstyle="danger" data-offstyle="success" type="checkbox" name="all_data[private]">
-                  <input id="favorite" value="1" type="checkbox" name="all_data[save_as_predefmoneyflow]">
+                  <input id="addmnfprivate"  data-toggle="toggle" value="1" data-on="{#TEXT_209#}" data-off="{#TEXT_301#}" data-onstyle="danger" data-offstyle="success" type="checkbox" name="all_data[private]">
+                  <input id="addmnffavorite" value="1" type="checkbox" name="all_data[save_as_predefmoneyflow]">
             </div>
     </div>
 
@@ -382,7 +382,7 @@
           var favoriteOff = offEmpty;
 
           $(function() {
-            $('#favorite').bootstrapToggle('destroy');
+            $('#addmnffavorite').bootstrapToggle('destroy');
           })
 
           if ( formMode == FORM_MODE_DEFAULT || formMode == FORM_MODE_EMPTY ) {
@@ -398,7 +398,7 @@
             if( formMode == FORM_MODE_EMPTY) {
               clearErrorDiv("addMoneyflowErrors");
               $(function() {
-                $('#favorite').prop('checked', false).change();
+                $('#addmnffavorite').prop('checked', false).change();
               })
 
               if(addMoneyflowJsonPreDefMoneyflows != null) {
@@ -413,13 +413,13 @@
                   if ( key == "save_as_predefmoneyflow") {
                     if ( addMoneyflowJsonFormDefaults["save_as_predefmoneyflow"] == "1" ) {
                       $(function() {
-                        $('#favorite').prop('checked', true).change();
+                        $('#addmnffavorite').prop('checked', true).change();
                       })
                     }
                   } else if ( key == "private") {
                     if ( addMoneyflowJsonFormDefaults["private"] == "1" ) {
                       $(function() {
-                        $('#private').prop('checked', true).change();
+                        $('#addmnfprivate').prop('checked', true).change();
                       })
                     }
                   } else {
@@ -479,7 +479,7 @@
 
             clearErrorDiv("addMoneyflowErrors");
             $(function() {
-              $('#favorite').prop('checked', false).change();
+              $('#addmnffavorite').prop('checked', false).change();
             })
           }
 
@@ -487,7 +487,7 @@
           $('#addmnfform').validator('update');
 
           $(function() {
-            $('#favorite').bootstrapToggle({
+            $('#addmnffavorite').bootstrapToggle({
               on: favoriteOn,
               off: favoriteOff
             });
