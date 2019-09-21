@@ -208,7 +208,7 @@
           <div class="form-group">
             <div class="col-sm-12 text-center">
               <button type="submit" class="btn btn-primary"                          >{#TEXT_271#}</button>
-              <button type="button" class="btn btn-danger" onclick="deleteImportedMoneyflow({$NUM})">{#TEXT_37#}</button>
+              <button formnovalidate type="button" class="btn btn-danger cancel" onclick="deleteImportedMoneyflow({$NUM})">{#TEXT_37#}</button>
             </div>  
           </div>  
 
@@ -321,7 +321,8 @@
 {literal}
         function deleteImportedMoneyflow(num) {
           $('#' + num + 'addmimdelete').val(1);
-          $('#' + num + 'addmimform').submit();
+          $('#' + num + 'addmimentry').hide();
+          $('#' + num + 'addmimform')[0].submit();
         }
 
 
