@@ -451,14 +451,13 @@ class moduleReports extends module {
 			$all_data = array ();
 		}
 
-
 		if (is_array( $all_data ) && count( $all_data ) > 0) {
 
 			if ($horizontalBarPlot) {
 				// $this->plotHorizontalBarPlot( $plot_data, $postingAccountNames, $title );
 				$summedData = array ();
 				foreach ( $all_data as $data ) {
-					if(array_key_exists($data ['postingaccountid'], $summedData)) {
+					if (array_key_exists( $data ['postingaccountid'], $summedData )) {
 						$fixedData = $summedData [$data ['postingaccountid']];
 					} else {
 						$fixedData = array (
@@ -466,15 +465,15 @@ class moduleReports extends module {
 								'amount' => 0
 						);
 					}
-					$fixedData['amount'] += $data['amount'] * -1;
-					$summedData[$data ['postingaccountid']] = $fixedData;
+					$fixedData ['amount'] += $data ['amount'] * - 1;
+					$summedData [$data ['postingaccountid']] = $fixedData;
 				}
 
 				$chartLabels = array ();
 				$chartData = array ();
-				$chartColors = array();
-				foreach ($summedData as $data) {
-					$chartLabels [] = $data['label'];
+				$chartColors = array ();
+				foreach ( $summedData as $data ) {
+					$chartLabels [] = $data ['label'];
 					$chartData [] = $data ['amount'];
 					$chartColors [] = $this->randomColor();
 				}
@@ -488,7 +487,7 @@ class moduleReports extends module {
 			} elseif ($barPlot) {
 				$chartLabels = array ();
 				$chartData = array ();
-				$chartColors = array();
+				$chartColors = array ();
 				foreach ( $all_data as $data ) {
 					$date = new \DateTime( $data ['date_ts'] );
 					if ($perMonthReport) {
@@ -513,7 +512,7 @@ class moduleReports extends module {
 			} elseif ($piePlot) {
 				$chartLabels = array ();
 				$chartData = array ();
-				$chartColors = array();
+				$chartColors = array ();
 				foreach ( $all_data as $data ) {
 					$chartLabels [] = $data ['postingaccountname'];
 					$chartData [] = $data ['amount'] * - 1;
