@@ -491,7 +491,6 @@ class moduleReports extends module {
 						$chartTitle = sprintf( "%s %s %s", $startdate->format( 'Y' ), $this->coreText->get_text( 170 ), $enddate->format( 'Y' ) );
 						break;
 				}
-
 			} elseif ($timeBasedGraph) {
 				foreach ( $all_data as $data ) {
 					$date = new \DateTime( $data ['date_ts'] );
