@@ -12,21 +12,17 @@ Requirements:
 	- Extension: curl
 	- Extension: json
 	- Extension: mbstring
-	- Extension: gd (for jpgraph)
 	- Extension: intl (for sorting via Transliterator class)
 	- Extension: xml (for utf8_encode)
 
 - Smarty 3.x (http://www.smarty.net/)
-
-- JpGraph 3.x (http://jpgraph.net/)
-
 
 Installation:
 =============
 
 - make sure your php.ini contains:
 
-	include_path = ".:<PATH-TO-SMARTY>:<PATH-TO-JPGRAPH:....."
+	include_path = ".:<PATH-TO-SMARTY>:....."
 	file_uploads = On
 	date.timezone = "Europe/Berlin"
 

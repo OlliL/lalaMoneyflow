@@ -109,8 +109,6 @@ print_headline( 'Checking additional requirements' );
 $errors = 0;
 @include 'Smarty.class.php';
 $errors += check_class( 'Smarty', '<a href="http://www.smarty.net/">Smarty Template Engine</a>' );
-@include 'jpgraph.php';
-$errors += check_class( 'Graph', '<a href="http://jpgraph.net/">JpGraph</a>' );
 print_result( $errors, 0 );
 
 /*
