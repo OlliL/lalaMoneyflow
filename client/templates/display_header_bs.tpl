@@ -117,10 +117,7 @@
       </div>
     </nav>
 {/if}
-
     <div class="main-wrapper">
-    
-    
 {if $EMBEDDED_ADD_CONTRACTPARTNER }
       <div id="contractpartnerModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -146,7 +143,6 @@
 </script>
 {/literal}
 {/if}
-
 {if $EMBEDDED_ADD_POSTINGACCOUNT }
       <div id="postingAccountModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -171,7 +167,6 @@
         }
 </script>
 {/if}
-
 {if $EMBEDDED_ADD_CAPITALSOURCE }
       <div id="capitalsourceModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -196,4 +191,3 @@
 
 </script>
 {/if}
-

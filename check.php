@@ -96,7 +96,6 @@ $errors += check_extension( 'hash' );
 $errors += check_extension( 'curl' );
 $errors += check_extension( 'json' );
 $errors += check_extension( 'mbstring' );
-$errors += check_extension( 'gd' );
 $errors += check_extension( 'intl' );
 $errors += check_extension( 'xml' );
 print_result( $errors, 0 );

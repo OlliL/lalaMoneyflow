@@ -387,74 +387,69 @@ class moduleReports extends module {
 	public final function plot_report($timemode, $accountmode, $year, $month_month, $year_month, $yearfrom, $yeartil, $account, $accounts_yes, $accounts_no) {
 		$perMonthReport = false;
 		$perYearReport = false;
-		$barPlot = false;
-		$piePlot = false;
-		$horizontalBarPlot = false;
+		$timeBasedGraph = false;
+		$accountBasedGraph = false;
 		$encoding = Configuration::getInstance()->getProperty( 'encoding' );
-		$title = "";
 
 		switch ($timemode) {
 			case 1 :
+				// 1 year
 				$startdate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $year . '-01-01 00:00:00' );
 				$enddate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $year . '-12-31 00:00:00' );
 				$perMonthReport = true;
-				$barPlot = true;
-				$title = $year;
 				break;
 			case 2 :
+				// 1 month
 				if ($year_month && $month_month) {
 					$startdate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $year_month . '-' . $month_month . '-01 00:00:00' );
 					$enddate = clone $startdate;
 					$enddate->modify( 'last day of this month' );
 					$perMonthReport = true;
-					$piePlot = true;
-					$title = html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $month_month ), ENT_COMPAT | ENT_HTML401, $encoding ) . ' ' . $year_month;
 				}
 				break;
 			case 3 :
+				// multiple years
 				$startdate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $yearfrom . '-01-01 00:00:00' );
 				$enddate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $yeartil . '-12-31 00:00:00' );
 				$perYearReport = true;
-				$barPlot = true;
-				$title = $yearfrom . ' - ' . $yeartil;
 				break;
 		}
 
 		switch ($accountmode) {
 			case 1 :
+				// 1 account
 				$accounts_yes = array (
 						$account
 				);
+				$timeBasedGraph = true;
 				break;
 			case 2 :
+				// multiple accounts
 				if (! is_array( $accounts_yes ))
 					$accounts_yes = array ();
-				if ($barPlot) {
-					$horizontalBarPlot = true;
-					$barPlot = false;
-				}
+				$accountBasedGraph = true;
 				break;
 		}
+
 		if (! is_array( $accounts_no ))
 			$accounts_no = array ();
 
 		$report = array ();
+
 		if ($perMonthReport) {
 			$report = ReportControllerHandler::getInstance()->showMonthlyReportGraph( $accounts_yes, $accounts_no, $startdate, $enddate );
 		} elseif ($perYearReport) {
 			$report = ReportControllerHandler::getInstance()->showYearlyReportGraph( $accounts_yes, $accounts_no, $startdate, $enddate );
 		}
-		if (is_array( $report ) && array_key_exists( 'postingAccounts', $report )) {
-			$postingAccounts = $report ['postingAccounts'];
+
+		if (is_array( $report ) && array_key_exists( 'postingAccounts', $report ) && count( $report ['data'] ) > 0) {
 			$all_data = $report ['data'];
-		} else {
-			$all_data = array ();
-		}
 
-		if (is_array( $all_data ) && count( $all_data ) > 0) {
+			$chartLabels = array ();
+			$chartData = array ();
+			$chartColors = array ();
 
-			if ($horizontalBarPlot) {
-				// $this->plotHorizontalBarPlot( $plot_data, $postingAccountNames, $title );
+			if ($accountBasedGraph) {
 				$summedData = array ();
 				foreach ( $all_data as $data ) {
 					if (array_key_exists( $data ['postingaccountid'], $summedData )) {
@@ -466,28 +461,20 @@ class moduleReports extends module {
 						);
 					}
 					$fixedData ['amount'] += $data ['amount'] * - 1;
+
 					$summedData [$data ['postingaccountid']] = $fixedData;
 				}
 
-				$chartLabels = array ();
-				$chartData = array ();
-				$chartColors = array ();
+				usort( $summedData, function ($a, $b) {
+					return $a ['amount'] < $b ['amount'];
+				} );
+
 				foreach ( $summedData as $data ) {
 					$chartLabels [] = $data ['label'];
-					$chartData [] = $data ['amount'];
+					$chartData [] = round( $data ['amount'], 2 );
 					$chartColors [] = $this->randomColor();
 				}
-				$this->template_assign_raw( 'CHART_LABELS', json_encode( $chartLabels ) );
-				$this->template_assign_raw( 'CHART_DATA', json_encode( $chartData ) );
-				$this->template_assign_raw( 'CHART_COLORS', json_encode( $chartColors ) );
-				$this->template_assign_raw( 'CHART_TYPE', 'pie' );
-
-				$this->parse_header_without_embedded( 1, 'display_plot_report_bs.tpl' );
-				return $this->fetch_template( 'display_plot_report_bs.tpl' );
-			} elseif ($barPlot) {
-				$chartLabels = array ();
-				$chartData = array ();
-				$chartColors = array ();
+			} elseif ($timeBasedGraph) {
 				foreach ( $all_data as $data ) {
 					$date = new \DateTime( $data ['date_ts'] );
 					if ($perMonthReport) {
@@ -499,40 +486,18 @@ class moduleReports extends module {
 					$chartData [] = $data ['amount'] * - 1;
 					$chartColors [] = $this->randomColor();
 				}
-
-				$this->template_assign_raw( 'CHART_LABELS', json_encode( $chartLabels ) );
-				$this->template_assign_raw( 'CHART_DATA', json_encode( $chartData ) );
-				$this->template_assign_raw( 'CHART_COLORS', json_encode( $chartColors ) );
-				$this->template_assign_raw( 'CHART_TYPE', 'bar' );
-
-				$this->parse_header_without_embedded( 1, 'display_plot_report_bs.tpl' );
-				return $this->fetch_template( 'display_plot_report_bs.tpl' );
-
-				// $this->plotBarPlot( $plot_data, $postingAccountNames, $title );
-			} elseif ($piePlot) {
-				$chartLabels = array ();
-				$chartData = array ();
-				$chartColors = array ();
-				foreach ( $all_data as $data ) {
-					$chartLabels [] = $data ['postingaccountname'];
-					$chartData [] = $data ['amount'] * - 1;
-					$chartColors [] = $this->randomColor();
-				}
-
-				$this->template_assign_raw( 'CHART_LABELS', json_encode( $chartLabels ) );
-				$this->template_assign_raw( 'CHART_DATA', json_encode( $chartData ) );
-				$this->template_assign_raw( 'CHART_COLORS', json_encode( $chartColors ) );
-				$this->template_assign_raw( 'CHART_TYPE', 'pie' );
-
-				$this->parse_header_without_embedded( 1, 'display_plot_report_bs.tpl' );
-				return $this->fetch_template( 'display_plot_report_bs.tpl' );
-
-				// $this->plotPiePlot( $plot_data, $postingAccountNames, $title );
 			}
-		}
 
-		$this->parse_header( 1 );
-		return $this->fetch_template( 'display_show_reporting_plot_no_data.tpl' );
+			$this->template_assign_raw( 'CHART_LABELS', json_encode( $chartLabels ) );
+			$this->template_assign_raw( 'CHART_DATA', json_encode( $chartData ) );
+			$this->template_assign_raw( 'CHART_COLORS', json_encode( $chartColors ) );
+			$this->template_assign_raw( 'CHART_TYPE', 'bar' );
+
+			$this->parse_header_without_embedded( 1, 'display_plot_report_bs.tpl' );
+			return $this->fetch_template( 'display_plot_report_bs.tpl' );
+		}
+		$this->parse_header_without_embedded( 1, 'display_show_reporting_plot_no_data_bs.tpl' );
+		return $this->fetch_template( 'display_show_reporting_plot_no_data_bs.tpl' );
 	}
 }
 

@@ -91,7 +91,7 @@
 	function submitform(f) {
             markAllAccounts(true);
             var url = "";     
-            win = window.open(url, 'new_window', "width=1024,height=900,status=no,resizable=yes,scrollbars=yes,menubar=no,toolbar=no,location=0");
+            win = window.open(url, 'new_window', "width=1024,height=600,status=no,resizable=yes,scrollbars=yes,menubar=no,toolbar=no,location=0");
             document.forms[f].submit();
         }
 

@@ -1,8 +1,7 @@
 {$HEADER}
     <script src="contrib/chart.js/Chart.min.js"></script>
-    <script src="contrib/chartjs-plugin-labels.js"></script>
 
-      <div class="container container-middle" style="position: relative; height: 80vh">
+      <div class="container container-middle" style="position: relative; height: 95vh">
         <canvas id="myChart"></canvas>
       </div>
 
@@ -27,17 +26,6 @@
           options: {
             legend: {
               display: false
-            },
-            plugins: {
-              labels: {
-                render: 'label',
-  //  arc: true,
-    position: 'border',
-    fontColor: '#000',
-    position: 'outside',
-    overlap: true,
-
-              }
             }
           }
         });
