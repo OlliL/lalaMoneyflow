@@ -505,7 +505,7 @@ if ($is_logged_in == 0) {
 				break;
 			case 'plot_trends' :
 
-				$display = (ENABLE_JPGRAPH ? $moduleReports->display_plot_trends( $all_data ) : '');
+				$display = $moduleReports->display_plot_trends( $all_data );
 				break;
 			case 'plot_graph' :
 

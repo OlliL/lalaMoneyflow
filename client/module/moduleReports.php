@@ -34,14 +34,6 @@ use client\core\coreText;
 use client\util\Environment;
 use base\Configuration;
 
-
-if (ENABLE_JPGRAPH) {
-	require_once 'jpgraph.php';
-	require_once 'jpgraph_bar.php';
-	require_once 'jpgraph_pie.php';
-	require_once 'jpgraph_line.php';
-}
-
 class moduleReports extends module {
 	private $coreText;
 	private const TRENDS_DATE_FORMAT = 'm/Y';
@@ -320,16 +312,16 @@ class moduleReports extends module {
 		}
 
 		$this->template_assign( 'SELECTED_CAPITALSOURCEIDS', $showTrendsForm ['selected_capitalsources'] );
-		$this->template_assign( 'START_DATE', date_format(new \DateTime($showTrendsForm ['minDate']), self::TRENDS_DATE_FORMAT) );
-		$this->template_assign( 'END_DATE',   date_format(new \DateTime($showTrendsForm ['maxDate']), self::TRENDS_DATE_FORMAT) );
+		$this->template_assign( 'START_DATE', date_format( new \DateTime( $showTrendsForm ['minDate'] ), self::TRENDS_DATE_FORMAT ) );
+		$this->template_assign( 'END_DATE', date_format( new \DateTime( $showTrendsForm ['maxDate'] ), self::TRENDS_DATE_FORMAT ) );
 
 		$this->parse_header_without_embedded( 0, 'display_plot_trends_bs.tpl' );
 		return $this->fetch_template( 'display_plot_trends_bs.tpl' );
 	}
 
 	public final function plot_graph($all_capitalsources_ids, $aStartdate, $aEnddate) {
-		$startdate = \DateTime::createFromFormat(self::TRENDS_DATE_FORMAT."/d", $aStartdate."/01");
-		$enddate = \DateTime::createFromFormat(self::TRENDS_DATE_FORMAT."/d", $aEnddate."/01");
+		$startdate = \DateTime::createFromFormat( self::TRENDS_DATE_FORMAT . "/d", $aStartdate . "/01" );
+		$enddate = \DateTime::createFromFormat( self::TRENDS_DATE_FORMAT . "/d", $aEnddate . "/01" );
 
 		$showTrendsGraph = ReportControllerHandler::getInstance()->showTrendsGraph( $all_capitalsources_ids, $startdate, $enddate );
 
@@ -459,127 +451,89 @@ class moduleReports extends module {
 			$all_data = array ();
 		}
 
-		$plot_data = array ();
+
 		if (is_array( $all_data ) && count( $all_data ) > 0) {
-			foreach ( $all_data as $data ) {
-				$postingAccountUsed [$data ['postingaccountid']] = true;
-			}
-
-			$i = 0;
-			foreach ( $postingAccounts as $key => $postingAccount ) {
-				if (array_key_exists( $postingAccount ['postingaccountid'], $postingAccountUsed )) {
-					$postingAccountKeys [$postingAccount ['postingaccountid']] = $i;
-					$postingAccountNames [] = utf8_decode( $postingAccount ['name'] );
-					$i ++;
-				}
-			}
-			foreach ( $all_data as $data ) {
-				$date = new \DateTime( $data ['date_ts'] );
-				if ($perMonthReport) {
-					$key = html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $date->format( 'n' ) ), ENT_COMPAT | ENT_HTML401, $encoding );
-				} else {
-					$key = $date->format( 'Y' );
-				}
-				$account_key = $postingAccountKeys [$data ['postingaccountid']];
-				if (! array_key_exists( $key, $plot_data ) || ! array_key_exists( $account_key, $plot_data [$key] ))
-					$plot_data [$key] [$account_key] = 0;
-				$plot_data [$key] [$account_key] += $data ['amount'] * - 1;
-			}
-
-			foreach ( $plot_data as $key => $data ) {
-				foreach ( $postingAccountKeys as $postingAccountKey ) {
-					if (! array_key_exists( $postingAccountKey, $data ))
-						$plot_data [$key] [$postingAccountKey] = 0;
-				}
-			}
 
 			if ($horizontalBarPlot) {
-				$this->plotHorizontalBarPlot( $plot_data, $postingAccountNames, $title );
+				// $this->plotHorizontalBarPlot( $plot_data, $postingAccountNames, $title );
+				$summedData = array ();
+				foreach ( $all_data as $data ) {
+					if(array_key_exists($data ['postingaccountid'], $summedData)) {
+						$fixedData = $summedData [$data ['postingaccountid']];
+					} else {
+						$fixedData = array (
+								'label' => $data ['postingaccountname'],
+								'amount' => 0
+						);
+					}
+					$fixedData['amount'] += $data['amount'] * -1;
+					$summedData[$data ['postingaccountid']] = $fixedData;
+				}
+
+				$chartLabels = array ();
+				$chartData = array ();
+				$chartColors = array();
+				foreach ($summedData as $data) {
+					$chartLabels [] = $data['label'];
+					$chartData [] = $data ['amount'];
+					$chartColors [] = $this->randomColor();
+				}
+				$this->template_assign_raw( 'CHART_LABELS', json_encode( $chartLabels ) );
+				$this->template_assign_raw( 'CHART_DATA', json_encode( $chartData ) );
+				$this->template_assign_raw( 'CHART_COLORS', json_encode( $chartColors ) );
+				$this->template_assign_raw( 'CHART_TYPE', 'pie' );
+
+				$this->parse_header_without_embedded( 1, 'display_plot_report_bs.tpl' );
+				return $this->fetch_template( 'display_plot_report_bs.tpl' );
 			} elseif ($barPlot) {
-				$this->plotBarPlot( $plot_data, $postingAccountNames, $title );
+				$chartLabels = array ();
+				$chartData = array ();
+				$chartColors = array();
+				foreach ( $all_data as $data ) {
+					$date = new \DateTime( $data ['date_ts'] );
+					if ($perMonthReport) {
+						$key = html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $date->format( 'n' ) ), ENT_COMPAT | ENT_HTML401, $encoding );
+					} else {
+						$key = $date->format( 'Y' );
+					}
+					$chartLabels [] = $key;
+					$chartData [] = $data ['amount'] * - 1;
+					$chartColors [] = $this->randomColor();
+				}
+
+				$this->template_assign_raw( 'CHART_LABELS', json_encode( $chartLabels ) );
+				$this->template_assign_raw( 'CHART_DATA', json_encode( $chartData ) );
+				$this->template_assign_raw( 'CHART_COLORS', json_encode( $chartColors ) );
+				$this->template_assign_raw( 'CHART_TYPE', 'bar' );
+
+				$this->parse_header_without_embedded( 1, 'display_plot_report_bs.tpl' );
+				return $this->fetch_template( 'display_plot_report_bs.tpl' );
+
+				// $this->plotBarPlot( $plot_data, $postingAccountNames, $title );
 			} elseif ($piePlot) {
-				$this->plotPiePlot( $plot_data, $postingAccountNames, $title );
+				$chartLabels = array ();
+				$chartData = array ();
+				$chartColors = array();
+				foreach ( $all_data as $data ) {
+					$chartLabels [] = $data ['postingaccountname'];
+					$chartData [] = $data ['amount'] * - 1;
+					$chartColors [] = $this->randomColor();
+				}
+
+				$this->template_assign_raw( 'CHART_LABELS', json_encode( $chartLabels ) );
+				$this->template_assign_raw( 'CHART_DATA', json_encode( $chartData ) );
+				$this->template_assign_raw( 'CHART_COLORS', json_encode( $chartColors ) );
+				$this->template_assign_raw( 'CHART_TYPE', 'pie' );
+
+				$this->parse_header_without_embedded( 1, 'display_plot_report_bs.tpl' );
+				return $this->fetch_template( 'display_plot_report_bs.tpl' );
+
+				// $this->plotPiePlot( $plot_data, $postingAccountNames, $title );
 			}
 		}
 
 		$this->parse_header( 1 );
 		return $this->fetch_template( 'display_show_reporting_plot_no_data.tpl' );
-	}
-
-	private final function plotHorizontalBarPlot($plot_data, $postingAccountNames, $title) {
-		foreach ( $plot_data as $key => $data ) {
-			$plot = new \BarPlot( $data );
-			$plot->SetColor( "white" );
-			$plot->SetFillColor( $this->randomColor() );
-			$plot->setLegend( $key );
-			$plots [] = $plot;
-		}
-		// Create the graph. These two calls are always required
-		$graph = new \Graph( 1000, count( $postingAccountNames ) * 30 + count( $postingAccountNames ) * count( $plot_data ) * 5 + 100 );
-		$graph->SetScale( "textlin" );
-		$graph->Set90AndMargin( 200, 30, 40, 40 );
-
-		$graph->ygrid->SetFill( false );
-
-		$graph->xaxis->SetTickLabels( $postingAccountNames );
-		$graph->xaxis->SetPos( "min" );
-
-		$graph->yaxis->HideLine( false );
-		$graph->yaxis->HideTicks( false, false );
-
-		$gbplot = new \GroupBarPlot( $plots );
-		// ...and add it to the graph
-
-		$graph->Add( $gbplot );
-		$graph->title->Set( $title );
-		$graph->Stroke();
-	}
-
-	private final function plotBarPlot($plot_data, $postingAccountNames, $title) {
-		foreach ( $plot_data as $key => $data ) {
-			$plot = new \BarPlot( $data );
-			$plot->SetColor( "white" );
-			$plot->SetFillColor( $this->randomColor() );
-			$plot->setLegend( $key );
-			$plots [] = $plot;
-		}
-
-		$graph = new \Graph( 1000, 600 );
-		$graph->SetScale( "textlin" );
-
-		$graph->ygrid->SetFill( false );
-		$graph->xaxis->SetTickLabels( $postingAccountNames );
-
-		$gbplot = new \GroupBarPlot( $plots );
-
-		$graph->Add( $gbplot );
-		$graph->legend->SetFrameWeight( 1 );
-		$graph->legend->SetColumns( 6 );
-		$graph->legend->SetColor( '#4E4E4E', '#00A78A' );
-		$graph->legend->SetPos( 0.5, 0.98, 'center', 'bottom' );
-		$graph->title->Set( $title );
-		$graph->Stroke();
-	}
-
-	private final function plotPiePlot($plot_data, $postingAccountNames, $title) {
-		$data = array_shift( $plot_data );
-		ksort( $data );
-
-		$p1 = new \PiePlot( $data );
-		$p1->SetCenter( 0.5, 0.5 );
-		$p1->SetSize( 0.4 );
-		$p1->SetGuideLines( true, false, true );
-		$p1->SetLabels( $postingAccountNames );
-		$p1->SetLabelPos( 1 );
-		$p1->SetLabelType( PIE_VALUE_PER );
-		$p1->value->Show();
-		$p1->value->SetColor( 'darkgray' );
-
-		$graph = new \PieGraph( 1000, 800 );
-
-		$graph->Add( $p1 );
-		$graph->title->Set( $title );
-		$graph->Stroke();
 	}
 }
 

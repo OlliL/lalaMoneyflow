@@ -46,7 +46,6 @@ spl_autoload_register( 'framework_autoload' );
 ini_set( "log_errors", 1 );
 ini_set( "error_log", "/tmp/php-error-client.log" );
 
-define( 'ENABLE_JPGRAPH', true );
 // $money_debug=2;
 $money_debug=0;
 ?>

@@ -24,10 +24,8 @@
 					<a href="{$ENV_INDEX_PHP}?action=list_predefmoneyflows">{#TEXT_3#}</a><br>
 					<a href="{$ENV_INDEX_PHP}?action=list_monthlysettlements">{#TEXT_4#}</a><br>
 					<a href="{$ENV_INDEX_PHP}?action=list_reports">{#TEXT_5#}</a><br>
-{if $ENABLE_JPGRAPH }
 					<a href="{$ENV_INDEX_PHP}?action=plot_trends">{#TEXT_6#}</a><br>
 					<a href="{$ENV_INDEX_PHP}?action=show_reporting_form">{#TEXT_254#}</a><br>
-{/if}
 					<a href="{$ENV_INDEX_PHP}?action=search">{#TEXT_7#}</a><br>
 					<a href="{$ENV_INDEX_PHP}?action=upfrm_cmp_data">{#TEXT_187#}</a><br>
 					<a href="{$ENV_INDEX_PHP}?action=add_importedmoneyflows">{#TEXT_268#}</a><br>

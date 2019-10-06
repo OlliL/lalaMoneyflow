@@ -63,7 +63,6 @@
             <li{if $TEMPLATE == "display_add_importedmoneyflows_bs.tpl"} class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=add_importedmoneyflows"><i class="glyphicon glyphicon-import"></i></a></li>
             <li><a href="{$ENV_INDEX_PHP}?action=upfrm_cmp_data"><i class="glyphicon glyphicon-transfer"></i></a></li>
 
-{if $ENABLE_JPGRAPH }
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-stats"></i> <span class="caret"></span></a>
               <ul class="dropdown-menu">
@@ -71,7 +70,7 @@
                 <li><a href="{$ENV_INDEX_PHP}?action=show_reporting_form">{#TEXT_254#}</a></li>
               </ul>
             </li>
-{/if}                
+
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-plus"></i> <span class="caret"></span></a>
               <ul class="dropdown-menu">
