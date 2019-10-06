@@ -448,9 +448,11 @@ class moduleReports extends module {
 			$chartLabels = array ();
 			$chartData = array ();
 			$chartColors = array ();
+			$chartTitle = '';
 
 			if ($accountBasedGraph) {
 				$summedData = array ();
+
 				foreach ( $all_data as $data ) {
 					if (array_key_exists( $data ['postingaccountid'], $summedData )) {
 						$fixedData = $summedData [$data ['postingaccountid']];
@@ -474,6 +476,22 @@ class moduleReports extends module {
 					$chartData [] = round( $data ['amount'], 2 );
 					$chartColors [] = $this->randomColor();
 				}
+
+				switch ($timemode) {
+					case 1 :
+						// 1 year
+						$chartTitle = $startdate->format( 'Y' );
+						break;
+					case 2 :
+						// 1 month
+						$chartTitle = sprintf( "%s %s", html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $startdate->format( 'n' ) ), ENT_COMPAT | ENT_HTML401, $encoding ), $startdate->format( 'Y' ) );
+						break;
+					case 3 :
+						// multiple years
+						$chartTitle = sprintf( "%s %s %s", $startdate->format( 'Y' ), $this->coreText->get_text( 170 ), $enddate->format( 'Y' ) );
+						break;
+				}
+
 			} elseif ($timeBasedGraph) {
 				foreach ( $all_data as $data ) {
 					$date = new \DateTime( $data ['date_ts'] );
@@ -486,12 +504,27 @@ class moduleReports extends module {
 					$chartData [] = $data ['amount'] * - 1;
 					$chartColors [] = $this->randomColor();
 				}
+
+				switch ($timemode) {
+					case 1 :
+						// 1 year
+						$chartTitle = sprintf( "%s - %s", $all_data [0] ['postingaccountname'], $startdate->format( 'Y' ) );
+						break;
+					case 2 :
+						// 1 month
+						$chartTitle = sprintf( "%s - %s %s", $all_data [0] ['postingaccountname'], html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $startdate->format( 'n' ) ), ENT_COMPAT | ENT_HTML401, $encoding ), $startdate->format( 'Y' ) );
+						break;
+					case 3 :
+						// multiple years
+						$chartTitle = sprintf( "%s - %s %s %s", $all_data [0] ['postingaccountname'], $startdate->format( 'Y' ), $this->coreText->get_text( 170 ), $enddate->format( 'Y' ) );
+						break;
+				}
 			}
 
 			$this->template_assign_raw( 'CHART_LABELS', json_encode( $chartLabels ) );
 			$this->template_assign_raw( 'CHART_DATA', json_encode( $chartData ) );
 			$this->template_assign_raw( 'CHART_COLORS', json_encode( $chartColors ) );
-			$this->template_assign_raw( 'CHART_TYPE', 'bar' );
+			$this->template_assign_raw( 'CHART_TITLE', $chartTitle );
 
 			$this->parse_header_without_embedded( 1, 'display_plot_report_bs.tpl' );
 			return $this->fetch_template( 'display_plot_report_bs.tpl' );

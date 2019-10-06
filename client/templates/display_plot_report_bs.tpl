@@ -15,7 +15,7 @@
         var ctx = document.getElementById("myChart").getContext('2d');
 
         var myChart = new Chart(ctx, {
-          type: '{$CHART_TYPE}',
+          type: 'bar',
           data: {
             labels: "",
             datasets: [{
@@ -24,8 +24,19 @@
             }]
           },
           options: {
+            title: {
+              display: true,
+              text: ''
+            },
             legend: {
               display: false
+            },
+            scales: {
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                }
+              }]
             }
           }
         });
@@ -48,6 +59,7 @@
           var chartLabels = {$CHART_LABELS};
           var chartData = {$CHART_DATA};
           var chartColors = {$CHART_COLORS};
+          var title = "{$CHART_TITLE}"
 
           // Add settled data
 
@@ -62,6 +74,15 @@
           chartColors.forEach((color) => {
             myChart.data.datasets[0].backgroundColor.push(color);
           });
+          
+          var parser = new DOMParser;
+          var dom = parser.parseFromString(
+            '<!doctype html><body>' + title,
+            'text/html');
+          var decodedString = dom.body.textContent;
+
+          myChart.options.title.text = decodedString;
+          
           
           myChart.update();
         
