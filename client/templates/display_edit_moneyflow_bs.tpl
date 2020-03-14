@@ -570,7 +570,8 @@
           for(i=0 ; i < length ; i++ ) {
             var subamount = $('#addmnfsubamount' + shownSplitEntryRows[i]).val();
             if(subamount != null) {
-              amount -= subamount;
+              // replace , decimal seperator with . before doing the math.
+              amount -= subamount.replace(",",".");
             }
 
           }
