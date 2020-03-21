@@ -122,7 +122,7 @@
             <div class="form-group col-md-2 col-xs-12">
               <span class="has-float-label">
                 <div class="input-group col-xs-12">
-                  <input type="number" step="0.01" class="form-control" id="addmnfamount" name="all_data[amount]" required data-error="{#TEXT_306#}" autofocus onChange="calculateRemainingAmount()">
+                  <input type="number" step="0.01" class="form-control" lang="en" id="addmnfamount" name="all_data[amount]" required data-error="{#TEXT_306#}" autofocus onChange="calculateRemainingAmount()">
                   <span class="input-group-addon">
                     <span class="glyphicon glyphicon-euro"></span>
                   </span>
@@ -558,7 +558,8 @@
         }
         
         function calculateRemainingAmount(row) {
-          var amount = $('#addmnfamount').val();
+          var amount = $('#addmnfamount').val().replace(",",".");
+          $('#addmnfamount').val(amount);
           var length = shownSplitEntryRows.length;
 
           // have we edited the last row? If yes add a new one automatically
@@ -568,10 +569,11 @@
           }
 
           for(i=0 ; i < length ; i++ ) {
-            var subamount = $('#addmnfsubamount' + shownSplitEntryRows[i]).val();
+            var subamount = $('#addmnfsubamount' + shownSplitEntryRows[i]).val().replace(",",".");
+            $('#addmnfsubamount' + shownSplitEntryRows[i]).val(subamount);
             if(subamount != null) {
               // replace , decimal seperator with . before doing the math.
-              amount -= subamount.replace(",",".");
+              amount -= subamount;
             }
 
           }
