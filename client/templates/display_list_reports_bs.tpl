@@ -565,7 +565,7 @@ function Go(x)
                           <th class="text-center" rowspan=2>{#TEXT_289#}</th>
                         </tr>
                         <tr>
-                          <th class="text-center">{#TEXT_335#}</th>
+                          <th class="text-center">{#TEXT_335#} &#8709;</th>
                           <th class="text-center">{#TEXT_336#}</th>
                           <th class="text-center">{#TEXT_337#}</th>
                           <th class="text-center">{#TEXT_335#}</th>
