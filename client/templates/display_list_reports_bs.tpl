@@ -547,15 +547,15 @@ function Go(x)
                 <div class="row">
                   <div class="col-xs-12 text-center">
                     <table class="table table-striped table-bordered table-hover" style="table-layout:fixed">
-                      <col style="width:15%">
-                      <col style="width:10%">
-                      <col style="width:10%">
-                      <col style="width:10%">
-                      <col style="width:10%">
-                      <col style="width:10%">
-                      <col style="width:10%">
-                      <col style="width:10%">
-                      <col style="width:15%">
+                      <col style="width:26%">
+                      <col style="width:6%">
+                      <col style="width:9%">
+                      <col style="width:9%">
+                      <col style="width:9%">
+                      <col style="width:9%">
+                      <col style="width:9%">
+                      <col style="width:9%">
+                      <col style="width:14%">
                       <thead>
                         <tr>
                           <th class="text-center" rowspan=2>{#TEXT_338#}</th>
@@ -581,7 +581,7 @@ function Go(x)
                           {math equation="x * y" x=$ETF_OVERVIEW_DATA[DATA].amount y=$ETF_OVERVIEW_DATA[DATA].sellPrice assign=SUM_SELLPRICE}
                           {math equation="x - y" x=$SUM_SELLPRICE y=$ETF_OVERVIEW_DATA[DATA].spentValue assign=PROFIT}
 
-                          <td class="text-left"><a href="https://www.gettex.de/gettex-die-guenstige-und-schnelle-boerse/isin/IE00BK5BQT80/name/VANG.FTSE_A.W._DLA/">{$ETF_OVERVIEW_DATA[DATA].isin}</a></td>
+                          <td class="text-left"><a href="{$ETF_OVERVIEW_DATA[DATA].chartUrl}">{$ETF_OVERVIEW_DATA[DATA].name}</a></td>
                           <td class="text-right">{$ETF_OVERVIEW_DATA[DATA].amount}</td>
                           <td class="text-right of_number_to_be_evaluated">{$AVG_SPENTPRICE|number_format} {#CURRENCY#}</td>
                           <td class="text-right of_number_to_be_evaluated">{$ETF_OVERVIEW_DATA[DATA].sellPrice|number_format} {#CURRENCY#}</td>

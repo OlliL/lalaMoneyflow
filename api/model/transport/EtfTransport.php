@@ -30,6 +30,8 @@ namespace api\model\transport;
 
 class EtfTransport extends AbstractTransport {
 	public $isin;
+	public $name;
+	public $chartUrl;
 	public $amount;
 	public $spentValue;
 	public $buyPrice;
@@ -48,6 +50,34 @@ class EtfTransport extends AbstractTransport {
 	 */
 	public final function setIsin($isin) {
 		$this->isin = $isin;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public final function getName() {
+		return $this->name;
+	}
+
+	/**
+	 * @param mixed $name
+	 */
+	public final function setName($name) {
+		$this->name = $name;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public final function getChartUrl() {
+		return $this->chartUrl;
+	}
+
+	/**
+	 * @param mixed $chartUrl
+	 */
+	public final function setChartUrl($chartUrl) {
+		$this->chartUrl = $chartUrl;
 	}
 
 	/**
