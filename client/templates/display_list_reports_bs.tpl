@@ -532,6 +532,72 @@ function Go(x)
           </div>
         </div>
     {/if}
+
+    {if $ETF_OVERVIEW_DATA != ''}
+        <div class="row">
+          <div class="col-xs-12">&nbsp;</div>
+        </div>
+        <div class="row">
+          <div class="col-xs-8 col-xs-push-2">
+            <div class="panel panel-default">
+              <div class="panel-heading text-center">
+                <h4>{#TEXT_331#}</h4>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-xs-12 text-center">
+                    <table class="table table-striped table-bordered table-hover" style="table-layout:fixed">
+                      <col style="width:20%">
+                      <col style="width:10%">
+                      <col style="width:10%">
+                      <col style="width:10%">
+                      <col style="width:10%">
+                      <col style="width:10%">
+                      <col style="width:10%">
+                      <col style="width:10%">
+                      <thead>
+                        <tr>
+                          <th class="text-center" rowspan=2>{#TEXT_338#}</th>
+                          <th class="text-center" rowspan=2>{#TEXT_332#}</th>
+                          <th class="text-center" colspan=3>{#TEXT_333#}</th>
+                          <th class="text-center" colspan=3>{#TEXT_334#}</th>
+                        </tr>
+                        <tr>
+                          <th class="text-center">{#TEXT_335#}</th>
+                          <th class="text-center">{#TEXT_336#}</th>
+                          <th class="text-center">{#TEXT_337#}</th>
+                          <th class="text-center">{#TEXT_335#}</th>
+                          <th class="text-center">{#TEXT_336#}</th>
+                          <th class="text-center">{#TEXT_339#}</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+      {section name=DATA loop=$ETF_OVERVIEW_DATA}
+                        <tr>
+                          {math equation="x / y" x=$ETF_OVERVIEW_DATA[DATA].spentValue y=$ETF_OVERVIEW_DATA[DATA].amount assign=AVG_SPENTPRICE}
+                          {math equation="x * y" x=$ETF_OVERVIEW_DATA[DATA].amount y=$ETF_OVERVIEW_DATA[DATA].sellPrice assign=SUM_SELLPRICE}
+                          {math equation="x - y" x=$SUM_SELLPRICE y=$ETF_OVERVIEW_DATA[DATA].spentValue assign=PROFIT}
+
+                          <td class="text-left">{$ETF_OVERVIEW_DATA[DATA].isin}</td>
+                          <td class="text-right">{$ETF_OVERVIEW_DATA[DATA].amount}</td>
+                          <td class="text-right of_number_to_be_evaluated">{$AVG_SPENTPRICE|number_format} {#CURRENCY#}</td>
+                          <td class="text-right of_number_to_be_evaluated">{$ETF_OVERVIEW_DATA[DATA].sellPrice|number_format} {#CURRENCY#}</td>
+                          <td class="text-right of_number_to_be_evaluated">{$ETF_OVERVIEW_DATA[DATA].buyPrice|number_format} {#CURRENCY#}</td>
+                          <td class="text-right of_number_to_be_evaluated">{$ETF_OVERVIEW_DATA[DATA].spentValue|number_format} {#CURRENCY#}</td>
+                          <td class="text-right of_number_to_be_evaluated">{$SUM_SELLPRICE|number_format} {#CURRENCY#}</td>
+                          <td class="text-right of_number_to_be_evaluated"><u>{$PROFIT|number_format} {#CURRENCY#}</u></td>
+                        </tr>
+      {/section}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    {/if}
   {/if}
       </div>
 {/if}

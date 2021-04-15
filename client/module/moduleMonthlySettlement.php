@@ -101,7 +101,6 @@ class moduleMonthlySettlement extends module {
 
 	public final function edit_monthlysettlement($all_data) {
 		$ret = MonthlySettlementControllerHandler::getInstance()->upsertMonthlySettlement( $all_data );
-		error_log( print_r( $ret, true ) );
 
 		return $this->handleReturnForAjax( $ret );
 	}

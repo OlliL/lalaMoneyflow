@@ -30,6 +30,7 @@
 namespace client\module;
 
 use client\handler\ReportControllerHandler;
+use client\handler\EtfControllerHandler;
 use client\core\coreText;
 use client\util\Environment;
 use base\Configuration;
@@ -249,7 +250,9 @@ class moduleReports extends module {
 						'nummeric' => sprintf( '%02d', $month ),
 						'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month )
 				);
-
+				$listEtfOverviewResponse = EtfControllerHandler::getInstance()->listEtfOverview( $year, $month );
+				$this->template_assign( 'ETF_OVERVIEW_DATA', $listEtfOverviewResponse['etfData'] );
+				var_dump($listEtfOverviewResponse);
 				$this->template_assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
 				$this->template_assign( 'PREV_MONTH', $prev_month );
