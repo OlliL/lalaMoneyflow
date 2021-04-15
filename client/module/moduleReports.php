@@ -252,7 +252,7 @@ class moduleReports extends module {
 				);
 				$listEtfOverviewResponse = EtfControllerHandler::getInstance()->listEtfOverview( $year, $month );
 				$this->template_assign( 'ETF_OVERVIEW_DATA', $listEtfOverviewResponse['etfData'] );
-				var_dump($listEtfOverviewResponse);
+
 				$this->template_assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
 				$this->template_assign( 'PREV_MONTH', $prev_month );
