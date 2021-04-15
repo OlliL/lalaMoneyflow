@@ -34,7 +34,7 @@ class EtfTransport extends AbstractTransport {
 	public $spentValue;
 	public $buyPrice;
 	public $sellPrice;
-
+	public $pricesTimestamp;
 
 	/**
 	 * @return mixed
@@ -104,6 +104,20 @@ class EtfTransport extends AbstractTransport {
 	 */
 	public final function setSellPrice($sellPrice) {
 		$this->sellPrice = $sellPrice;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public final function getPricesTimestamp() {
+		return $this->pricesTimestamp;
+	}
+
+	/**
+	 * @param mixed $pricesTimestamp
+	 */
+	public final function setPricesTimestamp($pricesTimestamp) {
+		$this->pricesTimestamp = $pricesTimestamp;
 	}
 
 }

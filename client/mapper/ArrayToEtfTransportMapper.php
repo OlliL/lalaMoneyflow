@@ -40,6 +40,7 @@ class ArrayToEtfTransportMapper extends AbstractArrayMapper {
 		$a ['spentValue'] = $b->getSpentValue();
 		$a ['sellPrice'] = $b->getSellPrice();
 		$a ['buyPrice'] = $b->getBuyPrice();
+		$a ['pricesTimestamp'] = parent::convertTransportTimestampToClient($b->getPricesTimestamp());
 
 		return $a;
 	}
