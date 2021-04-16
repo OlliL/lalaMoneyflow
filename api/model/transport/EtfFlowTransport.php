@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2021 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
@@ -24,51 +25,85 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-namespace client\handler;
+namespace api\model\transport;
 
-use api\model\etf\listEtfOverviewResponse;
-use client\mapper\ArrayToEtfSummaryTransportMapper;
-use base\Singleton;
-use api\model\etf\listEtfFlowsResponse;
-use client\mapper\ArrayToEtfFlowTransportMapper;
-use client\mapper\ArrayToEtfTransportMapper;
+class EtfFlowTransport  extends AbstractTransport {
+	public $etfflowid;
+	public $isin;
+	public $date;
+	public $amount;
+	public $price;
 
-class EtfControllerHandler extends AbstractHandler {
-	use Singleton;
 
-	protected function init() {
-		parent::init();
-		parent::addMapper( ArrayToEtfSummaryTransportMapper::getClass() );
-		parent::addMapper(ArrayToEtfFlowTransportMapper::getClass());
-		parent::addMapper(ArrayToEtfTransportMapper::getClass());
+	/**
+	 * @return mixed
+	 */
+	public final function getEtfflowid() {
+		return $this->etfflowid;
 	}
 
-	protected final function getCategory() {
-		return 'etf';
+	/**
+	 * @param mixed $etfflowid
+	 */
+	public final function setEtfflowid($etfflowid) {
+		$this->etfflowid = $etfflowid;
 	}
 
-	public final function listEtfOverview($year, $month) {
-		$response = parent::getJson( 'listEtfOverview', array (
-				$year,
-				$month
-		) );
-		$result = null;
-		if ($response instanceof listEtfOverviewResponse) {
-			$result ['etfData'] = parent::mapArrayNullable( $response->getEtfSummaryTransport() );
-		}
-		return $result;
+	/**
+	 * @return mixed
+	 */
+	public final function getIsin() {
+		return $this->isin;
 	}
 
-	public final function listEtfFlows() {
-		$response = parent::getJson( __FUNCTION__ );
-		$result = null;
-		if ($response instanceof listEtfFlowsResponse) {
-			$result ['etfs'] = parent::mapArrayNullable( $response->getEtfTransport() );
-			$result ['etfFlows'] = parent::mapArrayNullable( $response->getEtfFlowTransport() );
-		}
-		return $result;
+	/**
+	 * @param mixed $isin
+	 */
+	public final function setIsin($isin) {
+		$this->isin = $isin;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public final function getDate() {
+		return $this->date;
+	}
+
+	/**
+	 * @param mixed $date
+	 */
+	public final function setDate($date) {
+		$this->date = $date;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public final function getAmount() {
+		return $this->amount;
+	}
+
+	/**
+	 * @param mixed $amount
+	 */
+	public final function setAmount($amount) {
+		$this->amount = $amount;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public final function getPrice() {
+		return $this->price;
+	}
+
+	/**
+	 * @param mixed $price
+	 */
+	public final function setPrice($price) {
+		$this->price = $price;
 	}
 
 }
 
-?>

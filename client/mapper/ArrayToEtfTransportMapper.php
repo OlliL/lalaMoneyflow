@@ -37,12 +37,9 @@ class ArrayToEtfTransportMapper extends AbstractArrayMapper {
 	public static function mapBToA(EtfTransport $b) {
 		$a ['isin'] = $b->getIsin();
 		$a ['name'] = $b->getName();
+		$a ['wkn'] = $b->getWkn();
+		$a ['ticker'] = $b->getTicker();
 		$a ['chartUrl'] = $b->getChartUrl();
-		$a ['amount'] = $b->getAmount();
-		$a ['spentValue'] = $b->getSpentValue();
-		$a ['sellPrice'] = $b->getSellPrice();
-		$a ['buyPrice'] = $b->getBuyPrice();
-		$a ['pricesTimestamp'] = parent::convertTransportTimestampToClient($b->getPricesTimestamp());
 
 		return $a;
 	}

@@ -50,6 +50,7 @@ use client\util\utilTimer;
 use client\util\ErrorHandler;
 use client\module\modulePostingAccounts;
 use base\Configuration;
+use client\module\moduleEtf;
 
 require_once 'include.php';
 
@@ -207,6 +208,8 @@ if ($is_logged_in == 0) {
 		case 'analyze_cmp_data' :
 			$moduleCompare = new moduleCompare();
 			break;
+		case 'list_etf_flows' :
+			$moduleEtf = new moduleEtf();
 		default :
 			$moduleFrontPage = new moduleFrontPage();
 			break;
@@ -554,6 +557,11 @@ if ($is_logged_in == 0) {
 
 				$file = $_FILES ['file'];
 				$display = $moduleCompare->display_analyze_form( $file, $all_data );
+				break;
+
+			/* ETF */
+			case 'list_etf_flows' :
+				$display = $moduleEtf->display_list_etf_flows();
 				break;
 
 			default :

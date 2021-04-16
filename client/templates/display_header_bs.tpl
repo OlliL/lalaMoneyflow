@@ -95,6 +95,13 @@
               </ul>
             </li>
 
+            <li class="dropdown {if $TEMPLATE == "display_list_etf_flows_bs.tpl"}active{/if}">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-asterisk"></i> <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li{if $TEMPLATE == "display_list_etf_flows_bs.tpl"    } class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=list_etf_flows">{#TEXT_340#}</a></li>
+              </ul>
+            </li>
+
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">

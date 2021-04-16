@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2021 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
@@ -24,51 +25,26 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-namespace client\handler;
+namespace client\mapper;
 
-use api\model\etf\listEtfOverviewResponse;
-use client\mapper\ArrayToEtfSummaryTransportMapper;
-use base\Singleton;
-use api\model\etf\listEtfFlowsResponse;
-use client\mapper\ArrayToEtfFlowTransportMapper;
-use client\mapper\ArrayToEtfTransportMapper;
+use api\model\transport\EtfSummaryTransport;
 
-class EtfControllerHandler extends AbstractHandler {
-	use Singleton;
+class ArrayToEtfSummaryTransportMapper extends AbstractArrayMapper {
 
-	protected function init() {
-		parent::init();
-		parent::addMapper( ArrayToEtfSummaryTransportMapper::getClass() );
-		parent::addMapper(ArrayToEtfFlowTransportMapper::getClass());
-		parent::addMapper(ArrayToEtfTransportMapper::getClass());
+	public static function mapAToB(array $a) {
 	}
 
-	protected final function getCategory() {
-		return 'etf';
-	}
+	public static function mapBToA(EtfSummaryTransport $b) {
+		$a ['isin'] = $b->getIsin();
+		$a ['name'] = $b->getName();
+		$a ['chartUrl'] = $b->getChartUrl();
+		$a ['amount'] = $b->getAmount();
+		$a ['spentValue'] = $b->getSpentValue();
+		$a ['sellPrice'] = $b->getSellPrice();
+		$a ['buyPrice'] = $b->getBuyPrice();
+		$a ['pricesTimestamp'] = parent::convertTransportTimestampToClient($b->getPricesTimestamp());
 
-	public final function listEtfOverview($year, $month) {
-		$response = parent::getJson( 'listEtfOverview', array (
-				$year,
-				$month
-		) );
-		$result = null;
-		if ($response instanceof listEtfOverviewResponse) {
-			$result ['etfData'] = parent::mapArrayNullable( $response->getEtfSummaryTransport() );
-		}
-		return $result;
+		return $a;
 	}
-
-	public final function listEtfFlows() {
-		$response = parent::getJson( __FUNCTION__ );
-		$result = null;
-		if ($response instanceof listEtfFlowsResponse) {
-			$result ['etfs'] = parent::mapArrayNullable( $response->getEtfTransport() );
-			$result ['etfFlows'] = parent::mapArrayNullable( $response->getEtfFlowTransport() );
-		}
-		return $result;
-	}
-
 }
-
 ?>

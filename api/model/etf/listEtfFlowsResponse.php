@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2021 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
@@ -24,51 +25,40 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-namespace client\handler;
+namespace api\model\etf;
 
-use api\model\etf\listEtfOverviewResponse;
-use client\mapper\ArrayToEtfSummaryTransportMapper;
-use base\Singleton;
-use api\model\etf\listEtfFlowsResponse;
-use client\mapper\ArrayToEtfFlowTransportMapper;
-use client\mapper\ArrayToEtfTransportMapper;
+class listEtfFlowsResponse {
+	public $etfTransport;
+	public $etfFlowTransport;
 
-class EtfControllerHandler extends AbstractHandler {
-	use Singleton;
-
-	protected function init() {
-		parent::init();
-		parent::addMapper( ArrayToEtfSummaryTransportMapper::getClass() );
-		parent::addMapper(ArrayToEtfFlowTransportMapper::getClass());
-		parent::addMapper(ArrayToEtfTransportMapper::getClass());
+	/**
+	 * @return mixed
+	 */
+	public final function getEtfTransport() {
+		return $this->etfTransport;
 	}
 
-	protected final function getCategory() {
-		return 'etf';
+	/**
+	 * @param mixed $etfTransport
+	 */
+	public final function setEtfTransport(array $etfTransport) {
+		$this->etfTransport = $etfTransport;
 	}
 
-	public final function listEtfOverview($year, $month) {
-		$response = parent::getJson( 'listEtfOverview', array (
-				$year,
-				$month
-		) );
-		$result = null;
-		if ($response instanceof listEtfOverviewResponse) {
-			$result ['etfData'] = parent::mapArrayNullable( $response->getEtfSummaryTransport() );
-		}
-		return $result;
+	/**
+	 *
+	 * @return mixed
+	 */
+	public final function getEtfFlowTransport() {
+		return $this->etfFlowTransport;
 	}
 
-	public final function listEtfFlows() {
-		$response = parent::getJson( __FUNCTION__ );
-		$result = null;
-		if ($response instanceof listEtfFlowsResponse) {
-			$result ['etfs'] = parent::mapArrayNullable( $response->getEtfTransport() );
-			$result ['etfFlows'] = parent::mapArrayNullable( $response->getEtfFlowTransport() );
-		}
-		return $result;
+	/**
+	 *
+	 * @param mixed $etfTransport
+	 */
+	public final function setEtfFlowTransport(array $etfFlowTransport) {
+		$this->etfFlowTransport = $etfFlowTransport;
 	}
-
 }
 
-?>

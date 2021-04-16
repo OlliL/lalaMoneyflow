@@ -25,25 +25,25 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-
 namespace api\model\etf;
 
 class listEtfOverviewResponse {
-	public $etfTransport;
+	public $etfSummaryTransport;
 
 	/**
+	 *
 	 * @return mixed
 	 */
-	public final function getEtfTransport() {
-		return $this->etfTransport;
+	public final function getEtfSummaryTransport() {
+		return $this->etfSummaryTransport;
 	}
 
 	/**
+	 *
 	 * @param mixed $etfTransport
 	 */
-	public final function setEtfTransport(array $etfTransport) {
-		$this->etfTransport = $etfTransport;
+	public final function setEtfSummaryTransport(array $etfSummaryTransport) {
+		$this->etfSummaryTransport = $etfSummaryTransport;
 	}
-
 }
 

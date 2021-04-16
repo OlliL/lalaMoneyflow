@@ -25,14 +25,19 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
+
 namespace api\model\transport;
 
-class EtfTransport extends AbstractTransport {
+class EtfSummaryTransport extends AbstractTransport {
 	public $isin;
 	public $name;
-	public $wkn;
-	public $ticker;
 	public $chartUrl;
+	public $amount;
+	public $spentValue;
+	public $buyPrice;
+	public $sellPrice;
+	public $pricesTimestamp;
+
 	/**
 	 * @return mixed
 	 */
@@ -64,43 +69,85 @@ class EtfTransport extends AbstractTransport {
 	/**
 	 * @return mixed
 	 */
-	public final function getWkn() {
-		return $this->wkn;
-	}
-
-	/**
-	 * @param mixed $wkn
-	 */
-	public final function setWkn($wkn) {
-		$this->wkn = $wkn;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public final function getTicker() {
-		return $this->ticker;
-	}
-
-	/**
-	 * @param mixed $ticker
-	 */
-	public final function setTicker($ticker) {
-		$this->ticker = $ticker;
-	}
-
-	/**
-	 * @return mixed
-	 */
 	public final function getChartUrl() {
 		return $this->chartUrl;
 	}
 
 	/**
-	 * @param mixed $chart_url
+	 * @param mixed $chartUrl
 	 */
 	public final function setChartUrl($chartUrl) {
 		$this->chartUrl = $chartUrl;
 	}
-}
 
+	/**
+	 * @return mixed
+	 */
+	public final function getAmount() {
+		return $this->amount;
+	}
+
+	/**
+	 * @param mixed $amount
+	 */
+	public final function setAmount($amount) {
+		$this->amount = $amount;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public final function getSpentValue() {
+		return $this->spentValue;
+	}
+
+	/**
+	 * @param mixed $spentValue
+	 */
+	public final function setSpentValue($spentValue) {
+		$this->spentValue = $spentValue;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public final function getBuyPrice() {
+		return $this->buyPrice;
+	}
+
+	/**
+	 * @param mixed $buyPrice
+	 */
+	public final function setBuyPrice($buyPrice) {
+		$this->buyPrice = $buyPrice;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public final function getSellPrice() {
+		return $this->sellPrice;
+	}
+
+	/**
+	 * @param mixed $sellPrice
+	 */
+	public final function setSellPrice($sellPrice) {
+		$this->sellPrice = $sellPrice;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public final function getPricesTimestamp() {
+		return $this->pricesTimestamp;
+	}
+
+	/**
+	 * @param mixed $pricesTimestamp
+	 */
+	public final function setPricesTimestamp($pricesTimestamp) {
+		$this->pricesTimestamp = $pricesTimestamp;
+	}
+
+}
