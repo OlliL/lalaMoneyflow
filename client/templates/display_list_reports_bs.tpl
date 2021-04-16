@@ -558,7 +558,7 @@ function Go(x)
                       <col style="width:14%">
                       <thead>
                         <tr>
-                          <th class="text-center" rowspan=2>{#TEXT_338#}</th>
+                          <th class="text-center" rowspan=2>{#TEXT_41#}</th>
                           <th class="text-center" rowspan=2>{#TEXT_332#}</th>
                           <th class="text-center" colspan=3>{#TEXT_333#}</th>
                           <th class="text-center" colspan=3>{#TEXT_334#}</th>
