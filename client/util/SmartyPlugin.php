@@ -35,8 +35,16 @@ class SmartyPlugin {
 		// to not change NULL to 0.00 - for example in display_add_moneyflow at the empty lines
 		if (is_numeric( $number ))
 			return number_format( $number, 2 );
-		else
-			return $number;
+			else
+				return $number;
+	}
+
+	public final static function my_number_format_variable($number, $decimals) {
+		// to not change NULL to 0.00 - for example in display_add_moneyflow at the empty lines
+		if (is_numeric( $number ))
+			return number_format( $number, $decimals );
+			else
+				return $number;
 	}
 }
 

@@ -583,9 +583,9 @@ function Go(x)
 
                           <td class="text-left"><a href="{$ETF_OVERVIEW_DATA[DATA].chartUrl}">{$ETF_OVERVIEW_DATA[DATA].name}</a></td>
                           <td class="text-right">{$ETF_OVERVIEW_DATA[DATA].amount}</td>
-                          <td class="text-right of_number_to_be_evaluated">{$AVG_SPENTPRICE|number_format} {#CURRENCY#}</td>
-                          <td class="text-right of_number_to_be_evaluated">{$ETF_OVERVIEW_DATA[DATA].sellPrice|number_format} {#CURRENCY#}</td>
-                          <td class="text-right of_number_to_be_evaluated">{$ETF_OVERVIEW_DATA[DATA].buyPrice|number_format} {#CURRENCY#}</td>
+                          <td class="text-right of_number_to_be_evaluated">{$AVG_SPENTPRICE|number_format_variable:4} {#CURRENCY#}</td>
+                          <td class="text-right of_number_to_be_evaluated">{$ETF_OVERVIEW_DATA[DATA].sellPrice|number_format_variable:3} {#CURRENCY#}</td>
+                          <td class="text-right of_number_to_be_evaluated">{$ETF_OVERVIEW_DATA[DATA].buyPrice|number_format_variable:3} {#CURRENCY#}</td>
                           <td class="text-right of_number_to_be_evaluated">{$ETF_OVERVIEW_DATA[DATA].spentValue|number_format} {#CURRENCY#}</td>
                           <td class="text-right of_number_to_be_evaluated">{$SUM_SELLPRICE|number_format} {#CURRENCY#}</td>
                           <td class="text-right of_number_to_be_evaluated"><u>{$PROFIT|number_format} {#CURRENCY#}</u></td>

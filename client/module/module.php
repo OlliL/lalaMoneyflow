@@ -64,6 +64,7 @@ abstract class module {
 		$this->template->error_unassigned = false;
 		$this->template->error_reporting = E_ERROR;
 		$this->template->registerPlugin( 'modifier', 'number_format', 'client\util\SmartyPlugin::my_number_format' );
+		$this->template->registerPlugin( 'modifier', 'number_format_variable', 'client\util\SmartyPlugin::my_number_format_variable' );
 		$this->template_assign( 'ENV_INDEX_PHP', 'index.php' );
 		// $this->template->setCompileCheck( \Smarty::COMPILECHECK_OFF );
 
