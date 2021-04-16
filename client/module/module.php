@@ -178,7 +178,7 @@ abstract class module {
 	private final function parse_header_internal($nonavi, $isBootstrapped, $template, $addEmbeddedForms) {
 		$this->template->assign( 'REPORTS_YEAR', date( 'Y' ) );
 		$this->template->assign( 'REPORTS_MONTH', date( 'm' ) );
-		$this->template->assign( 'VERSION', '0.22.0' );
+		$this->template->assign( 'VERSION', '0.23.0' );
 		$this->template_assign( 'NO_NAVIGATION', $nonavi );
 		$this->template_assign( 'TEMPLATE', $template );
 		$this->template_assign( 'MAX_DATE', Configuration::getInstance()->getProperty( 'max_year' ) );

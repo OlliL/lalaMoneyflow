@@ -56,7 +56,7 @@ class moduleMonthlySettlement extends module {
 		$months = array ();
 
 		if (is_array( $allMonth )) {
-			foreach ( $allMonth as $key => $value ) {
+			foreach ( $allMonth as $value ) {
 				$temp_array = array (
 						'nummeric' => sprintf( '%02d', $value ),
 						'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $value )

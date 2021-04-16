@@ -141,7 +141,7 @@ class moduleCompare extends module {
 	 * This function removes all elements where the moneyflow is set to private and does not belong to the user.
 	 * Moneyflows which belong to the user also receive an additional flag indicating this.
 	 *
-	 * @param unknown $compareArray
+	 * @param mixed $compareArray
 	 * @return array
 	 */
 	private final function setOwnerAndFilterPrivate($compareArray) {

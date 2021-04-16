@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2005-2015 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
@@ -55,7 +56,6 @@ class modulePreDefMoneyFlows extends module {
 		$close = 0;
 		switch ($realaction) {
 			case 'save' :
-				$data_is_valid = true;
 				$all_data ['predefmoneyflowid'] = $predefmoneyflowid;
 				$all_data ['amount_error'] = 0;
 				$all_data ['capitalsource_error'] = 0;
@@ -65,53 +65,49 @@ class modulePreDefMoneyFlows extends module {
 							$all_data ['amount']
 					) );
 					$all_data ['amount_error'] = 1;
-					$valid_data = false;
-                    break;
+					break;
 				}
 
-				if ($data_is_valid) {
+				if ($predefmoneyflowid == 0)
+					$ret = PreDefMoneyflowControllerHandler::getInstance()->createPreDefMoneyflow( $all_data );
+				else
+					$ret = PreDefMoneyflowControllerHandler::getInstance()->updatePreDefMoneyflow( $all_data );
 
-					if ($predefmoneyflowid == 0)
-						$ret = PreDefMoneyflowControllerHandler::getInstance()->createPreDefMoneyflow( $all_data );
-					else
-						$ret = PreDefMoneyflowControllerHandler::getInstance()->updatePreDefMoneyflow( $all_data );
+				if ($ret === true) {
+					$close = 1;
+					break;
+				} else {
+					$capitalsource_values = $ret ['capitalsources'];
+					$contractpartner_values = $ret ['contractpartner'];
+					$postingaccount_values = $ret ['postingaccounts'];
+					foreach ( $ret ['errors'] as $validationResult ) {
+						$error = $validationResult ['error'];
 
-					if ($ret === true) {
-						$close = 1;
-						break;
-					} else {
-						$capitalsource_values = $ret ['capitalsources'];
-						$contractpartner_values = $ret ['contractpartner'];
-						$postingaccount_values = $ret ['postingaccounts'];
-						foreach ( $ret ['errors'] as $validationResult ) {
-							$error = $validationResult ['error'];
+						switch ($error) {
+							case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
+								$this->add_error( $error, array (
+										$all_data ['amount']
+								) );
+								break;
+							default :
+								$this->add_error( $error );
+						}
 
-							switch ($error) {
-								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-									$this->add_error( $error, array (
-											$all_data ['amount']
-									) );
-									break;
-								default :
-									$this->add_error( $error );
-							}
-
-							switch ($error) {
-								case ErrorCode::CAPITALSOURCE_DOES_NOT_EXIST :
-								case ErrorCode::CAPITALSOURCE_IS_NOT_SET :
-								case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
-									$all_data ['capitalsource_error'] = 1;
-									break;
-								case ErrorCode::CONTRACTPARTNER_DOES_NOT_EXIST :
-								case ErrorCode::CONTRACTPARTNER_IS_NOT_SET :
-								case ErrorCode::CONTRACTPARTNER_NO_LONGER_VALID :
-									$all_data ['contractpartner_error'] = 1;
-									break;
-								case ErrorCode::AMOUNT_IS_ZERO :
-								case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-									$all_data ['amount_error'] = 1;
-									break;
-							}
+						switch ($error) {
+							case ErrorCode::CAPITALSOURCE_DOES_NOT_EXIST :
+							case ErrorCode::CAPITALSOURCE_IS_NOT_SET :
+							case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
+								$all_data ['capitalsource_error'] = 1;
+								break;
+							case ErrorCode::CONTRACTPARTNER_DOES_NOT_EXIST :
+							case ErrorCode::CONTRACTPARTNER_IS_NOT_SET :
+							case ErrorCode::CONTRACTPARTNER_NO_LONGER_VALID :
+								$all_data ['contractpartner_error'] = 1;
+								break;
+							case ErrorCode::AMOUNT_IS_ZERO :
+							case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
+								$all_data ['amount_error'] = 1;
+								break;
 						}
 					}
 				}
