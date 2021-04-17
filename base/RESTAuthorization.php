@@ -36,10 +36,10 @@ class RESTAuthorization {
 	/**
 	 * This function works basically as described in <a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html">"Signing and Authenticating REST Requests"</a>
 	 *
-	 * @param unknown $url
-	 * @param unknown $headers
-	 * @param unknown $body
-	 * @param unknown $ident
+	 * @param mixed $url
+	 * @param mixed $headers
+	 * @param mixed $body
+	 * @param mixed $ident
 	 */
 	public static final function getRESTAuthorization($secret, $httpVerb, $contentType, $url, $date, $body, $ident) {
 		$signUrl = strstr( substr( $url, strpos( $url, '//' ) + 2 ), '/' );

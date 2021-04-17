@@ -50,25 +50,38 @@ class moduleEtf extends module {
 
 			if (is_array( $etfFlows )) {
 				foreach ( $etfFlows as $etfFlow ) {
-					$all_data_entry = array();
+					$all_data_entry = array ();
 
-					$all_data_entry['etfflowid'] = $etfFlow['etfflowid'];
-					$all_data_entry['name'] = $etf_data[$etfFlow['isin']]['name'];
-					$all_data_entry['chartUrl'] = $etf_data[$etfFlow['isin']]['chartUrl'];
-					$all_data_entry['date'] = $etfFlow['date'];
-					$all_data_entry['amount'] = $etfFlow['amount'];
-					$all_data_entry['price'] = $etfFlow['price'];
+					$all_data_entry ['etfflowid'] = $etfFlow ['etfflowid'];
+					$all_data_entry ['name'] = $etf_data [$etfFlow ['isin']] ['name'];
+					$all_data_entry ['chartUrl'] = $etf_data [$etfFlow ['isin']] ['chartUrl'];
+					$all_data_entry ['date'] = $etfFlow ['date'];
+					$all_data_entry ['amount'] = $etfFlow ['amount'];
+					$all_data_entry ['price'] = $etfFlow ['price'];
 
-					$all_data[] = $all_data_entry;
+					$all_data [] = $all_data_entry;
 				}
 			}
 		}
 
+		$this->template_assign( 'ETF_VALUES', $etfs );
 		$this->template_assign( 'ALL_DATA', $all_data );
+
+		$this->template_assign( 'CALC_ETF_SALE_ISIN', $listEtfFlows ['calcEtfSaleIsin'] );
+		$this->template_assign( 'CALC_ETF_SALE_PIECES', $listEtfFlows ['calcEtfSalePieces'] );
+		$this->template_assign( 'CALC_ETF_BID_PRICE', $listEtfFlows ['calcEtfBidPrice'] );
+		$this->template_assign( 'CALC_ETF_ASK_PRICE', $listEtfFlows ['calcEtfAskPrice'] );
+		$this->template_assign( 'CALC_ETF_TRANSACTIOM_COSTS', $listEtfFlows ['calcEtfTransactionCosts'] );
+
 		$this->template_assign( 'COUNT_ALL_DATA', count( $all_data ) );
 
 		$this->parse_header_without_embedded( 0, 'display_list_etf_flows_bs.tpl' );
 		return $this->fetch_template( 'display_list_etf_flows_bs.tpl' );
+	}
+
+	public final function calc_etf_sale($all_data) {
+		$ret = EtfControllerHandler::getInstance()->calcEtfSale( $all_data );
+		return $this->handleReturnForAjax( $ret );
 	}
 }
 ?>

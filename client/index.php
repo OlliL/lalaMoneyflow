@@ -209,6 +209,7 @@ if ($is_logged_in == 0) {
 			$moduleCompare = new moduleCompare();
 			break;
 		case 'list_etf_flows' :
+		case 'calc_etf_sale':
 			$moduleEtf = new moduleEtf();
 		default :
 			$moduleFrontPage = new moduleFrontPage();
@@ -562,6 +563,10 @@ if ($is_logged_in == 0) {
 			/* ETF */
 			case 'list_etf_flows' :
 				$display = $moduleEtf->display_list_etf_flows();
+				break;
+
+			case 'calc_etf_sale' :
+				$display = $moduleEtf->calc_etf_sale($all_data);
 				break;
 
 			default :

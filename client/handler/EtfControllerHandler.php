@@ -32,6 +32,8 @@ use base\Singleton;
 use api\model\etf\listEtfFlowsResponse;
 use client\mapper\ArrayToEtfFlowTransportMapper;
 use client\mapper\ArrayToEtfTransportMapper;
+use api\model\etf\calcEtfSaleRequest;
+use api\model\etf\calcEtfSaleResponse;
 
 class EtfControllerHandler extends AbstractHandler {
 	use Singleton;
@@ -65,9 +67,45 @@ class EtfControllerHandler extends AbstractHandler {
 		if ($response instanceof listEtfFlowsResponse) {
 			$result ['etfs'] = parent::mapArrayNullable( $response->getEtfTransport() );
 			$result ['etfFlows'] = parent::mapArrayNullable( $response->getEtfFlowTransport() );
+			$result ['calcEtfSaleIsin'] = $response->getCalcEtfSaleIsin();
+			$result ['calcEtfSalePieces'] = $response->getCalcEtfSalePieces();
+			$result ['calcEtfBidPrice'] = $response->getCalcEtfBidPrice();
+			$result ['calcEtfAskPrice'] = $response->getCalcEtfAskPrice();
+			$result ['calcEtfTransactionCosts'] = $response->getCalcEtfTransactionCosts();
 		}
 		return $result;
 	}
+
+	public final function calcEtfSale(array $all_data) {
+		$request = new calcEtfSaleRequest();
+		$request->setAskPrice($all_data['askPrice']);
+		$request->setBidPrice($all_data['bidPrice']);
+		$request->setTransactionCosts($all_data['transactionCosts']);
+		$request->setPieces($all_data['pieces']);
+		$request->setIsin($all_data['isin']);
+
+		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
+		$return = null;
+		if ($response instanceof calcEtfSaleResponse) {
+			$return = array();
+			$return['isin'] = $response->getIsin();
+			$return['originalBuyPrice'] = $response->getOriginalBuyPrice();
+			$return['sellPrice'] = $response->getSellPrice();
+			$return['newBuyPrice'] = $response->getNewBuyPrice();
+			$return['profit'] = $response->getProfit();
+			$return['chargeable'] = $response->getChargeable();
+			$return['transactionCosts'] = $response->getTransactionCosts();
+			$return['rebuyLosses'] = $response->getRebuyLosses();
+			$return['overallCosts'] = $response->getOverallCosts();
+			$return['pieces'] = $response->getPieces();
+			if(is_array($response->getValidationItemTransport())) {
+				$return ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
+			}
+		}
+
+		return $return;
+	}
+
 
 }
 
