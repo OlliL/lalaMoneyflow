@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2021 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
@@ -34,6 +35,12 @@ use client\mapper\ArrayToEtfFlowTransportMapper;
 use client\mapper\ArrayToEtfTransportMapper;
 use api\model\etf\calcEtfSaleRequest;
 use api\model\etf\calcEtfSaleResponse;
+use api\model\etf\showCreateEtfFlowResponse;
+use api\model\transport\EtfFlowTransport;
+use api\model\etf\createEtfFlowRequest;
+use api\model\etf\updateEtfFlowRequest;
+use api\model\etf\showEditEtfFlowResponse;
+use api\model\etf\showDeleteEtfFlowResponse;
 
 class EtfControllerHandler extends AbstractHandler {
 	use Singleton;
@@ -41,8 +48,8 @@ class EtfControllerHandler extends AbstractHandler {
 	protected function init() {
 		parent::init();
 		parent::addMapper( ArrayToEtfSummaryTransportMapper::getClass() );
-		parent::addMapper(ArrayToEtfFlowTransportMapper::getClass());
-		parent::addMapper(ArrayToEtfTransportMapper::getClass());
+		parent::addMapper( ArrayToEtfFlowTransportMapper::getClass() );
+		parent::addMapper( ArrayToEtfTransportMapper::getClass() );
 	}
 
 	protected final function getCategory() {
@@ -78,27 +85,27 @@ class EtfControllerHandler extends AbstractHandler {
 
 	public final function calcEtfSale(array $all_data) {
 		$request = new calcEtfSaleRequest();
-		$request->setAskPrice($all_data['askPrice']);
-		$request->setBidPrice($all_data['bidPrice']);
-		$request->setTransactionCosts($all_data['transactionCosts']);
-		$request->setPieces($all_data['pieces']);
-		$request->setIsin($all_data['isin']);
+		$request->setAskPrice( $all_data ['askPrice'] );
+		$request->setBidPrice( $all_data ['bidPrice'] );
+		$request->setTransactionCosts( $all_data ['transactionCosts'] );
+		$request->setPieces( $all_data ['pieces'] );
+		$request->setIsin( $all_data ['isin'] );
 
 		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 		$return = null;
 		if ($response instanceof calcEtfSaleResponse) {
-			$return = array();
-			$return['isin'] = $response->getIsin();
-			$return['originalBuyPrice'] = $response->getOriginalBuyPrice();
-			$return['sellPrice'] = $response->getSellPrice();
-			$return['newBuyPrice'] = $response->getNewBuyPrice();
-			$return['profit'] = $response->getProfit();
-			$return['chargeable'] = $response->getChargeable();
-			$return['transactionCosts'] = $response->getTransactionCosts();
-			$return['rebuyLosses'] = $response->getRebuyLosses();
-			$return['overallCosts'] = $response->getOverallCosts();
-			$return['pieces'] = $response->getPieces();
-			if(is_array($response->getValidationItemTransport())) {
+			$return = array ();
+			$return ['isin'] = $response->getIsin();
+			$return ['originalBuyPrice'] = $response->getOriginalBuyPrice();
+			$return ['sellPrice'] = $response->getSellPrice();
+			$return ['newBuyPrice'] = $response->getNewBuyPrice();
+			$return ['profit'] = $response->getProfit();
+			$return ['chargeable'] = $response->getChargeable();
+			$return ['transactionCosts'] = $response->getTransactionCosts();
+			$return ['rebuyLosses'] = $response->getRebuyLosses();
+			$return ['overallCosts'] = $response->getOverallCosts();
+			$return ['pieces'] = $response->getPieces();
+			if (is_array( $response->getValidationItemTransport() )) {
 				$return ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
 			}
 		}
@@ -106,7 +113,62 @@ class EtfControllerHandler extends AbstractHandler {
 		return $return;
 	}
 
+	public final function showCreateEtfFlow() {
+		$response = parent::getJson( __FUNCTION__ );
+		$result = null;
+		if ($response instanceof showCreateEtfFlowResponse) {
+			$result = parent::mapArray( $response->getEtfTransport() );
+		}
+		return $result;
+	}
 
+	public final function showEditEtfFlow($id) {
+		$response = parent::getJson( __FUNCTION__, array (
+				$id
+		) );
+		$result = null;
+		if ($response instanceof showEditEtfFlowResponse) {
+			$result = array ();
+			$result ['etfs'] = parent::mapArray( $response->getEtfTransport() );
+			$result ['all_data'] = parent::map( $response->getEtfFlowTransport() );
+		}
+		return $result;
+	}
+
+	public final function showDeleteEtfFlow($id) {
+		$response = parent::getJson( __FUNCTION__, array (
+				$id
+		) );
+		$result = null;
+		if ($response instanceof showDeleteEtfFlowResponse) {
+			$result = array ();
+			$result ['etfs'] = parent::mapArray( $response->getEtfTransport() );
+			$result ['all_data'] = parent::map( $response->getEtfFlowTransport() );
+		}
+		return $result;
+	}
+
+	public final function createEtfFlow(array $etfflow) {
+		$etfflowTransport = parent::map( $etfflow, EtfFlowTransport::getClass() );
+
+		$request = new createEtfFlowRequest();
+		$request->setEtfFlowTransport( $etfflowTransport );
+		return parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
+	}
+
+	public final function updateEtfFlow(array $etfflow) {
+		$etfflowTransport = parent::map( $etfflow, EtfFlowTransport::getClass() );
+
+		$request = new updateEtfFlowRequest();
+		$request->setEtfFlowTransport( $etfflowTransport );
+		return parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
+	}
+
+	public final function deleteEtfFlow( $id) {
+		return parent::deleteJson( __FUNCTION__, array (
+				$id
+		) );
+	}
 }
 
 ?>

@@ -55,7 +55,7 @@ class moduleEtf extends module {
 					$all_data_entry ['etfflowid'] = $etfFlow ['etfflowid'];
 					$all_data_entry ['name'] = $etf_data [$etfFlow ['isin']] ['name'];
 					$all_data_entry ['chartUrl'] = $etf_data [$etfFlow ['isin']] ['chartUrl'];
-					$all_data_entry ['date'] = $etfFlow ['date'];
+					$all_data_entry ['date'] = $etfFlow ['timestamp'];
 					$all_data_entry ['amount'] = $etfFlow ['amount'];
 					$all_data_entry ['price'] = $etfFlow ['price'];
 
@@ -81,6 +81,53 @@ class moduleEtf extends module {
 
 	public final function calc_etf_sale($all_data) {
 		$ret = EtfControllerHandler::getInstance()->calcEtfSale( $all_data );
+		return $this->handleReturnForAjax( $ret );
+	}
+
+	public final function display_edit_etf_flow($id, $all_data) {
+		if ($id > 0) {
+			$showEditEtfFlow = EtfControllerHandler::getInstance()->showEditEtfFlow( $id );
+			$etfs = $showEditEtfFlow ['etfs'];
+			$all_data = $showEditEtfFlow ['all_data'];
+		} else {
+			$etfs = EtfControllerHandler::getInstance()->showCreateEtfFlow();
+			$all_data = array ();
+		}
+
+		$this->template_assign( 'ETF_VALUES', $etfs );
+		$this->template_assign( 'ETFFLOWID', $id );
+		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
+
+		$this->parse_header_without_embedded( 1, 'display_edit_etf_flow_bs.tpl' );
+		return $this->fetch_template( 'display_edit_etf_flow_bs.tpl' );
+	}
+
+	public final function edit_etf_flow($id, $all_data) {
+		$all_data ['etfflowid'] = $id;
+
+		if ($id == 0)
+			$ret = EtfControllerHandler::getInstance()->createEtfFlow( $all_data );
+		else
+			$ret = EtfControllerHandler::getInstance()->updateEtfFlow( $all_data );
+		return $this->handleReturnForAjax( $ret );
+	}
+
+	public final function display_delete_etf_flow($id) {
+		error_log( $id );
+		$showDeleteEtfFlow = EtfControllerHandler::getInstance()->showDeleteEtfFlow( $id );
+		$etfs = $showDeleteEtfFlow ['etfs'];
+		$all_data = $showDeleteEtfFlow ['all_data'];
+
+		$this->template_assign( 'ETFFLOWID', $id );
+		$this->template_assign_raw( 'ETF_VALUES', json_encode( $etfs ) );
+		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
+
+		$this->parse_header_without_embedded( 1, 'display_delete_etf_flow_bs.tpl' );
+		return $this->fetch_template( 'display_delete_etf_flow_bs.tpl' );
+	}
+
+	public final function delete_etf_flow($id) {
+		$ret = EtfControllerHandler::getInstance()->deleteEtfFlow( $id );
 		return $this->handleReturnForAjax( $ret );
 	}
 }

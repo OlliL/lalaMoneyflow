@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2014-2015 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2014-2021 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -61,22 +61,50 @@ class DateUtil {
 		if ($modelDate) {
 			$modelDate->setTime( 0, 0, 0 );
 
-			return $modelDate->format(\DateTime::ATOM);
+			return $modelDate->format( \DateTime::ATOM );
 		}
 		return null;
 	}
 
 	public static final function convertTransportDateToClient($transportDate) {
 		$format = self::getClientDateFormat();
-		$clientDate = new \DateTime($transportDate);
+		$clientDate = new \DateTime( $transportDate );
 		return $clientDate->format( $format );
 	}
 
 	public static final function convertTransportTimestampToClient($transportDate) {
-		$format = self::getClientDateFormat()."  H:i:s";
-		$clientDate = new \DateTime($transportDate);
-		$clientDate->setTimeZone(new \DateTimeZone(date_default_timezone_get()));
+		$format = self::getClientDateFormat() . " H:i:s";
+		$clientDate = new \DateTime( $transportDate );
+		$clientDate->setTimeZone( new \DateTimeZone( date_default_timezone_get() ) );
 		return $clientDate->format( $format );
+	}
+
+	public static final function convertClientTimestampWithMillisToTransport($clientDate) {
+		$format = self::getClientDateFormat() . " H:i:s:v";
+		$parsedDate = date_parse_from_format( $format, $clientDate );
+
+		if ($parsedDate ['warning_count'] > 0)
+			return null;
+
+		$modelDate = \DateTime::createFromFormat( $format, $clientDate );
+		if ($modelDate) {
+			return $modelDate->format( \DateTime::ATOM );
+		}
+		return null;
+	}
+
+	public static final function extractNanoSecondsFromClientDate($clientDate) {
+		$format = self::getClientDateFormat() . "  H:i:s:v";
+		$parsedDate = date_parse_from_format( $format, $clientDate );
+
+		if ($parsedDate ['warning_count'] > 0)
+			return null;
+
+		$modelDate = \DateTime::createFromFormat( $format, $clientDate );
+		if ($modelDate) {
+			return $modelDate->format( "v" ) * 1000000;
+		}
+		return null;
 	}
 
 	public static final function convertStringDateToClient($date) {

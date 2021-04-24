@@ -32,11 +32,28 @@ use api\model\transport\EtfFlowTransport;
 class ArrayToEtfFlowTransportMapper extends AbstractArrayMapper {
 
 	public static function mapAToB(array $a) {
+		$b = new EtfFlowTransport();
+		$b->setEtfflowid( $a ['etfflowid'] );
+		$b->setAmount( $a ['amount'] );
+		$b->setPrice( $a ['price'] );
+		$b->setIsin( $a ['isin'] );
+
+		$timestamp = parent::convertClientTimestampWithMillisToTransport( $a ['date'] . ' ' . $a ['time'] );
+		if ($timestamp)
+			$b->setTimestamp( $timestamp );
+
+		$nanoseconds = parent::extractNanoSecondsFromClientDate( $a ['date'] . ' ' . $a ['time'] );
+		if ($nanoseconds)
+			$b->setNanoseconds( $nanoseconds );
+
+		return $b;
 	}
 
 	public static function mapBToA(EtfFlowTransport $b) {
 		$a ['isin'] = $b->getIsin();
-		$a ['date'] = parent::convertTransportDateToClient( $b->getDate() );
+		$nanoseconds = $b->getNanoseconds();
+		$milliseconds = str_pad($nanoseconds / 1000000,3,"0",STR_PAD_LEFT);
+		$a ['timestamp'] = parent::convertTransportTimestampToClient( $b->getTimestamp() ) . ":" . $milliseconds;
 		$a ['etfflowid'] = $b->getEtfflowid();
 		$a ['amount'] = $b->getAmount();
 		$a ['price'] = $b->getPrice();

@@ -22,8 +22,8 @@
 {if $COUNT_ALL_DATA > 0}
           <br><br>
           <table class="table table-striped table-bordered table-hover">
-                      <col style="width:40%">
-                      <col style="width:10%">
+                      <col style="width:33%">
+                      <col style="width:17%">
                       <col style="width:10%">
                       <col style="width:10%">
                       <col style="width:10%">
@@ -53,8 +53,8 @@
                 <td class="text-right">{$ALL_DATA[DATA].amount|number_format_variable:3}</td>
                 <td class="text-right of_number_to_be_evaluated">{$ALL_DATA[DATA].price|number_format_variable:3} {#CURRENCY#}</td>
                 <td class="text-right of_number_to_be_evaluated">{$SUM_PRICE|number_format} {#CURRENCY#}</td>
-                <td><i href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_et_flowf&amp;etfflowid={$ALL_DATA[DATA].etfflowid}&amp;sr=1','_blank','width=1000,height=150')">{#TEXT_37#}</i></td>
-                <td><i href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_etf_flow&amp;etfflowid={$ALL_DATA[DATA].etfflowid}&amp;sr=1','_blank','width=600,height=460')">{#TEXT_36#}</i></td>
+                <td><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=display_edit_etf_flow&amp;etfflowid={$ALL_DATA[DATA].etfflowid}&amp;sr=1','_blank','width=500,height=400')">{#TEXT_36#}</a></td>
+                <td><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=display_delete_etf_flow&amp;etfflowid={$ALL_DATA[DATA].etfflowid}&amp;sr=1','_blank','width=500,height=300')">{#TEXT_37#}</a></td>
               </tr>
 {/section}
               {math equation="x / y" x=$OVERALL_PRICE y=$PIECE assign=MEAN_PRICE}

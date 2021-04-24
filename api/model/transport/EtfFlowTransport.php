@@ -27,15 +27,16 @@
 //
 namespace api\model\transport;
 
-class EtfFlowTransport  extends AbstractTransport {
+class EtfFlowTransport extends AbstractTransport {
 	public $etfflowid;
 	public $isin;
-	public $date;
+	public $timestamp;
+	public $nanoseconds;
 	public $amount;
 	public $price;
 
-
 	/**
+	 *
 	 * @return mixed
 	 */
 	public final function getEtfflowid() {
@@ -43,6 +44,7 @@ class EtfFlowTransport  extends AbstractTransport {
 	}
 
 	/**
+	 *
 	 * @param mixed $etfflowid
 	 */
 	public final function setEtfflowid($etfflowid) {
@@ -50,6 +52,7 @@ class EtfFlowTransport  extends AbstractTransport {
 	}
 
 	/**
+	 *
 	 * @return mixed
 	 */
 	public final function getIsin() {
@@ -57,6 +60,7 @@ class EtfFlowTransport  extends AbstractTransport {
 	}
 
 	/**
+	 *
 	 * @param mixed $isin
 	 */
 	public final function setIsin($isin) {
@@ -64,20 +68,39 @@ class EtfFlowTransport  extends AbstractTransport {
 	}
 
 	/**
+	 *
 	 * @return mixed
 	 */
-	public final function getDate() {
-		return $this->date;
+	public final function getTimestamp() {
+		return $this->timestamp;
 	}
 
 	/**
-	 * @param mixed $date
+	 *
+	 * @param mixed $timestamp
 	 */
-	public final function setDate($date) {
-		$this->date = $date;
+	public final function setTimestamp($timestamp) {
+		$this->timestamp = $timestamp;
 	}
 
 	/**
+	 *
+	 * @return mixed
+	 */
+	public final function getNanoseconds() {
+		return $this->nanoseconds;
+	}
+
+	/**
+	 *
+	 * @param mixed $nanoseconds
+	 */
+	public final function setNanoseconds($nanoseconds) {
+		$this->nanoseconds = $nanoseconds;
+	}
+
+	/**
+	 *
 	 * @return mixed
 	 */
 	public final function getAmount() {
@@ -85,6 +108,7 @@ class EtfFlowTransport  extends AbstractTransport {
 	}
 
 	/**
+	 *
 	 * @param mixed $amount
 	 */
 	public final function setAmount($amount) {
@@ -92,6 +116,7 @@ class EtfFlowTransport  extends AbstractTransport {
 	}
 
 	/**
+	 *
 	 * @return mixed
 	 */
 	public final function getPrice() {
@@ -99,11 +124,11 @@ class EtfFlowTransport  extends AbstractTransport {
 	}
 
 	/**
+	 *
 	 * @param mixed $price
 	 */
 	public final function setPrice($price) {
 		$this->price = $price;
 	}
-
 }
 

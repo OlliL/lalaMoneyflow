@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2013-2021 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2021 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -25,35 +25,25 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: AbstractArrayMapper.php,v 1.11 2015/08/15 20:49:31 olivleh1 Exp $
-//
-namespace client\mapper;
+namespace api\model\etf;
 
-use client\util\DateUtil;
-use base\AbstractMapper;
+class updateEtfFlowRequest {
+	public $etfFlowTransport;
 
-abstract class AbstractArrayMapper extends AbstractMapper {
-
-	protected static final function convertClientDateToTransport($clientDate) {
-		return DateUtil::convertClientDateToTransport( $clientDate );
+	/**
+	 *
+	 * @return mixed
+	 */
+	public final function getEtfFlowTransport() {
+		return $this->etfFlowTransport;
 	}
 
-	protected static final function convertTransportDateToClient($transportDate) {
-		return DateUtil::convertTransportDateToClient( $transportDate );
+	/**
+	 *
+	 * @param mixed $etfFlowTransport
+	 */
+	public final function setEtfFlowTransport($etfFlowTransport) {
+		$this->etfFlowTransport = $etfFlowTransport;
 	}
-
-	protected static final function convertTransportTimestampToClient($transportDate) {
-		return DateUtil::convertTransportTimestampToClient( $transportDate );
-	}
-
-	protected static final function convertClientTimestampWithMillisToTransport($clientDate) {
-		return DateUtil::convertClientTimestampWithMillisToTransport( $clientDate );
-	}
-
-	protected static final function extractNanoSecondsFromClientDate($clientDate) {
-		return DateUtil::extractNanoSecondsFromClientDate( $clientDate );
-	}
-
 }
 
-?>

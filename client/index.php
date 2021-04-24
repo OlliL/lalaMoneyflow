@@ -210,6 +210,10 @@ if ($is_logged_in == 0) {
 			break;
 		case 'list_etf_flows' :
 		case 'calc_etf_sale':
+		case 'display_edit_etf_flow':
+		case 'edit_etf_flow':
+		case 'display_delete_etf_flow':
+		case 'delete_etf_flow':
 			$moduleEtf = new moduleEtf();
 		default :
 			$moduleFrontPage = new moduleFrontPage();
@@ -567,6 +571,26 @@ if ($is_logged_in == 0) {
 
 			case 'calc_etf_sale' :
 				$display = $moduleEtf->calc_etf_sale($all_data);
+				break;
+
+			case 'display_edit_etf_flow' :
+				$id = array_key_exists( 'etfflowid', $_REQUEST ) ? $_REQUEST ['etfflowid'] : 0;
+				$display = $moduleEtf->display_edit_etf_flow($id, $all_data);
+				break;
+
+			case 'edit_etf_flow' :
+				$id = array_key_exists( 'etfflowid', $_REQUEST ) ? $_REQUEST ['etfflowid'] : 0;
+				$display = $moduleEtf->edit_etf_flow($id, $all_data);
+				break;
+
+			case 'display_delete_etf_flow' :
+				$id = array_key_exists( 'etfflowid', $_REQUEST ) ? $_REQUEST ['etfflowid'] : 0;
+				$display = $moduleEtf->display_delete_etf_flow($id);
+				break;
+
+			case 'delete_etf_flow' :
+				$id = array_key_exists( 'etfflowid', $_REQUEST ) ? $_REQUEST ['etfflowid'] : 0;
+				$display = $moduleEtf->delete_etf_flow($id);
 				break;
 
 			default :
