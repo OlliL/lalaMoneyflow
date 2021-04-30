@@ -213,7 +213,6 @@
         }
 
         function ajaxImportImportedMoneyflowReceiptError(num, data) {
-          console.log(data);
           clearErrorDiv(num + 'importImportedMoneyflowReceiptErrors');
           populateErrorDiv(data.responseText,num + 'importImportedMoneyflowReceiptErrorsGoHere',num + 'importImportedMoneyflowReceiptErrors');
         }
