@@ -51,6 +51,7 @@ use client\util\ErrorHandler;
 use client\module\modulePostingAccounts;
 use base\Configuration;
 use client\module\moduleEtf;
+use client\module\moduleImportedMoneyflowReceipt;
 
 require_once 'include.php';
 
@@ -153,6 +154,7 @@ if ($is_logged_in == 0) {
 		case 'delete_moneyflow' :
 		case 'delete_moneyflow_submit' :
 		case 'show_moneyflow_receipt' :
+		case 'search_moneyflow_by_amount':
 			$moduleMoneyFlows = new moduleMoneyFlows();
 			break;
 		case 'add_importedmoneyflows' :
@@ -215,6 +217,13 @@ if ($is_logged_in == 0) {
 		case 'display_delete_etf_flow':
 		case 'delete_etf_flow':
 			$moduleEtf = new moduleEtf();
+			break;
+		case 'display_add_imported_moneyflow_receipt':
+		case 'add_imported_moneyflow_receipt':
+		case 'display_import_imported_moneyflow_receipts':
+		case 'import_imported_moneyflow_receipt_submit':
+			$moduleImportedMoneyflowReceipt = new moduleImportedMoneyflowReceipt();
+			break;
 		default :
 			$moduleFrontPage = new moduleFrontPage();
 			break;
@@ -439,6 +448,11 @@ if ($is_logged_in == 0) {
 				$display = $moduleMoneyFlows->show_moneyflow_receipt( $id );
 				break;
 
+			case 'search_moneyflow_by_amount':
+				$amount = array_key_exists( 'amount', $_REQUEST ) ? $_REQUEST ['amount'] : '';
+				$display = $moduleMoneyFlows->search_moneyflow_by_amount($amount);
+				break;
+
 			/* imported moneyflows */
 
 			case 'add_importedmoneyflow_submit' :
@@ -593,6 +607,27 @@ if ($is_logged_in == 0) {
 				$display = $moduleEtf->delete_etf_flow($id);
 				break;
 
+			/* Imported Moneyflow Receipt */
+			case 'display_add_imported_moneyflow_receipt':
+				$display = $moduleImportedMoneyflowReceipt->display_add_imported_moneyflow_receipt();
+				break;
+
+			case 'add_imported_moneyflow_receipt':
+				if( array_key_exists( 'all_data', $_FILES ) && is_array( $_FILES ['all_data'])) {
+					$file_data = $_FILES ['all_data'];
+				} else {
+					$file_data = null;
+				}
+				$display = $moduleImportedMoneyflowReceipt->add_imported_moneyflow_receipt($file_data);
+				break;
+
+			case 'display_import_imported_moneyflow_receipts':
+				$display = $moduleImportedMoneyflowReceipt->display_import_imported_moneyflow_receipts();
+				break;
+
+			case 'import_imported_moneyflow_receipt_submit':
+				$display = $moduleImportedMoneyflowReceipt->import_imported_moneyflow_receipt_submit($all_data);
+				break;
 			default :
 
 				$display = $moduleFrontPage->display_main();

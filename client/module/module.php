@@ -267,6 +267,9 @@ abstract class module {
 		if ($ret === true) {
 			header( "HTTP/1.1 204 No Content" );
 			return null;
+		} else if ($ret === false) {
+			header( 'HTTP/1.1 500 Internal Server Error' );
+			return json_encode( $this->get_errors() );
 		} elseif (array_key_exists( "errors", $ret )) {
 			foreach ( $ret ['errors'] as $validationResult ) {
 				$this->add_error( $validationResult ['error'] );

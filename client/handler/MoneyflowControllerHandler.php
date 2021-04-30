@@ -35,7 +35,6 @@ use api\model\moneyflow\searchMoneyflowsRequest;
 use api\model\moneyflow\showAddMoneyflowsResponse;
 use api\model\moneyflow\showEditMoneyflowResponse;
 use api\model\moneyflow\showDeleteMoneyflowResponse;
-use api\model\moneyflow\updateMoneyflowResponse;
 use api\model\moneyflow\showSearchMoneyflowFormResponse;
 use api\model\moneyflow\searchMoneyflowsResponse;
 use client\mapper\ArrayToCapitalsourceTransportMapper;
@@ -50,7 +49,7 @@ use api\model\transport\MoneyflowSearchParamsTransport;
 use base\Singleton;
 use client\mapper\ArrayToMoneyflowSplitEntryTransportMapper;
 use api\model\transport\MoneyflowSplitEntryTransport;
-use api\model\validation\validationResponse;
+use api\model\moneyflow\searchMoneyflowsByAmountResponse;
 
 class MoneyflowControllerHandler extends AbstractHandler {
 	use Singleton;
@@ -166,7 +165,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 
 		if ($response === true) {
 			$result = true;
-		} else if (is_array($response)) {
+		} else if (is_array( $response )) {
 			$result = $response;
 		}
 		return $result;
@@ -204,6 +203,22 @@ class MoneyflowControllerHandler extends AbstractHandler {
 			$result ['result'] = $response->getResult();
 		}
 		return $result;
+	}
+
+	public final function searchMoneyflowsByAmount($amount, $fromDate, $toDate) {
+		$response = parent::getJson( __FUNCTION__, array (
+				$amount,
+				$fromDate,
+				$toDate
+		) );
+		$result = null;
+		if ($response instanceof searchMoneyflowsByAmountResponse) {
+			$result ['moneyflows'] = parent::mapArrayNullable( $response->getMoneyflowTransport() );
+			$result ['moneyflow_split_entries'] = parent::mapArrayNullable( $response->getMoneyflowSplitEntryTransport() );
+			return $result;
+		}
+
+		return true;
 	}
 }
 

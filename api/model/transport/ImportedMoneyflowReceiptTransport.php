@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2017 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2021 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,36 +25,77 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowReceiptControllerHandler.php,v 1.1 2017/01/01 18:26:12 olivleh1 Exp $
 //
-namespace client\handler;
+namespace api\model\transport;
 
-use base\Singleton;
-use api\model\moneyflowreceipt\showMoneyflowReceiptResponse;
+class ImportedMoneyflowReceiptTransport extends AbstractTransport {
+	public $id;
+	public $receipt;
+	public $filename;
+	public $mediaType;
 
-class MoneyflowReceiptControllerHandler extends AbstractHandler {
-	use Singleton;
-
-	protected function init() {
-		parent::init();
+	/**
+	 *
+	 * @return mixed
+	 */
+	public final function getId() {
+		return $this->id;
 	}
 
-	protected final function getCategory() {
-		return 'moneyflowreceipt';
+	/**
+	 *
+	 * @param mixed $id
+	 */
+	public final function setId($id) {
+		$this->id = $id;
 	}
 
-	public final function showMoneyflowReceipt($id) {
-		$response = parent::getJson( __FUNCTION__, array (
-				$id
-		) );
-		$result = null;
-		if ($response instanceof showMoneyflowReceiptResponse) {
-			$result['receipt'] = $response->getReceipt();
-			$result['receipt_type'] = $response->getReceiptType();
-		}
+	/**
+	 *
+	 * @return mixed
+	 */
+	public final function getReceipt() {
+		return $this->receipt;
+	}
 
-		return $result;
+	/**
+	 *
+	 * @param mixed $receipt
+	 */
+	public final function setReceipt($receipt) {
+		$this->receipt = $receipt;
+	}
+
+	/**
+	 *
+	 * @return mixed
+	 */
+	public final function getFilename() {
+		return $this->filename;
+	}
+
+	/**
+	 *
+	 * @param mixed $filename
+	 */
+	public final function setFilename($filename) {
+		$this->filename = $filename;
+	}
+
+	/**
+	 *
+	 * @return mixed
+	 */
+	public final function getMediaType() {
+		return $this->mediaType;
+	}
+
+	/**
+	 *
+	 * @param mixed $mediaType
+	 */
+	public final function setMediaType($mediaType) {
+		$this->mediaType = $mediaType;
 	}
 }
 
-?>

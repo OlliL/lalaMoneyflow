@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2017 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2021 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,35 +25,30 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowReceiptControllerHandler.php,v 1.1 2017/01/01 18:26:12 olivleh1 Exp $
-//
-namespace client\handler;
+namespace client\mapper;
 
-use base\Singleton;
-use api\model\moneyflowreceipt\showMoneyflowReceiptResponse;
+use api\model\transport\ImportedMoneyflowReceiptTransport;
 
-class MoneyflowReceiptControllerHandler extends AbstractHandler {
-	use Singleton;
+class ArrayToImportedMoneyflowReceiptTransportMapper extends AbstractArrayMapper {
 
-	protected function init() {
-		parent::init();
+	public static function mapAToB(array $a) {
+		$b = new ImportedMoneyflowReceiptTransport();
+		$b->setFilename( $a ['filename'] );
+		$b->setMediaType( $a ['mediaType'] );
+		$b->setReceipt( base64_encode( $a ['receipt'] ) );
+		if (array_key_exists( 'id', $a ))
+			$b->setId( $a ['id'] );
+
+		return $b;
 	}
 
-	protected final function getCategory() {
-		return 'moneyflowreceipt';
-	}
+	public static function mapBToA(ImportedMoneyflowReceiptTransport $b) {
+		$a ['filename'] = $b->getFilename();
+		$a ['mediaType'] = $b->getMediaType();
+		$a ['receipt'] = base64_decode( $b->getReceipt() );
+		$a ['id'] = $b->getId();
 
-	public final function showMoneyflowReceipt($id) {
-		$response = parent::getJson( __FUNCTION__, array (
-				$id
-		) );
-		$result = null;
-		if ($response instanceof showMoneyflowReceiptResponse) {
-			$result['receipt'] = $response->getReceipt();
-			$result['receipt_type'] = $response->getReceiptType();
-		}
-
-		return $result;
+		return $a;
 	}
 }
 

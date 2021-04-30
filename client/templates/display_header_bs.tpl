@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="contrib/bootstrap-float-label/dist/bootstrap-float-label.css">
     <link rel="stylesheet" href="contrib/bootstrap-toggle/css/bootstrap-toggle.min.css">
     <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="contrib/bootstrap-fileinput/css/fileinput.css">
 
     <script src="contrib/jquery/dist/jquery.min.js"></script>
     <script src="contrib/jquery-form/dist/jquery.form.min.js"></script>
@@ -22,6 +23,7 @@
     <script src="contrib/bootstrap-validator/dist/validator.min.js"></script>
     <script src="contrib/mustache.js/mustache.min.js"></script>
     <script src="site.js"></script>
+    <script src="contrib/bootstrap-fileinput/js/fileinput.js"></script>
     <script>
       var today = "{$TODAY}";
       var maxDate = "{$MAX_DATE}";
@@ -71,10 +73,13 @@
               </ul>
             </li>
 
-            <li class="dropdown">
+            <li class="dropdown {if $TEMPLATE == "display_import_imported_moneyflow_receipts_bs.tpl"}active{/if}">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-plus"></i> <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="{$ENV_INDEX_PHP}?action=edit_moneyflow">{#TEXT_8#}</a>
+                <li role="separator" class="divider"></li>
+                <li><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=display_add_imported_moneyflow_receipt&amp;sr=1','_blank','width=1000,height=600')">{#TEXT_362#}</a>
+                <li{if $TEMPLATE == "display_import_imported_moneyflow_receipts_bs.tpl"  } class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=display_import_imported_moneyflow_receipts">{#TEXT_364#}</a></li>                
                 <li role="separator" class="divider"></li>
                 <li><a href="javascript:showOverlayCapitalsource()">{#TEXT_1#}</a></li>
                 <li><a href="javascript:showOverlayContractpartner()">{#TEXT_2#}</a></li>

@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2005-2019 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2005-2021 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -31,6 +31,7 @@ namespace client\module;
 
 use client\handler\MoneyflowControllerHandler;
 use client\handler\MoneyflowReceiptControllerHandler;
+use client\util\DateUtil;
 
 class moduleMoneyFlows extends module {
 
@@ -135,6 +136,13 @@ class moduleMoneyFlows extends module {
 	public final function delete_moneyflow($id) {
 		$ret = MoneyflowControllerHandler::getInstance()->deleteMoneyflowById( $id );
 		return $this->handleReturnForAjax( $ret );
+	}
+
+	public final function search_moneyflow_by_amount($amount) {
+		$fromDate = date('Ymd', strtotime('-60 days'));
+		$toDate = date('Ymd');
+		$searchMoneyflowsByAmount = MoneyflowControllerHandler::getInstance()->searchMoneyflowsByAmount($amount, $fromDate, $toDate);
+		return $this->handleReturnForAjax( $searchMoneyflowsByAmount );
 	}
 }
 ?>

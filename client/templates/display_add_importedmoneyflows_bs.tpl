@@ -616,7 +616,6 @@
 
         function ajaxAddImportedMoneyflowError(num, data) {
           clearErrorDiv(num + 'addImportedMoneyflowErrors');
-          console.log(data.responseText);
           populateErrorDiv(data.responseText,num + 'addImportedMoneyflowErrorsGoHere',num + 'addImportedMoneyflowErrors');
         }
 

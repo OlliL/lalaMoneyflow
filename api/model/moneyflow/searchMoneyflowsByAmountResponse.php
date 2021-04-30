@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2017 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2021 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,35 +25,43 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowReceiptControllerHandler.php,v 1.1 2017/01/01 18:26:12 olivleh1 Exp $
 //
-namespace client\handler;
+namespace api\model\moneyflow;
 
-use base\Singleton;
-use api\model\moneyflowreceipt\showMoneyflowReceiptResponse;
+class searchMoneyflowsByAmountResponse {
+	public $moneyflowTransport;
+	public $moneyflowSplitEntryTransport;
 
-class MoneyflowReceiptControllerHandler extends AbstractHandler {
-	use Singleton;
-
-	protected function init() {
-		parent::init();
+	/**
+	 *
+	 * @return mixed
+	 */
+	public final function getMoneyflowTransport() {
+		return $this->moneyflowTransport;
 	}
 
-	protected final function getCategory() {
-		return 'moneyflowreceipt';
+	/**
+	 *
+	 * @param mixed $moneyflowTransport
+	 */
+	public final function setMoneyflowTransport(array $moneyflowTransport) {
+		$this->moneyflowTransport = $moneyflowTransport;
 	}
 
-	public final function showMoneyflowReceipt($id) {
-		$response = parent::getJson( __FUNCTION__, array (
-				$id
-		) );
-		$result = null;
-		if ($response instanceof showMoneyflowReceiptResponse) {
-			$result['receipt'] = $response->getReceipt();
-			$result['receipt_type'] = $response->getReceiptType();
-		}
+	/**
+	 *
+	 * @return mixed
+	 */
+	public final function getMoneyflowSplitEntryTransport() {
+		return $this->moneyflowSplitEntryTransport;
+	}
 
-		return $result;
+	/**
+	 *
+	 * @param mixed $moneyflowSplitEntryTransport
+	 */
+	public final function setMoneyflowSplitEntryTransport(array $moneyflowSplitEntryTransport) {
+		$this->moneyflowSplitEntryTransport = $moneyflowSplitEntryTransport;
 	}
 }
 

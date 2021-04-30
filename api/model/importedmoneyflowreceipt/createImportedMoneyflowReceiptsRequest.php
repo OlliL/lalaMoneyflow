@@ -1,6 +1,7 @@
 <?php
+
 //
-// Copyright (c) 2017 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2021 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -24,36 +25,26 @@
 // OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 // SUCH DAMAGE.
 //
-// $Id: MoneyflowReceiptControllerHandler.php,v 1.1 2017/01/01 18:26:12 olivleh1 Exp $
 //
-namespace client\handler;
+namespace api\model\importedmoneyflowreceipt;
 
-use base\Singleton;
-use api\model\moneyflowreceipt\showMoneyflowReceiptResponse;
+class createImportedMoneyflowReceiptsRequest {
+	public $importedMoneyflowReceiptTransport;
 
-class MoneyflowReceiptControllerHandler extends AbstractHandler {
-	use Singleton;
-
-	protected function init() {
-		parent::init();
+	/**
+	 *
+	 * @return mixed
+	 */
+	public final function getImportedMoneyflowReceiptTransport() {
+		return $this->importedMoneyflowReceiptTransport;
 	}
 
-	protected final function getCategory() {
-		return 'moneyflowreceipt';
-	}
-
-	public final function showMoneyflowReceipt($id) {
-		$response = parent::getJson( __FUNCTION__, array (
-				$id
-		) );
-		$result = null;
-		if ($response instanceof showMoneyflowReceiptResponse) {
-			$result['receipt'] = $response->getReceipt();
-			$result['receipt_type'] = $response->getReceiptType();
-		}
-
-		return $result;
+	/**
+	 *
+	 * @param mixed $importedMoneyflowReceiptTransport
+	 */
+	public final function setImportedMoneyflowReceiptTransport(array $importedMoneyflowReceiptTransport) {
+		$this->importedMoneyflowReceiptTransport = $importedMoneyflowReceiptTransport;
 	}
 }
 
-?>

@@ -532,6 +532,7 @@ function Go(x)
           </div>
         </div>
     {/if}
+  {/if}
 
     {if $ETF_OVERVIEW_DATA != ''}
         <div class="row">
@@ -601,7 +602,6 @@ function Go(x)
           </div>
         </div>
     {/if}
-  {/if}
       </div>
 {/if}
       

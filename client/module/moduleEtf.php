@@ -113,7 +113,6 @@ class moduleEtf extends module {
 	}
 
 	public final function display_delete_etf_flow($id) {
-		error_log( $id );
 		$showDeleteEtfFlow = EtfControllerHandler::getInstance()->showDeleteEtfFlow( $id );
 		$etfs = $showDeleteEtfFlow ['etfs'];
 		$all_data = $showDeleteEtfFlow ['all_data'];

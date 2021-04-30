@@ -148,7 +148,6 @@
         }
 
         function ajaxEditEtfFlowError(data) {
-        alert(data.responseText);
           clearErrorDiv('editEtfFlowErrors');
           populateErrorDiv(data.responseText,'editEtfFlowErrorsGoHere','editEtfFlowErrors');
         }
