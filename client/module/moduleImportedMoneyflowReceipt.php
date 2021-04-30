@@ -87,7 +87,6 @@ class moduleImportedMoneyflowReceipt extends module {
 		} else {
 			$ret = ImportedMoneyflowReceiptControllerHandler::getInstance()->importImportedMoneyflowReceipt( $all_data ['id'], $all_data ['moneyflowid'] );
 		}
-error_log(print_r($ret,true));
 		return $this->handleReturnForAjax( $ret );
 	}
 }

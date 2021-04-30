@@ -146,7 +146,6 @@ abstract class AbstractHandler extends AbstractJsonSender {
 	protected final function postJson($usecase, $json, $parameter = array()) {
 		$url = $this->getUrl( $usecase, $parameter );
 		$response = Request::post( $url )->withoutStrictSsl()->sendsJson()->body( $json )->addHeaders( $this->getHeaders( Http::POST, $url, $json ) )->send();
-		error_log(print_r($response->body,true));
 		if ($response->code == 204) {
 			return true;
 		} else {

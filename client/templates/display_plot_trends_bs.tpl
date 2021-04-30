@@ -257,7 +257,6 @@
         }
 
         function ajaxPlotTrendsError(data) {
-          alert(data);
           clearErrorDiv("plotTrendsErrors");
           populateErrorDiv(data.responseText,'plotTrendsErrorsGoHere','plotTrendsErrors');
         }

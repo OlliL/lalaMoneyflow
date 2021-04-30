@@ -100,7 +100,6 @@
         }
 
         function ajaxDeleteEtfFlowError(data) {
-        alert(data.responseText);
           clearErrorDiv('deleteEtfFlowErrors');
           populateErrorDiv(data.responseText,'deleteEtfFlowErrorsGoHere','deleteEtfFlowErrors');
         }
