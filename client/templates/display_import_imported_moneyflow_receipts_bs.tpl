@@ -32,23 +32,74 @@
               <div class="form-group col-md-9 col-xs-12">
 
                 <div class="row">
+                  <div class="form-group col-md-1 col-xs-12">
+                        <span class="input-group-btn">
+                          <button type="button" class="btn btn-primary" onclick="searchForAmount({$NUM})">
+                            <span class="glyphicon glyphicon-search"></span>
+                          </button>
+                        </span>
+                  </div>
                   <div class="form-group col-md-4 col-xs-12">
                     <span class="has-float-label">
                       <div class="input-group col-xs-12">
-                        <input type="number" step="0.01" class="form-control" id="{$NUM}impimramount" name="all_data[amount]" required data-error="{#TEXT_306#}" autofocus style="text-align: right;">
+                        <input type="number" step="0.01" class="form-control" id="{$NUM}impimramount" name="all_data[amount]" autofocus style="text-align: right;">
                         <span class="input-group-addon">
                           <span class="glyphicon glyphicon-euro"></span>
-                        </span>
-                        <span class="input-group-btn">
-                          <button type="button" class="btn" onclick="searchForAmount({$NUM})">
-                            <span class="glyphicon glyphicon-search"></span>
-                          </button>
                         </span>
                       </div>
                       <label for="{$NUM}impimramount">{#TEXT_18#}</label>
                     </span>
                     <div class="help-block with-errors"></div>
                   </div>
+
+            <div class="form-group col-md-3 col-xs-12">
+              <span class="has-float-label">
+                <div class='input-group date col-xs-12' id="{$NUM}impimrdatefromDiv">
+                  <input type="text" class="form-control" name="all_data[dateFrom]" id="{$NUM}impimrdatefrom">
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+                </div>
+                <label for="{$NUM}impimrdatefrom">{#TEXT_69#}</label>
+              </span>
+              <div class="help-block with-errors"></div>
+              <script>
+                  $(function () {
+                      $('#{$NUM}impimrdatefromDiv').datetimepicker({
+                        format: 'YYYY-MM-DD',
+                        focusOnShow: false,
+                        showClear: true,
+                        showTodayButton: true,
+                        showClose: true, 
+                      });
+                  });
+              </script>
+            </div>
+
+            <div class="form-group col-md-3 col-xs-12">
+              <span class="has-float-label">
+                <div class='input-group date col-xs-12' id="{$NUM}impimrdatetilDiv">
+                  <input type="text" class="form-control" name="all_data[dateTil]" id="{$NUM}impimrdatetil">
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+                </div>
+                <label for="{$NUM}impimrdatetil">{#TEXT_70#}</label>
+              </span>
+              <div class="help-block with-errors"></div>
+              <script>
+                  $(function () {
+                      $('#{$NUM}impimrdatetilDiv').datetimepicker({
+                        format: 'YYYY-MM-DD',
+                        focusOnShow: false,
+                        showClear: true,
+                        showTodayButton: true,
+                        showClose: true, 
+                      });
+                  });
+              </script>
+            </div>
+
                 </div>
 
                 <div class="row">
@@ -81,7 +132,7 @@
           <div class="form-group">
             <div class="col-sm-12 text-center">
               <button type="submit" class="btn btn-primary"                          >{#TEXT_271#}</button>
-              <button formnovalidate type="button" class="btn btn-danger cancel" onclick="deleteImportedMoneyflowReceipt({$NUM})">{#TEXT_37#}</button>
+              <button type="button" class="btn btn-danger cancel" onclick="deleteImportedMoneyflowReceipt({$NUM})">{#TEXT_37#}</button>
             </div>
           </div>
 
@@ -131,6 +182,8 @@
                 element.innerHTML = value;
               } else if ( element.tagName == 'IMG' ) {
                 element.src = value;
+             } else if ( element.tagName == 'OBJECT' ) {
+                element.setAttribute('data', value);
               } else {
                 element.value = value;
               }
@@ -144,15 +197,34 @@
         }
 
         function preFillFormImportImportedMoneyflowReceipt(num) {
+        
+        
+          var now = new Date();
+          var element = document.getElementById( num+'impimrdatetil' );
+          element.value = now.toISOString();
+          element = document.getElementById( num+'impimrdatefrom' );
+          now.setMonth(now.getMonth() -1 );
+          element.value = now.toISOString();
+          
           for ( var key in importImportedMoneyflowReceiptJsonDefaults[num-1] ) {
-            var element = document.getElementById( num+'impimr'+key );
+            element = document.getElementById( num+'impimr'+key );
             
             if( key == 'amount' ) {
               amount = formatCurrency(importImportedMoneyflowReceiptJsonDefaults[num-1][key]);
               setElement(element, amount);
             } else if (key == "receipt") {
+              mediaType = importImportedMoneyflowReceiptJsonDefaults[num-1]["mediaType"];
+              if( mediaType == "application/pdf" ) {
+                newElement = document.createElement('object');
+                newElement.setAttribute('id', num+'impimr'+key);
+                newElement.setAttribute('style','max-width:100%;height:300px;');
+                element.replaceWith(newElement);
+                element = document.getElementById( num+'impimr'+key );
+                element.parentElement.setAttribute('style','');
+              }
+                
               src = "data:"
-                    + importImportedMoneyflowReceiptJsonDefaults[num-1]["mediaType"]
+                    + mediaType
                     + ";base64,"
                     + importImportedMoneyflowReceiptJsonDefaults[num-1][key];
               setElement(element, src);
@@ -196,9 +268,11 @@
         function searchForAmount(num) {
           initResults(num);
           amount = document.getElementById( num+'impimramount').value
+          dateFrom = document.getElementById( num+'impimrdatefrom').value
+          dateTil = document.getElementById( num+'impimrdatetil').value
           
           
-          $.get( "?action=search_moneyflow_by_amount&amount=" + amount, function( data ) {
+          $.get( '?action=search_moneyflow_by_amount&amount=' + amount + '&datefrom=' + dateFrom + '&datetil='+dateTil, function( data ) {
             if(data) {
               json = JSON.parse(data);
               for (const item of Object.keys(json['moneyflows'])) {

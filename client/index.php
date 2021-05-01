@@ -450,7 +450,9 @@ if ($is_logged_in == 0) {
 
 			case 'search_moneyflow_by_amount':
 				$amount = array_key_exists( 'amount', $_REQUEST ) ? $_REQUEST ['amount'] : '';
-				$display = $moduleMoneyFlows->search_moneyflow_by_amount($amount);
+				$dateFrom = array_key_exists( 'datefrom', $_REQUEST ) ? $_REQUEST ['datefrom'] : '';
+				$dateTil = array_key_exists( 'datetil', $_REQUEST ) ? $_REQUEST ['datetil'] : '';
+				$display = $moduleMoneyFlows->search_moneyflow_by_amount($amount, $dateFrom, $dateTil);
 				break;
 
 			/* imported moneyflows */

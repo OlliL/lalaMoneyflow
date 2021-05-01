@@ -138,11 +138,15 @@ class moduleMoneyFlows extends module {
 		return $this->handleReturnForAjax( $ret );
 	}
 
-	public final function search_moneyflow_by_amount($amount) {
-		$fromDate = date('Ymd', strtotime('-60 days'));
-		$toDate = date('Ymd');
-		$searchMoneyflowsByAmount = MoneyflowControllerHandler::getInstance()->searchMoneyflowsByAmount($amount, $fromDate, $toDate);
-		return $this->handleReturnForAjax( $searchMoneyflowsByAmount );
+	public final function search_moneyflow_by_amount($amount, $dateFrom, $dateTil) {
+		if ($amount != '') {
+			$from = new \DateTime($dateFrom);
+			$fromDate = $from->format('Ymd');
+			$to = new \DateTime($dateTil);
+			$toDate = $to->format('Ymd');
+			$searchMoneyflowsByAmount = MoneyflowControllerHandler::getInstance()->searchMoneyflowsByAmount( $amount, $fromDate, $toDate );
+			return $this->handleReturnForAjax( $searchMoneyflowsByAmount );
+		}
 	}
 }
 ?>
