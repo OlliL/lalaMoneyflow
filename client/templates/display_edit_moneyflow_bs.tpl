@@ -712,6 +712,9 @@
 
           // show comment and postingAccount of the main booking again if all rows where deleted
           hideNonRelevantFieldsIfSplitEntries(); 
+
+          $('#addmnfform').validator('reset');
+          $('#addmnfform').validator('update');
         }
         
         
