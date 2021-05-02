@@ -58,7 +58,7 @@ class moduleMoneyFlows extends module {
 
 	public final function delete_moneyflowreceipt_submit($id) {
 		$ret = MoneyflowReceiptControllerHandler::getInstance()->deleteMoneyflowReceipt( $id );
-		return $this->handleReturnForAjax( true );
+		return $this->handleReturnForAjax( $ret );
 	}
 
 	public final function display_edit_moneyflow($id) {
