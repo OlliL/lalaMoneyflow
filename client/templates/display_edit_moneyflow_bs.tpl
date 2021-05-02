@@ -1,4 +1,36 @@
 {$HEADER}
+      <div id="deleteReceiptModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+      <div class="modal-content">
+      <div class="modal-body">
+      <div>
+        <form action="{$ENV_INDEX_PHP}" method="POST" name="deletereceipt" id="delrcpform">
+          <input type="hidden" name="action"            value="delete_moneyflowreceipt_submit">
+          <input type="hidden" name="moneyflowid"       value="{$MONEYFLOWID}">
+          <div class="well">
+            <div class="row">
+              <div class="form-group col-sm-12 text-center">
+                <h4>{#TEXT_368#}</h4>
+              </div>  
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-12 text-center">
+                <span>
+                  <button type="button" class="btn"             onclick="btnDeleteReceiptCancel()">{#TEXT_315#}</button>
+                  <button type="submit" class="btn btn-danger"                                    >{#TEXT_367#}</button>
+                </span>
+              </div>  
+            </div>
+          </div>
+        </form>
+
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+
+
       <div class="container container-wide">
         <div class="text-center">
           <h4>{if $MONEYFLOWID > 0}{#TEXT_15#}{else}{#TEXT_8#}{/if}</h4>
@@ -194,7 +226,7 @@
 {if $NEW_WINDOW}
               <button type="button" class="btn"             onclick="btnEditMoneyflowCancel()"        >{#TEXT_315#}</button>
 {if $HAS_RECEIPT}
-              <button type="button" class="btn btn-danger"  onclick="btnEditMoneyflowDeleteReceipt()" >{#TEXT_367#}</button>
+              <button type="button" class="btn btn-danger"  onclick="btnEditMoneyflowDeleteReceipt()" id="addmnfdelrcpbtn">{#TEXT_367#}</button>
 {/if}
 {else}
               <button type="button" class="btn btn-default" onclick="resetFormAddMoneyflow()"         >{#TEXT_304#}</button>
@@ -682,6 +714,42 @@
           hideNonRelevantFieldsIfSplitEntries(); 
         }
         
+        
+        /************************************************************
+         *
+         * RECEIPT DELETION HANDLING
+         *
+         ************************************************************/
+        function showOverlayDeleteReceipt() {
+          saveFocusedElement();
+          $('#deleteReceiptModal').modal('show');
+//          document.editpostingaccount.edtmpaname.focus();
+        }
+
+        function hideOverlayDeleteReceipt() {
+          $('#deleteReceiptModal').modal('hide');
+          setTimeout("restoreLastFocusedElement()", 150);
+        }
+        
+        function btnEditMoneyflowDeleteReceipt() {
+          showOverlayDeleteReceipt();
+        }
+
+        function btnDeleteReceiptCancel() {
+          hideOverlayDeleteReceipt();
+        }
+        
+        function ajaxDeleteReceiptSuccess() {
+          hideOverlayDeleteReceipt();
+          $('#addmnfdelrcpbtn').hide();
+        }
+        
+        function ajaxDeleteReceiptError (data) {
+          console.log(data);
+          alert("error");
+        }
+        
+        
         /************************************************************
          *
          * AJAX AND INIT
@@ -698,12 +766,6 @@
           return true;
         }
 
-        function btnEditMoneyflowDeleteReceipt() {
-          var moneyflowId =  document.addmoneyflow.addmnfmoneyflowid.value;
-          
-          alert("Not yet implemented! " + moneyflowId);
-        }
-        
         function btnEditMoneyflowCancel() {
           window.close();
         }
@@ -736,6 +798,12 @@
             dataType: 'json',
             success: ajaxAddMoneyflowSuccess,
             error: ajaxAddMoneyflowError
+        });
+
+        $('#delrcpform').ajaxForm({
+            dataType: 'json',
+            success: ajaxDeleteReceiptSuccess,
+            error: ajaxDeleteReceiptError
         });
         
 

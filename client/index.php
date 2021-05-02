@@ -154,6 +154,7 @@ if ($is_logged_in == 0) {
 		case 'delete_moneyflow' :
 		case 'delete_moneyflow_submit' :
 		case 'show_moneyflow_receipt' :
+		case 'delete_moneyflowreceipt_submit':
 		case 'search_moneyflow_by_amount':
 			$moduleMoneyFlows = new moduleMoneyFlows();
 			break;
@@ -446,6 +447,11 @@ if ($is_logged_in == 0) {
 
 				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : '';
 				$display = $moduleMoneyFlows->show_moneyflow_receipt( $id );
+				break;
+
+			case 'delete_moneyflowreceipt_submit' :
+				$id = array_key_exists( 'moneyflowid', $_REQUEST ) ? $_REQUEST ['moneyflowid'] : '';
+				$display = $moduleMoneyFlows->delete_moneyflowreceipt_submit( $id );
 				break;
 
 			case 'search_moneyflow_by_amount':

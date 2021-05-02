@@ -56,6 +56,11 @@ class moduleMoneyFlows extends module {
 		echo base64_decode( $receipt ['receipt'] );
 	}
 
+	public final function delete_moneyflowreceipt_submit($id) {
+		$ret = MoneyflowReceiptControllerHandler::getInstance()->deleteMoneyflowReceipt( $id );
+		return $this->handleReturnForAjax( true );
+	}
+
 	public final function display_edit_moneyflow($id) {
 		if ($id == 0) {
 			$this->parse_header_bootstraped( 0, 'display_edit_moneyflow_bs.tpl' );
@@ -63,7 +68,7 @@ class moduleMoneyFlows extends module {
 			$this->template_assign_raw( 'JSON_FORM_DEFAULTS', '""' );
 			$this->template_assign_raw( 'JSON_FORM_SPLIT_ENTRIES_DEFAULTS', '[]' );
 			$this->template_assign_raw( 'NEW_WINDOW', false );
-			$this->template_assign('HAS_RECEIPT', false);
+			$this->template_assign( 'HAS_RECEIPT', false );
 		} else {
 			$this->parse_header_bootstraped( 1, 'display_edit_moneyflow_bs.tpl' );
 			$displayMoneyflow = MoneyflowControllerHandler::getInstance()->showEditMoneyflow( $id );
@@ -71,7 +76,7 @@ class moduleMoneyFlows extends module {
 			$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $displayMoneyflow ['moneyflow'] ) );
 			$this->template_assign_raw( 'JSON_FORM_SPLIT_ENTRIES_DEFAULTS', json_encode( $displayMoneyflow ['moneyflow_split_entries'] ) );
 			$this->template_assign_raw( 'NEW_WINDOW', true );
-			$this->template_assign('HAS_RECEIPT', $displayMoneyflow['has_receipt']);
+			$this->template_assign( 'HAS_RECEIPT', $displayMoneyflow ['has_receipt'] );
 		}
 
 		$contractpartner = $this->sort_contractpartner( $displayMoneyflow ['contractpartner'] );
@@ -141,10 +146,10 @@ class moduleMoneyFlows extends module {
 
 	public final function search_moneyflow_by_amount($amount, $dateFrom, $dateTil) {
 		if ($amount != '') {
-			$from = new \DateTime($dateFrom);
-			$fromDate = $from->format('Ymd');
-			$to = new \DateTime($dateTil);
-			$toDate = $to->format('Ymd');
+			$from = new \DateTime( $dateFrom );
+			$fromDate = $from->format( 'Ymd' );
+			$to = new \DateTime( $dateTil );
+			$toDate = $to->format( 'Ymd' );
 			$searchMoneyflowsByAmount = MoneyflowControllerHandler::getInstance()->searchMoneyflowsByAmount( $amount, $fromDate, $toDate );
 			return $this->handleReturnForAjax( $searchMoneyflowsByAmount );
 		}
