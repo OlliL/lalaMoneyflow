@@ -19,9 +19,9 @@
         </div>
         <form action="{$ENV_INDEX_PHP}" method="POST" name="addmoneyflow" id="addmnfform">
           <input type="hidden" name="action"                          value="edit_moneyflow_submit">
-          <input type="hidden" name="moneyflowid"                     value="{$MONEYFLOWID}">
-          <input type="hidden" name="all_data[predefmoneyflowid]"     value="-1"               id="addmnfpredefmoneyflowid" >
-          <input type="hidden" name="all_data[existing_split_entry_ids]"  value=""               id="addmnfexisting_split_entry_ids" >
+          <input type="hidden" name="moneyflowid"                     value="{$MONEYFLOWID}"   id="addmnfmoneyflowid">
+          <input type="hidden" name="all_data[predefmoneyflowid]"     value="-1"               id="addmnfpredefmoneyflowid">
+          <input type="hidden" name="all_data[existing_split_entry_ids]"  value=""             id="addmnfexisting_split_entry_ids">
 
           <div class="span2 well">
 
@@ -192,11 +192,14 @@
           <div class="form-group">
             <div class="col-sm-12 text-center">
 {if $NEW_WINDOW}
-              <button type="button" class="btn"             onclick="btnEditMoneyflowCancel()"    >{#TEXT_315#}</button>
-{else}
-              <button type="button" class="btn btn-default" onclick="resetFormAddMoneyflow()">{#TEXT_304#}</button>
+              <button type="button" class="btn"             onclick="btnEditMoneyflowCancel()"        >{#TEXT_315#}</button>
+{if $HAS_RECEIPT}
+              <button type="button" class="btn btn-danger"  onclick="btnEditMoneyflowDeleteReceipt()" >{#TEXT_367#}</button>
 {/if}
-              <button type="submit" class="btn btn-primary"                          >{#TEXT_22#}</button>
+{else}
+              <button type="button" class="btn btn-default" onclick="resetFormAddMoneyflow()"         >{#TEXT_304#}</button>
+{/if}
+              <button type="submit" class="btn btn-primary"                                           >{#TEXT_22#}</button>
             </div>  
           </div>  
 
@@ -695,6 +698,12 @@
           return true;
         }
 
+        function btnEditMoneyflowDeleteReceipt() {
+          var moneyflowId =  document.addmoneyflow.addmnfmoneyflowid.value;
+          
+          alert("Not yet implemented! " + moneyflowId);
+        }
+        
         function btnEditMoneyflowCancel() {
           window.close();
         }

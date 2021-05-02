@@ -63,6 +63,7 @@ class moduleMoneyFlows extends module {
 			$this->template_assign_raw( 'JSON_FORM_DEFAULTS', '""' );
 			$this->template_assign_raw( 'JSON_FORM_SPLIT_ENTRIES_DEFAULTS', '[]' );
 			$this->template_assign_raw( 'NEW_WINDOW', false );
+			$this->template_assign('HAS_RECEIPT', false);
 		} else {
 			$this->parse_header_bootstraped( 1, 'display_edit_moneyflow_bs.tpl' );
 			$displayMoneyflow = MoneyflowControllerHandler::getInstance()->showEditMoneyflow( $id );
@@ -70,6 +71,7 @@ class moduleMoneyFlows extends module {
 			$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $displayMoneyflow ['moneyflow'] ) );
 			$this->template_assign_raw( 'JSON_FORM_SPLIT_ENTRIES_DEFAULTS', json_encode( $displayMoneyflow ['moneyflow_split_entries'] ) );
 			$this->template_assign_raw( 'NEW_WINDOW', true );
+			$this->template_assign('HAS_RECEIPT', $displayMoneyflow['has_receipt']);
 		}
 
 		$contractpartner = $this->sort_contractpartner( $displayMoneyflow ['contractpartner'] );

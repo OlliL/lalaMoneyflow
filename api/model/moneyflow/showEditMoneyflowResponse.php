@@ -37,6 +37,7 @@ class showEditMoneyflowResponse implements IshowEditMoneyflowsResponse {
 	public $capitalsourceTransport;
 	public $contractpartnerTransport;
 	public $postingAccountTransport;
+	public $hasReceipt;
 
 	public final function getMoneyflowTransport() {
 		return $this->moneyflowTransport;
@@ -76,6 +77,22 @@ class showEditMoneyflowResponse implements IshowEditMoneyflowsResponse {
 
 	public final function setPostingAccountTransport(array $postingAccountTransport) {
 		$this->postingAccountTransport = $postingAccountTransport;
+	}
+
+	/**
+	 *
+	 * @return mixed
+	 */
+	public final function getHasReceipt() {
+		return $this->hasReceipt;
+	}
+
+	/**
+	 *
+	 * @param mixed $hasReceipt
+	 */
+	public final function setHasReceipt($hasReceipt) {
+		$this->hasReceipt = $hasReceipt;
 	}
 }
 

@@ -94,6 +94,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
 			if ($response->getMoneyflowTransport()) {
 				$result ['moneyflow'] = parent::map( $response->getMoneyflowTransport() );
+				$result ['has_receipt'] = $response->getHasReceipt();
 			} else {
 				$result ['moneyflow'] = array ();
 			}
