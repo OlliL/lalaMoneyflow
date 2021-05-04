@@ -43,7 +43,7 @@ class ArrayToEtfFlowTransportMapper extends AbstractArrayMapper {
 			$b->setTimestamp( $timestamp );
 
 		$nanoseconds = parent::extractNanoSecondsFromClientDate( $a ['date'] . ' ' . $a ['time'] );
-		if ($nanoseconds)
+		if ($nanoseconds !== null)
 			$b->setNanoseconds( $nanoseconds );
 
 		return $b;
