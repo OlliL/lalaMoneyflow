@@ -40,7 +40,7 @@
     	  <div class="col-xs-12">
             <div class="col-md-6 col-md-offset-3 col-xs-12">
               <select class="form-control" id="selectmoneyflow" onchange="preFillFormAddMoneyflow(this.value)">
-                <option value="-1">Neue Buchung</option>
+                <option value="-1">{#TEXT_374#}</option>
               </select>
             </div>
           </div>
@@ -210,7 +210,7 @@
               <div class="panel panel-default">
               
                 <div class="panel-heading">
-                  <a data-toggle="collapse" href="#addmnfsplitentries">Unterbuchungen</a>
+                  <a data-toggle="collapse" href="#addmnfsplitentries">{#TEXT_372#}</a>
                 </div>
                 
                 <div id="addmnfsplitentries" class="panel-collapse collapse panel-footer">
@@ -301,7 +301,7 @@
                 </span>
                 <span class="has-float-label">
                   <input type="text" class="form-control" id="addmnfremaining{{splitEntryIndex}}" readonly pattern="0">
-                  <label for="addmnfremaining{{splitEntryIndex}}">Rest</label>
+                  <label for="addmnfremaining{{splitEntryIndex}}">{{remainderLabel}}</label>
                 </span>                
               </div>
             </div>
@@ -334,6 +334,7 @@
           commentLabel: "{#TEXT_21#}",
           postingAccountError: "{#TEXT_309#}",
           postingAccountLabel: "{#TEXT_232#}",
+          remainderLabel: "{#TEXT_373#}",
           postingAccounts: addMoneyflowJsonPostingAccounts
         };
         
