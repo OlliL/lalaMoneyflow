@@ -30,17 +30,10 @@
 namespace api\model\report;
 
 class showReportingFormResponse {
-	public $allYears;
 	public $postingAccountTransport;
 	public $postingAccountIdsNo;
-
-	public final function getAllYears() {
-		return $this->allYears;
-	}
-
-	public final function setAllYears(array $allYears) {
-		$this->allYears = $allYears;
-	}
+	public $minDate;
+	public $maxDate;
 
 	public final function setPostingAccountTransport(array $postingAccountTransport) {
 		$this->postingAccountTransport = $postingAccountTransport;
@@ -56,6 +49,22 @@ class showReportingFormResponse {
 
 	public final function getPostingAccountIdsNo() {
 		return $this->postingAccountIdsNo;
+	}
+
+	public final function getMinDate() {
+		return $this->minDate;
+	}
+
+	public final function setMinDate($minDate) {
+		$this->minDate = $minDate;
+	}
+
+	public final function getMaxDate() {
+		return $this->maxDate;
+	}
+
+	public final function setMaxDate($maxDate) {
+		$this->maxDate = $maxDate;
 	}
 }
 

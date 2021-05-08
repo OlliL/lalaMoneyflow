@@ -520,18 +520,29 @@ if ($is_logged_in == 0) {
 				$display = $moduleReports->show_reporting_form();
 				break;
 			case 'plot_report' :
-
-				$timemode = array_key_exists( 'timemode', $_POST ) ? $_POST ['timemode'] : '';
-				$accountmode = array_key_exists( 'accountmode', $_POST ) ? $_POST ['accountmode'] : '';
-				$year = array_key_exists( 'year', $_POST ) ? $_POST ['year'] : '';
-				$month_month = array_key_exists( 'month_month', $_POST ) ? $_POST ['month_month'] : '';
-				$year_month = array_key_exists( 'year_month', $_POST ) ? $_POST ['year_month'] : '';
-				$yearfrom = array_key_exists( 'yearfrom', $_POST ) ? $_POST ['yearfrom'] : '';
-				$yeartil = array_key_exists( 'yeartil', $_POST ) ? $_POST ['yeartil'] : '';
+				$account_mode = array_key_exists( 'account_mode', $_POST ) ? $_POST ['account_mode'] : '0';
+				$aggregate_month = array_key_exists( 'aggregate_month', $_POST ) ? $_POST ['aggregate_month'] : '0';
+				$startdate = array_key_exists( 'startdate', $_POST ) ? $_POST ['startdate'] : '';
+				$enddate = array_key_exists( 'enddate', $_POST ) ? $_POST ['enddate'] : '';
+				$startyear = array_key_exists( 'startyear', $_POST ) ? $_POST ['startyear'] : '';
+				$endyear = array_key_exists( 'endyear', $_POST ) ? $_POST ['endyear'] : '';
 				$account = array_key_exists( 'account', $_POST ) ? $_POST ['account'] : '';
-				$accounts_yes = array_key_exists( 'accounts_yes', $_POST ) ? $_POST ['accounts_yes'] : '';
-				$accounts_no = array_key_exists( 'accounts_no', $_POST ) ? $_POST ['accounts_no'] : '';
-				$display = $moduleReports->plot_report( $timemode, $accountmode, $year, $month_month, $year_month, $yearfrom, $yeartil, $account, $accounts_yes, $accounts_no );
+
+				$_accounts_yes = array_key_exists( 'accounts_yes', $_POST ) ? $_POST ['accounts_yes'] : '';
+				if(strlen($_accounts_yes) > 0) {
+					$accounts_yes = array_filter(explode(',',$_accounts_yes));
+				} else {
+					$accounts_yes = array();
+				}
+
+				$_accounts_no = array_key_exists( 'accounts_no', $_POST ) ? $_POST ['accounts_no'] : '';
+				if(strlen($_accounts_no) > 0) {
+					$accounts_no = array_filter(explode(',',$_accounts_no));
+				} else {
+					$accounts_no = array();
+				}
+
+				$display = $moduleReports->plot_report( $aggregate_month, $account_mode, $startdate, $enddate, $startyear, $endyear, $account, $accounts_yes, $accounts_no );
 				break;
 			case 'plot_trends' :
 

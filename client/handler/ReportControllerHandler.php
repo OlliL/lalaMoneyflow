@@ -98,7 +98,8 @@ class ReportControllerHandler extends AbstractHandler {
 		$response = parent::getJson( __FUNCTION__ );
 		$result = null;
 		if ($response instanceof showReportingFormResponse) {
-			$result ['allYears'] = $response->getAllYears();
+			$result ['minDate'] = $response->getMinDate();
+			$result ['maxDate'] = $response->getMaxDate();
 			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
 			$result ['accounts_no'] = $response->getPostingAccountIdsNo();
 		}

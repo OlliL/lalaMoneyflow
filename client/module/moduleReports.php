@@ -38,6 +38,7 @@ use base\Configuration;
 class moduleReports extends module {
 	private $coreText;
 	private const TRENDS_DATE_FORMAT = 'm/Y';
+	private const TRENDS_YEAR_FORMAT = 'Y';
 
 	public final function __construct() {
 		parent::__construct();
@@ -251,8 +252,8 @@ class moduleReports extends module {
 						'name' => $this->coreText->get_domain_meaning( 'MONTHS', ( int ) $month )
 				);
 				$listEtfOverviewResponse = EtfControllerHandler::getInstance()->listEtfOverview( $year, $month );
-				if(is_array($listEtfOverviewResponse))
-					$this->template_assign( 'ETF_OVERVIEW_DATA', $listEtfOverviewResponse['etfData'] );
+				if (is_array( $listEtfOverviewResponse ))
+					$this->template_assign( 'ETF_OVERVIEW_DATA', $listEtfOverviewResponse ['etfData'] );
 
 				$this->template_assign( 'ALL_MONEYFLOW_DATA', $all_moneyflow_data );
 
@@ -335,8 +336,6 @@ class moduleReports extends module {
 	public final function show_reporting_form() {
 		$showReportingFormResponse = ReportControllerHandler::getInstance()->showReportingForm();
 
-		$years = $showReportingFormResponse ['allYears'];
-		$months = $this->coreText->get_domain_data( 'MONTHS' );
 		$postingaccount_values = $showReportingFormResponse ['postingaccounts'];
 		$accounts_no_settings = $showReportingFormResponse ['accounts_no'];
 
@@ -351,17 +350,18 @@ class moduleReports extends module {
 			}
 		}
 
-		$this->template_assign( 'CURRENT_MONTH', date( 'n' ) );
-		$this->template_assign( 'CURRENT_YEAR', date( 'Y' ) );
+		$this->template_assign( 'START_DATE', date_format( new \DateTime( $showReportingFormResponse ['minDate'] ), self::TRENDS_DATE_FORMAT ) );
+		$this->template_assign( 'END_DATE', date_format( new \DateTime( $showReportingFormResponse ['maxDate'] ), self::TRENDS_DATE_FORMAT ) );
+
+		$this->template_assign( 'START_YEAR', date_format( new \DateTime( $showReportingFormResponse ['minDate'] ), self::TRENDS_YEAR_FORMAT ) );
+		$this->template_assign( 'END_YEAR', date_format( new \DateTime( $showReportingFormResponse ['maxDate'] ), self::TRENDS_YEAR_FORMAT ) );
 
 		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template_assign( 'ACCOUNTS_YES', $accounts_yes );
 		$this->template_assign( 'ACCOUNTS_NO', $accounts_no );
-		$this->template_assign( 'MONTHS', $months );
-		$this->template_assign( 'YEARS', $years );
 
-		$this->parse_header();
-		return $this->fetch_template( 'display_show_reporting_form.tpl' );
+		$this->parse_header_without_embedded( 0, 'display_show_reporting_form_bs.tpl' );
+		return $this->fetch_template( 'display_show_reporting_form_bs.tpl' );
 	}
 
 	private final function randomColor() {
@@ -388,51 +388,30 @@ class moduleReports extends module {
 		return $color;
 	}
 
-	public final function plot_report($timemode, $accountmode, $year, $month_month, $year_month, $yearfrom, $yeartil, $account, $accounts_yes, $accounts_no) {
-		$perMonthReport = false;
-		$perYearReport = false;
-		$timeBasedGraph = false;
-		$accountBasedGraph = false;
+	public final function plot_report($aggregate_month, $account_mode, $_startdate, $_enddate, $startyear, $endyear, $account, $accounts_yes, $accounts_no) {
+		$perMonthReport = $aggregate_month == '1' ? false : true;
+		$accountBasedGraph = $account_mode == '1' ? false : true;
 		$encoding = Configuration::getInstance()->getProperty( 'encoding' );
 
-		switch ($timemode) {
-			case 1 :
-				// 1 year
-				$startdate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $year . '-01-01 00:00:00' );
-				$enddate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $year . '-12-31 00:00:00' );
-				$perMonthReport = true;
-				break;
-			case 2 :
-				// 1 month
-				if ($year_month && $month_month) {
-					$startdate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $year_month . '-' . $month_month . '-01 00:00:00' );
-					$enddate = clone $startdate;
-					$enddate->modify( 'last day of this month' );
-					$perMonthReport = true;
-				}
-				break;
-			case 3 :
-				// multiple years
-				$startdate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $yearfrom . '-01-01 00:00:00' );
-				$enddate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $yeartil . '-12-31 00:00:00' );
-				$perYearReport = true;
-				break;
+		if ($perMonthReport) {
+			$startdate = \DateTime::createFromFormat( 'm/Y-d H:i:s', $_startdate . '-01 00:00:00' );
+			$enddate = \DateTime::createFromFormat( 'm/Y-d H:i:s', $_enddate . '-01 00:00:00' );
+			$enddate->modify( 'last day of this month' );
+		} else {
+			// years
+			$startdate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $startyear . '-01-01 00:00:00' );
+			$enddate = \DateTime::createFromFormat( 'Y-m-d H:i:s', $endyear . '-12-31 00:00:00' );
 		}
 
-		switch ($accountmode) {
-			case 1 :
-				// 1 account
-				$accounts_yes = array (
-						$account
-				);
-				$timeBasedGraph = true;
-				break;
-			case 2 :
-				// multiple accounts
-				if (! is_array( $accounts_yes ))
-					$accounts_yes = array ();
-				$accountBasedGraph = true;
-				break;
+		if (!$accountBasedGraph) {
+			// time based - only 1 account
+			$accounts_yes = array (
+					$account
+			);
+		} else {
+			// multiple accounts
+			if (! is_array( $accounts_yes ))
+				$accounts_yes = array ();
 		}
 
 		if (! is_array( $accounts_no ))
@@ -442,7 +421,7 @@ class moduleReports extends module {
 
 		if ($perMonthReport) {
 			$report = ReportControllerHandler::getInstance()->showMonthlyReportGraph( $accounts_yes, $accounts_no, $startdate, $enddate );
-		} elseif ($perYearReport) {
+		} else {
 			$report = ReportControllerHandler::getInstance()->showYearlyReportGraph( $accounts_yes, $accounts_no, $startdate, $enddate );
 		}
 
@@ -453,6 +432,31 @@ class moduleReports extends module {
 			$chartData = array ();
 			$chartColors = array ();
 			$chartTitle = '';
+
+			if ($startdate->format( 'Y' ) == $enddate->format( 'Y' )) {
+				$sameYear = true;
+			} else {
+				$sameYear = false;
+			}
+			if ($startdate->format( 'Y-m' ) == $enddate->format( 'Y-m' )) {
+				$sameMonth = true;
+			} else {
+				$sameMonth = false;
+			}
+
+			if ($perMonthReport) {
+				if ($sameMonth) {
+					$chartTitle = sprintf( "%s %s", html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $startdate->format( 'n' ) ), ENT_COMPAT | ENT_HTML401, $encoding ), $startdate->format( 'Y' ) );
+				} else {
+					$chartTitle = sprintf( "%s %s%s%s %s", html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $startdate->format( 'n' ) ), ENT_COMPAT | ENT_HTML401, $encoding ), $startdate->format( 'Y' ), $this->coreText->get_text( 170 ), html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $enddate->format( 'n' ) ), ENT_COMPAT | ENT_HTML401, $encoding ), $enddate->format( 'Y' ) );
+				}
+			} else {
+				if ($sameYear) {
+					$chartTitle = sprintf( "%s", $startdate->format( 'Y' ) );
+				} else {
+					$chartTitle = sprintf( "%s%s%s", $startdate->format( 'Y' ), $this->coreText->get_text( 170 ), $enddate->format( 'Y' ) );
+				}
+			}
 
 			if ($accountBasedGraph) {
 				$summedData = array ();
@@ -480,26 +484,14 @@ class moduleReports extends module {
 					$chartData [] = round( $data ['amount'], 2 );
 					$chartColors [] = $this->randomColor();
 				}
-
-				switch ($timemode) {
-					case 1 :
-						// 1 year
-						$chartTitle = $startdate->format( 'Y' );
-						break;
-					case 2 :
-						// 1 month
-						$chartTitle = sprintf( "%s %s", html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $startdate->format( 'n' ) ), ENT_COMPAT | ENT_HTML401, $encoding ), $startdate->format( 'Y' ) );
-						break;
-					case 3 :
-						// multiple years
-						$chartTitle = sprintf( "%s %s %s", $startdate->format( 'Y' ), $this->coreText->get_text( 170 ), $enddate->format( 'Y' ) );
-						break;
-				}
-			} elseif ($timeBasedGraph) {
+			} else {
 				foreach ( $all_data as $data ) {
 					$date = new \DateTime( $data ['date_ts'] );
 					if ($perMonthReport) {
 						$key = html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $date->format( 'n' ) ), ENT_COMPAT | ENT_HTML401, $encoding );
+						if (!$sameYear) {
+							$key .= " '" . $date->format( 'y' );
+						}
 					} else {
 						$key = $date->format( 'Y' );
 					}
@@ -508,32 +500,21 @@ class moduleReports extends module {
 					$chartColors [] = $this->randomColor();
 				}
 
-				switch ($timemode) {
-					case 1 :
-						// 1 year
-						$chartTitle = sprintf( "%s - %s", $all_data [0] ['postingaccountname'], $startdate->format( 'Y' ) );
-						break;
-					case 2 :
-						// 1 month
-						$chartTitle = sprintf( "%s - %s %s", $all_data [0] ['postingaccountname'], html_entity_decode( $this->coreText->get_domain_meaning( 'MONTHS', $startdate->format( 'n' ) ), ENT_COMPAT | ENT_HTML401, $encoding ), $startdate->format( 'Y' ) );
-						break;
-					case 3 :
-						// multiple years
-						$chartTitle = sprintf( "%s - %s %s %s", $all_data [0] ['postingaccountname'], $startdate->format( 'Y' ), $this->coreText->get_text( 170 ), $enddate->format( 'Y' ) );
-						break;
-				}
+				$chartTitle = sprintf( "%s - %s", $all_data [0] ['postingaccountname'], $chartTitle );
 			}
 
-			$this->template_assign_raw( 'CHART_LABELS', json_encode( $chartLabels ) );
-			$this->template_assign_raw( 'CHART_DATA', json_encode( $chartData ) );
-			$this->template_assign_raw( 'CHART_COLORS', json_encode( $chartColors ) );
-			$this->template_assign_raw( 'CHART_TITLE', $chartTitle );
+			$result = array (
+					"chartLabels" => $chartLabels,
+					"chartData" => $chartData,
+					"chartColors" => $chartColors,
+					"chartTitle" => $chartTitle
+			);
 
-			$this->parse_header_without_embedded( 1, 'display_plot_report_bs.tpl' );
-			return $this->fetch_template( 'display_plot_report_bs.tpl' );
+			return $this->handleReturnForAjax( $result );
 		}
-		$this->parse_header_without_embedded( 1, 'display_show_reporting_plot_no_data_bs.tpl' );
-		return $this->fetch_template( 'display_show_reporting_plot_no_data_bs.tpl' );
+
+		$this->add_error( 261 );
+		return $this->handleReturnForAjax( false );
 	}
 }
 
