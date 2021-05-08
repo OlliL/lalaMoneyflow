@@ -759,17 +759,6 @@
          * AJAX AND INIT
          *
          ************************************************************/
-        function copyIfSplitEntries() {
-          if(filledSplitEntryRows.length > 0) {
-            filledSplitEntryRows.sort(function(a, b){return a-b});
-            var elementSplitEntryComment = $('#addmnfsubcomment' + filledSplitEntryRows[0]);
-            var elementSplitEntryPostingAccount = $('#addmnfsubmpa_postingaccountid' + filledSplitEntryRows[0]);
-            $('#addmnfcomment').val(elementSplitEntryComment.val());
-            $('#addmnfmpa_postingaccountid').val(elementSplitEntryPostingAccount.val());
-          }
-          return true;
-        }
-
         function btnEditMoneyflowCancel() {
           window.close();
         }
@@ -796,9 +785,6 @@
 
         $('#addmnfform').validator();
         $('#addmnfform').ajaxForm({
-            beforeSubmit: function() {
-              return copyIfSplitEntries();
-            },
             dataType: 'json',
             success: ajaxAddMoneyflowSuccess,
             error: ajaxAddMoneyflowError
