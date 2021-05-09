@@ -65,7 +65,8 @@
             <li{if $TEMPLATE == "display_add_importedmoneyflows_bs.tpl"} class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=add_importedmoneyflows"><i class="glyphicon glyphicon-import"></i></a></li>
             <li><a href="{$ENV_INDEX_PHP}?action=upfrm_cmp_data"><i class="glyphicon glyphicon-transfer"></i></a></li>
 
-            <li class="dropdown">
+            <li class="dropdown {if $TEMPLATE == "display_plot_trends_bs.tpl"
+                                 || $TEMPLATE == "display_show_reporting_form_bs.tpl"}active{/if}">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-stats"></i> <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li {if $TEMPLATE == "display_plot_trends_bs.tpl"} class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=plot_trends">{#TEXT_6#}</a></li>

@@ -26,7 +26,7 @@
             </div>
             
             <div class="row text-center" id="showrepmonthview">
-              <div class="form-group col-md-5 col-xs-12">
+              <div class="form-group col-md-5 col-xs-5">
                 <span class="has-float-label">
                   <div class='input-group date col-xs-12' id="showrepstartdateDiv">
                     <input type="text" class="form-control" name="startdate" id="showrepstartdate" required data-error="{#TEXT_329#}" value="{$START_DATE}">
@@ -51,7 +51,7 @@
                 </script>
               </div>
 
-              <div class="form-group col-md-2 col-xs-12">
+              <div class="form-group col-md-2 col-xs-2">
                 <div class="text-center">
                   <button type="button" class="btn btn-default" aria-label="Left Align" onClick="showrepCopyDate()">
                     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
@@ -59,7 +59,7 @@
                 </div>
               </div>
 
-              <div class="form-group col-md-5 col-xs-12">
+              <div class="form-group col-md-5 col-xs-5">
                 <span class="has-float-label">
                   <div class='input-group date col-xs-12' id="showrependdateDiv">
                     <input type="text" class="form-control" name="enddate" id="showrependdate" required data-error="{#TEXT_330#}" value="{$END_DATE}">
@@ -87,7 +87,7 @@
             </div>
 
             <div class="row text-center" id="showrepyearview"  style="display: none;">
-              <div class="form-group col-md-5 col-xs-12">
+              <div class="form-group col-md-5 col-xs-5">
                 <span class="has-float-label">
                   <div class='input-group date col-xs-12' id="showrepstartyearDiv">
                     <input type="text" class="form-control" name="startyear" id="showrepstartyear" required data-error="{#TEXT_329#}" value="{$START_YEAR}">
@@ -112,7 +112,7 @@
                 </script>
               </div>
 
-              <div class="form-group col-md-2 col-xs-12">
+              <div class="form-group col-md-2 col-xs-2">
                 <div class="text-center">
                   <button type="button" class="btn btn-default" aria-label="Left Align" onClick="showrepCopyYear()">
                     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
@@ -120,7 +120,7 @@
                 </div>
               </div>
 
-              <div class="form-group col-md-5 col-xs-12">
+              <div class="form-group col-md-5 col-xs-5">
                 <span class="has-float-label">
                   <div class='input-group date col-xs-12' id="showrependyearDiv">
                     <input type="text" class="form-control" name="endyear" id="showrependyear" required data-error="{#TEXT_330#}" value="{$END_YEAR}">
