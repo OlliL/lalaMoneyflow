@@ -48,7 +48,7 @@
                     <span class="glyphicon glyphicon-calendar"></span>
                   </span>
                 </div>
-                <label for="sermnfenddate">{#TEXT_17#}</label>
+                <label for="sermnfenddate">{#TEXT_70#}</label>
               </span>
               <div class="help-block with-errors"></div>
               <script>
