@@ -61,7 +61,7 @@
           <ul class="nav navbar-nav">
             
             <li{if $TEMPLATE == "display_list_reports_bs.tpl"} class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$REPORTS_MONTH}&amp;reports_year={$REPORTS_YEAR}"><i class="glyphicon glyphicon-list-alt"></i></a></li>
-            <li><a href="{$ENV_INDEX_PHP}?action=search"><i class="glyphicon glyphicon-search"></i></a></li>
+            <li{if $TEMPLATE =="display_search_bs.tpl"} class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=search"><i class="glyphicon glyphicon-search"></i></a></li>
             <li{if $TEMPLATE == "display_add_importedmoneyflows_bs.tpl"} class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=add_importedmoneyflows"><i class="glyphicon glyphicon-import"></i></a></li>
             <li><a href="{$ENV_INDEX_PHP}?action=upfrm_cmp_data"><i class="glyphicon glyphicon-transfer"></i></a></li>
 

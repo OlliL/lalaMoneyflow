@@ -170,7 +170,7 @@
                 display: true,
                 scaleLabel: {
                   display: true,
-                  labelString: '{#TEXT_172#}'
+                  labelString: '{#TEXT_18#}'
                 }
               }]
             }

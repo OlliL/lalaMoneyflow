@@ -48,13 +48,13 @@ class moduleSearch extends module {
 			$searchparams ['grouping2'] = 'month';
 			$searchparams ['order'] = 'grouping';
 		}
-		$this->template_assign( 'SEARCHPARAMS', $searchparams );
+		$this->template_assign_raw( 'SEARCHPARAMS', json_encode( $searchparams ) );
 		$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner($contractpartner_values) );
 		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template_assign( 'ERRORS', $this->get_errors() );
 
-		$this->parse_header();
-		return $this->fetch_template( 'display_search.tpl' );
+		$this->parse_header_without_embedded( 0, 'display_search_bs.tpl' );
+		return $this->fetch_template( 'display_search_bs.tpl' );
 	}
 
 	public final function do_search($searchstring, $contractpartner, $postingaccount, $startdate, $enddate, $equal, $casesensitive, $regexp, $minus, $grouping1, $grouping2, $order) {
@@ -181,13 +181,13 @@ class moduleSearch extends module {
 				}
 			}
 
-			$this->template_assign( 'SEARCHPARAMS', $searchparams );
+			$this->template_assign_raw( 'SEARCHPARAMS', json_encode( $searchparams ) );
 			$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner($contractpartner_values) );
 			$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 			$this->template_assign( 'ERRORS', $this->get_errors() );
 
-			$this->parse_header();
-			return $this->fetch_template( 'display_search.tpl' );
+			$this->parse_header_without_embedded( 0, 'display_search_bs.tpl' );
+			return $this->fetch_template( 'display_search_bs.tpl' );
 		}
 
 		return $this->display_search( $searchparams );
