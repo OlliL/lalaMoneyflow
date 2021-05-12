@@ -8,7 +8,7 @@
           <div class="col-xs-12">&nbsp;</div>
         </div>
         <form action="{$ENV_INDEX_PHP}" method="POST" name="searchmoneyflow" id="sermnfform">
-          <input type="hidden" name="action"                          value="do_search">
+          <input type="hidden" name="action" value="do_search">
 
           <div class="span2 well">
 
@@ -137,7 +137,7 @@
 
             <div class="form-group col-md-3 col-xs-12">
               <div class="form-group">
-                  <button type="submit" class="btn btn-primary"                                           >{#TEXT_83#}</button>
+                  <button type="submit" class="btn btn-primary">{#TEXT_83#}</button>
               </div>
             </div>  
             <div class="form-group col-md-3 col-xs-12">
@@ -146,10 +146,9 @@
                 <div class="input-group col-xs-12">
                   <select class="form-control" name="grouping1" id="sermnfgrouping1">
                     <option value="">&nbsp;</option>
-					<option value=""> </option>
-					<option value="year"             {if $SEARCHPARAMS.grouping1 == "year"           }selected{/if}> {#TEXT_57#}</option>
-					<option value="month"            {if $SEARCHPARAMS.grouping1 == "month"          }selected{/if}> {#TEXT_56#}</option>
-					<option value="contractpartner"  {if $SEARCHPARAMS.grouping1 == "contractpartner"}selected{/if}> {#TEXT_2#}</option>
+                    <option value="year"           > {#TEXT_57#}</option>
+                    <option value="month"          > {#TEXT_56#}</option>
+                    <option value="contractpartner"> {#TEXT_2#}</option>
                   </select>
                 </div>
                 <label for="sermnfgrouping1">{#TEXT_80#}</label>
@@ -163,9 +162,9 @@
                 <div class="input-group col-xs-12">
                   <select class="form-control" name="grouping2" id="sermnfgrouping2">
                     <option value="">&nbsp;</option>
-					<option value="year"             {if $SEARCHPARAMS.grouping2 == "year"           }selected{/if}> {#TEXT_57#}</option>
-					<option value="month"            {if $SEARCHPARAMS.grouping2 == "month"          }selected{/if}> {#TEXT_56#}</option>
-					<option value="contractpartner"  {if $SEARCHPARAMS.grouping2 == "contractpartner"}selected{/if}> {#TEXT_2#}</option>
+                    <option value="year"           > {#TEXT_57#}</option>
+                    <option value="month"          > {#TEXT_56#}</option>
+                    <option value="contractpartner"> {#TEXT_2#}</option>
                   </select>
                 </div>
                 <label for="sermnfgrouping2">{#TEXT_103#}</label>
@@ -179,9 +178,9 @@
                 <div class="input-group col-xs-12">
                   <select class="form-control" name="order" id="sermnforder">
                     <option value="">&nbsp;</option>
-					<option value="grouping" {if $SEARCHPARAMS.order == "grouping"}selected{/if}> {#TEXT_105#}</option>
-					<option value="amount"   {if $SEARCHPARAMS.order == "amount"  }selected{/if}> {#TEXT_18#}</option>
-					<option value="comment"  {if $SEARCHPARAMS.order == "comment" }selected{/if}> {#TEXT_21#}</option>
+                    <option value="grouping"> {#TEXT_105#}</option>
+                    <option value="amount"  > {#TEXT_18#}</option>
+                    <option value="comment" > {#TEXT_21#}</option>
                   </select>
                 </div>
                 <label for="sermnforder">{#TEXT_104#}</label>
@@ -191,10 +190,11 @@
             </div>
 
     </div>
+
         </form>
       </div>
 
-			{if $SEARCH_DONE == 1}
+{if $SEARCH_DONE == 1}
         <div class="row">
           <div class="col-xs-12">
             <div class="panel panel-default">
@@ -205,21 +205,21 @@
                 <table class="table table-striped table-bordered table-hover">
                   <thead>
                     <tr>
-					{if $COLUMNS.year  == "1"}<th class="text-center">{#TEXT_81#}</th>{/if}
-					{if $COLUMNS.month == "1"}<th class="text-center">{#TEXT_82#}</th>{/if}
-					{if $COLUMNS.name  == "1"}<th class="text-center">{#TEXT_2#}</th>{/if}
-					<th class="text-center">{#TEXT_18#}</th>
-					<th class="text-center">{#TEXT_21#}</th>
+                      {if $COLUMNS.year  == "1"}<th class="text-center">{#TEXT_81#}</th>{/if}
+                      {if $COLUMNS.month == "1"}<th class="text-center">{#TEXT_82#}</th>{/if}
+                      {if $COLUMNS.name  == "1"}<th class="text-center">{#TEXT_2#}</th>{/if}
+                      <th class="text-center">{#TEXT_18#}</th>
+                      <th class="text-center">{#TEXT_21#}</th>
                     </tr>
                   </thead>
                   <tbody>
 {section name=DATA loop=$RESULTS}
                     <tr>
-						{if $COLUMNS.year  == "1"}<td class="text-center">{$RESULTS[DATA].year}</td>{/if}
-						{if $COLUMNS.month == "1"}<td class="text-center">{$RESULTS[DATA].month}</td>{/if}
-						{if $COLUMNS.name  == "1"}<td class="text-center">{$RESULTS[DATA].name}</td>{/if}
-                                                <td class="text-right of_number_to_be_evaluated" style="white-space: nowrap;">{$RESULTS[DATA].amount|number_format} {#CURRENCY#}</td>
-						<td>{$RESULTS[DATA].comment}</td>
+                      {if $COLUMNS.year  == "1"}<td class="text-center">{$RESULTS[DATA].year}</td>{/if}
+                      {if $COLUMNS.month == "1"}<td class="text-center">{$RESULTS[DATA].month}</td>{/if}
+                      {if $COLUMNS.name  == "1"}<td class="text-center">{$RESULTS[DATA].name}</td>{/if}
+                      <td class="text-right of_number_to_be_evaluated" style="white-space: nowrap;">{$RESULTS[DATA].amount|number_format} {#CURRENCY#}</td>
+                      <td>{$RESULTS[DATA].comment}</td>
 {/section}
                   </tbody>
                 </table>
@@ -227,7 +227,7 @@
             </div>
           </div>
         </div>
-			{/if}
+{/if}
 
 <script>
         var searchParams = {$SEARCHPARAMS};
@@ -242,14 +242,15 @@
               case "equal": 
               case "casesensitive":
               case "regexp":
-              case "minus": if( value == '1' ) {
+              case "minus": 
+                            if( value == '1' ) {
                               $('#sermnf'+key).prop('checked', true);
                             } else {
                               $('#sermnf'+key).prop('checked', false);
                             }
                             break;
               default:
-                             $('#sermnf'+key).val(value);
+                            $('#sermnf'+key).val(value);
                             break;
             }
           }
@@ -263,7 +264,6 @@
         $('#sermnfform').validator();
 
         $("td.of_number_to_be_evaluated:contains('-')").addClass('red');
-
 </script>
 
 {/literal}
