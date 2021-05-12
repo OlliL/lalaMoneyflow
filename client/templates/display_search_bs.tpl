@@ -220,6 +220,7 @@
                       {if $COLUMNS.name  == "1"}<td class="text-center">{$RESULTS[DATA].name}</td>{/if}
                       <td class="text-right of_number_to_be_evaluated" style="white-space: nowrap;">{$RESULTS[DATA].amount|number_format} {#CURRENCY#}</td>
                       <td>{$RESULTS[DATA].comment}</td>
+                    </tr>
 {/section}
                   </tbody>
                 </table>
