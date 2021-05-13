@@ -173,8 +173,8 @@
                     <span class="glyphicon glyphicon-forward"></span>
                   </button>
                   <br>
-                  <button type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-chevron-right" onclick="showrepmove('showrepmpa_postingaccountid_yes','showrepmpa_postingaccountid_no', false)"></span>
+                  <button type="button" class="btn btn-default" onclick="showrepmove('showrepmpa_postingaccountid_yes','showrepmpa_postingaccountid_no', false)">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
                   </button>
                   <br>
                   <br>
