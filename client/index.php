@@ -137,6 +137,7 @@ if ($is_logged_in == 0) {
 		case 'edit_contractpartner' :
 		case 'edit_contractpartner_submit' :
 		case 'delete_contractpartner' :
+		case 'delete_contractpartner_submit' :
 			$moduleContractPartners = new moduleContractPartners();
 			break;
 		case 'list_contractpartneraccounts' :
@@ -154,8 +155,8 @@ if ($is_logged_in == 0) {
 		case 'delete_moneyflow' :
 		case 'delete_moneyflow_submit' :
 		case 'show_moneyflow_receipt' :
-		case 'delete_moneyflowreceipt_submit':
-		case 'search_moneyflow_by_amount':
+		case 'delete_moneyflowreceipt_submit' :
+		case 'search_moneyflow_by_amount' :
 			$moduleMoneyFlows = new moduleMoneyFlows();
 			break;
 		case 'add_importedmoneyflows' :
@@ -212,17 +213,17 @@ if ($is_logged_in == 0) {
 			$moduleCompare = new moduleCompare();
 			break;
 		case 'list_etf_flows' :
-		case 'calc_etf_sale':
-		case 'display_edit_etf_flow':
-		case 'edit_etf_flow':
-		case 'display_delete_etf_flow':
-		case 'delete_etf_flow':
+		case 'calc_etf_sale' :
+		case 'display_edit_etf_flow' :
+		case 'edit_etf_flow' :
+		case 'display_delete_etf_flow' :
+		case 'delete_etf_flow' :
 			$moduleEtf = new moduleEtf();
 			break;
-		case 'display_add_imported_moneyflow_receipt':
-		case 'add_imported_moneyflow_receipt':
-		case 'display_import_imported_moneyflow_receipts':
-		case 'import_imported_moneyflow_receipt_submit':
+		case 'display_add_imported_moneyflow_receipt' :
+		case 'add_imported_moneyflow_receipt' :
+		case 'display_import_imported_moneyflow_receipts' :
+		case 'import_imported_moneyflow_receipt_submit' :
 			$moduleImportedMoneyflowReceipt = new moduleImportedMoneyflowReceipt();
 			break;
 		default :
@@ -367,9 +368,14 @@ if ($is_logged_in == 0) {
 
 			case 'delete_contractpartner' :
 
-				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'contractpartnerid', $_REQUEST ) ? $_REQUEST ['contractpartnerid'] : '';
-				$display = $moduleContractPartners->display_delete_contractpartner( $realaction, $id );
+				$display = $moduleContractPartners->display_delete_contractpartner( $id );
+				break;
+
+			case 'delete_contractpartner_submit' :
+
+				$id = array_key_exists( 'contractpartnerid', $_REQUEST ) ? $_REQUEST ['contractpartnerid'] : '';
+				$display = $moduleContractPartners->delete_contractpartner( $id );
 				break;
 
 			/* contractpartneraccounts */
@@ -454,11 +460,11 @@ if ($is_logged_in == 0) {
 				$display = $moduleMoneyFlows->delete_moneyflowreceipt_submit( $id );
 				break;
 
-			case 'search_moneyflow_by_amount':
+			case 'search_moneyflow_by_amount' :
 				$amount = array_key_exists( 'amount', $_REQUEST ) ? $_REQUEST ['amount'] : '';
 				$dateFrom = array_key_exists( 'datefrom', $_REQUEST ) ? $_REQUEST ['datefrom'] : '';
 				$dateTil = array_key_exists( 'datetil', $_REQUEST ) ? $_REQUEST ['datetil'] : '';
-				$display = $moduleMoneyFlows->search_moneyflow_by_amount($amount, $dateFrom, $dateTil);
+				$display = $moduleMoneyFlows->search_moneyflow_by_amount( $amount, $dateFrom, $dateTil );
 				break;
 
 			/* imported moneyflows */
@@ -529,17 +535,17 @@ if ($is_logged_in == 0) {
 				$account = array_key_exists( 'account', $_POST ) ? $_POST ['account'] : '';
 
 				$_accounts_yes = array_key_exists( 'accounts_yes', $_POST ) ? $_POST ['accounts_yes'] : '';
-				if(strlen($_accounts_yes) > 0) {
-					$accounts_yes = array_filter(explode(',',$_accounts_yes));
+				if (strlen( $_accounts_yes ) > 0) {
+					$accounts_yes = array_filter( explode( ',', $_accounts_yes ) );
 				} else {
-					$accounts_yes = array();
+					$accounts_yes = array ();
 				}
 
 				$_accounts_no = array_key_exists( 'accounts_no', $_POST ) ? $_POST ['accounts_no'] : '';
-				if(strlen($_accounts_no) > 0) {
-					$accounts_no = array_filter(explode(',',$_accounts_no));
+				if (strlen( $_accounts_no ) > 0) {
+					$accounts_no = array_filter( explode( ',', $_accounts_no ) );
 				} else {
-					$accounts_no = array();
+					$accounts_no = array ();
 				}
 
 				$display = $moduleReports->plot_report( $aggregate_month, $account_mode, $startdate, $enddate, $startyear, $endyear, $account, $accounts_yes, $accounts_no );
@@ -603,49 +609,49 @@ if ($is_logged_in == 0) {
 				break;
 
 			case 'calc_etf_sale' :
-				$display = $moduleEtf->calc_etf_sale($all_data);
+				$display = $moduleEtf->calc_etf_sale( $all_data );
 				break;
 
 			case 'display_edit_etf_flow' :
 				$id = array_key_exists( 'etfflowid', $_REQUEST ) ? $_REQUEST ['etfflowid'] : 0;
-				$display = $moduleEtf->display_edit_etf_flow($id, $all_data);
+				$display = $moduleEtf->display_edit_etf_flow( $id, $all_data );
 				break;
 
 			case 'edit_etf_flow' :
 				$id = array_key_exists( 'etfflowid', $_REQUEST ) ? $_REQUEST ['etfflowid'] : 0;
-				$display = $moduleEtf->edit_etf_flow($id, $all_data);
+				$display = $moduleEtf->edit_etf_flow( $id, $all_data );
 				break;
 
 			case 'display_delete_etf_flow' :
 				$id = array_key_exists( 'etfflowid', $_REQUEST ) ? $_REQUEST ['etfflowid'] : 0;
-				$display = $moduleEtf->display_delete_etf_flow($id);
+				$display = $moduleEtf->display_delete_etf_flow( $id );
 				break;
 
 			case 'delete_etf_flow' :
 				$id = array_key_exists( 'etfflowid', $_REQUEST ) ? $_REQUEST ['etfflowid'] : 0;
-				$display = $moduleEtf->delete_etf_flow($id);
+				$display = $moduleEtf->delete_etf_flow( $id );
 				break;
 
 			/* Imported Moneyflow Receipt */
-			case 'display_add_imported_moneyflow_receipt':
+			case 'display_add_imported_moneyflow_receipt' :
 				$display = $moduleImportedMoneyflowReceipt->display_add_imported_moneyflow_receipt();
 				break;
 
-			case 'add_imported_moneyflow_receipt':
-				if( array_key_exists( 'all_data', $_FILES ) && is_array( $_FILES ['all_data'])) {
+			case 'add_imported_moneyflow_receipt' :
+				if (array_key_exists( 'all_data', $_FILES ) && is_array( $_FILES ['all_data'] )) {
 					$file_data = $_FILES ['all_data'];
 				} else {
 					$file_data = null;
 				}
-				$display = $moduleImportedMoneyflowReceipt->add_imported_moneyflow_receipt($file_data);
+				$display = $moduleImportedMoneyflowReceipt->add_imported_moneyflow_receipt( $file_data );
 				break;
 
-			case 'display_import_imported_moneyflow_receipts':
+			case 'display_import_imported_moneyflow_receipts' :
 				$display = $moduleImportedMoneyflowReceipt->display_import_imported_moneyflow_receipts();
 				break;
 
-			case 'import_imported_moneyflow_receipt_submit':
-				$display = $moduleImportedMoneyflowReceipt->import_imported_moneyflow_receipt_submit($all_data);
+			case 'import_imported_moneyflow_receipt_submit' :
+				$display = $moduleImportedMoneyflowReceipt->import_imported_moneyflow_receipt_submit( $all_data );
 				break;
 			default :
 

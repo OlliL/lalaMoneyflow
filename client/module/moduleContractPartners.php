@@ -82,27 +82,17 @@ class moduleContractPartners extends module {
 		return $this->handleReturnForAjax( $ret );
 	}
 
-	public final function display_delete_contractpartner($realaction, $contractpartnerid) {
-		switch ($realaction) {
-			case 'yes' :
-				if (ContractpartnerControllerHandler::getInstance()->deleteContractpartner( $contractpartnerid )) {
-					$this->template_assign( 'CLOSE', 1 );
-					break;
-				}
-			default :
-				if ($contractpartnerid > 0) {
-					$all_data = ContractpartnerControllerHandler::getInstance()->showDeleteContractpartner( $contractpartnerid );
-					if ($all_data) {
-						$this->template_assign( 'ALL_DATA', $all_data );
-					}
-				}
-				break;
-		}
+	public final function display_delete_contractpartner($contractpartnerid) {
+		$all_data = ContractpartnerControllerHandler::getInstance()->showDeleteContractpartner( $contractpartnerid );
+		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 
-		$this->template_assign( 'ERRORS', $this->get_errors() );
+		$this->parse_header_without_embedded( 1, 'display_delete_contractpartner_bs.tpl' );
+		return $this->fetch_template( 'display_delete_contractpartner_bs.tpl' );
+	}
 
-		$this->parse_header( 1 );
-		return $this->fetch_template( 'display_delete_contractpartner.tpl' );
+	public final function delete_contractpartner($contractpartnerid) {
+		$ret = ContractpartnerControllerHandler::getInstance()->deleteContractpartner( $contractpartnerid );
+		return $this->handleReturnForAjax( $ret );
 	}
 }
 ?>
