@@ -7,7 +7,7 @@
         <div class="row">
           <div class="col-xs-12">&nbsp;</div>
         </div>
-        <form action="{$ENV_INDEX_PHP}" method="POST" name="searchmoneyflow" id="sermnfform">
+        <form action="{$ENV_INDEX_PHP}" method="GET" name="searchmoneyflow" id="sermnfform">
           <input type="hidden" name="action" value="do_search">
 
           <div class="span2 well">
