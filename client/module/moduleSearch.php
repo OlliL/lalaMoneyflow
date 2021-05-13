@@ -124,7 +124,6 @@ class moduleSearch extends module {
 				}
 			}
 
-			$months = array ();
 			if ($data_is_valid) {
 
 				$resultsPreGrouped = $searchMoneyflows ['search_results'];
@@ -185,6 +184,7 @@ class moduleSearch extends module {
 						$columns [$column] = 1;
 					}
 
+					$months = array ();
 					for($month = 1; $month <= 12; $month ++) {
 						$months [$month] = $this->coreText->get_domain_meaning( 'MONTHS', $month );
 					}

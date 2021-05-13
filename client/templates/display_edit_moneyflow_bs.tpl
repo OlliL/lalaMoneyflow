@@ -766,8 +766,8 @@
         function ajaxAddMoneyflowSuccess(data) {
 {/literal}
 {if $NEW_WINDOW}
-          opener.location  =ENV_REFERER;
           window.close();
+          opener.location.reload(true);
 {else}
           resetFormAddMoneyflow();
 {/if}
