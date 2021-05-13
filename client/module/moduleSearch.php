@@ -256,12 +256,18 @@ class moduleSearch extends module {
 		}
 
 		foreach ( $return as $key => $item ) {
+			$return [$key] ['comment'] = implode( ', ', array_unique( $item ['comments'] ) );
+
 			$sortKey = array ();
 			foreach ( $item ['entries'] as $entryKey => $entryItem ) {
 				$sortKey [$entryKey] = $entryItem ['bookingdate'];
+				if ($entryItem ['mur_userid'] == Environment::getInstance()->getUserId()) {
+					$return [$key] ['entries'] [$entryKey] ['owner'] = true;
+				} else {
+					$return [$key] ['entries'] [$entryKey] ['owner'] = false;
+				}
 			}
-			array_multisort( $sortKey, SORT_ASC | SORT_STRING, $return[$key] ['entries'] );
-			$return [$key] ['comment'] = implode( ', ', array_unique( $item ['comments'] ) );
+			array_multisort( $sortKey, SORT_ASC | SORT_STRING, $return [$key] ['entries'] );
 		}
 
 		return $return;
