@@ -228,15 +228,15 @@
 </td>
 {if $COLUMNS.year  == "1" && $COLUMNS.month == "1" }
 {assign var="month" value=$RESULTS[DATA].month}
-                      <td class="text-center"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$RESULTS[DATA].month}&amp;reports_year={$RESULTS[DATA].year}">{$MONTHS[$month]} {$RESULTS[DATA].year}</a></td>
+                      <td class="text-center" style="vertical-align: middle;"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$RESULTS[DATA].month}&amp;reports_year={$RESULTS[DATA].year}">{$MONTHS[$month]} {$RESULTS[DATA].year}</a></td>
 {elseif $COLUMNS.year  == "1"}
-                      <td class="text-center"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_year={$RESULTS[DATA].year}">{$RESULTS[DATA].year}</a></td>
+                      <td class="text-center" style="vertical-align: middle;"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_year={$RESULTS[DATA].year}">{$RESULTS[DATA].year}</a></td>
 {elseif $COLUMNS.month == "1"}
-                      <td class="text-center">{$RESULTS[DATA].month}</td>
+                      <td class="text-center" style="vertical-align: middle;">{$RESULTS[DATA].month}</td>
 {/if}
-                      {if $COLUMNS.name  == "1"}<td class="text-center">{$RESULTS[DATA].name}</td>{/if}
-                      <td class="text-right of_number_to_be_evaluated" style="white-space: nowrap;">{$RESULTS[DATA].amount|number_format} {#CURRENCY#}</td>
-                      <td>{$RESULTS[DATA].comment}</td>
+                      {if $COLUMNS.name  == "1"}<td class="text-center" style="vertical-align: middle;">{$RESULTS[DATA].name}</td>{/if}
+                      <td class="text-right of_number_to_be_evaluated" style="white-space: nowrap; vertical-align: middle;">{$RESULTS[DATA].amount|number_format} {#CURRENCY#}</td>
+                      <td style="vertical-align: middle;">{$RESULTS[DATA].comment}</td>
                     </tr>
   
 
