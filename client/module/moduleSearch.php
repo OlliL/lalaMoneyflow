@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2006-2015 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
@@ -31,11 +32,14 @@ namespace client\module;
 use base\ErrorCode;
 use client\handler\MoneyflowControllerHandler;
 use client\util\Environment;
+use client\core\coreText;
 
 class moduleSearch extends module {
+	private $coreText;
 
 	public final function __construct() {
 		parent::__construct();
+		$this->coreText = new coreText();
 	}
 
 	public final function display_search($searchparams = null) {
@@ -49,7 +53,7 @@ class moduleSearch extends module {
 			$searchparams ['order'] = 'grouping';
 		}
 		$this->template_assign_raw( 'SEARCHPARAMS', json_encode( $searchparams ) );
-		$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner($contractpartner_values) );
+		$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
 		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 		$this->template_assign( 'ERRORS', $this->get_errors() );
 
@@ -120,8 +124,15 @@ class moduleSearch extends module {
 				}
 			}
 
+			$months = array ();
 			if ($data_is_valid) {
-				$results = $searchMoneyflows ['search_results'];
+
+				$resultsPreGrouped = $searchMoneyflows ['search_results'];
+				$results = $this->groupArray( $resultsPreGrouped, array (
+						$grouping1,
+						$grouping2
+				) );
+
 				if (is_array( $results ) && count( $results ) > 0) {
 					if ($order) {
 						if ($order === 'grouping') {
@@ -173,6 +184,12 @@ class moduleSearch extends module {
 					foreach ( array_keys( $results [0] ) as $column ) {
 						$columns [$column] = 1;
 					}
+
+					for($month = 1; $month <= 12; $month ++) {
+						$months [$month] = $this->coreText->get_domain_meaning( 'MONTHS', $month );
+					}
+
+					$this->template_assign( 'MONTHS', $months );
 					$this->template_assign( 'SEARCH_DONE', 1 );
 					$this->template_assign( 'COLUMNS', $columns );
 					$this->template_assign( 'RESULTS', $results );
@@ -182,7 +199,7 @@ class moduleSearch extends module {
 			}
 
 			$this->template_assign_raw( 'SEARCHPARAMS', json_encode( $searchparams ) );
-			$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner($contractpartner_values) );
+			$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
 			$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
 			$this->template_assign( 'ERRORS', $this->get_errors() );
 
@@ -191,6 +208,63 @@ class moduleSearch extends module {
 		}
 
 		return $this->display_search( $searchparams );
+	}
+
+	private final function groupArray(array $results, array $groupBy) {
+		$return = array ();
+		foreach ( $results as $item ) {
+			$year = ( int ) substr( $item ['bookingdate'], 0, 4 );
+			$month = ( int ) substr( $item ['bookingdate'], 5, 2 );
+			$partnerid = ( int ) $item ['mcp_contractpartnerid'];
+			$partnername = $item ['contractpartnername'];
+
+			$newkey = '';
+			if (in_array( 'year', $groupBy )) {
+				$newkey .= $year;
+			}
+			if (in_array( 'month', $groupBy )) {
+				$newkey .= $month;
+			}
+			if (in_array( 'contractpartner', $groupBy )) {
+				$newkey .= $partnerid;
+			}
+
+			if (! array_key_exists( $newkey, $return )) {
+				$return [$newkey] = array (
+						'amount' => $item ['amount'],
+						'comments' => array (
+								$item ['comment']
+						),
+						'entries' => array (
+								$item
+						)
+				);
+				if (in_array( 'year', $groupBy )) {
+					$return [$newkey] ['year'] = $year;
+				}
+				if (in_array( 'month', $groupBy )) {
+					$return [$newkey] ['month'] = $month;
+				}
+				if (in_array( 'contractpartner', $groupBy )) {
+					$return [$newkey] ['name'] = $partnername;
+				}
+			} else {
+				$return [$newkey] ['amount'] += $item ['amount'];
+				$return [$newkey] ['comments'] [] = $item ['comment'];
+				$return [$newkey] ['entries'] [] = $item;
+			}
+		}
+
+		foreach ( $return as $key => $item ) {
+			$sortKey = array ();
+			foreach ( $item ['entries'] as $entryKey => $entryItem ) {
+				$sortKey [$entryKey] = $entryItem ['bookingdate'];
+			}
+			array_multisort( $sortKey, SORT_ASC | SORT_STRING, $return[$key] ['entries'] );
+			$return [$key] ['comment'] = implode( ', ', array_unique( $item ['comments'] ) );
+		}
+
+		return $return;
 	}
 }
 

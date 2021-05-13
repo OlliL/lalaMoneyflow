@@ -206,8 +206,13 @@
                   <thead>
                     <tr>
                       <th>&nbsp;</th>
-                      {if $COLUMNS.year  == "1"}<th class="text-center">{#TEXT_81#}</th>{/if}
-                      {if $COLUMNS.month == "1"}<th class="text-center">{#TEXT_82#}</th>{/if}
+{if $COLUMNS.year  == "1" && $COLUMNS.month == "1" }
+                      <th class="text-center">{#TEXT_82#}</th>
+{elseif $COLUMNS.year  == "1"}
+                      <th class="text-center">{#TEXT_81#}</th>
+{elseif $COLUMNS.month == "1"}
+                      <th class="text-center">{#TEXT_82#}</th>
+{/if}
                       {if $COLUMNS.name  == "1"}<th class="text-center">{#TEXT_2#}</th>{/if}
                       <th class="text-center">{#TEXT_18#}</th>
                       <th class="text-center">{#TEXT_21#}</th>
@@ -221,8 +226,14 @@
   <span class="glyphicon glyphicon-menu-right" id="spansermnfdetail{$smarty.section.DATA.index}"></span>
 </button>
 </td>
-                      {if $COLUMNS.year  == "1"}<td class="text-center">{$RESULTS[DATA].year}</td>{/if}
-                      {if $COLUMNS.month == "1"}<td class="text-center">{$RESULTS[DATA].month}</td>{/if}
+{if $COLUMNS.year  == "1" && $COLUMNS.month == "1" }
+{assign var="month" value=$RESULTS[DATA].month}
+                      <td class="text-center"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$RESULTS[DATA].month}&amp;reports_year={$RESULTS[DATA].year}">{$MONTHS[$month]} {$RESULTS[DATA].year}</a></td>
+{elseif $COLUMNS.year  == "1"}
+                      <td class="text-center"><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_year={$RESULTS[DATA].year}">{$RESULTS[DATA].year}</a></td>
+{elseif $COLUMNS.month == "1"}
+                      <td class="text-center">{$RESULTS[DATA].month}</td>
+{/if}
                       {if $COLUMNS.name  == "1"}<td class="text-center">{$RESULTS[DATA].name}</td>{/if}
                       <td class="text-right of_number_to_be_evaluated" style="white-space: nowrap;">{$RESULTS[DATA].amount|number_format} {#CURRENCY#}</td>
                       <td>{$RESULTS[DATA].comment}</td>
@@ -241,22 +252,26 @@
                       <th class="text-center">{#TEXT_2#}</th>
                       <th class="text-center">{#TEXT_21#}</th>
                       <th class="text-center">{#TEXT_232#}</th>
+                      <th class="text-center">{#TEXT_19#}</th>
                       <th class="text-center" colspan="2"></th>
                     </tr>
                   </thead>
                   <tbody>
+{assign var="MONEYFLOWS" value=$RESULTS[DATA].entries}
+{section name=DATA2 loop=$MONEYFLOWS}
                     <tr>
-                      <td class="text-center">1970-01-01</td>
-                      <td class="text-right of_number_to_be_evaluated" style="white-space: nowrap;">{$RESULTS[DATA].amount|number_format} {#CURRENCY#}</td>
-                      <td>Lorem</td>
-                      <td>comment</td>
-                      <td>Account</td>
-                      <td class="text-center"><a href="javascript:void window.open('##{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=1205,height=800')">{#TEXT_36#}</a></td>
-                      <td class="text-center"><a href="javascript:void window.open('##{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$ALL_MONEYFLOW_DATA[DATA].moneyflowid}&amp;sr=1','_blank','width=520,height=310')">{#TEXT_37#}</a></td>
+                      <td class="text-center">{$MONEYFLOWS[DATA2].bookingdate}</td>
+                      <td class="text-right of_number_to_be_evaluated" style="white-space: nowrap;">{$MONEYFLOWS[DATA2].amount|number_format} {#CURRENCY#}</td>
+                      <td>{$MONEYFLOWS[DATA2].contractpartnername}</td>
+                      <td>{$MONEYFLOWS[DATA2].comment}</td>
+                      <td>{$MONEYFLOWS[DATA2].postingaccountname}</td>
+                      <td>{$MONEYFLOWS[DATA2].capitalsourcecomment}</td>
+                      <td class="text-center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_moneyflow&amp;moneyflowid={$MONEYFLOWS[DATA2].moneyflowid}&amp;sr=1','_blank','width=1205,height=800')">{#TEXT_36#}</a></td>
+                      <td class="text-center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_moneyflow&amp;moneyflowid={$MONEYFLOWS[DATA2].moneyflowid}&amp;sr=1','_blank','width=520,height=310')">{#TEXT_37#}</a></td>
                     </tr>
+{/section}
                   </tbody>
                 </table>
-                      
                       </div></td>
                     </tr>
 

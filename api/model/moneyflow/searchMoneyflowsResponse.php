@@ -32,7 +32,7 @@ namespace api\model\moneyflow;
 use api\model\validation\validationResponse;
 
 class searchMoneyflowsResponse extends validationResponse {
-	public $moneyflowSearchResultTransport;
+	public $moneyflowTransport;
 	public $contractpartnerTransport;
 	public $postingAccountTransport;
 
@@ -44,12 +44,12 @@ class searchMoneyflowsResponse extends validationResponse {
 		$this->contractpartnerTransport = $contractpartnerTransport;
 	}
 
-	public final function getMoneyflowSearchResultTransport() {
-		return $this->moneyflowSearchResultTransport;
+	public final function getMoneyflowTransport() {
+		return $this->moneyflowTransport;
 	}
 
-	public final function setMoneyflowSearchResultTransport(array $moneyflowSearchResultTransport) {
-		$this->moneyflowSearchResultTransport = $moneyflowSearchResultTransport;
+	public final function setMoneyflowTransport(array $moneyflowTransport) {
+		$this->moneyflowTransport = $moneyflowTransport;
 	}
 
 	public final function setPostingAccountTransport(array $postingAccountTransport) {

@@ -43,7 +43,6 @@ use client\mapper\ArrayToMoneyflowTransportMapper;
 use client\mapper\ArrayToPreDefMoneyflowTransportMapper;
 use client\mapper\ArrayToPostingAccountTransportMapper;
 use client\mapper\ArrayToMoneyflowSearchParamsTransportMapper;
-use client\mapper\ArrayToMoneyflowSearchResultTransportMapper;
 use api\model\transport\MoneyflowTransport;
 use api\model\transport\MoneyflowSearchParamsTransport;
 use base\Singleton;
@@ -62,7 +61,6 @@ class MoneyflowControllerHandler extends AbstractHandler {
 		parent::addMapper( ArrayToPreDefMoneyflowTransportMapper::getClass() );
 		parent::addMapper( ArrayToPostingAccountTransportMapper::getClass() );
 		parent::addMapper( ArrayToMoneyflowSearchParamsTransportMapper::getClass() );
-		parent::addMapper( ArrayToMoneyflowSearchResultTransportMapper::getClass() );
 		parent::addMapper( ArrayToMoneyflowSplitEntryTransportMapper::getClass() );
 	}
 
@@ -197,7 +195,7 @@ class MoneyflowControllerHandler extends AbstractHandler {
 
 		$result = null;
 		if ($response instanceof searchMoneyflowsResponse) {
-			$result ['search_results'] = parent::mapArrayNullable( $response->getMoneyflowSearchResultTransport() );
+			$result ['search_results'] = parent::mapArrayNullable( $response->getMoneyflowTransport() );
 			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
 			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
 			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );

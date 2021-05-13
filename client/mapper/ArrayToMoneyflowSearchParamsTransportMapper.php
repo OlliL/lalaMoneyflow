@@ -43,8 +43,6 @@ class ArrayToMoneyflowSearchParamsTransportMapper extends AbstractArrayMapper {
 		$b->setFeatureCaseSensitive( $a ['casesensitive'] );
 		$b->setFeatureOnlyMinusAmounts( $a ['minus'] );
 		$b->setContractpartnerId( $a ['mcp_contractpartnerid'] );
-		$b->setGroupBy1( $a ['grouping1'] );
-		$b->setGroupBy2( $a ['grouping2'] );
 		$b->setPostingAccountId( $a ['mpa_postingaccountid'] );
 
 		return $b;

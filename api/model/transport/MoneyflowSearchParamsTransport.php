@@ -39,9 +39,6 @@ class MoneyflowSearchParamsTransport extends AbstractTransport {
 	public $featureOnlyMinusAmounts;
 	public $contractpartnerId;
 	public $postingAccountId;
-	public $groupBy1;
-	public $groupBy2;
-	public $orderBy;
 
 	public final function setStartDate($startDate) {
 		$this->startDate = $startDate;
@@ -75,18 +72,6 @@ class MoneyflowSearchParamsTransport extends AbstractTransport {
 		$this->contractpartnerId = $contractpartnerId;
 	}
 
-	public final function setGroupBy1($groupBy1) {
-		$this->groupBy1 = $groupBy1;
-	}
-
-	public final function setGroupBy2($groupBy2) {
-		$this->groupBy2 = $groupBy2;
-	}
-
-	public final function setOrderBy($orderBy) {
-		$this->orderBy = $orderBy;
-	}
-
 	public final function getStartDate() {
 		return $this->startDate;
 	}
@@ -117,18 +102,6 @@ class MoneyflowSearchParamsTransport extends AbstractTransport {
 
 	public final function getContractpartnerId() {
 		return $this->contractpartnerId;
-	}
-
-	public final function getGroupBy1() {
-		return $this->groupBy1;
-	}
-
-	public final function getGroupBy2() {
-		return $this->groupBy2;
-	}
-
-	public final function getOrderBy() {
-		return $this->orderBy;
 	}
 
 	public final function setPostingAccountId($postingAccountId) {
