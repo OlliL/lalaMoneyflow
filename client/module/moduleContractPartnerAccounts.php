@@ -47,8 +47,8 @@ class moduleContractPartnerAccounts extends module {
 		$this->template_assign( 'CONTRACTPARTNERID', $contractpartnerid);
 		$this->template_assign( 'CONTRACTPARTNER_NAME', $contractpartnername );
 
-		$this->parse_header( 1 );
-		return $this->fetch_template( 'display_list_contractpartneraccounts.tpl' );
+		$this->parse_header_without_embedded( 1, 'display_list_contractpartneraccounts_bs.tpl' );
+		return $this->fetch_template( 'display_list_contractpartneraccounts_bs.tpl' );
 	}
 
 	public final function display_edit_contractpartneraccount($realaction, $contractpartneraccountid, $contractpartnerid, $all_data) {

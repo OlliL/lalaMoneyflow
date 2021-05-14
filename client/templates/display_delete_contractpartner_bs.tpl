@@ -107,7 +107,6 @@
         }
 
         function ajaxDeleteContractpartnerError(data) {
-        console.log(data);
           clearErrorDiv('deleteContractpartnerErrors');
           populateErrorDiv(data.responseText,'deleteContractpartnerErrorsGoHere','deleteContractpartnerErrors');
         }
