@@ -48,8 +48,8 @@ class modulePreDefMoneyFlows extends module {
 		$this->template_assign( 'COUNT_ALL_DATA', count( $all_data ) );
 		$this->template_assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 
-		$this->parse_header();
-		return $this->fetch_template( 'display_list_predefmoneyflows.tpl' );
+		$this->parse_header_bootstraped( 0, 'display_list_predefmoneyflows_bs.tpl' );
+		return $this->fetch_template( 'display_list_predefmoneyflows_bs.tpl' );
 	}
 
 	public final function display_edit_predefmoneyflow($realaction, $predefmoneyflowid, $all_data) {
