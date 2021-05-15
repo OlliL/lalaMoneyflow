@@ -97,29 +97,21 @@ class moduleCapitalSources extends module {
 		return $this->handleReturnForAjax( $ret );
 	}
 
-	public final function display_delete_capitalsource($realaction, $capitalsourceid) {
-		switch ($realaction) {
-			case 'yes' :
-				if (CapitalsourceControllerHandler::getInstance()->deleteCapitalsourceById( $capitalsourceid )) {
-					$this->template_assign( 'CLOSE', 1 );
-					break;
-				}
-			default :
-				if ($capitalsourceid > 0) {
-					$all_data = CapitalsourceControllerHandler::getInstance()->showDeleteCapitalsource( $capitalsourceid );
-					if (is_array( $all_data )) {
-						$all_data ['statecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_STATE', $all_data ['state'] );
-						$all_data ['typecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_TYPE', $all_data ['type'] );
-						$this->template_assign( 'ALL_DATA', $all_data );
-					}
-				}
-				break;
+	public final function display_delete_capitalsource($capitalsourceid) {
+		$all_data = CapitalsourceControllerHandler::getInstance()->showDeleteCapitalsource( $capitalsourceid );
+		if (is_array( $all_data )) {
+			$all_data ['statecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_STATE', $all_data ['state'] );
+			$all_data ['typecomment'] = $this->coreText->get_domain_meaning( 'CAPITALSOURCE_TYPE', $all_data ['type'] );
+			$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
 		}
 
-		$this->template_assign( 'ERRORS', $this->get_errors() );
+		$this->parse_header_without_embedded( 1, 'display_delete_capitalsource_bs.tpl' );
+		return $this->fetch_template( 'display_delete_capitalsource_bs.tpl' );
+	}
 
-		$this->parse_header( 1 );
-		return $this->fetch_template( 'display_delete_capitalsource.tpl' );
+	public final function delete_capitalsource($capitalsourceid) {
+		$ret = CapitalsourceControllerHandler::getInstance()->deleteCapitalsourceById( $capitalsourceid );
+		return $this->handleReturnForAjax( $ret );
 	}
 }
 ?>

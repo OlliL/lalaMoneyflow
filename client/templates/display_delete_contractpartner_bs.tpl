@@ -102,7 +102,7 @@
         }
 
         function ajaxDeleteContractpartnerSuccess(data) {
-          opener.location = ENV_REFERER;
+          opener.location.reload(true);
           window.close();
         }
 

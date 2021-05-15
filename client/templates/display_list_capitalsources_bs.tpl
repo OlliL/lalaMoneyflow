@@ -85,7 +85,7 @@
                 <td class="text-center"><b>{if $ALL_DATA[DATA].import_allowed == 1}<font color="green">{#TEXT_28#}{elseif $ALL_DATA[DATA].import_allowed == 2}<font color="green">{#TEXT_298#}{else}<font color="red">{#TEXT_26#}{/if}</font></b></td>
 {if $ALL_DATA[DATA].owner == true }
                 <td class="text-center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_capitalsource&amp;capitalsourceid={$ALL_DATA[DATA].capitalsourceid}&amp;sr=1','_blank','width=600,height=650')">{#TEXT_36#}</a></td>
-                <td class="text-center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_capitalsource&amp;capitalsourceid={$ALL_DATA[DATA].capitalsourceid}&amp;sr=1','_blank','width=800,height=120')">{#TEXT_37#}</a></td>
+                <td class="text-center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_capitalsource&amp;capitalsourceid={$ALL_DATA[DATA].capitalsourceid}&amp;sr=1','_blank','width=500,height=350')">{#TEXT_37#}</a></td>
 {/if}
               </tr>
 {/section}

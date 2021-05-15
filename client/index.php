@@ -131,6 +131,7 @@ if ($is_logged_in == 0) {
 		case 'edit_capitalsource' :
 		case 'edit_capitalsource_submit' :
 		case 'delete_capitalsource' :
+		case 'delete_capitalsource_submit' :
 			$moduleCapitalSources = new moduleCapitalSources();
 			break;
 		case 'list_contractpartners' :
@@ -142,9 +143,9 @@ if ($is_logged_in == 0) {
 			break;
 		case 'list_contractpartneraccounts' :
 		case 'edit_contractpartneraccount' :
-		case 'edit_contractpartneraccount_submit':
+		case 'edit_contractpartneraccount_submit' :
 		case 'delete_contractpartneraccount' :
-		case 'delete_contractpartneraccount_submit':
+		case 'delete_contractpartneraccount_submit' :
 			$moduleContractPartnerAccounts = new moduleContractPartnerAccounts();
 			break;
 		case 'list_predefmoneyflows' :
@@ -342,9 +343,14 @@ if ($is_logged_in == 0) {
 
 			case 'delete_capitalsource' :
 
-				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$capitalsourceid = array_key_exists( 'capitalsourceid', $_REQUEST ) ? $_REQUEST ['capitalsourceid'] : '';
-				$display = $moduleCapitalSources->display_delete_capitalsource( $realaction, $capitalsourceid );
+				$display = $moduleCapitalSources->display_delete_capitalsource(  $capitalsourceid );
+				break;
+
+			case 'delete_capitalsource_submit' :
+
+				$capitalsourceid = array_key_exists( 'capitalsourceid', $_REQUEST ) ? $_REQUEST ['capitalsourceid'] : '';
+				$display = $moduleCapitalSources->delete_capitalsource(  $capitalsourceid );
 				break;
 
 			/* contractpartners */
@@ -395,12 +401,11 @@ if ($is_logged_in == 0) {
 				$display = $moduleContractPartnerAccounts->display_edit_contractpartneraccount( $contractpartneraccountid, $contractpartnerid );
 				break;
 
-			case 'edit_contractpartneraccount_submit':
+			case 'edit_contractpartneraccount_submit' :
 				$contractpartnerid = array_key_exists( 'contractpartnerid', $_REQUEST ) ? $_REQUEST ['contractpartnerid'] : '';
 				$contractpartneraccountid = array_key_exists( 'contractpartneraccountid', $_REQUEST ) ? $_REQUEST ['contractpartneraccountid'] : 0;
 				$display = $moduleContractPartnerAccounts->edit_contractpartneraccount( $contractpartneraccountid, $contractpartnerid, $all_data );
 				break;
-
 
 			case 'delete_contractpartneraccount' :
 
