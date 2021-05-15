@@ -150,7 +150,9 @@ if ($is_logged_in == 0) {
 			break;
 		case 'list_predefmoneyflows' :
 		case 'edit_predefmoneyflow' :
+		case 'edit_predefmoneyflow_submit' :
 		case 'delete_predefmoneyflow' :
+		case 'delete_predefmoneyflow_submit' :
 			$modulePreDefMoneyFlows = new modulePreDefMoneyFlows();
 			break;
 		case 'edit_moneyflow' :
@@ -434,11 +436,20 @@ if ($is_logged_in == 0) {
 				$display = $modulePreDefMoneyFlows->display_edit_predefmoneyflow( $realaction, $id, $all_data );
 				break;
 
-			case 'delete_predefmoneyflow' :
+			case 'edit_predefmoneyflow_submit' :
+				$id = array_key_exists( 'predefmoneyflowid', $_REQUEST ) ? $_REQUEST ['predefmoneyflowid'] : 0;
+				$display = $modulePreDefMoneyFlows->dit_predefmoneyflow( $id, $all_data );
+				break;
 
-				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
+			case 'delete_predefmoneyflow' :
 				$id = array_key_exists( 'predefmoneyflowid', $_REQUEST ) ? $_REQUEST ['predefmoneyflowid'] : '';
-				$display = $modulePreDefMoneyFlows->display_delete_predefmoneyflow( $realaction, $id );
+				$display = $modulePreDefMoneyFlows->display_delete_predefmoneyflow(  $id );
+				break;
+
+			case 'delete_predefmoneyflow_submit' :
+
+				$id = array_key_exists( 'predefmoneyflowid', $_REQUEST ) ? $_REQUEST ['predefmoneyflowid'] : '';
+				$display = $modulePreDefMoneyFlows->delete_predefmoneyflow(  $id );
 				break;
 
 			/* moneyflows */

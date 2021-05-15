@@ -62,7 +62,7 @@
                 <td class="text-center">{if $ALL_DATA[DATA].once_a_month == 1}{#TEXT_25#}{else}{#TEXT_26#}{/if}</td>
                 <td class="text-center">{$ALL_DATA[DATA].last_used}</td>
                 <td class="text-center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_predefmoneyflow&amp;predefmoneyflowid={$ALL_DATA[DATA].predefmoneyflowid}&amp;sr=1','_blank','width=920,height=120')">{#TEXT_36#}</a></td>
-                <td class="text-center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_predefmoneyflow&amp;predefmoneyflowid={$ALL_DATA[DATA].predefmoneyflowid}&amp;sr=1','_blank','width=920,height=120')">{#TEXT_37#}</a></td>
+                <td class="text-center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_predefmoneyflow&amp;predefmoneyflowid={$ALL_DATA[DATA].predefmoneyflowid}&amp;sr=1','_blank','width=520,height=310')">{#TEXT_37#}</a></td>
               </tr>
 {/section}
             </tbody>

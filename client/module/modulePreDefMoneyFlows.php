@@ -152,23 +152,28 @@ class modulePreDefMoneyFlows extends module {
 		return $this->fetch_template( 'display_edit_predefmoneyflow.tpl' );
 	}
 
-	public final function display_delete_predefmoneyflow($realaction, $predefmoneyflowid) {
-		switch ($realaction) {
-			case 'yes' :
-				if (PreDefMoneyflowControllerHandler::getInstance()->deletePreDefMoneyflow( $predefmoneyflowid )) {
-					$this->template_assign( 'CLOSE', 1 );
-					break;
-				}
-			default :
-				$all_data = PreDefMoneyflowControllerHandler::getInstance()->showDeletePreDefMoneyflow( $predefmoneyflowid );
-				$this->template_assign( 'ALL_DATA', $all_data );
-				break;
-		}
+	public final function edit_predefmoneyflow($predefmoneyflowid, $all_data) {
+		$all_data ['predefmoneyflowid'] = $predefmoneyflowid;
 
-		$this->template_assign( 'ERRORS', $this->get_errors() );
+		if ($predefmoneyflowid == 0)
+			$ret = PreDefMoneyflowControllerHandler::getInstance()->createPreDefMoneyflow( $all_data );
+		else
+			$ret = PreDefMoneyflowControllerHandler::getInstance()->updatePreDefMoneyflow( $all_data );
 
-		$this->parse_header( 1 );
-		return $this->fetch_template( 'display_delete_predefmoneyflow.tpl' );
+		return $this->handleReturnForAjax( $ret );
+	}
+
+	public final function display_delete_predefmoneyflow($predefmoneyflowid) {
+		$all_data = PreDefMoneyflowControllerHandler::getInstance()->showDeletePreDefMoneyflow( $predefmoneyflowid );
+		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
+
+		$this->parse_header_without_embedded( 1, 'display_delete_predefmoneyflow_bs.tpl' );
+		return $this->fetch_template( 'display_delete_predefmoneyflow_bs.tpl' );
+	}
+
+	public final function delete_predefmoneyflow($predefmoneyflowid) {
+		$ret = PreDefMoneyflowControllerHandler::getInstance()->deletePreDefMoneyflow( $predefmoneyflowid );
+		return $this->handleReturnForAjax( $ret );
 	}
 }
 ?>
