@@ -48,7 +48,7 @@ class modulePreDefMoneyFlows extends module {
 		$this->template_assign( 'LETTER', $letter );
 		$this->template_assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 
-		$this->parse_header_bootstraped( 0, 'display_list_predefmoneyflows_bs.tpl' );
+		$this->parse_header_without_embedded( 0, 'display_list_predefmoneyflows_bs.tpl' );
 		return $this->fetch_template( 'display_list_predefmoneyflows_bs.tpl' );
 	}
 

@@ -63,7 +63,7 @@ class moduleCapitalSources extends module {
 		$this->template_assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 		$this->template_assign( 'CURRENTLY_VALID', $currently_valid );
 
-		$this->parse_header_bootstraped( 0, 'display_list_capitalsources_bs.tpl' );
+		$this->parse_header_without_embedded( 0, 'display_list_capitalsources_bs.tpl' );
 		return $this->fetch_template( 'display_list_capitalsources_bs.tpl' );
 	}
 
