@@ -46,6 +46,7 @@ class modulePreDefMoneyFlows extends module {
 
 		$this->template_assign( 'ALL_DATA', $all_data );
 		$this->template_assign( 'COUNT_ALL_DATA', count( $all_data ) );
+		$this->template_assign( 'LETTER', $letter );
 		$this->template_assign( 'ALL_INDEX_LETTERS', $all_index_letters );
 
 		$this->parse_header_bootstraped( 0, 'display_list_predefmoneyflows_bs.tpl' );
