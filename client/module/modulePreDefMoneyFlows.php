@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (c) 2005-2015 Oliver Lehmann <lehmann@ans-netz.de>
+// Copyright (c) 2005-2021 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,6 @@
 //
 namespace client\module;
 
-use base\ErrorCode;
 use client\handler\PreDefMoneyflowControllerHandler;
 
 class modulePreDefMoneyFlows extends module {
