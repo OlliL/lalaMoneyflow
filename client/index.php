@@ -142,7 +142,9 @@ if ($is_logged_in == 0) {
 			break;
 		case 'list_contractpartneraccounts' :
 		case 'edit_contractpartneraccount' :
+		case 'edit_contractpartneraccount_submit':
 		case 'delete_contractpartneraccount' :
+		case 'delete_contractpartneraccount_submit':
 			$moduleContractPartnerAccounts = new moduleContractPartnerAccounts();
 			break;
 		case 'list_predefmoneyflows' :
@@ -388,17 +390,28 @@ if ($is_logged_in == 0) {
 
 			case 'edit_contractpartneraccount' :
 
-				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$contractpartnerid = array_key_exists( 'contractpartnerid', $_REQUEST ) ? $_REQUEST ['contractpartnerid'] : '';
 				$contractpartneraccountid = array_key_exists( 'contractpartneraccountid', $_REQUEST ) ? $_REQUEST ['contractpartneraccountid'] : 0;
-				$display = $moduleContractPartnerAccounts->display_edit_contractpartneraccount( $realaction, $contractpartneraccountid, $contractpartnerid, $all_data );
+				$display = $moduleContractPartnerAccounts->display_edit_contractpartneraccount( $contractpartneraccountid, $contractpartnerid );
 				break;
+
+			case 'edit_contractpartneraccount_submit':
+				$contractpartnerid = array_key_exists( 'contractpartnerid', $_REQUEST ) ? $_REQUEST ['contractpartnerid'] : '';
+				$contractpartneraccountid = array_key_exists( 'contractpartneraccountid', $_REQUEST ) ? $_REQUEST ['contractpartneraccountid'] : 0;
+				$display = $moduleContractPartnerAccounts->edit_contractpartneraccount( $contractpartneraccountid, $contractpartnerid, $all_data );
+				break;
+
 
 			case 'delete_contractpartneraccount' :
 
-				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$contractpartneraccountid = array_key_exists( 'contractpartneraccountid', $_REQUEST ) ? $_REQUEST ['contractpartneraccountid'] : '';
-				$display = $moduleContractPartnerAccounts->display_delete_contractpartneraccount( $realaction, $contractpartneraccountid );
+				$display = $moduleContractPartnerAccounts->display_delete_contractpartneraccount( $contractpartneraccountid );
+				break;
+
+			case 'delete_contractpartneraccount_submit' :
+
+				$contractpartneraccountid = array_key_exists( 'contractpartneraccountid', $_REQUEST ) ? $_REQUEST ['contractpartneraccountid'] : '';
+				$display = $moduleContractPartnerAccounts->delete_contractpartneraccount( $contractpartneraccountid );
 				break;
 
 			/* predefmoneyflows */

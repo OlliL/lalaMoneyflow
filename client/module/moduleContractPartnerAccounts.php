@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2014-2015 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
@@ -38,91 +39,57 @@ class moduleContractPartnerAccounts extends module {
 	}
 
 	public final function display_list_contractpartneraccounts($contractpartnerid) {
-		$listContractpartnerAccounts = ContractpartnerAccountControllerHandler::getInstance()->showContractpartnerAccountList($contractpartnerid);
-		$contractpartnername = $listContractpartnerAccounts['contractpartnername'];
-		$all_data = $listContractpartnerAccounts['contractpartneraccount'];
+		$listContractpartnerAccounts = ContractpartnerAccountControllerHandler::getInstance()->showContractpartnerAccountList( $contractpartnerid );
+		$contractpartnername = $listContractpartnerAccounts ['contractpartnername'];
+		$all_data = $listContractpartnerAccounts ['contractpartneraccount'];
 
 		$this->template_assign( 'ALL_DATA', $all_data );
 		$this->template_assign( 'COUNT_ALL_DATA', count( $all_data ) );
-		$this->template_assign( 'CONTRACTPARTNERID', $contractpartnerid);
+		$this->template_assign( 'CONTRACTPARTNERID', $contractpartnerid );
 		$this->template_assign( 'CONTRACTPARTNER_NAME', $contractpartnername );
 
 		$this->parse_header_without_embedded( 1, 'display_list_contractpartneraccounts_bs.tpl' );
 		return $this->fetch_template( 'display_list_contractpartneraccounts_bs.tpl' );
 	}
 
-	public final function display_edit_contractpartneraccount($realaction, $contractpartneraccountid, $contractpartnerid, $all_data) {
-		$close = 0;
-		switch ($realaction) {
-			case 'save' :
-				$all_data ['contractpartneraccountid'] = $contractpartneraccountid;
-				$all_data ['mcp_contractpartnerid'] = $contractpartnerid;
-
-				if ($contractpartneraccountid == 0)
-					$ret = ContractpartnerAccountControllerHandler::getInstance()->createContractpartnerAccount( $all_data );
-				else
-					$ret = ContractpartnerAccountControllerHandler::getInstance()->updateContractpartnerAccount( $all_data );
-
-				if ($ret === true) {
-					$close = 1;
-				} else {
-					foreach ( $ret ['errors'] as $validationResult ) {
-						$error = $validationResult ['error'];
-						$variableArray = $validationResult ['variable_array'];
-
-						$this->add_error( $error, $variableArray );
-
-						switch ($error) {
-							case ErrorCode::BANK_CODE_TO_LONG :
-								$all_data ['bankcode_error'] = 1;
-								break;
-							case ErrorCode::ACCOUNT_NUMBER_TO_LONG :
-								$all_data ['accountnumber_error'] = 1;
-								break;
-						}
-					}
-				}
-			default :
-				if (! is_array( $all_data )) {
-					if ($contractpartneraccountid > 0) {
-						$all_data = ContractpartnerAccountControllerHandler::getInstance()->showEditContractpartnerAccount( $contractpartneraccountid );
-					}
-				}
-				break;
+	public final function display_edit_contractpartneraccount($contractpartneraccountid, $contractpartnerid) {
+		if ($contractpartneraccountid > 0) {
+			$all_data = ContractpartnerAccountControllerHandler::getInstance()->showEditContractpartnerAccount( $contractpartneraccountid );
+		} else {
+			$all_data = array ();
 		}
 
-		$this->template_assign( 'CLOSE', $close );
-		if ($close == 0) {
-			$this->template_assign( 'CONTRACTPARTNERACCOUNTID', $contractpartneraccountid );
-			$this->template_assign( 'CONTRACTPARTNERID', $contractpartnerid );
-			$this->template_assign( 'ALL_DATA', $all_data );
-			$this->template_assign( 'ERRORS', $this->get_errors() );
-		}
-		$this->parse_header( 1 );
-		return $this->fetch_template( 'display_edit_contractpartneraccount.tpl' );
+		$this->template_assign( 'CONTRACTPARTNERACCOUNTID', $contractpartneraccountid );
+		$this->template_assign( 'CONTRACTPARTNERID', $contractpartnerid );
+		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
+
+		$this->parse_header_without_embedded( 1, 'display_edit_contractpartneraccount_bs.tpl' );
+		return $this->fetch_template( 'display_edit_contractpartneraccount_bs.tpl' );
 	}
 
-	public final function display_delete_contractpartneraccount($realaction, $contractpartneraccountid) {
-		switch ($realaction) {
-			case 'yes' :
-				if (ContractpartnerAccountControllerHandler::getInstance()->deleteContractpartnerAccount( $contractpartneraccountid )) {
-					$this->template_assign( 'CLOSE', 1 );
-					break;
-				}
-			default :
-				if ($contractpartneraccountid > 0) {
-					$all_data = ContractpartnerAccountControllerHandler::getInstance()->showDeleteContractpartnerAccount( $contractpartneraccountid );
-					if ($all_data) {
-						$this->template_assign( 'ALL_DATA', $all_data );
-					}
-				}
-				break;
-		}
+	public final function edit_contractpartneraccount($contractpartneraccountid, $contractpartnerid, $all_data) {
+		$all_data ['contractpartneraccountid'] = $contractpartneraccountid;
+		$all_data ['mcp_contractpartnerid'] = $contractpartnerid;
 
-		$this->template_assign( 'ERRORS', $this->get_errors() );
+		if ($contractpartneraccountid == 0)
+			$ret = ContractpartnerAccountControllerHandler::getInstance()->createContractpartnerAccount( $all_data );
+		else
+			$ret = ContractpartnerAccountControllerHandler::getInstance()->updateContractpartnerAccount( $all_data );
 
-		$this->parse_header( 1 );
-		return $this->fetch_template( 'display_delete_contractpartneraccount.tpl' );
+		return $this->handleReturnForAjax( $ret );
+	}
+
+	public final function display_delete_contractpartneraccount($contractpartneraccountid) {
+		$all_data = ContractpartnerAccountControllerHandler::getInstance()->showDeleteContractpartnerAccount( $contractpartneraccountid );
+		$this->template_assign_raw( 'JSON_FORM_DEFAULTS', json_encode( $all_data ) );
+
+		$this->parse_header_without_embedded( 1, 'display_delete_contractpartneraccount_bs.tpl' );
+		return $this->fetch_template( 'display_delete_contractpartneraccount_bs.tpl' );
+	}
+
+	public final function delete_contractpartneraccount($contractpartneraccountid) {
+		$ret = ContractpartnerAccountControllerHandler::getInstance()->deleteContractpartnerAccount( $contractpartneraccountid );
+		return $this->handleReturnForAjax( $ret );
 	}
 }
 ?>

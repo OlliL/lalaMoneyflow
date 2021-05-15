@@ -210,7 +210,6 @@
           preFillFormEditContractpartner(FORM_MODE_EMPTY);
           hideOverlayContractpartner();
 {else}
-          opener.location = ENV_REFERER;
           window.close();
 {/if}
         }
@@ -226,6 +225,7 @@
           preFillFormEditContractpartner(FORM_MODE_EMPTY);
           hideOverlayContractpartner();
 {else}
+          opener.location.reload(true);
           window.close();
 {/if}
         }
