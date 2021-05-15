@@ -75,9 +75,9 @@
                 <td>{$ALL_DATA[DATA].validtil}</td>
                 <td>{$ALL_DATA[DATA].moneyflow_comment}</td>
                 <td>{$ALL_DATA[DATA].mpa_postingaccountname}</td>
-                <td><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_contractpartner&amp;contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&amp;sr=1','_blank','width=450,height=400')">{#TEXT_37#}</a></td>
-                <td><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&amp;contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&amp;sr=1','_blank','width=600,height=460')">{#TEXT_36#}</a></td>
-                <td><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=list_contractpartneraccounts&amp;contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&amp;sr=1','_blank','width=500,height=350')">{#TEXT_263#}</a></td>
+                <td class="text-center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=delete_contractpartner&amp;contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&amp;sr=1','_blank','width=450,height=400')">{#TEXT_37#}</a></td>
+                <td class="text-center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=edit_contractpartner&amp;contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&amp;sr=1','_blank','width=600,height=460')">{#TEXT_36#}</a></td>
+                <td class="text-center"><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=list_contractpartneraccounts&amp;contractpartnerid={$ALL_DATA[DATA].contractpartnerid}&amp;sr=1','_blank','width=500,height=350')">{#TEXT_263#}</a></td>
               </tr>
 {/section}
             </tbody>
