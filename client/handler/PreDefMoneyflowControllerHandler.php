@@ -42,6 +42,7 @@ use client\mapper\ArrayToPostingAccountTransportMapper;
 use client\mapper\ArrayToPreDefMoneyflowTransportMapper;
 use api\model\transport\PreDefMoneyflowTransport;
 use base\Singleton;
+use api\model\validation\validationResponse;
 
 class PreDefMoneyflowControllerHandler extends AbstractHandler {
 	use Singleton;
@@ -114,19 +115,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 
 		$request = new createPreDefMoneyflowRequest();
 		$request->setPreDefMoneyflowTransport( $preDefMoneyflowTransport );
-		$response = parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
-
-		$result = null;
-		if ($response === true) {
-			$result = true;
-		} else if ($response instanceof createPreDefMoneyflowResponse) {
-			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
-			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
-			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
-			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
-			$result ['result'] = $response->getResult();
-		}
-		return $result;
+		return parent::postJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 
 	public final function updatePreDefMoneyflow(array $preDefMoneyflow) {
@@ -134,19 +123,7 @@ class PreDefMoneyflowControllerHandler extends AbstractHandler {
 
 		$request = new updatePreDefMoneyflowRequest();
 		$request->setPreDefMoneyflowTransport( $preDefMoneyflowTransport );
-		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
-
-		$result = null;
-		if ($response === true) {
-			$result = true;
-		} else if ($response instanceof updatePreDefMoneyflowResponse) {
-			$result ['capitalsources'] = parent::mapArrayNullable( $response->getCapitalsourceTransport() );
-			$result ['contractpartner'] = parent::mapArrayNullable( $response->getContractpartnerTransport() );
-			$result ['postingaccounts'] = parent::mapArrayNullable( $response->getPostingAccountTransport() );
-			$result ['errors'] = parent::mapArrayNullable( $response->getValidationItemTransport() );
-			$result ['result'] = $response->getResult();
-		}
-		return $result;
+		return parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
 	}
 
 	public final function deletePreDefMoneyflow($id) {
