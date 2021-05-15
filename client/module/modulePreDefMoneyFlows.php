@@ -53,103 +53,29 @@ class modulePreDefMoneyFlows extends module {
 		return $this->fetch_template( 'display_list_predefmoneyflows_bs.tpl' );
 	}
 
-	public final function display_edit_predefmoneyflow($realaction, $predefmoneyflowid, $all_data) {
-		$close = 0;
-		switch ($realaction) {
-			case 'save' :
-				$all_data ['predefmoneyflowid'] = $predefmoneyflowid;
-				$all_data ['amount_error'] = 0;
-				$all_data ['capitalsource_error'] = 0;
-				$all_data ['contractpartner_error'] = 0;
-				if (! $this->fix_amount( $all_data ['amount'] )) {
-					$this->add_error( ErrorCode::AMOUNT_IN_WRONG_FORMAT, array (
-							$all_data ['amount']
-					) );
-					$all_data ['amount_error'] = 1;
-					break;
-				}
-
-				if ($predefmoneyflowid == 0)
-					$ret = PreDefMoneyflowControllerHandler::getInstance()->createPreDefMoneyflow( $all_data );
-				else
-					$ret = PreDefMoneyflowControllerHandler::getInstance()->updatePreDefMoneyflow( $all_data );
-
-				if ($ret === true) {
-					$close = 1;
-					break;
-				} else {
-					$capitalsource_values = $ret ['capitalsources'];
-					$contractpartner_values = $ret ['contractpartner'];
-					$postingaccount_values = $ret ['postingaccounts'];
-					foreach ( $ret ['errors'] as $validationResult ) {
-						$error = $validationResult ['error'];
-
-						switch ($error) {
-							case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-								$this->add_error( $error, array (
-										$all_data ['amount']
-								) );
-								break;
-							default :
-								$this->add_error( $error );
-						}
-
-						switch ($error) {
-							case ErrorCode::CAPITALSOURCE_DOES_NOT_EXIST :
-							case ErrorCode::CAPITALSOURCE_IS_NOT_SET :
-							case ErrorCode::CAPITALSOURCE_USE_OUT_OF_VALIDITY :
-								$all_data ['capitalsource_error'] = 1;
-								break;
-							case ErrorCode::CONTRACTPARTNER_DOES_NOT_EXIST :
-							case ErrorCode::CONTRACTPARTNER_IS_NOT_SET :
-							case ErrorCode::CONTRACTPARTNER_NO_LONGER_VALID :
-								$all_data ['contractpartner_error'] = 1;
-								break;
-							case ErrorCode::AMOUNT_IS_ZERO :
-							case ErrorCode::AMOUNT_IN_WRONG_FORMAT :
-								$all_data ['amount_error'] = 1;
-								break;
-						}
-					}
-				}
-				break;
-			default :
-				if ($predefmoneyflowid > 0) {
-					$showEditPreDefMoneyflow = PreDefMoneyflowControllerHandler::getInstance()->showEditPreDefMoneyflow( $predefmoneyflowid );
-					$all_data = $showEditPreDefMoneyflow ['predefmoneyflow'];
-					$capitalsource_values = $showEditPreDefMoneyflow ['capitalsources'];
-					$contractpartner_values = $showEditPreDefMoneyflow ['contractpartner'];
-					$postingaccount_values = $showEditPreDefMoneyflow ['postingaccounts'];
-				} else {
-					$showCreatePreDefMoneyflow = PreDefMoneyflowControllerHandler::getInstance()->showCreatePreDefMoneyflow();
-					$capitalsource_values = $showCreatePreDefMoneyflow ['capitalsources'];
-					$contractpartner_values = $showCreatePreDefMoneyflow ['contractpartner'];
-					$postingaccount_values = $showCreatePreDefMoneyflow ['postingaccounts'];
-					$all_data = array (
-							'amount' => null,
-							'mcp_contractpartnerid' => '',
-							'comment' => '',
-							'mcs_capitalsourceid' => '',
-							'once_a_month' => '',
-							'amount_error' => 0,
-							'contractpartner_error' => 0,
-							'capitalsource_error' => 0
-					);
-				}
-				break;
-		}
-		$this->template_assign( 'CLOSE', $close );
-		if ($close === 0) {
-			$this->template_assign( 'ALL_DATA', $all_data );
-			$this->template_assign( 'PREDEFMONEYFLOWID', $predefmoneyflowid );
-			$this->template_assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
-			$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
-			$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
-			$this->template_assign( 'ERRORS', $this->get_errors() );
+	public final function display_edit_predefmoneyflow($predefmoneyflowid) {
+		if ($predefmoneyflowid > 0) {
+			$showEditPreDefMoneyflow = PreDefMoneyflowControllerHandler::getInstance()->showEditPreDefMoneyflow( $predefmoneyflowid );
+			$all_data = $showEditPreDefMoneyflow ['predefmoneyflow'];
+			$capitalsource_values = $showEditPreDefMoneyflow ['capitalsources'];
+			$contractpartner_values = $showEditPreDefMoneyflow ['contractpartner'];
+			$postingaccount_values = $showEditPreDefMoneyflow ['postingaccounts'];
+		} else {
+			$showCreatePreDefMoneyflow = PreDefMoneyflowControllerHandler::getInstance()->showCreatePreDefMoneyflow();
+			$capitalsource_values = $showCreatePreDefMoneyflow ['capitalsources'];
+			$contractpartner_values = $showCreatePreDefMoneyflow ['contractpartner'];
+			$postingaccount_values = $showCreatePreDefMoneyflow ['postingaccounts'];
+			$all_data = array ();
 		}
 
-		$this->parse_header( 1 );
-		return $this->fetch_template( 'display_edit_predefmoneyflow.tpl' );
+		$this->template_assign_raw( 'PRE_JSON_FORM_DEFAULTS', json_encode( $all_data ) );
+		$this->template_assign( 'PREDEFMONEYFLOWID', $predefmoneyflowid );
+		$this->template_assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
+		$this->template_assign( 'CONTRACTPARTNER_VALUES', $this->sort_contractpartner( $contractpartner_values ) );
+		$this->template_assign( 'POSTINGACCOUNT_VALUES', $postingaccount_values );
+
+		$this->parse_header_bootstraped( 1, 'display_edit_predefmoneyflow_bs.tpl' );
+		return $this->fetch_template( 'display_edit_predefmoneyflow_bs.tpl' );
 	}
 
 	public final function edit_predefmoneyflow($predefmoneyflowid, $all_data) {

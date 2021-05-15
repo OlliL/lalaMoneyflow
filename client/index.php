@@ -431,14 +431,13 @@ if ($is_logged_in == 0) {
 
 			case 'edit_predefmoneyflow' :
 
-				$realaction = array_key_exists( 'realaction', $_REQUEST ) ? $_REQUEST ['realaction'] : '';
 				$id = array_key_exists( 'predefmoneyflowid', $_REQUEST ) ? $_REQUEST ['predefmoneyflowid'] : 0;
-				$display = $modulePreDefMoneyFlows->display_edit_predefmoneyflow( $realaction, $id, $all_data );
+				$display = $modulePreDefMoneyFlows->display_edit_predefmoneyflow( $id );
 				break;
 
 			case 'edit_predefmoneyflow_submit' :
 				$id = array_key_exists( 'predefmoneyflowid', $_REQUEST ) ? $_REQUEST ['predefmoneyflowid'] : 0;
-				$display = $modulePreDefMoneyFlows->dit_predefmoneyflow( $id, $all_data );
+				$display = $modulePreDefMoneyFlows->edit_predefmoneyflow( $id, $all_data );
 				break;
 
 			case 'delete_predefmoneyflow' :
