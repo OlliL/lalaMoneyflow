@@ -1,4 +1,5 @@
 <?php
+
 //
 // Copyright (c) 2007-2021 Oliver Lehmann <lehmann@ans-netz.de>
 // All rights reserved.
@@ -39,7 +40,7 @@ class moduleCompare extends module {
 		parent::__construct();
 	}
 
-	public final function display_upload_form($all_data = array()) {
+	public final function display_upload_form($all_data = array ()) {
 		$showCompareDataForm = CompareDataControllerHandler::getInstance()->showCompareDataForm();
 		$format_values = $showCompareDataForm ['comparedataformats'];
 		$capitalsource_values = $showCompareDataForm ['capitalsources'];
@@ -51,21 +52,24 @@ class moduleCompare extends module {
 			$all_data ['enddate'] = $this->convertDateToGui( date( "Y-m-d", mktime( 0, 0, 0, date( 'm', time() ) + 1, 0, date( 'Y', time() ) ) ) );
 			$all_data ['format'] = $selected_format;
 			$all_data ['mcs_capitalsourceid'] = $selected_capitalsource;
+			$all_data ['use_imported_data'] = 1;
 		}
 
 		$this->template_assign( 'CAPITALSOURCE_VALUES', $capitalsource_values );
 		$this->template_assign( 'FORMAT_VALUES', $format_values );
 		$this->template_assign( 'ALL_DATA', $all_data );
-		$this->template_assign( 'ERRORS', $this->get_errors() );
+		$this->template_assign_raw( 'ERRORS', json_encode($this->get_errors()) );
 
-		$this->parse_header();
-		return $this->fetch_template( 'display_upfrm_cmp_data.tpl' );
+		$this->parse_header_without_embedded( 0, 'display_upfrm_cmp_data_bs.tpl' );
+		return $this->fetch_template( 'display_upfrm_cmp_data_bs.tpl' );
 	}
 
 	public final function display_analyze_form($file, $all_data) {
 		$fileName = $file ['tmp_name'];
 		$startDate = $all_data ['startdate'];
 		$endDate = $all_data ['enddate'];
+		if (! array_key_exists( 'use_imported_data', $all_data ))
+			$all_data ['use_imported_data'] = 0;
 		$useImportedData = $all_data ['use_imported_data'];
 
 		$valid_data = true;
@@ -106,7 +110,7 @@ class moduleCompare extends module {
 			}
 
 			$result = CompareDataControllerHandler::getInstance()->compareData( $all_data );
-			if (is_array( $result ['errors'] )) {
+			if (is_array($result) && is_array( $result ['errors'] )) {
 				foreach ( $result ['errors'] as $validationResult ) {
 					$valid_data = false;
 					$error = $validationResult ['error'];

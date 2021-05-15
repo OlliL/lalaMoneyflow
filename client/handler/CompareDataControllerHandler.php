@@ -87,7 +87,8 @@ class CompareDataControllerHandler extends AbstractHandler {
 		$request->setUseImportedData( $compareData ['use_imported_data'] );
 
 		$response = parent::putJson( __FUNCTION__, parent::json_encode_response( $request ) );
-		$result = null;
+
+		$result = false;
 		if ($response instanceof compareDataResponse) {
 			if (is_array( $response->getCompareDataMatchingTransport() )) {
 				foreach ( $response->getCompareDataMatchingTransport() as $key => $compareDataMatchingTransport ) {

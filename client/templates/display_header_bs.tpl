@@ -60,17 +60,17 @@
         <div class="collapse navbar-collapse" id="moneyjinn-navbar-collapse">
           <ul class="nav navbar-nav">
             
-            <li{if $TEMPLATE == "display_list_reports_bs.tpl"} class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$REPORTS_MONTH}&amp;reports_year={$REPORTS_YEAR}"><i class="glyphicon glyphicon-list-alt"></i></a></li>
-            <li{if $TEMPLATE =="display_search_bs.tpl"} class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=search"><i class="glyphicon glyphicon-search"></i></a></li>
-            <li{if $TEMPLATE == "display_add_importedmoneyflows_bs.tpl"} class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=add_importedmoneyflows"><i class="glyphicon glyphicon-import"></i></a></li>
-            <li><a href="{$ENV_INDEX_PHP}?action=upfrm_cmp_data"><i class="glyphicon glyphicon-transfer"></i></a></li>
+            <li{if $TEMPLATE == "display_list_reports_bs.tpl"              } class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=list_reports&amp;reports_month={$REPORTS_MONTH}&amp;reports_year={$REPORTS_YEAR}"><i class="glyphicon glyphicon-list-alt"></i></a></li>
+            <li{if $TEMPLATE == "display_search_bs.tpl"                     } class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=search"><i class="glyphicon glyphicon-search"></i></a></li>
+            <li{if $TEMPLATE == "display_add_importedmoneyflows_bs.tpl"     } class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=add_importedmoneyflows"><i class="glyphicon glyphicon-import"></i></a></li>
+            <li{if $TEMPLATE == "display_upfrm_cmp_data_bs.tpl"             } class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=upfrm_cmp_data"><i class="glyphicon glyphicon-transfer"></i></a></li>
 
             <li class="dropdown {if $TEMPLATE == "display_plot_trends_bs.tpl"
                                  || $TEMPLATE == "display_show_reporting_form_bs.tpl"}active{/if}">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-stats"></i> <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li {if $TEMPLATE == "display_plot_trends_bs.tpl"} class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=plot_trends">{#TEXT_6#}</a></li>
-                <li {if $TEMPLATE == "display_show_reporting_form_bs.tpl"} class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=show_reporting_form">{#TEXT_254#}</a></li>
+                <li {if $TEMPLATE == "display_plot_trends_bs.tpl"           } class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=plot_trends">{#TEXT_6#}</a></li>
+                <li {if $TEMPLATE == "display_show_reporting_form_bs.tpl"   } class="active"{/if}><a href="{$ENV_INDEX_PHP}?action=show_reporting_form">{#TEXT_254#}</a></li>
               </ul>
             </li>
 
