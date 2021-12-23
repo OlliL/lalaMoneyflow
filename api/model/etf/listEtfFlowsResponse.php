@@ -30,6 +30,7 @@ namespace api\model\etf;
 class listEtfFlowsResponse {
 	public $etfTransport;
 	public $etfFlowTransport;
+	public $etfEffectiveFlowTransport;
 	public $calcEtfSaleIsin;
 	public $calcEtfSalePieces;
 	public $calcEtfBidPrice;
@@ -50,6 +51,20 @@ class listEtfFlowsResponse {
 	}
 
 	/**
+	 * @return mixed
+	 */
+	public final function getEtfEffectiveFlowTransport() {
+		return $this->etfEffectiveFlowTransport;
+	}
+
+	/**
+	 * @param mixed $etfTransport
+	 */
+	public final function setEtfEffectiveFlowTransport($etfEffectiveFlowTransport) {
+		$this->etfEffectiveFlowTransport = $etfEffectiveFlowTransport;
+	}
+
+/**
 	 * @return mixed
 	 */
 	public final function getEtfFlowTransport() {

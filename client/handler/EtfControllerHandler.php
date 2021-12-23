@@ -41,6 +41,7 @@ use api\model\etf\createEtfFlowRequest;
 use api\model\etf\updateEtfFlowRequest;
 use api\model\etf\showEditEtfFlowResponse;
 use api\model\etf\showDeleteEtfFlowResponse;
+use client\mapper\ArrayToEtfEffectiveFlowTransportMapper;
 
 class EtfControllerHandler extends AbstractHandler {
 	use Singleton;
@@ -49,6 +50,7 @@ class EtfControllerHandler extends AbstractHandler {
 		parent::init();
 		parent::addMapper( ArrayToEtfSummaryTransportMapper::getClass() );
 		parent::addMapper( ArrayToEtfFlowTransportMapper::getClass() );
+		parent::addMapper( ArrayToEtfEffectiveFlowTransportMapper::getClass() );
 		parent::addMapper( ArrayToEtfTransportMapper::getClass() );
 	}
 
@@ -74,6 +76,7 @@ class EtfControllerHandler extends AbstractHandler {
 		if ($response instanceof listEtfFlowsResponse) {
 			$result ['etfs'] = parent::mapArrayNullable( $response->getEtfTransport() );
 			$result ['etfFlows'] = parent::mapArrayNullable( $response->getEtfFlowTransport() );
+			$result ['etfEffectiveFlows'] = parent::mapArrayNullable( $response->getEtfEffectiveFlowTransport() );
 			$result ['calcEtfSaleIsin'] = $response->getCalcEtfSaleIsin();
 			$result ['calcEtfSalePieces'] = $response->getCalcEtfSalePieces();
 			$result ['calcEtfBidPrice'] = $response->getCalcEtfBidPrice();

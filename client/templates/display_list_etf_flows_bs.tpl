@@ -21,6 +21,62 @@
         <div class="container">
 {if $COUNT_ALL_DATA > 0}
           <br><br>
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#effective">{#TEXT_377#}</a></li>
+  <li><a data-toggle="tab" href="#all">{#TEXT_378#}</a></li>
+</ul>
+
+<div class="tab-content">
+  <div id="effective" class="tab-pane fade in active">
+          <table class="table table-striped table-bordered table-hover">
+                      <col style="width:33%">
+                      <col style="width:17%">
+                      <col style="width:10%">
+                      <col style="width:10%">
+                      <col style="width:10%">
+                      <col style="width:10%">
+                      <col style="width:10%">
+            <thead>
+              <tr>
+                <th class="text-center">{#TEXT_41#}</th>
+                <th class="text-center">{#TEXT_16#}</th>
+                <th class="text-center">{#TEXT_332#}</th>
+                <th class="text-center">{#TEXT_333#}</th>
+                <th class="text-center">{#TEXT_335#}</th>
+                <th class="text-center" colspan="2"></th>
+              </tr>
+            </thead>
+            <tbody>
+{assign "PIECE" "0"}
+{assign "OVERALL_PRICE" "0"}
+{section name=DATA loop=$ALL_DATA_EFFECTIVE}
+              {math equation="x * y" x=$ALL_DATA_EFFECTIVE[DATA].amount y=$ALL_DATA_EFFECTIVE[DATA].price assign=SUM_PRICE}
+              {math equation="x + y" x=$SUM_PRICE y=$OVERALL_PRICE assign=OVERALL_PRICE}
+              {math equation="x + y" x=$ALL_DATA_EFFECTIVE[DATA].amount y=$PIECE assign=PIECE}
+
+              <tr>
+                <td><a href="{$ALL_DATA_EFFECTIVE[DATA].chartUrl}">{$ALL_DATA_EFFECTIVE[DATA].name}</a></td>
+                <td>{$ALL_DATA_EFFECTIVE[DATA].date}</td>
+                <td class="text-right of_number_to_be_evaluated">{$ALL_DATA_EFFECTIVE[DATA].amount|number_format_variable:3}</td>
+                <td class="text-right of_number_to_be_evaluated">{$ALL_DATA_EFFECTIVE[DATA].price|number_format_variable:3} {#CURRENCY#}</td>
+                <td class="text-right of_number_to_be_evaluated">{$SUM_PRICE|number_format} {#CURRENCY#}</td>
+                <td><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=display_edit_etf_flow&amp;etfflowid={$ALL_DATA_EFFECTIVE[DATA].etfflowid}&amp;sr=1','_blank','width=500,height=400')">{#TEXT_36#}</a></td>
+                <td><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=display_delete_etf_flow&amp;etfflowid={$ALL_DATA_EFFECTIVE[DATA].etfflowid}&amp;sr=1','_blank','width=500,height=300')">{#TEXT_37#}</a></td>
+              </tr>
+{/section}
+              {math equation="x / y" x=$OVERALL_PRICE y=$PIECE assign=MEAN_PRICE}
+
+              <tr>
+                <td colspan="2"></td>
+                <td class="text-right"><b>{$PIECE|number_format_variable:3}</b></td>
+                <td class="text-right of_number_to_be_evaluated"><b>{$MEAN_PRICE|number_format_variable:3} {#CURRENCY#}</b></td>
+                <td class="text-right of_number_to_be_evaluated"><b>{$OVERALL_PRICE|number_format_variable:2} {#CURRENCY#}</b></td>
+                <td colspan="2"></td>
+              </tr>
+            </tbody>
+          </table>
+  </div>
+  <div id="all" class="tab-pane fade">
           <table class="table table-striped table-bordered table-hover">
                       <col style="width:33%">
                       <col style="width:17%">
@@ -50,7 +106,7 @@
               <tr>
                 <td><a href="{$ALL_DATA[DATA].chartUrl}">{$ALL_DATA[DATA].name}</a></td>
                 <td>{$ALL_DATA[DATA].date}</td>
-                <td class="text-right">{$ALL_DATA[DATA].amount|number_format_variable:3}</td>
+                <td class="text-right of_number_to_be_evaluated">{$ALL_DATA[DATA].amount|number_format_variable:3}</td>
                 <td class="text-right of_number_to_be_evaluated">{$ALL_DATA[DATA].price|number_format_variable:3} {#CURRENCY#}</td>
                 <td class="text-right of_number_to_be_evaluated">{$SUM_PRICE|number_format} {#CURRENCY#}</td>
                 <td><a href="javascript:void window.open('{$ENV_INDEX_PHP}?action=display_edit_etf_flow&amp;etfflowid={$ALL_DATA[DATA].etfflowid}&amp;sr=1','_blank','width=500,height=400')">{#TEXT_36#}</a></td>
@@ -68,6 +124,8 @@
               </tr>
             </tbody>
           </table>
+  </div>
+
 {/if}
         <div>
 
@@ -229,6 +287,7 @@
         function preFillFormCalcEtfSale(formMode) {
           $('#calcetfsalefrm').validator('reset');
           $('#calcetfsalefrm').validator('update');
+          $("td.of_number_to_be_evaluated:contains('-')").addClass('red');
         }
 
         

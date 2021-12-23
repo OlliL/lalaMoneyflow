@@ -42,6 +42,8 @@ class moduleEtf extends module {
 		$listEtfFlows = EtfControllerHandler::getInstance()->listEtfFlows();
 		$etfs = $listEtfFlows ['etfs'];
 		$etfFlows = $listEtfFlows ['etfFlows'];
+		$etfEffectiveFlows = $listEtfFlows ['etfEffectiveFlows'];
+
 		if (is_array( $etfs )) {
 			foreach ( $etfs as $etf ) {
 				$etf_data [$etf ['isin']] ['name'] = $etf ['name'];
@@ -62,10 +64,26 @@ class moduleEtf extends module {
 					$all_data [] = $all_data_entry;
 				}
 			}
+
+			if (is_array( $etfEffectiveFlows )) {
+				foreach ( $etfEffectiveFlows as $etfFlow ) {
+					$all_data_entry = array ();
+
+					$all_data_entry ['etfflowid'] = $etfFlow ['etfflowid'];
+					$all_data_entry ['name'] = $etf_data [$etfFlow ['isin']] ['name'];
+					$all_data_entry ['chartUrl'] = $etf_data [$etfFlow ['isin']] ['chartUrl'];
+					$all_data_entry ['date'] = $etfFlow ['timestamp'];
+					$all_data_entry ['amount'] = $etfFlow ['amount'];
+					$all_data_entry ['price'] = $etfFlow ['price'];
+
+					$all_data_effective [] = $all_data_entry;
+				}
+			}
 		}
 
 		$this->template_assign( 'ETF_VALUES', $etfs );
 		$this->template_assign( 'ALL_DATA', $all_data );
+		$this->template_assign( 'ALL_DATA_EFFECTIVE', $all_data_effective );
 
 		$this->template_assign( 'CALC_ETF_SALE_ISIN', $listEtfFlows ['calcEtfSaleIsin'] );
 		$this->template_assign( 'CALC_ETF_SALE_PIECES', $listEtfFlows ['calcEtfSalePieces'] );
