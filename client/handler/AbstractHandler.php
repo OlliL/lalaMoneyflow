@@ -106,7 +106,8 @@ abstract class AbstractHandler extends AbstractJsonSender {
 		$url .= $usecase;
 		if (is_array( $parameter ) && count( $parameter ) > 0) {
 			foreach ( $parameter as $param ) {
-				$url .= '/' . rawurlencode( $param );
+				if(strlen($param) > 0)
+					$url .= '/' . rawurlencode( $param );
 			}
 		}
 		return $url;
